@@ -1,0 +1,23 @@
+
+
+#ifndef Random_h
+#define Random_h
+
+class Random{
+	private:
+		float max=1;
+		float min=0;
+		float seed=1.0f;
+	
+    	public:
+		virtual void setMax(float Max);
+		virtual void setMin(float Min);
+		virtual float getMin();
+		virtual float getMax();
+		virtual float getSeed();
+		virtual void setSeed(float Seed);
+		virtual float getRandom();
+		
+};
+
+#endif 
