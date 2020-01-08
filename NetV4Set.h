@@ -6,7 +6,7 @@
 #include "DataSet.h"
 #include "KVMap.h"
 
-template<int xS = 1, int yS = 2, int zS = 3, int wS = 2>
+template<int wS = 1, int zS = 2, int yS = 3, int xS = 2>
 class NetV4Set : public DataSet<float>{
 	public:
 		NetV4Set(){
@@ -15,6 +15,44 @@ class NetV4Set : public DataSet<float>{
 		
 		virtual ~NetV4Set(){
 			
+		}
+		
+		void setArray(float arr[xS]){
+			for(int x=0; x < xS;x++){
+				this->x1[x] = arr[x];
+			}
+		}
+		
+		void setArray(float arr[yS][xS]){
+			for(int x=0; x < xS;x++){
+				for(int y=0; y < yS;y++){
+					this->x2[y][x] = arr[y][x];
+				}
+				
+			}
+		}
+		
+		void setArray(float arr[zS][yS][xS]){
+			for(int x=0; x < xS;x++){
+				for(int y=0; y < yS;y++){
+					for(int z=0; z < zS;z++){
+						this->x3[z][y][x] = arr[z][y][x];
+					}
+				}				
+			}
+		}
+		
+		void setArray(float arr[wS][zS][yS][xS]){
+			for(int x=0; x < xS;x++){
+				for(int y=0; y < yS;y++){
+					for(int z=0; z < zS;z++){
+						this->x3[z][y][x] = arr[z][y][x];
+						for(int w=0; w < wS;w++){
+							this->x4[w][z][y][x] = arr[w][z][y][x];
+						}
+					}
+				}				
+			}
 		}
 		
 		virtual DataSet<float>* dimention(int dimentionPos){
@@ -45,13 +83,13 @@ class NetV4Set : public DataSet<float>{
 				x1[xP] = t;
 			}
 			if(this->dimentionMap == 1){
-				x2[xP][yP] = t;
+				x2[yP][xP] = t;
 			}
 			if(this->dimentionMap == 2){
-				x3[xP][yP][zP] = t;
+				x3[zP][yP][xP] = t;
 			}
 			if(this->dimentionMap == 3){
-				x4[xP][yP][zP][wP] = t;
+				x4[wP][zP][yP][xP] = t;
 			}
 			return this;
 		}
@@ -61,13 +99,13 @@ class NetV4Set : public DataSet<float>{
 				x1[xP] = -1;
 			}
 			if(this->dimentionMap == 1){
-				x2[xP][yP] = -1;
+				x2[yP][xP] = -1;
 			}
 			if(this->dimentionMap == 2){
-				x3[xP][yP][zP] = -1;
+				x3[zP][yP][xP] = -1;
 			}
 			if(this->dimentionMap == 3){
-				x4[xP][yP][zP][wP] = -1;
+				x4[wP][zP][yP][xP] = -1;
 			}
 			return this;
 		}
@@ -77,13 +115,13 @@ class NetV4Set : public DataSet<float>{
 				return x1[xP];
 			}
 			if(this->dimentionMap == 1){
-				return x2[xP][yP];
+				return x2[yP][xP];
 			}
 			if(this->dimentionMap == 2){
-				return x3[xP][yP][zP];
+				return x3[zP][yP][xP];
 			}
 			if(this->dimentionMap == 3){
-				return x4[xP][yP][zP][wP];
+				return x4[wP][zP][yP][xP];
 			}
 			return -1;
 		}
@@ -93,13 +131,13 @@ class NetV4Set : public DataSet<float>{
 				return &x1[xP];
 			}
 			if(this->dimentionMap == 1){
-				return &x2[xP][yP];
+				return &x2[yP][xP];
 			}
 			if(this->dimentionMap == 2){
-				return &x3[xP][yP][zP];
+				return &x3[zP][yP][xP];
 			}
 			if(this->dimentionMap == 3){
-				return &x4[xP][yP][zP][wP];
+				return &x4[wP][zP][yP][xP];
 			}
 			return nullptr;
 		}
@@ -226,11 +264,11 @@ class NetV4Set : public DataSet<float>{
 		}
 		
 		virtual String toString(){
-			return "NetV4Set " + String(this->dimentionMap) + " " + String(xP) + " "  + String(yP) + " "  + String(zP) + " "  + String(wP) + " = "  + String(getValue());
+			return "NetV4Set " + String(this->dimentionMap) + " " + String(wP) + " "  + String(zP) + " "  + String(yP) + " "  + String(xP) + " = "  + String(getValue());
 		}
 		
 		virtual DataSet<float>* clone(){
-			DataSet<float> *nset = new NetV4Set<xS,yS,zS,wS>();
+			DataSet<float> *nset = new NetV4Set<wS,zS,yS,xS>();
 			nset->setIteration(0);
 			this->setIteration(0);
 			iterate(this){
@@ -244,9 +282,9 @@ class NetV4Set : public DataSet<float>{
 		
 	private:
 		float x1[xS];
-		float x2[xS][yS];
-		float x3[xS][yS][zS];
-		float x4[xS][yS][zS][wS];
+		float x2[yS][xS];
+		float x3[zS][yS][xS];
+		float x4[wS][zS][yS][xS];
 		int xP = 0;
 		int yP = 0;
 		int zP = 0;
