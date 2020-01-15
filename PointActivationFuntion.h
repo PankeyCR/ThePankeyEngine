@@ -1,4 +1,4 @@
-
+/*
 #ifndef PointActivationFuntion_h
 #define PointActivationFuntion_h
 
@@ -20,6 +20,12 @@ class PointActivationFuntion : public Funtion<any...>{
 		virtual void set(int p, float var);
 		virtual void set(String name, float var);
 		
+		virtual int getIterationSize();
+		virtual float getValue();
+		virtual String getName();
+		virtual bool isModifiable();
+		virtual void set(float var);
+		
 	protected:
 		float a = 1;
 		float b = 1;
@@ -29,3 +35,4 @@ class PointActivationFuntion : public Funtion<any...>{
 };
 
 #endif 
+*/

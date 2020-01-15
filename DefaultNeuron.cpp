@@ -28,16 +28,16 @@
 
 	
 	DataSet<float> *DefaultNeuron::compute(DataSet<float> *data){
-		iterate(data){
-			float value =this->funtion->f(data->getValue());
-			data->set(value);
-			iterate(this->neuronList){
-				DataSet<float> *ndata = this->neuronList->getPointer()->compute(data);
-				if(ndata == nullptr){
-					return ndata;
-				}
-			}
-		}
+		// iterate(data){
+			// auto value =this->funtion->f(data->getValue());
+			// data->set(value);
+			// iterate(this->neuronList){
+				// DataSet<float> *ndata = this->neuronList->getPointer()->compute(data);
+				// if(ndata == nullptr){
+					// return ndata;
+				// }
+			// }
+		// }
 		return data;
 	}
 	

@@ -28,13 +28,13 @@ class NetNeuron : public Neuron<float>{
 		virtual bool equal(cppObject *b);
 		virtual Neuron<float> *clone();
 		
-		virtual Neuron<float> *setFuntion(Funtion<arr...> *a);
-		virtual Funtion<arr...> *getFuntion();
+		virtual Neuron<float> *setFuntion(Funtion<float,arr...> *a);
+		virtual Funtion<float,arr...> *getFuntion();
     
 	protected:
 		List<Neuron<float>> *neuronList = nullptr;
 		List<float> *weightList = nullptr;
-		Funtion<arr...> *funtion = nullptr;
+		Funtion<float,arr...> *funtion = nullptr;
 };
 
 #endif

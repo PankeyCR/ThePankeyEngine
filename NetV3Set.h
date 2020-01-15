@@ -122,6 +122,19 @@ class NetV3Set : public DataSet<float>{
 			return 3;
 		}
 		
+		virtual int dimentionVectorSize(int dimentionPos){
+			if(this->dimentionMap == 0){
+				return 1;
+			}
+			if(this->dimentionMap == 1){
+				return 2;
+			}
+			if(this->dimentionMap == 2){
+				return 3;
+			}
+			return -1;
+		}
+		
 		virtual int vectorSize(int dimentionPos){
 			if(this->dimentionMap == 0){
 				return xS;

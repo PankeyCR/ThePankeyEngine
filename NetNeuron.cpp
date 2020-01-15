@@ -114,13 +114,13 @@
 	}
 	
 	template<class... arr>
-	Neuron<float> *NetNeuron<arr...>::setFuntion(Funtion<arr...> *a){
+	Neuron<float> *NetNeuron<arr...>::setFuntion(Funtion<float,arr...> *a){
 		this->funtion = a;
 		return this;
 	}
 	
 	template<class... arr>
-	Funtion<arr...> *NetNeuron<arr...>::getFuntion(){
+	Funtion<float,arr...> *NetNeuron<arr...>::getFuntion(){
 		return this->funtion;
 	}
 	

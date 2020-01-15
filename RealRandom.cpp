@@ -9,10 +9,13 @@
 		limitMax = ((float)2147483646/1000000.0f);
 	}
 	
+	RealRandom::~RealRandom(){
+	}
+	
 	float RealRandom::getRandom(){
 		float time = ((float)micros()/1000000.0f);
 		float d = getMax()-getMin();
-		float dx = ((float)limitMax/(getSeed()*10000.0f));
+		float dx = ((float)limitMax/(this->seed*10.0f));
 		float tdx = abs((float)(time/dx));
 		float tx = (((float)(tdx))-((long)(tdx)));
 		float x = d*tx;

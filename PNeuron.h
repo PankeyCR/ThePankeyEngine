@@ -5,6 +5,7 @@
 #include "PList.h"
 #include "ArrayList.h"
 #include "DataSet.h"
+#include "Neuron.h"
 #include "NetNeuron.h"
 
 template<int size = 10>
@@ -29,6 +30,19 @@ class PNeuron : public NetNeuron<float>{
 			return true;
 		}
 		virtual DataSet<float> *compute(DataSet<float> *data){
+			if(this->funtion == nullptr){
+				return data;
+			}
+			if(data->getClassName() == "DuoArray1"){
+				iterate(data->iterateDimention(0)){
+					this->funtion->set(data->getIteration(), data->getValue());
+				}
+				iterate(data->iterateDimention(1)){
+					data->set(this->funtion->f(data->vector(1)));
+				}
+				return data;
+			}
+			
 			iterate(data){
 				float value =this->funtion->f(data->getValue());
 				data->set(value);

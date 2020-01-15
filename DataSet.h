@@ -21,8 +21,10 @@ class DataSet : public Iterator , public cppObject{
 		virtual T *getPointer();
 		
 		virtual int dimentionSize();
+		virtual int dimentionVectorSize(int dimentionPos);
 		virtual int vectorSize(int dimentionPos);
 		
+		virtual DataSet<T>* iterateDimention(int dimention);
 		virtual void setIteration(int iter);
 		virtual int getIterationSize();
 		virtual void last();

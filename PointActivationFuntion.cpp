@@ -1,4 +1,4 @@
-
+/*
 #ifndef PointActivationFuntion_cpp
 #define PointActivationFuntion_cpp
 
@@ -117,3 +117,4 @@
 	
 	
 #endif 
+*/

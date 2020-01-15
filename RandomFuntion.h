@@ -1,4 +1,4 @@
-
+/*
 #ifndef RandomFuntion_h
 #define RandomFuntion_h
 
@@ -38,3 +38,4 @@ class RandomFuntion : public Funtion<any...>{
 };
 
 #endif 
+*/

@@ -1,4 +1,4 @@
-
+/*
 #ifndef RandomFuntion_cpp
 #define RandomFuntion_cpp
 
@@ -211,3 +211,4 @@
 	
 	
 #endif 
+*/

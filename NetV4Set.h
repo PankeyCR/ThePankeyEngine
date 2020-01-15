@@ -146,6 +146,22 @@ class NetV4Set : public DataSet<float>{
 			return 4;
 		}
 		
+		virtual int dimentionVectorSize(int dimentionPos){
+			if(this->dimentionMap == 0){
+				return 1;
+			}
+			if(this->dimentionMap == 1){
+				return 2;
+			}
+			if(this->dimentionMap == 2){
+				return 3;
+			}
+			if(this->dimentionMap == 2){
+				return 4;
+			}
+			return -1;
+		}
+		
 		virtual int vectorSize(int dimentionPos){
 			if(this->dimentionMap == 0){
 				return xS;

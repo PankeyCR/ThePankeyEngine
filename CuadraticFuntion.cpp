@@ -178,6 +178,155 @@
 		
 		return a*x*x + b*y*y + c*z*z + d*w*w + e*t*t + fvar;
 	}
+		
+	template<class... any>
+	int CuadraticFuntion<any...>::getIterationSize(){
+		return 10;
+	}
+		
+	template<class... any>
+	float CuadraticFuntion<any...>::getValue(){
+		if(this->getIteration() == 0){
+			return a;
+		}
+		if(this->getIteration() == 0){
+			return b;
+		}
+		if(this->getIteration() == 0){
+			return c;
+		}
+		if(this->getIteration() == 0){
+			return d;
+		}
+		if(this->getIteration() == 0){
+			return e;
+		}
+		if(this->getIteration() == 0){
+			return fvar;
+		}
+		if(this->getIteration() == 0){
+			return g;
+		}
+		if(this->getIteration() == 0){
+			return h;
+		}
+		if(this->getIteration() == 0){
+			return i;
+		}
+		if(this->getIteration() == 0){
+			return j;
+		}
+		return -1;
+	}
+		
+	template<class... any>
+	float *CuadraticFuntion<any...>::getPointer(){
+		if(this->getIteration() == 0){
+			return &a;
+		}
+		if(this->getIteration() == 0){
+			return &b;
+		}
+		if(this->getIteration() == 0){
+			return &c;
+		}
+		if(this->getIteration() == 0){
+			return &d;
+		}
+		if(this->getIteration() == 0){
+			return &e;
+		}
+		if(this->getIteration() == 0){
+			return &fvar;
+		}
+		if(this->getIteration() == 0){
+			return &g;
+		}
+		if(this->getIteration() == 0){
+			return &h;
+		}
+		if(this->getIteration() == 0){
+			return &i;
+		}
+		if(this->getIteration() == 0){
+			return &j;
+		}
+		return nullptr;
+	}
+		
+	template<class... any>
+	String CuadraticFuntion<any...>::getName(){
+		if(this->getIteration() == 0){
+			return "a";
+		}
+		if(this->getIteration() == 0){
+			return "b";
+		}
+		if(this->getIteration() == 0){
+			return "c";
+		}
+		if(this->getIteration() == 0){
+			return "d";
+		}
+		if(this->getIteration() == 0){
+			return "e";
+		}
+		if(this->getIteration() == 0){
+			return "f";
+		}
+		if(this->getIteration() == 0){
+			return "g";
+		}
+		if(this->getIteration() == 0){
+			return "h";
+		}
+		if(this->getIteration() == 0){
+			return "i";
+		}
+		if(this->getIteration() == 0){
+			return "j";
+		}
+		return "";
+	}
+		
+	template<class... any>
+	bool CuadraticFuntion<any...>::isModifiable(){
+		return true;
+	}
+		
+	template<class... any>
+	void CuadraticFuntion<any...>::set(float var){
+		if(this->getIteration() == 0){
+			a = var;
+		}
+		if(this->getIteration() == 0){
+			b = var;
+		}
+		if(this->getIteration() == 0){
+			c = var;
+		}
+		if(this->getIteration() == 0){
+			d = var;
+		}
+		if(this->getIteration() == 0){
+			e = var;
+		}
+		if(this->getIteration() == 0){
+			fvar = var;
+		}
+		if(this->getIteration() == 0){
+			g = var;
+		}
+		if(this->getIteration() == 0){
+			h = var;
+		}
+		if(this->getIteration() == 0){
+			i = var;
+		}
+		if(this->getIteration() == 0){
+			j = var;
+		}
+	}
 	
 	
 	

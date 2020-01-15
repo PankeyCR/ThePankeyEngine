@@ -4,12 +4,13 @@
 #define Random_h
 
 class Random{
-	private:
+	protected:
 		float max=1;
 		float min=0;
 		float seed=1.0f;
 	
-    	public:
+    public:
+		virtual ~Random();
 		virtual void setMax(float Max);
 		virtual void setMin(float Min);
 		virtual float getMin();

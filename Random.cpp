@@ -5,6 +5,9 @@
 
 #include "Random.h"
 	
+	Random::~Random(){
+	}
+	
 	void Random::setMax(float Max){
 		max = Max;
 	}

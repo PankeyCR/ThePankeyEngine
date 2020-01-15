@@ -53,12 +53,22 @@
 	}
 	
 	template<class T>
+	int DataSet<T>::dimentionVectorSize(int dimentionPos){
+		return -1;
+	}
+	
+	template<class T>
 	int DataSet<T>::vectorSize(int dimentionPos){
 		return -1;
 	}
 	
 	template<class T>
 	void DataSet<T>::setIteration(int iter){
+	}
+	
+	template<class T>
+	DataSet<T>* DataSet<T>::iterateDimention(int dimention){
+		return this;
 	}
 	
 	template<class T>

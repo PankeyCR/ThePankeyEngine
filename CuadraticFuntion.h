@@ -5,7 +5,7 @@
 #include "Funtion.h"
 
 template<class... any>
-class CuadraticFuntion : public Funtion<any...>{
+class CuadraticFuntion : public Funtion<float,any...>{
 	public:
 		
 		CuadraticFuntion();
@@ -16,10 +16,17 @@ class CuadraticFuntion : public Funtion<any...>{
 		//cppObject part
 		virtual String getClassName();
 		virtual String toString();
-		virtual CuadraticFuntion* clone();
+		virtual CuadraticFuntion<any...>* clone();
 		
 		virtual void set(int p, float var);
 		virtual void set(String name, float var);
+		
+		virtual int getIterationSize();
+		virtual float getValue();
+		virtual float* getPointer();
+		virtual String getName();
+		virtual bool isModifiable();
+		virtual void set(float var);
 		
 	protected:
 		float a = 1;
