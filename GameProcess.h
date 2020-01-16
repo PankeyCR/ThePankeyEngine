@@ -24,7 +24,7 @@ class GameProcess{
 
 		
 	protected:
-		P* key;
+		P key;
 		Processing<V>* value;
 	
 };

@@ -2,15 +2,14 @@
 #include "Funtion.h"
 #include "DefaultNeuron.h"
 #include "CuadraticFuntion.h"
-#include "RandomFuntion.h"
 #include "DataSet.h"
 #include "NetV3Set.h"
 #include "MemoryFree.h"
 
 DataSet<float>* data;//1132
 DefaultNeuron* firstNeuron;
-Funtion<float>* fr;
-Funtion<float>* fx;
+Funtion<float,float>* fr;
+Funtion<float,float>* fx;
 
 int deletememory;
 int startmemory;
@@ -20,8 +19,7 @@ void setup() {
   Serial.begin(9600);
   Serial.println("start");
   startmemory = freeMemory();
-  fx = new CuadraticFuntion<float>();
-  fr = new RandomFuntion<float>(54524);  
+  fx = new CuadraticFuntion<float>(); 
   firstNeuron = new DefaultNeuron(); 
   firstNeuron->setFuntion(fx);
 
@@ -57,7 +55,6 @@ void setup() {
   Serial.println(responce->toString());
    
   delete fx;
-  delete fr;
   delete firstNeuron;
   delete data;
   delete responce;

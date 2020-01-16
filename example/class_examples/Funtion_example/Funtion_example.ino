@@ -2,8 +2,8 @@
 #include "Funtion.h"
 #include "CuadraticFuntion.h"
 
-Funtion<float,float,float>* fxyz;
-Funtion<float>* fx;
+Funtion<float,float,float,float>* fxyz;
+Funtion<float,float>* fx;
 
 void setup() {
   Serial.begin(9600);

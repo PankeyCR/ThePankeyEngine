@@ -5,16 +5,24 @@
 #include "PList.h"
 #include "ArrayList.h"
 #include "Neuron.h"
-#include "PNeuron.h"
+#include "NetNeuron.h"
 
 template<int size = 10>
-class DuoArray1Neuron : public PNeuron<size>{
+class DuoArray1Neuron : public NetNeuron<float>{
 	public:
 		DuoArray1Neuron(){
 			this->weightList = new ArrayList<float,size>();
 			this->neuronList = new PList<Neuron<float>,size>();
 		}
 		virtual ~DuoArray1Neuron(){
+			if(this->weightList != nullptr){
+				delete this->weightList;
+				this->weightList = nullptr;
+			}		
+			if(this->neuronList != nullptr){
+				delete this->neuronList;
+				this->neuronList = nullptr;
+			}
 		}
 		
 		virtual String getClassName(){
@@ -28,6 +36,10 @@ class DuoArray1Neuron : public PNeuron<size>{
 			dn->setFuntion(this->getFuntion());
 			return dn;
 		}
+		
+		virtual bool initialize(){
+			return true;
+		}
 		virtual DataSet<float> *compute(DataSet<float> *data){
 			if(this->funtion == nullptr){
 				return data;
@@ -39,6 +51,11 @@ class DuoArray1Neuron : public PNeuron<size>{
 				data->set(this->funtion->f(data->vector(1)));
 			}
 			return data;
+		}
+		virtual void onDelete(){
+			if(this->neuronList != nullptr){
+				this->neuronList->onDelete();
+			}
 		}
     
 	protected:

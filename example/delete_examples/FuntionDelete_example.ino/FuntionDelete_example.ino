@@ -3,7 +3,7 @@
 #include "CuadraticFuntion.h"
 #include "MemoryFree.h"
 
-Funtion<float>* fx;
+Funtion<float,float>* fx;
 
 int deletememory;
 int startmemory;

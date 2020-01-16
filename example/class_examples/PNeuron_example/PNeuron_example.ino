@@ -4,15 +4,13 @@
 #include "PNeuron.h"
 #include "PList.h"
 #include "CuadraticFuntion.h"
-#include "RandomFuntion.h"
 #include "DataSet.h"
 #include "NetV3Set.h"
 #include "MemoryFree.h"
 
-DataSet<float>* data;//1132
+DataSet<float>* data;
 PNeuron<9>* firstNeuron;
-Funtion<float>* fr;
-Funtion<float>* fx;
+Funtion<float,float>* fx;
 
 int deletememory;
 int startmemory;
@@ -23,7 +21,6 @@ void setup() {
   startmemory = freeMemory();
   data = new NetV3Set<4,2,4>();
   fx = new CuadraticFuntion<float>();
-  fr = new RandomFuntion<float>(54524); 
   firstNeuron = new PNeuron<9>();
   firstNeuron->setFuntion(fx);
 
@@ -69,7 +66,6 @@ void setup() {
   delete responce;
   delete data;
   delete fx;
-  delete fr;
 
   deletememory = freeMemory();
   Serial.print("startmemory ");Serial.println(startmemory);

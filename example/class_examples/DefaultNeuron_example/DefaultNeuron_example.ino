@@ -2,23 +2,20 @@
 #include "Funtion.h"
 #include "DefaultNeuron.h"
 #include "CuadraticFuntion.h"
-#include "RandomFuntion.h"
 #include "DataSet.h"
 #include "NetV3Set.h"
 
 DataSet<float>* data;//396
 DefaultNeuron* firstNeuron;
-Funtion<float>* fr;
-Funtion<float>* fx;
+Funtion<float,float>* fx;
 
 void setup() {
   Serial.begin(9600);
-  fx = new CuadraticFuntion<float>();
-  fr = new RandomFuntion<float>(54524);  
+  fx = new CuadraticFuntion<float>();  
   firstNeuron = new DefaultNeuron();
   firstNeuron->setFuntion(fx);
 
-  firstNeuron->connect(firstNeuron->clone()->setFuntion(fr));
+  firstNeuron->connect(firstNeuron->clone());
   
   data = new NetV3Set<1,2,3>();
   
