@@ -58,7 +58,7 @@ class MonkeyTime {
 	protected:	
 		long currentTimer = 0;
 		long microTimer = 0;
-		int tpcTimer = 0;
+		long tpcTimer = 0;
 		long tickTimer = 0;
     
 		long startTime = 0;

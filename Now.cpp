@@ -10,15 +10,15 @@
 			return time == isNow;
 		}
 		if(ofst == TimeCheck::LessThan){
-			return time > isNow;
+			return time < isNow;
 		}
 		if(ofst == TimeCheck::GreaterThan){
-			return time < isNow;
+			return time > isNow;
 		}
 		if(ofst == TimeCheck::GreaterEqualThan){
 			return time >= isNow;
 		}
-		if(ofst == TimeCheck::GreaterEqualThan){
+		if(ofst == TimeCheck::LessEqualThan){
 			return time <= isNow;
 		}
 		if(ofst == TimeCheck::InBetween){

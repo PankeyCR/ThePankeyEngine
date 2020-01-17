@@ -56,6 +56,54 @@
 		if(p==9){
 			j=var;
 		}
+		if(p==10){
+			k=var;
+		}
+		if(p==11){
+			l=var;
+		}
+		if(p==12){
+			m=var;
+		}
+		if(p==13){
+			n=var;
+		}
+		if(p==14){
+			o=var;
+		}
+		if(p==15){
+			pvar=var;
+		}
+		if(p==16){
+			q=var;
+		}
+		if(p==17){
+			r=var;
+		}
+		if(p==18){
+			s=var;
+		}
+		if(p==19){
+			t=var;
+		}
+		if(p==20){
+			u=var;
+		}
+		if(p==21){
+			v=var;
+		}
+		if(p==22){
+			w=var;
+		}
+		if(p==23){
+			x=var;
+		}
+		if(p==24){
+			y=var;
+		}
+		if(p==25){
+			z=var;
+		}
 	}
 	
 	void XtremeFuntion1::set(String name, float var){
@@ -90,17 +138,9 @@
 			j=var;
 		}
 	}
-	
-	float XtremeFuntion1::f(float x){
-		
-		return 	a*adx*x - b*bdx + c - cdx +
-				d*ddx*x + e*edx - fvar + fvardx -
-				g*gdx*x + h*hdx + i -
-				j*jdx*x ;
-	}
 		
 	int XtremeFuntion1::getIterationSize(){
-		return 20;
+		return 26;
 	}
 		
 	float XtremeFuntion1::getValue(){
@@ -133,6 +173,54 @@
 		}
 		if(this->getIteration() == 9){
 			return jdx;
+		}
+		if(this->getIteration() == 10){
+			return kdx;
+		}
+		if(this->getIteration() == 11){
+			return ldx;
+		}
+		if(this->getIteration() == 12){
+			return mdx;
+		}
+		if(this->getIteration() == 13){
+			return ndx;
+		}
+		if(this->getIteration() == 14){
+			return odx;
+		}
+		if(this->getIteration() == 15){
+			return pdx;
+		}
+		if(this->getIteration() == 16){
+			return qdx;
+		}
+		if(this->getIteration() == 17){
+			return rdx;
+		}
+		if(this->getIteration() == 18){
+			return sdx;
+		}
+		if(this->getIteration() == 19){
+			return tdx;
+		}
+		if(this->getIteration() == 20){
+			return udx;
+		}
+		if(this->getIteration() == 21){
+			return vdx;
+		}
+		if(this->getIteration() == 22){
+			return wdx;
+		}
+		if(this->getIteration() == 23){
+			return xdx;
+		}
+		if(this->getIteration() == 24){
+			return ydx;
+		}
+		if(this->getIteration() == 25){
+			return zdx;
 		}
 		return -1;
 	}
@@ -167,6 +255,54 @@
 		}
 		if(this->getIteration() == 9){
 			return &jdx;
+		}
+		if(this->getIteration() == 10){
+			return &kdx;
+		}
+		if(this->getIteration() == 11){
+			return &ldx;
+		}
+		if(this->getIteration() == 12){
+			return &mdx;
+		}
+		if(this->getIteration() == 13){
+			return &ndx;
+		}
+		if(this->getIteration() == 14){
+			return &odx;
+		}
+		if(this->getIteration() == 15){
+			return &pdx;
+		}
+		if(this->getIteration() == 16){
+			return &qdx;
+		}
+		if(this->getIteration() == 17){
+			return &rdx;
+		}
+		if(this->getIteration() == 18){
+			return &sdx;
+		}
+		if(this->getIteration() == 19){
+			return &tdx;
+		}
+		if(this->getIteration() == 20){
+			return &udx;
+		}
+		if(this->getIteration() == 21){
+			return &vdx;
+		}
+		if(this->getIteration() == 22){
+			return &wdx;
+		}
+		if(this->getIteration() == 23){
+			return &xdx;
+		}
+		if(this->getIteration() == 24){
+			return &ydx;
+		}
+		if(this->getIteration() == 25){
+			return &zdx;
 		}
 		return nullptr;
 	}
@@ -240,6 +376,88 @@
 		if(this->getIteration() == 9){
 			jdx = var;
 		}
+		if(this->getIteration() == 10){
+			kdx = var;
+		}
+		if(this->getIteration() == 11){
+			ldx = var;
+		}
+		if(this->getIteration() == 12){
+			mdx = var;
+		}
+		if(this->getIteration() == 13){
+			ndx = var;
+		}
+		if(this->getIteration() == 14){
+			odx = var;
+		}
+		if(this->getIteration() == 15){
+			pdx = var;
+		}
+		if(this->getIteration() == 16){
+			qdx = var;
+		}
+		if(this->getIteration() == 17){
+			rdx = var;
+		}
+		if(this->getIteration() == 18){
+			sdx = var;
+		}
+		if(this->getIteration() == 19){
+			tdx = var;
+		}
+		if(this->getIteration() == 20){
+			udx = var;
+		}
+		if(this->getIteration() == 21){
+			vdx = var;
+		}
+		if(this->getIteration() == 22){
+			wdx = var;
+		}
+		if(this->getIteration() == 23){
+			xdx = var;
+		}
+		if(this->getIteration() == 24){
+			ydx = var;
+		}
+		if(this->getIteration() == 25){
+			zdx = var;
+		}
+	}
+	
+	float XtremeFuntion1::f(float x){
+		return 	-1;
+		/*
+		return 	a*adx*x - a*ady + adz - adw + a*adt*adt - a*adp*adp +
+				b*bdx*x - b*bdy + bdz - bdw + b*bdt*bdt - b*bdp*bdp +
+				c*cdx*x - c*cdy + cdz - cdw + c*cdt*cdt - c*cdp*cdp +
+				d*ddx*x - d*ddy + ddz - ddw + d*ddt*ddt - d*ddp*ddp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				f*fdx*x - f*fdy + fdz - fdw + f*fdt*fdt - f*fdp*fdp +
+				g*gdx*x - g*gdy + gdz - gdw + g*gdt*gdt - g*gdp*gdp +
+				h*hdx*x - h*hdy + hdz - hdw + h*hdt*hdt - h*hdp*hdp +
+				i*idx*x - i*idy + idz - idw + i*idt*idt - i*idp*idp +
+				j*jdx*x - j*jdy + jdz - jdw + j*jdt*jdt - j*jdp*jdp +
+				k*kdx*x - k*kdy + kdz - kdw + k*kdt*kdt - k*kdp*kdp +
+				l*ldx*x - l*ldy + ldz - ldw + l*ldt*ldt - l*ldp*ldp +
+				m*mdx*x - m*mdy + mdz - mdw + m*mdt*mdt - m*mdp*mdp +
+				n*ndx*x - n*ndy + ndz - ndw + n*ndt*ndt - n*ndp*ndp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				e*edx*x - e*edy + edz - edw + e*edt*edt - e*edp*edp +
+				e*edx*x + e*edx - fvar + fvardx -
+				g*gdx*x + h*hdx + i -
+				j*jdx*x ;*/
 	}
 	
 	

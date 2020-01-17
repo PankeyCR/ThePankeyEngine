@@ -21,6 +21,7 @@
             long mm = micros();
 			this->tpcTimer = mm -this->currentTimer;
             this->currentTimer = mm;
+			this->microTimer = this->currentTimer-this->startTime;
         }
     }
 		
@@ -49,7 +50,6 @@
 	}
 
 	long MonkeyTime::getTime(){
-        this->microTimer = this->currentTimer-this->startTime;
         return this->microTimer;
 	}
 
@@ -109,7 +109,6 @@
 	}
 
 	float MonkeyTime::getScaleTime(){
-        this->microTimer = this->currentTimer-this->startTime;
         return (float)((float)this->microTimer/(float)this->scale);
 	}
 
