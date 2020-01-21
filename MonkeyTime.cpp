@@ -28,24 +28,26 @@
     void MonkeyTime::computeTime(long time) {
         if(this->running){
             long mm = micros();
-			if(time < mm -this->currentTimer){
+			this->microTimer = mm - this->startTime;
+			this->tpcTimer = 0;
+			if(time > mm -this->currentTimer){
 				return;
 			}
 			this->tpcTimer = mm -this->currentTimer;
             this->currentTimer = mm;
-			this->microTimer = this->currentTimer-this->startTime;
         }
     }
 	
     void MonkeyTime::computeScaleTime(float time) {
         if(this->running){
             long mm = micros();
-			if(time < (float)((float)(mm -this->startTime)/(float)this->scale)){
+			this->microTimer = mm - this->startTime;
+			this->tpcTimer = 0;
+			if(time > (float)((float)(mm - this->currentTimer -this->startTime)/(float)this->scale)){
 				return;
 			}
-			this->tpcTimer = mm -this->currentTimer;
+			this->tpcTimer = mm - this->currentTimer;
             this->currentTimer = mm;
-			this->microTimer = this->currentTimer-this->startTime;
         }
     }
 		

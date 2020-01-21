@@ -50,9 +50,11 @@
 		if(this->value > this->limitt){
 			openRecorder+=this->timer->getScaleTPC();
 			closeRecorder.resetRecord();
+			this->closem = false;
 		}else{
 			closeRecorder+=this->timer->getScaleTPC();
 			openRecorder.resetRecord();
+			this->openm = false;
 		}
 		if(openRecorder.isNow(this->timecheckm,this->timing,this->offsetm)){
 			this->openm = true;
