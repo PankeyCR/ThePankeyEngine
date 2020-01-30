@@ -1,29 +1,28 @@
-#ifndef PNeuron_h
-#define PNeuron_h
+#ifndef VNeuron_h
+#define VNeuron_h
 
-#include "GameOn.h"
 #include "List.h"
-#include "PList.h"
+#include "PrimitiveList.h"
 #include "DataSet.h"
 #include "Neuron.h"
 
 template<int size = 10>
-class PNeuron : public Neuron<float,float,float>{
+class VNeuron : public Neuron<float,float,float>{
 	public:
-		PNeuron(){
-			this->childs = new PList<GameOn,size>();
+		VNeuron(){
+			this->childs = new PrimitiveList<GameOn>();
 		}
-		PNeuron(String i){
+		VNeuron(String i){
 			this->setId(i);
-			this->childs = new PList<GameOn,size>();
+			this->childs = new PrimitiveList<GameOn>();
 		}
-		PNeuron(String i, int in, int out){
+		VNeuron(String i, int in, int out){
 			this->setId(i);
 			this->diminput = in;
 			this->dimoutput = out;
-			this->childs = new PList<GameOn,size>();
+			this->childs = new PrimitiveList<GameOn>();
 		}
-		virtual ~PNeuron(){
+		virtual ~VNeuron(){
 			if(this->childs != nullptr){
 				delete this->childs;
 				this->childs = nullptr;
@@ -40,19 +39,18 @@ class PNeuron : public Neuron<float,float,float>{
 			iterate(data->iterateDimention(dimoutput)){
 				data->set(this->funtion->f(data->getIteration()));
 			}
-			data->setIteration(0);
 			return data;
 		}
 		
 		//cppObject part
 		virtual String getClassName(){
-			return "PNeuron";
+			return "VNeuron";
 		}
 		virtual String toString(){
-			return "PNeuron";
+			return "VNeuron";
 		}
-		virtual PNeuron<size> *clone(){
-			PNeuron<size> *dn = new PNeuron<size>();
+		virtual VNeuron<size> *clone(){
+			VNeuron<size> *dn = new VNeuron<size>();
 			dn->setFuntion(this->getFuntion());
 			return dn;
 		}

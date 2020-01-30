@@ -13,14 +13,10 @@
 	}
 	
 	bool JoystickCalibrationControl::isValidControl(){
-		if(this->object == nullptr){
+		if(this->parent == nullptr){
 			return false;
 		}
-		return this->object->getClassName() == "AnalogJoystick";
-	}
-	
-	void JoystickCalibrationControl::onDelete(){
-		delete this;
+		return this->parent->getClassName() == "AnalogJoystick";
 	}
 	
 	String JoystickCalibrationControl::getClassName(){
@@ -33,7 +29,7 @@
 	
 	JoystickCalibrationControl *JoystickCalibrationControl::clone(){
 		JoystickCalibrationControl *control = new JoystickCalibrationControl();
-		control->object = this->object;
+		control->parent = this->parent;
 		return control;
 	}
 	
@@ -41,17 +37,17 @@
 		if(!this->isValidControl()){
 			return nullptr;
 		}
-		return (AnalogJoystick*)this->object;
+		return (AnalogJoystick*)this->parent;
 	}
 	
-	void JoystickCalibrationControl::update(){
+	void JoystickCalibrationControl::update(float tpc){
 		if(!this->isValidControl()){
-			this->object->removeControl(this);
+			((GameObject*)this->parent)->detach(this->idm);
 			return;
 		}
 		Joystick *joystick= this->getJoystick();
 		joystick->setOrigin(analogRead(joystick->getPinX()),analogRead(joystick->getPinY()));
-		delete this->object->removeControl(this);
+		delete ((GameObject*)this->parent)->detach(this->idm);
 	}
 	
 	

@@ -45,10 +45,6 @@
 		return clicked;
 	}
 
-	void AnalogJoystick::onDelete(){
-		delete this;
-	}
-
 	String AnalogJoystick::getClassName(){
 		return "AnalogJoystick";
 	}
@@ -96,7 +92,7 @@
 		scale = Scale;
 	}
 
-	void AnalogJoystick::update(){
+	void AnalogJoystick::update(float tpc){
 		rawX = analogRead(pinX);
 		rawY = analogRead(pinY);
 		x = (rawX-defaultX)*scale;
@@ -122,7 +118,7 @@
           clicked = false;
           pressed=false;
         }		
-		GameObject::update();
+		GameObject::update(tpc);
 	}
 	
 #endif 

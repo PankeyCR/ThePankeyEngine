@@ -22,7 +22,7 @@ class DataSet : public Iterator , public cppObject{
 		
 		virtual int dimentionSize();
 		virtual int dimentionVectorSize(int dimentionPos);
-		virtual int vectorSize(int dimentionPos);
+		virtual int vectorSize(int dimentionPos, int vectorPos);
 		
 		virtual DataSet<T>* iterateDimention(int dimention);
 		virtual void setIteration(int iter);
@@ -43,6 +43,7 @@ class DataSet : public Iterator , public cppObject{
 		virtual bool operator!=(DataSet<T> b);
 		
 	protected:
+		int iteratedimention=-1;
 };
 
 #endif 

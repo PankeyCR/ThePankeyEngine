@@ -17,12 +17,12 @@ class ArrayList : public List<T>{
 			pos=0;
 		}
 		
-		ArrayList<T,size>(ArrayList<T,size> *array){
-			pos=0;
-			for(int x=0; x<array->getPos(); x++){
-				this->add(*array->getByPos(x));
-			}
-		}
+		// ArrayList<T,size>(ArrayList<T,size> *array){
+			// pos=0;
+			// for(int x=0; x<array->getPos(); x++){
+				// this->add(*array->getByPos(x));
+			// }
+		// }
 		ArrayList<T,size>(T t[],int s){
 			pos=0;
 			for(int x=0; x<s; x++){
@@ -266,6 +266,14 @@ class ArrayList : public List<T>{
 		
 		T *getPointer(){
 			return this->getByPos(this->getIteration());
+		}
+		
+		void set(T s){
+			return this->set(this->getIteration() , s);
+		}
+		
+		void set(T* s){
+			return this->set(this->getIteration() , s);
 		}
 		
         void operator =(ArrayList<T,size> t){

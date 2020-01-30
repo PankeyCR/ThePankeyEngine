@@ -1,10 +1,10 @@
 
-#include "AnalogJoystick.h"
-#include "JoystickCalibrationControl.h"
+#include "GameObject.h"
+#include "VNeuron.h"
 #include "MemoryFree.h"
 
-AnalogJoystick *joy;
- 
+GameObject* entity;
+
 int deletememory;
 int startmemory;
 int instancememory;
@@ -12,19 +12,16 @@ int instancememory;
 void setup() {
   Serial.begin(9600);
   startmemory = freeMemory();
-  joy = new AnalogJoystick();
-  joy->setPins(A10,A11,46);
-  joy->attach(new JoystickCalibrationControl());
   
+  entity = new VNeuron<5>("parent");
+  entity->attach(new VNeuron<2>("arm_left"));
+  entity->attach(new VNeuron<2>("arm_right"));
+  entity->attach(new VNeuron<2>("leg_left"));
+  entity->attach(new VNeuron<2>("leg_right"));
+ 
   instancememory = freeMemory();
+  delete entity;
   
-  joy->update(0.1f);
-  Serial.print("X "); Serial.println(joy->getX()); 
-  Serial.print("Y "); Serial.println(joy->getY()); 
-  Serial.print("Xraw "); Serial.println(joy->getRawX()); 
-  Serial.print("Yraw "); Serial.println(joy->getRawY()); 
-
-  delete joy;
   deletememory = freeMemory();
   Serial.print("startmemory ");Serial.println(startmemory);
   Serial.print("instancememory ");Serial.println(instancememory);
@@ -33,5 +30,6 @@ void setup() {
   
 }
 
-void loop(){
+void loop() {
+
 }

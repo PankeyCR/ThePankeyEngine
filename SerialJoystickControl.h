@@ -2,12 +2,12 @@
 #ifndef SerialJoystickControl_h
 #define SerialJoystickControl_h
 
-#include "Control.h"
+#include "GameOn.h"
 #include "Joystick.h"
 #include "AnalogJoystick.h"
 #include "SerialConnection.h"
 
-class SerialJoystickControl : public Control{
+class SerialJoystickControl : public GameOn{
     private:
 	
     public:
@@ -17,8 +17,7 @@ class SerialJoystickControl : public Control{
         bool isValidControl();
         Joystick *getJoystick();
         SerialConnection *getSerial();
-        virtual void update();
-        virtual void onDelete();
+        virtual void update(float tpc);
 		virtual String getClassName();
 		virtual String toString();
 		virtual SerialJoystickControl *clone();

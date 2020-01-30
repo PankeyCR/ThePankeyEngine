@@ -75,4 +75,12 @@
 	bool DelaySensor::isOpen(){
 		return this->openm;
 	}
+	
+	float DelaySensor::closeTime(){
+		return this->openRecorder.getRecord();
+	}
+	
+	float DelaySensor::openTime(){
+		return this->closeRecorder.getRecord();
+	}
 #endif 

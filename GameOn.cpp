@@ -13,12 +13,20 @@
 		
 	}
 	
-	void GameOn::setParent(GameObject *parent){
+	void GameOn::setParent(GameOn *parent){
 		this->parent = parent;
 	}
 	
-	GameObject *GameOn::getParent(){
+	GameOn *GameOn::getParent(){
 		return this->parent;
+	}
+	
+	void GameOn::setId(String id){
+		this->idm = id;
+	}
+	
+	String GameOn::getId(){
+		return this->idm;
 	}
 		
 	bool GameOn::isEnable(){
@@ -32,30 +40,30 @@
 	void GameOn::disable(){
 		this->enabler = false;
 	}
-		
-	//Note GameOn::getNote(){
-		
-	//}
 	
 	void GameOn::update(float tpf){
 		
 	}
 	
-	// GameOn GameOn::operator =(const Note& note){
+	String GameOn::getClassName(){
+		return "GameOn";
+	}
+	
+	String GameOn::toString(){
+		return "GameOn";
+	}
+	
+	GameOn GameOn::operator =(const GameOn& note){
 		
-	// }
+	}
 	
-	// GameOn GameOn::operator =(const GameOn& note){
-		
-	// }
+	bool GameOn::operator ==(const GameOn& note){
+		return false;
+	}
 	
-	// bool GameOn::operator ==((const GameOn& note){
-		// return false;
-	// }
-	
-	// bool GameOn::operator !=((const GameOn& note){
-		// return false;
-	// }
+	bool GameOn::operator !=(const GameOn& note){
+		return false;
+	}
 	
 
 #endif 

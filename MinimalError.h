@@ -8,6 +8,7 @@
 #include "AbsoluteRandom.h"
 #include "DataSet.h"
 #include "Stream.h"
+#include "Logger.h"
 
 class MinimalError : public FuntionConfiguration<float,float>{
 	public:
@@ -15,6 +16,8 @@ class MinimalError : public FuntionConfiguration<float,float>{
 		MinimalError(Stream* serial);
 		virtual ~MinimalError();
 		
+		virtual MinimalError* random(float max,float min,float st);
+		virtual MinimalError* minimalerror(float st);
 		virtual MinimalError* input(int st);
 		virtual MinimalError* output(int st);
 		virtual MinimalError* funtion(Funtion<float,float>* fn);
@@ -30,7 +33,11 @@ class MinimalError : public FuntionConfiguration<float,float>{
 		int inputD=0;
 		int outputD=0;
 		long epochcount=100;
+		float rnd=521;
+		float rndmax=2;
+		float rndmin=0;
 		float Error=0;
+		float MError=0;
 		DataSet<float>* data;
 		Funtion<float,float>* fx = nullptr;
 };

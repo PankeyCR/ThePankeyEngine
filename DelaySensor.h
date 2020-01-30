@@ -32,6 +32,8 @@ class DelaySensor{
 		virtual void update();
 		virtual bool isClose();
 		virtual bool isOpen();
+		virtual float closeTime();
+		virtual float openTime();
 		
 };
 

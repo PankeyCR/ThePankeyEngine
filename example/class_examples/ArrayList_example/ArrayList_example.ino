@@ -32,7 +32,8 @@ void setup() {
     Serial.print("Actual Object:  ");Serial.println(*testList->getByPos(x));
   }
 
-  ArrayList<String,10> *Listt = new ArrayList<String,10>(testList);
+  ArrayList<String,10> *Listt = new ArrayList<String,10>();
+  Listt->add(testList);
 
   
   for(int x = 0; x < Listt->getPos(); x++){

@@ -30,10 +30,10 @@
 	}
 		
 	RobotiHandTransferData::~RobotiHandTransferData(){
-		if(servos == nullptr){
-			delete servos;        
-		}
-		if(list == nullptr){
+		// if(servos != nullptr){
+			// delete servos;        
+		// }
+		if(list != nullptr){
 			delete list;
 		}
 	}
@@ -42,17 +42,17 @@
     if(!isValidControl()){
       return nullptr;
     }
-    return (SerialController*)object;
+    return (SerialController*)parent;
   }
  
   bool RobotiHandTransferData::isValidControl(){
-    if(object == nullptr){
+    if(parent == nullptr){
       return false;
     }
-    return this->object->getClassName()=="SerialController";
+    return this->parent->getClassName()=="SerialController";
   }
   
-  void RobotiHandTransferData::update(){
+  void RobotiHandTransferData::update(float tpc){
     if(!isValidControl()){
       return;
     }
@@ -101,16 +101,6 @@
    
   String RobotiHandTransferData::getMessage(){
     return buff;
-  }
-    
-  void RobotiHandTransferData::onDelete(){
-		if(servos == nullptr){
-			delete servos;        
-		}
-		if(list == nullptr){
-			delete list;
-		}
-		delete this;			
   }
   
   String RobotiHandTransferData::Split(String divide,int parte, char limiter){     

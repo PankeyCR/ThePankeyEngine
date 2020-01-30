@@ -5,30 +5,34 @@
 
 #include "cppObject.h"
 #include "Note.h"
-class GameObject;
 
 class GameOn : public cppObject{
     public:		
 		GameOn();
 		virtual ~GameOn();
-		virtual void setParent(GameObject *parent);
-		virtual GameObject *getParent();
+		virtual void setParent(GameOn *parent);
+		virtual GameOn *getParent();
+		
+        virtual void setId(String id);
+        virtual String getId();
 		
 		virtual bool isEnable();
 		virtual void enable();
 		virtual void disable();
 		
-		//virtual Note getNote();
-		
 		virtual void update(float tpf);
-        // virtual GameOn operator =(const Note& note);
-        // virtual GameOn operator =(const GameOn& c);
-        // virtual bool operator ==(const GameOn& c);
-        // virtual bool operator !=(const GameOn& c);
+		
+		virtual String getClassName();
+		virtual String toString();
+		
+        virtual GameOn operator =(const GameOn& c);
+        virtual bool operator ==(const GameOn& c);
+        virtual bool operator !=(const GameOn& c);
     
 	protected:	
-		GameObject *parent;
+		GameOn* parent;
 		bool enabler = false;
+		String idm;
 };
 
 

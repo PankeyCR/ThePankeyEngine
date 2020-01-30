@@ -42,8 +42,7 @@ class AnalogJoystick : public Joystick , public GameObject {
 		bool isReleased();
 		bool isClick();
 		
-        void update();
-        void onDelete();
+        void update(float tpc);
 		String getClassName();
 		String toString();
 		AnalogJoystick *clone();

@@ -94,55 +94,50 @@ class DuoArray1 : public DataSet<float>{
 		}
 		
 		virtual int dimentionVectorSize(int dimentionPos){
-			if(this->dimentionMap == 0){
+			if(dimentionPos == 0){
 				return 1;
 			}
-			if(this->dimentionMap == 1){
+			if(dimentionPos == 1){
 				return 1;
 			}
 			return -1;
 		}
 		
-		virtual int vectorSize(int dimentionPos){
-			if(this->dimentionMap == 0){
-				return xS1;
+		virtual int vectorSize(int dimentionPos, int vectorPos){
+			if(dimentionPos == 0){
+				if(vectorPos == 0){
+					return xS1;
+				}
 			}
-			if(this->dimentionMap == 1){
-				return xS2;
+			if(dimentionPos == 1){
+				if(vectorPos == 0){
+					return xS2;
+				}
 			}
 			return -1;
-		}
-		
-		virtual DataSet<float>* iterateDimention(int dimention){
-			this->iterateOnlyOneDimention=true;
-			this->iterateOnlyOneDimentionSize=true;
-			this->iterdim=dimention;
-			return this;
 		}
 		
 		virtual void setIteration(int iter){
-			if(this->iterateOnlyOneDimention){
-				this->iterateOnlyOneDimention=false;
-				this->iterateOnlyOneDimentionSize=false;
-				if(this->iterdim==0){
+			if(this->iteratedimention >= 0){
+				if(this->iteratedimention == 0){
 					this->iterateCount = 0;
 					this->dimentionMap = 0;
 					this->xP1 = 0;
 					this->xP2 = 0;					
 				}
-				if(this->iterdim==1){
-					this->iterateCount = xS1;
+				if(this->iteratedimention == 1){
+					this->iterateCount = 0;
 					this->dimentionMap = 1;
 					this->xP1 = 0;
 					this->xP2 = 0;					
 				}
-				if(this->iterdim>=2){
+				if(this->iteratedimention >= 2){
 					this->iterateCount = 0;
 					this->dimentionMap = 0;
 					this->xP1 = 0;
 					this->xP2 = 0;					
 				}
-				
+				this->iteratedimention = -1;
 				return;
 			}
 			this->iterateCount = iter;
@@ -159,17 +154,15 @@ class DuoArray1 : public DataSet<float>{
 		}
 		
 		int getIterationSize(){
-			if(this->iterateOnlyOneDimentionSize){
-				this->iterateOnlyOneDimention=false;
-				this->iterateOnlyOneDimentionSize=false;
-				if(this->iterdim==0){
+			if(this->iteratedimention >= 0){
+				if(this->iteratedimention == 0){
 					this->fullSize = xS1;
-					return this->fullSize;
 				}
-				if(this->iterdim==1){
-					this->fullSize = xS1 + xS2;
-					return this->fullSize;
+				if(this->iteratedimention == 1){
+					this->fullSize = xS2;
 				}
+				this->iteratedimention = -1;
+				return this->fullSize;
 			}
 			this->fullSize = xS1 + xS2;
 			return this->fullSize;
@@ -198,6 +191,20 @@ class DuoArray1 : public DataSet<float>{
 		
 		virtual void next(){
 			this->iterateCount++;
+			if(this->iteratedimention >= 0){
+				if(this->iteratedimention == 0){
+					if(xP1 < xS1){
+						xP1++;
+					}
+				}
+				if(this->iteratedimention == 1){
+					if(xP2 < xS2){
+						xP2++;
+					}
+				}
+				this->iteratedimention = -1;
+				return;
+			}
 			if(xP1 < xS1 && this->dimentionMap == 0){
 				xP1++;
 			}
@@ -282,9 +289,6 @@ class DuoArray1 : public DataSet<float>{
 		int dimentionMap = 0;
 		int fullSize = 0;
 		float offSet = 0.1f;
-		int iterdim=0;
-		bool iterateOnlyOneDimentionSize=false;
-		bool iterateOnlyOneDimention=false;
 };
 
 #endif 

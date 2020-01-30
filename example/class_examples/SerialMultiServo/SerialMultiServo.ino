@@ -28,7 +28,7 @@ void setup() {
 }
 
 void loop() {
-  serial->update();
+  serial->update(0.1f);
   buff = serial->safeReceive('{','}');        
   String buff_0 = "";
 

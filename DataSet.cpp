@@ -58,7 +58,7 @@
 	}
 	
 	template<class T>
-	int DataSet<T>::vectorSize(int dimentionPos){
+	int DataSet<T>::vectorSize(int dimentionPos, int vectorPos){
 		return -1;
 	}
 	
@@ -68,6 +68,7 @@
 	
 	template<class T>
 	DataSet<T>* DataSet<T>::iterateDimention(int dimention){
+		this->iteratedimention=dimention;
 		return this;
 	}
 	

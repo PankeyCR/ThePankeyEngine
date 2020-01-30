@@ -4,14 +4,14 @@
 #define RobotiHandTransferData_h
 
 #include "Arduino.h"
-#include "Control.h"
+#include "GameOn.h"
 #include "LimitServo.h"
 #include "SimpleServo.h"
 #include "MultiServo.h"
 #include "SerialController.h"
 #include "ArrayList.h"
 
-class RobotiHandTransferData : public Control{
+class RobotiHandTransferData : public GameOn{
 	private:  
 		
 	public:
@@ -21,10 +21,11 @@ class RobotiHandTransferData : public Control{
 		
 		RobotiHandTransferData(MultiServo *s);
 		~RobotiHandTransferData();
-		void onDelete();
+		
 		SerialController *getSerial();
 		bool isValidControl();
-		void update();
+		void update(float tpc);
+		
 		String getMessage();
 		int moveDistance();
 		String Split(String divide,int parte, char limiter);

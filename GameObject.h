@@ -3,43 +3,30 @@
 #define GameObject_h
 
 #include "Arduino.h"
-#include "cppObject.h"
-#include "Control.h"
+#include "GameOn.h"
 #include "List.h"
-#include "PList.h"
 
-class GameObject : public cppObject{
-    private:
+class GameObject : public GameOn{
+    protected:
+		List<GameOn>* childs = nullptr;
 	
     public:
-		List<Control> *controls = nullptr;
-		List<GameObject> *childs = nullptr;
-		GameObject *parent = nullptr;
 		
-		GameObject();
 		virtual ~GameObject();
-        virtual void setParent(GameObject *obj);
-        virtual GameObject *get();
-        virtual void update();
-        virtual void addControl(Control *control);
-        virtual Control *getControl(String className);
-        virtual Control *getControl(Control *control);
-        virtual Control *getControl(int control);
-        virtual Control *removeControl(Control *control);
-        virtual Control *removeControl(int control);
-        virtual void attach(GameObject *gameobject);
-        virtual GameObject *getChild(String className);
-        virtual GameObject *getChild(GameObject *gameobject);
-        virtual GameObject *getChild(int control);
-        virtual GameObject *detach(GameObject *gameobject);
-        virtual GameObject *detach(int gameobject);
-        virtual void onDelete();
+		
+		virtual void update(float tpf);
+		
+        virtual GameOn* attach(GameOn* gameobject);
+        virtual GameOn* attach(String id, GameOn* gameobject);
+		
+        virtual GameOn* getChild(String id_className);
+        virtual GameOn* getChild(String id, String className);
+		
+        virtual GameOn* detach(String id_className);
+        virtual GameOn* detach(String id, String className);
+		
 		virtual String getClassName();
 		virtual String toString();
-		virtual GameObject *clone();
-        void operator =(GameObject c);
-        bool operator ==(GameObject c);
-        bool operator !=(GameObject c);
 };
 
 #endif 

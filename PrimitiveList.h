@@ -9,6 +9,7 @@
 #include "AppState.h"
 #include "Arduino.h"
 #include "Neuron.h"
+#include "GameOn.h"
 #include "List.h"
 
 template<class T>

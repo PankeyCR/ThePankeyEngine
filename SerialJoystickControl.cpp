@@ -9,26 +9,22 @@
 	}
 	
 	bool SerialJoystickControl::isValidControl(){
-		if(this->object == nullptr){
+		if(this->parent == nullptr){
 			return false;
 		}
 		bool valid=false;
-		if(this->object->getClassName() == "SerialJoystickObject"){
+		if(this->parent->getClassName() == "SerialJoystickparent"){
 			valid = true;
-			connection = (SerialConnection*)this->object;
-			joystick = (AnalogJoystick*)this->object;			
+			connection = (SerialConnection*)this->parent;
+			joystick = (AnalogJoystick*)this->parent;			
 		}
-		if(this->object->getChild("SerialConnection") != nullptr 
-			&& this->object->getChild("AnalogJoystick") != nullptr ){
+		if(((GameObject*)this->parent)->getChild("SerialConnection") != nullptr 
+			&& ((GameObject*)this->parent)->getChild("AnalogJoystick") != nullptr ){
 			valid = true;
-			connection = (SerialConnection*)this->object->getChild("SerialConnection");
-			joystick = (AnalogJoystick*)this->object->getChild("AnalogJoystick");
+			connection = (SerialConnection*)((GameObject*)this->parent)->getChild("SerialConnection");
+			joystick = (AnalogJoystick*)((GameObject*)this->parent)->getChild("AnalogJoystick");
 		}
 		return valid;
-	}
-	
-	void SerialJoystickControl::onDelete(){
-		delete this;
 	}
 	
 	String SerialJoystickControl::getClassName(){
@@ -41,7 +37,7 @@
 	
 	SerialJoystickControl *SerialJoystickControl::clone(){
 		SerialJoystickControl *control = new SerialJoystickControl();
-		control->object = this->object;
+		control->parent = this->parent;
 		return control;
 	}
 	
@@ -53,7 +49,7 @@
 		return connection;
 	}
 	
-	void SerialJoystickControl::update(){
+	void SerialJoystickControl::update(float tpc){
 		
 	}
 	

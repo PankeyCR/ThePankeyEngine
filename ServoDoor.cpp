@@ -40,14 +40,14 @@
 		this->state = false;
 		this->closem = false;
 		this->openm = false;
-		this->servo.write(this->oAngle);
+		this->servo.write(this->cAngle);
 		return this;
 	}
 	ServoDoor* ServoDoor::open(){
 		this->state = true;
 		this->closem = false;
 		this->openm = false;
-		this->servo.write(this->cAngle);
+		this->servo.write(this->oAngle);
 		return this;
 	}
 	ServoDoor* ServoDoor::openAngle(int angle){

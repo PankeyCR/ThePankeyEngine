@@ -318,6 +318,7 @@
 	template class PrimitiveList<AbstractRead>;
 	template class PrimitiveList<cppObject>;
 	template class PrimitiveList<AppState>;
-	template class PrimitiveList<Neuron<float>>;
+	template class PrimitiveList<GameOn>;
+	template class PrimitiveList<Neuron<float,float,float>>;
 	
 #endif
