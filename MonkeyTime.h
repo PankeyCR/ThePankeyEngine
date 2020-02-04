@@ -14,6 +14,8 @@ class MonkeyTime {
 		virtual ~MonkeyTime();
 		
 		virtual void run();
+		virtual void computeManualTime(long time);
+		virtual void computeManualScaleTime(float time);
 		virtual void computeTime();
 		virtual void computeTime(long time);
 		virtual void computeScaleTime(float time);

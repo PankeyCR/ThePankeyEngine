@@ -4,10 +4,12 @@
 #include "List.h"
 #include "PrimitiveList.h"
 #include "DataSet.h"
+#include "GameOn.h"
 #include "Neuron.h"
+#include "FNeuron.h"
 
 template<int size = 10>
-class VNeuron : public Neuron<float,float,float>{
+class VNeuron : public FNeuron<float,float,float>{
 	public:
 		VNeuron(){
 			this->childs = new PrimitiveList<GameOn>();

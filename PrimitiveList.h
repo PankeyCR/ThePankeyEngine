@@ -7,6 +7,7 @@
 #include "AbstractRead.h"
 #include "cppObject.h"
 #include "AppState.h"
+#include "Funtion.h"
 #include "Arduino.h"
 #include "Neuron.h"
 #include "GameOn.h"

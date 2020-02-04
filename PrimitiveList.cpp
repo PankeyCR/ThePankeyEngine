@@ -319,6 +319,9 @@
 	template class PrimitiveList<cppObject>;
 	template class PrimitiveList<AppState>;
 	template class PrimitiveList<GameOn>;
-	template class PrimitiveList<Neuron<float,float,float>>;
+	template class PrimitiveList<Neuron<float>>;
+	template class PrimitiveList<Neuron<String>>;
+	template class PrimitiveList<Neuron<char>>;
+	template class PrimitiveList<Funtion<float,float>>;
 	
 #endif

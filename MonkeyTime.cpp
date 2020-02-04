@@ -16,6 +16,22 @@
         this->running=true;
     }
 	
+    void MonkeyTime::computeManualTime(long time) {
+        if(this->running){
+			this->microTimer = time - this->startTime;
+			this->tpcTimer = time -this->currentTimer;
+            this->currentTimer = time;
+        }
+    }
+	
+    void MonkeyTime::computeManualScaleTime(float time) {
+        if(this->running){
+			this->microTimer = time - this->startTime;
+			this->tpcTimer = time - this->currentTimer;
+            this->currentTimer = time;
+        }
+    }
+	
     void MonkeyTime::computeTime() {
         if(this->running){
             long mm = micros();
@@ -28,7 +44,7 @@
     void MonkeyTime::computeTime(long time) {
         if(this->running){
             long mm = micros();
-			this->microTimer = mm - this->startTime;
+			this->microTimer = this->currentTimer - this->startTime;
 			this->tpcTimer = 0;
 			if(time > mm -this->currentTimer){
 				return;
@@ -41,7 +57,7 @@
     void MonkeyTime::computeScaleTime(float time) {
         if(this->running){
             long mm = micros();
-			this->microTimer = mm - this->startTime;
+			this->microTimer = this->currentTimer - this->startTime;
 			this->tpcTimer = 0;
 			if(time > (float)((float)(mm - this->currentTimer -this->startTime)/(float)this->scale)){
 				return;

@@ -6,9 +6,10 @@
 #include "PList.h"
 #include "DataSet.h"
 #include "Neuron.h"
+#include "FNeuron.h"
 
 template<int size = 10>
-class PNeuron : public Neuron<float,float,float>{
+class PNeuron : public FNeuron<float,float,float>{
 	public:
 		PNeuron(){
 			this->childs = new PList<GameOn,size>();

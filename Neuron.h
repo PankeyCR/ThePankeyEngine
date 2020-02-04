@@ -3,19 +3,15 @@
 
 #include "DataSet.h"
 #include "GameObject.h"
-#include "Funtion.h"
 
-template<class dataset,class funtion_return, class... arr>
+template<class dataset>
 class Neuron : public GameObject{
 	public:
 		virtual ~Neuron();
 		
-		virtual DataSet<dataset> *compute(DataSet<dataset> *data);  
-		
-		virtual Neuron<dataset,funtion_return,arr...>* setFuntion(Funtion<funtion_return,arr...>* a);
-		virtual Funtion<funtion_return,arr...>* getFuntion();  
+		virtual DataSet<dataset> *compute(DataSet<dataset> *data); 
 	protected:
-		Funtion<funtion_return,arr...>* funtion=nullptr;
+	
 };
 
 #endif

@@ -10,6 +10,6 @@ class ScreenButton : public Button{
 	
     public:
 		virtual Vector2f getCursor()=0;
-		virtual uint16_t getPressure()=0;
+		virtual int getPressure()=0;
 };
 #endif 
