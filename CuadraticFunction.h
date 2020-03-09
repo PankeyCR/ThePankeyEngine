@@ -1,22 +1,22 @@
 
-#ifndef CuadraticFuntion_h
-#define CuadraticFuntion_h
+#ifndef CuadraticFunction_h
+#define CuadraticFunction_h
 
-#include "Funtion.h"
+#include "Function.h"
 
 template<class... any>
-class CuadraticFuntion : public Funtion<float,any...>{
+class CuadraticFunction : public Function<float,any...>{
 	public:
 		
-		CuadraticFuntion();
-		virtual ~CuadraticFuntion();
+		CuadraticFunction();
+		virtual ~CuadraticFunction();
     
 		virtual float f(any... mf);
 		
 		//cppObject part
 		virtual String getClassName();
 		virtual String toString();
-		virtual CuadraticFuntion<any...>* clone();
+		virtual CuadraticFunction<any...>* clone();
 		
 		virtual void set(int p, float var);
 		virtual void set(String name, float var);

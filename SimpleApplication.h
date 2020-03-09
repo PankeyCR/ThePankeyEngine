@@ -11,6 +11,7 @@
 #include "SimpleTimer.h"
 #include "SimpleAppSettings.h"
 #include "SimpleStateManager.h"
+#include "Logger.h"
 
 template <int SettingsSize>
 class SimpleApplication : public Application{
@@ -19,6 +20,7 @@ class SimpleApplication : public Application{
 			states = new SimpleStateManager<SettingsSize>();
 			settings = new SimpleAppSettings<SettingsSize>();
 			states->setApplication(this);
+			//Log("println","Start SimpleApplication ");
 		}
 		void setSettings(AppSettings *setting){
 			settings = setting;
@@ -33,6 +35,7 @@ class SimpleApplication : public Application{
 			return states;
 		}
 		void update(){
+			//Log("println","update SimpleApplication ");
 			states->update();
 		}
 		void setTimeControl(TimeControl *timecontrol){

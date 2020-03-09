@@ -2,10 +2,10 @@
 //#define Log 
 //#define LogSerial 
 
-#include "Funtion.h"
+#include "Function.h"
 #include "Neuron.h"
 #include "PNeuron.h"
-#include "XtremeFuntion1.h"
+#include "XtremeFunction1.h"
 #include "DataSet.h"
 #include "DuoArray1.h"
 #include "Logger.h"
@@ -13,7 +13,7 @@
 
 DuoArray1<2,7>* data;
 PNeuron<2>* firstNeuron;
-Funtion<float,float>* fx;
+Function<float,float>* fx;
 
 
 void setup() {
@@ -27,7 +27,7 @@ void setup() {
   data->setArray1(inputData);
   data->setArray2(learningData);
   
-  MinimalError* fconf = new MinimalError(&Serial);
+  MinimalError* fconf = new MinimalError();
   
   fx = fconf->epochs(1000)
             ->dataset(data)
@@ -41,7 +41,7 @@ void setup() {
   delete fconf;
   
   firstNeuron = new PNeuron<2>();
-  firstNeuron->setFuntion(fx); 
+  firstNeuron->setFunction(fx); 
   
   DataSet<float>* responce = firstNeuron->compute(data->clone());
 

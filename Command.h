@@ -7,6 +7,17 @@ class Command {
     private:
 	
     public:
-		virtual void execute(C c)=0;
+		virtual void execute(C* c){
+			
+		}
+		virtual void operator=(Command<C> b){
+			
+		}
+		virtual bool operator==(Command<C> b){
+			return true;
+		}
+		virtual bool operator!=(Command<C> b){
+			return false;
+		}
 };
 #endif 

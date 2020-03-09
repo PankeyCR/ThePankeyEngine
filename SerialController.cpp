@@ -286,10 +286,10 @@ ArrayList<char,100>* SerialController::validChars = 0;
 		return validChars->contain(chr);
 	}
 	
-	void SerialController::onDelete(){
-		validChars->onDelete();
-		delete this;
-	}
+	// void SerialController::onDelete(){
+		// validChars->onDelete();
+		// delete this;
+	// }
 	
 	String SerialController::getClassName(){
 		return "SerialController";

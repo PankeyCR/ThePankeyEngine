@@ -267,10 +267,10 @@
 		return n.getNote();
 	}
 	
-	template<int Lsize=20>
-	ArrayList<String,Lsize> Note::getWords(){
+	// template<int Lsize=20>
+	// ArrayList<String,Lsize> Note::getWords(){
 		
-	}
+	// }
 	
 	String Note::getWord(String s, int pos){
 		return Split(s, pos, space);

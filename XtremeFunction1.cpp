@@ -1,12 +1,12 @@
 
-#ifndef XtremeFuntion1_cpp
-#define XtremeFuntion1_cpp
+#ifndef XtremeFunction1_cpp
+#define XtremeFunction1_cpp
 
-#include "XtremeFuntion1.h"
+#include "XtremeFunction1.h"
 
 
 	
-	XtremeFuntion1::XtremeFuntion1(){
+	XtremeFunction1::XtremeFunction1(){
 		for(int x=0; x < 21; x++){
 			vars.add(0.0f);
 		}
@@ -15,57 +15,57 @@
 		}
 	}
 	
-	XtremeFuntion1::~XtremeFuntion1(){
+	XtremeFunction1::~XtremeFunction1(){
 		
 	}
 		
 	//cppObject part
-	String XtremeFuntion1::getClassName(){
-		return "XtremeFuntion1";
+	String XtremeFunction1::getClassName(){
+		return "XtremeFunction1";
 	}
-	String XtremeFuntion1::toString(){
-		return "XtremeFuntion1";
+	String XtremeFunction1::toString(){
+		return "XtremeFunction1";
 	}
-	XtremeFuntion1* XtremeFuntion1::clone(){
+	XtremeFunction1* XtremeFunction1::clone(){
 		return this;
 	}
 	
-	void XtremeFuntion1::set(int p, float var){
+	void XtremeFunction1::set(int p, float var){
 		vars.set(p, var);
 	}
 	
-	void XtremeFuntion1::set(String name, float var){
+	void XtremeFunction1::set(String name, float var){
 		
 	}
 		
-	int XtremeFuntion1::getIterationSize(){
+	int XtremeFunction1::getIterationSize(){
 		return 200;
 	}
 		
-	float XtremeFuntion1::getValue(){
+	float XtremeFunction1::getValue(){
 		learningvars.setIteration(this->getIteration());
 		return learningvars.getValue();
 	}
 		
-	float *XtremeFuntion1::getPointer(){
+	float *XtremeFunction1::getPointer(){
 		learningvars.setIteration(this->getIteration());
 		return learningvars.getPointer();
 	}
 		
-	String XtremeFuntion1::getName(){
+	String XtremeFunction1::getName(){
 		return "";
 	}
 		
-	bool XtremeFuntion1::isModifiable(){
+	bool XtremeFunction1::isModifiable(){
 		return true;
 	}
 		
-	void XtremeFuntion1::set(float var){
+	void XtremeFunction1::set(float var){
 		learningvars.setIteration(this->getIteration());
 		learningvars.set(var);
 	}
 	
-	float XtremeFuntion1::f(float x){
+	float XtremeFunction1::f(float x){
 		return 	(*vars.getByPos(0)) * (*learningvars.getByPos(0) ) * x - (*vars.getByPos(0)) * (*learningvars.getByPos(1) ) *x +  (*learningvars.getByPos(2) ) *x -  (*learningvars.getByPos(3) ) *x + (*vars.getByPos(0)) * (*learningvars.getByPos(4) ) *x*x - (*vars.getByPos(0)) * (*learningvars.getByPos(5) ) *x*x + (*vars.getByPos(0)) * (*learningvars.getByPos(6) )  - (*vars.getByPos(0)) * (*learningvars.getByPos(7) ) +  (*learningvars.getByPos(8) )  *  (*learningvars.getByPos(9) ) +
 				(*vars.getByPos(1)) * (*learningvars.getByPos(10)) * x - (*vars.getByPos(1)) * (*learningvars.getByPos(11)) *x +  (*learningvars.getByPos(12)) *x -  (*learningvars.getByPos(13)) *x + (*vars.getByPos(1)) * (*learningvars.getByPos(14)) *x*x - (*vars.getByPos(1)) * (*learningvars.getByPos(15)) *x*x + (*vars.getByPos(1)) * (*learningvars.getByPos(16))  - (*vars.getByPos(1)) * (*learningvars.getByPos(17)) +  (*learningvars.getByPos(18))  *  (*learningvars.getByPos(19)) +
 				(*vars.getByPos(2)) * (*learningvars.getByPos(20)) * x - (*vars.getByPos(2)) * (*learningvars.getByPos(21)) *x +  (*learningvars.getByPos(22)) *x -  (*learningvars.getByPos(23)) *x + (*vars.getByPos(2)) * (*learningvars.getByPos(24)) *x*x - (*vars.getByPos(2)) * (*learningvars.getByPos(25)) *x*x + (*vars.getByPos(2)) * (*learningvars.getByPos(26))  - (*vars.getByPos(2)) * (*learningvars.getByPos(27)) +  (*learningvars.getByPos(28))  *  (*learningvars.getByPos(29)) +

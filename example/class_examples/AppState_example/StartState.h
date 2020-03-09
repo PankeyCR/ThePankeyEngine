@@ -15,10 +15,10 @@ class StartState : public AppState{
    
 		void initialize(Application *app){
       if(app->getTimeControl()->getClassName() == "SimpleTimer"){
-        ((SimpleTimer*)app->getTimeControl())->initialize(500000);//time in nanos for the timer
+        ((SimpleTimer*)app->getTimeControl())->setScale(TimeScale::Second);
+        ((SimpleTimer*)app->getTimeControl())->initialize(0.5f);//time is scaled for the timer
         ((SimpleTimer*)app->getTimeControl())->startInterrupt();
         ((SimpleTimer*)app->getTimeControl())->attachInterrupt();
-        ((SimpleTimer*)app->getTimeControl())->getMonkeyTime()->setScale(TimeScale::CentiSecond);
         ((SimpleTimer*)app->getTimeControl())->getMonkeyTime()->start();
         serial->println("init start");
       }			

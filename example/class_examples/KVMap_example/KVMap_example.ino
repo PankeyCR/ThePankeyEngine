@@ -28,8 +28,7 @@ void setup() {
 
   
   Serial.print("Value go:  ");Serial.println(*testMap->get("go"));
-  testMap->remove("go");
-  Serial.print("Value go:  ");Serial.println(*testMap->get("go"));
+  //testMap->remove("go");
 
   if(testMap->get("go") == NULL){
     Serial.println("Value go is null ");

@@ -3,12 +3,15 @@
 #ifndef PrimitiveList_h
 #define PrimitiveList_h
 
-#include "TimeElapsed.h"
+#include "WebPageState.h"
 #include "AbstractRead.h"
+#include "TimeElapsed.h"
 #include "cppObject.h"
+#include "MFNEntry.h"
 #include "AppState.h"
-#include "Funtion.h"
+#include "Function.h"
 #include "Arduino.h"
+#include "Command.h"
 #include "Neuron.h"
 #include "GameOn.h"
 #include "List.h"

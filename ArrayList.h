@@ -289,11 +289,11 @@ class ArrayList : public List<T>{
 		}
 		
         bool operator ==(ArrayList<T,size> t){
-			return this->getClassName() == t->getClassName();
+			return this->getClassName() == t.getClassName();
 		}
 		
         bool operator !=(ArrayList<T,size> t){
-			return this->getClassName() != t->getClassName();
+			return this->getClassName() != t.getClassName();
 		}
 };
 

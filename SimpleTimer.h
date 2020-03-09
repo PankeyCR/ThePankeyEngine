@@ -6,9 +6,18 @@
 #include "TimeElapsed.h"
 #include "MonkeyTime.h"
 #include "List.h"
-#include "PList.h"
-#include <avr/io.h>
-#include <avr/interrupt.h>
+#include "PrimitiveList.h"
+
+
+#if defined(ARDUINO_ARCH_AVR)
+	#include <avr/interrupt.h>
+	#include <avr/io.h>
+
+#elif defined(ARDUINO_ARCH_SAM)
+  // SAM-specific code
+#else
+  // generic, non-platform specific code
+#endif
 
 class Application;
 #define RESOLUTION 65536
@@ -18,14 +27,13 @@ class SimpleTimer : public TimeControl{
 		
 		unsigned char clockSelectBits;
 		char oldSREG;
-		long _micros=1000000;
 		List<TimeElapsed> *timeList;
 		
 		virtual ~SimpleTimer();
 		
 		static TimeControl *getInstance();
-		void initialize(long microsec=1000000);
-		void setPeriod(long microsec=1000000);
+		void initialize(float timeperiod);
+		void setPeriod(float timeperiod);
 		void attachInterrupt();
 		void detachInterrupt();
 		void startInterrupt();

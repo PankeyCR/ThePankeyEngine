@@ -1,86 +1,86 @@
 
-#ifndef CuadraticFuntion_cpp
-#define CuadraticFuntion_cpp
+#ifndef CuadraticFunction_cpp
+#define CuadraticFunction_cpp
 
-#include "CuadraticFuntion.h"
+#include "CuadraticFunction.h"
 
 
 	// template<class... any>
-	// CuadraticFuntion<any...>::CuadraticFuntion(){
+	// CuadraticFunction<any...>::CuadraticFunction(){
 		
 	// }
 		
 	// template<class... any>
-	// CuadraticFuntion<any...>::~CuadraticFuntion(){
+	// CuadraticFunction<any...>::~CuadraticFunction(){
 		
 	// }
 	
 	template<>
-	CuadraticFuntion<float>::CuadraticFuntion(){
+	CuadraticFunction<float>::CuadraticFunction(){
 		
 	}
 	
 	template<>
-	CuadraticFuntion<float,float>::CuadraticFuntion(){
+	CuadraticFunction<float,float>::CuadraticFunction(){
 		
 	}
 	
 	template<>
-	CuadraticFuntion<float,float,float>::CuadraticFuntion(){
+	CuadraticFunction<float,float,float>::CuadraticFunction(){
 		
 	}
 	
 	template<>
-	CuadraticFuntion<float,float,float,float>::CuadraticFuntion(){
+	CuadraticFunction<float,float,float,float>::CuadraticFunction(){
 		
 	}
 	
 	template<>
-	CuadraticFuntion<float,float,float,float,float>::CuadraticFuntion(){
+	CuadraticFunction<float,float,float,float,float>::CuadraticFunction(){
 		
 	}
 	
 	template<>
-	CuadraticFuntion<float>::~CuadraticFuntion(){
+	CuadraticFunction<float>::~CuadraticFunction(){
 		
 	}
 	
 	template<>
-	CuadraticFuntion<float,float>::~CuadraticFuntion(){
+	CuadraticFunction<float,float>::~CuadraticFunction(){
 		
 	}
 	
 	template<>
-	CuadraticFuntion<float,float,float>::~CuadraticFuntion(){
+	CuadraticFunction<float,float,float>::~CuadraticFunction(){
 		
 	}
 	
 	template<>
-	CuadraticFuntion<float,float,float,float>::~CuadraticFuntion(){
+	CuadraticFunction<float,float,float,float>::~CuadraticFunction(){
 		
 	}
 	
 	template<>
-	CuadraticFuntion<float,float,float,float,float>::~CuadraticFuntion(){
+	CuadraticFunction<float,float,float,float,float>::~CuadraticFunction(){
 		
 	}
 		
 	//cppObject part
 	template<class... any>
-	String CuadraticFuntion<any...>::getClassName(){
-		return "CuadraticFuntion";
+	String CuadraticFunction<any...>::getClassName(){
+		return "CuadraticFunction";
 	}
 	template<class... any>
-	String CuadraticFuntion<any...>::toString(){
-		return "CuadraticFuntion";
+	String CuadraticFunction<any...>::toString(){
+		return "CuadraticFunction";
 	}
 	template<class... any>
-	CuadraticFuntion<any...>* CuadraticFuntion<any...>::clone(){
+	CuadraticFunction<any...>* CuadraticFunction<any...>::clone(){
 		return this;
 	}
 	
 	template<class... any>
-	void CuadraticFuntion<any...>::set(int p, float var){
+	void CuadraticFunction<any...>::set(int p, float var){
 		if(p==0){
 			a=var;
 		}
@@ -114,7 +114,7 @@
 	}
 	
 	template<class... any>
-	void CuadraticFuntion<any...>::set(String name, float var){
+	void CuadraticFunction<any...>::set(String name, float var){
 		if(name=="a"){
 			a=var;
 		}
@@ -149,43 +149,43 @@
 
 	
 	// template<class... any>
-	// virtual float CuadraticFuntion::f(any... a){
+	// virtual float CuadraticFunction::f(any... a){
 		
 	// }
 	
 	template<>
-	float CuadraticFuntion<float>::f(float x){
+	float CuadraticFunction<float>::f(float x){
 		
 		return a*x*x + b*x + c;
 	}
 	template<>
-	float CuadraticFuntion<float,float>::f(float x,float y){
+	float CuadraticFunction<float,float>::f(float x,float y){
 		
 		return a*x*x + b*y*y + c*x*y + d*x + e*y + fvar;
 	}
 	template<>
-	float CuadraticFuntion<float,float,float>::f(float x,float y,float z){
+	float CuadraticFunction<float,float,float>::f(float x,float y,float z){
 		
 		return a*x*x + b*y*y + c*z*z + d*x*y + e*x*z + fvar*y*z + g*x + h*y + i*z + j;
 	}
 	template<>
-	float CuadraticFuntion<float,float,float,float>::f(float x,float y,float z,float w){
+	float CuadraticFunction<float,float,float,float>::f(float x,float y,float z,float w){
 		
 		return a*x*x + b*y*y + c*z*z + d*w*w + e;
 	}
 	template<>
-	float CuadraticFuntion<float,float,float,float,float>::f(float x,float y,float z,float w,float t){
+	float CuadraticFunction<float,float,float,float,float>::f(float x,float y,float z,float w,float t){
 		
 		return a*x*x + b*y*y + c*z*z + d*w*w + e*t*t + fvar;
 	}
 		
 	template<class... any>
-	int CuadraticFuntion<any...>::getIterationSize(){
+	int CuadraticFunction<any...>::getIterationSize(){
 		return 10;
 	}
 		
 	template<class... any>
-	float CuadraticFuntion<any...>::getValue(){
+	float CuadraticFunction<any...>::getValue(){
 		if(this->getIteration() == 0){
 			return a;
 		}
@@ -220,7 +220,7 @@
 	}
 		
 	template<class... any>
-	float *CuadraticFuntion<any...>::getPointer(){
+	float *CuadraticFunction<any...>::getPointer(){
 		if(this->getIteration() == 0){
 			return &a;
 		}
@@ -255,7 +255,7 @@
 	}
 		
 	template<class... any>
-	String CuadraticFuntion<any...>::getName(){
+	String CuadraticFunction<any...>::getName(){
 		if(this->getIteration() == 0){
 			return "a";
 		}
@@ -290,12 +290,12 @@
 	}
 		
 	template<class... any>
-	bool CuadraticFuntion<any...>::isModifiable(){
+	bool CuadraticFunction<any...>::isModifiable(){
 		return true;
 	}
 		
 	template<class... any>
-	void CuadraticFuntion<any...>::set(float var){
+	void CuadraticFunction<any...>::set(float var){
 		if(this->getIteration() == 0){
 			a = var;
 		}

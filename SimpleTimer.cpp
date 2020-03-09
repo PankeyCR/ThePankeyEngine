@@ -6,11 +6,8 @@
 
 TimeControl* SimpleTimer::instance = nullptr;
 
-	ISR(TIMER1_OVF_vect){
-		iterate(((SimpleTimer*)SimpleTimer::getInstance())->timeList){
-			((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPointer()->Play(SimpleTimer::getInstance());
-		}
-	}
+
+
 	TimeControl *SimpleTimer::getInstance(){
 		if (instance == nullptr){
 			instance = new SimpleTimer();
@@ -20,23 +17,32 @@ TimeControl* SimpleTimer::instance = nullptr;
 	
 	SimpleTimer::SimpleTimer(){
 		this->time = new MonkeyTime();
-		this->timeList = new PList<TimeElapsed,10>();
+		this->timeList = new PrimitiveList<TimeElapsed>();
 	}
 	
 	SimpleTimer::~SimpleTimer(){
 		delete this->time;
-		this->timeList->onDelete();
+		this->time = nullptr;
 		delete this->timeList;
+		this->timeList = nullptr;
+	}
+	
+#if defined(ARDUINO_ARCH_AVR)
+	ISR(TIMER1_OVF_vect){
+		((SimpleTimer*)SimpleTimer::getInstance())->getMonkeyTime()->computeTime();
+		iterate(((SimpleTimer*)SimpleTimer::getInstance())->timeList){
+			((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPointer()->Play(SimpleTimer::getInstance());
+		}
 	}
 
-	void SimpleTimer::initialize(long microseconds){
+	void SimpleTimer::initialize(float timeperiod){
 		TCCR1A = 0;
 		TCCR1B = _BV(WGM13);
-		setPeriod(microseconds);
+		setPeriod(timeperiod);
 	}
 
-	void SimpleTimer::setPeriod(long microseconds){
-		long cycles = (F_CPU / 2000000) * microseconds;                                // the counter runs backwards after TOP, interrupt is at BOTTOM so divide microseconds by 2
+	void SimpleTimer::setPeriod(float timeperiod){
+		long cycles = (F_CPU / 2000000) * timeperiod * this->time->getScale();        // the counter runs backwards after TOP, interrupt is at BOTTOM so divide microseconds by 2
 		if(cycles < RESOLUTION)              clockSelectBits = _BV(CS10);              // no prescale, full xtal
 		else if((cycles >>= 3) < RESOLUTION) clockSelectBits = _BV(CS11);              // prescale by /8
 		else if((cycles >>= 3) < RESOLUTION) clockSelectBits = _BV(CS11) | _BV(CS10);  // prescale by /64
@@ -94,6 +100,62 @@ TimeControl* SimpleTimer::instance = nullptr;
 	void SimpleTimer::resumeInterrupt(){ 
 		TCCR1B |= clockSelectBits;
 	}
+	
+
+#elif defined(ARDUINO_ARCH_SAM)
+  // SAM-specific code
+#else
+	
+	void ICACHE_RAM_ATTR onTime() {
+		((SimpleTimer*)SimpleTimer::getInstance())->getMonkeyTime()->computeTime();
+		iterate(((SimpleTimer*)SimpleTimer::getInstance())->timeList){
+			((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPointer()->Play(SimpleTimer::getInstance());
+		}
+	}
+
+	void SimpleTimer::initialize(float timeperiod){
+		timer1_isr_init();
+		setPeriod(timeperiod);
+	}
+
+	void SimpleTimer::setPeriod(float timeperiod){
+		//timer1_write(100000000);//5 ticks per us from TIM_DIV16
+		timer1_write((long)(((long)(timeperiod * this->time->getScale())) * 0.312500f));//5 ticks per us from TIM_DIV16
+		// Arm the Timer for our 0.5s Interval
+		//timer1_write(2500000); // 2500000 / 5 ticks per us from TIM_DIV16 == 500,000 us interval 
+	}
+
+	void SimpleTimer::attachInterrupt(){
+		timer1_attachInterrupt(onTime);
+		timer1_enable(TIM_DIV256, TIM_EDGE, TIM_LOOP);
+		/* Dividers:
+			TIM_DIV1 = 0,   //80MHz (80 ticks/us - 104857.588 us max)
+			TIM_DIV16 = 1,  //5MHz (5 ticks/us - 1677721.4 us max)
+			TIM_DIV256 = 3  //312.5Khz (1 tick = 3.2us - 26843542.4 us max)
+		Reloads:
+			TIM_SINGLE	0 //on interrupt routine you need to write a new value to start the timer again
+			TIM_LOOP	1 //on interrupt the counter will start with the same value again
+		*/		
+		// Arm the Timer for our 0.5s Interval
+		//timer1_write(2500000); // 2500000 / 5 ticks per us from TIM_DIV16 == 500,000 us interval 
+	}
+
+	void SimpleTimer::detachInterrupt(){
+		
+	}
+
+	void SimpleTimer::startInterrupt(){
+		
+	}
+
+	void SimpleTimer::stopInterrupt(){
+		
+	}
+
+	void SimpleTimer::resumeInterrupt(){ 
+	
+	}
+#endif
 	
 	TimeElapsed *SimpleTimer::add(TimeElapsed *t){
 		this->timeList->add(t);

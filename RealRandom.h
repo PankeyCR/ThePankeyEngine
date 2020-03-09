@@ -5,6 +5,7 @@
 
 #include "Arduino.h"
 #include "Random.h"
+#include "Logger.h"
 
 //seed from 0 - 1000
 class RealRandom : public Random{
@@ -14,7 +15,7 @@ class RealRandom : public Random{
     public:
 		RealRandom();
 		virtual ~RealRandom();
-		float getRandom();
+		virtual float getRandom();
 		
 };
 

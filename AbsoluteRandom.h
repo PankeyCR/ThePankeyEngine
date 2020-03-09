@@ -17,7 +17,7 @@ class AbsoluteRandom : public Random{
 		AbsoluteRandom();
 		AbsoluteRandom(float seed);
 		virtual ~AbsoluteRandom();
-		float getRandom();
+		virtual float getRandom();
 		
 };
 

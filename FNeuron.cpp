@@ -3,20 +3,31 @@
 
 #include "FNeuron.h"
 
-	template<class dataset,class funtion_return, class... arr>
-	FNeuron<dataset,funtion_return,arr...>::~FNeuron(){
+	template<class dataset,class function_return, class... arr>
+	FNeuron<dataset,function_return,arr...>::~FNeuron(){
 		
 	}
 	
-	template<class dataset,class funtion_return, class... arr>
-	Neuron<dataset> *FNeuron<dataset,funtion_return,arr...>::setFuntion(Funtion<funtion_return,arr...> *a){
-		this->funtion = a;
+	template<class dataset,class function_return, class... arr>
+	Neuron<dataset> *FNeuron<dataset,function_return,arr...>::setFunction(Function<function_return,arr...> *a){
+		this->function = a;
 		return this;
 	}
 	
-	template<class dataset,class funtion_return, class... arr>
-	Funtion<funtion_return,arr...> *FNeuron<dataset,funtion_return,arr...>::getFuntion(){
-		return this->funtion;
+	template<class dataset,class function_return, class... arr>
+	Function<function_return,arr...> *FNeuron<dataset,function_return,arr...>::getFunction(){
+		return this->function;
+	}
+	
+	template<class dataset,class function_return, class... arr>
+	Neuron<dataset> *FNeuron<dataset,function_return,arr...>::setFuntionSetup(FunctionSetup a){
+		this->functionse = a;
+		return this;
+	}
+	
+	template<class dataset,class function_return, class... arr>
+	FunctionSetup FNeuron<dataset,function_return,arr...>::getFuntionSetup(){
+		return this->functionse;
 	}
 	
 	template class FNeuron<long,float,float>;

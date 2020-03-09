@@ -11,7 +11,7 @@
 
 class SerialController : public SerialConnection , public GameObject{		
     private:
-		Stream *port=NULL;
+		Stream *port=nullptr;
 		String message="";
 		bool receive=false;
 		static ArrayList<char,100> *validChars;
@@ -38,7 +38,6 @@ class SerialController : public SerialConnection , public GameObject{
 		void writeln(String Send);
 		void writeln(int Send);
 		static bool isValidChar(char chr);
-        void onDelete();
 		String getClassName();
 		String toString();
 		SerialController *clone();

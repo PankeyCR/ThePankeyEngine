@@ -11,6 +11,11 @@
 	
 	TimeControl::~TimeControl() {
 		delete this->time;
+		this->time = nullptr;
+	}
+	
+	void TimeControl::setScale(TimeScale scale){
+		this->time->setScale(scale);
 	}
 	
 	MonkeyTime *TimeControl::getMonkeyTime() {

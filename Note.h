@@ -66,8 +66,8 @@ class Note{
 		static String fixEmptySpaces(String s);
 		static String fixEndLinePoint(String s);
 		
-		template<int Lsize=20>
-		ArrayList<String,Lsize> getWords();
+		// template<int Lsize=20>
+		// ArrayList<String,Lsize> getWords();
 		
 		String getWord(int pos);
 		String getSentence(int pos);

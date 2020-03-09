@@ -2,34 +2,32 @@
 #ifndef MinimalError_h
 #define MinimalError_h
 
-#include "FuntionConfiguration.h"
-#include "Funtion.h"
-#include "XtremeFuntion1.h"
+#include "FunctionConfiguration.h"
+#include "Function.h"
+#include "XtremeFunction1.h"
 #include "AbsoluteRandom.h"
 #include "DataSet.h"
 #include "Stream.h"
 #include "Logger.h"
 
-class MinimalError : public FuntionConfiguration<float,float>{
+class MinimalError : public FunctionConfiguration<float,float>{
 	public:
 		MinimalError();
-		MinimalError(Stream* serial);
 		virtual ~MinimalError();
 		
 		virtual MinimalError* random(float max,float min,float st);
 		virtual MinimalError* minimalerror(float st);
 		virtual MinimalError* input(int st);
 		virtual MinimalError* output(int st);
-		virtual MinimalError* funtion(Funtion<float,float>* fn);
+		virtual MinimalError* function(Function<float,float>* fn);
 		virtual MinimalError* epochs(long epochs);
 		virtual MinimalError* dataset(DataSet<float>* data);
 		
-		virtual Funtion<float,float>* build();
+		virtual Function<float,float>* build();
 		
 		virtual float error();
 		
 	protected:
-		Stream* port = nullptr;
 		int inputD=0;
 		int outputD=0;
 		long epochcount=100;
@@ -39,7 +37,7 @@ class MinimalError : public FuntionConfiguration<float,float>{
 		float Error=0;
 		float MError=0;
 		DataSet<float>* data;
-		Funtion<float,float>* fx = nullptr;
+		Function<float,float>* fx = nullptr;
 };
 
 #endif 

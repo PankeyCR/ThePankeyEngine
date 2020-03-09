@@ -4,17 +4,22 @@
 #include "DataSet.h"
 #include "GameObject.h"
 #include "Neuron.h"
-#include "Funtion.h"
+#include "Function.h"
+#include "FunctionSetup.h"
 
-template<class dataset,class funtion_return, class... arr>
+template<class dataset,class function_return, class... arr>
 class FNeuron : public Neuron<dataset>{
 	public:
 		virtual ~FNeuron(); 
 		
-		virtual Neuron<dataset>* setFuntion(Funtion<funtion_return,arr...>* a);
-		virtual Funtion<funtion_return,arr...>* getFuntion();  
+		virtual Neuron<dataset>* setFunction(Function<function_return,arr...>* a);
+		virtual Function<function_return,arr...>* getFunction();  
+		
+		virtual Neuron<dataset>* setFuntionSetup(FunctionSetup a);
+		virtual FunctionSetup getFuntionSetup();  
 	protected:
-		Funtion<funtion_return,arr...>* funtion=nullptr;
+		Function<function_return,arr...>* function=nullptr;
+		FunctionSetup functionse=FunctionSetup::ZeroStart;
 };
 
 #endif

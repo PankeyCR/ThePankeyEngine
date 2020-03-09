@@ -322,6 +322,8 @@
 	template class PrimitiveList<Neuron<float>>;
 	template class PrimitiveList<Neuron<String>>;
 	template class PrimitiveList<Neuron<char>>;
-	template class PrimitiveList<Funtion<float,float>>;
+	template class PrimitiveList<Function<float,float>>;
+	template class PrimitiveList<MFNEntry<float,float>>;
+	template class PrimitiveList<Command<WebPageState>>;
 	
 #endif

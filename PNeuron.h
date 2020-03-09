@@ -32,14 +32,31 @@ class PNeuron : public FNeuron<float,float,float>{
 		}
 		
 		virtual DataSet<float> *compute(DataSet<float> *data){
-			if(this->funtion == nullptr){
+			if(this->function == nullptr){
 				return data;
 			}
-			iterate(data->iterateDimention(diminput)){
-				this->funtion->set(data->getIteration(), data->getValue());
+			if(this->getFuntionSetup() == FunctionSetup::ZeroStart){
+				iterate(data->iterateDimention(diminput)){
+					this->function->set(data->getIteration(), data->getValue());
+				}
 			}
-			iterate(data->iterateDimention(dimoutput)){
-				data->set(this->funtion->f(data->getIteration()));
+			if(this->getFuntionSetup() == FunctionSetup::UnityStart){
+				iterate(data->iterateDimention(diminput)){
+					this->function->set(data->getIteration()+1, data->getValue());
+				}
+			}
+			
+			if(this->logic() == Logic::LogicGate1x1){
+				if(this->computability() == Computability::Computable){
+					iterate(data->iterateDimention(dimoutput)){
+						if(this->getFuntionSetup() == FunctionSetup::ZeroStart){
+							data->set(this->function->f(data->getIteration()));
+						}
+						if(this->getFuntionSetup() == FunctionSetup::UnityStart){
+							data->set(this->function->f(data->getIteration()+1));
+						}
+					}
+				}
 			}
 			data->setIteration(0);
 			return data;
@@ -54,7 +71,7 @@ class PNeuron : public FNeuron<float,float,float>{
 		}
 		virtual PNeuron<size> *clone(){
 			PNeuron<size> *dn = new PNeuron<size>();
-			dn->setFuntion(this->getFuntion());
+			dn->setFunction(this->getFunction());
 			return dn;
 		}
 		virtual void onDelete(){

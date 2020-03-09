@@ -1,22 +1,22 @@
 
-#ifndef XtremeFuntion1_h
-#define XtremeFuntion1_h
+#ifndef XtremeFunction1_h
+#define XtremeFunction1_h
 
 #include "ArrayList.h"
-#include "Funtion.h"
+#include "Function.h"
 
-class XtremeFuntion1 : public Funtion<float,float>{
+class XtremeFunction1 : public Function<float,float>{
 	public:
 		
-		XtremeFuntion1();
-		virtual ~XtremeFuntion1();
+		XtremeFunction1();
+		virtual ~XtremeFunction1();
     
 		virtual float f(float mf);
 		
 		//cppObject part
 		virtual String getClassName();
 		virtual String toString();
-		virtual XtremeFuntion1* clone();
+		virtual XtremeFunction1* clone();
 		
 		virtual void set(int p, float var);
 		virtual void set(String name, float var);

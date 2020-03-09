@@ -32,4 +32,8 @@
 		return seed;
 	}
 	
+	float Random::getRandom(){
+		return 0;
+	}
+	
 #endif 

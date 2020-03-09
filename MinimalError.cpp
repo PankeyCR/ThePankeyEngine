@@ -9,10 +9,6 @@
 	MinimalError::MinimalError(){
 	}
 	
-	MinimalError::MinimalError(Stream* serial){
-		this->port = serial;
-	}
-	
 	MinimalError::~MinimalError(){
 		
 	}
@@ -49,7 +45,7 @@
         return this;
 	}
 	
-	MinimalError* MinimalError::funtion(Funtion<float,float>* fn){
+	MinimalError* MinimalError::function(Function<float,float>* fn){
 		this->fx = fn;
         return this;
 	}
@@ -58,19 +54,33 @@
         return this->Error;
 	}
 	
-	Funtion<float,float>* MinimalError::build(){
+	Function<float,float>* MinimalError::build(){
 		if(this->fx == nullptr){
-			this->fx = new XtremeFuntion1();
+			this->fx = new XtremeFunction1();
+			Log("println","XtremeFunction1 used for MinimalError build as default");
 		}
-		iterate(this->data->iterateDimention(this->inputD)){
-			this->fx->set(this->data->getIteration(), this->data->getValue());
+		if(this->functionsetup() == FunctionSetup::ZeroStart){
+			Log("println","FunctionSetup ZeroStart");
+			iterate(this->data->iterateDimention(this->inputD)){
+				this->fx->set(this->data->getIteration(), this->data->getValue());
+			}
+		}
+		if(this->functionsetup() == FunctionSetup::UnityStart){
+			Log("println","FunctionSetup UnityStart");
+			iterate(this->data->iterateDimention(this->inputD)){
+				this->fx->set(this->data->getIteration()+1, this->data->getValue());
+			}
 		}
 		AbsoluteRandom random;
 		random.setSeed(this->rnd);
 		random.setMax(this->rndmax);
 		random.setMin(this->rndmin);
+		Log("print","setSeed");Log("println",String(this->rnd));
+		Log("print","setMax");Log("println",String(this->rndmax));
+		Log("print","setMin");Log("println",String(this->rndmin));
 		
 		for(long x=0; x<this->epochcount;x++){
+			yield();
 			Log("print","epochcount ");
 			Log("println", String(x));
 			
@@ -80,8 +90,11 @@
 			iterate(this->data->iterateDimention(this->outputD)){
 				int pos= this->data->getIteration();
 				float rf = this->fx->f(pos);
-				float errt1 = abs(rf - this->data->getValue());
-				Log("println","iterate 1 dimention output");
+				float errt1 = (rf - this->data->getValue());
+				if(errt1 < 0){
+					errt1*=-1.00f;
+				}
+				Log("println","iterate dimention "+String(this->outputD)+" output");
 				Log("print","pos ");Log("println", String(pos));
 				Log("print","data getValue ");Log("println", String(this->data->getValue()));
 				Log("print","funtion responce ");Log("println", String(rf));
@@ -100,16 +113,25 @@
 			float maxErrT2 = 0;
 			Log("println","funtion start ");
 			iterate(this->fx){
-				if(this->fx->isModifiable()){
+				if(this->fx->isModifiable()){yield();
 					Log("print","funtion iteration ");Log("println", String(this->fx->getIteration()));
 					float fv = this->fx->getValue();
 					float randd = random.getRandom();
 					Log("print","random ");Log("println", String(randd));
 					this->fx->set(randd);
 					iterate(this->data->iterateDimention(this->outputD)){
-						int pos=this->data->getIteration();
+						int pos=0;
+						if(this->functionsetup() == FunctionSetup::ZeroStart){
+							pos=this->data->getIteration();
+						}
+						if(this->functionsetup() == FunctionSetup::UnityStart){
+							pos=this->data->getIteration()+1;
+						}
 						float rf = this->fx->f(pos);
-						float errt2 = abs(rf - this->data->getValue());
+						float errt2 = (rf - this->data->getValue());
+						if(errt2 < 0){
+							errt2*=-1.00f;
+						}
 						Log("println","iterate 2 dimention output");
 						Log("print","pos ");Log("println", String(pos));
 						Log("print","data getValue ");Log("println", String(this->data->getValue()));
@@ -148,6 +170,7 @@
 				if(this->MError > this->Error){
 					break;
 				}
+				
 			}
 			if(this->MError > this->Error){
 				break;
