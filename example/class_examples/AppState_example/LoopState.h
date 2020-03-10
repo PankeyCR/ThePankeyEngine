@@ -13,12 +13,13 @@ class LoopState : public AppState{
 		void initialize(Application *app){
 			App = app;
 		}
-    void update(){
-      serial->println(App->getTimeControl()->getMonkeyTime()->getScaleTime());
-    }
-    String getClassName(){
-      return "LoopState";
-    }
+		void update(){
+		  serial->println(App->getTimeControl()->getTime());
+		}
+		
+		String getClassName(){
+		  return "LoopState";
+		}
 		
 	private:
 		Stream *serial=NULL;

@@ -12,17 +12,16 @@ class TimerState : public AppState, TimeElapsed{
 		}
    
 		void initialize(Application *app){
-      if(app->getTimeControl()->getClassName() == "SimpleTimer"){
-			  ((SimpleTimer*)app->getTimeControl())->add(this);
-      }
+		  app->getTimeControl()->add(this);
 		}
    
 		void Play(TimeControl *t){
-			serial->println(t->getMonkeyTime()->getScaleTime());
+			serial->println(t->getTime());
 		}
-    String getClassName(){
-      return "TimerState";
-    }
+		
+		String getClassName(){
+		  return "TimerState";
+		}
 		
 	private:
 		Stream *serial=NULL;

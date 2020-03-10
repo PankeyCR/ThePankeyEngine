@@ -9,27 +9,22 @@ class StartState : public AppState{
 	public:
  
 		StartState(){}
-    StartState(Stream *port){
-      serial = port;
-    }
+		StartState(Stream *port){
+			serial = port;
+		}
    
 		void initialize(Application *app){
-      if(app->getTimeControl()->getClassName() == "SimpleTimer"){
-        ((SimpleTimer*)app->getTimeControl())->setScale(TimeScale::Second);
-        ((SimpleTimer*)app->getTimeControl())->initialize(0.5f);//time is scaled for the timer
-        ((SimpleTimer*)app->getTimeControl())->startInterrupt();
-        ((SimpleTimer*)app->getTimeControl())->attachInterrupt();
-        ((SimpleTimer*)app->getTimeControl())->getMonkeyTime()->start();
-        serial->println("init start");
-      }			
-      App = app;
+			app->getTimeControl()->setScale(TimeScale::Second);
+			app->getTimeControl()->initialize(2);//time is scaled for the timer
+			app->getTimeControl()->startInterrupt();
+			app->getTimeControl()->attachInterrupt();
+			serial->println("init start");
+			App = app;
 		}
-    String getClassName(){
-      return "StartState";
-    }
-    void update(){
-      App->getTimeControl()->getMonkeyTime()->computeTime();
-    }
+   
+		String getClassName(){
+			return "StartState";
+		}
    		
 	private:
     Application *App;

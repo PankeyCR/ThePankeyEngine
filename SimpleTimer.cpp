@@ -16,33 +16,36 @@ TimeControl* SimpleTimer::instance = nullptr;
 	}
 	
 	SimpleTimer::SimpleTimer(){
-		this->time = new MonkeyTime();
 		this->timeList = new PrimitiveList<TimeElapsed>();
+		Log("println","SimpleTimer: new instance of this class");
 	}
 	
 	SimpleTimer::~SimpleTimer(){
-		delete this->time;
-		this->time = nullptr;
 		delete this->timeList;
 		this->timeList = nullptr;
+		Log("println","SimpleTimer: delete instance of this class");
 	}
 	
 #if defined(ARDUINO_ARCH_AVR)
 	ISR(TIMER1_OVF_vect){
-		((SimpleTimer*)SimpleTimer::getInstance())->getMonkeyTime()->computeTime();
 		iterate(((SimpleTimer*)SimpleTimer::getInstance())->timeList){
 			((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPointer()->Play(SimpleTimer::getInstance());
 		}
+		((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
 	}
 
-	void SimpleTimer::initialize(float timeperiod){
+	void SimpleTimer::initialize(long timeperiod){
 		TCCR1A = 0;
 		TCCR1B = _BV(WGM13);
-		setPeriod(timeperiod);
+		if(this->scale == 0){
+			setPeriod(timeperiod);
+			return;
+		}
+		setPeriod(timeperiod*this->scale);
 	}
 
-	void SimpleTimer::setPeriod(float timeperiod){
-		long cycles = (F_CPU / 2000000) * timeperiod * this->time->getScale();        // the counter runs backwards after TOP, interrupt is at BOTTOM so divide microseconds by 2
+	void SimpleTimer::setPeriod(long timeperiod){
+		long cycles = (F_CPU / 2000000) * timeperiod;        // the counter runs backwards after TOP, interrupt is at BOTTOM so divide microseconds by 2
 		if(cycles < RESOLUTION)              clockSelectBits = _BV(CS10);              // no prescale, full xtal
 		else if((cycles >>= 3) < RESOLUTION) clockSelectBits = _BV(CS11);              // prescale by /8
 		else if((cycles >>= 3) < RESOLUTION) clockSelectBits = _BV(CS11) | _BV(CS10);  // prescale by /64
@@ -107,26 +110,37 @@ TimeControl* SimpleTimer::instance = nullptr;
 #else
 	
 	void ICACHE_RAM_ATTR onTime() {
-		((SimpleTimer*)SimpleTimer::getInstance())->getMonkeyTime()->computeTime();
 		iterate(((SimpleTimer*)SimpleTimer::getInstance())->timeList){
 			((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPointer()->Play(SimpleTimer::getInstance());
 		}
+		((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
 	}
 
-	void SimpleTimer::initialize(float timeperiod){
+	void SimpleTimer::initialize(long timeperiod){
 		timer1_isr_init();
-		setPeriod(timeperiod);
+		if(this->scale == 0){
+			setPeriod(timeperiod);
+			return;
+		}
+		setPeriod(timeperiod*this->scale);
 	}
 
-	void SimpleTimer::setPeriod(float timeperiod){
+	void SimpleTimer::setPeriod(long timeperiod){
 		//timer1_write(100000000);//5 ticks per us from TIM_DIV16
-		timer1_write((long)(((long)(timeperiod * this->time->getScale())) * 0.312500f));//5 ticks per us from TIM_DIV16
+		//timer1_write((long)((timeperiod) * 80));//5 ticks per us from TIM_DIV1
+		//timer1_write((long)((timeperiod) * 5));//5 ticks per us from TIM_DIV16
+		timer1_write((long)((timeperiod) * 0.312500f));//1 ticks per 3.2us from TIM_DIV256
 		// Arm the Timer for our 0.5s Interval
-		//timer1_write(2500000); // 2500000 / 5 ticks per us from TIM_DIV16 == 500,000 us interval 
+		//timer1_write(2500000); // 2500000 / 5 ticks per us from TIM_DIV16 == 500,000 us interval 	
+		//Set up ESP watchdog
+		// ESP.wdtDisable();
+		// ESP.wdtEnable(WDTO_8S);
 	}
 
 	void SimpleTimer::attachInterrupt(){
 		timer1_attachInterrupt(onTime);
+		//timer1_enable(TIM_DIV1, TIM_EDGE, TIM_LOOP);
+		//timer1_enable(TIM_DIV16, TIM_EDGE, TIM_LOOP);
 		timer1_enable(TIM_DIV256, TIM_EDGE, TIM_LOOP);
 		/* Dividers:
 			TIM_DIV1 = 0,   //80MHz (80 ticks/us - 104857.588 us max)
@@ -156,31 +170,6 @@ TimeControl* SimpleTimer::instance = nullptr;
 	
 	}
 #endif
-	
-	TimeElapsed *SimpleTimer::add(TimeElapsed *t){
-		this->timeList->add(t);
-		return t;
-	}
-	
-	TimeElapsed *SimpleTimer::remove(TimeElapsed *t){
-		return this->timeList->remove(t);
-	}
-	
-	TimeElapsed *SimpleTimer::removeByPos(int pos){
-		return this->timeList->removeByPos(pos);
-	}
-		
-	List<TimeElapsed> *SimpleTimer::getTimeElapsedList(){
-		return this->timeList;
-	}
-	
-	TimeElapsed *SimpleTimer::getTimeElapsed(int pos){
-		return this->timeList->getByPos(pos);
-	}
-	
-	TimeElapsed *SimpleTimer::getTimeElapsed(TimeElapsed *t){
-		return this->timeList->get(t);
-	}
 	
 	String SimpleTimer::toString() {
 		return "SimpleTimer";
