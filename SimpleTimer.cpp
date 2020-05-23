@@ -34,17 +34,14 @@ TimeControl* SimpleTimer::instance = nullptr;
 		((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
 	}
 
-	void SimpleTimer::initialize(long timeperiod){
+	TimeControl* SimpleTimer::initialize(long timeperiod){
 		TCCR1A = 0;
 		TCCR1B = _BV(WGM13);
-		if(this->scale == 0){
-			setPeriod(timeperiod);
-			return;
-		}
-		setPeriod(timeperiod*this->scale);
+		setPeriod(timeperiod);
+		return this;
 	}
 
-	void SimpleTimer::setPeriod(long timeperiod){
+	TimeControl* SimpleTimer::setPeriod(long timeperiod){
 		long cycles = (F_CPU / 2000000) * timeperiod;        // the counter runs backwards after TOP, interrupt is at BOTTOM so divide microseconds by 2
 		if(cycles < RESOLUTION)              clockSelectBits = _BV(CS10);              // no prescale, full xtal
 		else if((cycles >>= 3) < RESOLUTION) clockSelectBits = _BV(CS11);              // prescale by /8
@@ -60,21 +57,24 @@ TimeControl* SimpleTimer::instance = nullptr;
 
 		TCCR1B &= ~(_BV(CS10) | _BV(CS11) | _BV(CS12));
 		TCCR1B |= clockSelectBits;                                          // reset clock select register, and starts the clock
+		return this;
 	}
 
-	void SimpleTimer::attachInterrupt(){
+	TimeControl* SimpleTimer::attachInterrupt(){
 		TIMSK1 = _BV(TOIE1);                                     // sets the timer overflow interrupt enable bit
 		// might be running with interrupts disabled (eg inside an ISR), so don't touch the global state
 		//  sei();
-		resumeInterrupt();												
+		resumeInterrupt();	
+		return this;											
 	}
 
-	void SimpleTimer::detachInterrupt(){
+	TimeControl* SimpleTimer::detachInterrupt(){
 		TIMSK1 &= ~_BV(TOIE1);                                   // clears the timer overflow interrupt enable bit 
 																// timer continues to count without calling the isr
+		return this;
 	}
 
-	void SimpleTimer::startInterrupt(){
+	TimeControl* SimpleTimer::startInterrupt(){
 		unsigned int tcnt1;
 
 		TIMSK1 &= ~_BV(TOIE1);        // AR added 
@@ -94,14 +94,17 @@ TimeControl* SimpleTimer::instance = nullptr;
 
 		//  TIFR1 = 0xff;              		// AR - Clear interrupt flags
 		//  TIMSK1 = _BV(TOIE1);              // sets the timer overflow interrupt enable bit
+		return this;
 	}
 
-	void SimpleTimer::stopInterrupt(){
+	TimeControl* SimpleTimer::stopInterrupt(){
 		TCCR1B &= ~(_BV(CS10) | _BV(CS11) | _BV(CS12));          // clears all clock selects bits
+		return this;
 	}
 
-	void SimpleTimer::resumeInterrupt(){ 
+	TimeControl* SimpleTimer::resumeInterrupt(){ 
 		TCCR1B |= clockSelectBits;
+		return this;
 	}
 	
 
@@ -116,16 +119,13 @@ TimeControl* SimpleTimer::instance = nullptr;
 		((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
 	}
 
-	void SimpleTimer::initialize(long timeperiod){
+	TimeControl* SimpleTimer::initialize(long timeperiod){
 		timer1_isr_init();
-		if(this->scale == 0){
-			setPeriod(timeperiod);
-			return;
-		}
-		setPeriod(timeperiod*this->scale);
+		setPeriod(timeperiod);
+		return this;
 	}
 
-	void SimpleTimer::setPeriod(long timeperiod){
+	TimeControl* SimpleTimer::setPeriod(long timeperiod){
 		//timer1_write(100000000);//5 ticks per us from TIM_DIV16
 		//timer1_write((long)((timeperiod) * 80));//5 ticks per us from TIM_DIV1
 		//timer1_write((long)((timeperiod) * 5));//5 ticks per us from TIM_DIV16
@@ -135,9 +135,10 @@ TimeControl* SimpleTimer::instance = nullptr;
 		//Set up ESP watchdog
 		// ESP.wdtDisable();
 		// ESP.wdtEnable(WDTO_8S);
+		return this;
 	}
 
-	void SimpleTimer::attachInterrupt(){
+	TimeControl* SimpleTimer::attachInterrupt(){
 		timer1_attachInterrupt(onTime);
 		//timer1_enable(TIM_DIV1, TIM_EDGE, TIM_LOOP);
 		//timer1_enable(TIM_DIV16, TIM_EDGE, TIM_LOOP);
@@ -152,22 +153,27 @@ TimeControl* SimpleTimer::instance = nullptr;
 		*/		
 		// Arm the Timer for our 0.5s Interval
 		//timer1_write(2500000); // 2500000 / 5 ticks per us from TIM_DIV16 == 500,000 us interval 
+		return this;
 	}
 
-	void SimpleTimer::detachInterrupt(){
+	TimeControl* SimpleTimer::detachInterrupt(){
 		
+		return this;
 	}
 
-	void SimpleTimer::startInterrupt(){
+	TimeControl* SimpleTimer::startInterrupt(){
 		
+		return this;
 	}
 
-	void SimpleTimer::stopInterrupt(){
+	TimeControl* SimpleTimer::stopInterrupt(){
 		
+		return this;
 	}
 
-	void SimpleTimer::resumeInterrupt(){ 
+	TimeControl* SimpleTimer::resumeInterrupt(){ 
 	
+		return this;
 	}
 #endif
 	

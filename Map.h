@@ -18,8 +18,14 @@ class Map : public cppObject , public Iterator{
 		virtual void set(K *key, V *value)=0;
 		virtual void set(K key, V value)=0;
 		virtual void set(K key, V *value)=0;
+		virtual void setKeyByPos(int p, K key)=0;
+		virtual void setKeyByPos(int p, K *key)=0;
+		virtual void setValueByPos(int p, V value)=0;
+		virtual void setValueByPos(int p, V *value)=0;
 		virtual bool contain(K *key)=0;
 		virtual bool contain(K key)=0;
+		virtual bool containValue(V *value)=0;
+		virtual bool containValue(V value)=0;
 		virtual V *get(K *key)=0;
 		virtual V *get(K key)=0;
 		virtual V *getByPos(int p)=0;

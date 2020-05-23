@@ -1,6 +1,7 @@
 
 #include "MonkeyTime.h"
-#include "TimeScale.h"
+#include "MetricScale.h"
+#include "MetricPrefix.h"
 #include "DelaySensor.h"
 #include "LightSensor.h"
 #include "SimpleEvent.h"
@@ -9,12 +10,16 @@ SimpleEvent<String>* LightActivations;
 
 MonkeyTime* timer;
 
+MetricScale* scale;
+
 LightSensor* light;
 
 void setup() {
   Serial.begin(9600);
   
   timer = new MonkeyTime();
+  
+  scale = new MetricScale();
   
   LightActivations = new SimpleEvent<String>();
   LightActivations->add(&lightEvent);
@@ -26,14 +31,14 @@ void setup() {
         ->limit(120);
         
   timer->start();
-  timer->setScale(TimeScale::Second);
+  scale->setScaleTransform(MetricPrefix::micro, MetricPrefix::none);
 }
 
 void loop() {
-  timer->computeScaleTime(0.1f);
+  timer->computeTime(scale->getValue(0.1f));
   light->update();
-  if(timer->getScaleTPC() > 0){
-    Serial.print("timer tpc ");Serial.println(timer->getScaleTPC());
+  if(timer->getTPC() > 0){
+    Serial.print("timer tpc ");Serial.println(timer->getTPC());
   }
   if(light->isOpen()){
     LightActivations->event("open");

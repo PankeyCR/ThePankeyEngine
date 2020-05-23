@@ -69,7 +69,10 @@
 	
 	
 	
-	template class Function<float,float>;	
+	template class Function<float,float>;
+	template class Function<float,float,float>;	
+	template class Function<float,float,float,float>;	
+	template class Function<float,float,float,float,float>;	
 	
 	
 	

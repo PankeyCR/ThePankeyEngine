@@ -93,6 +93,34 @@ class KVMap : public Map<K,P>{
 			}
 		}
 		
+		void setKeyByPos(int p, K key){
+			if(size < p){
+				return;
+			}
+			keys[p] = key;
+		}
+		
+		void setKeyByPos(int p, K *key){
+			if(size < p){
+				return;
+			}
+			keys[p] = *key;
+		}
+		
+		void setValueByPos(int p, P value){
+			if(size < p){
+				return;
+			}
+			values[p] = value;
+		}
+		
+		void setValueByPos(int p, P *value){
+			if(size < p){
+				return;
+			}
+			values[p] = *value;
+		}
+		
 		bool contain(K *key){
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == *key ){
@@ -111,13 +139,31 @@ class KVMap : public Map<K,P>{
 			return false;
 		}
 		
+		bool containValue(P *value){
+			for(int x=0; x < this->pos; x++){
+				if(this->values[x] == *value ){
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		bool containValue(P value){
+			for(int x=0; x < this->pos; x++){
+				if(this->values[x] == value ){
+					return true;
+				}
+			}
+			return false;
+		}
+		
 		P *get(K *key){
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == *key ){
 					return &this->values[x];
 				}
 			}
-			return NULL;
+			return nullptr;
 		}
 		
 		P *get(K key){
@@ -126,7 +172,7 @@ class KVMap : public Map<K,P>{
 					return &this->values[x];
 				}
 			}
-			return NULL;
+			return nullptr;
 		}
 		
 		P *getByPos(int p){
@@ -135,7 +181,7 @@ class KVMap : public Map<K,P>{
 					return &this->values[x];
 				}
 			}
-			return NULL;
+			return nullptr;
 		}
 		
 		K *getKeyByPos(int p){
@@ -144,7 +190,7 @@ class KVMap : public Map<K,P>{
 					return &this->keys[x];
 				}
 			}
-			return NULL;
+			return nullptr;
 		}
 		
 		K *getKey(P *value){
@@ -153,7 +199,7 @@ class KVMap : public Map<K,P>{
 					return &this->keys[x];
 				}
 			}
-			return NULL;
+			return nullptr;
 		}
 	
 		K *getKey(P value){
@@ -162,7 +208,7 @@ class KVMap : public Map<K,P>{
 					return &this->keys[x];
 				}
 			}
-			return NULL;
+			return nullptr;
 		}
 		
 		void reset(){
@@ -177,7 +223,7 @@ class KVMap : public Map<K,P>{
 		}
 		
 		P *remove(K *key){
-			P *p =NULL;
+			P *p =nullptr;
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == *key ){
@@ -201,7 +247,7 @@ class KVMap : public Map<K,P>{
 		}
 		
 		P *remove(K key){
-			P *p =NULL;
+			P *p =nullptr;
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == key ){
@@ -225,7 +271,7 @@ class KVMap : public Map<K,P>{
 		}
 		
 		P *removeByPos(int ps){
-			P *p = NULL;
+			P *p = nullptr;
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
 				if(x == ps ){

@@ -146,6 +146,74 @@
 			}
 		}
 	}
+		
+	template <class K,class V>
+	void PrimitiveMap<K,V>::setKeyByPos(int p, K key){
+		if(this->pos >= this->size){
+			return;
+		}
+		if(this->key[p] == nullptr){
+			this->key[p] = new K();
+			*this->key[p] = key;
+		}else{
+			if(*this->key[p] == key){
+				*this->key[p] = key;
+			}else{
+				*this->key[p] = key;
+			}
+		}
+	}
+	
+	template <class K,class V>
+	void PrimitiveMap<K,V>::setKeyByPos(int p, K *key){
+		if(this->pos >= this->size){
+			return;
+		}
+		if(this->key[p] == nullptr){
+			this->key[p] = key;
+		}else{
+			if(this->key[p] == key){
+				this->key[p] = key;
+			}else{
+				delete this->key[p];
+				this->key[p] = key;
+			}
+		}
+	}
+	
+	template <class K,class V>
+	void PrimitiveMap<K,V>::setValueByPos(int p, V value){
+		if(this->pos >= this->size){
+			return;
+		}
+		if(this->value[p] == nullptr){
+			this->value[p] = new V();
+			*this->value[p] = value;
+		}else{
+			if(*this->value[p] == value){
+				*this->value[p] = value;
+			}else{
+				*this->value[p] = value;
+			}
+		}
+	}
+	
+	template <class K,class V>
+	void PrimitiveMap<K,V>::setValueByPos(int p, V *value){
+		if(this->pos >= this->size){
+			return;
+		}
+		if(this->value[p] == nullptr){
+			this->value[p] = value;
+		}else{
+			if(this->value[p] == value){
+				this->value[p] = value;
+			}else{
+				delete this->value[p];
+				this->value[p] = value;
+			}
+		}
+	}
 
 	template <class K,class V>
 	bool PrimitiveMap<K,V>::contain(K *key){
@@ -161,6 +229,26 @@
 	bool PrimitiveMap<K,V>::contain(K key){
 		iterate(this){
 			if(this->getKey() == key){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	template <class K,class V>
+	bool PrimitiveMap<K,V>::containValue(V *value){
+		iterate(this){
+			if(this->getPointer() == value){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	template <class K,class V>
+	bool PrimitiveMap<K,V>::containValue(V value){
+		iterate(this){
+			if(this->getValue() == value){
 				return true;
 			}
 		}
@@ -483,6 +571,7 @@
 	template class PrimitiveMap<String,float>;
 	template class PrimitiveMap<String,double>;
 	template class PrimitiveMap<String,bool>;
+	template class PrimitiveMap<String,char>;
 	template class PrimitiveMap<String,AbstractRead>;
 	template class PrimitiveMap<String,cppObject>;
 	template class PrimitiveMap<String,AppState>;
@@ -493,6 +582,7 @@
 	template class PrimitiveMap<int,float>;
 	template class PrimitiveMap<int,double>;
 	template class PrimitiveMap<int,bool>;
+	template class PrimitiveMap<int,char>;
 	template class PrimitiveMap<int,AbstractRead>;
 	template class PrimitiveMap<int,cppObject>;
 	template class PrimitiveMap<int,AppState>;
@@ -503,6 +593,7 @@
 	template class PrimitiveMap<float,float>;
 	template class PrimitiveMap<float,double>;
 	template class PrimitiveMap<float,bool>;
+	template class PrimitiveMap<float,char>;
 	template class PrimitiveMap<float,AbstractRead>;
 	template class PrimitiveMap<float,cppObject>;
 	template class PrimitiveMap<float,AppState>;
@@ -513,6 +604,7 @@
 	template class PrimitiveMap<double,float>;
 	template class PrimitiveMap<double,double>;
 	template class PrimitiveMap<double,bool>;
+	template class PrimitiveMap<double,char>;
 	template class PrimitiveMap<double,AbstractRead>;
 	template class PrimitiveMap<double,cppObject>;
 	template class PrimitiveMap<double,AppState>;

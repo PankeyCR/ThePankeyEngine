@@ -270,11 +270,11 @@ class PList : public List<T>{
 		}
 		
         bool operator ==(PList<T,size> t){
-			return this->getClassName() == t->getClassName();
+			return this->getClassName() == t.getClassName();
 		}
 		
         bool operator !=(PList<T,size> t){
-			return this->getClassName() != t->getClassName();
+			return this->getClassName() != t.getClassName();
 		}
 };
 

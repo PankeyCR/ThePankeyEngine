@@ -5,7 +5,6 @@
 
 #include "Arduino.h"
 #include "Now.h"
-#include "TimeScale.h"
 #include "TimeCheck.h"
 
 class MonkeyTime {
@@ -15,12 +14,9 @@ class MonkeyTime {
 		
 		virtual void run();
 		virtual void computeManualTime(long time);
-		virtual void computeManualScaleTime(float time);
 		virtual void computeTime();
 		virtual void computeTime(long time);
-		virtual void computeScaleTime(float time);
 		virtual void setStartTime(long time);
-		virtual float getStartScaleTime();
 		virtual long getStartTime();
 		virtual void setCurrentTime(long time);
 		virtual long getCurrentTimer();
@@ -28,12 +24,6 @@ class MonkeyTime {
 		virtual long getTime();
 		virtual void setEndTime(long time);
 		virtual long getEndTime();
-		virtual float getEndScaleTime();
-		virtual void setScale(long scale);
-		virtual void setScale(TimeScale scale);
-		virtual long getScale();
-		virtual float getScaleTime();
-		virtual float getScaleTimeandRestart();
 		virtual void start(long time);
 		virtual void start();
 		virtual void end(long time);
@@ -44,12 +34,9 @@ class MonkeyTime {
 		virtual int getTPC();
 		virtual int getTPCandRestart();
 		virtual void restartTPC();
-		virtual float getScaleTPC();
-		virtual float getScaleTPCandRestart();
 		virtual void Tick();
 		virtual void setTick(long tick);
 		virtual long getTick();
-		virtual float getScaleTick();
 		virtual void resetTick();
 		virtual bool isNow(float time);
 		virtual bool isNow(float time,float offset);

@@ -16,88 +16,78 @@
 		Log("println","TimeControl: delete instance of this class");
 	}
 	
-	void TimeControl::setScale(TimeScale scale){
-		if(scale == TimeScale::MicroSecond){
-			this->scale = 1l;
-			return;
-		}
-		if(scale == TimeScale::MilliSecond){
-			this->scale = 1000l;
-			return;
-		}
-		if(scale == TimeScale::CentiSecond){
-			this->scale = 10000l;
-			return;
-		}
-		if(scale == TimeScale::DeciSecond){
-			this->scale = 100000l;
-			return;
-		}
-		if(scale == TimeScale::Second){
-			this->scale = 1000000l;
-			return;
-		}
-		if(scale == TimeScale::DecaSecond){
-			this->scale = 10000000l;
-			return;
-		}
-		if(scale == TimeScale::HectoSecond){
-			this->scale = 100000000l;
-			return;
-		}
-		if(scale == TimeScale::KiloSecond){
-			this->scale = 1000000000l;
-			return;
-		}
-	}
-	
 	long TimeControl::getTime() {
 		return this->time;
 	}
 	
-	void TimeControl::initialize(long timeperiod){
+	TimeControl* TimeControl::initialize(long timeperiod){
+		return this;
 	}
 
-	void TimeControl::setPeriod(long timeperiod){
+	TimeControl* TimeControl::setPeriod(long timeperiod){
+		return this;
 	}
 
-	void TimeControl::attachInterrupt(){										
+	TimeControl* TimeControl::attachInterrupt(){
+		return this;										
 	}
 
-	void TimeControl::detachInterrupt(){
+	TimeControl* TimeControl::detachInterrupt(){
+		return this;
 	}
 
-	void TimeControl::startInterrupt(){
+	TimeControl* TimeControl::startInterrupt(){
+		return this;
 	}
 
-	void TimeControl::stopInterrupt(){
+	TimeControl* TimeControl::stopInterrupt(){
+		return this;
 	}
 
-	void TimeControl::resumeInterrupt(){
+	TimeControl* TimeControl::resumeInterrupt(){
+		return this;
 	}
 	
 	TimeElapsed *TimeControl::add(TimeElapsed *t){
+		if(this->timeList == nullptr){
+			return nullptr;
+		}
 		this->timeList->add(t);
 		return t;
 	}
 	
 	TimeElapsed *TimeControl::remove(TimeElapsed *t){
+		if(this->timeList == nullptr){
+			return nullptr;
+		}
 		return this->timeList->remove(t);
 	}
 	
 	TimeElapsed *TimeControl::removeByPos(int pos){
+		if(this->timeList == nullptr){
+			return nullptr;
+		}
 		return this->timeList->removeByPos(pos);
 	}
 		
 	List<TimeElapsed> *TimeControl::getTimeElapsedList(){
+		if(this->timeList == nullptr){
+			return nullptr;
+		}
 		return this->timeList;
 	}
 	
 	TimeElapsed *TimeControl::getTimeElapsed(int pos){
+		if(this->timeList == nullptr){
+			return nullptr;
+		}
 		return this->timeList->getByPos(pos);
 	}
 	
 	TimeElapsed *TimeControl::getTimeElapsed(TimeElapsed *t){
+		if(this->timeList == nullptr){
+			return nullptr;
+		}
 		return this->timeList->get(t);
 	}
 	

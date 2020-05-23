@@ -44,11 +44,11 @@
 			return;
 		}
 		if(this->state==true){
-			openRecorder+=this->timer->getScaleTPC();
+			openRecorder+=this->timer->getTPC();
 			closeRecorder.resetRecord();
 		}
 		if(this->state==false){
-			closeRecorder+=this->timer->getScaleTPC();
+			closeRecorder+=this->timer->getTPC();
 			openRecorder.resetRecord();
 		}
 		if(this->state==unknown){

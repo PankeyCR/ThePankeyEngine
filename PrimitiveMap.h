@@ -26,8 +26,14 @@ class PrimitiveMap : public Map<K,V>{
 		virtual void set(K *key, V *value);
 		virtual void set(K key, V value);
 		virtual void set(K key, V *value);
+		virtual void setKeyByPos(int p, K key);
+		virtual void setKeyByPos(int p, K *key);
+		virtual void setValueByPos(int p, V value);
+		virtual void setValueByPos(int p, V *value);
 		virtual bool contain(K *key);
 		virtual bool contain(K key);
+		virtual bool containValue(V *value);
+		virtual bool containValue(V value);
 		virtual V *get(K *key);
 		virtual V *get(K key);
 		virtual V *getByPos(int p);

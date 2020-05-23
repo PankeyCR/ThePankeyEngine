@@ -1,6 +1,7 @@
 
 #include "MonkeyTime.h"
-#include "TimeScale.h"
+#include "MetricScale.h"
+#include "MetricPrefix.h"
 #include "ServoDoor.h"
 #include "SimpleEvent.h"
 #include "DelaySensor.h"
@@ -8,6 +9,8 @@
 SimpleEvent<String>* DoorActivations;
 
 MonkeyTime* timer;
+
+MetricScale* scale;
 
 ServoDoor* door;
 
@@ -18,6 +21,8 @@ void setup() {
   DoorActivations->add(&doorEvent);
 
   timer = new MonkeyTime();
+
+  scale = new MetricScale();
   
   door = new ServoDoor();
   door  ->monkeytime(timer)
@@ -29,11 +34,11 @@ void setup() {
          //->close()
         ;
   timer->start();
-  timer->setScale(TimeScale::Second);
+  scale->setScaleTransform(MetricPrefix::micro, MetricPrefix::none);
 }
 
 void loop() {
-  timer->computeScaleTime(0.1f);
+  timer->computeTime(0.1f);
   door->update();
   if(door->isOpen()){
     DoorActivations->event("open");

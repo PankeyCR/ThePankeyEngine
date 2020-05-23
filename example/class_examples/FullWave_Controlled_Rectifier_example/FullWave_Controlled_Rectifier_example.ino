@@ -18,7 +18,7 @@ void setup() {
   //webpage->addCommand(new WebCommands());
   
  // app->getStateManager()->add(webpage);
-  app->getStateManager()->add(new RectifierState(&Serial));
+  app->getStateManager()->add(new RectifierState());
 }
 
 void loop() {

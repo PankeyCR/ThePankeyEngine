@@ -113,7 +113,8 @@
 			float maxErrT2 = 0;
 			Log("println","funtion start ");
 			iterate(this->fx){
-				if(this->fx->isModifiable()){yield();
+				if(this->fx->isModifiable()){
+					yield();
 					Log("print","funtion iteration ");Log("println", String(this->fx->getIteration()));
 					float fv = this->fx->getValue();
 					float randd = random.getRandom();

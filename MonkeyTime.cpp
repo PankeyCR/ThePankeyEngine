@@ -24,14 +24,6 @@
         }
     }
 	
-    void MonkeyTime::computeManualScaleTime(float time) {
-        if(this->running){
-			this->microTimer = time - this->startTime;
-			this->tpcTimer = time - this->currentTimer;
-            this->currentTimer = time;
-        }
-    }
-	
     void MonkeyTime::computeTime() {
         if(this->running){
             long mm = micros();
@@ -53,26 +45,9 @@
             this->currentTimer = mm;
         }
     }
-	
-    void MonkeyTime::computeScaleTime(float time) {
-        if(this->running){
-            long mm = micros();
-			this->microTimer = this->currentTimer - this->startTime;
-			this->tpcTimer = 0;
-			if(time > (float)((float)(mm - this->currentTimer -this->startTime)/(float)this->scale)){
-				return;
-			}
-			this->tpcTimer = mm - this->currentTimer;
-            this->currentTimer = mm;
-        }
-    }
 		
 	void MonkeyTime::setStartTime(long time){
         this->startTime = time;
-	}
-	
-	float MonkeyTime::getStartScaleTime() {
-        return (float)((float) this->startTime/(float)this->scale);
 	}
 	
 	long MonkeyTime::getStartTime() {
@@ -101,63 +76,6 @@
 
 	long MonkeyTime::getEndTime() {
         return this->endTime;
-	}
-
-	float MonkeyTime::getEndScaleTime(){
-        return (float)((float)this->endTime/(float)this->scale);
-	}
-
-	void MonkeyTime::setScale(long scale){
-        this->scale = scale;
-	}
-
-	void MonkeyTime::setScale(TimeScale scale){
-		if(scale == TimeScale::MicroSecond){
-			this->scale = 1l;
-			return;
-		}
-		if(scale == TimeScale::MilliSecond){
-			this->scale = 1000l;
-			return;
-		}
-		if(scale == TimeScale::CentiSecond){
-			this->scale = 10000l;
-			return;
-		}
-		if(scale == TimeScale::DeciSecond){
-			this->scale = 100000l;
-			return;
-		}
-		if(scale == TimeScale::Second){
-			this->scale = 1000000l;
-			return;
-		}
-		if(scale == TimeScale::DecaSecond){
-			this->scale = 10000000l;
-			return;
-		}
-		if(scale == TimeScale::HectoSecond){
-			this->scale = 100000000l;
-			return;
-		}
-		if(scale == TimeScale::KiloSecond){
-			this->scale = 1000000000l;
-			return;
-		}
-	}
-
-	long MonkeyTime::getScale(){
-        return this->scale;
-	}
-
-	float MonkeyTime::getScaleTime(){
-        return (float)((float)this->microTimer/(float)this->scale);
-	}
-
-	float MonkeyTime::getScaleTimeandRestart(){
-        float time = this->getScaleTime();
-        this->restart();
-        return time;
 	}
 
 	void MonkeyTime::start(long time){
@@ -212,16 +130,6 @@
         this->tpcTimer=0;   
 	}
 
-	float MonkeyTime::getScaleTPC(){
-        return (float)((float)this->tpcTimer/(float)this->scale);
-	}
-
-	float MonkeyTime::getScaleTPCandRestart(){
-        float tpc = this->getScaleTPC();
-        this->restartTPC();
-        return tpc;
-	}
-
 	void MonkeyTime::Tick(){
         this->tickTimer++;
 	}
@@ -234,28 +142,24 @@
         return this->tickTimer;
 	}
 
-	float MonkeyTime::getScaleTick(){
-        return (float)((float)this->tickTimer/(float)this->scale);
-	}
-
 	void MonkeyTime::resetTick(){
         this->tickTimer = 0;
 	}
 
 	bool MonkeyTime::isNow(float time){
-		return Now::is(TimeCheck::InBetween, this->getScaleTime(), time,0.01f);
+		return Now::is(TimeCheck::InBetween, this->getTime(), time,0.01f);
 	}
 
 	bool MonkeyTime::isNow(float time,float offset){
-		return Now::is(TimeCheck::InBetween, this->getScaleTime(), time,offset);
+		return Now::is(TimeCheck::InBetween, this->getTime(), time,offset);
 	}
 
 	bool MonkeyTime::isNow(TimeCheck check,float time){
-		return Now::is(check, this->getScaleTime(), time,0.01f);
+		return Now::is(check, this->getTime(), time,0.01f);
 	}
 
 	bool MonkeyTime::isNow(TimeCheck check,float time,float offset){
-		return Now::is(check, this->getScaleTime(), time,offset);
+		return Now::is(check, this->getTime(), time,offset);
 	}
 
 	void MonkeyTime::setTimeOffset(TimeCheck check){

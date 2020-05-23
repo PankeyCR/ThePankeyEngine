@@ -48,11 +48,11 @@
 		}
 		this->value = analogRead(this->slpin);
 		if(this->value > this->limitt){
-			openRecorder+=this->timer->getScaleTPC();
+			openRecorder+=this->timer->getTPC();
 			closeRecorder.resetRecord();
 			this->closem = false;
 		}else{
-			closeRecorder+=this->timer->getScaleTPC();
+			closeRecorder+=this->timer->getTPC();
 			openRecorder.resetRecord();
 			this->openm = false;
 		}

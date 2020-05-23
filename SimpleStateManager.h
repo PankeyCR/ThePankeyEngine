@@ -2,19 +2,19 @@
 #ifndef SimpleStateManager_h
 #define SimpleStateManager_h
 
-#include "PList.h"
 #include "AppStateManager.h"
 #include "List.h"
-#include "PrimitiveList.h"
+#include "PList.h"
+#include "AppState.h"
 
-template <int Size>
+template<int Size>
 class SimpleStateManager : public AppStateManager{
     public:
-		SimpleStateManager(){
+		SimpleStateManager<Size>(){
 			this->appStateList = new PList<AppState,Size>();
 		}
 		
-		~SimpleStateManager(){
+		~SimpleStateManager<Size>(){
 			this->appStateList->onDelete();
 			delete this->appStateList;
 		}
@@ -128,9 +128,9 @@ class SimpleStateManager : public AppStateManager{
 			return "SimpleStateManager";
 		}
     
-	private:
-		List<AppState> *appStateList;
-		Application *managerApp;
+	protected:
+		List<AppState>* appStateList;
+		Application* managerApp;
 };
 
 #endif

@@ -4,6 +4,8 @@
 
 #include "AppState.h"
 #include "Application.h"
+#include "MetricScale.h"
+#include "MetricPrefix.h"
 
 class StartState : public AppState{
 	public:
@@ -14,8 +16,9 @@ class StartState : public AppState{
 		}
    
 		void initialize(Application *app){
-			app->getTimeControl()->setScale(TimeScale::Second);
-			app->getTimeControl()->initialize(2);//time is scaled for the timer
+			MetricScale scale;
+			scale.setScaleTransform(MetricPrefix::micro , MetricPrefix::none);
+			app->getTimeControl()->initialize(scale.getValue(2));// 2 seconds
 			app->getTimeControl()->startInterrupt();
 			app->getTimeControl()->attachInterrupt();
 			serial->println("init start");

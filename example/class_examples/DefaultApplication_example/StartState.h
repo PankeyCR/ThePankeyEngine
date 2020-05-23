@@ -3,31 +3,31 @@
 #define StartState_h
 
 #include "AppState.h"
+#include "MetricScale.h"
+#include "MetricPrefix.h"
 
 class StartState : public AppState{
 	public:
  
     StartState(){
-      this->id = new String("tomaco");
+		this->id = new String("tomaco");
     }
     
     ~StartState(){
-      delete this->id;
+		delete this->id;
     }
     
     StartState(String tid){
-      this->id = new String(tid);
+		this->id = new String(tid);
     }
    
     void initialize(Application *app){
-      App = app;
-      if(app->getTimeControl()->getClassName() == "SimpleTimer"){
-        ((SimpleTimer*)app->getTimeControl())->initialize(500000);//time in nanos for the timer
-        ((SimpleTimer*)app->getTimeControl())->startInterrupt();
-        ((SimpleTimer*)app->getTimeControl())->attachInterrupt();
-        ((SimpleTimer*)app->getTimeControl())->getMonkeyTime()->setScale(TimeScale::CentiSecond);
-        ((SimpleTimer*)app->getTimeControl())->getMonkeyTime()->start();
-      }      
+		MetricScale scale;
+		scale.setScaleTransform(MetricPrefix::micro , MetricPrefix::none);
+		app->getTimeControl()->initialize(scale.getValue(2));// 2 seconds
+		app->getTimeControl()->startInterrupt();
+		app->getTimeControl()->attachInterrupt();
+		App = app;   
     }
     void onEnable(){
             
@@ -36,20 +36,18 @@ class StartState : public AppState{
             
     }
     void setId(String tid){
-      if(this->id != nullptr){
-        delete this->id;
-      }
-      this->id = new String(tid);
+		if(this->id != nullptr){
+		delete this->id;
+		}
+		this->id = new String(tid);
     }
    		
     String getClassName(){
-      return "StartState";
+		return "StartState";
     }
-    void update(){
-      App->getTimeControl()->getMonkeyTime()->computeTime();
-    }
+	
 	private:
-    Application *App;
+		Application *App;
   
 };
 

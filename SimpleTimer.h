@@ -4,7 +4,6 @@
 
 #include "TimeControl.h"
 #include "TimeElapsed.h"
-#include "MonkeyTime.h"
 #include "List.h"
 #include "PrimitiveList.h"
 #include "Logger.h"
@@ -32,14 +31,14 @@ class SimpleTimer : public TimeControl{
 		
 		static TimeControl *getInstance();
 		
-		virtual void initialize(long timeperiod);
-		virtual void setPeriod(long timeperiod);
+		virtual TimeControl* initialize(long timeperiod);
+		virtual TimeControl* setPeriod(long timeperiod);
 		
-		void attachInterrupt();
-		void detachInterrupt();
-		void startInterrupt();
-		void stopInterrupt();
-		void resumeInterrupt();
+		TimeControl* attachInterrupt();
+		TimeControl* detachInterrupt();
+		TimeControl* startInterrupt();
+		TimeControl* stopInterrupt();
+		TimeControl* resumeInterrupt();
 		
 		virtual String toString();
 		virtual String getClassName();

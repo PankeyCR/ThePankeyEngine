@@ -1,9 +1,9 @@
 
 
-#ifndef Anotation_h
-#define Anotation_h
+#ifndef Annotation_h
+#define Annotation_h
 
-#define invoke(cls,anott,pt) iterate(cls->getMethodAnotations()){ if(cls->getMethodAnotations()->getValue() == anott){( cls->**cls->getMethodAnotations()->getKeyPointer())(pt);}}
+#define invoke(cls,anott,pt) iterate(cls->getMethodAnnotations()){ if(cls->getMethodAnnotations()->getKey() == anott){( cls->**cls->getMethodAnnotations()->getPointer())(pt);}}
 
 #define parameter2(p1,p2) p1,p2
 #define parameter3(p1,p2,p3) p1,p2,p3
@@ -17,10 +17,10 @@
 #include "List.h"
 
 template<class T,class A>
-class Anotation {
+class Annotation {
 	public:
-		virtual List<A>* getClassAnotations();
-		virtual Map<T,A>* getMethodAnotations();
+		virtual List<T>* getClassAnnotations();
+		virtual Map<T,A>* getMethodAnnotations();
 	private:
 };
 

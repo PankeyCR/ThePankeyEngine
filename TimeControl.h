@@ -4,7 +4,6 @@
 #define TimeControl_h
 
 #include "Arduino.h"
-#include "TimeScale.h"
 #include "cppObject.h"
 #include "PrimitiveList.h"
 #include "List.h"
@@ -17,20 +16,19 @@ class TimeControl : public cppObject{
     public:
 		List<TimeElapsed> *timeList;
 		long time=0;
-		long scale=0;
+		
 		TimeControl();
 		virtual ~TimeControl();
-		virtual void setScale(TimeScale sc);
 		virtual long getTime();
 		
-		virtual void initialize(long timeperiod);
-		virtual void setPeriod(long timeperiod);
+		virtual TimeControl* initialize(long timeperiod);
+		virtual TimeControl* setPeriod(long timeperiod);
 		
-		virtual void attachInterrupt();
-		virtual void detachInterrupt();
-		virtual void startInterrupt();
-		virtual void stopInterrupt();
-		virtual void resumeInterrupt();
+		virtual TimeControl* attachInterrupt();
+		virtual TimeControl* detachInterrupt();
+		virtual TimeControl* startInterrupt();
+		virtual TimeControl* stopInterrupt();
+		virtual TimeControl* resumeInterrupt();
 		
 		virtual TimeElapsed *add(TimeElapsed *t);
 		virtual TimeElapsed *remove(TimeElapsed *t);
