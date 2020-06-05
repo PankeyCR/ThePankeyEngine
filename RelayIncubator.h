@@ -5,6 +5,7 @@
 
 #include "Logger.h"
 #include "Arduino.h"
+#include "Average.h"
 #include "MetricScale.h"
 #include "Application.h"
 #include "AppState.h"
@@ -35,6 +36,7 @@ class RelayIncubator : public AppState{
 		FixPulseGenerator* relayPulse;
 		int tpin = 0;
 		float maxT = 38;
+		Average<float>* average;
 };
 
 #endif 

@@ -1193,6 +1193,7 @@
 		this->w = a.w;
         return Quaternion(this->x, this->y, this->z, this->w);
 	}
+	
 	Quaternion Quaternion::operator=(const float a[4]) {
 		this->x = a[0];
 		this->y = a[1];
@@ -1200,6 +1201,15 @@
 		this->w = a[3];
         return Quaternion(this->x, this->y, this->z, this->w);
 	}
+	
+	Quaternion Quaternion::operator=(const int& a) {
+		this->x = (float)a;
+		this->y = (float)a;
+		this->z = (float)a;
+		this->w = (float)a;
+        return Quaternion(this->x, this->y, this->z, this->w);
+	}
+	
 	bool Quaternion::operator==(const Quaternion& a) {
 		if(this->x == a.x && this->y == a.y && this->z == a.z && this->w == a.w){
 		return true;
@@ -1244,6 +1254,9 @@
 	// Quaternion Quaternion::operator/(const float a[4]) {
 		// return Quaternion(this->x/ a[0] ,this->y/ a[1] ,this->z / a[2] ,this->w / a[3]);
 	// }
+	Quaternion Quaternion::operator/(const int a) {
+		return Quaternion(this->x/ a ,this->y/ a ,this->z / a ,this->w / a);
+	}
 	
 	
 	Quaternion Quaternion::operator+=(const Quaternion& a) {

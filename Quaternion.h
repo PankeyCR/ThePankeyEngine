@@ -143,6 +143,7 @@ class Quaternion : public cppObject{
 		
 		Quaternion operator=(const Quaternion& a);
 		Quaternion operator=(const float a[4]);
+		Quaternion operator=(const int& a);
 		bool operator==(const Quaternion& a);
 		bool operator!=(const Quaternion& a);
 		Quaternion operator+(const Quaternion& a);
@@ -153,6 +154,7 @@ class Quaternion : public cppObject{
 		Quaternion operator*(const float a[4]);
 		// Quaternion operator/(const Quaternion& a);
 		// Quaternion operator/(const float [4]);
+		Quaternion operator/(const int a);
 		
 		Quaternion operator+=(const Quaternion& a);
 		Quaternion operator+=(const float a[4]);

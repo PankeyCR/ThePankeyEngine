@@ -27,4 +27,11 @@
 		return TempC;
 	}
 	
+	float TemperatureNTC::getResistance(int pin){
+		float valor= analogRead(pin);  
+		Vout = (valor/1023)*5; 
+		Rout = (Raux*Vout/(Vin-Vout));
+		return Rout;
+	}
+	
 #endif 

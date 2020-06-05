@@ -10,6 +10,7 @@
 		this->fanPulse = new FixPulseGenerator();
 		this->relayPulse = new FixPulseGenerator();
 		this->scale = new MetricScale();
+		this->average = new Average<float>();
 	}
 	
 	RelayIncubator::~RelayIncubator(){
@@ -24,6 +25,9 @@
 		}
 		if(this->scale != nullptr){
 			delete this->scale;
+		}
+		if(this->average != nullptr){
+			delete this->average;
 		}
 	}
 	
@@ -72,17 +76,18 @@
 	
 	void RelayIncubator::update(){
 		float temp = this->temperature->getTemperature(this->tpin);
-		float deltaT = maxT-temp;
+		float deltaT = 0;
 		
+		this->average->add(&temp);
+		if(this->average->getSize() >= 10){
+			temp = this->average->getAverage();
+			this->average->reset();
+			deltaT = maxT-temp;
+		}else{
+			return;
+		}
 		Log("print","temperature ");Log("println",String(temp));
-		// if(abs(deltaT) < 0.5f){
-			// this->relayPulse->enable(false);
-			// this->fanPulse->enable(false);
-			// return;
-		// }else{
-			// this->relayPulse->enable(true);
-			// this->fanPulse->enable(true);
-		// }
+		
 		if(temp < this->maxT){
 			this->relayPulse->setHighTime(deltaT*this->scale->getValue(4));
 			this->relayPulse->setLowTime(this->scale->getValue(4));
