@@ -29,6 +29,12 @@
 		}
 		return false;
 	}
+	bool cppObject::instanceof(String s){
+		if(s == "cppObject"){
+			return true;
+		}
+		return false;
+	}
 	cppObject *cppObject::clone(){
 		return this;
 	}

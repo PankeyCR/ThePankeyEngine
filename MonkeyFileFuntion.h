@@ -11,27 +11,23 @@
 
 #include "Arduino.h"
 #include "cppObject.h"
+#include "MonkeyFile.h"
 
-template<class MFile>
-class MonkeyFileFuntion : public cppObject{
+class MonkeyFileFunction{
     public:
-		MonkeyFileFuntion(){}
-		virtual ~MonkeyFileFuntion(){}
-    	virtual bool SaveFileFuntion(MFile* file,cppObject* instance,String path,String key){
+		MonkeyFileFunction(){}
+		virtual ~MonkeyFileFunction(){}
+    	virtual bool SaveFileFunction(MonkeyFile* file,cppObject* instance,String path,String key){
 			return false;
 		}
-    	virtual cppObject* LoadFileFuntion(MFile* file,cppObject* attachable,String path,String key){
+    	virtual cppObject* LoadFileFunction(MonkeyFile* file,cppObject* attachable,String path,String key){
 			return nullptr;
 		}
-    	virtual bool DeleteFileFuntion(MFile* file,cppObject* attachable,String path,String key){
+    	virtual bool DeleteFileFunction(MonkeyFile* file,cppObject* attachable,String path,String key){
 			return false;
 		}
-		
-		virtual String getClassName(){
-			return "MonkeyFileFuntion";
-		}
-		virtual String toString(){
-			return "MonkeyFileFuntion";
+    	virtual bool operator==(const MonkeyFileFunction& b){
+			return false;
 		}
 	protected:
 	
