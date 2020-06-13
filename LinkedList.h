@@ -377,7 +377,6 @@ class LinkedList : public List<T>{
 					n = nn;
 				}
 			}
-			return nullptr;
 		}
 		
 		int getIterationSize(){

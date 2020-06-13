@@ -8,12 +8,11 @@
 	Lexer::Lexer(){
 		this->captureToken = new PrimitiveMap<String,String>();
 		this->delimiterToken = new PrimitiveMap<String,String>();
-		//this->compareToken = new PrimitiveMap<String,String>();
 		
-		this->lastDelimiterTokenPosition = new LinkedList<int>();
 		this->tokens = new LinkedList<String>();
 		this->primitiveClasses = new LinkedList<String>();
 		this->breakPoint = new LinkedList<char>();
+		this->delimiterCatcher = new PrimitiveMap<String,int>();
 	}
 	
 	Lexer::~Lexer(){
@@ -24,14 +23,6 @@
 		if(this->delimiterToken != nullptr){
 			delete this->delimiterToken;
 			this->delimiterToken = nullptr;
-		}
-		// if(this->compareToken != nullptr){
-			// delete this->compareToken;
-			// this->compareToken = nullptr;
-		// }
-		if(this->lastDelimiterTokenPosition != nullptr){
-			delete this->lastDelimiterTokenPosition;
-			this->lastDelimiterTokenPosition = nullptr;
 		}
 		if(this->tokens != nullptr){
 			delete this->tokens;
@@ -45,139 +36,106 @@
 			delete this->breakPoint;
 			this->breakPoint = nullptr;
 		}
+		if(this->delimiterCatcher != nullptr){
+			delete this->delimiterCatcher;
+			this->delimiterCatcher = nullptr;
+		}
 	}
 	
 	void Lexer::capture(char chr){
 		this->captureChar = chr;
-		//Serial.println(this->reading);
-		if(this->breakPoint->contain(chr)){
-			if(this->reading != ""){
-				//Serial.println(this->reading);
-				if(this->isString(this->reading)){
-					Serial.println(this->reading);
-					this->captureToken->add("String",this->reading);
-					this->reading = "";
-					return;
+		//Serial.println("start capture "+String(chr));
+		
+		if(this->delimiterCatcher->getPos() >= 1){
+			bool deleteCatcher = false;
+			LinkedList<String> deleteCatcherList;
+			iterate(this->delimiterCatcher){
+				int* delPosition = this->delimiterCatcher->getPointer();
+				String delToken = this->delimiterCatcher->getKey();
+				//Serial.println("iterate delimiterCatcher "+String(delimiterCatcher->getIteration()));
+				//Serial.println("delToken.length() "+String(delToken.length()));
+				
+				(*delPosition)++;
+				//Serial.println("delPosition "+String(*delPosition));
+				//Serial.println("this->delimiterCatcher->getPos() "+String(this->delimiterCatcher->getPos()));
+								
+				if(*delPosition == delToken.length() && this->delimiterCatcher->getPos() == 1){
+					deleteCatcher = true;
+					break;
 				}
-				if(this->isFloat(this->reading)){
-					this->captureToken->add("float",this->reading);
-					this->reading = "";
-					return;
+				if(*delPosition == delToken.length() && this->delimiterCatcher->getPos() > 1){
+					deleteCatcherList.add(delToken);
+					//Serial.println("adding deleteCatcherList > 1 "+delToken);
+					continue;
 				}
-				if(this->isInt(this->reading)){
-					this->captureToken->add("int",this->reading);
-					this->reading = "";
-					return;
-				}
-				if(this->isLong(this->reading)){
-					this->captureToken->add("long",this->reading);
-					this->reading = "";
-					return;
-				}
-				if(this->isDouble(this->reading)){
-					this->captureToken->add("double",this->reading);
-					this->reading = "";
-					return;
-				}
-				if(this->tokens->contain(this->reading)){
-					this->captureToken->add(this->reading,this->reading);
-					this->reading = "";
-					return;
-				}
-				if(this->primitiveClasses->contain(this->reading)){
-					this->captureToken->add("ClassName",this->reading);
-					this->reading = "";
-					return;
-				}
-				if(this->captureToken->getByPos(this->captureToken->getPos()-1) != nullptr){
-					if(*this->captureToken->getByPos(this->captureToken->getPos()-1) == "class"){
-						this->captureToken->add("ClassName",this->reading);
-					}else{
-						this->captureToken->add("Variable",this->reading);
+				
+				if(*delPosition <= delToken.length()){
+					if(chr != delToken.charAt(*delPosition)){
+						deleteCatcherList.add(delToken);
+						//Serial.println("adding deleteCatcherList "+delToken);
+						//this->delimiterCatcher->removeDelete(delToken);
 					}
-				}else{
-					this->captureToken->add("Variable",this->reading);
 				}
-				this->reading = "";
-				return;
-			}else{
-				// this->captureToken->add("Variable",this->reading);
-				this->reading = "";
-				return;
 			}
-		}else{
-			String chrS(chr);
-			if(this->delimiterToken->containValue(chrS)){
+			iterateV(deleteCatcherList){
+				//Serial.println("deleting delimiterCatcher "+deleteCatcherList.getValue());
+				this->delimiterCatcher->removeDelete(deleteCatcherList.getValue());
+			}
+			if(deleteCatcher){
+				//Serial.println("resetDelete delimiterCatcher ");
+				this->delimiterCatcher->resetDelete();
 				if(this->reading != ""){
-					//Serial.println(this->reading);
-					if(this->isString(this->reading)){
-						this->captureToken->add("String",this->reading);
-						this->captureToken->add(*this->delimiterToken->getKey(chrS),chrS);
+					String tkn = this->getToken(this->reading);
+					if(tkn != ""){
+						this->captureToken->add(tkn,this->reading);
 						this->reading = "";
-						return;
 					}
-					if(this->tokens->contain(this->reading)){
-						this->captureToken->add(this->reading,this->reading);
-						this->captureToken->add(*this->delimiterToken->getKey(chrS),chrS);
-						this->reading = "";
-						return;
-					}
-					if(this->primitiveClasses->contain(this->reading)){
-						this->captureToken->add("ClassName",this->reading);
-						this->captureToken->add(*this->delimiterToken->getKey(chrS),chrS);
-						this->reading = "";
-						return;
-					}
-					if(chr == '.' && this->isInt(this->reading)){
-						this->reading.concat(chr);
-						return;
-					}
-					if(this->isFloat(this->reading)){
-						this->captureToken->add("float",this->reading);
-						this->captureToken->add(*this->delimiterToken->getKey(chrS),chrS);
-						this->reading = "";
-						return;
-					}
-					if(this->isInt(this->reading)){
-						this->captureToken->add("int",this->reading);
-						this->captureToken->add(*this->delimiterToken->getKey(chrS),chrS);
-						this->reading = "";
-						return;
-					}
-					if(this->isLong(this->reading)){
-						this->captureToken->add("long",this->reading);
-						this->captureToken->add(*this->delimiterToken->getKey(chrS),chrS);
-						this->reading = "";
-						return;
-					}
-					if(this->isDouble(this->reading)){
-						this->captureToken->add("double",this->reading);
-						this->captureToken->add(*this->delimiterToken->getKey(chrS),chrS);
-						this->reading = "";
-						return;
-					}
-					if(this->captureToken->getByPos(this->captureToken->getPos()-1) != nullptr){
-						if(*this->captureToken->getByPos(this->captureToken->getPos()-1) == "class"){
-							this->captureToken->add("ClassName",this->reading);
-							this->captureToken->add(*this->delimiterToken->getKey(chrS),chrS);
+				}
+			}
+			//deleteCatcherList.resetDelete();
+		}
+		
+		if(this->delimiterCatcher->getPos() == 0){
+			//Serial.println("reading "+reading);
+			//Serial.println("delimiterCatcher getPos "+String(this->delimiterCatcher->getPos()));
+			iterate(this->delimiterToken){
+				String delToken = this->delimiterToken->getValue();
+				if(delToken.charAt(0) == chr){
+					//Serial.println("adding delimiterCatcher "+delToken);
+					this->delimiterCatcher->add(new String(delToken),new int(0));
+					if(this->reading != ""){
+						String tkn = this->getToken(this->reading);
+						if(tkn != ""){
+							this->captureToken->add(tkn,this->reading);
+							//Serial.println("reading "+reading);
+							//Serial.println("delimiterCatcher getPos "+String(this->delimiterCatcher->getPos()));
+							this->reading = "";
 						}else{
 							this->captureToken->add("Variable",this->reading);
-							this->captureToken->add(*this->delimiterToken->getKey(chrS),chrS);
+							//Serial.println("reading "+reading);
+							//Serial.println("delimiterCatcher getPos "+String(this->delimiterCatcher->getPos()));
+							this->reading = "";
 						}
-					}else{
-						this->captureToken->add("Variable",this->reading);
 					}
-					
-					this->captureToken->add(*this->delimiterToken->getKey(chrS),chrS);
-					
+				}
+			}
+		}
+		
+		if(this->breakPoint->contain(chr)){
+			if(this->reading != ""){
+				String tkn = this->getToken(this->reading);
+				if(tkn != ""){
+					this->captureToken->add(tkn,this->reading);
 					this->reading = "";
 					return;
+					//Serial.println("breakPoint "+tkn);
 				}else{
-					this->captureToken->add(*this->delimiterToken->getKey(chrS),chrS);
-					
+					this->captureToken->add("Variable",this->reading);
 					this->reading = "";
 					return;
 				}
+			}else{
+				return;
 			}
 		}
 		this->reading.concat(chr);
@@ -291,15 +249,45 @@
 		return true;
 	}
 	
+	String Lexer::getToken(String tkn){
+		if(this->isDouble(tkn)){
+			return "Double";
+		}
+		if(this->isFloat(tkn)){
+			return "Float";
+		}
+		if(this->isString(tkn)){
+			return "String";
+		}
+		if(this->isInt(tkn)){
+			return "Int";
+		}
+		if(this->isLong(tkn)){
+			return "Long";
+		}
+		if(this->tokens->contain(tkn)){
+			return tkn;
+		}
+		if(this->primitiveClasses->contain(tkn)){
+			return "ClassName";
+		}
+		if(this->delimiterToken->containValue(tkn)){
+			return *this->delimiterToken->getKey(tkn);
+		}
+		
+		return "";
+	}
+	
 	String Lexer::getActualToken(){
 		return this->reading;
 	}
 	
 	String Lexer::getCapturedToken(int x){
-		if(this->captureToken->getByPos(x) == nullptr){
+		String* token = this->captureToken->getByPos(x);
+		if(token == nullptr){
 			return "";
 		}
-		return *this->captureToken->getByPos(x);
+		return *token;
 	}
 	
 	Map<String,String>* Lexer::getCapturedToken(){
@@ -326,30 +314,12 @@
 		return this;
 	}
 	
-	// Lexer* Lexer::addCompareToken(String name,String dlm){
-		// this->compareToken->add(name,dlm);
-		// return this;
-	// }
-	
-	bool Lexer::syntaxError(){
-		//class-interface detection with methods
-		bool cls = false;
-		int curly = 0;
-		iterate(this->captureToken){
-			if(this->captureToken->getKey() == "class" || this->captureToken->getKey() == "interface"){
-				cls = true;
-			}
-			if(this->captureToken->getKey() == "LCurlyB"){
-				if(curly >= 1){
-					if(this->captureToken->getKeyByPos(this->captureToken->getIteration()-1) == "if"){
-						
-					}
-					//this->captureToken->setKeyByPos();
-				}
-				curly++;
-			}
+	void Lexer::printTokens(Stream* port){
+		iterate(this->getCapturedToken()){
+			port->print(this->getCapturedToken()->getKey());
+			port->print(" ");
+			port->println(this->getCapturedToken()->getValue());
 		}
-		return false;
 	}
 	
 #endif 

@@ -144,17 +144,6 @@
         for(int i=0; i < mnsLenght; i++){
 			this->lexer->capture(mnsArray[i]);
         }
-		
-		if(this->lexer->syntaxError()){
-			if(extraSerial!=nullptr){
-				extraSerial->println("syntaxError");
-			}else{
-				if(port!=nullptr){
-					port->println("syntaxError");
-				}
-			}
-			return;
-		}
 		if(extraSerial!=nullptr){
 			extraSerial->println(this->lexer->getCapturedToken()->getPos());
 			iterate(this->lexer->getCapturedToken()){

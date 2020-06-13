@@ -100,13 +100,11 @@
 		if(this->pos >= this->size){
 			return;
 		}
-		iterate(this){
-			if(this->getKeyPointer() == key){
-				if(this->getPointer() != value){
-					delete this->value[this->getIteration()];
-					this->value[this->getIteration()] = value;
-				}else{
-					
+		for(int x = 0; x < this->pos; x++){
+			if(this->key[x] == key){
+				if(this->value[x] != value){
+					delete this->value[x];
+					this->value[x] = value;
 				}
 			}
 		}
@@ -120,9 +118,9 @@
 		if(this->pos >= this->size){
 			return;
 		}
-		iterate(this){
-			if(this->getKey() == key){
-				*this->value[this->getIteration()] = value;
+		for(int x = 0; x < this->pos; x++){
+			if(*this->key[x] == key){
+				*this->value[x] = value;
 			}
 		}
 	}
@@ -135,13 +133,11 @@
 		if(this->pos >= this->size){
 			return;
 		}
-		iterate(this){
-			if(this->getKey() == key){
-				if(this->getPointer() != value){
-					delete this->value[this->getIteration()];
-					this->value[this->getIteration()] = value;
-				}else{
-					
+		for(int x = 0; x < this->pos; x++){
+			if(*this->key[x] == key){
+				if(this->value[x] != value){
+					delete this->value[x];
+					this->value[x] = value;
 				}
 			}
 		}
@@ -410,7 +406,6 @@
 
 	template <class K,class V>
 	void PrimitiveMap<K,V>::removeDelete(K *key){
-		V *p = nullptr;
 		bool is=false;
 		for(int x=0; x < this->pos; x++){
 			if(this->key[x] == key ){
@@ -425,8 +420,8 @@
 					this->value[nv] = this->value[x];
 					nv++;
 				}else{
-					p=this->value[x];
-					delete p;
+					delete this->key[x];
+					delete this->value[x];
 				}
 			}
 			this->pos = nv;
@@ -435,7 +430,6 @@
 
 	template <class K,class V>
 	void PrimitiveMap<K,V>::removeDelete(K key){
-		V *p = nullptr;
 		bool is=false;
 		for(int x=0; x < this->pos; x++){
 			if(*this->key[x] == key ){
@@ -450,8 +444,8 @@
 					this->value[nv] = this->value[x];
 					nv++;
 				}else{
-					p=this->value[x];
-					delete p;
+					delete this->key[x];
+					delete this->value[x];
 				}
 			}
 			this->pos = nv;
@@ -460,7 +454,6 @@
 
 	template <class K,class V>
 	void PrimitiveMap<K,V>::removeDeleteByPos(int p){
-		V *v = nullptr;
 		bool is=false;
 		for(int x=0; x < this->pos; x++){
 			if(x == p){
@@ -475,8 +468,8 @@
 					this->value[nv] = this->value[x];
 					nv++;
 				}else{
-					v=this->value[x];
-					delete v;
+					delete this->key[x];
+					delete this->value[x];
 				}
 			}
 			this->pos = nv;
