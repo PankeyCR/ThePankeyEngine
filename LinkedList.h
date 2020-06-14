@@ -403,6 +403,20 @@ class LinkedList : public List<T>{
 			return iteratorNode->actual;
 		}
 		
+		LinkedList<T>* clone(){
+			LinkedList<T>* l = new LinkedList<T>();
+			LinkedListNode<T>* n = start;
+			LinkedListNode<T>* nn = nullptr;
+			for(int x=0; x<size; x++){
+				l->add(*n->actual);
+				if(n->next != nullptr){
+					nn = n->next;
+					n = nn;
+				}
+			}
+			return l;
+		}
+		
         void operator =(LinkedList<T> t){
 			
 		}

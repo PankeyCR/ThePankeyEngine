@@ -32,6 +32,7 @@ class List : public cppObject , public Iterator{
 		//iterator part
 		virtual T getValue()=0;
 		virtual T *getPointer()=0;
+		virtual List<T>* clone();
 		// virtual void set(T s)=0;
 		// virtual void set(T* s)=0;
 	private:

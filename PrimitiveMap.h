@@ -61,7 +61,7 @@ class PrimitiveMap : public Map<K,V>{
 		virtual void onDelete();
 		virtual String getClassName();
 		virtual String toString();
-		virtual PrimitiveMap<K,V>* clone();
+		virtual Map<K,V>* clone();
 		
 		//resize length by adding more space
 		virtual void expandLocal(int add);

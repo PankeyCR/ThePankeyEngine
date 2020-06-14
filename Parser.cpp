@@ -6,9 +6,7 @@
 
 	
 	Parser::Parser(){
-		this->captureToken = new LinkedList<String>();
-		this->tokens = new LinkedList<String>();
-		this->breakPoint = new LinkedList<char>();
+		this->captureToken = new PrimitiveMap<String,String>();
 	}
 	
 	Parser::~Parser(){
@@ -16,14 +14,11 @@
 			delete this->captureToken;
 			this->captureToken = nullptr;
 		}
-		if(this->tokens != nullptr){
-			delete this->tokens;
-			this->tokens = nullptr;
-		}
-		if(this->breakPoint != nullptr){
-			delete this->breakPoint;
-			this->breakPoint = nullptr;
-		}
 	}
+	
+	void Parser::addLexerTokens(Lexer* lexer){
+		this->captureToken = lexer->getCapturedToken()->clone();
+	}
+	
 	
 #endif 

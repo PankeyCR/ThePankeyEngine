@@ -247,6 +247,7 @@ class PList : public List<T>{
 			for(int x=0; x < pos; x++){
 				delete values[x];
 			}
+			pos = 0;
 		}
 		
 		String getClassName(){
@@ -263,6 +264,16 @@ class PList : public List<T>{
 		
 		T *getPointer(){
 			return this->getByPos(this->getIteration());
+		}
+		
+		List<T>* clone(){
+			List<T>* list = new PList<T,size>();
+			
+			for(int xl=0; xl < this->pos; xl++){
+				list->add(values[xl]);
+			}
+			
+			return list;
 		}
 		
         void operator =(PList<T,size> t){

@@ -276,6 +276,16 @@ class ArrayList : public List<T>{
 			return this->set(this->getIteration() , s);
 		}
 		
+		List<T>* clone(){
+			List<T>* list = new ArrayList<T,size>();
+			
+			for(int xl=0; xl < this->pos; xl++){
+				list->add(values[xl]);
+			}
+			
+			return list;
+		}
+		
         void operator =(ArrayList<T,size> t){
 			for(int xtst=0; xtst<size; xtst++){
 				values[xtst] == *t.getByPos(xtst);

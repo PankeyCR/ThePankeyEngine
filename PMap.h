@@ -20,6 +20,10 @@ class PMap : public Map<K,P>{
 			}
 		}
 		
+		~PMap(){
+			
+		}
+		
 		void setPos(int p){
 			pos = p;
 		}
@@ -395,6 +399,16 @@ class PMap : public Map<K,P>{
 		
 		K *getKeyPointer(){
 			return this->getKeyByPos(this->getIteration());
+		}
+		
+		Map<K,P>* clone(){
+			Map<K,P>* cloneMap = new PMap<K,P,size>();
+			
+			for(int cm = 0; cm < pos; cm++){
+				cloneMap->add(keys[cm], values[cm]);
+			}
+			
+			return cloneMap;
 		}
 		
         void operator =(PMap<K,P,size> t){

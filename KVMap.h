@@ -388,6 +388,16 @@ class KVMap : public Map<K,P>{
 			return this->getKeyByPos(this->getIteration());
 		}
 		
+		Map<K,P>* clone(){
+			Map<K,P>* cloneMap = new KVMap<K,P,size>();
+			
+			for(int cm = 0; cm < pos; cm++){
+				cloneMap->add(keys[cm], values[cm]);
+			}
+			
+			return cloneMap;
+		}
+		
         void operator =(KVMap<K,P,size> t){
 			
 		}

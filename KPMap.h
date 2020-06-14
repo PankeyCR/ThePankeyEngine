@@ -399,6 +399,16 @@ class KPMap : public Map<K,P>{
 			return this->getKeyByPos(this->getIteration());
 		}
 		
+		Map<K,P>* clone(){
+			Map<K,P>* cloneMap = new KPMap<K,P,size>();
+			
+			for(int cm = 0; cm < pos; cm++){
+				cloneMap->add(keys[cm], values[cm]);
+			}
+			
+			return cloneMap;
+		}
+		
         void operator =(KPMap<K,P,size> t){
 			
 		}

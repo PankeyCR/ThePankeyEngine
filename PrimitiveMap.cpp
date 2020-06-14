@@ -526,8 +526,14 @@
 	}
 
 	template <class K,class V>
-	PrimitiveMap<K,V>* PrimitiveMap<K,V>::clone(){
-		return new PrimitiveMap<K,V>(this->size);
+	Map<K,V>* PrimitiveMap<K,V>::clone(){
+		Map<K,V>* cloneMap = new PrimitiveMap<K,V>(this->size);
+		
+		for(int cm = 0; cm < pos; cm++){
+			cloneMap->add(*key[cm], *value[cm]);
+		}
+		
+		return cloneMap;
 	}
 
 		//resize length by adding more space

@@ -45,6 +45,7 @@ class Map : public cppObject , public Iterator{
 		virtual V *getPointer()=0;
 		virtual K getKey()=0;
 		virtual K *getKeyPointer()=0;
+		virtual Map<K,V>* clone();
 	private:
 };
 #endif 
