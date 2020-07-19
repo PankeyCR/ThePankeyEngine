@@ -16,7 +16,7 @@ class Entity : public GameObject{
     public:
 		
 		Entity();
-		Entity(String idEntity);
+		Entity(int idEntity);
 		virtual ~Entity();
 		
 		virtual void setData(String name, cppObject* obj);

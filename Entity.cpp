@@ -9,7 +9,7 @@
 		this->data = new PrimitiveMap<String,cppObject>();
 	}
 	
-	Entity::Entity(String idEntity){
+	Entity::Entity(int idEntity){
 		this->setId(idEntity);
 		this->childs = new PrimitiveList<GameOn>();
 		this->data = new PrimitiveMap<String,cppObject>();

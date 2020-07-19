@@ -34,4 +34,10 @@
 		return Rout;
 	}
 	
+	float TemperatureNTC::getVolt(int pin){
+		float valor= analogRead(pin);  
+		float v = (valor/1023)*5; 
+		return v;
+	}
+	
 #endif 

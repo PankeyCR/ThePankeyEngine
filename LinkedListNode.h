@@ -15,12 +15,12 @@ class LinkedListNode{
 		}
 		
 		~LinkedListNode<T>(){
-			if(actual != nullptr){
-				delete actual;
-				actual = nullptr;
-			}
-			last = nullptr;
-			next = nullptr;
+			// if(actual != nullptr){
+				// delete actual;
+				// actual = nullptr;
+			// }
+			// last = nullptr;
+			// next = nullptr;
 		}
 };
 

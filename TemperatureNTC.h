@@ -13,6 +13,7 @@ class TemperatureNTC{
 		void initialize();
 		float getTemperature(int pin);
 		float getResistance(int pin);
+		float getVolt(int pin);
 	protected:
 		float Vin=5.0;     // [V]        Supply voltage in the Voltage-Divider
 		float Raux=10000;  // [ohm]      Secondary resistor in the Voltage-Divider

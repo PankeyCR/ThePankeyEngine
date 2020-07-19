@@ -575,6 +575,7 @@
 	template class PrimitiveMap<String,cppObject>;
 	template class PrimitiveMap<String,AppState>;
 	template class PrimitiveMap<String,TimeElapsed>;
+	template class PrimitiveMap<String,LinkedList<GameOn>>;
 	
 	template class PrimitiveMap<int,String>;
 	template class PrimitiveMap<int,int>;

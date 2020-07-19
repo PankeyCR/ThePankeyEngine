@@ -48,11 +48,13 @@
 	bool MonkeyFile::create(String file){
 		File myFile = SD.open(file, FILE_WRITE);
 		myFile.close();
+		return true;
 	}
 	
 	bool MonkeyFile::createRoot(String file){
 		File myFile = SD.open(this->rootPath+"/"+file, FILE_WRITE);
 		myFile.close();
+		return true;
 	}
 	
 	bool MonkeyFile::write(String file, String text){

@@ -10,6 +10,7 @@ class LinkedList : public List<T>{
 	private:
 		int pos;
 		int size;
+		bool owner = true;
     public:
 		
 		LinkedListNode<T>* start = nullptr;
@@ -23,15 +24,27 @@ class LinkedList : public List<T>{
 			size=0;
 		}
 		
+		LinkedList<T>(bool own){
+			start = new LinkedListNode<T>();
+			node = start;
+			pos=0;
+			size=0;
+			owner=own;
+		}
+		
 		~LinkedList<T>(){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x < size+1; x++){
 				if(n->next != nullptr){
 					nn = n->next;
+					n->next = nullptr;
 				}
 				if(n != nullptr){
 					n->last = nullptr;
+					if(n->actual != nullptr && owner){
+						delete n->actual;
+					}
 					delete n;
 				}
 				if(nn != nullptr){

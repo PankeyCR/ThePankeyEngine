@@ -42,12 +42,12 @@
 	
 	void JoystickCalibrationControl::update(float tpc){
 		if(!this->isValidControl()){
-			((GameObject*)this->parent)->detach(this->idm);
+			((GameObject*)this->parent)->detach(this->getClassName());
 			return;
 		}
 		Joystick *joystick= this->getJoystick();
 		joystick->setOrigin(analogRead(joystick->getPinX()),analogRead(joystick->getPinY()));
-		delete ((GameObject*)this->parent)->detach(this->idm);
+		delete ((GameObject*)this->parent)->detach(this->getClassName());
 	}
 	
 	

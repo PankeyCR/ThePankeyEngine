@@ -21,12 +21,17 @@
 		return this->parent;
 	}
 	
-	void GameOn::setId(String id){
-		this->idm = id;
+	void GameOn::setId(int id){
+		if(this->parent != nullptr){
+			this->parent->setId(id);
+		}
 	}
 	
-	String GameOn::getId(){
-		return this->idm;
+	int GameOn::getId(){
+		if(this->parent != nullptr){
+			return this->parent->getId();
+		}
+		return -1;
 	}
 		
 	bool GameOn::isEnable(){

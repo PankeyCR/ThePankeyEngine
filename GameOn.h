@@ -4,7 +4,6 @@
 #define GameOn_h
 
 #include "cppObject.h"
-#include "Note.h"
 
 class GameOn : public cppObject{
     public:		
@@ -13,8 +12,8 @@ class GameOn : public cppObject{
 		virtual void setParent(GameOn *parent);
 		virtual GameOn *getParent();
 		
-        virtual void setId(String id);
-        virtual String getId();
+        virtual void setId(int id);
+        virtual int getId();
 		
 		virtual bool isEnable();
 		virtual void enable();
@@ -30,9 +29,8 @@ class GameOn : public cppObject{
         virtual bool operator !=(const GameOn& c);
     
 	protected:	
-		GameOn* parent;
+		GameOn* parent = nullptr;
 		bool enabler = false;
-		String idm;
 };
 
 
