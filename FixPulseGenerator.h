@@ -6,6 +6,7 @@
 #include "Arduino.h"
 #include "TimeControl.h"
 #include "MonkeyTime.h"
+#include "Command.h"
 
 class FixPulseGenerator : public TimeElapsed, public Command<int>{
     public:

@@ -9,16 +9,34 @@ template <class T,int size>
 class PList : public List<T>{
 	private:
 		int pos;	
+		bool owner = false;
     public:
 		
-		T *values[size];
+		T* values[size];
 		
 		PList<T,size>(){
 			pos=0;
+			for(int x=0; x < size ; x++){
+				values[x] = nullptr;
+			}
+		}
+		
+		PList<T,size>(bool own){
+			pos=0;
+			owner = own;
+			for(int x=0; x < size ; x++){
+				values[x] = nullptr;
+			}
 		}
 		
 		~PList<T,size>(){
-			
+			if(owner){
+				for(int x=0; x < size ; x++){
+					if(values[x] != nullptr){
+						delete values[x];
+					}
+				}
+			}
 		}
 		
 		void setPos(int p){
@@ -33,7 +51,7 @@ class PList : public List<T>{
 			return size;
 		}
 		
-		T *getByPos(int x){
+		T* getByPos(int x){
 			if(x >= pos){
 				return nullptr;
 			}
@@ -44,43 +62,162 @@ class PList : public List<T>{
             if(list == nullptr){
 				return;
             }
-			for(int x=0; x < pos ; x++){
+			for(int x=0; x < list->getPos() ; x++){
+				while(values[pos] != nullptr){
+					pos++;
+				}
+				if(pos >= size){
+					return;
+				}
 				values[pos] = list->getByPos(x);
 				pos++;
 			}
 		}
 		
-		void add(T *value){
+		template<class... Args>
+		T* add(Args... args){
             if(pos >= size){
-				return;
+				return nullptr;
+            }
+			while(values[pos] != nullptr){
+				pos++;
+			}
+            if(pos >= size){
+				return nullptr;
+            }
+			values[pos] = new T(args...);
+			pos++;
+			return values[pos-1];
+		}
+		
+		T* add(T* value){
+            if(pos >= size){
+				return nullptr;
+            }
+			while(values[pos] != nullptr){
+				pos++;
+			}
+            if(pos >= size){
+				return nullptr;
             }
 			values[pos] = value;
 			pos++;
+			return value;
 		}
 		
-		void add(T value){
+		T* add(T value){
             if(pos >= size){
-				return;
+				return nullptr;
             }
+			while(values[pos] != nullptr){
+				pos++;
+			}
+            if(pos >= size){
+				return nullptr;
+            }
+			values[pos] = new T();
 			*values[pos] = value;
 			pos++;
+			return values[pos-1];
 		}
 		
-		void set(int posIn,T value){
-            if(posIn >= size){
-				return;
+		T* set(int position, T value){
+            if(position >= size){
+				return nullptr;
             }
-			*values[posIn] = value;
+			if(values[position] == nullptr){
+				values[position] = new T();
+			}
+			*values[position] = value;
+			return values[position];
 		}
 		
-		void set(int posIn,T *value){
-            if(posIn >= size){
-				return;
+		T* set(int position, T* value){
+            if(position >= size){
+				return nullptr;
             }
-			values[posIn] = value;
+			if(values[position] != nullptr && values[position] != value && owner){
+				delete this->values[position];
+			}
+			values[position] = value;
+			return value;
 		}
 		
-		T *get(T *key){
+		T* insert(int position, T value){
+            if(position >= size){
+				return nullptr;
+            }
+            if(position >= pos+1){
+				return nullptr;
+            }
+			T* nVaule = nullptr;
+			T* rVaule = new T();
+			*rVaule = value;
+			if(owner){
+				for(int x = 0; x <= size; x++){
+					if(x == size && nVaule != nullptr){
+						delete nVaule;
+					}
+					if(x >= position && x != size){
+						nVaule = values[x];
+						values[x] = rVaule;
+						rVaule = nVaule;
+					}
+				}
+			}else{
+				for(int x = 0; x <= pos; x++){
+					if(x >= position){
+						nVaule = values[x];
+						values[x] = rVaule;
+						rVaule = nVaule;
+					}
+				}
+			}
+			if(pos < size){
+				pos++;
+			}
+			return values[position];
+		}
+		
+		T* insert(int position, T* value){
+            if(value == nullptr || values[position] == value){
+				return nullptr;
+            }
+            if(position >= size){
+				return nullptr;
+            }
+            if(position >= pos+1){
+				return nullptr;
+            }
+			T* nVaule;
+			T* rVaule = value;
+			if(owner){
+				for(int x = 0; x <= pos; x++){
+					if(x == size && nVaule != nullptr){
+						delete nVaule;
+					}
+					if(x >= position && x != size){
+						nVaule = values[x];
+						values[x] = rVaule;
+						rVaule = nVaule;
+					}
+				}
+			}else{
+				for(int x = 0; x <= pos; x++){
+					if(x >= position){
+						nVaule = values[x];
+						values[x] = rVaule;
+						rVaule = nVaule;
+					}
+				}
+			}
+			if(pos < size){
+				pos++;
+			}
+			return values[position];
+		}
+		
+		T* get(T* key){
 			for(int x=0; x < pos; x++){
 				if(values[x] == key ){
 					return values[x];
@@ -89,7 +226,7 @@ class PList : public List<T>{
 			return nullptr;
 		}
 		
-		T *get(T key){
+		T* get(T key){
 			for(int x=0; x < pos; x++){
 				if(*values[x] == key ){
 					return values[x];
@@ -122,12 +259,15 @@ class PList : public List<T>{
 		
 		void resetDelete(){
 			for(int x=0; x < pos; x++){
-				delete values[x];
+				if(values[x] != nullptr && owner){
+					delete values[x];
+				}
+				values[x] = nullptr;
 			}
 			pos=0;
 		}
 		
-		T *remove(T *key){
+		T *remove(T* key){
 			T *t = nullptr;
 			bool is=false;
 			for(int x=0; x < pos; x++){
@@ -174,17 +314,19 @@ class PList : public List<T>{
 		}
 		
 		T *removeByPos(int p){
-			T *t = nullptr;
-				int nv =0;
-				for(int x=0; x < pos; x++){
-					if(x != p ){
-						values[nv] = values[x];
-						nv++;
-					}else{
-						t = values[x];
-					}
+			if(p >= pos){
+				return nullptr;
+			}
+			T* t = nullptr;
+			for(int x=0; x < pos; x++){
+				if(x == p ){
+					t = values[x];
 				}
-				pos = nv;
+				if(x > p ){
+					values[x-1] = values[x];
+				}
+			}
+			pos--;
 			return t;
 		}
 	
@@ -202,7 +344,9 @@ class PList : public List<T>{
 						values[nv] = values[x];
 						nv++;
 					}else{
-						delete values[x];
+						if(values[x] != nullptr && owner){
+							delete values[x];
+						}
 					}
 				}
 				pos = nv;
@@ -223,7 +367,9 @@ class PList : public List<T>{
 						values[nv] = values[x];
 						nv++;
 					}else{
-						delete values[x];
+						if(values[x] != nullptr && owner){
+							delete values[x];
+						}
 					}
 				}
 				pos = nv;
@@ -231,23 +377,43 @@ class PList : public List<T>{
 		}
 		
 		void removeDeleteByPos(int p){
-				int nv =0;
-				for(int x=0; x < pos; x++){
-					if(x != p ){
-						values[nv] = values[x];
-						nv++;
-					}else{
-						delete values[x];
-					}
+			if(p >= pos){
+				return;
+			}
+			T* t = nullptr;
+			for(int x=0; x < pos; x++){
+				if(x == p ){
+					t = values[x];
 				}
-				pos = nv;
+				if(x > p ){
+					values[x-1] = values[x];
+				}
+			}
+			pos--;
+			if(t != nullptr && owner){
+				delete t;
+			}
 		}
 	
 		void onDelete(){
 			for(int x=0; x < pos; x++){
-				delete values[x];
+				if(values[x] != nullptr && owner){
+					delete values[x];
+				}
+				values[x] = nullptr;
 			}
 			pos = 0;
+		}
+		
+		T& operator[](int x){
+			if(x >= size){
+				return *values[size-1];
+			}
+			if(pos == x){
+				pos++;
+			}
+			values[x] = new T();
+			return *values[x];
 		}
 		
 		String getClassName(){
@@ -259,17 +425,49 @@ class PList : public List<T>{
 		}
 		
 		T getValue(){
-			return *this->getByPos(this->getIteration());
+			return *values[this->getIteration()];
 		}
 		
-		T *getPointer(){
-			return this->getByPos(this->getIteration());
+		T* getPointer(){
+			return values[this->getIteration()];
+		}
+		
+		T* set(T s){
+			return this->set(this->getIteration() , s);
+		}
+		
+		T* set(T* s){
+			return this->set(this->getIteration() , s);
+		}
+		
+		T* insert(T s){
+			int p = this->iterateCount;
+			this->iterateCount++;
+			return this->insert(p , s);
+		}
+		
+		T* insert(T* s){
+			int p = this->iterateCount;
+			this->iterateCount++;
+			return this->insert(p , s);
+		}
+		
+		T* remove(){
+			int p = this->iterateCount;
+			this->iterateCount--;
+			return this->removeByPos(p);
+		}
+		
+		void removeDelete(){
+			int p = this->iterateCount;
+			this->iterateCount--;
+			this->removeDeleteByPos(p);
 		}
 		
 		List<T>* clone(){
 			List<T>* list = new PList<T,size>();
 			
-			for(int xl=0; xl < this->pos; xl++){
+			for(int xl=0; xl < size; xl++){
 				list->add(values[xl]);
 			}
 			

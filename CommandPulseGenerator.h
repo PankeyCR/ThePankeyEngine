@@ -4,6 +4,7 @@
 
 #include "TimeControl.h"
 #include "MonkeyTime.h"
+#include "Command.h"
 
 class CommandPulseGenerator : public TimeElapsed, public Command<int>{
     public:
