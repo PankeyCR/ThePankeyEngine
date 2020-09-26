@@ -17,7 +17,7 @@ void setup() {
   manager->addComponent(entity, new NTC(A4));
   manager->addComponent(entity, new TemperatureNTCRelay(46,40));
 
-  app = new SimpleApplication<3>();
+  app = new SimpleApplication<3,2>();
   app->getStateManager()->add(new TemperatureNTCSystem(manager));
   app->getStateManager()->add(new TemperatureNTCRelaySystem(manager));
 }

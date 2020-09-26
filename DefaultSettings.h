@@ -8,12 +8,6 @@
 
 class DefaultSettings : public AppSettings{
     public:
-		Map<String,int> *intMap;
-		Map<String,float> *floatMap;
-		Map<String,String> *StringMap;
-		Map<String,bool> *boolMap;
-		Map<String,cppObject> *cppObjectMap;
-		
 		DefaultSettings();
 		~DefaultSettings();
 		
@@ -41,8 +35,15 @@ class DefaultSettings : public AppSettings{
 		void setCppObject(String s, cppObject *i);
 		cppObject *getCppObject(String s);
 		bool containCppObject(String s);
+		String toString();
+		String getClassName();
 		
-	private:
+	protected:
+		Map<String,int> *intMap;
+		Map<String,float> *floatMap;
+		Map<String,String> *StringMap;
+		Map<String,bool> *boolMap;
+		Map<String,cppObject> *cppObjectMap;
 };
 
 #endif 

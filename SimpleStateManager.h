@@ -11,11 +11,10 @@ template<int Size>
 class SimpleStateManager : public AppStateManager{
     public:
 		SimpleStateManager<Size>(){
-			this->appStateList = new PList<AppState,Size>();
+			this->appStateList = new PList<AppState,Size>(true);
 		}
 		
 		~SimpleStateManager<Size>(){
-			this->appStateList->onDelete();
 			delete this->appStateList;
 		}
 		
@@ -23,9 +22,11 @@ class SimpleStateManager : public AppStateManager{
 			this->managerApp = app;
 		}
 		
-		AppState *add(AppState *state){
+		AppState* add(AppState *state){
 			this->appStateList->add(state);
-			state->initialize(this->managerApp);
+			if(this->managerApp != nullptr){
+				state->initialize(this->managerApp);
+			}
 			state->onEnable();
 			return state;
 		}
@@ -114,8 +115,11 @@ class SimpleStateManager : public AppStateManager{
 		}
 		
 		void update(){
+			this->now = micros();
+			this->tpc = (float)(this->now - this->prev)/1000000;
+			this->prev = this->now;
 			for(int x=0; x < this->appStateList->getPos();x++){
-				this->appStateList->getByPos(x)->update();
+				this->appStateList->getByPos(x)->update(this->tpc);
 			}			
 		}
 		
@@ -131,6 +135,9 @@ class SimpleStateManager : public AppStateManager{
 	protected:
 		List<AppState>* appStateList;
 		Application* managerApp;
+		long now = 0;
+		long prev = 0;
+		float tpc = 0;
 };
 
 #endif

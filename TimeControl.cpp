@@ -27,6 +27,10 @@
 	TimeControl* TimeControl::setPeriod(long timeperiod){
 		return this;
 	}
+	
+	long TimeControl::getPeriod(){
+		return this->period;
+	}
 
 	TimeControl* TimeControl::attachInterrupt(){
 		return this;										

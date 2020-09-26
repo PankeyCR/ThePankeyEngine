@@ -219,5 +219,27 @@
 		}
 	}
 	
+	String GameManager::getClassName(){
+		return "GameManager";
+	}
+	
+	String GameManager::toString(){
+		return "GameManager"+String(gameobjects->getSize());
+	}
+	
+	bool GameManager::equal(cppObject *b){
+		if(b == this){
+			return true;
+		}
+		if(b->getClassName() == this->getClassName()){
+			return true;
+		}
+		return false;
+	}
+	
+	cppObject* GameManager::clone(){
+		return new GameManager();
+	}
+	
 
 #endif 

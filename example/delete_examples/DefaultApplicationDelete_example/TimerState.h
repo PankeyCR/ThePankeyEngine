@@ -5,25 +5,22 @@
 #include "AppState.h"
 
 class TimerState : public AppState, TimeElapsed{
-	public:
-	
-		TimerState(Stream *port){
-			serial = port;
-		}
-    ~TimerState(){}
-   
-		void initialize(Application *app){
-      //if(app->getTimeControl()->getClassName() == "SimpleTimer"){
-        //((SimpleTimer*)app->getTimeControl())->add(this);
-      //}
-		}
-   
-		void Play(TimeControl *t){
-			serial->println(t->getMonkeyTime()->getTime());
-		}
-		
-	private:
-		Stream *serial=NULL;
+public:
+
+TimerState(Stream *port){
+	serial = port;
+}
+~TimerState(){}
+
+void initialize(Application *app){
+}
+
+void Play(TimeControl *t){
+	serial->println(t->getTime());
+}
+
+private:
+Stream *serial=NULL;
 };
 
 #endif 

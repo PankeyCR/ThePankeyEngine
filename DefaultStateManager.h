@@ -12,13 +12,13 @@ class DefaultStateManager : public AppStateManager{
 		DefaultStateManager();
 		virtual ~DefaultStateManager();
 		
-		virtual void setApplication(Application *app);
+		virtual void setApplication(Application* app);
 		
-		virtual AppState *add(AppState *state);
-		virtual AppState *get(String classname);
-		virtual AppState *get(String appstateId,String classname);
-		virtual AppState *remove(String classname);
-		virtual AppState *remove(String appstateId,String classname);
+		virtual AppState* add(AppState* state);
+		virtual AppState* get(String classname);
+		virtual AppState* get(String appstateId,String classname);
+		virtual AppState* remove(String classname);
+		virtual AppState* remove(String appstateId,String classname);
 		virtual bool contain(String classname);
 		virtual bool contain(String appstateId,String classname);
 		virtual void removeAll();
@@ -30,9 +30,12 @@ class DefaultStateManager : public AppStateManager{
 		virtual String getClassName();
 		virtual String toString();
     
-	private:
+	protected:
 		List<AppState> *appStateList;
 		Application *managerApp;
+		long now = 0;
+		long prev = 0;
+		float tpc = 0;
 };
 
 #endif

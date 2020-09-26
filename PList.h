@@ -73,6 +73,14 @@ class PList : public List<T>{
 				pos++;
 			}
 		}
+	
+		template<class... args>
+		void addPack(args... x){
+			T array[] = {x...};
+			for(const T &a : array){
+				add(a);
+			}
+		}
 		
 		template<class... Args>
 		T* add(Args... args){

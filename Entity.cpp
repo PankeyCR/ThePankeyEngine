@@ -5,7 +5,7 @@
 #include "Entity.h"
 	
 	Entity::Entity(){
-		this->childs = new PrimitiveList<GameOn>();
+		// this->childs = new PrimitiveList<GameOn>();
 		this->data = new PrimitiveMap<String,cppObject>();
 	}
 	

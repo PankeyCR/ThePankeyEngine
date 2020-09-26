@@ -9,6 +9,7 @@ template <class K,class P,int size>
 class KPMap : public Map<K,P>{
 	
     public:
+		bool owner = false;
 		P *values[size];
 		K keys[size];
 		
@@ -19,8 +20,20 @@ class KPMap : public Map<K,P>{
 			}
 		}
 		
+		KPMap(bool own){
+			owner = own;
+			pos=0;
+			for(int x=0; x < size; x++){
+				values[x] = nullptr;
+			}
+		}
+		
 		~KPMap(){
-			
+			if(owner){
+				for(int x=0; x < pos; x++){
+					delete values[x];
+				}
+			}
 		}
 		
 		void setPos(int p){
@@ -205,11 +218,11 @@ class KPMap : public Map<K,P>{
 		}
 		
 		K *getKey(P value){
-		/*	for(int x=0; x < pos; x++){
+			for(int x=0; x < pos; x++){
 				if(*values[x] == value ){
 					return &keys[x];
 				}
-			}*/
+			}
 			return nullptr;
 		}
 		
@@ -218,8 +231,10 @@ class KPMap : public Map<K,P>{
 		}
 		
 		void resetDelete(){
-			for(int x=0; x < pos; x++){
-				delete &values[x];
+			if(owner){
+				for(int x=0; x < pos; x++){
+					delete &values[x];
+				}
 			}
 			pos=0;
 		}
@@ -313,7 +328,9 @@ class KPMap : public Map<K,P>{
 						nv++;
 					}else{
 						p=values[x];
-						delete p;
+						if(owner){
+							delete p;
+						}
 					}
 				}
 				pos = nv;
@@ -337,7 +354,9 @@ class KPMap : public Map<K,P>{
 						nv++;
 					}else{
 						p=values[x];
-						delete p;
+						if(owner){
+							delete p;
+						}
 					}
 				}
 				pos = nv;
@@ -361,7 +380,9 @@ class KPMap : public Map<K,P>{
 						nv++;
 					}else{
 						p=values[x];
-						delete p;
+						if(owner){
+							delete p;
+						}
 					}
 				}
 				pos = nv;
@@ -369,10 +390,11 @@ class KPMap : public Map<K,P>{
 		}
 		
 		void onDelete(){
-			for(int x=0; x < pos; x++){
-				delete values[x];
+			if(owner){
+				for(int x=0; x < pos; x++){
+					delete values[x];
+				}
 			}
-			delete this;
 		}
 		
 		String getClassName(){

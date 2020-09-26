@@ -1,16 +1,15 @@
 
-#include "Function.h"
 #include "CuadraticFunction.h"
 
-Function<float,float,float,float>* fxyz;
-Function<float,float>* fx;
+CuadraticFunction<float,float,float>* fxyz;
+CuadraticFunction<float>* fx;
 
 void setup() {
   Serial.begin(9600);
   fx = new CuadraticFunction<float>();
-  fx->set("a",1);
-  fx->set("b",0);
-  fx->set("c",0);
+  fx->setVariable(0, 1);
+  fx->setVariable(1, 0);
+  fx->setVariable(2, 0);
   Serial.println(fx->f(2));
   
   fxyz = new CuadraticFunction<float,float,float>();
@@ -18,5 +17,4 @@ void setup() {
 }
 
 void loop() {
-
 }

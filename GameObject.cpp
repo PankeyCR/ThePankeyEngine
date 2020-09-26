@@ -11,6 +11,7 @@
 	GameObject::~GameObject(){
 		if(this->childs != nullptr){
 			delete this->childs;
+			this->childs = nullptr;
 		}
 	}
 	

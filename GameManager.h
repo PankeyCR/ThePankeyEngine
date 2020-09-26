@@ -10,7 +10,7 @@
 #include "LinkedList.h"
 #include "List.h"
 
-class GameManager{
+class GameManager : public cppObject{
     public:		
 		GameManager();
 		virtual ~GameManager();
@@ -42,6 +42,11 @@ class GameManager{
 		
 		void deleteComponent(int entity, String componentClassName);
 		void deleteComponent(GameObject* obj, String componentClassName);
+		
+		virtual String getClassName();
+		virtual String toString();
+		virtual bool equal(cppObject *b);
+		virtual cppObject *clone();
 		
 	protected:
 		Map<String,LinkedList<GameOn>>* components = nullptr;

@@ -16,16 +16,22 @@
 		delete this->settings;
 	}
 	
-	void DefaultApplication::setSettings(AppSettings *setting){
-		this->settings = setting;
+	void DefaultApplication::setSettings(AppSettings *set){
+		if(set != nullptr && this->settings != set){
+			delete this->settings;
+		}
+		this->settings = set;
 	}
 	
 	AppSettings *DefaultApplication::getSettings(){
 		return this->settings;
 	}
 	
-	void DefaultApplication::setStateManager(AppStateManager *appstate){
-		this->states = appstate;
+	void DefaultApplication::setStateManager(AppStateManager *manager){
+		if(manager != nullptr && this->states != manager){
+			delete this->states;
+		}
+		this->states = manager;
 	}
 	
 	AppStateManager *DefaultApplication::getStateManager(){

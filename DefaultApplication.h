@@ -33,8 +33,8 @@ class DefaultApplication : public Application{
 		virtual String toString();
 		
 	private:
-		AppStateManager *states;
-		AppSettings *settings;
+		AppStateManager *states = nullptr;
+		AppSettings *settings = nullptr;
 };
 
 #endif 

@@ -13,23 +13,29 @@
 #include "SimpleStateManager.h"
 #include "Logger.h"
 
-template <int SettingsSize>
+template <int StatesSize, int SettingsSize>
 class SimpleApplication : public Application{
     public:
 		SimpleApplication(){
-			states = new SimpleStateManager<SettingsSize>();
+			states = new SimpleStateManager<StatesSize>();
 			settings = new SimpleAppSettings<SettingsSize>();
 			states->setApplication(this);
 			//Log("println","Start SimpleApplication ");
 		}
-		void setSettings(AppSettings *setting){
-			settings = setting;
+		void setSettings(AppSettings *set){
+			if(this->settings != nullptr && this->settings != set){
+				delete this->settings;
+			}
+			this->settings = set;
 		}
 		AppSettings *getSettings(){
 			return settings;
 		}
-		void setStateManager(AppStateManager *appstate){
-			states = appstate;
+		void setStateManager(AppStateManager *manager){
+			if(this->states != nullptr && this->states != manager){
+				delete this->states;
+			}
+			this->states = manager;
 		}
 		AppStateManager *getStateManager(){
 			return states;
@@ -51,8 +57,8 @@ class SimpleApplication : public Application{
 		}
     
 	private:	
-	AppStateManager *states;
-	AppSettings *settings;
+	AppStateManager *states = nullptr;
+	AppSettings *settings = nullptr;
 };
 
 #endif 

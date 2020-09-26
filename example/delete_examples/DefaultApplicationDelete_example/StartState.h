@@ -3,6 +3,8 @@
 #define StartState_h
 
 #include "AppState.h"
+#include "MetricScale.h"
+#include "MetricPrefix.h"
 
 class StartState : public AppState{
 	public:
@@ -16,14 +18,12 @@ class StartState : public AppState{
     }
    
     void initialize(Application *app){
-//      if(app->getTimeControl()->getClassName() == "SimpleTimer"){
-//        ((SimpleTimer*)app->getTimeControl())->initialize(500000);//time in nanos for the timer
-//        ((SimpleTimer*)app->getTimeControl())->startInterrupt();
-//        ((SimpleTimer*)app->getTimeControl())->attachInterrupt();
-//        ((SimpleTimer*)app->getTimeControl())->getMonkeyTime()->setScale(TimeScale::CentiSecond);
-//        ((SimpleTimer*)app->getTimeControl())->getMonkeyTime()->start();
-//      }      
-      App = app;
+		MetricScale scale;
+		scale.setScaleTransform(MetricPrefix::micro , MetricPrefix::none);
+		app->getTimeControl()->initialize(scale.getValue(2));// 2 seconds
+		app->getTimeControl()->startInterrupt();
+		app->getTimeControl()->attachInterrupt();
+		App = app;   
     }
     void onEnable(){
             
@@ -40,9 +40,6 @@ class StartState : public AppState{
    		
     String getClassName(){
       return "StartState";
-    }
-    void update(){
-      App->getTimeControl()->getMonkeyTime()->computeTime();
     }
 	private:
     Application *App;

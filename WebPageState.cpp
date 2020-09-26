@@ -2,7 +2,7 @@
 
 #ifndef WebPageState_cpp
 #define WebPageState_cpp
-
+/*
 #include "WebPageState.h"
 
 	WebPageState::WebPageState(const char* ssid,const char* pass){
@@ -248,5 +248,5 @@
 		return this->client;
 	}
 	#endif
-
+*/
 #endif 

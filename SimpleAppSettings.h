@@ -10,13 +10,19 @@
 template <int size>
 class SimpleAppSettings : public AppSettings{
     public:
-		
 		SimpleAppSettings(){
 			intMap = new KVMap<String,int,size>();
 			floatMap = new KVMap<String,float,size>();
 			StringMap = new KVMap<String,String,size>();
 			booleanMap = new KVMap<String,bool,size>();
-			cppObjectMap = new KPMap<String,cppObject,size>();
+			cppObjectMap = new KPMap<String,cppObject,size>(true);
+		}
+		~SimpleAppSettings(){
+			delete intMap;
+			delete floatMap;
+			delete StringMap;
+			delete boolMap;
+			delete cppObjectMap;
 		}
 		String toString(){
 			return "SimpleAppSettings";
@@ -32,7 +38,6 @@ class SimpleAppSettings : public AppSettings{
 			floatMap->onDelete();
 			StringMap->onDelete();
 			booleanMap->onDelete();
-			delete this;
 		}
 		void addInt(String s, int i){
 			intMap->add(s,i);
@@ -94,13 +99,12 @@ class SimpleAppSettings : public AppSettings{
 		bool containCppObject(String s){
 			return cppObjectMap->contain(s);
 		}
-		
+	protected:
 		Map<String,int> *intMap;
 		Map<String,float> *floatMap;
 		Map<String,String> *StringMap;
 		Map<String,bool> *booleanMap;
 		Map<String,cppObject> *cppObjectMap;
-	private:	
 };
 
 #endif 

@@ -17,14 +17,16 @@
 		this->managerApp = app;
 	}
 	
-	AppState *DefaultStateManager::add(AppState *state){
+	AppState *DefaultStateManager::add(AppState* state){
 		this->appStateList->add(state);
-		state->initialize(this->managerApp);
+		if(this->managerApp != nullptr){
+			state->initialize(this->managerApp);
+		}
 		state->onEnable();
 		return state;
 	}
 	
-	AppState *DefaultStateManager::get(String classname){
+	AppState* DefaultStateManager::get(String classname){
 		iterate(this->appStateList){
 			if(this->appStateList->getPointer()->getClassName() == classname){
 				return this->appStateList->getPointer();
@@ -33,7 +35,7 @@
 		return nullptr;
 	}
 	
-	AppState *DefaultStateManager::get(String appstateId,String classname){
+	AppState* DefaultStateManager::get(String appstateId,String classname){
 		iterate(this->appStateList){
 			if(this->appStateList->getPointer()->getClassName() == classname &&
 							this->appStateList->getPointer()->getId() == appstateId){
@@ -43,7 +45,7 @@
 		return nullptr;
 	}
 	
-	AppState *DefaultStateManager::remove(String classname){
+	AppState* DefaultStateManager::remove(String classname){
 		AppState *appstate = nullptr;
 		iterate(this->appStateList){
 			if(this->appStateList->getPointer()->getClassName() == classname){
@@ -58,7 +60,7 @@
 		return appstate;
 	}
 	
-	AppState *DefaultStateManager::remove(String appstateId,String classname){
+	AppState* DefaultStateManager::remove(String appstateId,String classname){
 		AppState *appstate = nullptr;
 		iterate(this->appStateList){
 			if(this->appStateList->getPointer()->getClassName() == classname &&
@@ -94,22 +96,25 @@
 	}
 	
 	void DefaultStateManager::removeAll(){
-		for(int x=0; x < this->appStateList->getPos();x++){
-			this->appStateList->getByPos(x)->onDisable();
+		iterate(this->appStateList){
+			this->appStateList->getPointer()->onDisable();
 		}			
 		this->appStateList->reset();
 	}
 	
 	void DefaultStateManager::removeDeleteAll(){
-		for(int x=0; x < this->appStateList->getPos();x++){
-			this->appStateList->getByPos(x)->onDisable();
+		iterate(this->appStateList){
+			this->appStateList->getPointer()->onDisable();
 		}			
 		this->appStateList->resetDelete();
 	}
 	
 	void DefaultStateManager::update(){
+		this->now = micros();
+		this->tpc = (float)(this->now - this->prev)/1000000;
+		this->prev = this->now;
 		for(int x=0; x < this->appStateList->getPos();x++){
-			this->appStateList->getByPos(x)->update();
+			this->appStateList->getByPos(x)->update(this->tpc);
 		}			
 	}
 	

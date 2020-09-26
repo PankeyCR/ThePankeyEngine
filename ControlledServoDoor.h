@@ -6,11 +6,10 @@
 #include "Arduino.h"
 #include "DelaySensor.h"
 #include "MonkeyTime.h"
-#include "Controlling.h"
 #include "LinearController.h"
 #include "KVMap.h"
 #include <Servo.h> 
-
+/*
 class ControlledServoDoor : public DelaySensor{
 	protected:
 		Servo servo;
@@ -40,5 +39,5 @@ class ControlledServoDoor : public DelaySensor{
 		virtual void update(float tpc);
 		
 };
-
+*/
 #endif 

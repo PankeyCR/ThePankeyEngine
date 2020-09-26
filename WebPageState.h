@@ -2,7 +2,7 @@
 
 #ifndef WebPageState_h
 #define WebPageState_h
-
+/*
 #include "Arduino.h"
 #include "AppState.h"
 #include "Command.h"
@@ -59,5 +59,5 @@ class WebPageState : public AppState{
 		WiFiClient client;
 		#endif
 };
-
+*/
 #endif 

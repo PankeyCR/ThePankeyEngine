@@ -4,39 +4,36 @@
 #define DataSetV3_h
 
 #include "DataSet.h"
-#include "KVMap.h"
 
-template<int zS = 1, int yS = 2, int xS = 3>
-class DataSetV3 : public DataSet<float>{
+template<class T, int xS = 3, int yS = 2, int zS = 1>
+class DataSetV3 : public DataSet<T>{
 	public:
-		float x1[xS];
-		float x2[yS][xS];
-		float x3[zS][yS][xS];
+		T x1[xS];
+		T x2[yS][xS];
+		T x3[zS][yS][xS];
 		
 		DataSetV3(){
-			this->dimentionLimit = 3;
+			this->spaceLimit = 3;
 		}
 		
 		virtual ~DataSetV3(){
-			
 		}
 		
-		void setArray(float arr[xS]){
+		void setArray(T arr[xS]){
 			for(int x=0; x < xS;x++){
 				this->x1[x] = arr[x];
 			}
 		}
 		
-		void setArray(float arr[yS][xS]){
+		void setArray(T arr[yS][xS]){
 			for(int x=0; x < xS;x++){
 				for(int y=0; y < yS;y++){
 					this->x2[y][x] = arr[y][x];
 				}
-				
 			}
 		}
 		
-		void setArray(float arr[zS][yS][xS]){
+		void setArray(T arr[zS][yS][xS]){
 			for(int x=0; x < xS;x++){
 				for(int y=0; y < yS;y++){
 					for(int z=0; z < zS;z++){
@@ -46,117 +43,133 @@ class DataSetV3 : public DataSet<float>{
 			}
 		}
 		
-		virtual DataSet<float>* dimention(int dimentionPos){
-			if(dimentionPos < this->dimentionLimit){
-				this->dimentionMap = dimentionPos;
+		virtual DataSet<T>* space(int i_space){
+			if(i_space < this->spaceLimit){
+				this->m_space = i_space;
+			}else{
+				this->m_space = -1;
 			}
 			return this;
 		}
 		
-		virtual DataSet<float>* vector(int vectorPosn, int pointPosn){
-			if(vectorPosn == 0 && pointPosn < xS){
-				this->xP = pointPosn;
+		virtual DataSet<T>* dimention(int i_dimention){
+			if(this->m_space == 0 && i_dimention < 1){
+				this->m_dimention = i_dimention;
 			}
-			if(vectorPosn == 1 && pointPosn < yS){
-				this->yP = pointPosn;
+			if(this->m_space == 1 && i_dimention < 2){
+				this->m_dimention = i_dimention;
 			}
-			if(vectorPosn == 2 && pointPosn < zS){
-				this->zP = pointPosn;
+			if(this->m_space == 2 && i_dimention < 3){
+				this->m_dimention = i_dimention;
 			}
 			return this;
 		}
 		
-		virtual DataSet<float>* set(float t){
-			if(this->dimentionMap == 0){
+		virtual DataSet<T>* position(int i_position){
+			this->m_position = i_position;
+			if(this->m_dimention == 0 && i_position < xS){
+				this->xP = i_position;
+			}
+			if(this->m_dimention == 1 && i_position < yS){
+				this->yP = i_position;
+			}
+			if(this->m_dimention == 2 && i_position < zS){
+				this->zP = i_position;
+			}
+			return this;
+		}
+		
+		virtual DataSet<T>* set(T t){
+			if(this->m_space == 0){
 				x1[xP] = t;
 			}
-			if(this->dimentionMap == 1){
+			if(this->m_space == 1){
 				x2[yP][xP] = t;
 			}
-			if(this->dimentionMap == 2){
+			if(this->m_space == 2){
 				x3[zP][yP][xP] = t;
 			}
 			return this;
 		}
 		
-		virtual DataSet<float>* remove(){
-			if(this->dimentionMap == 0){
+		virtual DataSet<T>* remove(){
+			if(this->m_space == 0){
 				x1[xP] = -1;
 			}
-			if(this->dimentionMap == 1){
+			if(this->m_space == 1){
 				x2[yP][xP] = -1;
 			}
-			if(this->dimentionMap == 2){
+			if(this->m_space == 2){
 				x3[zP][yP][xP] = -1;
 			}
 			return this;
 		}
 		
-		virtual float getValue(){
-			if(this->dimentionMap == 0){
+		virtual T getValue(){
+			if(this->m_space == 0 && this->xP < xS){
 				return x1[xP];
 			}
-			if(this->dimentionMap == 1){
+			if(this->m_space == 1 && this->xP < xS && this->yP < yS){
 				return x2[yP][xP];
 			}
-			if(this->dimentionMap == 2){
+			if(this->m_space == 2 && this->xP < xS && this->yP < yS && this->zP < zS){
 				return x3[zP][yP][xP];
 			}
 			return -1;
 		}
 		
-		virtual float *getPointer(){
-			if(this->dimentionMap == 0){
+		virtual T *getPointer(){
+			if(this->m_space == 0 && this->xP < xS){
 				return &x1[xP];
 			}
-			if(this->dimentionMap == 1){
+			if(this->m_space == 1 && this->xP < xS && this->yP < yS){
 				return &x2[yP][xP];
 			}
-			if(this->dimentionMap == 2){
+			if(this->m_space == 2 && this->xP < xS && this->yP < yS && this->zP < zS){
 				return &x3[zP][yP][xP];
 			}
 			return nullptr;
 		}
 		
-		virtual int dimentionSize(){
+		virtual int spaceSize(){
 			return 3;
 		}
 		
-		virtual int dimentionVectorSize(int dimentionPos){
-			if(dimentionPos == 0){
+		virtual int dimentionSize(int i_space){
+			if(i_space == 0){
 				return 1;
 			}
-			if(dimentionPos == 1){
+			if(i_space == 1){
 				return 2;
 			}
-			if(dimentionPos == 2){
+			if(i_space == 2){
 				return 3;
 			}
 			return -1;
 		}
 		
-		virtual int vectorSize(int dimentionPos, int vectorPos){
-			if(dimentionPos == 0){
-				if(vectorPos == 0){
+		virtual int positionSize(int i_space, int i_dimention){
+			if(i_space == 0){
+				if(i_dimention == 0){
 					return xS;
 				}
 			}
-			if(dimentionPos == 1){
-				if(vectorPos == 0){
+			if(i_space == 1){
+				if(i_dimention == 0){
 					return xS;
 				}
-				if(vectorPos == 1){
+				if(i_dimention == 1){
 					return yS;
 				}
 			}
-			if(dimentionPos == 2){
-				if(vectorPos == 0){
+			if(i_space == 2){
+				if(i_dimention == 0){
 					return xS;
 				}
-				if(vectorPos == 1){
+				if(i_dimention == 1){
 					return yS;
 				}
-				if(vectorPos == 2){
+				if(i_dimention == 2){
 					return zS;
 				}
 			}
@@ -164,65 +177,56 @@ class DataSetV3 : public DataSet<float>{
 		}
 		
 		virtual void setIteration(int iter){
-			if(this->iteratedimention >= 0){
-				if(this->iteratedimention == 0){
-					this->iterateCount = 0;
-					this->dimentionMap = 0;
-					this->xP = 0;
-					this->yP = 0;
-					this->zP = 0;			
-				}
-				if(this->iteratedimention == 1){
-					this->iterateCount = 0;
-					this->dimentionMap = 1;
-					this->xP = 0;
-					this->yP = 0;
-					this->zP = 0;				
-				}
-				if(this->iteratedimention == 2){
-					this->iterateCount = 0;
-					this->dimentionMap = 2;
-					this->xP = 0;
-					this->yP = 0;
-					this->zP = 0;				
-				}
-				if(this->iteratedimention >= 3){
-					this->iterateCount = 0;
-					this->dimentionMap = 0;
-					this->xP = 0;
-					this->yP = 0;
-					this->zP = 0;		
-				}
-				this->iteratedimention = -1;
+			if(this->m_iterateSpace >= 0 && this->m_iterateSpace < 3){
+				this->m_space = this->m_iterateSpace * (this->m_iterateSpace < 3);
+				this->iterateCount = 0;
+				this->m_dimention = 0;
+				this->m_position = 0;
+				this->xP = 0;
+				this->yP = 0;
+				this->zP = 0;
+				this->m_iterateSpace = -1;
+				this->m_iterateDimention = -1;
 				return;
 			}
 			this->iterateCount = iter;
 			if(iter == 0){
-				this->dimentionMap = 0;
+				this->m_space = 0;
+				this->m_dimention = 0;
+				this->m_position = 0;
 				this->xP = 0;
 				this->yP = 0;
 				this->zP = 0;
 			}
 			if(iter == this->getIterationSize()-1){
-				this->dimentionMap = this->dimentionLimit-1;
+				this->m_space = this->spaceLimit-1;
+				this->m_dimention = 2;
+				this->m_position = zS-1;
 				this->xP = xS-1;
 				this->yP = yS-1;
 				this->zP = zS-1;
 			}
+			this->m_iterateSpace = -1;
+			this->m_iterateDimention = -1;
 		}
 		
 		int getIterationSize(){
-			if(this->iteratedimention >= 0){
-				if(this->iteratedimention == 0){
+			if(this->m_iterateSpace >= 3){
+				this->m_iterateSpace = -1;
+				this->m_iterateDimention = -1;
+				return 0;
+			}
+			if(this->m_iterateSpace >= 0){
+				if(this->m_iterateSpace == 0){
 					this->fullSize = xS;
 				}
-				if(this->iteratedimention == 1){
+				if(this->m_iterateSpace == 1){
 					this->fullSize = xS*yS;
 				}
-				if(this->iteratedimention == 2){
+				if(this->m_iterateSpace == 2){
 					this->fullSize = xS*yS*zS;
 				}
-				this->iteratedimention = -1;
+				this->m_iterateSpace = -1;
 				return this->fullSize;
 			}
 			this->fullSize = xS + xS*yS + xS*yS*zS;
@@ -244,13 +248,13 @@ class DataSetV3 : public DataSet<float>{
 				}
 			}
 			if(this->iterateCount == xS){
-				this->dimentionMap++;
+				this->m_space++;
 				this->xP = xS-1;
 				this->yP = yS-1;
 				this->zP = zS-1;
 			}
 			if(this->iterateCount == xS + xS*yS){
-				this->dimentionMap++;
+				this->m_space++;
 				this->xP = xS-1;
 				this->yP = yS-1;
 				this->zP = zS-1;
@@ -259,18 +263,18 @@ class DataSetV3 : public DataSet<float>{
 		
 		virtual void next(){
 			this->iterateCount++;
-			if(this->iteratedimention >= 0){
-				if(this->iteratedimention == 0){
+			if(this->m_iterateSpace >= 0){
+				if(this->m_iterateSpace == 0){
 					xP++;
 				}
-				if(this->iteratedimention == 1){
+				if(this->m_iterateSpace == 1){
 					xP++;
 					if(xP >= xS){
 						xP = 0;
 						yP++;
 					}
 				}
-				if(this->iteratedimention == 2){
+				if(this->m_iterateSpace == 2){
 					xP++;
 					if(xP >= xS){
 						xP = 0;
@@ -284,7 +288,7 @@ class DataSetV3 : public DataSet<float>{
 						}
 					}
 				}
-				this->iteratedimention = -1;
+				this->m_iterateSpace = -1;
 				return;
 			}
 			xP++;
@@ -300,34 +304,23 @@ class DataSetV3 : public DataSet<float>{
 				}
 			}
 			if(this->iterateCount == xS){
-				this->dimentionMap++;
+				this->m_space++;
 				this->xP = 0;
 				this->yP = 0;
 				this->zP = 0;
 			}
 			if(this->iterateCount == xS + xS*yS){
-				this->dimentionMap++;
+				this->m_space++;
 				this->xP = 0;
 				this->yP = 0;
 				this->zP = 0;
 			}
-		}
-		
-		virtual int dimention(){
-			return this->dimentionMap;
-		}
-		
-		virtual int vector(int dimentionPos){
-			if(this->dimentionMap == 0){
-				return xP;
+			if(this->iterateCount == xS + xS*yS + xS*yS*zS){
+				this->m_space++;
+				this->xP = 0;
+				this->yP = 0;
+				this->zP = 0;
 			}
-			if(this->dimentionMap == 1){
-				return yP;
-			}
-			if(this->dimentionMap == 2){
-				return zP;
-			}
-			return -1;
 		}
 		
 		virtual String getClassName(){
@@ -335,28 +328,22 @@ class DataSetV3 : public DataSet<float>{
 		}
 		
 		virtual String toString(){
-			return "DataSetV3 " + String(this->dimentionMap) + " " + String(zP) + " "  + String(yP) + " "  + String(xP) + " = "  + String(getValue());
+			return "DataSetV3 " + String(this->m_space) + " " + String(zP) + " "  + String(yP) + " "  + String(xP) + " = "  + String(getValue());
 		}
 		
-		virtual DataSet<float>* clone(){
-			DataSet<float> *nset = new DataSetV3<zS,yS,xS>();
-			nset->setIteration(0);
-			this->setIteration(0);
-			iterate(this){
-				nset->set(this->getValue());
-				nset->next();
-			}
-			nset->setIteration(0);
-			this->setIteration(0);
+		virtual DataSet<T>* clone(){
+			DataSetV3<T,xS,yS,zS> *nset = new DataSetV3<T,xS,yS,zS>();
+			nset->setArray(this->x1);
+			nset->setArray(this->x2);
+			nset->setArray(this->x3);
 			return nset;
 		}
 		
-	private:
+	protected:
 		int xP = 0;
 		int yP = 0;
 		int zP = 0;
-		int dimentionLimit = 0;
-		int dimentionMap = 0;
+		int spaceLimit = 0;
 		int fullSize = 0;
 };
 

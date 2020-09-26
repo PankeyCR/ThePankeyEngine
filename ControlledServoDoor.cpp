@@ -2,7 +2,7 @@
 
 #ifndef ControlledServoDoor_cpp
 #define ControlledServoDoor_cpp
-
+/*
 #include "ControlledServoDoor.h"
 
 	ControlledServoDoor::ControlledServoDoor(){
@@ -12,7 +12,6 @@
 		this->controlmap->add("kp",0.05f);
 		this->controlmap->add("error",0.001f);
 		this->controllerm	->input(0.0f)
-							->setup(Controlling::KpError)//Default , SetpointOutputError , KpError
 							->control(this->controlmap);
 	}
 	ControlledServoDoor::~ControlledServoDoor(){
@@ -115,4 +114,5 @@
 		}
 		this->servo.write((int)this->controllerm->outputValue());
 	}
+	*/
 #endif 

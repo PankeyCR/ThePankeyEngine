@@ -17,10 +17,13 @@
 	}
 	
 	String AppState::getId(){
+		if(this->id == nullptr){
+			return "";
+		}
 		return *this->id;
 	}
 	
-	void AppState::update(){
+	void AppState::update(float tpc){
 		
 	}
 	

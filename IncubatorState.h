@@ -44,7 +44,7 @@ class IncubatorState : public AppState{
 			
 		}
 		
-		void update(){
+		void update(float tpc){
 			//Current NTC resistance value calculation (through Vout)
 			Vout=Vin*((float)(analogRead(analogPin))/1024.0);
 			Rout=(Raux*Vout/(Vin-Vout));

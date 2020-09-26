@@ -42,6 +42,7 @@ TimeControl* SimpleTimer::instance = nullptr;
 	}
 
 	TimeControl* SimpleTimer::setPeriod(long timeperiod){
+		this->period = timeperiod;
 		long cycles = (F_CPU / 2000000) * timeperiod;        // the counter runs backwards after TOP, interrupt is at BOTTOM so divide microseconds by 2
 		if(cycles < RESOLUTION)              clockSelectBits = _BV(CS10);              // no prescale, full xtal
 		else if((cycles >>= 3) < RESOLUTION) clockSelectBits = _BV(CS11);              // prescale by /8
@@ -110,7 +111,7 @@ TimeControl* SimpleTimer::instance = nullptr;
 
 #elif defined(ARDUINO_ARCH_SAM)
   // SAM-specific code
-#else
+#elif defined(ARDUINO_ARCH_ESP8266)
 	
 	void ICACHE_RAM_ATTR onTime() {
 		iterate(((SimpleTimer*)SimpleTimer::getInstance())->timeList){
@@ -153,6 +154,79 @@ TimeControl* SimpleTimer::instance = nullptr;
 		*/		
 		// Arm the Timer for our 0.5s Interval
 		//timer1_write(2500000); // 2500000 / 5 ticks per us from TIM_DIV16 == 500,000 us interval 
+		return this;
+	}
+
+	TimeControl* SimpleTimer::detachInterrupt(){
+		
+		return this;
+	}
+
+	TimeControl* SimpleTimer::startInterrupt(){
+		
+		return this;
+	}
+
+	TimeControl* SimpleTimer::stopInterrupt(){
+		
+		return this;
+	}
+
+	TimeControl* SimpleTimer::resumeInterrupt(){ 
+	
+		return this;
+	}
+	
+#elif defined(ARDUINO_SAMD_ZERO)
+
+	TimeControl* SimpleTimer::initialize(long timeperiod){
+		
+		setPeriod(timeperiod);
+		return this;
+	}
+
+	TimeControl* SimpleTimer::setPeriod(long timeperiod){
+		return this;
+	}
+
+	TimeControl* SimpleTimer::attachInterrupt(){
+		
+		return this;
+	}
+
+	TimeControl* SimpleTimer::detachInterrupt(){
+		
+		return this;
+	}
+
+	TimeControl* SimpleTimer::startInterrupt(){
+		
+		return this;
+	}
+
+	TimeControl* SimpleTimer::stopInterrupt(){
+		
+		return this;
+	}
+
+	TimeControl* SimpleTimer::resumeInterrupt(){ 
+	
+		return this;
+	}
+#else
+
+	TimeControl* SimpleTimer::initialize(long timeperiod){
+		
+		setPeriod(timeperiod);
+		return this;
+	}
+
+	TimeControl* SimpleTimer::setPeriod(long timeperiod){
+		return this;
+	}
+
+	TimeControl* SimpleTimer::attachInterrupt(){
+		
 		return this;
 	}
 

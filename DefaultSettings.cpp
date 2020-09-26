@@ -6,11 +6,11 @@
 #include "DefaultSettings.h"
 
 	DefaultSettings::DefaultSettings(){
-		intMap = new PrimitiveMap<String,int>(1);
-		floatMap = new PrimitiveMap<String,float>(1);
-		StringMap = new PrimitiveMap<String,String>(1);
-		boolMap = new PrimitiveMap<String,bool>(1);
-		cppObjectMap = new PrimitiveMap<String,cppObject>(1);
+		intMap = new PrimitiveMap<String,int>(2);
+		floatMap = new PrimitiveMap<String,float>(2);
+		StringMap = new PrimitiveMap<String,String>(2);
+		boolMap = new PrimitiveMap<String,bool>(2);
+		cppObjectMap = new PrimitiveMap<String,cppObject>(2);
 	}
 	
 	DefaultSettings::~DefaultSettings(){
@@ -99,6 +99,12 @@
 	
 	bool DefaultSettings::containCppObject(String s){
 		return this->cppObjectMap->contain(s);
+	}
+	String DefaultSettings::toString(){
+		return "DefaultSettings";
+	}
+	String DefaultSettings::getClassName(){
+		return "DefaultSettings";
 	}
 	
 #endif 

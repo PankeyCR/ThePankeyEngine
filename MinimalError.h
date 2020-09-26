@@ -3,7 +3,7 @@
 #define MinimalError_h
 
 #include "FunctionConfiguration.h"
-#include "Function.h"
+#include "ModifiableFunction.h"
 #include "XtremeFunction1.h"
 #include "AbsoluteRandom.h"
 #include "DataSet.h"
@@ -19,7 +19,7 @@ class MinimalError : public FunctionConfiguration<float,float>{
 		virtual MinimalError* minimalerror(float st);
 		virtual MinimalError* input(int st);
 		virtual MinimalError* output(int st);
-		virtual MinimalError* function(Function<float,float>* fn);
+		virtual MinimalError* function(ModifiableFunction<float,float>* fn);
 		virtual MinimalError* epochs(long epochs);
 		virtual MinimalError* dataset(DataSet<float>* data);
 		
@@ -37,7 +37,7 @@ class MinimalError : public FunctionConfiguration<float,float>{
 		float Error=0;
 		float MError=0;
 		DataSet<float>* data;
-		Function<float,float>* fx = nullptr;
+		ModifiableFunction<float,float>* fx = nullptr;
 };
 
 #endif 

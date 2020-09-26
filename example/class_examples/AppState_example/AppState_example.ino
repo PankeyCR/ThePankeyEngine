@@ -9,14 +9,14 @@
  
 void setup() {
   Serial.begin(9600);   
-  app = new SimpleApplication<3>();
+  app = new SimpleApplication<3,2>();
 
   Serial.println("setup");
   app->getStateManager()->add(new StartState(&Serial));//starts the timer
   //app->getStateManager()->add(new LoopState(&Serial));//appstate with update method (normal loop)
   app->getStateManager()->add(new TimerState(&Serial));//appstate with Play method (timer loop)
 //  
-//  app->getStateManager()->remove("start")->onDelete();//remove the appstate and delete´s it to save up memory but it wouldnt compute the time
+//  delete app->getStateManager()->remove("start");//remove the appstate and delete´s it to save up memory but it wouldnt compute the time
   
 }
 

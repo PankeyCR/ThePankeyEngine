@@ -4,6 +4,10 @@
 #include <WProgram.h>
 #endif
 
+#include "MemoryFree.h"
+
+#ifdef ARDUINO_ARCH_AVR
+
 extern unsigned int __heap_start;
 extern void *__brkval;
 
@@ -19,7 +23,6 @@ struct __freelist {
 /* The head of the free list structure */
 extern struct __freelist *__flp;
 
-#include "MemoryFree.h"
 
 /* Calculates the size of the free list */
 int freeListSize() {
@@ -42,3 +45,26 @@ int freeMemory() {
   }
   return free_memory;
 }
+
+#endif
+
+#ifdef ARDUINO_ARCH_ESP8266
+extern "C" {
+#include "user_interface.h"
+}
+
+int freeMemory() {
+	return system_get_free_heap_size();
+}
+
+#endif
+
+#ifdef ARDUINO_SAMD_ZERO
+extern "C" char *sbrk(int i);
+ 
+int freeMemory() {
+  char stack_dummy = 0;
+  return &stack_dummy - sbrk(0);
+}
+
+#endif

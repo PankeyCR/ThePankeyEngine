@@ -16,6 +16,7 @@ class TimeControl : public cppObject{
     public:
 		List<TimeElapsed> *timeList;
 		long time=0;
+		long period=0;
 		
 		TimeControl();
 		virtual ~TimeControl();
@@ -23,6 +24,7 @@ class TimeControl : public cppObject{
 		
 		virtual TimeControl* initialize(long timeperiod);
 		virtual TimeControl* setPeriod(long timeperiod);
+		virtual long getPeriod();
 		
 		virtual TimeControl* attachInterrupt();
 		virtual TimeControl* detachInterrupt();

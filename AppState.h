@@ -14,7 +14,7 @@ class AppState : public cppObject{
 		virtual void onEnable();
 		virtual void onDisable();
 		virtual String getId();
-		virtual void update();
+		virtual void update(float tpc);
 		virtual void operator=(AppState b);
 		virtual bool operator==(AppState b);
 		virtual bool operator!=(AppState b);

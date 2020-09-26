@@ -14,7 +14,7 @@ class LoopState : public AppState{
 		void initialize(Application *app){
 			//App = app;
 		}
-		void update(){
+		void update(float tpc){
 			serial->println(getClassName());
 		}
     String getClassName(){

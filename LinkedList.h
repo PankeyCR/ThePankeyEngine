@@ -75,6 +75,14 @@ class LinkedList : public List<T>{
 				this->add(list->getByPos(x));
 			}
 		}
+	
+		template<class... args>
+		void addPack(args... x){
+			T array[] = {x...};
+			for(const T &a : array){
+				add(a);
+			}
+		}
 		
 		template<class... Args>
 		T* add(Args... args){

@@ -4,49 +4,57 @@
 #define Controller_h
 
 #include "Arduino.h"
-#include "cppObject.h"
+#include "GameOn.h"
 #include "Map.h"
 #include "List.h"
-#include "Controlling.h"
 
-template<class InputSource,class ControlSource, class OutputSource>
-class Controller : public cppObject{
+template<class Input,class Control, class Output>
+class Controller : public GameOn{
 	public:
-		Controller();
-		virtual ~Controller();
+		Controller(){
+		}
+		virtual ~Controller(){
+		}
 		
-		virtual Controller<InputSource,ControlSource,OutputSource>* setup(Controlling ctl);
+		virtual Controller<Input,Control,Output>* input(Input* in){
+			this->input_m = in;
+			return this;
+		}
+		virtual Controller<Input,Control,Output>* control(Control* ct){
+			this->control_m = ct;
+			return this;
+		}
+		virtual Controller<Input,Control,Output>* output(Output* ot){
+			this->output_m = ot;
+			return this;
+		}
 		
-		virtual Controller<InputSource,ControlSource,OutputSource>* input(InputSource* in);
-		virtual Controller<InputSource,ControlSource,OutputSource>* control(ControlSource* ct);
-		virtual Controller<InputSource,ControlSource,OutputSource>* output(OutputSource* ot);
+		virtual Input* input(){
+			return this->input_m;
+		}
+		virtual Control* control(){
+			return this->control_m;
+		}
+		virtual Output* output(){
+			return this->output_m;
+		}
 		
-		// virtual Controller<InputSource,ControlSource,OutputSource>* input(InputSource in);
-		// virtual Controller<InputSource,ControlSource,OutputSource>* control(ControlSource ct);
-		// virtual Controller<InputSource,ControlSource,OutputSource>* output(OutputSource ot);
-		
-		virtual InputSource* input();
-		virtual ControlSource* control();
-		virtual OutputSource* output();
-		//virtual OutputSource outputValue();
-		
-		virtual void update(float tpf);
 		
 		//cppObject part
-		virtual String getClassName();
-		virtual String toString();
-		virtual Controller<InputSource,ControlSource,OutputSource>* clone();
-		
-		virtual void operator=(const Controller& b);
-		virtual bool operator==(const Controller& b);
-		virtual bool operator!=(const Controller& b);
+		virtual String getClassName(){
+			return "Controller";
+		}
+		virtual String toString(){
+			return "Controller";
+		}
+		virtual Controller<Input,Control,Output>* clone(){
+			return nullptr;
+		}
 		
 	protected:
-		InputSource* inputm = nullptr;
-		ControlSource* controlm = nullptr;
-		OutputSource* outputm = nullptr;
-		Controlling controlling = Controlling::Default;
-		
+		Input* input_m = nullptr;
+		Control* control_m = nullptr;
+		Output* output_m = nullptr;
 };
 
 #endif 

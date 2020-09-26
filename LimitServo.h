@@ -50,43 +50,43 @@ class LimitServo : public MultiServo{
 		
 		Servo *getServo(int sel){
 			if(sel < size){
-				return NULL;				
+				return nullptr;				
 			}
 			return servos[sel];
 		}
 		
 		void attach(int sel,int i){
 			if(sel < size){
-				return NULL;				
+				return;				
 			}
 			servos[sel]->attach(i);
 		}
 		
 		void detach(int sel,int i){
 			if(sel < size){
-				return NULL;				
+				return;				
 			}
 			servos[sel]->detach();
 		}
 		
 		int getLimitMax(int sel){
-			if(limitMax->getByPos(sel) == NULL){
-				return NULL;
+			if(limitMax->getByPos(sel) == nullptr){
+				return -1;
 			}
 			return *limitMax->getByPos(sel);
 		}
 		
 		int getLimitMin(int sel){
-			if(limitMin->getByPos(sel) == NULL){
-				return NULL;
+			if(limitMin->getByPos(sel) == nullptr){
+				return -1;
 			}
 			return *limitMin->getByPos(sel);
 		}
 		
 		int MoveServo(int sel,int angle){
 			if(sel >= size
-					|| limitMax->getByPos(sel) == NULL
-					|| limitMin->getByPos(sel) == NULL){
+					|| limitMax->getByPos(sel) == nullptr
+					|| limitMin->getByPos(sel) == nullptr){
 				return 0;				
 			}
 			int limitmax = *limitMax->getByPos(sel);
