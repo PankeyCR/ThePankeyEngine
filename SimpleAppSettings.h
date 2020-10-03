@@ -21,7 +21,7 @@ class SimpleAppSettings : public AppSettings{
 			delete intMap;
 			delete floatMap;
 			delete StringMap;
-			delete boolMap;
+			delete booleanMap;
 			delete cppObjectMap;
 		}
 		String toString(){

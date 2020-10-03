@@ -54,6 +54,10 @@ class LinkedList : public List<T>{
 			start = nullptr;
 			node = nullptr;
 		}
+
+		bool isEmpty(){
+			return pos==0;
+		}
 		
 		void setPos(int p){
 			pos=p;
@@ -332,6 +336,36 @@ class LinkedList : public List<T>{
 				}
 			}
 			return false;
+		}
+		
+		int getIndex(T* key){
+			LinkedListNode<T>* n = start;
+			LinkedListNode<T>* nn = nullptr;
+			for(int x=0; x<size; x++){
+				if(key == n->actual){
+					return x;
+				}
+				if(n->next != nullptr){
+					nn = n->next;
+					n = nn;
+				}
+			}
+			return -1;
+		}
+		
+		int getIndex(T key){
+			LinkedListNode<T>* n = start;
+			LinkedListNode<T>* nn = nullptr;
+			for(int x=0; x<size; x++){
+				if(key == *n->actual){
+					return x;
+				}
+				if(n->next != nullptr){
+					nn = n->next;
+					n = nn;
+				}
+			}
+			return -1;
 		}
 		
 		void reset(){

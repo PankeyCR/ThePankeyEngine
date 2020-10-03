@@ -10,60 +10,22 @@
 //int Note::empty = '\0';
 
 	Note::Note(){
-		this->charList = new ArrayList<char,20>();
-		for(int x=0; x< this->charList->getSize(); x++){
-			this->charList->set(x, '\0');
-		}
+		this->charList = new PrimitiveList<char>(50);
+		this->charList->expandSize = 20;
 	}
 
-	Note::Note(int scale){
-		if(scale == 0){
-			this->charList = new ArrayList<char,50>();
-		}
-		if(scale == 1){
-			this->charList = new ArrayList<char,100>();
-		}
-		if(scale == 2){
-			this->charList = new ArrayList<char,200>();
-		}
-		if(scale == 3){
-			this->charList = new ArrayList<char,300>();
-		}
-		if(scale == 4){
-			this->charList = new ArrayList<char,400>();
-		}
-		if(scale == 5){
-			this->charList = new ArrayList<char,500>();
-		}
-		if(scale == 6){
-			this->charList = new ArrayList<char,600>();
-		}
-		if(scale == 7){
-			this->charList = new ArrayList<char,700>();
-		}
-		if(scale == 8){
-			this->charList = new ArrayList<char,800>();
-		}
-		if(scale == 9){
-			this->charList = new ArrayList<char,900>();
-		}
-		if(scale == 10){
-			this->charList = new ArrayList<char,1000>();
-		}
-		for(int x=0; x< this->charList->getSize(); x++){
-			this->charList->set(x, '\0');
-		}
+	Note::Note(int size){
+		this->charList = new PrimitiveList<char>(size);
+		this->charList->expandSize = size/4;
+	}
+
+	Note::Note(int size, int expantion){
+		this->charList = new PrimitiveList<char>(size);
+		this->charList->expandSize = expantion;
 	}
 	
 	Note::~Note(){
-		for(int x=0; x< this->charList->getSize(); x++){
-			delete this->charList->getByPos(x);
-		}
 		delete this->charList;
-	}
-	
-	char Note::getNote(int chr){
-		return *this->charList->getByPos(chr);
 	}
 	
 	String Note::getNote(){
@@ -113,8 +75,10 @@
 	}
 	
 	void Note::add(char *value, int size){
-		
-		this->focus++;
+		for(int x = 0; x < size; x++){
+			this->charList->add(value[x]);
+			this->focus++;
+		}
 	}
 	
 	void Note::add(char value){
@@ -139,7 +103,11 @@
 	}
 	
 	char Note::getChar(int x){
-		return *this->charList->getByPos(x);
+		char* c = this->charList->getByPos(x);
+		if(c == nullptr){
+			return '\0';
+		}
+		return *c;
 	}
 	
 	template<>ArrayList<int,20> Note::getCharPositions(char chr){
@@ -289,11 +257,15 @@
 	}
 	
 	String Note::getSentence(int pos){
-		return Split(this->getNote(), pos, endLine);
+		return Split(this->getNote(), pos, enter);
 	}
 	
 	String Note::getParagraph(int pos){
-		return Split(this->getNote(), pos, enter);
+		return Split(this->getNote(), pos, endLine);
+	}
+	
+	int Note::getSentenceSize(){
+		return SplitLenght(this->getNote(), enter)+1;
 	}
 	
 	bool Note::contain(String s){
@@ -343,22 +315,33 @@
   
 	String Note::Split(String divide,int parte, char limiter){     
         String return_1="";     
-        int delimiter=0;  
-        int respuesta_len = divide.length() + 1; 
-        char respuesta_array[respuesta_len];
-        divide.toCharArray(respuesta_array, respuesta_len);
-        for(int i=0; i < respuesta_len; i++){
-			if(respuesta_array[i] == limiter){                   
+        int delimiter=0;
+		
+		for(int x = 0; x < divide.length(); x++){
+			if(divide.charAt(x) == limiter){                   
                 delimiter++;  
             }
-            if((parte == delimiter) && (respuesta_array[i] != limiter)){
-                return_1=return_1+respuesta_array[i];
+            if((parte == delimiter) && (divide.charAt(x) != limiter)){
+                return_1.concat(divide.charAt(x));
             }
-        }
+		}
         return return_1;
+		
+        // int respuesta_len = divide.length() + 1; 
+        // char respuesta_array[respuesta_len];
+        // divide.toCharArray(respuesta_array, respuesta_len);
+        // for(int i=0; i < respuesta_len; i++){
+			// if(respuesta_array[i] == limiter){                   
+                // delimiter++;  
+            // }
+            // if((parte == delimiter) && (respuesta_array[i] != limiter)){
+                // return_1+=respuesta_array[i];
+            // }
+        // }
+        // return return_1;
     }
   
-	int Note::SplitLenght(String divide,int parte, char limiter){     
+	int Note::SplitLenght(String divide, char limiter){     
         String return_1="";     
         int delimiter=0;  
         int respuesta_len = divide.length() + 1; 
@@ -434,17 +417,19 @@
 	}*/
 	
 	void Note::operator=(const String& s){
-		for(int x=0; x< this->charList->getPos();x++){
-			this->charList->set(x, '\0');
+		if(this->charList == nullptr){
+			this->charList = new PrimitiveList<char>();
 		}
+		
+		this->charList->resetDelete();    
+        
 		int size= s.length()+1; 
 		char Array[size];
         s.toCharArray(Array, size);        
         
 		for(int x=0; x< size;x++){
-			this->charList->set(x, Array[x]);
+			this->charList->add(Array[x]);
 		}
-		this->charList->setPos(s.length());
 	}
 	
 	Note Note::operator+(char chr){

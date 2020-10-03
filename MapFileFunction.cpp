@@ -63,7 +63,7 @@
 		Serial.println(file->read(path+".txt"));
 		Serial.println("prenote ");
 		
-		Note n(10);
+		Note n;
 		Serial.println("posnote ");
 		n=file->read(path+".txt");
 		Serial.println("posposnote ");

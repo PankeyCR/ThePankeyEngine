@@ -24,6 +24,16 @@ class PrimitiveMap : public Map<K,V>{
 			}
 		}
 		
+		PrimitiveMap(bool own){
+			this->owner = own;
+			this->keys = new K*[this->size];
+			this->values = new V*[this->size];
+			for(int x=0; x < this->size; x++){
+				this->keys[x] = nullptr;
+				this->values[x] = nullptr;
+			}
+		}
+		
 		PrimitiveMap(int msize){
 			this->keys = new K*[msize];
 			this->values = new V*[msize];
@@ -90,6 +100,7 @@ class PrimitiveMap : public Map<K,V>{
 			if(this->pos >= this->size){
 				return;
 			}
+			//this->keys[this->pos] = new K(key);
 			this->keys[this->pos] = new K();
 			*this->keys[this->pos] = key;
 			this->values[this->pos] = value;
@@ -251,19 +262,19 @@ class PrimitiveMap : public Map<K,V>{
 			return false;
 		}
 		
-		virtual V *get(K *key){
-			iterate(this){
-				if(this->getKeyPointer() == key){
-					return this->getPointer();
+		virtual V* get(K *key){
+			for(int xk = 0; xk < this->getPos(); xk++){
+				if(this->keys[xk] == key){
+					return this->values[xk];
 				}
 			}
 			return nullptr;
 		}
 		
-		virtual V *get(K key){
-			iterate(this){
-				if(this->getKey() == key){
-					return this->getPointer();
+		virtual V* get(K key){
+			for(int xk = 0; xk < this->pos; xk++){
+				if(*this->keys[xk] == key){
+					return this->values[xk];
 				}
 			}
 			return nullptr;
@@ -538,9 +549,9 @@ class PrimitiveMap : public Map<K,V>{
 			}
 			return nprimitive;
 		}
-	protected:
 		K **keys;
 		V **values;
+	protected:
 		int pos=0;
 		int size=10;
 		int expandSize=5;

@@ -7,7 +7,8 @@
 #include "GameObject.h"
 #include "Map.h"
 #include "PrimitiveMap.h"
-#include "LinkedList.h"
+#include "PrimitiveList.h"
+#include "KPMap.h"
 #include "List.h"
 
 class GameManager : public cppObject{
@@ -20,6 +21,8 @@ class GameManager : public cppObject{
 		
 		int createEntity();
 		GameObject* createGameObject();
+		
+		void deleteEntity(int entity);
 		
 		int getEntity(GameObject* obj);
 		GameObject* getGameObject(int entity);
@@ -35,7 +38,7 @@ class GameManager : public cppObject{
 		
 		List<GameOn>* getComponents(int entity);
 		List<GameOn>* getComponents(GameObject* obj);
-		List<GameOn>* getComponents(String componentClassName);
+		PrimitiveList<GameOn>* getComponents(String componentClassName);
 		
 		GameOn* removeComponent(int entity, String componentClassName);
 		GameOn* removeComponent(GameObject* obj, String componentClassName);
@@ -43,14 +46,17 @@ class GameManager : public cppObject{
 		void deleteComponent(int entity, String componentClassName);
 		void deleteComponent(GameObject* obj, String componentClassName);
 		
+		int getEntitySize();
+		int getComponentSize(int entity);
+		
 		virtual String getClassName();
 		virtual String toString();
 		virtual bool equal(cppObject *b);
 		virtual cppObject *clone();
 		
 	protected:
-		Map<String,LinkedList<GameOn>>* components = nullptr;
-		List<GameObject>* gameobjects = nullptr;
+		Map<String,PrimitiveList<GameOn>>* components = nullptr;
+		PrimitiveList<GameObject>* gameobjects = nullptr;
 };
 
 

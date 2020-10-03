@@ -53,6 +53,10 @@ class PrimitiveList : public List<T>{
 			delete[] this->values;
 		}
 		
+
+		bool isEmpty(){
+			return pos==0;
+		}
 		
 		virtual void setPos(int p){
 			this->pos = p;
@@ -81,7 +85,7 @@ class PrimitiveList : public List<T>{
 		}
 		
 		template<class... Args>
-		T* add(Args... args){
+		T* addParameters(Args... args){
 			if(this->pos >= this->size){
 				this->expandLocal(this->expandSize);
 			}
@@ -222,8 +226,8 @@ class PrimitiveList : public List<T>{
 		}
 		
 		virtual bool contain(T* key){
-		iterate(this){
-			if(key == this->getPointer()){
+		for(int xk = 0; xk < this->pos; xk++){
+			if(key == this->values[xk]){
 				return true;
 			}
 		}
@@ -231,9 +235,27 @@ class PrimitiveList : public List<T>{
 		}
 		
 		virtual bool contain(T key){
+		for(int xk = 0; xk < this->pos; xk++){
+			if(key == *this->values[xk]){
+				return true;
+			}
+		}
+			return false;
+		}
+		
+		virtual int getIndex(T* key){
+		iterate(this){
+			if(key == this->getPointer()){
+				return this->getIteration();
+			}
+		}
+		return false;
+		}
+		
+		virtual int getIndex(T key){
 			iterate(this){
 				if(key == this->getValue()){
-					return true;
+					return this->getIteration();
 				}
 			}
 			return false;
@@ -244,8 +266,13 @@ class PrimitiveList : public List<T>{
 		}
 		
 		virtual void resetDelete(){
-			this->pos = 0;
-			this->onDelete();
+			for(int x=0; x < pos; x++){
+				if(this->values[x] != nullptr && owner){
+					delete this->values[x];
+				}
+				this->values[x] = nullptr;
+			}
+			pos = 0;
 		}
 		
 		virtual T* remove(T *key){
@@ -328,10 +355,20 @@ class PrimitiveList : public List<T>{
 		}
 		
 		virtual void removeDeleteByPos(int p){
-			T* t = this->removeByPos(p);
-			if(t != nullptr && owner){
-				delete t;
+			if(p >= pos){
+				return;
 			}
+			for(int x=0; x < pos; x++){
+				if(x == p ){
+					if(values[x] != nullptr && owner){
+						delete values[x];
+					}
+				}
+				if(x > p ){
+					values[x-1] = values[x];
+				}
+			}
+			pos--;
 		}
 		
 		virtual T& operator[](int x){
@@ -417,6 +454,7 @@ class PrimitiveList : public List<T>{
 		
 		
 		//resize length by adding more space
+		//bug unkown for template = char on feather m0
 		virtual void expandLocal(int add){
 			int nsize = this->size+add;
 			T **nT;

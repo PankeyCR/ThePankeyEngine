@@ -105,6 +105,14 @@ class StateMachineSystem : public AppState{
 			return this->states->getPos();
 		}
 			
+		virtual void initialize(Application *app){
+			this->App = app;
+		}
+		
+		Application* getApplication(){
+			return this->App;
+		}
+		
 		virtual void update(float tpc){
 			if(this->actualState == nullptr){
 				return;
@@ -115,6 +123,7 @@ class StateMachineSystem : public AppState{
 		int statePosition = 0;
 		T* system = nullptr;
 		bool owner = false;
+		Application* App = nullptr;
 		MachineState<T>* actualState = nullptr;
 };
 #endif 

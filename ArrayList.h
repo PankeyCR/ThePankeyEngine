@@ -24,6 +24,10 @@ class ArrayList : public List<T>{
 		}
 	}
 
+	bool isEmpty(){
+		return pos==0;
+	}
+
 	void setPos(int p){
 		pos=p;
 	}
@@ -186,6 +190,24 @@ class ArrayList : public List<T>{
 			}
 		}
 		return false;
+	}
+
+	int getIndex(T* key){
+		for(int x=0; x < pos; x++){
+			if(values[x] == *key ){
+				return x;
+			}
+		}
+		return -1;
+	}
+
+	int getIndex(T key){
+		for(int x=0; x < pos; x++){
+			if(values[x] == key ){
+				return x;
+			}
+		}
+		return -1;
 	}
 
 	void reset(){

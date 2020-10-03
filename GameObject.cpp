@@ -5,7 +5,7 @@
 #include "GameObject.h"
 	
 	GameObject::GameObject(){
-		this->childs = new LinkedList<GameOn>();
+		this->childs = new PrimitiveList<GameOn>();
 	}
 	
 	GameObject::~GameObject(){

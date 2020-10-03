@@ -8,6 +8,7 @@
 template <class T>
 class List : public cppObject , public Iterator{	
 	public:
+	virtual bool isEmpty()=0;
 	virtual void setPos(int p)=0;
 	virtual int getPos()=0;
 	virtual int getSize()=0;
@@ -23,6 +24,8 @@ class List : public cppObject , public Iterator{
 	virtual T* getByPos(int x)=0;
 	virtual bool contain(T* key)=0;
 	virtual bool contain(T key)=0;
+	virtual int getIndex(T* key)=0;
+	virtual int getIndex(T key)=0;
 	virtual void reset()=0;
 	virtual void resetDelete()=0;
 	virtual T* remove(T* key)=0;

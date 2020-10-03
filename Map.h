@@ -8,7 +8,7 @@
 template <class K,class V>
 class Map : public cppObject , public Iterator{	
     public:
-		//virtual ~Map(){}
+		virtual ~Map(){}
 		virtual void setPos(int p)=0;
 		virtual int getPos()=0;
 		virtual int getSize()=0;

@@ -6,6 +6,7 @@
 #include "Arduino.h"
 #include "List.h"
 #include "ArrayList.h"
+#include "PrimitiveList.h"
 
 #define space ' '
 #define endLine '.'
@@ -16,7 +17,7 @@ class Note{
 	private:
 		
     public:
-		List<char> *charList;
+		PrimitiveList<char> *charList = nullptr;
 		int focus=0;
 		int size=20;
 		//char space=' ';
@@ -24,11 +25,11 @@ class Note{
 		//char empty='\0';
 		
 		Note();
-		Note(int scale);
+		Note(int size);
+		Note(int size, int expantion);
 		~Note();
 		
 		String getNote();
-		char getNote(int chr);
 		
 		void setPos(int p);
 		int getPos();
@@ -73,6 +74,8 @@ class Note{
 		String getSentence(int pos);
 		String getParagraph(int pos);
 		
+		int getSentenceSize();
+		
 		static String getWord(String s, int pos);
 		static String getSentence(String s, int pos);
 		static String getParagraph(String s, int pos);
@@ -89,8 +92,8 @@ class Note{
 		bool remove(int pos,char key);
 		bool remove(int pos,String key);
 		
-		static String Split(String divide,int parte, char limiter);
-		static int SplitLenght(String divide,int parte, char limiter);
+		static String Split(String divide, int parte, char limiter);
+		static int SplitLenght(String divide, char limiter);
 		static String Split(String divide,int parte, char limiter, char fin);
 		
 		void operator=(const String& s);
