@@ -68,7 +68,7 @@
 		n=file->read(path+".txt");
 		Serial.println("posposnote ");
 		
-		Serial.println("note " +n.getNote());
+		Serial.println("note " +n.toString());
 		Serial.println("sentence " +n.getSentence(0));
 		int size = n.getSentence(0).toInt();
 		Map<String,String>* map;

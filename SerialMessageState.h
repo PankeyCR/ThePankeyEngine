@@ -11,6 +11,9 @@
 #include "Pair.h"
 #include "Message.h"
 #include "SerialPort.h"
+#include "Note.h"
+#include "Map.h"
+#include "PrimitiveMap.h"
 
 class SerialMessageState : public AppState{	
     public:
@@ -64,7 +67,6 @@ class SerialMessageState : public AppState{
 			}else{
 				clientMessages->add(mns.id(), mns.text());
 			}
-			
 		}
 		
 		void send(Message* mns){
@@ -84,13 +86,18 @@ class SerialMessageState : public AppState{
 		}
 		
 		void addSerial(SerialPort* serial){
-			 clientsMain->add(serial);
-			// serial->attach(this);
+			clientsMain->add(serial);
 		}
 		
-		// void removeSerial(Stream* serial){
-			// clientsMain->remove(serial);
-		// }
+		SerialPort* removeSerial(SerialPort* serial){
+			clients->remove(serial);
+			return clientsMain->remove(serial);
+		}
+		
+		void removeDeleteSerial(SerialPort* serial){
+			clients->remove(serial);
+			clientsMain->removeDelete(serial);
+		}
 		
 		void setRawTypeName(String name){
 			rawMessageType = name;
@@ -98,6 +105,7 @@ class SerialMessageState : public AppState{
 		
 		virtual void update(float tpc){
 			iterate(clientsMain){
+				//Serial.println(clientsMain->getPos());
 				SerialPort* serial = clientsMain->getPointer();
 				int index = clientsMain->getIteration();
 				if (serial->available() > 0) {
@@ -110,47 +118,73 @@ class SerialMessageState : public AppState{
 					}
 					char thisChar = serial->read();
 					//raw type
-					if(thisChar == '\n' && rawMessage != ""){
-						Message* m = new Message();
-						m->id(index);
-						m->type(rawMessageType);
-						m->text(rawMessage);
-						rawMessage = "";
-						receivedMessage->add(m);
-						//Serial.print("sending to receivedMessage: ");Serial.println(m->text());
-					}else{
-						//Serial.print("adding thisChar: ");Serial.println(thisChar);
-						rawMessage+=thisChar;
-					}
+					String tp = *whatsRecording->getByPos(index);
+					// if(tp == ""){
+						// if(thisChar == '\n' && !rawMessage.isEmpty()){//rawMessage != ""
+							// Message* m = new Message();
+							// m->id(index);
+							// m->type(rawMessageType);
+							// m->text(rawMessage.toString());
+							// rawMessage.resetDelete();
+							// receivedMessage->add(m);
+							//Serial.print("sending to receivedMessage: ");Serial.println(m->text());
+						// }else{
+							//Serial.print("adding thisChar: ");Serial.println(thisChar);
+							// rawMessage+=thisChar;
+						// }
+					// }else{
+						// rawMessage.resetDelete();
+					// }
 					//multi type 
 					String* mns = incummingMessages->get(index);
 					bool* rec = isRecording->getByPos(index);
-					String tp = *whatsRecording->getByPos(index);
+					if(mns == nullptr){
+						mns = new String();
+						incummingMessages->add(index,mns);
+					}
 					if(rec != nullptr){
 						if((*rec)){
-							if(mns == nullptr){
-								mns = new String();
-								incummingMessages->add(index,mns);
-							}
-							if(tp != ""){
+							if(tp != ""){// Serial.println("notraw");
 								Pair<char,char>* p = delimiterType->get(tp);
 								if(p != nullptr){
 									if((*p->value) == thisChar){
-										(*rec) = false;
+										// Serial.println("nn ending");
+										// Serial.println(*mns);
 										Message* m = new Message();
 										m->id(index);
 										m->type(tp);
 										m->text(*mns);
-										(*mns) = "";
 										receivedMessage->add(m);
+										incummingMessages->set(index,"");
+										whatsRecording->set(index, "");
+										isRecording->set(index, false);
 									}else{
-										(*mns)+=thisChar;
+										mns->concat(thisChar);
 									}
 								}
 							}
 						}else{
+							if(tp == ""){//Serial.println("raw");
+								if(thisChar == '\n' && mns->length() != 0){
+									Message* m = new Message();
+									m->id(index);
+									m->type(rawMessageType);
+									String s = *mns;
+									m->text(s);
+									//Serial.println("raw ending");
+									// Serial.println(m->text());
+									receivedMessage->add(m);
+									incummingMessages->set(index,"");
+									whatsRecording->set(index, "");
+									isRecording->set(index, false);
+								}
+								if(thisChar != '\n'){
+									mns->concat(thisChar);
+								}
+							}
 							iterate(delimiterType){
 								if((*(delimiterType->getPointer()->key)) == thisChar){
+									incummingMessages->set(index, "");
 									whatsRecording->set(index, delimiterType->getKey());
 									(*rec) = true;
 								}
@@ -173,10 +207,10 @@ class SerialMessageState : public AppState{
 				}
 			}
 			
-			if(clients->getPos() == 0){
-				//Serial.println("clients->getPos() == 0");
-				return;
-			}
+			// if(clients->getPos() == 0){
+				// Serial.println("clients->getPos() == 0");
+				// return;
+			// }
 			
 			iterate(clientMessages){
 				SerialPort* c = clients->getByPos(clientMessages->getKey());
@@ -199,7 +233,7 @@ class SerialMessageState : public AppState{
 		}
 		
 	protected:
-		String rawMessage = "";
+		Note rawMessage = "";
 		String rawMessageType = "";
 		List<SerialPort>* clientsMain = nullptr;
 		List<SerialPort>* clients = nullptr;

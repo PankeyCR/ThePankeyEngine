@@ -1,5 +1,3 @@
-
-
 #ifndef EntityScript_h
 #define EntityScript_h
 
@@ -19,6 +17,18 @@ EntityScript(Stream* port, GameManager* mana){
 }
 ~EntityScript(){}
 
+
+cppObject* invokeGlobal(String method, String parameter1){
+	if(method == "print"){
+		serial->print(parameter1);
+		return nullptr;
+	}
+	if(method == "println"){
+		serial->println(parameter1);
+		return nullptr;
+	}
+	return nullptr;
+}
 cppObject* invoke(String method){
 	if(method == "createEntity"){
 		manager->createEntity();
@@ -37,7 +47,7 @@ cppObject* invoke(String method, String parameter){
 		return nullptr;
 	}
 	if(method == "println"){
-		serial->print(parameter);
+		serial->println(parameter);
 		return nullptr;
 	}
 	if(method == "printComponentSize"){

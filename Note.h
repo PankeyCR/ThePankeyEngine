@@ -7,58 +7,47 @@
 #include "List.h"
 #include "ArrayList.h"
 #include "PrimitiveList.h"
+#include "Printable.h"
+#include "TemplateMath.h"
 
 #define space ' '
 #define endLine '.'
 #define enter '\n'
 #define empty '\0'
 
-class Note{
-	private:
+class Note : public PrimitiveList<char> , public Printable{
+	protected:
+		int focus=0;
 		
     public:
-		PrimitiveList<char> *charList = nullptr;
-		int focus=0;
-		int size=20;
-		//char space=' ';
-		//char enter='\n';
-		//char empty='\0';
+		Note(int size,int expand);
+		Note(const char* cstr = "");
+		Note(const char& i);
+		Note(const int& i);
+		Note(const long& i);
+		Note(const String& i);
+		virtual ~Note();
 		
-		Note();
-		Note(int size);
-		Note(int size, int expantion);
-		~Note();
+		virtual size_t printTo(Print& p) const;
 		
-		String getNote();
+		virtual void expandLocal(int add);
+		virtual Note* expand(int add);
+		//virtual char* add(char* chr);
 		
-		void setPos(int p);
-		int getPos();
-		int getSize();
 		int getFocus();
 		void setFocus(int Focus);
-		void add(List<char> *list);
-		template<int Size> void add(ArrayList<char,Size> list);
-		void add(char *value);
-		void add(char *value,int size);
-		void add(char value);
-		void add(String value);
-		void set(int pos,char value);
-		void set(int pos,char *value);
-		void set(int pos,String value);
 		
-		template<int Lsize=20>
-		ArrayList<int,Lsize> getCharPositions(char chr);
+		PrimitiveList<int> getCharPositions(char chr);
+		int getCharPosition(char chr, int pos);
 		int getCharSize(char chr);
-		char getChar(int x);
 		
-		template<int Lsize=20>
-		ArrayList<int,Lsize> getSpacePositions();
+		PrimitiveList<int> getSpacePositions();/////////////////////////
 		int getSpaceSize();
-		
-		template<int Lsize=20>
-		ArrayList<int,Lsize> getStringPositions(String s);
-		
 		int getSpacingSize();
+		
+		PrimitiveList<int> getStringPositions(String s);
+		int getStringPosition(String s, int pos);
+		
 		void fixExtraSpace();
 		void fixEmptySpaces();
 		void fixEndLinePoint();
@@ -67,58 +56,53 @@ class Note{
 		static String fixEmptySpaces(String s);
 		static String fixEndLinePoint(String s);
 		
-		// template<int Lsize=20>
-		// ArrayList<String,Lsize> getWords();
+		PrimitiveList<String> getWords();
 		
 		String getWord(int pos);
 		String getSentence(int pos);
 		String getParagraph(int pos);
 		
+		static String getWord(int pos, String note);
+		static String getSentence(int pos, String note);
+		static String getParagraph(int pos, String note);
+		
 		int getSentenceSize();
 		
-		static String getWord(String s, int pos);
-		static String getSentence(String s, int pos);
-		static String getParagraph(String s, int pos);
-		
-		bool contain(const char *key,int size);
-		bool contain(char key);
 		bool contain(String key);
 		
 		void reset();
-		bool remove(const String& s);
 		bool remove(String key);
-		bool remove(char key);
-		bool remove(int pos);
-		bool remove(int pos,char key);
-		bool remove(int pos,String key);
+		bool remove(char key,int pos);
+		bool remove(String key,int pos);
 		
 		static String Split(String divide, int parte, char limiter);
 		static int SplitLenght(String divide, char limiter);
 		static String Split(String divide,int parte, char limiter, char fin);
 		
+		int toInt();
+		long toLong();
+		char toChar();
+		char toChar(int x);
+		String toString();
+		
 		void operator=(const String& s);
-		//void operator=(String s);
-		//void operator=(Note note);
-		//Note operator+(const char *chr);
-		Note operator+(char chr);
-		void operator+=(char chr);
+		void operator=(const char* chr);
+		void operator=(const char& i);
+		void operator=(const int& i);
+		void operator=(const long& i);
+		void operator=(Note note);
+		Note operator+(Note note);
+		Note operator+(const char& chr);
+		Note operator+(const char* chr);
+		void operator+=(const char* chr);
+		void operator<(const char* chr);
+		void operator<<(const char* chr);
+		bool operator==(Note note);
+		bool operator!=(Note note);
+		bool operator==(const char* chr);
+		bool operator!=(const char* chr);
+		void operator+=(const char& chr);
 		void operator+=(const String& s);
-	/*	void operator<<(int moveFocus);
-		void operator<<(const int& moveFocus);
-		void operator<(int moveFocus);
-		void operator<(const int& moveFocus);
-		void operator>>(int moveFocus);
-		void operator>>(const int& moveFocus);
-		void operator>(int moveFocus);
-		void operator>(const int& moveFocus);
-		void operator<<();
-		void operator<<();
-		void operator<();
-		void operator<();
-		void operator>>();
-		void operator>>();
-		void operator>();
-		void operator>();*/
 };
 
 #endif 

@@ -12,23 +12,25 @@ class DefaultSerialPort : public SerialPort{
 		}
 		virtual ~DefaultSerialPort(){
 		}
-		bool available(){
+		virtual int available(){
 			return port->available();
 		}
-		char read(){
+		virtual int read(){
 			return port->read();
 		}
-		bool connected(){
+		virtual int peek(){
+			return port->peek();
+		}
+		virtual size_t write(uint8_t chr){
+			return port->write(chr);
+		}
+		virtual bool connected(){
 			return true;
 		}
-		void print(String mns){
-			port->print(mns);
-		}
-		void println(String mns){
-			port->println(mns);
-		}
-		bool operator==(DefaultSerialPort b){return b.port == this->port;}
-		bool operator!=(DefaultSerialPort b){return b.port != this->port;}
+		virtual operator bool(){return true;}
+		virtual void operator=(DefaultSerialPort b){this->port = b.port;}
+		virtual bool operator==(DefaultSerialPort b){return b.port == this->port;}
+		virtual bool operator!=(DefaultSerialPort b){return b.port != this->port;}
 	protected:
 		Stream* port = nullptr;
 };

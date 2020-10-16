@@ -2,70 +2,68 @@
 #ifndef RobotArmTest_h
 #define RobotArmTest_h
 
-#include "Annotation.h"
 #include "Stream.h"
-#include "List.h"
-#include "Map.h"
-#include "KVMap.h"
-#include "ArrayList.h"
+#include "Annotation.h"
 #include "SimpleServo.h"
 
-class RobotArmTest : public Annotation<String, void (RobotArmTest::*)(float)>{
-	public:
-		RobotArmTest(Stream *port,int Xpin,int Ypin,int Zpin){
-			serial = port;      
-      
-			listA = new ArrayList<String,4>();
-			mapA = new KVMap<String, void (RobotArmTest::*)(float),3>();
+class RobotArmTest{
+public:
+RobotArmTest(Stream *port,int Xpin,int Ypin,int Zpin){
+	serial = port;
+	annotation = false;
+	annotationString = "";
 
-			listA->add("arm");
-			listA->add("X Axis");
-			listA->add("Y Axis");
-			listA->add("Z Axis");
+	annotation.add("X",&RobotArmTest::MoveX);
+	annotation.add("Y",&RobotArmTest::MoveY);
+	annotation.add("Z",&RobotArmTest::MoveZ);
+	annotationString.add("stop",&RobotArmTest::Stop);
 
-			mapA->add("X",&RobotArmTest::MoveX);
-			mapA->add("Y",&RobotArmTest::MoveY);
-			mapA->add("Z",&RobotArmTest::MoveZ);
+	servos = new SimpleServo();
+	servos->setup(3);
+	servos->attach(0,Xpin);        
+	servos->attach(1,Ypin);
+	servos->attach(2,Zpin);
+}
 
-			servos = new SimpleServo();
-			servos->setup(3);
-			servos->attach(0,Xpin);        
-			servos->attach(1,Ypin);
-			servos->attach(2,Zpin);
-		}
-   
-    void MoveX(float move){
-      servos->MoveServo(0,move);
-      serial->println(move);
-    }
-    
-    void MoveY(float move){
-      servos->MoveServo(1,move);   
-      serial->println(move);   
-    }
-    
-    void MoveZ(float move){
-      servos->MoveServo(2,move);   
-      serial->println(move);   
-    }
-   
-   ~RobotArmTest(){
-      delete listA;
-      delete mapA;
-      delete servos;
-   }
-    List<String>* getClassAnnotations(){
-      return listA;
-    }
-    Map<String, void (RobotArmTest::*)(float)>* getMethodAnnotations(){
-      return mapA;
-    }
-		
-	private:
-		Stream *serial=NULL;
-		List<String> *listA;
-		Map<String,void (RobotArmTest::*)(float)> *mapA;
-		SimpleServo *servos;
+bool invoke(String method, float move){
+ return annotation.invoke(this,method,move);
+}
+
+String invoke(String method){
+ return annotationString.invoke(this,method);
+}
+
+bool MoveX(float move){
+	servos->MoveServo(0,move);
+	serial->println(move);
+	return true;
+}
+
+bool MoveY(float move){
+	servos->MoveServo(1,move);   
+	serial->println(move); 
+	return false;  
+}
+
+bool MoveZ(float move){
+ servos->MoveServo(2,move);   
+  serial->println(move);
+  return true;
+}
+
+String Stop(){
+  return "stopping";
+}
+
+~RobotArmTest(){
+	delete servos;
+}
+
+private:
+Stream *serial = nullptr;
+SimpleServo *servos = nullptr;
+Annotation<String,bool,RobotArmTest,float> annotation;
+Annotation<String,String,RobotArmTest> annotationString;
 };
 
 #endif 

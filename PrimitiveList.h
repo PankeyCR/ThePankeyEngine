@@ -42,19 +42,24 @@ class PrimitiveList : public List<T>{
 			}
 		}
 		
-		~PrimitiveList(){
-			if(owner){
-				for(int x=0; x < size ; x++){
-					if(values[x] != nullptr){
-						delete values[x];
+		virtual ~PrimitiveList(){
+			//Serial.println("PrimitiveList");
+			if(this->values != nullptr){
+				if(owner && this->values != nullptr){
+					for(int x=0; x < this->pos ; x++){
+						if(this->values[x] != nullptr){
+							delete this->values[x];
+						}
 					}
 				}
+				delete[] this->values;
+				this->values = nullptr;
 			}
-			delete[] this->values;
+			//Serial.println("end");
 		}
 		
 
-		bool isEmpty(){
+		virtual bool isEmpty(){
 			return pos==0;
 		}
 		
@@ -150,7 +155,7 @@ class PrimitiveList : public List<T>{
 			return value;
 		}
 		
-		T* insert(int position, T value){
+		virtual T* insert(int position, T value){
 			if(position >= this->size){
 				this->expandLocal(this->expandSize+(position-this->size));
 			}
@@ -174,7 +179,7 @@ class PrimitiveList : public List<T>{
 			return values[position];
 		}
 		
-		T* insert(int position, T* value){
+		virtual T* insert(int position, T* value){
             if(value == nullptr || values[position] == value){
 				return nullptr;
             }
@@ -266,13 +271,16 @@ class PrimitiveList : public List<T>{
 		}
 		
 		virtual void resetDelete(){
-			for(int x=0; x < pos; x++){
+			if(this->pos == 0){
+				return;
+			}
+			for(int x=0; x < this->pos; x++){
 				if(this->values[x] != nullptr && owner){
 					delete this->values[x];
 				}
 				this->values[x] = nullptr;
 			}
-			pos = 0;
+			this->pos = 0;
 		}
 		
 		virtual T* remove(T *key){
@@ -392,27 +400,27 @@ class PrimitiveList : public List<T>{
 			return this->values[this->getIteration()];
 		}
 		
-		T* set(T s){
+		virtual T* set(T s){
 			return this->set(this->getIteration() , s);
 		}
 		
-		T* set(T* s){
+		virtual T* set(T* s){
 			return this->set(this->getIteration() , s);
 		}
 		
-		T* insert(T s){
+		virtual T* insert(T s){
 			int p = this->iterateCount;
 			this->iterateCount++;
 			return this->insert(p , s);
 		}
 		
-		T* insert(T* s){
+		virtual T* insert(T* s){
 			int p = this->iterateCount;
 			this->iterateCount++;
 			return this->insert(p , s);
 		}
 		
-		T* remove(){
+		virtual T* remove(){
 			int p = this->iterateCount;
 			this->iterateCount--;
 			return this->removeByPos(p);
@@ -477,7 +485,7 @@ class PrimitiveList : public List<T>{
 		}
 		
 	protected:
-		T **values;
+		T **values = nullptr;
 		int pos=0;
 		int size=10;
 		bool owner = true;
