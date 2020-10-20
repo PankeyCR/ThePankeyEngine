@@ -124,7 +124,9 @@ class PrimitiveList : public List<T>{
 			if(this->pos >= this->size){
 				return nullptr;
 			}
-			this->values[this->pos] = new T();
+			if(this->values[this->pos] == nullptr){
+				this->values[this->pos] = new T();
+			}
 			*this->values[this->pos] = value;
 			this->pos++;
 			return this->values[this->pos-1];

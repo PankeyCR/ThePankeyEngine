@@ -89,6 +89,16 @@ class SerialMessageState : public AppState{
 			clientsMain->add(serial);
 		}
 		
+		template<class SerialP>
+		bool containSerial(SerialP serial){
+			iterate(clientsMain){
+				if(clientsMain->getValue() == serial){
+					return true;
+				}
+			}
+			return false;
+		}
+		
 		SerialPort* removeSerial(SerialPort* serial){
 			clients->remove(serial);
 			return clientsMain->remove(serial);
