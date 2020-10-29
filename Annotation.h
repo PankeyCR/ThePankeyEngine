@@ -19,13 +19,19 @@ R invoke(T* intance, A a,P... p){
 	return ( intance->**this->get(a))(p...);
 }
 virtual void operator=(R rtn){r=rtn;}
-virtual bool operator==(Annotation<A,R,T,P...> ){
+virtual bool operator==(Annotation<A,R,T,P...> a){
 	
 	return false;
 }
-virtual bool operator!=(Annotation<A,R,T,P...> ){
+virtual bool operator!=(Annotation<A,R,T,P...> a){
 	
 	return false;
+}
+virtual void operator=(Annotation<A,R,T,P...> a){
+	this->resetDelete();
+	for(int x=0; x < a.getPos(); x++){
+		this->add(a.getKeyByPos(x),a.getByPos(x));
+	}
 }
 
 protected:

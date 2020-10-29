@@ -20,13 +20,17 @@ class Note : public PrimitiveList<char> , public Printable{
 		int focus=0;
 		
     public:
+		Note();
 		Note(int size,int expand);
-		Note(const char* cstr = "");
+		Note(const char* cstr);
 		Note(const char& i);
 		Note(const int& i);
 		Note(const long& i);
 		Note(const String& i);
 		virtual ~Note();
+		
+		virtual char* add(char* value);
+		virtual char* add(char value);
 		
 		virtual size_t printTo(Print& p) const;
 		
@@ -34,6 +38,7 @@ class Note : public PrimitiveList<char> , public Printable{
 		virtual Note* expand(int add);
 		//virtual char* add(char* chr);
 		
+		int length();
 		int getFocus();
 		void setFocus(int Focus);
 		
@@ -67,6 +72,7 @@ class Note : public PrimitiveList<char> , public Printable{
 		static String getParagraph(int pos, String note);
 		
 		int getSentenceSize();
+		static int getSentenceSize(String note);
 		
 		bool contain(String key);
 		

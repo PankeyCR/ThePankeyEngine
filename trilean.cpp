@@ -8,6 +8,24 @@
 	trilean::trilean(){
 		
 	}
+	trilean::trilean(const bool& b){
+		this->tbool=b;
+		this->known=true;
+	}
+	trilean::trilean(const int& b){
+		if(b == 1){
+			this->tbool=true;
+			this->known=true;
+		}
+		if(b == 0){
+			this->tbool=false;
+			this->known=true;
+		}
+		if(b == -1){
+			this->tbool=true;
+			this->known=false;
+		}
+	}
 	trilean::~trilean(){
 		
 	}

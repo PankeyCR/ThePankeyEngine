@@ -10,6 +10,8 @@ class trilean{
     public:
 		bool tbool=false;
 		bool known=false;
+		trilean(const bool& b);
+		trilean(const int& b);
 		trilean();
 		virtual ~trilean();
 		

@@ -30,10 +30,10 @@
 		return false;
 	}
 	bool cppObject::instanceof(String s){
-		if(s == "cppObject"){
+		if(s == this->getClassName()){
 			return true;
 		}
-		return false;
+		return s == "cppObject";
 	}
 	cppObject *cppObject::clone(){
 		return this;

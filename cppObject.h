@@ -13,7 +13,12 @@ class cppObject {
 		virtual String getClassName();
 		virtual String toString();
 		virtual bool equal(cppObject *b);
-		virtual bool instanceof(String s);
+		template<class T>
+		bool instanceof(){
+			T t;
+			return this->instanceof(t.getClassName());
+		}
+		virtual bool instanceof(String name);
 		virtual cppObject *clone();
 		virtual void operator=(cppObject b);
 		virtual bool operator==(cppObject b);

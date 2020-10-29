@@ -34,18 +34,18 @@ class MessageInvokeListener : public Command<Message>{
 		void execute(Message* mns){
 			if(mns->type() == type){
 				//Serial.println("execute");
-				Note note = mns->text();
-				int size = note.getSentenceSize();
+				String note = mns->text();
+				int size = Note::getSentenceSize(note);
 				//Serial.print("note: ");//Serial.println(mns->text());
 				//Serial.print("size: ");//Serial.println(size);
 				for(int x = 0; x < size; x++){
 					////Serial.print("note: ");//Serial.println(note.getNote());
-					Note sentence = note.getSentence(x);
+					String sentence = Note::getSentence(x, note);
 					if(sentence == ""){
 						return;
 					}
 					//Serial.print("sentence: ");//Serial.println(sentence);
-					String instanceName = sentence.getWord(0);
+					String instanceName = Note::getWord(0, sentence);
 					//Serial.print("instanceName: ");//Serial.println(instanceName);
 					if(instanceName == ""){
 						return;
@@ -54,8 +54,8 @@ class MessageInvokeListener : public Command<Message>{
 					if(instance == nullptr){
 						//Serial.println("instance == nullptr");
 						String method = instanceName;
-						String parameter1 = sentence.getWord(1);
-						String parameter2 = sentence.getWord(2);
+						String parameter1 = Note::getWord(1, sentence);
+						String parameter2 = Note::getWord(2, sentence);
 						iterate(map){
 							instance = map->getPointer();
 							if(method == ""){
@@ -75,18 +75,18 @@ class MessageInvokeListener : public Command<Message>{
 						}
 						return;
 					}
-					String method = sentence.getWord(1);
+					String method = Note::getWord(1, sentence);
 					if(method == ""){
 						return;
 					}
-					String parameter1 = sentence.getWord(2);
+					String parameter1 = Note::getWord(2, sentence);
 					if(parameter1 == ""){
 						if(Method::invoke<bool>(instance, method)){
 							//Serial.println("invoked on parameter1: ");
 							return;
 						}
 					}
-					String parameter2 = sentence.getWord(3);
+					String parameter2 = Note::getWord(3, sentence);
 					if(parameter2 == ""){
 						if(Method::invoke<bool>(instance, method, parameter1)){
 							//Serial.println("invoked on parameter2: ");

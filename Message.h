@@ -24,6 +24,22 @@ Message(String mType,int i,String txt){
 	m_id = i;
 	m_text = txt;
 }
+// Message(Note txt){
+	// m_text = txt;
+// }
+// Message(int i,Note txt){
+	// m_id = i;
+	// m_text = txt;
+// }
+// Message(Note mType,Note txt){
+	// m_type = mType;
+	// m_text = txt;
+// }
+// Message(Note mType,int i,Note txt){
+	// m_type = mType;
+	// m_id = i;
+	// m_text = txt;
+// }
 virtual ~Message(){}
 
 virtual int id(){
@@ -35,6 +51,12 @@ virtual String text(){
 virtual String type(){
 	return m_type;
 }
+// virtual String textString(){
+	// return m_text.toString();
+// }
+// virtual String typeString(){
+	// return m_type.toString();
+// }
 
 virtual void id(int i){
 	m_id = i;
@@ -45,6 +67,15 @@ virtual void text(const String& t){
 virtual void type(const String& t){
 	m_type = t;
 }
+// virtual void text(const Note& t){
+	// m_text = t;
+// }
+// virtual void type(const Note& t){
+	// m_type = t;
+// }
+// virtual void operator=(const Note& b){
+	// m_text = b;
+// }
 virtual void operator=(const String& b){
 	m_text = b;
 }

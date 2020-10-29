@@ -6,6 +6,8 @@
 #include "Note.h"
 
 
+	Note::Note(){}
+	
 	Note::Note(int size,int expand): PrimitiveList(size,expand){
 	}
 	
@@ -48,20 +50,65 @@
 	Note::~Note(){
 		//Serial.println("Note");
 	}
+		
+	char* Note::add(char* value){
+		if(value == nullptr){
+			return nullptr;
+		}
+		if(this->pos >= this->size){
+			this->expandLocal(this->expandSize);
+		}
+		if(this->pos >= this->size){
+			return nullptr;
+		}
+		this->values[this->pos] = value;
+		this->pos++;
+		return this->values[this->pos-1];
+	}
+		
+	char* Note::add(char value){
+		if(this->pos >= this->size){
+			this->expandLocal(this->expandSize);
+		}
+		if(this->pos >= this->size){
+			return nullptr;
+		}
+		if(this->values[this->pos] == nullptr){
+			this->values[this->pos] = new char(value);
+		}
+		// *this->values[this->pos] = value;
+		this->pos++;
+		// Serial.println(*this->values[this->pos-1]);
+		// return this->values[this->pos-1];
+		return nullptr;
+	}
 	
     size_t Note::printTo(Print& p) const{
-		for(int x = 0; x < this->pos; x++){
-			p.print(*this->values[x]);
-		}
+		// Serial.println("printTo");
+		// Serial.println(this->pos);
+		// for(int x = 0; x < this->pos; x++){
+			// if(this->values[x] != nullptr && *this->values[x] != empty){
+				// Serial.println("printing");
+				// Serial.println(this->pos);
+				// Serial.println(x);
+				// Serial.println(x < this->pos);
+				// Serial.println(*this->values[x]);
+				// p.print(*this->values[x]);
+			// }
+			
+		// }
+		// Serial.println("stop printing");
 	}
 	
 	void Note::expandLocal(int add){
-		//Serial.print("expanding local: ");Serial.println(add);
+		Serial.print("expanding local: ");Serial.println(add);
 		int nsize = this->size+add;
 		char **nT;
 		nT = new char*[nsize];
-		for(int x=0; x < this->pos; x++){
-			nT[x] = this->values[x];
+		for(int x=0; x < nsize; x++){
+			if(x < this->pos){
+				nT[x] = this->values[x];
+			}
 		}
 		delete[] this->values;
 		this->values = nT;
@@ -75,6 +122,10 @@
 			note->add(*this->values[x]);
 		}
 		return note;
+	}
+	
+	int Note::length(){
+		return this->pos;
 	}
 	
 	int Note::getFocus(){
@@ -253,11 +304,49 @@
 		}
 		return p;
 	}
+		
+	String Note::getWord(int pos, String note){
+		return Split(note, pos, space);
+	}
+	String Note::getSentence(int pos, String note){
+		return Split(note, pos, enter);
+	}
+	String Note::getParagraph(int pos, String note){
+		// int paragraph = 0;
+		// bool start = false;
+		// String p;
+		// for(int x = 0; x < this->pos; x++){
+			// if(*this->values[x] == enter && *this->values[x+1] == enter){
+				// paragraph++;
+			// }
+			// if(paragraph == pos && *this->values[x] != enter){
+				// start = true;
+			// }
+			// if(paragraph > pos){
+				// start = false;
+				// return p;
+			// }
+			// if(start){
+				// p.concat(*this->values[x]);
+			// }
+		// }
+		return note;
+	}
 	
 	int Note::getSentenceSize(){
 		int size = 1;
 		for(int x = 0; x < this->pos; x++){
 			if(*this->values[x] == enter){
+				size++;
+			}
+		}
+		return size;
+	}
+	
+	int Note::getSentenceSize(String note){
+		int size = 1;
+		for(char c : note){
+			if(c == enter){
 				size++;
 			}
 		}
@@ -375,7 +464,12 @@
 	String Note::toString(){
 		String s;
 		for(int x = 0; x < this->getPos(); x++){
-			s.concat(*this->getByPos(x));
+			if(this->getByPos(x)!=nullptr){
+				Serial.print("toString: ");
+				Serial.println(*this->getByPos(x));
+				Serial.println(x);
+				s.concat(*this->getByPos(x));
+			}
 		}
 		return s;
 	}
@@ -444,7 +538,9 @@
 	
 	Note Note::operator+(const char* cstr){
 		Note n;
-		n.add(this);
+		for(int x = 0 ; x < n.getPos(); x++){
+			this->add(*n.getByPos(x));
+		}
 		for(  ;  *cstr != empty; cstr++){
 			n.add(*cstr);
 		}
@@ -469,14 +565,7 @@
 	}
 	
 	void Note::operator+=(const char& chr){
-		if(this->pos >= this->size){
-			this->expandLocal(this->expandSize);
-		}
-		if(this->pos >= this->size){
-			return;
-		}
-		this->values[this->pos] = new char(chr);
-		this->pos++;
+		this->add(chr);
 	}
 	/*
 	Note Note::operator+(const char *chr){

@@ -55,11 +55,21 @@ class SerialMessageState : public AppState{
 		
 		void send(String mns){
 			broadMessages->add(mns);
+			//broadMessages->add(Note(mns));
 		}
+		
+		// void send(Note mns){
+			// broadMessages->add(mns);
+		// }
 		
 		void send(int index, String mns){
 			clientMessages->add(index, mns);
+			//clientMessages->add(index, Note(mns));
 		}
+		
+		// void send(int index, Note mns){
+			// clientMessages->add(index, mns);
+		// }
 		
 		void send(Message mns){
 			if(mns.id() == -1){
@@ -113,9 +123,17 @@ class SerialMessageState : public AppState{
 			rawMessageType = name;
 		}
 		
+		// void setRawTypeName(Note name){
+			// rawMessageType = name;
+		// }
+		
+		void setRawTypeName(const char* name){
+			rawMessageType = name;
+		}
+		
 		virtual void update(float tpc){
 			iterate(clientsMain){
-				//Serial.println(clientsMain->getPos());
+				// Serial.print("client size");Serial.println(clientsMain->getPos());
 				SerialPort* serial = clientsMain->getPointer();
 				int index = clientsMain->getIteration();
 				if (serial->available() > 0) {
@@ -179,9 +197,15 @@ class SerialMessageState : public AppState{
 									Message* m = new Message();
 									m->id(index);
 									m->type(rawMessageType);
-									String s = *mns;
-									m->text(s);
+									m->text(*mns);
 									//Serial.println("raw ending");
+									// Serial.println("length: ");
+									// Serial.println(mns->length());
+									// Serial.println(mns->toString());
+									// for(int x = 0 ; x < mns->getPos(); x++){
+									// Serial.print(*mns->getByPos(x));
+									// }Serial.println();
+									// Serial.println(*mns);
 									// Serial.println(m->text());
 									receivedMessage->add(m);
 									incummingMessages->set(index,"");
@@ -189,12 +213,17 @@ class SerialMessageState : public AppState{
 									isRecording->set(index, false);
 								}
 								if(thisChar != '\n'){
+									// Serial.print("adding raw: ");
+									// Serial.println(thisChar);
 									mns->concat(thisChar);
+									// Serial.println(*t);
+									// Serial.println(*mns);
+									// Serial.println(thisChar);
 								}
 							}
 							iterate(delimiterType){
 								if((*(delimiterType->getPointer()->key)) == thisChar){
-									incummingMessages->set(index, "");
+									incummingMessages->set(index,"");
 									whatsRecording->set(index, delimiterType->getKey());
 									(*rec) = true;
 								}
@@ -243,7 +272,7 @@ class SerialMessageState : public AppState{
 		}
 		
 	protected:
-		Note rawMessage = "";
+		String rawMessage = "";
 		String rawMessageType = "";
 		List<SerialPort>* clientsMain = nullptr;
 		List<SerialPort>* clients = nullptr;
