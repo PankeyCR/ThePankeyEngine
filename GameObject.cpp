@@ -37,21 +37,25 @@
 	}
 	
     GameOn* GameObject::getChild(String className){
-		iterate(this->childs){
-			if(this->childs->getPointer()->getClassName() == className){
-				return this->childs->getPointer();
+		for(int x = 0; x < this->childs->getPos(); x++){
+			if(this->childs->getByPos(x)->getClassName() == className){
+				return this->childs->getByPos(x);
 			}
 		}
 		return nullptr;
 	}
 	
     GameOn* GameObject::detach(String className){
-		iterate(this->childs){
-			if(this->childs->getPointer()->getClassName() == className){
-				return this->childs->removeByPos(this->childs->getIteration());
+		for(int x = 0; x < this->childs->getPos(); x++){
+			if(this->childs->getByPos(x)->getClassName() == className){
+				return this->childs->removeByPos(x);
 			}
 		}
 		return nullptr;
+	}
+	
+    void GameObject::detach(GameOn* gameon){
+		this->childs->remove(gameon);
 	}
 	
 	List<GameOn>* GameObject::getChilds(){

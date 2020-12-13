@@ -7,13 +7,13 @@
 
 	TimeControl::TimeControl() {
 		this->timeList = new PrimitiveList<TimeElapsed>();
-		Log("println","TimeControl: new instance of this class");
+		Log("TimeControl", "Constructor", "println","TimeControl: new instance of this class");
 	}
 	
 	TimeControl::~TimeControl() {
 		delete this->timeList;
 		this->timeList = nullptr;
-		Log("println","TimeControl: delete instance of this class");
+		Log("TimeControl", "Destructor", "println","TimeControl: delete instance of this class");
 	}
 	
 	long TimeControl::getTime() {

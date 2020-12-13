@@ -7,7 +7,7 @@
 
 	RealRandom::RealRandom(){
 		limitMax = ((float)2147483646/1000000.0f);
-		Log("println",String(limitMax));
+		Log("RealRandom", "Contructor", "println",String(limitMax));
 	}
 	
 	RealRandom::~RealRandom(){
@@ -20,15 +20,15 @@
 		float tdx = ((float)(time/dx));
 		float tx = (((float)(tdx))-((long)(tdx)));
 		float x = d*tx;
-		Log("println","");
-		Log("println","realrandom");
-		Log("print","time ");Log("println",String(time));
-		Log("print","d ");Log("println",String(d));
-		Log("print","dx ");Log("println",String(dx));
-		Log("print","tdx ");Log("println",String(tdx));
-		Log("print","tx ");Log("println",String(tx));
-		Log("print","x ");Log("println",String(x));
-		Log("println","");
+		Log("RealRandom", "getRandom", "println","");
+		Log("RealRandom", "getRandom", "println","realrandom");
+		Log("RealRandom", "getRandom", "print","time ");Log("RealRandom", "getRandom", "println",String(time));
+		Log("RealRandom", "getRandom", "print","d ");Log("RealRandom", "getRandom", "println",String(d));
+		Log("RealRandom", "getRandom", "print","dx ");Log("RealRandom", "getRandom", "println",String(dx));
+		Log("RealRandom", "getRandom", "print","tdx ");Log("RealRandom", "getRandom", "println",String(tdx));
+		Log("RealRandom", "getRandom", "print","tx ");Log("RealRandom", "getRandom", "println",String(tx));
+		Log("RealRandom", "getRandom", "print","x ");Log("RealRandom", "getRandom", "println",String(x));
+		Log("RealRandom", "getRandom", "println","");
 		return x+getMin();
 	}
 	

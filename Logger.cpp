@@ -12,28 +12,55 @@
 	Logger::~Logger(){
     }
 	
-	void Logger::setSerial(Stream *port){
-		this->port = port;
+	void Logger::setLog(Logging* l){
+		this->logging = l;
     }
 	
-	Logger *Logger::getLog(){
+	Logger* Logger::getLog(){
 		if(Logger::log == nullptr){
 			Logger::log = new Logger();
 		}
 		return Logger::log;
     }
 	
-	void Logger::Logging(String priority,String mns){
-		if(priority == "print"){
-			if(Logger::getLog()->port != nullptr){
-				Logger::getLog()->port->print(mns);
-			}
+	void Logger::StaticLog(String className, String methodName, String type, String mns){
+		Logger* logger = Logger::getLog();
+		if(logger->logging == nullptr){
+			return;
 		}
-		if(priority == "println"){
-			if(Logger::getLog()->port != nullptr){
-				Logger::getLog()->port->println(mns);
-			}
+		logger->logging->StaticLog(className, methodName, type, mns);
+    }
+	
+	void Logger::addClass(String className){
+		Logger* logger = Logger::getLog();
+		if(logger->logging == nullptr){
+			return;
 		}
+		logger->logging->addClass(className);
+    }
+	
+	void Logger::addMethod(String methodName){
+		Logger* logger = Logger::getLog();
+		if(logger->logging == nullptr){
+			return;
+		}
+		logger->logging->addMethod(methodName);
+    }
+	
+	void Logger::removeClass(String className){
+		Logger* logger = Logger::getLog();
+		if(logger->logging == nullptr){
+			return;
+		}
+		logger->logging->removeClass(className);
+    }
+	
+	void Logger::removeMethod(String methodName){
+		Logger* logger = Logger::getLog();
+		if(logger->logging == nullptr){
+			return;
+		}
+		logger->logging->removeMethod(methodName);
     }
 	
 	

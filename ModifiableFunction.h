@@ -49,6 +49,9 @@ class ModifiableFunction : public Function<type, args...>, public Iterator{
 			}
 			variables->set(this->getIteration(), var);
 		}
+		virtual String getClassName(){return "ModifiableFunction";}
+		virtual String toString(){return "ModifiableFunction";}
+		virtual bool instanceof(String name){return name == "ModifiableFunction" || name == "Function";}
 		
 	protected:
 		List<type>* constants = nullptr;

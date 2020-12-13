@@ -33,7 +33,7 @@ class TimeRecorder {
 		virtual bool operator >(const float& time);
     
 	protected:	
-		float recordtimeh = 0;
+		float recordtimeh = 0.0f;
 };
 
 

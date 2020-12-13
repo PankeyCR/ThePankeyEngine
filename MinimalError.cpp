@@ -57,16 +57,16 @@
 	Function<float,float>* MinimalError::build(){
 		if(this->fx == nullptr){
 			this->fx = new XtremeFunction1();
-			Log("println","XtremeFunction1 used for MinimalError build as default");
+			Log("MinimalError", "build", "println","XtremeFunction1 used for MinimalError build as default");
 		}
 		if(this->functionsetup() == FunctionSetup::ZeroStart){
-			Log("println","FunctionSetup ZeroStart");
+			Log("MinimalError", "build", "println","FunctionSetup ZeroStart");
 			iterate(this->data->iterateSpace(this->inputD)){
 				this->fx->setConstante(this->data->getIteration(), this->data->getValue());
 			}
 		}
 		if(this->functionsetup() == FunctionSetup::UnityStart){
-			Log("println","FunctionSetup UnityStart");
+			Log("MinimalError", "build", "println","FunctionSetup UnityStart");
 			iterate(this->data->iterateSpace(this->inputD)){
 				this->fx->setConstante(this->data->getIteration()+1, this->data->getValue());
 			}
@@ -75,14 +75,14 @@
 		random.setSeed(this->rnd);
 		random.setMax(this->rndmax);
 		random.setMin(this->rndmin);
-		Log("print","setSeed");Log("println",String(this->rnd));
-		Log("print","setMax");Log("println",String(this->rndmax));
-		Log("print","setMin");Log("println",String(this->rndmin));
+		Log("MinimalError", "build", "print","setSeed");Log("MinimalError", "build", "println",String(this->rnd));
+		Log("MinimalError", "build", "print","setMax");Log("MinimalError", "build", "println",String(this->rndmax));
+		Log("MinimalError", "build", "print","setMin");Log("MinimalError", "build", "println",String(this->rndmin));
 		
 		for(long x=0; x<this->epochcount;x++){
 			yield();
-			Log("print","epochcount ");
-			Log("println", String(x));
+			Log("MinimalError", "build", "print","epochcount ");
+			Log("MinimalError", "build", "println", String(x));
 			
 			float fun1 = 0;
 			float maxErrT1 = 0;
@@ -94,30 +94,30 @@
 				if(errt1 < 0){
 					errt1*=-1.00f;
 				}
-				Log("println","iterate dimention "+String(this->outputD)+" output");
-				Log("print","pos ");Log("println", String(pos));
-				Log("print","data getValue ");Log("println", String(this->data->getValue()));
-				Log("print","funtion responce ");Log("println", String(rf));
-				Log("print","error ");Log("println", String(errt1));
+				Log("MinimalError", "build", "println","iterate dimention "+String(this->outputD)+" output");
+				Log("MinimalError", "build", "print","pos ");Log("MinimalError", "build", "println", String(pos));
+				Log("MinimalError", "build", "print","data getValue ");Log("MinimalError", "build", "println", String(this->data->getValue()));
+				Log("MinimalError", "build", "print","funtion responce ");Log("MinimalError", "build", "println", String(rf));
+				Log("MinimalError", "build", "print","error ");Log("MinimalError", "build", "println", String(errt1));
 				if(errt1 > maxErrT1){
 					fun1 = rf;
 					maxErrT1 = errt1;
 					maxErrT1Pos = pos;
 					this->Error = errt1;
-					Log("print","maxErrT1 ");Log("println", String(errt1));
-					Log("print","maxErrT1Pos ");Log("println", String(pos));
+					Log("MinimalError", "build", "print","maxErrT1 ");Log("MinimalError", "build", "println", String(errt1));
+					Log("MinimalError", "build", "print","maxErrT1Pos ");Log("MinimalError", "build", "println", String(pos));
 				}
 			}
 			
 			bool learn = false;
 			float maxErrT2 = 0;
-			Log("println","funtion start ");
+			Log("MinimalError", "build", "println","funtion start ");
 			iterate(this->fx){
 				yield();
-				Log("print","funtion iteration ");Log("println", String(this->fx->getIteration()));
+				Log("MinimalError", "build", "print","funtion iteration ");Log("MinimalError", "build", "println", String(this->fx->getIteration()));
 				float fv = this->fx->getValue();
 				float randd = random.getRandom();
-				Log("print","random ");Log("println", String(randd));
+				Log("MinimalError", "build", "print","random ");Log("MinimalError", "build", "println", String(randd));
 				this->fx->set(randd);
 				iterate(this->data->iterateSpace(this->outputD)){
 					int pos=0;
@@ -132,35 +132,35 @@
 					if(errt2 < 0){
 						errt2*=-1.00f;
 					}
-					Log("println","iterate 2 dimention output");
-					Log("print","pos ");Log("println", String(pos));
-					Log("print","data getValue ");Log("println", String(this->data->getValue()));
-					Log("print","funtion responce ");Log("println", String(rf));
-					Log("print","error ");Log("println", String(errt2));
+					Log("MinimalError", "build", "println","iterate 2 dimention output");
+					Log("MinimalError", "build", "print","pos ");Log("MinimalError", "build", "println", String(pos));
+					Log("MinimalError", "build", "print","data getValue ");Log("MinimalError", "build", "println", String(this->data->getValue()));
+					Log("MinimalError", "build", "print","funtion responce ");Log("MinimalError", "build", "println", String(rf));
+					Log("MinimalError", "build", "print","error ");Log("MinimalError", "build", "println", String(errt2));
 					if(errt2 > maxErrT2){
 						maxErrT2 = errt2;
-						Log("print","maxErrT1 ");Log("println", String(maxErrT1));
-						Log("print","maxErrT2 ");Log("println", String(maxErrT2));
+						Log("MinimalError", "build", "print","maxErrT1 ");Log("MinimalError", "build", "println", String(maxErrT1));
+						Log("MinimalError", "build", "print","maxErrT2 ");Log("MinimalError", "build", "println", String(maxErrT2));
 					}
 					learn = true;
 					if(maxErrT2 > maxErrT1){
 						learn = false;
-						Log("print","unlearning from error ");Log("println", String(errt2));
+						Log("MinimalError", "build", "print","unlearning from error ");Log("MinimalError", "build", "println", String(errt2));
 						break;
 					}
 				}
 				if(!learn){
 					this->fx->set(fv);
 					maxErrT2 = 0;
-					Log("println","unlearned ");
+					Log("MinimalError", "build", "println","unlearned ");
 				}
 				if(learn){
 					this->Error = maxErrT2;
 					maxErrT1 = maxErrT2;
 					maxErrT2 = 0;
 					learn = false;
-					Log("print","learn////////////////////////////////////// ");
-					Log("println",String(this->Error));
+					Log("MinimalError", "build", "print","learn////////////////////////////////////// ");
+					Log("MinimalError", "build", "println",String(this->Error));
 					if(this->MError > this->Error){
 						break;
 					}

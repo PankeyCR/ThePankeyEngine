@@ -8,15 +8,24 @@
 template<class A,class R,class T,class... P>
 class Annotation : public PrimitiveMap<A,R (T::*)(P...)>{
 public:
+using EventMethod = R (T::*)(P...);
 Annotation(){}
 Annotation(R rtn){r=rtn;}
 ~Annotation(){}
 
-R invoke(T* intance, A a,P... p){
+R invoke(T* intance, A a, P... p){
 	if(this->get(a) == nullptr){
 		return r;
 	}
 	return ( intance->**this->get(a))(p...);
+}
+
+R invoke(T* intance, EventMethod* a, P... p){
+	return ( intance->**a)(p...);
+}
+
+R invoke(T* intance, EventMethod a, P... p){
+	return ( intance->*a)(p...);
 }
 virtual void operator=(R rtn){r=rtn;}
 virtual bool operator==(Annotation<A,R,T,P...> a){

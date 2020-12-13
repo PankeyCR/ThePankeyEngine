@@ -4,8 +4,9 @@
 #define cppObject_h
 
 #include "Arduino.h"
+//#include "ManegedMemory.h"
 
-class cppObject {
+class cppObject/* : public ManegedMemory<cppObject>*/{
     public:
 		cppObject();
 		virtual ~cppObject();

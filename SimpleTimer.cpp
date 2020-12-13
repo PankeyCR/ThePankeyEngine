@@ -17,13 +17,13 @@ TimeControl* SimpleTimer::instance = nullptr;
 	
 	SimpleTimer::SimpleTimer(){
 		this->timeList = new PrimitiveList<TimeElapsed>();
-		Log("println","SimpleTimer: new instance of this class");
+		Log("SimpleTimer", "Constructor", "println","SimpleTimer: new instance of this class");
 	}
 	
 	SimpleTimer::~SimpleTimer(){
 		delete this->timeList;
 		this->timeList = nullptr;
-		Log("println","SimpleTimer: delete instance of this class");
+		Log("SimpleTimer", "Destructor", "println","SimpleTimer: delete instance of this class");
 	}
 	
 #if defined(ARDUINO_ARCH_AVR)

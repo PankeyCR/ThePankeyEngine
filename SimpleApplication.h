@@ -12,6 +12,7 @@
 #include "SimpleAppSettings.h"
 #include "SimpleStateManager.h"
 #include "Logger.h"
+#include "Listener.h"
 
 template <int StatesSize, int SettingsSize>
 class SimpleApplication : public Application{
@@ -40,6 +41,14 @@ class SimpleApplication : public Application{
 		AppStateManager *getStateManager(){
 			return states;
 		}
+		
+		void setListener(Listener* l){
+			listener = l;
+			listener->attach(this);
+		}
+		Listener* getListener(){
+			return listener;
+		}
 		void update(){
 			//Log("println","update SimpleApplication ");
 			states->update();
@@ -59,6 +68,7 @@ class SimpleApplication : public Application{
 	private:	
 	AppStateManager *states = nullptr;
 	AppSettings *settings = nullptr;
+	Listener *listener = nullptr;
 };
 
 #endif 

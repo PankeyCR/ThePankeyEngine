@@ -4,6 +4,7 @@
 #define PrimitiveList_h
 
 #include "List.h"
+#include "MemoryFree.h"
 
 template<class T>
 class PrimitiveList : public List<T>{
@@ -276,12 +277,17 @@ class PrimitiveList : public List<T>{
 			if(this->pos == 0){
 				return;
 			}
+			// Serial.println("resetDelete");
+			// Serial.println(freeMemory());
 			for(int x=0; x < this->pos; x++){
-				if(this->values[x] != nullptr && owner){
+				if(this->values[x] != nullptr && this->owner){
 					delete this->values[x];
+					//Serial.println("delinting");
 				}
 				this->values[x] = nullptr;
 			}
+			// Serial.println("end resetDelete");
+			// Serial.println(freeMemory());
 			this->pos = 0;
 		}
 		

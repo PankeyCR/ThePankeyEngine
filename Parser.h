@@ -5,41 +5,52 @@
 
 #include "PrimitiveMap.h"
 #include "GameObject.h"
-#include "Block.h"
-#include "PMap.h"
 #include "LinkedList.h"
-#include "ArrayList.h"
 #include "Statement.h"
 #include "Arduino.h"
 #include "Stream.h"
 #include "Script.h"
 #include "Lexer.h"
+#include "Block.h"
 #include "List.h"
 #include "Map.h"
 
 class Parser{
     public:
 		Parser();
-		~Parser();
+		virtual ~Parser();
 		
-		void addLexerTokens(Map<String,String>* lexer);
-		void setLineCommentToken(String n);
-		void setCommentTokens(String start, String end);
-		Map<String,String>* removeComments(Map<String,String>* ntoken, Map<String,String>* lexertokens);
-		void addBlock(Block* block);
-		/*
-		GameObject* getBlockStatement(Map<String,String>* tokens);*/
-		Script* compile();
-		void printFileTree(Stream* port);
+		virtual void addLexerTokens(Lexer* lexer);
+		virtual void addLexerTokens(Map<String,String>* lexer);
+		
+		virtual void setLineCommentToken(String n);
+		virtual void setCommentTokens(String start, String end);
+		virtual void setEnterToken(String n);
+		virtual void setBlockName(String n);
+		
+		virtual Map<String,String>* removeComments(
+										Map<String,String>* ntoken, 
+										Map<String,String>* lexertokens);
+		virtual bool syntax(Map<String,String>* tokens);
+		
+		template<class... Tokens>
+		void addBlock(Block* block, Tokens... t){
+			PrimitiveList<String>* list = new PrimitiveList<String>();
+			list->addPack(t...);
+			blocks->add(block, list);
+		}
+		
+		virtual Script* compile();
+		virtual void printTree(Stream* port);
 		
 	protected:
 		Map<String,String>* captureToken = nullptr;
-		List<Statement>* statements = nullptr;
-		List<Block>* blocks = nullptr;
+		Map<Block,PrimitiveList<String>>* blocks = nullptr;
 		String lineCommentToken = "linecomment";
 		String commentTokenStart = "commentstart";
 		String commentTokenEnd = "commentend";
 		String enterToken = "enter";
+		String blockName = "BLOCK";
 };
 
 #endif 

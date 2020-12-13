@@ -10,24 +10,7 @@
 	
 	Block::~Block(){
 	}
-	/*
-	bool Block::checkSyntax(Map<String,String>* code,List<String>* blockCode, String blockD){
-	//	List<List<String>>*
-		int startBlock = 0;
-		iterate(code){
-			blockCode->setIteration(code->getIteration());
-			if(blockCode->getValue() == blockD){
-				
-			}
-		}
-	}
-	/*
-	GameOn* Block::getBlock(Parser* parser){
-		
-		
-		return nullptr;
-	}
-	*/
+	
 	void Block::operator=(Block b) {
 	}
 	

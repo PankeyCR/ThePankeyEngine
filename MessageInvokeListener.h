@@ -36,7 +36,7 @@ class MessageInvokeListener : public Command<Message>{
 				//Serial.println("execute");
 				String note = mns->text();
 				int size = Note::getSentenceSize(note);
-				//Serial.print("note: ");//Serial.println(mns->text());
+				//Serial.print("note: ");Serial.println(mns->text());
 				//Serial.print("size: ");//Serial.println(size);
 				for(int x = 0; x < size; x++){
 					////Serial.print("note: ");//Serial.println(note.getNote());
@@ -58,6 +58,8 @@ class MessageInvokeListener : public Command<Message>{
 						String parameter2 = Note::getWord(2, sentence);
 						iterate(map){
 							instance = map->getPointer();
+							instance->type(mns->type());
+							instance->id(mns->id());
 							if(method == ""){
 								continue;
 							}
@@ -75,6 +77,8 @@ class MessageInvokeListener : public Command<Message>{
 						}
 						return;
 					}
+					instance->type(mns->type());
+					instance->id(mns->id());
 					String method = Note::getWord(1, sentence);
 					if(method == ""){
 						return;

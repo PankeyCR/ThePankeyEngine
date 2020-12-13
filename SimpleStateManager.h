@@ -116,11 +116,14 @@ class SimpleStateManager : public AppStateManager{
 		
 		void update(){
 			this->now = micros();
-			this->tpc = (float)(this->now - this->prev)/1000000;
+			this->t = (float)(this->now - this->prev)/1000000;
 			this->prev = this->now;
 			for(int x=0; x < this->appStateList->getPos();x++){
-				this->appStateList->getByPos(x)->update(this->tpc);
+				this->appStateList->getByPos(x)->update(this->t);
 			}			
+		}
+		float tpc(){
+			return t;
 		}
 		
 		//cppObject part
@@ -137,7 +140,7 @@ class SimpleStateManager : public AppStateManager{
 		Application* managerApp;
 		long now = 0;
 		long prev = 0;
-		float tpc = 0;
+		float t = 0;
 };
 
 #endif

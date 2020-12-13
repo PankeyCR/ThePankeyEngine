@@ -10,13 +10,7 @@
 	
 	Statement::~Statement(){
 	}
-	/*
-	GameOn* Statement::getStatement(Parser* parser){
-		
-		
-		return nullptr;
-	}
-	*/
+	
 	void Statement::operator=(Statement b) {
 	}
 	

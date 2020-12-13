@@ -10,9 +10,7 @@
 class Statement{
     public:
 		Statement();
-		~Statement();
-		
-		//GameObject* getStatement(Parser* parser);
+		virtual ~Statement();
 		
 		virtual void operator=(Statement b);
 		virtual bool operator==(Statement b);

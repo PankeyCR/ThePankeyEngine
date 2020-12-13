@@ -6,24 +6,23 @@
 
 	
 	Parser::Parser(){
-		//this->captureToken = new PrimitiveMap<String,String>();
-		this->statements = new LinkedList<Statement>();
-		this->blocks = new LinkedList<Block>();
+		this->blocks = new PrimitiveMap<Block,PrimitiveList<String>>();
 	}
 	
 	Parser::~Parser(){
 		if(this->captureToken != nullptr){
 			delete this->captureToken;
-			this->captureToken = nullptr;
-		}
-		if(this->statements != nullptr){
-			delete this->statements;
-			this->statements = nullptr;
 		}
 		if(this->blocks != nullptr){
 			delete this->blocks;
-			this->blocks = nullptr;
 		}
+	}
+	
+	void Parser::addLexerTokens(Lexer* lexer){
+		if(this->captureToken != nullptr){
+			delete this->captureToken;
+		}
+		this->captureToken = this->removeComments(lexer->getCapturedToken(),new PrimitiveMap<String,String>());
 	}
 	
 	void Parser::addLexerTokens(Map<String,String>* map){
@@ -42,12 +41,15 @@
 		this->commentTokenEnd = end;
 	}
 	
-	void Parser::addBlock(Block* block){
-		this->blocks->add(block);
+	void Parser::setEnterToken(String n){
+		this->enterToken = n;
 	}
 	
-	Map<String,String>* Parser::removeComments(Map<String,String>* lexertokens,Map<String,String>* ntoken){
-		
+	void Parser::setBlockName(String n){
+		this->blockName = n;
+	}
+	
+	Map<String,String>* Parser::removeComments(Map<String,String>* lexertokens, Map<String,String>* ntoken){
 		bool comnt = false;
 		LinkedList<int> com;
 		LinkedList<int> com2;
@@ -84,11 +86,16 @@
 		return ntoken;
 	}
 	
-	Script* Parser::compile(){
+	bool Parser::syntax(Map<String,String>* tokens){
 		
+		return false;
 	}
 	
-	void Parser::printFileTree(Stream* port){
+	Script* Parser::compile(){
+		return nullptr;
+	}
+	
+	void Parser::printTree(Stream* port){
 		iterate(this->captureToken){
 			Serial.print(this->captureToken->getKey());
 			Serial.print(" ");

@@ -45,8 +45,20 @@
 	TimeControl *DefaultApplication::getTimeControl(){
 		return SimpleTimer::getInstance();
 	}
+	
+	void DefaultApplication::setListener(Listener *l){
+		listener = l;
+		listener->attach(this);
+	}
+	
+	Listener *DefaultApplication::getListener(){
+		return listener;
+	}
 		
 	void DefaultApplication::update(){
+		if(listener != nullptr){
+			listener->InterruptEvent();
+		}
 		this->states->update();
 	}
 	

@@ -11,6 +11,7 @@
 #include "SimpleTimer.h"
 #include "DefaultSettings.h"
 #include "DefaultStateManager.h"
+#include "Listener.h"
 
 class DefaultApplication : public Application{
     public:
@@ -26,6 +27,9 @@ class DefaultApplication : public Application{
 		virtual void setTimeControl(TimeControl *timecontrol);
 		virtual TimeControl *getTimeControl();
 		
+		virtual void setListener(Listener* l);
+		virtual Listener* getListener();
+		
 		virtual void update();
 		
 		//cppObject part
@@ -35,6 +39,7 @@ class DefaultApplication : public Application{
 	private:
 		AppStateManager *states = nullptr;
 		AppSettings *settings = nullptr;
+		Listener *listener = nullptr;
 };
 
 #endif 

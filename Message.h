@@ -15,11 +15,17 @@ Message(int i,String txt){
 	m_id = i;
 	m_text = txt;
 }
-Message(String mType,String txt){
+Message(String mname,String txt){
+	m_name = mname;
+	m_text = txt;
+}
+Message(String mname, String mType,String txt){
+	m_name = mname;
 	m_type = mType;
 	m_text = txt;
 }
-Message(String mType,int i,String txt){
+Message(int i, String mname, String mType,String txt){
+	m_name = mname;
 	m_type = mType;
 	m_id = i;
 	m_text = txt;
@@ -45,6 +51,9 @@ virtual ~Message(){}
 virtual int id(){
 	return m_id;
 }
+virtual String name(){
+	return m_text;
+}
 virtual String text(){
 	return m_text;
 }
@@ -61,10 +70,13 @@ virtual String type(){
 virtual void id(int i){
 	m_id = i;
 }
-virtual void text(const String& t){
+virtual void name(String n){
+	m_name = n;
+}
+virtual void text(String t){
 	m_text = t;
 }
-virtual void type(const String& t){
+virtual void type(String t){
 	m_type = t;
 }
 // virtual void text(const Note& t){
@@ -81,17 +93,19 @@ virtual void operator=(const String& b){
 }
 virtual void operator=(const Message& b){
 	m_id = b.m_id;
+	m_name = b.m_name;
 	m_text = b.m_text;
 	m_type = b.m_type;
 }
 virtual bool operator==(const Message& b){
-	return m_id == b.m_id && m_text == b.m_text && m_type == b.m_type;
+	return m_id == b.m_id && m_name == b.m_name && m_text == b.m_text && m_type == b.m_type;
 }
 virtual bool operator!=(const Message& b){
-	return m_id != b.m_id && m_text != b.m_text && m_type != b.m_type;
+	return m_id != b.m_id && m_name != b.m_name && m_text != b.m_text && m_type != b.m_type;
 }
 protected:
 int m_id = -1;
+String m_name;
 String m_text;
 String m_type;
 };

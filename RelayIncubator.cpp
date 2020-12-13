@@ -71,7 +71,7 @@
 		// this->fanPulse->enable(false);
 		this->relayPulse->enable(true);
 		this->fanPulse->enable(true);
-		Log("println","RelayIncubator initialize");
+		Log("RelayIncubator", "initialize", "println","RelayIncubator initialize");
 	}
 	
 	void RelayIncubator::update(){
@@ -86,7 +86,7 @@
 		}else{
 			return;
 		}
-		Log("print","temperature ");Log("println",String(temp));
+		Log("RelayIncubator", "update", "print","temperature ");Log("RelayIncubator", "update", "println",String(temp));
 		
 		if(temp < this->maxT){
 			this->relayPulse->setHighTime(deltaT*this->scale->getValue(4));

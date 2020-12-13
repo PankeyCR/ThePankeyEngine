@@ -8,6 +8,7 @@
 #include "AppSettings.h"
 #include "TimeControl.h"
 #include "cppObject.h"
+#include "Listener.h"
 
 class Application : public cppObject{
     public:
@@ -30,12 +31,9 @@ class Application : public cppObject{
 		virtual AssetManager *getAssetManager(){
 			
 		}*/
-	/*	virtual void setListener(Listener *listener){
-			
-		}
-		virtual Listener *getListener(){
-			
-		}*/
+		virtual void setListener(Listener* listener)=0;
+		
+		virtual Listener* getListener()=0;
 		
 		virtual void update()=0;
     

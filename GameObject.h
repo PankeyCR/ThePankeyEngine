@@ -28,6 +28,8 @@ class GameObject : public GameOn{
 		
         virtual GameOn* detach(String className);
 		
+        virtual void detach(GameOn* gameon);
+		
         virtual List<GameOn>* getChilds();
 		
 		virtual String getClassName();

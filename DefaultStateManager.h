@@ -26,6 +26,8 @@ class DefaultStateManager : public AppStateManager{
 		
 		virtual void update();
 		
+		virtual float tpc();
+		
 		//cppObject part
 		virtual String getClassName();
 		virtual String toString();
@@ -35,7 +37,7 @@ class DefaultStateManager : public AppStateManager{
 		Application *managerApp;
 		long now = 0;
 		long prev = 0;
-		float tpc = 0;
+		float t = 0;
 };
 
 #endif

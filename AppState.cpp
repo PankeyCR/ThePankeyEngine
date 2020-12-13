@@ -27,6 +27,10 @@
 		
 	}
 	
+	bool AppState::instanceof(String name){
+		return name == "AppState" || cppObject::instanceof(name);
+	}
+	
 	void AppState::operator=(AppState b) {
 		this->id = b.id;
 	}

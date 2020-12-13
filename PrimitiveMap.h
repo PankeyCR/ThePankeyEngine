@@ -323,13 +323,17 @@ class PrimitiveMap : public Map<K,V>{
 		}
 		
 		virtual void resetDelete(){
-			iterate(this){
+			for(int rd = 0; rd < this->pos; rd++){
 				if(this->owner){
-					delete this->getKeyPointer();
-					delete this->getPointer();
+					if(this->keys[rd] == nullptr){
+						delete this->keys[rd];
+						this->keys[rd] = nullptr;
+					}
+					if(this->values[rd] == nullptr){
+						delete this->values[rd];
+						this->values[rd] = nullptr;
+					}
 				}
-				this->keys[this->getIteration()] = nullptr;
-				this->values[this->getIteration()] = nullptr;
 			}
 			this->pos = 0;
 		}

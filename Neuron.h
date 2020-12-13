@@ -11,7 +11,7 @@ class Neuron{
 		Neuron(){}
 		virtual ~Neuron(){}
 		
-		virtual DataSet<dataset>* compute(DataSet<dataset> *data){}
+		virtual DataSet<dataset>* compute(DataSet<dataset>* data){return data;}
 		virtual void setFunction(Function<T,args...>* fn){fun = fn;}
 		virtual Function<T,args...>* getFunction(){return fun;}
 	protected:

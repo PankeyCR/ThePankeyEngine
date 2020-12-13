@@ -10,7 +10,7 @@
 	}
 	
 	GameOn::~GameOn(){
-		
+		parent = nullptr;
 	}
 	
 	void GameOn::setParent(GameOn *parent){

@@ -10,6 +10,38 @@ class AppStateManager : public cppObject{
     public:
 		virtual void setApplication(Application *app)=0;
 		
+		template<class T>
+		T* addState(T* state){
+			this->add(state);
+			return state;
+		}
+		template<class T>
+		T* getState(){
+			T t;
+			AppState* st = this->get(t.getClassName());
+			if(st->instanceof(t.getClassName())){
+				return (T*)st;
+			}
+			return nullptr;
+		}
+		template<class T>
+		T* removeState(){
+			T t;
+			AppState* st = this->get(t.getClassName());
+			if(st->instanceof(t.getClassName())){
+				this->remove(t.getClassName());
+				return (T*)st;
+			}
+			return nullptr;
+		}
+		template<class T>
+		void removeDeleteState(){
+			T t;
+			AppState* s = this->remove(t.getClassName());
+			if(s != nullptr){
+				delete s;
+			}
+		}
 		virtual AppState* add(AppState* state)=0;
 		virtual AppState* get(String classname)=0;
 		virtual AppState* get(String appstateId,String classname)=0;
@@ -21,6 +53,8 @@ class AppStateManager : public cppObject{
 		virtual void removeDeleteAll()=0;
 		
 		virtual void update()=0;
+		
+		virtual float tpc()=0;
 	private:
 };
 

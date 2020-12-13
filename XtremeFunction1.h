@@ -10,12 +10,12 @@ class XtremeFunction1 : public ModifiableFunction<float,float>{
 		
 		XtremeFunction1(){
 			this->constants = new ArrayList<float,20>;
-			this->variables = new ArrayList<float,20>;
+			this->variables = new ArrayList<float,200>;
 			for(int x=0; x <= 20; x++){
-				this->constants->add(0.0f);
+				this->constants->add(new float(0.0f));
 			}
 			for(int x=0; x <= 200; x++){
-				this->variables->add(0.0f);
+				this->variables->add(new float(0.0f));
 			}
 		}
 		
@@ -60,6 +60,7 @@ class XtremeFunction1 : public ModifiableFunction<float,float>{
 		virtual int getIterationSize(){
 			return 200;
 		}
+		virtual bool instanceof(String name){return name == "XtremeFunction1" || name == "ModifiableFunction" || name == "Function";}
 		
 	protected:
 		
