@@ -35,7 +35,10 @@
 		}
 		return s == "cppObject";
 	}
-	cppObject *cppObject::clone(){
+	cppObject *cppObject::clone(void){
+		return this->clone(true);
+	}
+	cppObject *cppObject::clone(bool owningMemory){
 		return this;
 	}
 

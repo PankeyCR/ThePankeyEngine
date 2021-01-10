@@ -2,7 +2,7 @@
 #ifndef Quaternion_h
 #define Quaternion_h
 
-#include "FastMath.h"
+#include "FastMonkeyMath.h"
 #include "cppObject.h"
 #include "List.h"
 #include "Matrix3f.h"

@@ -56,7 +56,7 @@
 		if(this->timeList == nullptr){
 			return nullptr;
 		}
-		this->timeList->add(t);
+		this->timeList->addPointer(t);
 		return t;
 	}
 	
@@ -64,14 +64,14 @@
 		if(this->timeList == nullptr){
 			return nullptr;
 		}
-		return this->timeList->remove(t);
+		return this->timeList->removeByPointer(t);
 	}
 	
 	TimeElapsed *TimeControl::removeByPos(int pos){
 		if(this->timeList == nullptr){
 			return nullptr;
 		}
-		return this->timeList->removeByPos(pos);
+		return this->timeList->removeByPosition(pos);
 	}
 		
 	List<TimeElapsed> *TimeControl::getTimeElapsedList(){
@@ -85,14 +85,14 @@
 		if(this->timeList == nullptr){
 			return nullptr;
 		}
-		return this->timeList->getByPos(pos);
+		return this->timeList->getByPosition(pos);
 	}
 	
 	TimeElapsed *TimeControl::getTimeElapsed(TimeElapsed *t){
 		if(this->timeList == nullptr){
 			return nullptr;
 		}
-		return this->timeList->get(t);
+		return this->timeList->getByPointer(t);
 	}
 	
 	

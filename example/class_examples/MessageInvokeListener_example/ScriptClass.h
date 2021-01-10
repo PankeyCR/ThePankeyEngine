@@ -14,7 +14,7 @@ ScriptClass(){
   annotation1 = false;
   annotation2 = false;
   annotation3 = false;
-  annotationGlobal1.add("command01",&ScriptClass::command01);
+  annotationGlobal1.addLValues("command01",&ScriptClass::command01);
 }
 ~ScriptClass(){}
 
@@ -41,6 +41,19 @@ virtual bool operator!=(ScriptClass b){return annotationGlobal1 != b.annotationG
                                               annotation2 != b.annotation2 &&
                                               annotation3 != b.annotation3;}
 
+void type(String t){
+  m_type = t;
+}
+void messageId(int i){
+  m_id = i;
+}
+String type(){
+  return m_type;
+}
+int messageId(){
+  return m_id;
+}
+
 bool command01(){
   //to something
   if(serial == nullptr){
@@ -50,6 +63,8 @@ bool command01(){
   return true;
 }
 protected:
+String m_type;
+int m_id;
 Stream* serial = nullptr;
 Annotation<String,bool,ScriptClass> annotationGlobal1;
 Annotation<String,bool,ScriptClass,String> annotationGlobal2;

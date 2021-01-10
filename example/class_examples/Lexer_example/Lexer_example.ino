@@ -1,5 +1,6 @@
 
 #include "Lexer.h"
+#include "MemoryFree.h"
 
 String scriptText = String("//simple script class\n")+
   "class ScriptClass{\n"+
@@ -11,7 +12,12 @@ String scriptText = String("//simple script class\n")+
  
 void setup() {
   Serial.begin(9600);
-  Serial.println(scriptText);
+}
+
+void loop() {
+  Serial.println("////////////start");
+  Serial.println(freeMemory());
+//  Serial.println(scriptText);
   Lexer* lexer = new Lexer();
   lexer->   addToken("if")->
             addToken("while")->
@@ -75,8 +81,6 @@ void setup() {
   lexer->printTokens(&Serial);
 
   delete lexer;
-}
-
-void loop() {
-
+  Serial.println("////////////end");
+  Serial.println(freeMemory());
 }

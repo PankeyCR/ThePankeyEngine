@@ -318,10 +318,10 @@
     }
 	
     List<float> *Vector4f::toArray(List<float> *list) {
-        list->set(0, this->x);
-        list->set(1, this->y);
-        list->set(2, this->z);
-        list->set(3, this->w);
+        list->setLValue(0, this->x);
+        list->setLValue(1, this->y);
+        list->setLValue(2, this->z);
+        list->setLValue(3, this->w);
         return list;
     }
 	

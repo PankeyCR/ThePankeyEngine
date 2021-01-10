@@ -3,6 +3,10 @@
 //Set individual bits, checking if bits are true and if array contains byte, ByteArray:
 void setup() {
   Serial.begin(9600);
+}
+
+void loop() {
+  Serial.println("start");
   ByteArray array;
   array.add(0b00000000);//adds a single byte
 
@@ -27,11 +31,9 @@ void setup() {
   if(array.getBit(0,6)){
     Serial.println("this bit is on: cell:0, bit:6");
   }
-  if(array.contain(0b01010101)){
+  if(array.containByLValue(0b01010101)){
     Serial.println("contain this byte: 0b01010101");
-    Serial.print("in position: ");Serial.println(array.getIndex(0b01010101));
+    Serial.print("in position: ");Serial.println(array.getIndexByLValue(0b01010101));
   }
-}
-
-void loop() {
+  Serial.println("end");
 }

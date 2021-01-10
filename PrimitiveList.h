@@ -34,7 +34,7 @@ class PrimitiveList : public List<T>{
 			}
 		}
 		
-		PrimitiveList(int lsize, bool own){
+		PrimitiveList( bool own, int lsize){
 			owner = own;
 			this->values = new T*[lsize];
 			this->size = lsize;
@@ -64,11 +64,11 @@ class PrimitiveList : public List<T>{
 			return pos==0;
 		}
 		
-		virtual void setPos(int p){
+		virtual void setPosition(int p){
 			this->pos = p;
 		}
 		
-		virtual int getPos(){
+		virtual int getPosition(){
 			return this->pos;
 		}
 		
@@ -76,9 +76,9 @@ class PrimitiveList : public List<T>{
 			return this->size;
 		}
 		
-		virtual void add(List<T> *list){
+		virtual void addList(List<T> *list){
 			for(int x=0; x < list->getSize() ; x++){
-				this->add(list->getByPos(x));
+				this->addPointer(list->getByPosition(x));
 			}
 		}
 	
@@ -86,7 +86,8 @@ class PrimitiveList : public List<T>{
 		void addPack(args... x){
 			T array[] = {x...};
 			for(const T &a : array){
-				add(a);
+			//for(T a : array){
+				addPointer(new T(a));
 			}
 		}
 		
@@ -103,7 +104,7 @@ class PrimitiveList : public List<T>{
 			return this->values[this->pos-1];
 		}
 		
-		virtual T* add(T* value){
+		virtual T* addPointer(T* value){
 			if(value == nullptr){
 				return nullptr;
 			}
@@ -118,7 +119,7 @@ class PrimitiveList : public List<T>{
 			return this->values[this->pos-1];
 		}
 		
-		virtual T* add(T value){
+		virtual T* addLValue(T value){
 			if(this->pos >= this->size){
 				this->expandLocal(this->expandSize);
 			}
@@ -133,7 +134,7 @@ class PrimitiveList : public List<T>{
 			return this->values[this->pos-1];
 		}
 		
-		virtual T* set(int position,T value){
+		virtual T* setLValue(int position, T value){
 			if(position >= this->size){
 				return nullptr;			
 			}
@@ -144,7 +145,7 @@ class PrimitiveList : public List<T>{
 			return this->values[position];
 		}
 		
-		virtual T* set(int position,T* value){
+		virtual T* setPointer(int position, T* value){
 			if(position >= this->size){
 				return nullptr;			
 			}
@@ -158,7 +159,7 @@ class PrimitiveList : public List<T>{
 			return value;
 		}
 		
-		virtual T* insert(int position, T value){
+		virtual T* insertLValue(int position, T value){
 			if(position >= this->size){
 				this->expandLocal(this->expandSize+(position-this->size));
 			}
@@ -182,7 +183,7 @@ class PrimitiveList : public List<T>{
 			return values[position];
 		}
 		
-		virtual T* insert(int position, T* value){
+		virtual T* insertPointer(int position, T* value){
             if(value == nullptr || values[position] == value){
 				return nullptr;
             }
@@ -208,32 +209,32 @@ class PrimitiveList : public List<T>{
 			return values[position];
 		}
 		
-		virtual T* get(T* key){
-			iterate(this){
-				if(key == this->getPointer()){
-					return this->getPointer();
+		virtual T* getByPointer(T* key){
+			for(Iterator i : *this){
+				if(key == this->getPointer(i)){
+					return this->getPointer(i);
 				}
 			}
 			return nullptr;
 		}
 		
-		virtual T* get(T key){
-			iterate(this){
-				if(key == this->getValue()){
-					return this->getPointer();
+		virtual T* getByLValue(T key){
+			for(Iterator i : *this){
+				if(key == this->getLValue(i)){
+					return this->getPointer(i);
 				}
 			}
 			return nullptr;
 		}
 		
-		virtual T* getByPos(int x){
+		virtual T* getByPosition(int x){
 			if(x < this->pos){
 				return this->values[x];
 			}
 			return nullptr;
 		}
 		
-		virtual bool contain(T* key){
+		virtual bool containByPointer(T* key){
 		for(int xk = 0; xk < this->pos; xk++){
 			if(key == this->values[xk]){
 				return true;
@@ -242,7 +243,7 @@ class PrimitiveList : public List<T>{
 		return false;
 		}
 		
-		virtual bool contain(T key){
+		virtual bool containByLValue(T key){
 		for(int xk = 0; xk < this->pos; xk++){
 			if(key == *this->values[xk]){
 				return true;
@@ -251,19 +252,19 @@ class PrimitiveList : public List<T>{
 			return false;
 		}
 		
-		virtual int getIndex(T* key){
-		iterate(this){
-			if(key == this->getPointer()){
-				return this->getIteration();
+		virtual int getIndexByPointer(T* key){
+			for(Iterator i : *this){
+				if(key == this->getPointer(i)){
+					return i.getIteration();
+				}
 			}
-		}
-		return false;
+			return false;
 		}
 		
-		virtual int getIndex(T key){
-			iterate(this){
-				if(key == this->getValue()){
-					return this->getIteration();
+		virtual int getIndexByLValue(T key){
+			for(Iterator i : *this){
+				if(key == this->getLValue(i)){
+					return i.getIteration();
 				}
 			}
 			return false;
@@ -291,22 +292,30 @@ class PrimitiveList : public List<T>{
 			this->pos = 0;
 		}
 		
-		virtual T* remove(T *key){
+		virtual T* removeByPointer(T *key){
 			T *t = nullptr;
 			bool is=false;
-			iterate(this){
-				if(key == this->getPointer()){
+			for(Iterator i : *this){
+				if(key == this->getPointer(i)){
 					is = true;
 				}
 			}
 			if(is){
 				int nv =0;
-				iterate(this){
-					if(key != this->getPointer()){
-						this->values[nv] = this->values[this->getIteration()];
+				for(Iterator i : *this){
+					if(key != this->getPointer(i)){
+						this->values[nv] = this->values[i.getIteration()];
 						nv++;
 					}else{
-						t = this->values[this->getIteration()];
+						t = this->values[i.getIteration()];
+					}
+				}
+				for(Iterator i : *this){
+					if(key != this->getPointer(i)){
+						this->values[nv] = this->values[i.getIteration()];
+						nv++;
+					}else{
+						t = this->values[i.getIteration()];
 					}
 				}
 				pos = nv;
@@ -315,22 +324,22 @@ class PrimitiveList : public List<T>{
 			return nullptr;
 		}
 		
-		virtual T* remove(T key){
+		virtual T* removeByLValue(T key){
 			T *t = nullptr;
 			bool is=false;
-			iterate(this){
-				if(key == this->getValue()){
+			for(Iterator i : *this){
+				if(key == this->getLValue(i)){
 					is = true;
 				}
 			}
 			if(is){
 				int nv =0;
-				iterate(this){
-					if(key != this->getValue()){
-						this->values[nv] = this->values[this->getIteration()];
+				for(Iterator i : *this){
+					if(key != this->getLValue(i)){
+						this->values[nv] = this->values[i.getIteration()];
 						nv++;
 					}else{
-						t = this->values[this->getIteration()];
+						t = this->values[i.getIteration()];
 					}
 				}
 				pos = nv;
@@ -339,7 +348,7 @@ class PrimitiveList : public List<T>{
 			return nullptr;
 		}
 		
-		virtual T* removeByPos(int p){
+		virtual T* removeByPosition(int p){
 			if(p >= pos){
 				return nullptr;
 			}
@@ -356,21 +365,21 @@ class PrimitiveList : public List<T>{
 			return t;
 		}
 		
-		virtual void removeDelete(T* key){
-			T* t = this->remove(key);
+		virtual void removeDeleteByPointer(T* key){
+			T* t = this->removeByPointer(key);
 			if(t != nullptr && owner){
 				delete t;
 			}
 		}
 		
-		virtual void removeDelete(T key){
-			T* t = this->remove(key);
+		virtual void removeDeleteByLValue(T key){
+			T* t = this->removeByLValue(key);
 			if(t != nullptr && owner){
 				delete t;
 			}
 		}
 		
-		virtual void removeDeleteByPos(int p){
+		virtual void removeDeleteByPosition(int p){
 			if(p >= pos){
 				return;
 			}
@@ -400,44 +409,44 @@ class PrimitiveList : public List<T>{
 		
 		
 		//iterator part
-		virtual T getValue(){
-			return *this->values[this->getIteration()];
+		virtual T getLValue(Iterator iterate){
+			return *this->values[iterate.getIteration()];
 		}
 		
-		virtual T* getPointer(){
-			return this->values[this->getIteration()];
+		virtual T* getPointer(Iterator iterate){
+			return this->values[iterate.getIteration()];
 		}
 		
-		virtual T* set(T s){
-			return this->set(this->getIteration() , s);
+		virtual T* setLValue(Iterator iterate, T s){
+			return this->setLValue(iterate.getIteration() , s);
 		}
 		
-		virtual T* set(T* s){
-			return this->set(this->getIteration() , s);
+		virtual T* setPointer(Iterator iterate, T* s){
+			return this->setPointer(iterate.getIteration() , s);
 		}
 		
-		virtual T* insert(T s){
-			int p = this->iterateCount;
-			this->iterateCount++;
-			return this->insert(p , s);
+		virtual T* insertLValue(Iterator& iterate, T s){
+			int p = iterate.getIteration();
+			iterate.next();
+			return this->insertLValue(p , s);
 		}
 		
-		virtual T* insert(T* s){
-			int p = this->iterateCount;
-			this->iterateCount++;
-			return this->insert(p , s);
+		virtual T* insertPointer(Iterator& iterate, T* s){
+			int p = iterate.getIteration();
+			iterate.next();
+			return this->insertPointer(p , s);
 		}
 		
-		virtual T* remove(){
-			int p = this->iterateCount;
-			this->iterateCount--;
-			return this->removeByPos(p);
+		virtual T* remove(Iterator& iterate){
+			int p = iterate.getIteration();
+			iterate.last();
+			return this->removeByPosition(p);
 		}
 		
-		void removeDelete(){
-			int p = this->iterateCount;
-			this->iterateCount--;
-			this->removeDeleteByPos(p);
+		void removeDelete(Iterator& iterate){
+			int p = iterate.getIteration();
+			iterate.last();
+			this->removeDeleteByPosition(p);
 		}
 		
 		virtual int getIterationSize(){
@@ -463,9 +472,21 @@ class PrimitiveList : public List<T>{
 		virtual String toString(){
 			return "PrimitiveList";
 		}
-		
+
 		virtual PrimitiveList<T>* clone(){
-			return new PrimitiveList<T>(this->size);
+			PrimitiveList<T>* list = new PrimitiveList<T>(this->size);
+			for(int xl=0; xl < this->pos; xl++){
+				list->addLValue(*values[xl]);
+			}
+			return list;
+		}
+
+		virtual PrimitiveList<T>* clone(bool owningMemory){
+			PrimitiveList<T>* list = new PrimitiveList<T>(owningMemory, this->size);
+			for(int xl=0; xl < this->pos; xl++){
+				list->addLValue(*values[xl]);
+			}
+			return list;
 		}
 		
 		
@@ -487,7 +508,7 @@ class PrimitiveList : public List<T>{
 			int nsize = this->size+add;
 			PrimitiveList<T> *nprimitive = new PrimitiveList<T>(nsize);	
 			for(int x=0; x < this->pos; x++){
-				nprimitive->add(this->values[x]);
+				nprimitive->addPointer(this->values[x]);
 			}
 			return nprimitive;
 		}

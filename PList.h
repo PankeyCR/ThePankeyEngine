@@ -31,7 +31,7 @@ class PList : public List<T>{
 		
 		~PList<T,size>(){
 			if(owner){
-				for(int x=0; x < size ; x++){
+				for(int x=0; x < pos ; x++){
 					if(values[x] != nullptr){
 						delete values[x];
 					}
@@ -43,11 +43,11 @@ class PList : public List<T>{
 			return pos==0;
 		}
 		
-		void setPos(int p){
+		void setPosition(int p){
 			pos=p;
 		}
 		
-		int getPos(){
+		int getPosition(){
 			return pos;
 		}
 		
@@ -55,25 +55,25 @@ class PList : public List<T>{
 			return size;
 		}
 		
-		T* getByPos(int x){
+		T* getByPosition(int x){
 			if(x >= pos){
 				return nullptr;
 			}
 			return values[x];
 		}
 		
-		void add(List<T> *list){
+		void addList(List<T> *list){
             if(list == nullptr){
 				return;
             }
-			for(int x=0; x < list->getPos() ; x++){
+			for(int x=0; x < list->getPosition() ; x++){
 				while(values[pos] != nullptr){
 					pos++;
 				}
 				if(pos >= size){
 					return;
 				}
-				values[pos] = list->getByPos(x);
+				values[pos] = list->getByPosition(x);
 				pos++;
 			}
 		}
@@ -81,13 +81,14 @@ class PList : public List<T>{
 		template<class... args>
 		void addPack(args... x){
 			T array[] = {x...};
-			for(const T &a : array){
-				add(a);
+			//for(const T &a : array){
+			for(T a : array){
+				addLValue(a);
 			}
 		}
 		
 		template<class... Args>
-		T* add(Args... args){
+		T* addParameters(Args... args){
             if(pos >= size){
 				return nullptr;
             }
@@ -102,13 +103,7 @@ class PList : public List<T>{
 			return values[pos-1];
 		}
 		
-		T* add(T* value){
-            if(pos >= size){
-				return nullptr;
-            }
-			while(values[pos] != nullptr){
-				pos++;
-			}
+		T* addPointer(T* value){
             if(pos >= size){
 				return nullptr;
             }
@@ -117,13 +112,7 @@ class PList : public List<T>{
 			return value;
 		}
 		
-		T* add(T value){
-            if(pos >= size){
-				return nullptr;
-            }
-			while(values[pos] != nullptr){
-				pos++;
-			}
+		T* addLValue(T value){
             if(pos >= size){
 				return nullptr;
             }
@@ -133,7 +122,7 @@ class PList : public List<T>{
 			return values[pos-1];
 		}
 		
-		T* set(int position, T value){
+		T* setLValue(int position, T value){
             if(position >= size){
 				return nullptr;
             }
@@ -144,7 +133,7 @@ class PList : public List<T>{
 			return values[position];
 		}
 		
-		T* set(int position, T* value){
+		T* setPointer(int position, T* value){
             if(position >= size){
 				return nullptr;
             }
@@ -155,7 +144,7 @@ class PList : public List<T>{
 			return value;
 		}
 		
-		T* insert(int position, T value){
+		T* insertLValue(int position, T value){
             if(position >= size){
 				return nullptr;
             }
@@ -191,7 +180,7 @@ class PList : public List<T>{
 			return values[position];
 		}
 		
-		T* insert(int position, T* value){
+		T* insertPointer(int position, T* value){
             if(value == nullptr || values[position] == value){
 				return nullptr;
             }
@@ -229,7 +218,7 @@ class PList : public List<T>{
 			return values[position];
 		}
 		
-		T* get(T* key){
+		T* getByPointer(T* key){
 			for(int x=0; x < pos; x++){
 				if(values[x] == key ){
 					return values[x];
@@ -238,7 +227,7 @@ class PList : public List<T>{
 			return nullptr;
 		}
 		
-		T* get(T key){
+		T* getByLValue(T key){
 			for(int x=0; x < pos; x++){
 				if(*values[x] == key ){
 					return values[x];
@@ -247,7 +236,7 @@ class PList : public List<T>{
 			return nullptr;
 		}
 		
-		bool contain(T *key){
+		bool containByPointer(T *key){
 			for(int x=0; x < pos; x++){
 				if(values[x] == key ){
 					return true;
@@ -256,7 +245,7 @@ class PList : public List<T>{
 			return false;
 		}
 		
-		bool contain(T key){
+		bool containByLValue(T key){
 			for(int x=0; x < pos; x++){
 				if(*values[x] == key ){
 					return true;
@@ -265,7 +254,7 @@ class PList : public List<T>{
 			return false;
 		}
 		
-		int getIndex(T *key){
+		int getIndexByPointer(T *key){
 			for(int x=0; x < pos; x++){
 				if(values[x] == key ){
 					return x;
@@ -274,7 +263,7 @@ class PList : public List<T>{
 			return -1;
 		}
 		
-		int getIndex(T key){
+		int getIndexByLValue(T key){
 			for(int x=0; x < pos; x++){
 				if(*values[x] == key ){
 					return x;
@@ -285,6 +274,9 @@ class PList : public List<T>{
 		
 		void reset(){
 			pos=0;
+			for(int x=0; x < pos; x++){
+				values[x] = nullptr;
+			}
 		}
 		
 		void resetDelete(){
@@ -297,7 +289,7 @@ class PList : public List<T>{
 			pos=0;
 		}
 		
-		T *remove(T* key){
+		T* removeByPointer(T* key){
 			T *t = nullptr;
 			bool is=false;
 			for(int x=0; x < pos; x++){
@@ -320,7 +312,7 @@ class PList : public List<T>{
 			return t;
 		}
 		
-		T *remove(T key){
+		T* removeByLValue(T key){
 			T *t = nullptr;
 			bool is=false;
 			for(int x=0; x < pos; x++){
@@ -343,7 +335,7 @@ class PList : public List<T>{
 			return t;
 		}
 		
-		T *removeByPos(int p){
+		T* removeByPosition(int p){
 			if(p >= pos){
 				return nullptr;
 			}
@@ -360,7 +352,7 @@ class PList : public List<T>{
 			return t;
 		}
 	
-		void removeDelete(T *key){
+		void removeDeleteByPointer(T* key){
 			bool is=false;
 			for(int x=0; x < pos; x++){
 				if(values[x] == key ){
@@ -383,7 +375,7 @@ class PList : public List<T>{
 			}
 		}
 	
-		void removeDelete(T key){
+		void removeDeleteByLValue(T key){
 			bool is=false;
 			for(int x=0; x < pos; x++){
 				if(*values[x] == key ){
@@ -406,7 +398,7 @@ class PList : public List<T>{
 			}
 		}
 		
-		void removeDeleteByPos(int p){
+		void removeDeleteByPosition(int p){
 			if(p >= pos){
 				return;
 			}
@@ -454,53 +446,59 @@ class PList : public List<T>{
 			return pos;
 		}
 		
-		T getValue(){
-			return *values[this->getIteration()];
+		T getLValue(Iterator iterate){
+			return *values[iterate.getIteration()];
 		}
 		
-		T* getPointer(){
-			return values[this->getIteration()];
+		T* getPointer(Iterator iterate){
+			return values[iterate.getIteration()];
 		}
 		
-		T* set(T s){
-			return this->set(this->getIteration() , s);
+		T* setLValue(Iterator iterate, T s){
+			return this->setLValue(iterate.getIteration() , s);
 		}
 		
-		T* set(T* s){
-			return this->set(this->getIteration() , s);
+		T* setPointer(Iterator iterate, T* s){
+			return this->setPointer(iterate.getIteration() , s);
 		}
 		
-		T* insert(T s){
-			int p = this->iterateCount;
-			this->iterateCount++;
-			return this->insert(p , s);
+		T* insertLValue(Iterator& iterate, T s){
+			int p = iterate.getIteration();
+			iterate.next();
+			return this->insertLValue(p , s);
 		}
 		
-		T* insert(T* s){
-			int p = this->iterateCount;
-			this->iterateCount++;
-			return this->insert(p , s);
+		T* insertPointer(Iterator& iterate, T* s){
+			int p = iterate.getIteration();
+			iterate.next();
+			return this->insertPointer(p , s);
 		}
 		
-		T* remove(){
-			int p = this->iterateCount;
-			this->iterateCount--;
-			return this->removeByPos(p);
+		T* remove(Iterator& iterate){
+			int p = iterate.getIteration();
+			iterate.last();
+			return this->removeByPosition(p);
 		}
 		
-		void removeDelete(){
-			int p = this->iterateCount;
-			this->iterateCount--;
-			this->removeDeleteByPos(p);
+		void removeDelete(Iterator& iterate){
+			int p = iterate.getIteration();
+			iterate.last();
+			this->removeDeleteByPosition(p);
 		}
 		
 		List<T>* clone(){
-			List<T>* list = new PList<T,size>();
-			
-			for(int xl=0; xl < size; xl++){
-				list->add(values[xl]);
+			List<T>* list = new PList<T,size>(true);
+			for(int xl=0; xl < pos; xl++){
+				list->addLValue(*values[xl]);
 			}
-			
+			return list;
+		}
+		
+		List<T>* clone(bool owningMemory){
+			List<T>* list = new PList<T,size>(owningMemory);
+			for(int xl=0; xl < pos; xl++){
+				list->addLValue(*values[xl]);
+			}
 			return list;
 		}
 		

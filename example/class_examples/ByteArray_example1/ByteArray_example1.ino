@@ -7,6 +7,9 @@
 
 void setup() {
   Serial.begin(9600);
+}
+
+void loop() {
   ByteArray array;
   array += 5;
   array += 0b00000101;//this is also a 5
@@ -22,7 +25,4 @@ void setup() {
   Serial.println();
   Serial.println("toString");
   Serial.println(array.toString());
-}
-
-void loop() {
 }

@@ -7,7 +7,7 @@
 
 template<class T>
 class LinkedList : public List<T>{
-	private:
+	protected:
 		int pos;
 		int size;
 		bool owner = true;
@@ -15,7 +15,7 @@ class LinkedList : public List<T>{
 		
 		LinkedListNode<T>* start = nullptr;
 		LinkedListNode<T>* node = nullptr;
-		LinkedListNode<T>* iteratorNode = nullptr;
+		// LinkedListNode<T>* iteratorNode = nullptr;
 		
 		LinkedList<T>(){
 			start = new LinkedListNode<T>();
@@ -59,11 +59,11 @@ class LinkedList : public List<T>{
 			return pos==0;
 		}
 		
-		void setPos(int p){
+		void setPosition(int p){
 			pos=p;
 		}
 		
-		int getPos(){
+		int getPosition(){
 			return pos;
 		}
 		
@@ -71,25 +71,26 @@ class LinkedList : public List<T>{
 			return size;
 		}
 		
-		void add(List<T> *list){
+		void addList(List<T> *list){
             if(list == nullptr){
 				return;
             }
-			for(int x=0; x<list->getPos();x++){
-				this->add(list->getByPos(x));
+			for(int x=0; x<list->getPosition();x++){
+				this->addPointer(list->getByPosition(x));
 			}
 		}
 	
 		template<class... args>
 		void addPack(args... x){
 			T array[] = {x...};
-			for(const T &a : array){
-				add(a);
+			//for(const T &a : array){
+			for(T a : array){
+				addLValue(a);
 			}
 		}
 		
 		template<class... Args>
-		T* add(Args... args){
+		T* addParameters(Args... args){
 			node->actual = new T(args...);
 			LinkedListNode<T>* n;
 			T* rturn =  node->actual;
@@ -108,7 +109,7 @@ class LinkedList : public List<T>{
 			return rturn;
 		}
 		
-		T* add(T* value){
+		T* addPointer(T* value){
 			if(value == nullptr){
 				return nullptr;
 			}
@@ -130,7 +131,7 @@ class LinkedList : public List<T>{
 			return rturn;
 		}
 		
-		T* add(T value){
+		T* addLValue(T value){
 			node->actual = new T();
 			*node->actual = value;
 			LinkedListNode<T>* n;
@@ -150,7 +151,7 @@ class LinkedList : public List<T>{
 			return rturn;
 		}
 		
-		T* set(int position,T value){
+		T* setLValue(int position,T value){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -169,7 +170,7 @@ class LinkedList : public List<T>{
 			return nullptr;
 		}
 		
-		T* set(int position, T* value){
+		T* setPointer(int position, T* value){
 			if(value == nullptr){
 				return nullptr;
 			}
@@ -190,7 +191,7 @@ class LinkedList : public List<T>{
 			return nullptr;
 		}
 		
-		T* insert(int position, T value){
+		T* insertLValue(int position, T value){
             if(position >= size){
 				return nullptr;
             }
@@ -223,7 +224,7 @@ class LinkedList : public List<T>{
 			return rturn;
 		}
 		
-		T* insert(int position, T* value){
+		T* insertPointer(int position, T* value){
             if(value == nullptr){
 				return nullptr;
             }
@@ -260,7 +261,7 @@ class LinkedList : public List<T>{
 			return value;
 		}
 		
-		T *get(T* key){
+		T *getByPointer(T* key){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -275,7 +276,7 @@ class LinkedList : public List<T>{
 			return nullptr;
 		}
 		
-		T* get(T key){
+		T* getByLValue(T key){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -290,7 +291,7 @@ class LinkedList : public List<T>{
 			return nullptr;
 		}
 		
-		T* getByPos(int p){
+		T* getByPosition(int p){
 			if(p >= size){
 				return nullptr;
 			}
@@ -308,7 +309,7 @@ class LinkedList : public List<T>{
 			return nullptr;
 		}
 		
-		bool contain(T* key){
+		bool containByPointer(T* key){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -323,7 +324,7 @@ class LinkedList : public List<T>{
 			return false;
 		}
 		
-		bool contain(T key){
+		bool containByLValue(T key){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -338,7 +339,7 @@ class LinkedList : public List<T>{
 			return false;
 		}
 		
-		int getIndex(T* key){
+		int getIndexByPointer(T* key){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -353,7 +354,7 @@ class LinkedList : public List<T>{
 			return -1;
 		}
 		
-		int getIndex(T key){
+		int getIndexByLValue(T key){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -391,15 +392,15 @@ class LinkedList : public List<T>{
 		void resetDelete(){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
-			for(int x=0; x<size; x++){
+			for(int x=0; x < size+1; x++){
 				if(n->next != nullptr){
 					nn = n->next;
 				}
-				if(n != nullptr){
-					delete n;
-				}
 				if(n->actual != nullptr && owner){
 					delete n->actual;
+				}
+				if(n != nullptr){
+					delete n;
 				}
 				if(nn != nullptr){
 					n = nn;
@@ -411,7 +412,7 @@ class LinkedList : public List<T>{
 			size = 0;
 		}
 		
-		T* remove(T* key){
+		T* removeByPointer(T* key){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -431,7 +432,7 @@ class LinkedList : public List<T>{
 			}
 		}
 		
-		T* remove(T key){
+		T* removeByLValue(T key){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -451,7 +452,7 @@ class LinkedList : public List<T>{
 			}
 		}
 		
-		T* removeByPos(int p){
+		T* removeByPosition(int p){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -472,7 +473,7 @@ class LinkedList : public List<T>{
 			return nullptr;
 		}
 	
-		void removeDelete(T* key){
+		void removeDeleteByPointer(T* key){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -496,7 +497,7 @@ class LinkedList : public List<T>{
 			}
 		}
 	
-		void removeDelete(T key){
+		void removeDeleteByLValue(T key){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -520,7 +521,7 @@ class LinkedList : public List<T>{
 			}
 		}
 		
-		void removeDeleteByPos(int p){
+		void removeDeleteByPosition(int p){
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
@@ -598,77 +599,80 @@ class LinkedList : public List<T>{
 		String getClassName(){
 			return "LinkedList";
 		}
-		void setIteration(int iter){
-			this->iterateCount = iter;
+		
+		// void setIteration(int iter){
+			// this->iterateCount = iter;
 			
-			LinkedListNode<T>* n = start;
-			LinkedListNode<T>* nn = nullptr;
-			for(int x=0; x<size; x++){
-				if(x == iter){
-					iteratorNode = n;
-					return;
-				}
-				if(n->next != nullptr){
-					nn = n->next;
-					n = nn;
-				}
-			}
-		}
+			// LinkedListNode<T>* n = start;
+			// LinkedListNode<T>* nn = nullptr;
+			// for(int x=0; x<size; x++){
+				// if(x == iter){
+					// iteratorNode = n;
+					// return;
+				// }
+				// if(n->next != nullptr){
+					// nn = n->next;
+					// n = nn;
+				// }
+			// }
+		// }
 		
 		int getIterationSize(){
 			return size;
 		}
 		
-		void last(){
-			LinkedListNode<T>* lst = iteratorNode->last;
-			iteratorNode = lst;
-			this->iterateCount--;
+		// void last(){
+			// LinkedListNode<T>* lst = iteratorNode->last;
+			// iteratorNode = lst;
+			// this->iterateCount--;
+		// }
+		
+		// void next(){
+			// LinkedListNode<T>* nxt = iteratorNode->next;
+			// iteratorNode = nxt;
+			// this->iterateCount++;
+		// }
+		
+		T getLValue(Iterator iterate){
+			return *this->getByPosition(iterate.getIteration());
+			// return *iteratorNode->actual;
 		}
 		
-		void next(){
-			LinkedListNode<T>* nxt = iteratorNode->next;
-			iteratorNode = nxt;
-			this->iterateCount++;
+		T *getPointer(Iterator iterate){
+			return this->getByPosition(iterate.getIteration());
+			// return iteratorNode->actual;
 		}
 		
-		T getValue(){
-			return *iteratorNode->actual;
+		T* setLValue(Iterator iterate, T s){
+			return this->setLValue(this->getIteration() , s);
 		}
 		
-		T *getPointer(){
-			return iteratorNode->actual;
+		T* setPointer(Iterator iterate, T* s){
+			return this->setPointer(this->getIteration() , s);
 		}
 		
-		T* set(T s){
-			return this->set(this->getIteration() , s);
+		T* insertLValue(Iterator& iterate, T s){
+			int p = iterate.getIteration();
+			iterate.next();
+			return this->insertLValue(p , s);
 		}
 		
-		T* set(T* s){
-			return this->set(this->getIteration() , s);
+		T* insertPointer(Iterator& iterate, T* s){
+			int p = iterate.getIteration();
+			iterate.next();
+			return this->insertPointer(p , s);
 		}
 		
-		T* insert(T s){
-			int p = this->iterateCount;
-			this->next();
-			return this->insert(p , s);
+		T* remove(Iterator& iterate){
+			int p = iterate.getIteration();
+			iterate.last();
+			return this->removeByPosition(p);
 		}
 		
-		T* insert(T* s){
-			int p = this->iterateCount;
-			this->next();
-			return this->insert(p , s);
-		}
-		
-		T* remove(){
-			int p = this->iterateCount;
-			this->last();
-			return this->removeByPos(p);
-		}
-		
-		void removeDelete(){
-			int p = this->iterateCount;
-			this->last();
-			this->removeDeleteByPos(p);
+		void removeDelete(Iterator& iterate){
+			int p = iterate.getIteration();
+			iterate.last();
+			this->removeDeleteByPosition(p);
 		}
 		
 		LinkedList<T>* clone(){
@@ -676,7 +680,21 @@ class LinkedList : public List<T>{
 			LinkedListNode<T>* n = start;
 			LinkedListNode<T>* nn = nullptr;
 			for(int x=0; x<size; x++){
-				l->add(*n->actual);
+				l->addLValue(*n->actual);
+				if(n->next != nullptr){
+					nn = n->next;
+					n = nn;
+				}
+			}
+			return l;
+		}
+		
+		LinkedList<T>* clone(bool owningMemory){
+			LinkedList<T>* l = new LinkedList<T>(owningMemory);
+			LinkedListNode<T>* n = start;
+			LinkedListNode<T>* nn = nullptr;
+			for(int x=0; x<size; x++){
+				l->addLValue(*n->actual);
 				if(n->next != nullptr){
 					nn = n->next;
 					n = nn;

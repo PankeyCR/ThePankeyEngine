@@ -53,33 +53,33 @@
 		bool comnt = false;
 		LinkedList<int> com;
 		LinkedList<int> com2;
-		iterate(lexertokens){
-			if(lexertokens->getKey() == lineCommentToken){
+		for(Iterator i : *lexertokens){
+			if(lexertokens->getKey(i) == lineCommentToken){
 				comnt = true;
 			}
 			if(comnt){
-				com.add(lexertokens->getIteration());
+				com.addLValue(i.getIteration());
 			}
-			if(lexertokens->getKey() == enterToken){
+			if(lexertokens->getKey(i) == enterToken){
 				comnt = false;
 			}
 		}
 		comnt = false;
-		iterate(lexertokens){
-			if(lexertokens->getKey() == commentTokenStart){
+		for(Iterator i : *lexertokens){
+			if(lexertokens->getKey(i) == commentTokenStart){
 				comnt = true;
 			}
 			if(comnt){
-				com2.add(lexertokens->getIteration());
+				com2.addLValue(i.getIteration());
 			}
-			if(lexertokens->getKey() == commentTokenEnd){
+			if(lexertokens->getKey(i) == commentTokenEnd){
 				comnt = false;
 			}
 		}
-		iterate(lexertokens){
-			if( !com.contain(lexertokens->getIteration()) &&
-					!com2.contain(lexertokens->getIteration()) ){
-				ntoken->add(lexertokens->getKey(),lexertokens->getValue());
+		for(Iterator i : *lexertokens){
+			if( !com.containByLValue(i.getIteration()) &&
+					!com2.containByLValue(i.getIteration()) ){
+				ntoken->addLValues(lexertokens->getKey(i),lexertokens->getLValue(i));
 			}
 		}
 		
@@ -96,10 +96,10 @@
 	}
 	
 	void Parser::printTree(Stream* port){
-		iterate(this->captureToken){
-			Serial.print(this->captureToken->getKey());
+		for(Iterator i : *this->captureToken){
+			Serial.print(this->captureToken->getKey(i));
 			Serial.print(" ");
-			Serial.println(this->captureToken->getValue());
+			Serial.println(this->captureToken->getLValue(i));
 		}
 	}
 	

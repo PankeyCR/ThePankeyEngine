@@ -7,7 +7,7 @@
 
 	RealRandom::RealRandom(){
 		limitMax = ((float)2147483646/1000000.0f);
-		Log("RealRandom", "Contructor", "println",String(limitMax));
+		RealRandomLog("RealRandom", "Contructor", "println",String(limitMax));
 	}
 	
 	RealRandom::~RealRandom(){
@@ -20,15 +20,15 @@
 		float tdx = ((float)(time/dx));
 		float tx = (((float)(tdx))-((long)(tdx)));
 		float x = d*tx;
-		Log("RealRandom", "getRandom", "println","");
-		Log("RealRandom", "getRandom", "println","realrandom");
-		Log("RealRandom", "getRandom", "print","time ");Log("RealRandom", "getRandom", "println",String(time));
-		Log("RealRandom", "getRandom", "print","d ");Log("RealRandom", "getRandom", "println",String(d));
-		Log("RealRandom", "getRandom", "print","dx ");Log("RealRandom", "getRandom", "println",String(dx));
-		Log("RealRandom", "getRandom", "print","tdx ");Log("RealRandom", "getRandom", "println",String(tdx));
-		Log("RealRandom", "getRandom", "print","tx ");Log("RealRandom", "getRandom", "println",String(tx));
-		Log("RealRandom", "getRandom", "print","x ");Log("RealRandom", "getRandom", "println",String(x));
-		Log("RealRandom", "getRandom", "println","");
+		RealRandomLog("RealRandom", "getRandom", "println","");
+		RealRandomLog("RealRandom", "getRandom", "println","realrandom");
+		RealRandomLog("RealRandom", "getRandom", "print","time ");RealRandomLog("RealRandom", "getRandom", "println",String(time));
+		RealRandomLog("RealRandom", "getRandom", "print","d ");RealRandomLog("RealRandom", "getRandom", "println",String(d));
+		RealRandomLog("RealRandom", "getRandom", "print","dx ");RealRandomLog("RealRandom", "getRandom", "println",String(dx));
+		RealRandomLog("RealRandom", "getRandom", "print","tdx ");RealRandomLog("RealRandom", "getRandom", "println",String(tdx));
+		RealRandomLog("RealRandom", "getRandom", "print","tx ");RealRandomLog("RealRandom", "getRandom", "println",String(tx));
+		RealRandomLog("RealRandom", "getRandom", "print","x ");RealRandomLog("RealRandom", "getRandom", "println",String(x));
+		RealRandomLog("RealRandom", "getRandom", "println","");
 		return x+getMin();
 	}
 	

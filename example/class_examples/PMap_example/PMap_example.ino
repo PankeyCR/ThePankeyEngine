@@ -1,47 +1,46 @@
 
+#include "PrimitiveMap.h"
 #include "PMap.h"
 #include "Map.h"
+#include "MemoryFree.h"
 
 Map<String,int> *testMap;
 
 void setup() {
   Serial.begin(9600);
-  testMap = new PMap<String,int,10>();
+}
+void loop() {
+  Serial.println("////////////start");
+  Serial.println(freeMemory());
+  testMap = new PMap<String,int,10>(true);
   
-  testMap->add(new String("names"), new int(15));
-  testMap->add(new String("node"), new int(10));
-  testMap->add(new String("pankey"), new int(5));
-  testMap->add(new String("test"), new int(0));
-  testMap->add(new String("monkey"), new int(7));
+  testMap->addPointers(new String("names"), new int(15));
+  testMap->addPointers(new String("node"), new int(10));
+  testMap->addPointers(new String("pankey"), new int(5));
+  testMap->addPointers(new String("test"), new int(0));
+  testMap->addPointers(new String("monkey"), new int(7));
   
 
-  for(int x = 0; x < testMap->getPos(); x++){
-    Serial.print("Total Size Available:  ");Serial.println(testMap->getSize());
-    Serial.print("Total Size Used:  ");Serial.println(testMap->getPos());
+  for(int x = 0; x < testMap->getPosition(); x++){
     Serial.print("Actual Position:  ");Serial.println(x);
-    Serial.print("Actual Key:  ");Serial.println(*testMap->getKeyByPos(x));
-    Serial.print("Actual Value:  ");Serial.println(*testMap->getByPos(x));
+    Serial.print("Actual Key:  ");Serial.println(*testMap->getKeyByPosition(x));
+    Serial.print("Actual Value:  ");Serial.println(*testMap->getByPosition(x));
   }
 
   
-  Serial.print("Value monkey:  ");Serial.println(*testMap->get("monkey"));
-  testMap->remove("monkey");
-  Serial.print("Value monkey:  ");Serial.println(*testMap->get("monkey"));
+  Serial.print("Value monkey:  ");Serial.println(*testMap->getByLValue("monkey"));
+  testMap->removeDeleteByLValue("monkey");
 
-  if(testMap->get("monkey") == NULL){
+  if(testMap->getByLValue("monkey") == nullptr){
     Serial.println("Value monkey is null ");
   }
 
-  for(int x = 0; x < testMap->getPos(); x++){
-    Serial.print("Total Size Available:  ");Serial.println(testMap->getSize());
-    Serial.print("Total Size Used:  ");Serial.println(testMap->getPos());
-    Serial.print("Actual Position:  ");Serial.println(x);
-    Serial.print("Actual Key:  ");Serial.println(*testMap->getKeyByPos(x));
-    Serial.print("Actual Value:  ");Serial.println(*testMap->getByPos(x));
+  for(Iterator i : *testMap){
+    Serial.print("Actual Position:  ");Serial.println(i.getIteration());
+    Serial.print("Actual Key:  ");Serial.println(testMap->getKey(i));
+    Serial.print("Actual Value:  ");Serial.println(testMap->getLValue(i));
   }
-  
-}
-void loop() {
-  
-
+  delete testMap;
+  Serial.println("////////////end");
+  Serial.println(freeMemory());
 }

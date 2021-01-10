@@ -42,16 +42,19 @@ class SimpleApplication : public Application{
 			return states;
 		}
 		
-		void setListener(Listener* l){
+		Listener* setListener(Listener* l){
 			listener = l;
 			listener->attach(this);
+			return l;
 		}
 		Listener* getListener(){
 			return listener;
 		}
 		void update(){
-			//Log("println","update SimpleApplication ");
 			states->update();
+			if(listener != nullptr){
+				listener->InterruptEvent(this->states->tpc());
+			}
 		}
 		void setTimeControl(TimeControl *timecontrol){
 		}

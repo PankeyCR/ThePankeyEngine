@@ -2,7 +2,7 @@
 #ifndef Matrix4f_h
 #define Matrix4f_h
 
-#include "FastMath.h"
+#include "FastMonkeyMath.h"
 #include "Vector3f.h"
 //#include "Quaternion.h"
 #include "List.h"

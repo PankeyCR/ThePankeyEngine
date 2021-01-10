@@ -19,10 +19,11 @@ class GameOn : public cppObject{
 		virtual void enable();
 		virtual void disable();
 		
-		virtual void update(float tpf);
+		virtual void update(float tpc);
 		
 		virtual String getClassName();
 		virtual String toString();
+		virtual bool instanceof(String name);
 		
         virtual GameOn operator =(const GameOn& c);
         virtual bool operator ==(const GameOn& c);

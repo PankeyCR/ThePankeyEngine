@@ -1,31 +1,21 @@
 
+#include "Iterator.h"
 #include "ArrayList.h"
-#include "List.h"
 
-List<int> *list;
+ArrayList<int,10> list;
 
 void setup() {
   Serial.begin(9600);
-  list = new ArrayList<int>();
-  list->add(1);
-  list->add(2);
-  list->add(3);
-  list->add(4);
-  
-  iterate(list){
-    Serial.println(list->getValue());
-  }
-  
-  iterate(list) fun(&funtionToIterate)
-  
-  iterate(list){
-    funtionToIterate();
-  }
-  
+  list.addLValue(1);
+  list.addLValue(2);
+  list.addLValue(3);
+  list.addLValue(4);
 }
 
-void funtionToIterate(){
-  Serial.println(list->getValue());
+void loop(){
+  Serial.println("///////////////start");
+  for(Iterator i : list){
+    Serial.println(list.getLValue(i));
+  }
+  Serial.println("///////////////end");
 }
-
-void loop(){}

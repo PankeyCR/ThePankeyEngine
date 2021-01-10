@@ -9,6 +9,13 @@
 #include "PrimitiveList.h"
 #include "Printable.h"
 #include "TemplateMath.h"
+#include "Logger.h"
+
+#ifdef NoteLogApp
+	#define NoteLog(name,method,type,mns) Log(name,method,type,mns)
+#else
+	#define NoteLog(name,method,type,mns) 
+#endif
 
 #define space ' '
 #define endLine '.'
@@ -29,14 +36,13 @@ class Note : public PrimitiveList<char> , public Printable{
 		Note(const String& i);
 		virtual ~Note();
 		
-		virtual char* add(char* value);
-		virtual char* add(char value);
+		virtual char* addPointer(char* value);
+		virtual char* addLValue(char value);
 		
 		virtual size_t printTo(Print& p) const;
 		
 		virtual void expandLocal(int add);
 		virtual Note* expand(int add);
-		//virtual char* add(char* chr);
 		
 		int length();
 		int getFocus();

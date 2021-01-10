@@ -33,7 +33,7 @@ class Average{
 			return this->size;
 		}
 		
-		virtual T getValue(){
+		virtual T getLValue(){
 			return *this->value;
 		}
 		
@@ -41,12 +41,17 @@ class Average{
 			return this->value;
 		}
 		
-		virtual void add(T&& t){
+		virtual void addRValue(T&& t){
 			*this->value += t;
 			this->size++;
 		}
 		
-		virtual void add(T *t){
+		virtual void addLValue(T t){
+			*this->value += t;
+			this->size++;
+		}
+		
+		virtual void addPointer(T *t){
 			*this->value += *t;
 			this->size++;
 		}

@@ -3,458 +3,566 @@
 #ifndef Listener_h
 #define Listener_h
 
+#define ListenerInput 0
+#define ListenerDebounceInput 1
+#define ListenerDebounceInterrupt 2
+#define ListenerInterrupt 3
+#define ListenerThreadInterrupt 4
+#define ListenerOutput 5
+#define ListenerOutputInterrupt 6
+#define ListenerOutputEvent 7
+#define ListenerInputEvent 8
+
 class Application;
 #include "Arduino.h"
 #include "cppObject.h"
 #include "ListenerEvent.h"
 #include "PrimitiveList.h"
-#include "PrimitiveMap.h"
-#include "Trio.h"
 
-static PrimitiveMap<int,volatile bool>* SafeBool_m = nullptr;
+#ifdef ListenerLogApp
+	#define ListenerLog(name,method,type,mns) Log(name,method,type,mns)
+#else
+	#define ListenerLog(name,method,type,mns)
+#endif
+
 static PrimitiveList<void (*)()>* ThreadMap_m = nullptr;
-static PrimitiveList<void (*)()>* LoopMap_m = nullptr;
-static PrimitiveMap<int,Trio<int,bool,PrimitiveList<ListenerEvent>>>* ListenerEventMap_m = nullptr;
+static PrimitiveList<void (*)(float)>* LoopMap_m = nullptr;
+static PrimitiveList<void (*)()>* OutputMap_m = nullptr;
+
+template<int interrupt>
+struct IO_Set{
+	static int m_pin;
+	static int m_type;
+	static bool m_state;
+	static bool m_safe;
+	static float m_time;
+	static float m_timelimit;
+	static PrimitiveList<ListenerEvent>* m_events;
+	
+};
+template<int interrupt> int IO_Set<interrupt>::m_pin = -1;
+template<int interrupt> int  IO_Set<interrupt>::m_type = -1;
+template<int interrupt> bool  IO_Set<interrupt>::m_state = false;
+template<int interrupt> bool  IO_Set<interrupt>::m_safe = false;
+template<int interrupt> float  IO_Set<interrupt>::m_time = 0.0f;
+template<int interrupt> float  IO_Set<interrupt>::m_timelimit = 0.1f;
+template<int interrupt> PrimitiveList<ListenerEvent>*  IO_Set<interrupt>::m_events = nullptr;
+
+
+template<int interrupt>
+void Input(float tpc){
+	ListenerLog("Listener", "Input",  "println", "");
+	if(IO_Set<interrupt>::m_pin == -1){
+		ListenerLog("Listener", "Input",  "println", "pin == -1");
+		return;
+	}
+	IO_Set<interrupt>::m_state = digitalRead(IO_Set<interrupt>::m_pin);
+	ListenerLog("Listener", "Input",  "println", String("pin: ") + String(IO_Set<interrupt>::m_pin));
+	ListenerLog("Listener", "Input",  "println", String("state: ") + String(IO_Set<interrupt>::m_state));
+}
+
+template<int interrupt>
+void DebounceInput(float tpc){
+	ListenerLog("Listener", "DebounceInput",  "println", "");
+	int pin = IO_Set<interrupt>::m_pin;
+	IO_Set<interrupt>::m_time += tpc;
+	if(pin == -1){
+		ListenerLog("Listener", "DebounceInput",  "println", "pin == -1");
+		return;
+	}
+	if(IO_Set<interrupt>::m_time < IO_Set<interrupt>::m_timelimit){
+		ListenerLog("Listener", "DebounceInput",  "println", "IO_Set<interrupt>::m_time < IO_Set<interrupt>::m_timelimit");
+		return;
+	}
+	bool state = digitalRead(pin);
+	if(state == IO_Set<interrupt>::m_state){
+		ListenerLog("Listener", "DebounceInput",  "println", "state == IO_Set<interrupt>::m_state");
+		return;
+	}
+	IO_Set<interrupt>::m_time = 0.0f;
+	IO_Set<interrupt>::m_state = state;
+	ListenerLog("Listener", "DebounceInput",  "println", String("state: ") + String(IO_Set<interrupt>::m_state));
+}
+
+template<int interrupt>
+void DebounceInterrupt(float tpc){
+	ListenerLog("Listener", "DebounceInterrupt",  "println", "");
+	int pin = IO_Set<interrupt>::m_pin;
+	IO_Set<interrupt>::m_time += tpc;
+	List<ListenerEvent>* events = IO_Set<interrupt>::m_events;
+	if(pin == -1 || events == nullptr){
+		ListenerLog("Listener", "DebounceInterrupt",  "println", "pin == -1 || events == nullptr");
+		return;
+	}
+	if(IO_Set<interrupt>::m_time < IO_Set<interrupt>::m_timelimit){
+		ListenerLog("Listener", "DebounceInterrupt",  "println", "IO_Set<interrupt>::m_time < IO_Set<interrupt>::m_timelimit");
+		return;
+	}
+	bool state = digitalRead(pin);
+	if(state == IO_Set<interrupt>::m_state){
+		ListenerLog("Listener", "DebounceInterrupt",  "println", "state == IO_Set<interrupt>::m_state");
+		return;
+	}
+	IO_Set<interrupt>::m_time = 0.0f;
+	IO_Set<interrupt>::m_state = state;
+	ListenerLog("Listener", "DebounceInterrupt",  "println", "start interrupt");
+	for(int x = 0; x < events->getPosition(); x++){
+		events->getByPosition(x)->event(interrupt, pin, state);
+	}
+	ListenerLog("Listener", "DebounceInterrupt",  "println", "end interrupt");
+}
+
+template<int interrupt>
+void OutputInterrupt(){
+	ListenerLog("Listener", "OutputInterrupt",  "println", "");
+	int pin = IO_Set<interrupt>::m_pin;
+	List<ListenerEvent>* events = IO_Set<interrupt>::m_events;
+	if(pin == -1 || events == nullptr){
+		ListenerLog("Listener", "OutputInterrupt",  "println", "pin == -1 || events == nullptr");
+		return;
+	}
+	ListenerLog("Listener", "OutputInterrupt",  "println", "start interrupt");
+	for(int x = 0; x < events->getPosition(); x++){
+		events->getByPosition(x)->event(interrupt, pin, IO_Set<interrupt>::m_state);
+	}
+	ListenerLog("Listener", "OutputInterrupt",  "println", "end interrupt");
+}
+
+#ifdef ARDUINO_ARCH_ESP8266
+
+template<int interrupt>
+void ICACHE_RAM_ATTR Interrupt(){
+	
+#elif defined(ARDUINO_ARCH_SAM)
 
 template<int interrupt>
 void Interrupt(){
-	Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-	if(trio == nullptr){
+	
+#elif defined(ARDUINO_ARCH_AVR)
+
+template<int interrupt>
+void Interrupt(){
+
+#elif defined(ARDUINO_SAMD_ZERO)
+
+template<int interrupt>
+void Interrupt(){
+
+#else
+
+template<int interrupt>
+void Interrupt(){
+	
+#endif
+	ListenerLog("Listener", "Interrupt",  "println", "");
+	int pin = IO_Set<interrupt>::m_pin;
+	bool state = IO_Set<interrupt>::m_state;
+	List<ListenerEvent>* events = IO_Set<interrupt>::m_events;
+	if(pin == -1 || events == nullptr){
+		ListenerLog("Listener", "Interrupt",  "println", "pin == -1 || events == nullptr");
 		return;
 	}
-	if(trio->bot == nullptr || trio->top == nullptr || trio->mid == nullptr){
-		return;
+	IO_Set<interrupt>::m_state = !(state);
+	ListenerLog("Listener", "Interrupt",  "println", "start interrupt");
+	for(int x = 0; x < events->getPosition(); x++){
+		events->getByPosition(x)->event(interrupt, pin, IO_Set<interrupt>::m_state);
 	}
-	*trio->mid = !(*trio->mid);
-	// Serial.println("inicio interrupt");
-	iterate(trio->bot){
-		trio->bot->getPointer()->event(interrupt,*trio->top,*trio->mid);
-	}
-	// Serial.println("fin interrupt");
+	ListenerLog("Listener", "Interrupt",  "println", "end interrupt");
 }
+
+#ifdef ARDUINO_ARCH_ESP8266
+
+template<int interrupt>
+void ICACHE_RAM_ATTR ThreadInterrupt(){
+	
+#elif defined(ARDUINO_ARCH_SAM)
+
 template<int interrupt>
 void ThreadInterrupt(){
-	volatile bool* safe = SafeBool_m->get(interrupt);
-	if(safe == nullptr){
-		return;
-	}
-	if(*safe){
+	
+#elif defined(ARDUINO_ARCH_AVR)
+
+template<int interrupt>
+void ThreadInterrupt(){
+
+#elif defined(ARDUINO_SAMD_ZERO)
+
+template<int interrupt>
+void ThreadInterrupt(){
+
+#else
+
+template<int interrupt>
+void ThreadInterrupt(){
+	
+#endif
+	ListenerLog("Listener", "ThreadInterrupt",  "println", "");
+	if(IO_Set<interrupt>::m_safe){
+		ListenerLog("Listener", "ThreadInterrupt",  "println", "safe interrupt");
 		Interrupt<interrupt>();
 	}else{
 		if(ThreadMap_m != nullptr){
-			ThreadMap_m->add(&Interrupt<interrupt>);
-		}
-	}
-}
-
-template<int interrupt>
-void LoopInterrupt(){
-	Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-	if(trio == nullptr){
-		return;
-	}
-	if(trio->bot == nullptr || trio->top == nullptr || trio->mid == nullptr){
-		return;
-	}
-	if(*trio->mid != digitalRead(*trio->top)){
-		*trio->mid = !(*trio->mid);
-		for(int x = 0; x < trio->bot->getPos(); x++){
-			trio->bot->getByPos(x)->event(interrupt,*trio->top,*trio->mid);
+			ListenerLog("Listener", "ThreadInterrupt",  "println", "adding unsafe interrupt");
+			ThreadMap_m->addLValue(&Interrupt<interrupt>);
 		}
 	}
 }
 
 template<int interrupt>
 void Interrupt(bool state){
-	Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-	if(trio == nullptr){
+	ListenerLog("Listener", "Interrupt",  "println", "with parameter");
+	int pin = IO_Set<interrupt>::m_pin;
+	List<ListenerEvent>* events = IO_Set<interrupt>::m_events;
+	if(pin == -1 || events == nullptr){
+		ListenerLog("Listener", "Interrupt",  "println", "pin == -1 || events == nullptr");
 		return;
 	}
-	if(trio->bot == nullptr || trio->top == nullptr || trio->mid == nullptr){
-		return;
+	ListenerLog("Listener", "Interrupt",  "println", "start interrupt");
+	for(int x = 0; x < events->getPosition(); x++){
+		events->getByPosition(x)->event(interrupt, pin, state);
 	}
-	//*trio->mid = state;
-	// Serial.println("inicio interrupt");
-	for(int x = 0; x < trio->bot->getPos(); x++){
-		trio->bot->getByPos(x)->event(interrupt,*trio->top,state);
-	}
-	// Serial.println("fin interrupt");
+	ListenerLog("Listener", "Interrupt",  "println", "end interrupt");
 }
 
 class Listener : public cppObject{
     public:
 		typedef void (*Method)();
 		Listener(){
-			if(ListenerEventMap_m == nullptr){
-				ListenerEventMap_m = new PrimitiveMap<int,Trio<int,bool,PrimitiveList<ListenerEvent>>>();
+			if(ThreadMap_m == nullptr){
 				ThreadMap_m = new PrimitiveList<void (*)()>();
-				LoopMap_m = new PrimitiveList<void (*)()>();
-				SafeBool_m = new PrimitiveMap<int,volatile bool>();
+			}
+			if(LoopMap_m == nullptr){
+				LoopMap_m = new PrimitiveList<void (*)(float)>();
+			}
+			if(OutputMap_m == nullptr){
+				OutputMap_m = new PrimitiveList<void (*)()>();
 			}
 		}
 		virtual ~Listener(){
-			delete ListenerEventMap_m;
-			ListenerEventMap_m = nullptr;
-			delete ThreadMap_m;
-			ThreadMap_m = nullptr;
-			delete LoopMap_m;
-			LoopMap_m = nullptr;
-			delete SafeBool_m;
-			SafeBool_m = nullptr;
+			if(ThreadMap_m != nullptr){
+				delete ThreadMap_m;
+			}
+			if(LoopMap_m != nullptr){
+				delete LoopMap_m;
+			}
+			if(OutputMap_m != nullptr){
+				delete OutputMap_m;
+			}
 		}
 		
 		virtual void attach(Application* a){
 			app = a;
 		}
 		virtual String getClassName(){return "Listener";}
-		virtual bool instanceof(String name){
-			return name == "Listener" || cppObject::instanceof(name);
+		virtual bool instanceof(String name){return name == "Listener" || cppObject::instanceof(name);}
+		
+		template<int interrupt>
+		void Secure(){
+			IO_Set<interrupt>::m_safe = true;
 		}
-		virtual void Secure(){
-			for(int x = 0; x < SafeBool_m->getPos(); x++){
-				SafeBool_m->set(*SafeBool_m->getKeyByPos(x), true);
-			}
+		
+		template<int interrupt>
+		void UnSecure(){
+			IO_Set<interrupt>::m_safe = false;
 		}
-		virtual void UnSecure(){
-			for(int x = 0; x < SafeBool_m->getPos(); x++){
-				SafeBool_m->set(*SafeBool_m->getKeyByPos(x), false);
+		virtual void InterruptEvent(float tpc){
+			for(int x = 0; x < LoopMap_m->getPosition(); x++){
+				(*LoopMap_m->getByPosition(x))(tpc);
 			}
-		}
-		virtual void InterruptEvent(){
-			for(int x = 0; x < LoopMap_m->getPos(); x++){
-				(*LoopMap_m->getByPos(x))();
+			for(int x = 0; x < ThreadMap_m->getPosition(); x++){
+				(*ThreadMap_m->getByPosition(x))();
 			}
-			for(int x = 0; x < ThreadMap_m->getPos(); x++){
-				(*ThreadMap_m->getByPos(x))();
+			for(int x = 0; x < OutputMap_m->getPosition(); x++){
+				(*OutputMap_m->getByPosition(x))();
 			}
-			//ThreadMap_m->reset();
+			OutputMap_m->resetDelete();
 			ThreadMap_m->resetDelete();
 		}
 		
 		template<int interrupt>
-		void addEvent(int pin,bool state, ListenerEvent* e){
-			addEvent<interrupt>(Interrupt<interrupt>, pin,state, e);
+		void createInput(int pin, bool state){
+			IO_Set<interrupt>::m_pin = pin;
+			IO_Set<interrupt>::m_type = ListenerInput;
+			IO_Set<interrupt>::m_state = state;
+			IO_Set<interrupt>::m_safe = true;
+			IO_Set<interrupt>::m_events = nullptr;
+			pinMode(pin,INPUT);
+			LoopMap_m->addLValue(&Input<interrupt>);
 		}
 		
 		template<int interrupt>
-		void addThreadEvent(int pin,bool state, ListenerEvent* e){
-			addEvent<interrupt>(ThreadInterrupt<interrupt>, pin,state, e);
+		void createDebounceInput(float l, int pin, bool state){
+			IO_Set<interrupt>::m_pin = pin;
+			IO_Set<interrupt>::m_type = ListenerDebounceInput;
+			IO_Set<interrupt>::m_state = state;
+			IO_Set<interrupt>::m_timelimit = l;
+			IO_Set<interrupt>::m_safe = true;
+			IO_Set<interrupt>::m_events = nullptr;
+			pinMode(pin,INPUT);
+			LoopMap_m->addLValue(&DebounceInput<interrupt>);
 		}
 		
 		template<int interrupt>
-		void addLoopEvent(int pin,bool state, ListenerEvent* e){
-			LoopMap_m->add(LoopInterrupt<interrupt>);
-			Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-			volatile bool* safe = SafeBool_m->get(interrupt);
-			if(safe == nullptr){
-				safe = new volatile bool();
-				*safe = false;
-				SafeBool_m->add(interrupt, safe);
+		void createDebounceInput(float l, int pin){
+			createDebounceInput<interrupt>(l, pin, false);
+		}
+		
+		template<int interrupt>
+		void createDebounceInput(int pin){
+			createDebounceInput<interrupt>(0.1f, pin, false);
+		}
+		
+		template<int interrupt>
+		void createDebounceInput(int pin, bool state){
+			createDebounceInput<interrupt>(0.1f, pin, state);
+		}
+		
+		template<int interrupt>
+		void createDebounceInterrupt(float l, int pin, bool state, bool owner){
+			IO_Set<interrupt>::m_pin = pin;
+			IO_Set<interrupt>::m_type = ListenerDebounceInput;
+			IO_Set<interrupt>::m_state = state;
+			IO_Set<interrupt>::m_safe = true;
+			IO_Set<interrupt>::m_timelimit = l;
+			IO_Set<interrupt>::m_events = nullptr;
+			if(IO_Set<interrupt>::m_events == nullptr){
+				IO_Set<interrupt>::m_events = new PrimitiveList<ListenerEvent>(owner);
 			}
-			if(trio == nullptr){
-				//Serial.print("trio nullptr");
-				trio = new Trio<int,bool,PrimitiveList<ListenerEvent>>(true);
-				trio->top = new int(pin);
-				trio->mid = new bool(state);
-				trio->bot = new PrimitiveList<ListenerEvent>();
-				ListenerEventMap_m->add(interrupt, trio);
-				pinMode(pin,INPUT);
-				//attachInterrupt(digitalPinToInterrupt(pin), method, CHANGE);
-			}else{
-				if(trio->mid == nullptr){
-					trio->mid = new bool(state);
-				}else{
-					if(state != *trio->mid){
-						//*trio->mid = false;
-						*trio->mid = false;
-					}
-				}
-				if(trio->top == nullptr){
-					//Serial.print("top nullptr");
-					trio->top = new int(pin);
-					pinMode(pin,INPUT);
-					//attachInterrupt(digitalPinToInterrupt(pin), method, CHANGE);
-				}else{
-					if(pin != *trio->top){
-						//Serial.print("pin ");Serial.println(pin);
-						//Serial.print("top ");Serial.println(*trio->top);
-						pinMode(pin,INPUT);
-						//detachInterrupt(digitalPinToInterrupt(*trio->top));
-						*trio->top = pin;
-						//attachInterrupt(digitalPinToInterrupt(pin), method, CHANGE);
-					}
-				}
-				if(trio->bot == nullptr){
-					trio->bot = new PrimitiveList<ListenerEvent>();
-				}
+			pinMode(pin,INPUT);
+			LoopMap_m->addLValue(&DebounceInterrupt<interrupt>);
+		}
+		
+		template<int interrupt>
+		void createDebounceInterrupt(float l, int pin){
+			createDebounceInterrupt<interrupt>(l, pin, false, true);
+		}
+		
+		template<int interrupt>
+		void createDebounceInterrupt(int pin){
+			createDebounceInterrupt<interrupt>(0.1f, pin, false, true);
+		}
+		
+		template<int interrupt>
+		void createDebounceInterrupt(int pin, bool state){
+			createDebounceInterrupt<interrupt>(0.1f, pin, state, true);
+		}
+		
+		template<int interrupt>
+		void createDebounceInterrupt(float l, int pin, bool state){
+			createDebounceInterrupt<interrupt>(l, pin, state, true);
+		}
+		
+		template<int interrupt>
+		void createInterrupt(int pin, bool state, bool owner){
+			IO_Set<interrupt>::m_pin = pin;
+			IO_Set<interrupt>::m_type = ListenerInterrupt;
+			IO_Set<interrupt>::m_state = state;
+			IO_Set<interrupt>::m_safe = true;
+			if(IO_Set<interrupt>::m_events == nullptr){
+				IO_Set<interrupt>::m_events = new PrimitiveList<ListenerEvent>(owner);
 			}
-			if(trio->bot->contain(e)){
+			pinMode(pin,INPUT_PULLUP);
+			attachInterrupt(digitalPinToInterrupt(pin), Interrupt<interrupt>, CHANGE);
+		}
+		
+		template<int interrupt>
+		void createInterrupt(int pin, bool state){
+			createInterrupt<interrupt>(pin, state, true);
+		}
+		
+		template<int interrupt>
+		void createThreadInterrupt(int pin, bool state, bool owner){
+			IO_Set<interrupt>::m_pin = pin;
+			IO_Set<interrupt>::m_type = ListenerThreadInterrupt;
+			IO_Set<interrupt>::m_state = state;
+			IO_Set<interrupt>::m_safe = true;
+			if(IO_Set<interrupt>::m_events == nullptr){
+				IO_Set<interrupt>::m_events = new PrimitiveList<ListenerEvent>(owner);
+			}
+			pinMode(pin,INPUT);
+			attachInterrupt(digitalPinToInterrupt(pin), ThreadInterrupt<interrupt>, CHANGE);
+		}
+		
+		template<int interrupt>
+		void createThreadInterrupt(int pin, bool state){
+			createThreadInterrupt<interrupt>(pin, state, true);
+		}
+		
+		template<int interrupt>
+		void createOutput(int pin, bool state){
+			IO_Set<interrupt>::m_pin = pin;
+			IO_Set<interrupt>::m_type = ListenerOutput;
+			IO_Set<interrupt>::m_state = state;
+			IO_Set<interrupt>::m_safe = true;
+			IO_Set<interrupt>::m_events = nullptr;
+			pinMode(pin,OUTPUT);
+		}
+		
+		template<int interrupt>
+		void createOutput(int pin){
+			createOutput<interrupt>(pin, false);
+		}
+		
+		template<int interrupt>
+		void createOutputInterrupt(int pin){
+			createOutputInterrupt<interrupt>(pin, false, true);
+		}
+		
+		template<int interrupt>
+		void createOutputInterrupt(int pin, bool state){
+			createOutputInterrupt<interrupt>(pin, state, true);
+		}
+		
+		template<int interrupt>
+		void createOutputInterrupt(int pin, bool state, bool owner){
+			IO_Set<interrupt>::m_pin = pin;
+			IO_Set<interrupt>::m_type = ListenerOutputInterrupt;
+			IO_Set<interrupt>::m_state = state;
+			IO_Set<interrupt>::m_safe = true;
+			if(IO_Set<interrupt>::m_events == nullptr){
+				IO_Set<interrupt>::m_events = new PrimitiveList<ListenerEvent>(owner);
+			}
+			pinMode(pin,OUTPUT);
+		}
+		
+		template<int interrupt>
+		void createOutputEvent(int pin, bool state, bool owner){
+			IO_Set<interrupt>::m_pin = pin;
+			IO_Set<interrupt>::m_type = ListenerOutputEvent;
+			IO_Set<interrupt>::m_state = state;
+			IO_Set<interrupt>::m_safe = true;
+			if(IO_Set<interrupt>::m_events == nullptr){
+				IO_Set<interrupt>::m_events = new PrimitiveList<ListenerEvent>(owner);
+			}
+			pinMode(pin,OUTPUT);
+		}
+		
+		template<int interrupt>
+		void createOutputEvent(int pin, bool state){
+			createOutputEvent<interrupt>(pin, state, true);
+		}
+		
+		template<int interrupt>
+		int Type(){
+			return IO_Set<interrupt>::m_type;
+		}
+		
+		template<int interrupt>
+		int Pin(){
+			return IO_Set<interrupt>::m_pin;
+		}
+		
+		template<int interrupt>
+		void setPin(int pin){
+			if(IO_Set<interrupt>::m_type == -1){
 				return;
 			}
-			trio->bot->add(e);
-		}
-		template<int interrupt>
-		void addEvent(Method method, int pin,bool state, ListenerEvent* e){
-			//Serial.println("addEvent ");
-			Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-			volatile bool* safe = SafeBool_m->get(interrupt);
-			if(safe == nullptr){
-				safe = new volatile bool();
-				*safe = false;
-				SafeBool_m->add(interrupt, safe);
-			}
-			if(trio == nullptr){
-				//Serial.print("trio nullptr");
-				trio = new Trio<int,bool,PrimitiveList<ListenerEvent>>(true);
-				trio->top = new int(pin);
-				trio->mid = new bool(state);
-				trio->bot = new PrimitiveList<ListenerEvent>();
-				ListenerEventMap_m->add(interrupt, trio);
+			if(IO_Set<interrupt>::m_type == ListenerInput){
 				pinMode(pin,INPUT);
-				attachInterrupt(digitalPinToInterrupt(pin), method, CHANGE);
-			}else{
-				if(trio->mid == nullptr){
-					trio->mid = new bool(state);
-				}else{
-					if(state != *trio->mid){
-						//*trio->mid = false;
-						*trio->mid = false;
-					}
-				}
-				if(trio->top == nullptr){
-					//Serial.print("top nullptr");
-					trio->top = new int(pin);
-					pinMode(pin,INPUT);
-					attachInterrupt(digitalPinToInterrupt(pin), method, CHANGE);
-				}else{
-					if(pin != *trio->top){
-						//Serial.print("pin ");Serial.println(pin);
-						//Serial.print("top ");Serial.println(*trio->top);
-						pinMode(pin,INPUT);
-						//detachInterrupt(digitalPinToInterrupt(*trio->top));
-						*trio->top = pin;
-						attachInterrupt(digitalPinToInterrupt(pin), method, CHANGE);
-					}
-				}
-				if(trio->bot == nullptr){
-					trio->bot = new PrimitiveList<ListenerEvent>();
-				}
 			}
-			if(trio->bot->contain(e)){
-				return;
+			if(IO_Set<interrupt>::m_type == ListenerInputEvent){
+				pinMode(pin,INPUT);
 			}
-			trio->bot->add(e);
+			if(IO_Set<interrupt>::m_type == ListenerDebounceInput){
+				pinMode(pin,INPUT);
+			}
+			if(IO_Set<interrupt>::m_type == ListenerDebounceInterrupt){
+				pinMode(pin,INPUT);
+			}
+			if(IO_Set<interrupt>::m_type == ListenerInterrupt){
+				pinMode(pin,INPUT);
+				attachInterrupt(digitalPinToInterrupt(pin), Interrupt<interrupt>, CHANGE);
+			}
+			if(IO_Set<interrupt>::m_type == ListenerThreadInterrupt){
+				pinMode(pin,INPUT);
+				attachInterrupt(digitalPinToInterrupt(pin), ThreadInterrupt<interrupt>, CHANGE);
+			}
+			if(IO_Set<interrupt>::m_type == ListenerOutput){
+				pinMode(pin,OUTPUT);
+			}
+			if(IO_Set<interrupt>::m_type == ListenerOutputInterrupt){
+				pinMode(pin,OUTPUT);
+			}
+			if(IO_Set<interrupt>::m_type == ListenerOutputEvent){
+				pinMode(pin,OUTPUT);
+			}
+			IO_Set<interrupt>::m_pin = pin;
 		}
 		
 		template<int interrupt>
-		void addEvent(int pin, bool state){
-			addEvent<interrupt>(Interrupt<interrupt>, pin, state);
+		void setTimeLimit(float t){
+			IO_Set<interrupt>::m_timelimit = t;
 		}
+		
 		template<int interrupt>
-		void addThreadEvent(int pin, bool state){
-			addEvent<interrupt>(ThreadInterrupt<interrupt>, pin, state);
+		int TimeLimit(){
+			return IO_Set<interrupt>::m_timelimit;
 		}
+		
 		template<int interrupt>
-		void addLoopEvent(int pin, bool state){
-			LoopMap_m->add(LoopInterrupt<interrupt>);
-			Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-			volatile bool* safe = SafeBool_m->get(interrupt);
-			if(safe == nullptr){
-				safe = new volatile bool();
-				*safe = false;
-				SafeBool_m->add(interrupt, safe);
-			}
-			if(trio == nullptr){
-				//Serial.print("trio nullptr");
-				trio = new Trio<int,bool,PrimitiveList<ListenerEvent>>(true);
-				trio->top = new int(pin);
-				trio->mid = new bool(state);
-				trio->bot = new PrimitiveList<ListenerEvent>();
-				ListenerEventMap_m->add(interrupt, trio);
-				pinMode(pin,INPUT);
-				//attachInterrupt(digitalPinToInterrupt(pin), method, CHANGE);
-			}else{
-				if(trio->mid == nullptr){
-					trio->mid = new bool(state);
-				}else{
-					if(state != *trio->mid){
-						//*trio->mid = false;
-						*trio->mid = false;
-					}
-				}
-				if(trio->top == nullptr){
-					//Serial.print("top nullptr");
-					trio->top = new int(pin);
-					pinMode(pin,INPUT);
-					//(digitalPinToInterrupt(pin), method, CHANGE);
-				}else{
-					if(pin != *trio->top){
-						//Serial.print("pin ");Serial.println(pin);
-						//Serial.print("top ");Serial.println(*trio->top);
-						pinMode(pin,INPUT);
-						//detachInterrupt(digitalPinToInterrupt(*trio->top));
-						*trio->top = pin;
-						//attachInterrupt(digitalPinToInterrupt(pin), method, CHANGE);
-					}
-				}
-			}
+		bool PinState(){
+			return IO_Set<interrupt>::m_state;
 		}
+		
 		template<int interrupt>
-		void addEvent(Method method, int pin, bool state){
-			Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-			volatile bool* safe = SafeBool_m->get(interrupt);
-			if(safe == nullptr){
-				safe = new volatile bool();
-				*safe = false;
-				SafeBool_m->add(interrupt, safe);
+		void setPinState(bool state){
+			IO_Set<interrupt>::m_state = state;
+			if(IO_Set<interrupt>::m_type == ListenerOutput){
+				digitalWrite(IO_Set<interrupt>::m_pin, state);
 			}
-			if(trio == nullptr){
-				//Serial.print("trio nullptr");
-				trio = new Trio<int,bool,PrimitiveList<ListenerEvent>>(true);
-				trio->top = new int(pin);
-				trio->mid = new bool(state);
-				trio->bot = new PrimitiveList<ListenerEvent>();
-				ListenerEventMap_m->add(interrupt, trio);
-				pinMode(pin,INPUT);
-				attachInterrupt(digitalPinToInterrupt(pin), method, CHANGE);
-			}else{
-				if(trio->mid == nullptr){
-					trio->mid = new bool(state);
-				}else{
-					if(state != *trio->mid){
-						//*trio->mid = false;
-						*trio->mid = false;
-					}
-				}
-				if(trio->top == nullptr){
-					//Serial.print("top nullptr");
-					trio->top = new int(pin);
-					pinMode(pin,INPUT);
-					attachInterrupt(digitalPinToInterrupt(pin), method, CHANGE);
-				}else{
-					if(pin != *trio->top){
-						//Serial.print("pin ");Serial.println(pin);
-						//Serial.print("top ");Serial.println(*trio->top);
-						pinMode(pin,INPUT);
-						//detachInterrupt(digitalPinToInterrupt(*trio->top));
-						*trio->top = pin;
-						attachInterrupt(digitalPinToInterrupt(pin), method, CHANGE);
-					}
-				}
+			if(IO_Set<interrupt>::m_type == ListenerOutputInterrupt){
+				digitalWrite(IO_Set<interrupt>::m_pin, state);
+				OutputMap_m->addLValue(&OutputInterrupt<interrupt>);
+			}
+			if(IO_Set<interrupt>::m_type == ListenerOutputEvent){
+				digitalWrite(IO_Set<interrupt>::m_pin, state);
+				OutputInterrupt<interrupt>();
 			}
 		}
 		
 		template<int interrupt>
-		void setState(bool state){
-			Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-			if(trio == nullptr){
-				return;
+		bool PinSafe(){
+			return IO_Set<interrupt>::m_safe;
+		}
+		
+		template<int interrupt>
+		void addEvent(ListenerEvent* e, bool owner){
+			if(IO_Set<interrupt>::m_events == nullptr){
+				IO_Set<interrupt>::m_events = new PrimitiveList<ListenerEvent>(owner);
 			}
-			volatile bool* safe = SafeBool_m->get(interrupt);
-			if(safe == nullptr){
-				safe = new volatile bool();
-				*safe = false;
-				SafeBool_m->add(interrupt, safe);
-			}
-			if(trio->mid == nullptr){
-				trio->mid = new bool(state);
-			}else{
-				if(state != *trio->mid){
-					*trio->mid = state;
-				}
-			}
+			IO_Set<interrupt>::m_events->addPointer(e);
 		}
 		
 		template<int interrupt>
 		void addEvent(ListenerEvent* e){
-			Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-			if(trio == nullptr){
-				return;
+			if(IO_Set<interrupt>::m_events == nullptr){
+				IO_Set<interrupt>::m_events = new PrimitiveList<ListenerEvent>();
 			}
-			volatile bool* safe = SafeBool_m->get(interrupt);
-			if(safe == nullptr){
-				safe = new volatile bool();
-				*safe = false;
-				SafeBool_m->add(interrupt, safe);
-			}
-			if(trio->bot == nullptr){
-				trio->bot = new PrimitiveList<ListenerEvent>();
-			}
-			if(trio->bot->contain(e)){
-				return;
-			}
-			trio->bot->add(e);
+			IO_Set<interrupt>::m_events->addPointer(e);
 		}
 		
 		template<int interrupt>
 		bool containEvent(ListenerEvent* e){
-			Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-			if(trio == nullptr){
+			if(IO_Set<interrupt>::m_events == nullptr){
 				return false;
 			}
-			if(trio->bot == nullptr){
-				return false;
-			}
-			return trio->bot->contain(e);
-		}
-		
-		void addEvent(int interrupt, int pin, bool state, ListenerEvent* e){
-			Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-			if(trio == nullptr){
-				return;
-			}
-			volatile bool* safe = SafeBool_m->get(interrupt);
-			if(safe == nullptr){
-				safe = new volatile bool();
-				*safe = false;
-				SafeBool_m->add(interrupt, safe);
-			}
-			if(trio->top == nullptr){
-				trio->top = new int(pin);
-			}else{
-				if(pin != *trio->top){
-					*trio->top = pin;
-				}
-			}
-			if(trio->mid == nullptr){
-				trio->mid = new bool(state);
-			}else{
-				if(state != *trio->mid){
-					//*trio->mid = false;
-					*trio->mid = false;
-				}
-			}
-			if(trio->bot == nullptr){
-				trio->bot = new PrimitiveList<ListenerEvent>();
-			}
-			if(trio->bot->contain(e)){
-				return;
-			}
-			trio->bot->add(e);
+			return IO_Set<interrupt>::m_events->containByPointer(e);
 		}
 		
 		template<int interrupt>
 		ListenerEvent* removeEvent(ListenerEvent* e){
-			Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-			if(trio == nullptr){
+			if(IO_Set<interrupt>::m_events == nullptr){
 				return nullptr;
 			}
-			ListenerEvent* method = trio->bot->remove(e);
-			return method;
+			return IO_Set<interrupt>::m_events->removeByPointer(e);
 		}
 		
-		ListenerEvent* removeEvent(int interrupt, ListenerEvent* e){
-			Trio<int,bool,PrimitiveList<ListenerEvent>>* trio = ListenerEventMap_m->get(interrupt);
-			if(trio == nullptr){
-				return nullptr;
+		template<int interrupt>
+		void deleteEvent(ListenerEvent* e){
+			if(IO_Set<interrupt>::m_events == nullptr){
+				return;
 			}
-			ListenerEvent* method = trio->bot->remove(e);
-			return method;
-		}
-		
-		void deleteEvent(int interrupt){
-			ListenerEventMap_m->removeDelete(interrupt);
-			//detachInterrupt(digitalPinToInterrupt(interrupt));
+			IO_Set<interrupt>::m_events->removeDeleteByPointer(e);
 		}
 		
 	protected:

@@ -20,12 +20,12 @@
         servos->MoveServo(3,45);
         servos->MoveServo(4,45);
         
-        list->add("angulos");
-        list->add("indice");
-        list->add("medio");
-        list->add("anular");
-        list->add("menique");
-        list->add("pulgar");
+        list->addLValue("angulos");
+        list->addLValue("indice");
+        list->addLValue("medio");
+        list->addLValue("anular");
+        list->addLValue("menique");
+        list->addLValue("pulgar");
         
 	}
 		

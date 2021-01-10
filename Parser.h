@@ -37,7 +37,7 @@ class Parser{
 		void addBlock(Block* block, Tokens... t){
 			PrimitiveList<String>* list = new PrimitiveList<String>();
 			list->addPack(t...);
-			blocks->add(block, list);
+			blocks->addPointers(block, list);
 		}
 		
 		virtual Script* compile();

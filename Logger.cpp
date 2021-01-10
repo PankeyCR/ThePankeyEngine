@@ -26,6 +26,7 @@
 	void Logger::StaticLog(String className, String methodName, String type, String mns){
 		Logger* logger = Logger::getLog();
 		if(logger->logging == nullptr){
+			// Serial.println("logger->logging == nullptr");
 			return;
 		}
 		logger->logging->StaticLog(className, methodName, type, mns);

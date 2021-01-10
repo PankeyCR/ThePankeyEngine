@@ -18,7 +18,7 @@
 	}
 	
 	AppState *DefaultStateManager::add(AppState* state){
-		this->appStateList->add(state);
+		this->appStateList->addPointer(state);
 		if(this->managerApp != nullptr){
 			state->initialize(this->managerApp);
 		}
@@ -27,19 +27,19 @@
 	}
 	
 	AppState* DefaultStateManager::get(String classname){
-		for(int x = 0; x < this->appStateList->getPos(); x++){
-			if(this->appStateList->getByPos(x)->getClassName() == classname){
-				return this->appStateList->getByPos(x);
+		for(int x = 0; x < this->appStateList->getPosition(); x++){
+			if(this->appStateList->getByPosition(x)->getClassName() == classname){
+				return this->appStateList->getByPosition(x);
 			}
 		}
 		return nullptr;
 	}
 	
 	AppState* DefaultStateManager::get(String appstateId,String classname){
-		for(int x = 0; x < this->appStateList->getPos(); x++){
-			if(this->appStateList->getByPos(x)->getClassName() == classname &&
-							this->appStateList->getByPos(x)->getId() == appstateId){
-				return this->appStateList->getByPos(x);
+		for(int x = 0; x < this->appStateList->getPosition(); x++){
+			if(this->appStateList->getByPosition(x)->getClassName() == classname &&
+							this->appStateList->getByPosition(x)->getId() == appstateId){
+				return this->appStateList->getByPosition(x);
 			}
 		}
 		return nullptr;
@@ -47,38 +47,38 @@
 	
 	AppState* DefaultStateManager::remove(String classname){
 		AppState *appstate = nullptr;
-		for(int x = 0; x < this->appStateList->getPos(); x++){
-			if(this->appStateList->getByPos(x)->getClassName() == classname){
-				appstate = this->appStateList->getByPos(x);
+		for(int x = 0; x < this->appStateList->getPosition(); x++){
+			if(this->appStateList->getByPosition(x)->getClassName() == classname){
+				appstate = this->appStateList->getByPosition(x);
 			}
 		}
 		if(appstate == nullptr){
 			return nullptr;
 		}
 		appstate->onDisable();
-		this->appStateList->remove(appstate);
+		this->appStateList->removeByPointer(appstate);
 		return appstate;
 	}
 	
 	AppState* DefaultStateManager::remove(String appstateId,String classname){
 		AppState *appstate = nullptr;
-		for(int x = 0; x < this->appStateList->getPos(); x++){
-			if(this->appStateList->getByPos(x)->getClassName() == classname &&
-							this->appStateList->getByPos(x)->getId() == appstateId){
-				appstate = this->appStateList->getByPos(x);
+		for(int x = 0; x < this->appStateList->getPosition(); x++){
+			if(this->appStateList->getByPosition(x)->getClassName() == classname &&
+							this->appStateList->getByPosition(x)->getId() == appstateId){
+				appstate = this->appStateList->getByPosition(x);
 			}
 		}
 		if(appstate == nullptr){
 			return nullptr;
 		}
 		appstate->onDisable();
-		this->appStateList->remove(appstate);
+		this->appStateList->removeByPointer(appstate);
 		return appstate;
 	}
 	
 	bool DefaultStateManager::contain(String classname){
-		for(int x = 0; x < this->appStateList->getPos(); x++){
-			if(this->appStateList->getByPos(x)->getClassName() == classname){
+		for(int x = 0; x < this->appStateList->getPosition(); x++){
+			if(this->appStateList->getByPosition(x)->getClassName() == classname){
 				return true;
 			}
 		}
@@ -86,9 +86,9 @@
 	}
 	
 	bool DefaultStateManager::contain(String appstateId,String classname){
-		for(int x = 0; x < this->appStateList->getPos(); x++){
-			if(this->appStateList->getByPos(x)->getClassName() == classname &&
-							this->appStateList->getByPos(x)->getId() == appstateId){
+		for(int x = 0; x < this->appStateList->getPosition(); x++){
+			if(this->appStateList->getByPosition(x)->getClassName() == classname &&
+							this->appStateList->getByPosition(x)->getId() == appstateId){
 				return true;
 			}
 		}
@@ -96,15 +96,15 @@
 	}
 	
 	void DefaultStateManager::removeAll(){
-		for(int x = 0; x < this->appStateList->getPos(); x++){
-			this->appStateList->getByPos(x)->onDisable();
+		for(int x = 0; x < this->appStateList->getPosition(); x++){
+			this->appStateList->getByPosition(x)->onDisable();
 		}			
 		this->appStateList->reset();
 	}
 	
 	void DefaultStateManager::removeDeleteAll(){
-		for(int x = 0; x < this->appStateList->getPos(); x++){
-			this->appStateList->getByPos(x)->onDisable();
+		for(int x = 0; x < this->appStateList->getPosition(); x++){
+			this->appStateList->getByPosition(x)->onDisable();
 		}			
 		this->appStateList->resetDelete();
 	}
@@ -113,8 +113,8 @@
 		this->now = micros();
 		this->t = (float)(this->now - this->prev)/1000000;
 		this->prev = this->now;
-		for(int x=0; x < this->appStateList->getPos();x++){
-			this->appStateList->getByPos(x)->update(this->t);
+		for(int x=0; x < this->appStateList->getPosition();x++){
+			this->appStateList->getByPosition(x)->update(this->t);
 		}			
 	}
 		

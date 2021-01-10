@@ -46,7 +46,7 @@
 		this->enabler = false;
 	}
 	
-	void GameOn::update(float tpf){
+	void GameOn::update(float tpc){
 		
 	}
 	
@@ -56,6 +56,10 @@
 	
 	String GameOn::toString(){
 		return "GameOn";
+	}
+	
+	bool GameOn::instanceof(String s){
+		return s == "GameOn" || cppObject::instanceof(s);
 	}
 	
 	GameOn GameOn::operator =(const GameOn& note){

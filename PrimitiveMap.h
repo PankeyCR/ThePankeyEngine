@@ -44,22 +44,37 @@ class PrimitiveMap : public Map<K,V>{
 			}
 		}
 		
+		PrimitiveMap(bool own, int msize){
+			this->owner = own;
+			this->keys = new K*[msize];
+			this->values = new V*[msize];
+			this->size = msize;
+			for(int x=0; x < this->size; x++){
+				this->keys[x] = nullptr;
+				this->values[x] = nullptr;
+			}
+		}
+		
 		~PrimitiveMap(){
 			if(this->owner){
-				iterate(this){
-					delete this->getKeyPointer();
-					delete this->getPointer();
+				for(Iterator i : *this){
+					delete this->getKeyPointer(i);
+					delete this->getPointer(i);
 				}
 			}
 			delete[] this->keys;
 			delete[] this->values;
 		}
+
+		virtual bool isEmpty(){
+			return this->pos==0;
+		}
 		
-		virtual void setPos(int p){
+		virtual void setPosition(int p){
 			this->pos = p;
 		}
 		
-		virtual int getPos(){
+		virtual int getPosition(){
 			return this->pos;
 		}
 		
@@ -67,7 +82,7 @@ class PrimitiveMap : public Map<K,V>{
 			return this->size;
 		}
 		
-		virtual void add(K *key, V *value){
+		virtual void addPointers(K *key, V *value){
 			if(this->pos >= this->size){
 				this->expandLocal(this->expandSize);
 			}
@@ -79,7 +94,7 @@ class PrimitiveMap : public Map<K,V>{
 			this->pos++;
 		}
 		
-		virtual void add(K key, V value){
+		virtual void addLValues(K key, V value){
 			if(this->pos >= this->size){
 				this->expandLocal(this->expandSize);
 			}
@@ -93,7 +108,7 @@ class PrimitiveMap : public Map<K,V>{
 			this->pos++;
 		}
 		
-		virtual void add(K key, V *value){
+		virtual void addPointer(K key, V *value){
 			if(this->pos >= this->size){
 				this->expandLocal(this->expandSize);
 			}
@@ -107,7 +122,7 @@ class PrimitiveMap : public Map<K,V>{
 			this->pos++;
 		}
 		
-		virtual void set(K *key, V *value){
+		virtual void setPointers(K *key, V *value){
 			if(this->pos >= this->size){
 				this->expandLocal(this->expandSize);
 			}
@@ -126,7 +141,7 @@ class PrimitiveMap : public Map<K,V>{
 			}
 		}
 		
-		virtual void set(K key, V value){
+		virtual void setLValues(K key, V value){
 			if(this->pos >= this->size){
 				this->expandLocal(10);
 			}
@@ -140,7 +155,7 @@ class PrimitiveMap : public Map<K,V>{
 			}
 		}
 		
-		virtual void set(K key, V *value){
+		virtual void setPointer(K key, V *value){
 			if(this->pos >= this->size){
 				this->expandLocal(10);
 			}
@@ -158,7 +173,7 @@ class PrimitiveMap : public Map<K,V>{
 				}
 			}
 		}
-		virtual void setKeyByPos(int p, K key){
+		virtual void setKeyLValueByPosition(int p, K key){
 			if(this->pos >= this->size){
 				return;
 			}
@@ -174,7 +189,7 @@ class PrimitiveMap : public Map<K,V>{
 			}
 		}
 		
-		virtual void setKeyByPos(int p, K *key){
+		virtual void setKeyPointerByPosition(int p, K *key){
 			if(this->pos >= this->size){
 				return;
 			}
@@ -192,7 +207,7 @@ class PrimitiveMap : public Map<K,V>{
 			}
 		}
 		
-		virtual void setValueByPos(int p, V value){
+		virtual void setValueByPosition(int p, V value){
 			if(this->pos >= this->size){
 				return;
 			}
@@ -208,7 +223,7 @@ class PrimitiveMap : public Map<K,V>{
 			}
 		}
 		
-		virtual void setValueByPos(int p, V *value){
+		virtual void setValuePointerByPosition(int p, V *value){
 			if(this->pos >= this->size){
 				return;
 			}
@@ -226,44 +241,44 @@ class PrimitiveMap : public Map<K,V>{
 			}
 		}
 		
-		virtual bool contain(K *key){
-			iterate(this){
-				if(this->getKeyPointer() == key){
+		virtual bool containKeyByPointer(K *key){
+			for(Iterator i : *this){
+				if(this->getKeyPointer(i) == key){
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		virtual bool contain(K key){
-			iterate(this){
-				if(this->getKey() == key){
+		virtual bool containKeyByLValue(K key){
+			for(Iterator i : *this){
+				if(this->getKey(i) == key){
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		virtual bool containValue(V *value){
-			iterate(this){
-				if(this->getPointer() == value){
+		virtual bool containValueByPointer(V *value){
+			for(Iterator i : *this){
+				if(this->getPointer(i) == value){
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		virtual bool containValue(V value){
-			iterate(this){
-				if(this->getValue() == value){
+		virtual bool containValueByLValue(V value){
+			for(Iterator i : *this){
+				if(this->getLValue(i) == value){
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		virtual V* get(K *key){
-			for(int xk = 0; xk < this->getPos(); xk++){
+		virtual V* getByPointer(K *key){
+			for(int xk = 0; xk < this->pos; xk++){
 				if(this->keys[xk] == key){
 					return this->values[xk];
 				}
@@ -271,7 +286,7 @@ class PrimitiveMap : public Map<K,V>{
 			return nullptr;
 		}
 		
-		virtual V* get(K key){
+		virtual V* getByLValue(K key){
 			for(int xk = 0; xk < this->pos; xk++){
 				if(*this->keys[xk] == key){
 					return this->values[xk];
@@ -280,44 +295,44 @@ class PrimitiveMap : public Map<K,V>{
 			return nullptr;
 		}
 		
-		virtual V *getByPos(int p){
+		virtual V *getByPosition(int p){
 			if(p >= this->size){
 				return nullptr;
 			}
 			return this->values[p];
 		}
 		
-		virtual K *getKeyByPos(int p){
+		virtual K *getKeyByPosition(int p){
 			if(p >= this->size){
 				return nullptr;
 			}
 			return this->keys[p];
 		}
 		
-		virtual K *getKey(V *value){
-			iterate(this){
-				if(this->getPointer() == value){
-					return this->getKeyPointer();
+		virtual K *getKeyByPointer(V *value){
+			for(Iterator i : *this){
+				if(this->getPointer(i) == value){
+					return this->getKeyPointer(i);
 				}
 			}
 			return nullptr;
 		}
 		
-		virtual K *getKey(V value){
-			iterate(this){
-				if(this->getValue() == value){
-					return this->getKeyPointer();
+		virtual K *getKeyByLValue(V value){
+			for(Iterator i : *this){
+				if(this->getLValue(i) == value){
+					return this->getKeyPointer(i);
 				}
 			}
 			return nullptr;
 		}
 		
 		virtual void reset(){
-			iterate(this){
-				delete this->getKeyPointer();
-				delete this->getPointer();
-				this->keys[this->getIteration()] = nullptr;
-				this->values[this->getIteration()] = nullptr;
+			for(Iterator i : *this){
+				delete this->getKeyPointer(i);
+				delete this->getPointer(i);
+				this->keys[i.getIteration()] = nullptr;
+				this->values[i.getIteration()] = nullptr;
 			}
 			this->pos = 0;
 		}
@@ -338,7 +353,7 @@ class PrimitiveMap : public Map<K,V>{
 			this->pos = 0;
 		}
 		
-		virtual V *remove(K *key){
+		virtual V *removeByPointer(K *key){
 			V *p = nullptr;
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
@@ -362,7 +377,7 @@ class PrimitiveMap : public Map<K,V>{
 			return p;
 		}
 		
-		virtual V *remove(K key){
+		virtual V *removeByLValue(K key){
 			V *p = nullptr;
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
@@ -386,7 +401,7 @@ class PrimitiveMap : public Map<K,V>{
 			return p;
 		}
 		
-		virtual V *removeByPos(int p){
+		virtual V *removeByPosition(int p){
 			V *v = nullptr;
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
@@ -410,7 +425,7 @@ class PrimitiveMap : public Map<K,V>{
 			return v;
 		}
 		
-		virtual void removeDelete(K *key){
+		virtual void removeDeleteByPointer(K *key){
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == key ){
@@ -435,7 +450,7 @@ class PrimitiveMap : public Map<K,V>{
 			}
 		}
 		
-		virtual void removeDelete(K key){
+		virtual void removeDeleteByLValue(K key){
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
 				if(*this->keys[x] == key ){
@@ -460,7 +475,7 @@ class PrimitiveMap : public Map<K,V>{
 			}
 		}
 		
-		virtual void removeDeleteByPos(int p){
+		virtual void removeDeleteByPosition(int p){
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
 				if(x == p){
@@ -486,29 +501,29 @@ class PrimitiveMap : public Map<K,V>{
 		}
 		
 		//iterator part
-		virtual V getValue(){
-			return *this->values[this->getIteration()];
+		virtual V getLValue(Iterator iterate){
+			return *this->values[iterate.getIteration()];
 		}
-		virtual V *getPointer(){
-			return this->values[this->getIteration()];
+		virtual V *getPointer(Iterator iterate){
+			return this->values[iterate.getIteration()];
 		}
-		virtual K getKey(){
-			return *this->keys[this->getIteration()];
+		virtual K getKey(Iterator iterate){
+			return *this->keys[iterate.getIteration()];
 		}
-		virtual K *getKeyPointer(){
-			return this->keys[this->getIteration()];
+		virtual K *getKeyPointer(Iterator iterate){
+			return this->keys[iterate.getIteration()];
 		}		
 		virtual int getIterationSize(){
-			return this->getPos();
+			return this->getPosition();
 		}
 		
 		
 		//cppObject part
 		virtual void onDelete(){
 			if(this->owner){
-				iterate(this){
-					delete this->getKeyPointer();
-					delete this->getPointer();
+				for(Iterator i : *this){
+					delete this->getKeyPointer(i);
+					delete this->getPointer(i);
 				}
 			}
 		}
@@ -519,12 +534,17 @@ class PrimitiveMap : public Map<K,V>{
 			return "PrimitiveMap";
 		}
 		virtual Map<K,V>* clone(){
-			Map<K,V>* cloneMap = new PrimitiveMap<K,V>(this->size);
-			
-			for(int cm = 0; cm < pos; cm++){
-				cloneMap->add(*this->keys[cm], *this->values[cm]);
+			Map<K,V>* cloneMap = new PrimitiveMap<K,V>(true, this->size);
+			for(int cm = 0; cm < this->pos; cm++){
+				cloneMap->addLValues(*this->keys[cm], *this->values[cm]);
 			}
-			
+			return cloneMap;
+		}
+		virtual Map<K,V>* clone(bool owningMemory){
+			Map<K,V>* cloneMap = new PrimitiveMap<K,V>(owningMemory, this->size);
+			for(int cm = 0; cm < this->pos; cm++){
+				cloneMap->addLValues(*this->keys[cm], *this->values[cm]);
+			}
 			return cloneMap;
 		}
 		
@@ -549,7 +569,7 @@ class PrimitiveMap : public Map<K,V>{
 			int nsize = this->size+add;
 			PrimitiveMap<K,V> *nprimitive = new PrimitiveMap<K,V>(nsize);	
 			for(int x=0; x < this->pos; x++){
-				nprimitive->add(this->keys[x],this->values[x]);
+				nprimitive->addPointers(this->keys[x],this->values[x]);
 			}
 			return nprimitive;
 		}

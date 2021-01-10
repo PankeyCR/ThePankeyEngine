@@ -78,13 +78,13 @@
     }
 	
     Quaternion Quaternion::fromAngles(List<float> *angles) {
-        if (angles->getPos() != 3) {
+        if (angles->getPosition() != 3) {
             //throw new IllegalArgumentException(
             //        "Angles array must have three elements");
 			return Quaternion(this->x, this->y, this->z, this->w);
         }
 
-        return this->fromAngles(*angles->getByPos(0), *angles->getByPos(1), *angles->getByPos(2));
+        return this->fromAngles(*angles->getByPosition(0), *angles->getByPosition(1), *angles->getByPosition(2));
     }
 	
     Quaternion Quaternion::fromAngles(float xAngle, float yAngle, float zAngle) {
@@ -93,8 +93,8 @@
         angle = zAngle * 0.5f;
         sinZ = sin(angle);
         cosZ = cos(angle);
-        //sinZ = FastMath.sin(angle);
-        //cosZ = FastMath.cos(angle);
+        //sinZ = FastMonkeyMath.sin(angle);
+        //cosZ = FastMonkeyMath.cos(angle);
         angle = yAngle * 0.5f;
         sinY = sin(angle);
         cosY = cos(angle);
@@ -119,13 +119,13 @@
     }
 	
     Quaternion Quaternion::fromAnglesLocal(List<float> *angles) {
-        if (angles->getPos() != 3) {
+        if (angles->getPosition() != 3) {
             //throw new IllegalArgumentException(
             //        "Angles array must have three elements");
 			return Quaternion(this->x, this->y, this->z, this->w);
         }
 
-        return this->fromAnglesLocal(*angles->getByPos(0), *angles->getByPos(1), *angles->getByPos(2));
+        return this->fromAnglesLocal(*angles->getByPosition(0), *angles->getByPosition(1), *angles->getByPosition(2));
     }
 	
     Quaternion Quaternion::fromAnglesLocal(float xAngle, float yAngle, float zAngle) {
@@ -134,8 +134,8 @@
         angle = zAngle * 0.5f;
         sinZ = sin(angle);
         cosZ = cos(angle);
-        //sinZ = FastMath.sin(angle);
-        //cosZ = FastMath.cos(angle);
+        //sinZ = FastMonkeyMath.sin(angle);
+        //cosZ = FastMonkeyMath.cos(angle);
         angle = yAngle * 0.5f;
         sinY = sin(angle);
         cosY = cos(angle);
@@ -162,7 +162,7 @@
         if (angles == nullptr) {
             return nullptr;
             //angles = new float[3];
-        } else if (angles->getPos() < 3) {
+        } else if (angles->getPosition() < 3) {
             //throw new IllegalArgumentException("Angles array must have three elements");
         }
 
@@ -174,19 +174,19 @@
         // is correction factor
         float test = x * y + z * w;
         if (test > 0.499 * unit) { // singularity at north pole
-            //angles[1] = 2 * FastMath.atan2(x, w);
-            angles->set(1, 2.0f * atan2(x, w) );
-            angles->set(2, HALF_PI );
-            angles->set(0, 0.0f );
+            //angles[1] = 2 * FastMonkeyMath.atan2(x, w);
+            angles->setLValue(1, 2.0f * atan2(x, w) );
+            angles->setLValue(2, HALF_PI );
+            angles->setLValue(0, 0.0f );
         } else if (test < -0.499f * unit) { // singularity at south pole
-            //angles[1] = -2 * FastMath.atan2(x, w);
-            angles->set(1, -2.0f * atan2(x, w) );
-            angles->set(2, -HALF_PI );
-            angles->set(0, 0.0f );
+            //angles[1] = -2 * FastMonkeyMath.atan2(x, w);
+            angles->setLValue(1, -2.0f * atan2(x, w) );
+            angles->setLValue(2, -HALF_PI );
+            angles->setLValue(0, 0.0f );
         } else {
-            angles->set(1, atan2(2 * this->y * this->w - 2 * this->x * this->z, sqx - sqy - sqz + sqw) ); // yaw or heading
-            angles->set(2, asin(2 * test / unit) );
-            angles->set(0, atan2(2 * this->x * this->w - 2 * this->y * this->z, -sqx + sqy - sqz + sqw) );
+            angles->setLValue(1, atan2(2 * this->y * this->w - 2 * this->x * this->z, sqx - sqy - sqz + sqw) ); // yaw or heading
+            angles->setLValue(2, asin(2 * test / unit) );
+            angles->setLValue(0, atan2(2 * this->x * this->w - 2 * this->y * this->z, -sqx + sqy - sqz + sqw) );
         }
         return angles;
     }
@@ -466,7 +466,7 @@
 
         float normm = norm();
         if (normm != 1.0f) {
-            normm = FastMath::invSqrt(normm);
+            normm = FastMonkeyMath::invSqrt(normm);
         }
 
         float xx = x * x * normm;
@@ -886,12 +886,12 @@
     }
 	
     Quaternion Quaternion::fromAxes(List<Vector3f> *axis) {
-        if (axis->getPos() < 3) {
+        if (axis->getPosition() < 3) {
             //throw new IllegalArgumentException(
             //        "Axis array must have three elements");
 			return Quaternion(this->x, this->y, this->z, this->w);
         }
-        return this->fromAxes(*axis->getByPos(0), *axis->getByPos(1), *axis->getByPos(2));
+        return this->fromAxes(*axis->getByPosition(0), *axis->getByPosition(1), *axis->getByPosition(2));
     }
 	
     Quaternion Quaternion::fromAxes(Vector3f xAxis, Vector3f yAxis, Vector3f zAxis) {
@@ -900,12 +900,12 @@
     }
 	
     Quaternion Quaternion::fromAxesLocal(List<Vector3f> *axis) {
-        if (axis->getPos() < 3) {
+        if (axis->getPosition() < 3) {
             //throw new IllegalArgumentException(
             //        "Axis array must have three elements");
 			return Quaternion(this->x, this->y, this->z, this->w);
         }
-        return this->fromAxesLocal(*axis->getByPos(0), *axis->getByPos(1), *axis->getByPos(2));
+        return this->fromAxesLocal(*axis->getByPosition(0), *axis->getByPosition(1), *axis->getByPosition(2));
     }
 	
     Quaternion Quaternion::fromAxesLocal(Vector3f xAxis, Vector3f yAxis, Vector3f zAxis) {
@@ -915,19 +915,19 @@
 
     List<Vector3f> *Quaternion::toAxes(List<Vector3f> *axis) {
         Matrix3f tempMat = this->toRotationMatrix3f();
-		if(axis->getPos() >= 3){
-			axis->set( 0, tempMat.getColumn(0) );
-			axis->set( 1, tempMat.getColumn(1) );
-			axis->set( 2, tempMat.getColumn(2) );
+		if(axis->getPosition() >= 3){
+			axis->setLValue( 0, tempMat.getColumn(0) );
+			axis->setLValue( 1, tempMat.getColumn(1) );
+			axis->setLValue( 2, tempMat.getColumn(2) );
 		}
-		if(axis->getPos() == 0){
-			axis->add( tempMat.getColumn(0) );
-			axis->add( tempMat.getColumn(1) );
-			axis->add( tempMat.getColumn(2) );
+		if(axis->getPosition() == 0){
+			axis->addLValue( tempMat.getColumn(0) );
+			axis->addLValue( tempMat.getColumn(1) );
+			axis->addLValue( tempMat.getColumn(2) );
 		}
-        //axis[0] = tempMat.getColumn(0, axis->getByPos(0));
-        //axis[1] = tempMat.getColumn(1, axis->getByPos(1));
-        //axis[2] = tempMat.getColumn(2, axis->getByPos(2));
+        //axis[0] = tempMat.getColumn(0, axis->getByPosition(0));
+        //axis[1] = tempMat.getColumn(1, axis->getByPosition(1));
+        //axis[2] = tempMat.getColumn(2, axis->getByPosition(2));
 		return axis;
     }
 	
@@ -1007,7 +1007,7 @@
 
 //    @Deprecated
 //    public void normalize() {
-//        float n = FastMath.invSqrt(norm());
+//        float n = FastMonkeyMath.invSqrt(norm());
 //        x *= n;
 //        y *= n;
 //        z *= n;
@@ -1015,7 +1015,7 @@
 //    }
 
     Quaternion Quaternion::normalize() {
-        float n = FastMath::invSqrt(norm());
+        float n = FastMonkeyMath::invSqrt(norm());
         float nx = this->x * n;
         float ny = this->y * n;
         float nz = this->z * n;
@@ -1024,7 +1024,7 @@
     }
 
     Quaternion Quaternion::normalizeLocal() {
-        float n = FastMath::invSqrt(norm());
+        float n = FastMonkeyMath::invSqrt(norm());
         this->x *= n;
         this->y *= n;
         this->z *= n;

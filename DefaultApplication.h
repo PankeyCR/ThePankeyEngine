@@ -27,7 +27,7 @@ class DefaultApplication : public Application{
 		virtual void setTimeControl(TimeControl *timecontrol);
 		virtual TimeControl *getTimeControl();
 		
-		virtual void setListener(Listener* l);
+		virtual Listener* setListener(Listener* l);
 		virtual Listener* getListener();
 		
 		virtual void update();

@@ -16,104 +16,68 @@
 	}
 	
 	Lexer::~Lexer(){
-		if(this->captureToken != nullptr){
-			delete this->captureToken;
-			this->captureToken = nullptr;
-		}
-		if(this->delimiterToken != nullptr){
-			delete this->delimiterToken;
-			this->delimiterToken = nullptr;
-		}
-		if(this->tokens != nullptr){
-			delete this->tokens;
-			this->tokens = nullptr;
-		}
-		if(this->primitiveClasses != nullptr){
-			delete this->primitiveClasses;
-			this->primitiveClasses = nullptr;
-		}
-		if(this->breakPoint != nullptr){
-			delete this->breakPoint;
-			this->breakPoint = nullptr;
-		}
-		if(this->delimiterCatcher != nullptr){
-			delete this->delimiterCatcher;
-			this->delimiterCatcher = nullptr;
-		}
+		delete this->captureToken;
+		delete this->delimiterToken;
+		delete this->tokens;
+		delete this->primitiveClasses;
+		delete this->breakPoint;
+		delete this->delimiterCatcher;
 	}
 	
 	void Lexer::capture(char chr){
 		this->captureChar = chr;
 		//Serial.println("start capture "+String(chr));
 		
-		if(this->delimiterCatcher->getPos() >= 1){
+		if(this->delimiterCatcher->getPosition() >= 1){
 			bool deleteCatcher = false;
-			LinkedList<String> deleteCatcherList;
-			iterate(this->delimiterCatcher){
-				int* delPosition = this->delimiterCatcher->getPointer();
-				String delToken = this->delimiterCatcher->getKey();
-				//Serial.println("iterate delimiterCatcher "+String(delimiterCatcher->getIteration()));
-				//Serial.println("delToken.length() "+String(delToken.length()));
+			LinkedList<String> deleteCatcherList(false);
+			for(Iterator i : *this->delimiterCatcher){
+				int* delPosition = this->delimiterCatcher->getPointer(i);
+				String* delToken = this->delimiterCatcher->getKeyPointer(i);
 				
 				(*delPosition)++;
-				//Serial.println("delPosition "+String(*delPosition));
-				//Serial.println("this->delimiterCatcher->getPos() "+String(this->delimiterCatcher->getPos()));
-								
-				if(*delPosition == delToken.length() && this->delimiterCatcher->getPos() == 1){
+				if(*delPosition == delToken->length() && this->delimiterCatcher->getPosition() == 1){
 					deleteCatcher = true;
 					break;
 				}
-				if(*delPosition == delToken.length() && this->delimiterCatcher->getPos() > 1){
-					deleteCatcherList.add(delToken);
-					//Serial.println("adding deleteCatcherList > 1 "+delToken);
+				if(*delPosition == delToken->length() && this->delimiterCatcher->getPosition() > 1){
+					deleteCatcherList.addPointer(delToken);
 					continue;
 				}
 				
-				if(*delPosition <= delToken.length()){
-					if(chr != delToken.charAt(*delPosition)){
-						deleteCatcherList.add(delToken);
-						//Serial.println("adding deleteCatcherList "+delToken);
-						//this->delimiterCatcher->removeDelete(delToken);
+				if(*delPosition <= delToken->length()){
+					if(chr != delToken->charAt(*delPosition)){
+						 deleteCatcherList.addPointer(delToken);
 					}
 				}
 			}
-			iterateV(deleteCatcherList){
-				//Serial.println("deleting delimiterCatcher "+deleteCatcherList.getValue());
-				this->delimiterCatcher->removeDelete(deleteCatcherList.getValue());
+			for(Iterator di : deleteCatcherList){
+				this->delimiterCatcher->removeDeleteByPointer(deleteCatcherList.getPointer(di));
 			}
 			if(deleteCatcher){
-				//Serial.println("resetDelete delimiterCatcher ");
 				this->delimiterCatcher->resetDelete();
 				if(this->reading != ""){
 					String tkn = this->getToken(this->reading);
 					if(tkn != ""){
-						this->captureToken->add(tkn,this->reading);
+						this->captureToken->addLValues(tkn,this->reading);
 						this->reading = "";
 					}
 				}
 			}
-			//deleteCatcherList.resetDelete();
 		}
 		
-		if(this->delimiterCatcher->getPos() == 0){
-			//Serial.println("reading "+reading);
-			//Serial.println("delimiterCatcher getPos "+String(this->delimiterCatcher->getPos()));
-			iterate(this->delimiterToken){
-				String delToken = this->delimiterToken->getValue();
+		if(this->delimiterCatcher->isEmpty()){
+			for(Iterator dt : *this->delimiterToken){
+				String delToken = this->delimiterToken->getLValue(dt);
 				if(delToken.charAt(0) == chr){
-					//Serial.println("adding delimiterCatcher "+delToken);
-					this->delimiterCatcher->add(new String(delToken),new int(0));
+					this->delimiterCatcher->addPointers(new String(delToken),new int(0));
 					if(this->reading != ""){
 						String tkn = this->getToken(this->reading);
 						if(tkn != ""){
-							this->captureToken->add(tkn,this->reading);
-							//Serial.println("reading "+reading);
-							//Serial.println("delimiterCatcher getPos "+String(this->delimiterCatcher->getPos()));
+							this->captureToken->addLValues(tkn,this->reading);
 							this->reading = "";
 						}else{
-							this->captureToken->add("Variable",this->reading);
-							//Serial.println("reading "+reading);
-							//Serial.println("delimiterCatcher getPos "+String(this->delimiterCatcher->getPos()));
+							this->captureToken->addLValues("Variable",this->reading);
 							this->reading = "";
 						}
 					}
@@ -121,16 +85,15 @@
 			}
 		}
 		
-		if(this->breakPoint->contain(chr)){
+		if(this->breakPoint->containByLValue(chr)){
 			if(this->reading != ""){
 				String tkn = this->getToken(this->reading);
 				if(tkn != ""){
-					this->captureToken->add(tkn,this->reading);
+					this->captureToken->addLValues(tkn,this->reading);
 					this->reading = "";
 					return;
-					//Serial.println("breakPoint "+tkn);
 				}else{
-					this->captureToken->add("Variable",this->reading);
+					this->captureToken->addLValues("Variable",this->reading);
 					this->reading = "";
 					return;
 				}
@@ -265,14 +228,14 @@
 		if(this->isLong(tkn)){
 			return "Long";
 		}
-		if(this->tokens->contain(tkn)){
+		if(this->tokens->containByLValue(tkn)){
 			return tkn;
 		}
-		if(this->primitiveClasses->contain(tkn)){
+		if(this->primitiveClasses->containByLValue(tkn)){
 			return "ClassName";
 		}
-		if(this->delimiterToken->containValue(tkn)){
-			return *this->delimiterToken->getKey(tkn);
+		if(this->delimiterToken->containValueByLValue(tkn)){
+			return *this->delimiterToken->getKeyByLValue(tkn);
 		}
 		
 		return "";
@@ -283,7 +246,7 @@
 	}
 	
 	String Lexer::getCapturedToken(int x){
-		String* token = this->captureToken->getByPos(x);
+		String* token = this->captureToken->getByPosition(x);
 		if(token == nullptr){
 			return "";
 		}
@@ -295,30 +258,30 @@
 	}
 	
 	Lexer* Lexer::addToken(String tkn){
-		this->tokens->add(tkn);
+		this->tokens->addLValue(tkn);
 		return this;
 	}
 	
 	Lexer* Lexer::addPrimitiveClass(String cls){
-		this->primitiveClasses->add(cls);
+		this->primitiveClasses->addLValue(cls);
 		return this;
 	}
 	
 	Lexer* Lexer::addBreakPoint(char brk){
-		this->breakPoint->add(brk);
+		this->breakPoint->addLValue(brk);
 		return this;
 	}
 	
 	Lexer* Lexer::addDelimiterToken(String name,String dlm){
-		this->delimiterToken->add(name,dlm);
+		this->delimiterToken->addLValues(name,dlm);
 		return this;
 	}
 	
 	void Lexer::printTokens(Stream* port){
-		iterate(this->getCapturedToken()){
-			port->print(this->getCapturedToken()->getKey());
+		for(Iterator i : *this->getCapturedToken()){
+			port->print(this->getCapturedToken()->getKey(i));
 			port->print(" ");
-			port->println(this->getCapturedToken()->getValue());
+			port->println(this->getCapturedToken()->getLValue(i));
 		}
 	}
 	

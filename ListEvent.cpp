@@ -15,22 +15,22 @@
 	}
 	template<class T>
 	void ListEvent<T>::event(){
-		iterate(this->list){
-			(**this->list->getPointer())(this->var);
+		for(Iterator i : *this->list){
+			(**this->list->getPointer(i))(this->var);
 		}
 	}
 	template<class T>
 	void ListEvent<T>::event(T c){
 		if(this->var != c){
 			this->var = c;
-			iterate(this->list){
-				(**this->list->getPointer())(this->var);
+			for(Iterator i : *this->list){
+				(**this->list->getPointer(i))(this->var);
 			}
 		}
 	}
 	template<class T>
 	void ListEvent<T>::add(EventMethod c){
-		this->list->add(c);
+		this->list->addLValue(c);
 	}
 	template<class T>
 	void ListEvent<T>::add(T name, EventMethod c){

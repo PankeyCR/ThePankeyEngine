@@ -81,9 +81,12 @@ class GameManager : public AppState{
 		void deleteComponent(int entity, GameOn* component);
 		void deleteComponent(GameObject* obj, GameOn* component);
 		
-		GameOn* removeComponentIterating(List<GameOn>* components);
+		GameOn* removeComponentIterating(Iterator& i, List<GameOn>* listComponents);
 		
-		void deleteComponentIterating(List<GameOn>* components);
+		void deleteComponentIterating(Iterator& i, List<GameOn>* listComponents);
+		
+		//resets the list and it deletes the components from there entities
+		void deleteComponentsFromList(PrimitiveList<GameOn>* listComponents);
 		
 		int getEntitySize();
 		int getComponentSize(int entity);

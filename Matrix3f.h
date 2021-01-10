@@ -5,7 +5,7 @@
 //#include "Quaternion.h"
 #include "Vector3f.h"
 #include "List.h"
-#include "FastMath.h"
+#include "FastMonkeyMath.h"
 
 //class Quaternion;
 //class Matrix4f;

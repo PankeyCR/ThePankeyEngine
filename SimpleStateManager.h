@@ -23,7 +23,7 @@ class SimpleStateManager : public AppStateManager{
 		}
 		
 		AppState* add(AppState *state){
-			this->appStateList->add(state);
+			this->appStateList->addPointer(state);
 			if(this->managerApp != nullptr){
 				state->initialize(this->managerApp);
 			}
@@ -32,19 +32,19 @@ class SimpleStateManager : public AppStateManager{
 		}
 		
 		AppState *get(String classname){
-			iterate(this->appStateList){
-				if(this->appStateList->getPointer()->getClassName() == classname){
-					return this->appStateList->getPointer();
+			for(int x = 0; x > this->appStateList->getPosition(); x++){
+				if(this->appStateList->getByPosition(x)->getClassName() == classname){
+					return this->appStateList->getByPosition(x);
 				}
 			}
 			return nullptr;
 		}
 		
 		AppState *get(String appstateId,String classname){
-			iterate(this->appStateList){
-				if(this->appStateList->getPointer()->getClassName() == classname &&
-								this->appStateList->getPointer()->getId() == appstateId){
-					return this->appStateList->getPointer();
+			for(int x = 0; x > this->appStateList->getPosition(); x++){
+				if(this->appStateList->getByPosition(x)->getClassName() == classname &&
+								this->appStateList->getByPosition(x)->getId() == appstateId){
+					return this->appStateList->getByPosition(x);
 				}
 			}
 			return nullptr;
@@ -52,38 +52,38 @@ class SimpleStateManager : public AppStateManager{
 		
 		AppState *remove(String classname){
 			AppState *appstate = nullptr;
-			iterate(this->appStateList){
-				if(this->appStateList->getPointer()->getClassName() == classname){
-					appstate = this->appStateList->getPointer();
+			for(int x = 0; x > this->appStateList->getPosition(); x++){
+				if(this->appStateList->getByPosition(x)->getClassName() == classname){
+					appstate = this->appStateList->getByPosition(x);
 				}
 			}
 			if(appstate == nullptr){
 				return nullptr;
 			}
 			appstate->onDisable();
-			this->appStateList->remove(appstate);
+			this->appStateList->removeByPointer(appstate);
 			return appstate;
 		}
 		
 		AppState *remove(String appstateId,String classname){
 			AppState *appstate = nullptr;
-			iterate(this->appStateList){
-				if(this->appStateList->getPointer()->getClassName() == classname &&
-								this->appStateList->getPointer()->getId() == appstateId){
-					appstate = this->appStateList->getPointer();
+			for(int x = 0; x > this->appStateList->getPosition(); x++){
+				if(this->appStateList->getByPosition(x)->getClassName() == classname &&
+								this->appStateList->getByPosition(x)->getId() == appstateId){
+					appstate = this->appStateList->getByPosition(x);
 				}
 			}
 			if(appstate == nullptr){
 				return nullptr;
 			}
 			appstate->onDisable();
-			this->appStateList->remove(appstate);
+			this->appStateList->removeByPointer(appstate);
 			return appstate;
 		}
 		
 		bool contain(String classname){
-			iterate(this->appStateList){
-				if(this->appStateList->getPointer()->getClassName() == classname){
+			for(int x = 0; x > this->appStateList->getPosition(); x++){
+				if(this->appStateList->getByPosition(x)->getClassName() == classname){
 					return true;
 				}
 			}
@@ -91,9 +91,9 @@ class SimpleStateManager : public AppStateManager{
 		}
 		
 		bool contain(String appstateId,String classname){
-			iterate(this->appStateList){
-				if(this->appStateList->getPointer()->getClassName() == classname &&
-								this->appStateList->getPointer()->getId() == appstateId){
+			for(int x = 0; x > this->appStateList->getPosition(); x++){
+				if(this->appStateList->getByPosition(x)->getClassName() == classname &&
+								this->appStateList->getByPosition(x)->getId() == appstateId){
 					return true;
 				}
 			}
@@ -101,15 +101,15 @@ class SimpleStateManager : public AppStateManager{
 		}
 		
 		void removeAll(){
-			for(int x=0; x < this->appStateList->getPos();x++){
-				this->appStateList->getByPos(x)->onDisable();
+			for(int x=0; x < this->appStateList->getPosition();x++){
+				this->appStateList->getByPosition(x)->onDisable();
 			}			
 			this->appStateList->reset();
 		}
 		
 		void removeDeleteAll(){
-			for(int x=0; x < this->appStateList->getPos();x++){
-				this->appStateList->getByPos(x)->onDisable();
+			for(int x=0; x < this->appStateList->getPosition();x++){
+				this->appStateList->getByPosition(x)->onDisable();
 			}			
 			this->appStateList->resetDelete();
 		}
@@ -118,8 +118,8 @@ class SimpleStateManager : public AppStateManager{
 			this->now = micros();
 			this->t = (float)(this->now - this->prev)/1000000;
 			this->prev = this->now;
-			for(int x=0; x < this->appStateList->getPos();x++){
-				this->appStateList->getByPos(x)->update(this->t);
+			for(int x=0; x < this->appStateList->getPosition();x++){
+				this->appStateList->getByPosition(x)->update(this->t);
 			}			
 		}
 		float tpc(){

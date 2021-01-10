@@ -43,10 +43,10 @@
 		Map<String,String>* map = (Map<String,String>*)instance;
 		String mapS="";
 		mapS.concat(String(map->getSize()));
-		iterate(map){
-			mapS.concat(map->getKey());
+		for(Iterator i : *map){
+			mapS.concat(map->getKey(i));
 			mapS.concat(enter);
-			mapS.concat(map->getValue());
+			mapS.concat(map->getLValue(i));
 			mapS.concat(enter);
 		}
 		file->write(path+".txt", mapS);
@@ -80,7 +80,7 @@
 		}
 		
 		for(int x= 0; x < size; x++){
-			map->add(n.getSentence((x*2)+1),n.getSentence((x*2)+2));
+			map->addLValues(n.getSentence((x*2)+1),n.getSentence((x*2)+2));
 		}
 		
 		return map;

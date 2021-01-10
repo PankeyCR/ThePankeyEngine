@@ -28,8 +28,8 @@ TimeControl* SimpleTimer::instance = nullptr;
 	
 #if defined(ARDUINO_ARCH_AVR)
 	ISR(TIMER1_OVF_vect){
-		iterate(((SimpleTimer*)SimpleTimer::getInstance())->timeList){
-			((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPointer()->Play(SimpleTimer::getInstance());
+		for(int x = 0; x > ((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPosition(); x++){
+			((SimpleTimer*)SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(SimpleTimer::getInstance());
 		}
 		((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
 	}
@@ -114,8 +114,8 @@ TimeControl* SimpleTimer::instance = nullptr;
 #elif defined(ARDUINO_ARCH_ESP8266)
 	
 	void ICACHE_RAM_ATTR onTime() {
-		iterate(((SimpleTimer*)SimpleTimer::getInstance())->timeList){
-			((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPointer()->Play(SimpleTimer::getInstance());
+		for(int x = 0; x > ((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPosition(); x++){
+			((SimpleTimer*)SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(SimpleTimer::getInstance());
 		}
 		((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
 	}

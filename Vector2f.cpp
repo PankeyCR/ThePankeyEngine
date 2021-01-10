@@ -287,8 +287,8 @@
 		if (floats == nullptr) {
 		   return nullptr;
 		}
-		floats->set(0, this->x);
-		floats->set(1, this->y);
+		floats->setLValue(0, this->x);
+		floats->setLValue(1, this->y);
 		return floats;
 	}
 

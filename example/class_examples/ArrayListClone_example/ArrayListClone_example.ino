@@ -1,30 +1,33 @@
 
 #include "ArrayList.h"
 #include "List.h"
-
-List<String> *testList;
+#include "MemoryFree.h"
 
 void setup() {
   Serial.begin(9600);
-  testList = new ArrayList<String,10>();
-
-  testList->add("names");
-  testList->add("node");
-  testList->add("pankey");
-  testList->add("test");
-  testList->add("monkey");
-  
-  iterate(testList){
-    Serial.println(testList->getValue());
-  }
-  
-  List<String>* cloneList = testList->clone();
-  delete testList;//list can be deleted because the new list has new rvalues saved on it, 
-                  //and ArrayList doesnt have ownership of the data stored on the list
-  
-  iterate(cloneList){
-    Serial.println(cloneList->getValue());
-  }
 }
 
-void loop() {}
+void loop() {
+  Serial.println(freeMemory());
+  ArrayList<String,10> testList;
+
+  testList.addLValue("names");
+  testList.addLValue("node");
+  testList.addLValue("pankey");
+  testList.addLValue("test");
+  testList.addLValue("monkey");
+  
+  Serial.println("testList Iterator");
+  for(Iterator i : testList){
+    Serial.println(testList.getLValue(i));
+  }
+  
+  List<String>* cloneList = testList.clone();
+  
+  Serial.println("cloneList Iterator");
+  for(Iterator i : *cloneList){
+    Serial.println(cloneList->getLValue(i));
+  }
+  delete cloneList;
+  Serial.println(freeMemory());
+}

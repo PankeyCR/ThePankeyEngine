@@ -1,6 +1,6 @@
 
-#ifndef TemperatureNTCSystem_h
-#define TemperatureNTCSystem_h
+#ifndef NTCSystem_h
+#define NTCSystem_h
 
 #include "TemperatureNTC.h"
 #include "GameManager.h"
@@ -9,31 +9,37 @@
 #include "List.h"
 #include "NTC.h"
 
-class TemperatureNTCSystem : public AppState{
+class NTCSystem : public AppState{
 public:
 TemperatureNTC* temperature;
 
-TemperatureNTCSystem(GameManager* mgr){
-	manager = mgr;
+NTCSystem(){
 	temperature = new TemperatureNTC();
 }
 
-virtual ~TemperatureNTCSystem(){}
+virtual ~NTCSystem(){}
 
 void initialize(Application *app){
+	manager = app->getStateManager()->getState<GameManager>();
+	if(manager == nullptr){
+		return;
+	}
 	tempList = manager->getComponents("NTC");
 	temperature->initialize();
 }
 
 void update(float tpc){
-	iterate(tempList){
-		NTC* tSensor = (NTC*)tempList->getPointer();
+	if(tempList == nullptr){
+		return;
+	}
+	for(int x = 0; x > tempList->getPosition(); x++){
+		NTC* tSensor = (NTC*)tempList->getByPosition(x);
 		tSensor->temperature = temperature->getTemperature(tSensor->pin);
 	}
 }
 
 String getClassName(){
-	return "TemperatureNTCSystem";
+	return "NTCSystem";
 }
 
 protected:

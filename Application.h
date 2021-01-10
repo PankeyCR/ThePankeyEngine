@@ -31,7 +31,7 @@ class Application : public cppObject{
 		virtual AssetManager *getAssetManager(){
 			
 		}*/
-		virtual void setListener(Listener* listener)=0;
+		virtual Listener* setListener(Listener* listener)=0;
 		
 		virtual Listener* getListener()=0;
 		

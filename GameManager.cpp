@@ -32,33 +32,33 @@
 	}
 	
 	int GameManager::createEntity(GameObject* obj){
-		obj->setId(this->gameobjects->getPos());
-		this->gameobjects->add(obj);
+		obj->setId(this->gameobjects->getPosition());
+		this->gameobjects->addPointer(obj);
 		return obj->getId();
 	}
 	
 	GameObject* GameManager::createGameObject(GameObject* obj){
-		obj->setId(this->gameobjects->getPos());
-		this->gameobjects->add(obj);
+		obj->setId(this->gameobjects->getPosition());
+		this->gameobjects->addPointer(obj);
 		return obj;
 	}
 	
 	int GameManager::createEntity(){
 		GameObject* obj = new GameObject();
-		obj->setId(this->gameobjects->getPos());
-		this->gameobjects->add(obj);
+		obj->setId(this->gameobjects->getPosition());
+		this->gameobjects->addPointer(obj);
 		return obj->getId();
 	}
 	
 	GameObject* GameManager::createGameObject(){
 		GameObject* obj = new GameObject();
-		obj->setId(this->gameobjects->getPos());
-		this->gameobjects->add(obj);
+		obj->setId(this->gameobjects->getPosition());
+		this->gameobjects->addPointer(obj);
 		return obj;
 	}
 	
 	void GameManager::deleteEntity(int entity){
-		GameObject* obj = this->gameobjects->getByPos(entity);
+		GameObject* obj = this->gameobjects->getByPosition(entity);
 		if(obj == nullptr){
 			return;
 		}
@@ -66,30 +66,28 @@
 		if(objChilds == nullptr){
 			return;
 		}
-		for(int x = 0; x < objChilds->getPos(); x++){
-			GameOn* child = objChilds->getByPos(x);
+		for(int x = 0; x < objChilds->getPosition(); x++){
+			GameOn* child = objChilds->getByPosition(x);
 			String classnamae = child->getClassName();
-			PrimitiveList<GameOn>* list = this->components->get(classnamae);
+			PrimitiveList<GameOn>* list = this->components->getByLValue(classnamae);
 			if(list == nullptr){
 				return;
 			}
-			list->remove(child);
+			list->removeByPointer(child);
 		}
-		this->gameobjects->removeDeleteByPos(entity);
+		this->gameobjects->removeDeleteByPosition(entity);
 	}
 	
 	void GameManager::deleteAllEntities(){
-		Serial.println("deliting all entities");
 		this->gameobjects->resetDelete();
-		Serial.println("finish deliting all entities");
-		for(int x = 0; x < components->getPos(); x++){
-			List<GameOn>* childs = components->getByPos(x);
+		for(int x = 0; x < components->getPosition(); x++){
+			List<GameOn>* childs = components->getByPosition(x);
 			childs->reset();
 		}
 	}
 	
 	void GameManager::deleteEntityRequest(int entity){
-		deleteERequest->add(entity);
+		deleteERequest->addLValue(entity);
 	}
 	
 	void GameManager::deleteAllEntitiesRequest(){
@@ -97,12 +95,15 @@
 	}
 	
 	int GameManager::getEntity(GameObject* obj){
-		return obj->getId();
+		if(gameobjects->containByPointer(obj)){
+			return obj->getId();
+		}
+		return -1;
 	}
 	
 	int GameManager::getEntity(String entityClassName){
-		for(int x = 0; x < gameobjects->getPos(); x++){
-			GameOn* child = gameobjects->getByPos(x);
+		for(int x = 0; x < gameobjects->getPosition(); x++){
+			GameOn* child = gameobjects->getByPosition(x);
 			if(child->getClassName() == entityClassName){
 				return x;
 			}
@@ -111,8 +112,8 @@
 	}
 	
 	GameObject* GameManager::getGameObject(String entityClassName){
-		for(int x = 0; x < gameobjects->getPos(); x++){
-			GameObject* obj = gameobjects->getByPos(x);
+		for(int x = 0; x < gameobjects->getPosition(); x++){
+			GameObject* obj = gameobjects->getByPosition(x);
 			if(obj->getClassName() == entityClassName){
 				return obj;
 			}
@@ -121,23 +122,23 @@
 	}
 	
 	GameObject* GameManager::getGameObject(int entity){
-		return this->gameobjects->getByPos(entity);
+		return this->gameobjects->getByPosition(entity);
 	}
 	
 	void GameManager::addComponent(int entity, GameOn* component){
-		GameObject* obj = this->gameobjects->getByPos(entity);
+		GameObject* obj = this->gameobjects->getByPosition(entity);
 		if(obj == nullptr){
 			return;
 		}
-		PrimitiveList<GameOn>* list = this->components->get(component->getClassName());
+		PrimitiveList<GameOn>* list = this->components->getByLValue(component->getClassName());
 		if(list == nullptr){
 			list = new PrimitiveList<GameOn>(false);
-			this->components->add(component->getClassName(),list);
+			this->components->addPointer(component->getClassName(),list);
 		}
-		if(!list->contain(component)){
-			list->add(component);
+		if(!list->containByPointer(component)){
+			list->addPointer(component);
 		}
-		if(!obj->getChilds()->contain(component)){
+		if(!obj->getChilds()->containByPointer(component)){
 			obj->attach(component);
 		}
 	}
@@ -146,36 +147,36 @@
 		if(obj == nullptr){
 			return;
 		}
-		if(obj->getChilds()->contain(component)){
+		if(obj->getChilds()->containByPointer(component)){
 			return;
 		}
 		obj->attach(component);
 		
-		List<GameOn>* list = this->components->get(component->getClassName());
+		PrimitiveList<GameOn>* list = this->components->getByLValue(component->getClassName());
 		if(list == nullptr){
 			list = new PrimitiveList<GameOn>(false);
-			this->components->add(component->getClassName(),list);
-			list->add(component);
+			this->components->addPointer(component->getClassName(),list);
+			list->addPointer(component);
 		}else{
-			list->add(component);
+			list->addPointer(component);
 		}
 	}
 	
 	void GameManager::addComponentRequest(int entity, GameOn* component){
-		addRequest->add(entity,component);
+		addRequest->addPointer(entity,component);
 	}
 	
 	void GameManager::addComponentRequest(GameObject* obj, GameOn* component){
-		int index = gameobjects->getIndex(obj);
+		int index = gameobjects->getIndexByPointer(obj);
 		if(index == -1){
 			return;
 		}
-		addRequest->add(index,component);
+		addRequest->addPointer(index,component);
 	}
 	
 	bool GameManager::containComponent(String componentClassName){
-		for(int xxs = 0; xxs < gameobjects->getPos(); xxs++){
-			GameObject* obj = gameobjects->getByPos(xxs);
+		for(int xxs = 0; xxs < gameobjects->getPosition(); xxs++){
+			GameObject* obj = gameobjects->getByPosition(xxs);
 			if(obj == nullptr){
 				return false;
 			}
@@ -183,8 +184,8 @@
 			if(objChilds == nullptr){
 				return false;
 			}
-			for(int yys = 0; yys < objChilds->getPos(); yys++){
-				GameOn* child = objChilds->getByPos(yys);
+			for(int yys = 0; yys < objChilds->getPosition(); yys++){
+				GameOn* child = objChilds->getByPosition(yys);
 				if(child == nullptr){
 					return false;
 				}
@@ -202,8 +203,8 @@
 		if(list == nullptr){
 			return false;
 		}
-		for(int x = 0; x < list->getPos(); x++){
-			if(list->getByPos(x)->getClassName() == componentClassName){
+		for(int x = 0; x < list->getPosition(); x++){
+			if(list->getByPosition(x)->getClassName() == componentClassName){
 				return true;
 			}
 		}
@@ -219,8 +220,8 @@
 		if(list == nullptr){
 			return false;
 		}
-		for(int x = 0; x < list->getPos(); x++){
-			if(list->getByPos(x)->getClassName() == componentClassName){
+		for(int x = 0; x < list->getPosition(); x++){
+			if(list->getByPosition(x)->getClassName() == componentClassName){
 				return true;
 			}
 		}
@@ -228,11 +229,11 @@
 	}
 	
 	GameOn* GameManager::getComponent(int entity, int index){
-		GameObject* obj = this->gameobjects->getByPos(entity);
+		GameObject* obj = this->gameobjects->getByPosition(entity);
 		if(obj == nullptr){
 			return nullptr;
 		}
-		return obj->getChilds()->getByPos(index);
+		return obj->getChilds()->getByPosition(index);
 	}
 	
 	bool GameManager::isEmpty(){
@@ -245,9 +246,9 @@
 		if(list == nullptr){
 			return nullptr;
 		}
-		for(int x = 0; x < list->getPos(); x++){
-			if(list->getByPos(x)->getClassName() == componentClassName){
-				return list->getByPos(x);
+		for(int x = 0; x < list->getPosition(); x++){
+			if(list->getByPosition(x)->getClassName() == componentClassName){
+				return list->getByPosition(x);
 			}
 		}
 		return nullptr;
@@ -262,19 +263,19 @@
 		if(list == nullptr){
 			return nullptr;
 		}
-		for(int x = 0; x < list->getPos(); x++){
-			if(list->getByPos(x)->getClassName() == componentClassName){
-				return list->getByPos(x);
+		for(int x = 0; x < list->getPosition(); x++){
+			if(list->getByPosition(x)->getClassName() == componentClassName){
+				return list->getByPosition(x);
 			}
 		}
 		return nullptr;
 	}
 	
 	GameOn* GameManager::getComponent(String componentClassName){
-		for(int x = 0; x < gameobjects->getPos(); x++){
-			for(int xc = 0; xc < gameobjects->getByPos(x)->getChilds()->getPos(); xc++){
-				if(gameobjects->getByPos(x)->getChilds()->getByPos(xc)->getClassName() == componentClassName){
-					return gameobjects->getByPos(x)->getChilds()->getByPos(xc);
+		for(int x = 0; x < gameobjects->getPosition(); x++){
+			for(int xc = 0; xc < gameobjects->getByPosition(x)->getChilds()->getPosition(); xc++){
+				if(gameobjects->getByPosition(x)->getChilds()->getByPosition(xc)->getClassName() == componentClassName){
+					return gameobjects->getByPosition(x)->getChilds()->getByPosition(xc);
 				}
 			}
 		}
@@ -282,8 +283,8 @@
 	}
 	
 	int GameManager::getEntityComponent(String componentClassName){
-		for(int x = 0; x < gameobjects->getPos(); x++){
-			GameObject* obj = gameobjects->getByPos(x);
+		for(int x = 0; x < gameobjects->getPosition(); x++){
+			GameObject* obj = gameobjects->getByPosition(x);
 			if(obj == nullptr){
 				return -1;
 			}
@@ -291,8 +292,8 @@
 			if(list == nullptr){
 				return -1;
 			}
-			for(int y = 0; y < list->getPos(); y++){
-				GameOn* gameon = list->getByPos(y);
+			for(int y = 0; y < list->getPosition(); y++){
+				GameOn* gameon = list->getByPosition(y);
 				if(gameon == nullptr){
 					return -1;
 				}
@@ -310,8 +311,8 @@
 		if(list == nullptr){
 			return -1;
 		}
-		for(int x = 0; x < list->getPos(); x++){
-			if(list->getByPos(x)->getClassName() == componentClassName){
+		for(int x = 0; x < list->getPosition(); x++){
+			if(list->getByPosition(x)->getClassName() == componentClassName){
 				return x;
 			}
 		}
@@ -327,8 +328,8 @@
 		if(list == nullptr){
 			return -1;
 		}
-		for(int x = 0; x < list->getPos(); x++){
-			if(list->getByPos(x)->getClassName() == componentClassName){
+		for(int x = 0; x < list->getPosition(); x++){
+			if(list->getByPosition(x)->getClassName() == componentClassName){
 				return x;
 			}
 		}
@@ -336,11 +337,11 @@
 	}
 	
 	int GameManager::getComponentEntity(String componentClassName){
-		for(int x = 0; x < gameobjects->getPos(); x++){
-			GameObject* obj = gameobjects->getByPos(x);
+		for(int x = 0; x < gameobjects->getPosition(); x++){
+			GameObject* obj = gameobjects->getByPosition(x);
 			List<GameOn>* list = obj->getChilds();
-			for(int xs = 0; xs < list->getPos(); xs++){
-				GameOn* child = list->getByPos(xs);
+			for(int xs = 0; xs < list->getPosition(); xs++){
+				GameOn* child = list->getByPosition(xs);
 				if(child->getClassName() == componentClassName){
 					return xs;
 				}
@@ -350,7 +351,7 @@
 	}
 	
 	List<GameOn>* GameManager::getComponents(int entity){
-		GameObject* obj = this->gameobjects->getByPos(entity);
+		GameObject* obj = this->gameobjects->getByPosition(entity);
 		if(obj != nullptr){
 			return obj->getChilds();
 		}
@@ -365,24 +366,24 @@
 	}
 	
 	List<GameOn>* GameManager::getComponents(String componentClassName){
-		PrimitiveList<GameOn>* list = this->components->get(componentClassName);
+		PrimitiveList<GameOn>* list = this->components->getByLValue(componentClassName);
 		if(list == nullptr){
 			list = new PrimitiveList<GameOn>(false);
-			this->components->add(componentClassName,list);
+			this->components->addPointer(componentClassName,list);
 		}
 		return list;
 	}
 	
 	void GameManager::deleteComponent(String componentClassName){
-		for(int x= 0; x < gameobjects->getPos(); x++){
+		for(int x= 0; x < gameobjects->getPosition(); x++){
 			GameOn* gameon = nullptr;
-			GameObject* obj = this->gameobjects->getByPos(x);
+			GameObject* obj = this->gameobjects->getByPosition(x);
 			if(obj != nullptr){
 				gameon = obj->detach(componentClassName);
 			}
-			List<GameOn>* list = this->components->get(componentClassName);
+			PrimitiveList<GameOn>* list = this->components->getByLValue(componentClassName);
 			if(list != nullptr){
-				list->remove(gameon);
+				list->removeByPointer(gameon);
 			}
 			if(gameon == nullptr){
 				return;
@@ -393,13 +394,13 @@
 	
 	GameOn* GameManager::removeComponent(int entity, String componentClassName){
 		GameOn* gameon = nullptr;
-		GameObject* obj = this->gameobjects->getByPos(entity);
+		GameObject* obj = this->gameobjects->getByPosition(entity);
 		if(obj != nullptr){
 			gameon = obj->detach(componentClassName);
 		}
-		List<GameOn>* list = this->components->get(componentClassName);
+		PrimitiveList<GameOn>* list = this->components->getByLValue(componentClassName);
 		if(list != nullptr){
-			list->remove(gameon);
+			list->removeByPointer(gameon);
 		}
 		return gameon;
 	}
@@ -409,23 +410,23 @@
 		if(obj != nullptr){
 			gameon = obj->detach(componentClassName);
 		}
-		List<GameOn>* list = this->components->get(componentClassName);
+		PrimitiveList<GameOn>* list = this->components->getByLValue(componentClassName);
 		if(list != nullptr){
-			list->remove(gameon);
+			list->removeByPointer(gameon);
 		}
 		return gameon;
 	}
 	
 	void GameManager::deleteComponent(int entity, String componentClassName){
-		GameObject* obj = this->gameobjects->getByPos(entity);
+		GameObject* obj = this->gameobjects->getByPosition(entity);
 		if(obj == nullptr){
 			return;
 		}
 		
 		GameOn* gon = obj->detach(componentClassName);
-		List<GameOn>* list = this->components->get(componentClassName);
+		PrimitiveList<GameOn>* list = this->components->getByLValue(componentClassName);
 		if(list != nullptr){
-			list->remove(gon);
+			list->removeByPointer(gon);
 		}
 		if(gon != nullptr){
 			delete gon;
@@ -438,9 +439,9 @@
 		}
 		
 		GameOn* gon = obj->detach(componentClassName);
-		List<GameOn>* list = this->components->get(componentClassName);
+		PrimitiveList<GameOn>* list = this->components->getByLValue(componentClassName);
 		if(list != nullptr){
-			list->remove(gon);
+			list->removeByPointer(gon);
 		}
 		if(gon != nullptr){
 			delete gon;
@@ -448,25 +449,25 @@
 	}
 	
 	void GameManager::deleteComponentRequest(int entity, String componentClassName){
-		deleteRequest->add(entity,componentClassName);
+		deleteRequest->addLValues(entity,componentClassName);
 	}
 	
 	void GameManager::deleteComponentRequest(GameObject* obj, String componentClassName){
-		int index = gameobjects->getIndex(obj);
+		int index = gameobjects->getIndexByPointer(obj);
 		if(index == -1){
 			return;
 		}
-		deleteRequest->add(index,componentClassName);
+		deleteRequest->addLValues(index,componentClassName);
 	}
 	
 	void GameManager::removeComponent(int entity, GameOn* component){
-		GameObject* obj = this->gameobjects->getByPos(entity);
+		GameObject* obj = this->gameobjects->getByPosition(entity);
 		if(obj != nullptr){
 			obj->detach(component);
 		}
-		List<GameOn>* list = this->components->get(component->getClassName());
+		PrimitiveList<GameOn>* list = this->components->getByLValue(component->getClassName());
 		if(list != nullptr){
-			list->remove(component);
+			list->removeByPointer(component);
 		}
 	}
 	
@@ -474,22 +475,22 @@
 		if(obj != nullptr){
 			 obj->detach(component);
 		}
-		List<GameOn>* list = this->components->get(component->getClassName());
+		PrimitiveList<GameOn>* list = this->components->getByLValue(component->getClassName());
 		if(list != nullptr){
-			list->remove(component);
+			list->removeByPointer(component);
 		}
 	}
 	
 	void GameManager::deleteComponent(int entity, GameOn* component){
 		if(component != nullptr){
-			GameObject* obj = this->gameobjects->getByPos(entity);
+			GameObject* obj = this->gameobjects->getByPosition(entity);
 			if(obj == nullptr){
 				return;
 			}
 			obj->detach(component);
-			List<GameOn>* list = this->components->get(component->getClassName());
+			PrimitiveList<GameOn>* list = this->components->getByLValue(component->getClassName());
 			if(list != nullptr){
-				list->remove(component);
+				list->removeByPointer(component);
 			}
 			delete component;
 		}
@@ -501,49 +502,75 @@
 				return;
 			}
 			obj->detach(component);
-			List<GameOn>* list = this->components->get(component->getClassName());
+			PrimitiveList<GameOn>* list = this->components->getByLValue(component->getClassName());
 			if(list != nullptr){
-				list->remove(component);
+				list->removeByPointer(component);
 			}
 			delete component;
 		}
 	}
 	
-	GameOn* GameManager::removeComponentIterating(List<GameOn>* components){
-		if(components != nullptr){
-			GameOn* gameon = components->getPointer();
-			components->remove();
-			GameObject* obj = this->gameobjects->getByPos(gameon->getId());
+	GameOn* GameManager::removeComponentIterating(Iterator& i, List<GameOn>* listComponents){
+		if(listComponents != nullptr){
+			GameOn* gameon = listComponents->getPointer(i);
+			listComponents->remove(i);
+			GameObject* obj = this->gameobjects->getByPosition(gameon->getId());
 			if(obj != nullptr){
 				obj->detach(gameon);
 			}
+			i.last();
 			return gameon;
 		}
 		return nullptr;
 	}
 	
-	void GameManager::deleteComponentIterating(List<GameOn>* components){
-		if(components != nullptr){
-			GameOn* gameon = components->getPointer();
-			components->remove();
-			GameObject* obj = this->gameobjects->getByPos(gameon->getId());
+	void GameManager::deleteComponentIterating(Iterator& i, List<GameOn>* listComponents){
+		if(listComponents != nullptr){
+			GameOn* gameon = listComponents->getPointer(i);
+			listComponents->remove(i);
+			GameObject* obj = this->gameobjects->getByPosition(gameon->getId());
 			if(obj == nullptr){
 				return;
 			}
 			obj->detach(gameon);
 			delete gameon;
+			i.last();
 		}
+	}
+	
+	void GameManager::deleteComponentsFromList(PrimitiveList<GameOn>* listComponents){
+		if(listComponents == nullptr){
+			return;
+		}
+		if(listComponents->isEmpty()){
+			return;
+		}
+		String* s = this->components->getKeyByPointer(listComponents);
+		if(s == nullptr){
+			return;
+		}
+		for(int x = 0; x > this->gameobjects->getPosition(); x++){
+			GameObject* obj = this->gameobjects->getByPosition(x);
+			List<GameOn>* list = obj->getChilds();
+			for(Iterator i : *list){
+				GameOn* gameon = list->getPointer(i);
+				if(gameon->getClassName() == *s){
+					list->removeDelete(i);
+				}
+			}
+		}
+		listComponents->reset();
 	}
 	
 	int GameManager::getEntitySize(){
-		return gameobjects->getPos();
+		return gameobjects->getPosition();
 	}
 	
 	int GameManager::getComponentSize(int entity){
-		if(gameobjects->getByPos(entity)==nullptr){
+		if(gameobjects->getByPosition(entity)==nullptr){
 			return -1;
 		}
-		return gameobjects->getByPos(entity)->getChilds()->getPos();
+		return gameobjects->getByPosition(entity)->getChilds()->getPosition();
 	}
 	
 	String GameManager::getClassName(){
@@ -569,19 +596,19 @@
 	}
 	
 	void GameManager::update(float tpc){
-		for(int txp = 0; txp < this->addRequest->getPos(); txp++){
-			this->addComponent(*this->addRequest->getKeyByPos(txp), this->addRequest->getByPos(txp));
-			this->addRequest->setValueByPos(txp, nullptr);
+		for(int txp = 0; txp < this->addRequest->getPosition(); txp++){
+			this->addComponent(*this->addRequest->getKeyByPosition(txp), this->addRequest->getByPosition(txp));
+			this->addRequest->setValuePointerByPosition(txp, nullptr);
 		}
 		this->addRequest->resetDelete();
 		
-		for(int txp = 0; txp < this->deleteRequest->getPos(); txp++){
-			this->deleteComponent(*this->deleteRequest->getKeyByPos(txp), *this->deleteRequest->getByPos(txp));
+		for(int txp = 0; txp < this->deleteRequest->getPosition(); txp++){
+			this->deleteComponent(*this->deleteRequest->getKeyByPosition(txp), *this->deleteRequest->getByPosition(txp));
 		}
 		this->deleteRequest->resetDelete();
 		
-		for(int txp = 0; txp < this->deleteERequest->getPos(); txp++){
-			this->deleteEntity(*this->deleteERequest->getByPos(txp));
+		for(int txp = 0; txp < this->deleteERequest->getPosition(); txp++){
+			this->deleteEntity(*this->deleteERequest->getByPosition(txp));
 		}
 		this->deleteERequest->resetDelete();
 		

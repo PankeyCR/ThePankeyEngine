@@ -15,7 +15,7 @@
 	}
 	
 	void DipSwitch::addPin(int pin){
-		pinList->add(pin);
+		pinList->addLValue(pin);
 	}
     
 	int DipSwitch::operator &(){
@@ -49,8 +49,8 @@
     
 	void DipSwitch::readPins(){
 		value = 0;
-		for(int x =0; x < pinList->getPos(); x++){
-			value += digitalRead(*pinList->getByPos(x)) * pow(2,x);
+		for(int x =0; x < pinList->getPosition(); x++){
+			value += digitalRead(*pinList->getByPosition(x)) * pow(2,x);
 		}
 	}
 	

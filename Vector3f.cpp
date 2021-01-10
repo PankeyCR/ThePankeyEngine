@@ -1,4 +1,7 @@
 
+#ifndef Vector3f_cpp
+#define Vector3f_cpp
+
 #include "Arduino.h"
 #include "Vector3f.h"
 
@@ -735,4 +738,5 @@
         return Vector3f(this->x, this->y, this->z);
 	}
 	
+#endif 
 	

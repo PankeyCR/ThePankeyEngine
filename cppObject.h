@@ -20,7 +20,8 @@ class cppObject/* : public ManegedMemory<cppObject>*/{
 			return this->instanceof(t.getClassName());
 		}
 		virtual bool instanceof(String name);
-		virtual cppObject *clone();
+		virtual cppObject *clone(void);
+		virtual cppObject *clone(bool owningMemory);
 		virtual void operator=(cppObject b);
 		virtual bool operator==(cppObject b);
 		virtual bool operator!=(cppObject b);

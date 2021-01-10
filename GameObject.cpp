@@ -24,38 +24,38 @@
 	}
 	
     void GameObject::update(float tpc){
-		iterate(this->childs){
-			this->childs->getPointer()->update(tpc);
+		for(Iterator i : *this->childs){
+			this->childs->getPointer(i)->update(tpc);
 		}
 	}
 	
     GameOn* GameObject::attach(GameOn* gmo){
 		gmo->setParent(this);
 		gmo->setId(this->getId());
-		this->childs->add(gmo);
+		this->childs->addPointer(gmo);
 		return gmo;
 	}
 	
     GameOn* GameObject::getChild(String className){
-		for(int x = 0; x < this->childs->getPos(); x++){
-			if(this->childs->getByPos(x)->getClassName() == className){
-				return this->childs->getByPos(x);
+		for(int x = 0; x < this->childs->getPosition(); x++){
+			if(this->childs->getByPosition(x)->getClassName() == className){
+				return this->childs->getByPosition(x);
 			}
 		}
 		return nullptr;
 	}
 	
     GameOn* GameObject::detach(String className){
-		for(int x = 0; x < this->childs->getPos(); x++){
-			if(this->childs->getByPos(x)->getClassName() == className){
-				return this->childs->removeByPos(x);
+		for(int x = 0; x < this->childs->getPosition(); x++){
+			if(this->childs->getByPosition(x)->getClassName() == className){
+				return this->childs->removeByPosition(x);
 			}
 		}
 		return nullptr;
 	}
 	
     void GameObject::detach(GameOn* gameon){
-		this->childs->remove(gameon);
+		this->childs->removeByPointer(gameon);
 	}
 	
 	List<GameOn>* GameObject::getChilds(){

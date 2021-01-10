@@ -1,31 +1,31 @@
 
-#ifndef FastMath_cpp
-#define FastMath_cpp
+#ifndef FastMonkeyMath_cpp
+#define FastMonkeyMath_cpp
 
-#include "FastMath.h"
+#include "FastMonkeyMath.h"
 
-    FastMath::FastMath(){}
+    // FastMonkeyMath::FastMonkeyMath(){}
 
-    int FastMath::randomSize = 100;
-    RealRandom *FastMath::realRandom = NULL;
+    int FastMonkeyMath::randomSize = 100;
+    RealRandom *FastMonkeyMath::realRandom = nullptr;
 	
-    float FastMath::Random(){
-		if(realRandom == NULL){
+    float FastMonkeyMath::Random(){
+		if(realRandom == nullptr){
 			realRandom = new RealRandom();
 			realRandom->setSeed(524);
 		}
 		realRandom->setMax(randomSize);
 		return realRandom->getRandom();
 	}
-    void FastMath::setRandomSize(int size){
+    void FastMonkeyMath::setRandomSize(int size){
 		randomSize = size;
 	}
 
-    bool FastMath::isPowerOfTwo(int number) {
+    bool FastMonkeyMath::isPowerOfTwo(int number) {
         return (number > 0) && (number & (number - 1)) == 0;
     }
 	
-    int FastMath::nearestPowerOfTwo(int number) {
+    int FastMonkeyMath::nearestPowerOfTwo(int number) {
         number--;
         number |= number >> 1;
         number |= number >> 2;
@@ -37,7 +37,7 @@
         return number;
     }
 
-    float FastMath::interpolateLinear(float scale, float startValue, float endValue) {
+    float FastMonkeyMath::interpolateLinear(float scale, float startValue, float endValue) {
         if (startValue == endValue) {
             return startValue;
         }
@@ -50,7 +50,7 @@
         return ((1.0f - scale) * startValue) + (scale * endValue);
     }
 	
-    Vector3f FastMath::interpolateLinear(float scale, Vector3f startValue, Vector3f endValue) {
+    Vector3f FastMonkeyMath::interpolateLinear(float scale, Vector3f startValue, Vector3f endValue) {
 		Vector3f store;
         store.x = interpolateLinear(scale, startValue.x, endValue.x);
         store.y = interpolateLinear(scale, startValue.y, endValue.y);
@@ -59,14 +59,14 @@
     }
 	
 	
-    float FastMath::extrapolateLinear(float scale, float startValue, float endValue) {
+    float FastMonkeyMath::extrapolateLinear(float scale, float startValue, float endValue) {
     //    if (scale <= 0.0f) {
     //        return startValue;
     //    }
         return ((1.0f - scale) * startValue) + (scale * endValue);
     }
 	
-    Vector3f FastMath::extrapolateLinear(float scale, Vector3f startValue, Vector3f endValue) {
+    Vector3f FastMonkeyMath::extrapolateLinear(float scale, Vector3f startValue, Vector3f endValue) {
         if (scale <= 1.0f) {
             return interpolateLinear(scale, startValue, endValue);
         }
@@ -78,7 +78,7 @@
     }
 	
 	
-    float FastMath::interpolateCatmullRom(float u, float T, float p0, float p1, float p2, float p3) {
+    float FastMonkeyMath::interpolateCatmullRom(float u, float T, float p0, float p1, float p2, float p3) {
         float c1, c2, c3, c4;
         c1 = p1;
         c2 = -1.0f * T * p0 + T * p2;
@@ -88,7 +88,7 @@
         return (float) (((c4 * u + c3) * u + c2) * u + c1);
     }
 	
-    Vector3f FastMath::interpolateCatmullRom(float u, float T, Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3) {
+    Vector3f FastMonkeyMath::interpolateCatmullRom(float u, float T, Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3) {
         Vector3f store;
         store.x = interpolateCatmullRom(u, T, p0.x, p1.x, p2.x, p3.x);
         store.y = interpolateCatmullRom(u, T, p0.y, p1.y, p2.y, p3.y);
@@ -96,7 +96,7 @@
         return store;
     }
 	
-    float FastMath::interpolateBezier(float u, float p0, float p1, float p2, float p3) {
+    float FastMonkeyMath::interpolateBezier(float u, float p0, float p1, float p2, float p3) {
         float oneMinusU = 1.0f - u;
         float oneMinusU2 = oneMinusU * oneMinusU;
         float u2 = u * u;
@@ -106,7 +106,7 @@
                 + p3 * u2 * u;
     }
 	
-    Vector3f FastMath::interpolateBezier(float u, Vector3f p0, Vector3f p1, 
+    Vector3f FastMonkeyMath::interpolateBezier(float u, Vector3f p0, Vector3f p1, 
 									Vector3f p2, Vector3f p3) {
         Vector3f store;
         store.x = interpolateBezier(u, p0.x, p1.x, p2.x, p3.x);
@@ -115,20 +115,20 @@
         return store;
     }
 	
-    float FastMath::getCatmullRomP1toP2Length(Vector3f p0, Vector3f p1, 
+    float FastMonkeyMath::getCatmullRomP1toP2Length(Vector3f p0, Vector3f p1, 
 			Vector3f p2, Vector3f p3, float startRange, float endRange, float curveTension) {
 
         float epsilon = 0.001f;
         float middleValue = (startRange + endRange) * 0.5f;
         Vector3f start = Vector3f( p1.getX(),p1.getY(),p1.getZ() );
         if (startRange != 0) {
-            start = FastMath::interpolateCatmullRom(startRange, curveTension, p0, p1, p2, p3);
+            start = FastMonkeyMath::interpolateCatmullRom(startRange, curveTension, p0, p1, p2, p3);
         }
         Vector3f end = Vector3f( p2.getX(),p2.getY(),p2.getZ() );
         if (endRange != 1) {
-            end = FastMath::interpolateCatmullRom(endRange, curveTension, p0, p1, p2, p3);
+            end = FastMonkeyMath::interpolateCatmullRom(endRange, curveTension, p0, p1, p2, p3);
         }
-        Vector3f middle = FastMath::interpolateCatmullRom(middleValue, curveTension, p0, p1, p2, p3);
+        Vector3f middle = FastMonkeyMath::interpolateCatmullRom(middleValue, curveTension, p0, p1, p2, p3);
         float l = end.subtract(start).length();
         float l1 = middle.subtract(start).length();
         float l2 = end.subtract(middle).length();
@@ -141,12 +141,12 @@
         return l;
     }
 	
-    float FastMath::getBezierP1toP2Length(Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3) {
+    float FastMonkeyMath::getBezierP1toP2Length(Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3) {
         float delta = 0.02f, t = 0.0f, result = 0.0f;
         Vector3f v1 = p0;
         Vector3f v2;
         while (t <= 1.0f) {
-            v2 = FastMath::interpolateBezier(t, p0, p1, p2, p3);
+            v2 = FastMonkeyMath::interpolateBezier(t, p0, p1, p2, p3);
             result += v1.subtractLocal(v2).length();
             v1.set(v2);
             t += delta;
@@ -154,7 +154,7 @@
         return result;
     }
 	
-    float FastMath::acos(float fValue) {
+    float FastMonkeyMath::acos(float fValue) {
         if (-1.0f < fValue) {
             if (fValue < 1.0f) {
                 return (float) acos(fValue);
@@ -166,7 +166,7 @@
         return PI;
     }
 	
-    float FastMath::asin(float fValue) {
+    float FastMonkeyMath::asin(float fValue) {
         if (-1.0f < fValue) {
             if (fValue < 1.0f) {
                 return (float) asin(fValue);
@@ -178,55 +178,55 @@
         return -HALF_PI;
     }
 	
-    // float FastMath::atan(float fValue) {
+    // float FastMonkeyMath::atan(float fValue) {
         // return (float) atan(fValue);
     // }
 	
-    // float FastMath::atan2(float fY, float fX) {
+    // float FastMonkeyMath::atan2(float fY, float fX) {
         // return (float) atan2(fY, fX);
     // }
 	
-    // float FastMath::ceil(float fValue) {
+    // float FastMonkeyMath::ceil(float fValue) {
         // return (float) Math.ceil(fValue);
     // }
 	
-    // float FastMath::cos(float v) {
+    // float FastMonkeyMath::cos(float v) {
         // return (float) Math.cos(v);
     // }
 	
-    // float FastMath::sin(float v) {
+    // float FastMonkeyMath::sin(float v) {
         // return (float) Math.sin(v);
     // }
 	
-    // float FastMath::exp(float fValue) {
+    // float FastMonkeyMath::exp(float fValue) {
         // return (float) Math.exp(fValue);
     // }
 	
-    // float FastMath::abs(float fValue) {
+    // float FastMonkeyMath::abs(float fValue) {
         // if (fValue < 0) {
             // return -fValue;
         // }
         // return fValue;
     // }
 	
-    // float FastMath::floor(float fValue) {
+    // float FastMonkeyMath::floor(float fValue) {
         // return (float) Math.floor(fValue);
     // }
 	
-    float FastMath::invSqrt(float fValue) {
+    float FastMonkeyMath::invSqrt(float fValue) {
         return (float) (1.0f / sqrt(fValue));
     }
 
-    float FastMath::fastInvSqrt(float x) {
+    float FastMonkeyMath::fastInvSqrt(float x) {
         float xhalf = 0.5f * x;
-        int i = FastMath::floatToIntBits(x); // get bits for floating value
+        int i = FastMonkeyMath::floatToIntBits(x); // get bits for floating value
         i = 0x5f375a86 - (i >> 1); // gives initial guess y0
-        x = FastMath::intBitsToFloat(i); // convert bits back to float
+        x = FastMonkeyMath::intBitsToFloat(i); // convert bits back to float
         x = x * (1.5f - xhalf * x * x); // Newton step, repeating increases accuracy
         return x;
     }
 	
-	float FastMath::intBitsToFloat(int x){
+	float FastMonkeyMath::intBitsToFloat(int x){
 		union {
 		   float f;  // assuming 32-bit IEEE 754 single-precision
 		   int i;    // assuming 32-bit 2's complement int
@@ -236,37 +236,37 @@
 		return u.f;
 	}
 	
-	float FastMath::floatToIntBits(float x){
+	float FastMonkeyMath::floatToIntBits(float x){
 		float y;
 		memcpy(&y, &x, 4);
 		return y;
 	}
 	
-    // float FastMath::log(float fValue) {
+    // float FastMonkeyMath::log(float fValue) {
         // return (float) Math.log(fValue);
     // }
 	
-    // float FastMath::log(float value, float base) {
+    // float FastMonkeyMath::log(float value, float base) {
         // return (float) (log(value) / log(base));
     // }
 	
-    // float FastMath::pow(float fBase, float fExponent) {
+    // float FastMonkeyMath::pow(float fBase, float fExponent) {
         // return (float) pow(fBase, fExponent);
     // }
 	
-    float FastMath::sqr(float fValue) {
+    float FastMonkeyMath::sqr(float fValue) {
         return fValue * fValue;
     }
 	
-    // float FastMath::sqrt(float fValue) {
+    // float FastMonkeyMath::sqrt(float fValue) {
         // return (float) Math.sqrt(fValue);
     // }
 	
-    // float FastMath::tan(float fValue) {
+    // float FastMonkeyMath::tan(float fValue) {
         // return (float) Math.tan(fValue);
     // }
 	
-    int FastMath::sign(int iValue) {
+    int FastMonkeyMath::sign(int iValue) {
         if (iValue > 0) {
             return 1;
         }
@@ -276,11 +276,11 @@
         return 0;
     }
 	
-    // float FastMath::sign(float fValue) {
+    // float FastMonkeyMath::sign(float fValue) {
         // return Math.signum(fValue);
     // }
 	
-    int FastMath::counterClockwise(Vector2f p0, Vector2f p1, Vector2f p2) {
+    int FastMonkeyMath::counterClockwise(Vector2f p0, Vector2f p1, Vector2f p2) {
         float dx1, dx2, dy1, dy2;
         dx1 = p1.x - p0.x;
         dy1 = p1.y - p0.y;
@@ -301,7 +301,7 @@
         return 0;
     }
 	
-    int FastMath::pointInsideTriangle(Vector2f t0, Vector2f t1, Vector2f t2, Vector2f p) {
+    int FastMonkeyMath::pointInsideTriangle(Vector2f t0, Vector2f t1, Vector2f t2, Vector2f p) {
         int val1 = counterClockwise(t0, t1, p);
         if (val1 == 0) {
             return 1;
@@ -323,13 +323,13 @@
         return val3;
     }
 	
-    Vector3f FastMath::computeNormal(Vector3f v1, Vector3f v2, Vector3f v3) {
+    Vector3f FastMonkeyMath::computeNormal(Vector3f v1, Vector3f v2, Vector3f v3) {
         Vector3f a1 = v1.subtract(v2);
         Vector3f a2 = v3.subtract(v2);
         return a2.crossLocal(a1).normalizeLocal();
     }
 	
-    float FastMath::determinant(double m00, double m01, double m02,
+    float FastMonkeyMath::determinant(double m00, double m01, double m02,
             double m03, double m10, double m11, double m12, double m13,
             double m20, double m21, double m22, double m23, double m30,
             double m31, double m32, double m33) {
@@ -346,7 +346,7 @@
                 * (m10 * det12 - m11 * det02 + m12 * det01));
     }
 	
-    // float FastMath::nextRandomFloat() {
+    // float FastMonkeyMath::nextRandomFloat() {
 		// if(realRandom == NULL){
 			// realRandom = new RealRandom();
 			// realRandom->setSeed(524);
@@ -355,15 +355,15 @@
 		// return realRandom->getRandom();
     // }
 	
-    // int FastMath::nextRandomInt(int min, int max) {
+    // int FastMonkeyMath::nextRandomInt(int min, int max) {
         // return (int) (nextRandomFloat() * (max - min + 1)) + min;
     // }
 
-    // int FastMath::nextRandomInt() {
+    // int FastMonkeyMath::nextRandomInt() {
         // return rand.nextInt();
     // }
 	
-    Vector3f FastMath::sphericalToCartesian(Vector3f sphereCoords) {
+    Vector3f FastMonkeyMath::sphericalToCartesian(Vector3f sphereCoords) {
 		Vector3f store;
         store.y = sphereCoords.x * sin(sphereCoords.z);
         float a = sphereCoords.x * cos(sphereCoords.z);
@@ -373,7 +373,7 @@
         return Vector3f(store.x, store.y, store.z );
     }
 	
-    Vector3f FastMath::cartesianToSpherical(Vector3f cartCoords) {
+    Vector3f FastMonkeyMath::cartesianToSpherical(Vector3f cartCoords) {
 		Vector3f store;
         float x = cartCoords.x;
         if (x == 0) {
@@ -390,7 +390,7 @@
         return Vector3f(store.x, store.y, store.z );
     }
 	
-    Vector3f FastMath::sphericalToCartesianZ(Vector3f sphereCoords) {
+    Vector3f FastMonkeyMath::sphericalToCartesianZ(Vector3f sphereCoords) {
 		Vector3f store;
         store.z = sphereCoords.x * sin(sphereCoords.z);
         float a = sphereCoords.x * cos(sphereCoords.z);
@@ -400,7 +400,7 @@
         return Vector3f(store.x, store.y, store.z );
     }
 	
-    Vector3f FastMath::cartesianZToSpherical(Vector3f cartCoords) {
+    Vector3f FastMonkeyMath::cartesianZToSpherical(Vector3f cartCoords) {
 		Vector3f store;
         float x = cartCoords.x;
         if (x == 0) {
@@ -417,7 +417,7 @@
         return Vector3f(store.x, store.y, store.z );
     }
 	
-    float FastMath::normalize(float val, float min, float max){
+    float FastMonkeyMath::normalize(float val, float min, float max){
         float range = max - min;
         while (val > max) {
             val -= range;
@@ -428,7 +428,7 @@
         return val;
     }
 	
-    float FastMath::copysign(float x, float y) {
+    float FastMonkeyMath::copysign(float x, float y) {
         if (y >= 0 && x <= -0) {
             return -x;
         } else if (y < 0 && x >= 0) {
@@ -438,15 +438,15 @@
         }
     }
 	
-    float FastMath::clamp(float input, float min, float max) {
+    float FastMonkeyMath::clamp(float input, float min, float max) {
         return (input < min) ? min : (input > max) ? max : input;
     }
 	
-    float FastMath::saturate(float input) {
+    float FastMonkeyMath::saturate(float input) {
         return clamp(input, 0.0f, 1.0f);
     }
 	
-    bool FastMath::approximateEquals(float a, float b) {
+    bool FastMonkeyMath::approximateEquals(float a, float b) {
         if (a == b) {
             return true;
         } else {
@@ -454,7 +454,7 @@
         }
     }
 	
-    float FastMath::convertHalfToFloat(short half) {
+    float FastMonkeyMath::convertHalfToFloat(short half) {
         switch ((int) half) {
             case 0x0000:
                 return 0.0f;
@@ -466,7 +466,7 @@
                         | ((half & 0x03FF) << 13);
         }
     }
-    short FastMath::convertFloatToHalf(float flt) {
+    short FastMonkeyMath::convertFloatToHalf(float flt) {
         if (flt == 0.0f) {
             return (short) 0x0000;
         } else if (flt == -0.0f) {

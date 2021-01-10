@@ -2,7 +2,7 @@
 #include "DefaultSettings.h"
 #include "AppSettings.h"
 #include "Vector2f.h"
-#include "GameManager.h"
+#include "Vector3f.h"
 
 DefaultSettings *settings;
 
@@ -12,17 +12,16 @@ void setup() {
 
   settings->addInt("speed",100);
   settings->addCppObject("direction",new Vector2f(1,0));
-  settings->addCppObject("GameManager",new GameManager());
+  settings->addCppObject("position",new Vector3f(1,2,3));
+}
 
+void loop() {
   int speed = settings->getInt("speed");
   Serial.println(speed);
   
   Vector2f* direction = (Vector2f*)settings->getCppObject("direction");
   Serial.println(direction->toString());
   
-  GameManager* manager = (GameManager*)settings->getCppObject("GameManager");
-  Serial.println(manager->getClassName());
-}
-
-void loop() {
+  Vector3f* position = (Vector3f*)settings->getCppObject("position");
+  Serial.println(position->toString());
 }

@@ -78,7 +78,7 @@
 		float temp = this->temperature->getTemperature(this->tpin);
 		float deltaT = 0;
 		
-		this->average->add(&temp);
+		this->average->addLValue(temp);
 		if(this->average->getSize() >= 10){
 			temp = this->average->getAverage();
 			this->average->reset();

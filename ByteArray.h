@@ -11,10 +11,10 @@
 class ByteArray : public PrimitiveList<byte> , public Printable{
 public:
 ByteArray(){}
-ByteArray(const byte& b){
+ByteArray(byte b){
 	this->add(b);
 }
-ByteArray(const byte b[]){
+ByteArray(byte b[]){
 	for(int xx = 0; xx < sizeof(b)/sizeof(b[0]); xx++){
 		this->add(xx);
 	}
@@ -44,60 +44,49 @@ virtual String toString(){
 	}
 	return array;
 }
-void getBitSize(){
+virtual int getBitSize(){
 	return this->getSize() * 8;
 }
 
-void operator=(const byte& value){
+virtual void operator=(byte value){
 	this->resetDelete();
-	this->add(value);
+	this->addLValue(value);
 }
 
-void operator+=(const byte& value){
-	this->add(value);
+virtual void operator+=(byte value){
+	this->addLValue(value);
 }
 
-byte* add(){
+virtual byte* add(){
 	return this->addParameters(0);
 }
 
-byte* add(const byte& value){
-	if(this->pos >= this->size){
-		this->expandLocal(this->expandSize);
-	}
-	if(this->pos >= this->size){
-		return nullptr;
-	}
-	if(this->values[this->pos] == nullptr){
-		this->values[this->pos] = new byte();
-	}
-	*this->values[this->pos] = value;
-	this->pos++;
-	return this->values[this->pos-1];
+virtual byte* add(byte value){
+	return this->addLValue(value);
 }
 
-void add(int size, const byte& value){
+virtual void add(int size, byte value){
 	for(int x = 0; x < size; x++){
-		this->add(value);
+		this->addLValue(value);
 	}
 }
 
-void adding(int size){
+virtual void adding(int size){
 	for(int x = 0; x < size; x++){
 		this->addParameters(0);
 	}
 }
 
-void adding(int size, bool value){
+virtual void adding(int size, bool value){
 	for(int x = 0; x < size; x++){
 		byte* c = this->addParameters(0);
 		for(int y = 0; y < 8; y++){
-			bitWrite((*c), y, true);
+			bitWrite((*c), y, value);
 		}
 	}
 }
 
-void addBits(int size){
+virtual void addBits(int size){
 	int arraySize = (int)(size / 8);
 	if(size % 8){
 		arraySize++;
@@ -107,7 +96,7 @@ void addBits(int size){
 	}
 }
 
-void addBits(int size, bool value){
+virtual void addBits(int size, bool value){
 	int counter = 0;
 	int arraySize = (int)(size / 8);
 	if(size % 8){
@@ -126,29 +115,29 @@ void addBits(int size, bool value){
 	}
 }
 
-void setBit(int cell, int bit, bool value){
-	byte* c = this->getByPos(cell);
+virtual void setBit(int cell, int bit, bool value){
+	byte* c = this->getByPosition(cell);
 	if(c == nullptr || bit >= 8){
 		return;
 	}
 	bitWrite((*c), bit, value);
 }
 
-void clearAll(){
+virtual void clearAll(){
 	for(int xi = 0; xi < this->pos; xi++){
 		(*this->values[xi]) = 0;
 	}
 }
 
-void clearBit(int cell, int bit){
-	byte* c = this->getByPos(cell);
+virtual void clearBit(int cell, int bit){
+	byte* c = this->getByPosition(cell);
 	if(c == nullptr){
 		return;
 	}
 	bitWrite((*c), bit, false);
 }
 
-void toggleAll(){
+virtual void toggleAll(){
 	for(int xi = 0; xi < this->pos; xi++){
 		for(int xo = 0; xo < 8; xo++){
 			bitWrite((*this->values[xi]), xo, !bitRead((*this->values[xi]), xo));
@@ -156,8 +145,8 @@ void toggleAll(){
 	}
 }
 
-void toggleByte(int cell){
-	byte* c = this->getByPos(cell);
+virtual void toggleByte(int cell){
+	byte* c = this->getByPosition(cell);
 	if(c == nullptr){
 		return;
 	}
@@ -166,16 +155,16 @@ void toggleByte(int cell){
 	}
 }
 
-void toggleBit(int cell, int bit){
-	byte* c = this->getByPos(cell);
+virtual void toggleBit(int cell, int bit){
+	byte* c = this->getByPosition(cell);
 	if(c == nullptr){
 		return;
 	}
 	bitWrite((*c), bit, !bitRead((*c), bit));
 }
 
-bool getBit(int cell, int bit){
-	byte* c = this->getByPos(cell);
+virtual bool getBit(int cell, int bit){
+	byte* c = this->getByPosition(cell);
 	if(c == nullptr){
 		return false;
 	}

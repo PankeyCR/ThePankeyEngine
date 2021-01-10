@@ -4,7 +4,6 @@
 
 #include "cppObject.h"
 #include "SerialPort.h"
-class SerialMessageState;
 
 class SerialServer : public cppObject{	
     public:
@@ -21,16 +20,20 @@ class SerialServer : public cppObject{
 			return nullptr;
 		}
 		
-		virtual void attach(SerialMessageState* state){
-			serialState = state;
-		}
-		
 		virtual void setName(String name){
 			m_name = name;
 		}
 		
 		virtual String getName(){
 			return m_name;
+		}
+		
+		virtual void setTimeOut(float t){
+			m_timeout = t;
+		}
+		
+		virtual float getTimeOut(){
+			return m_timeout;
 		}
 		virtual void operator=(SerialServer b){}
 		virtual bool operator==(SerialServer b){return this->getName()==b.getName();}
@@ -48,7 +51,7 @@ class SerialServer : public cppObject{
 		virtual cppObject *clone(){return nullptr;}
 		
 	protected:
+	float m_timeout = -1.0;
 	String m_name = "";
-	SerialMessageState* serialState = nullptr;
 };
 #endif 

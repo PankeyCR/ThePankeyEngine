@@ -40,64 +40,64 @@ class SimpleAppSettings : public AppSettings{
 			booleanMap->onDelete();
 		}
 		void addInt(String s, int i){
-			intMap->add(s,i);
+			intMap->addLValues(s,i);
 		}
 		void setInt(String s, int i){
-			intMap->set(s,i);
+			intMap->setLValues(s,i);
 		}
 		int getInt(String s){
-			return *intMap->get(s);
+			return *intMap->getByLValue(s);
 		}
 		boolean containInt(String s){
-			return intMap->contain(s);
+			return intMap->containKeyByLValue(s);
 		}
 		void addFloat(String s, float i){
-			floatMap->add(s,i);
+			floatMap->addLValues(s,i);
 		}
 		void setFloat(String s, float i){
-			floatMap->set(s,i);
+			floatMap->setLValues(s,i);
 		}
 		float getFloat(String s){
-			return *floatMap->get(s);
+			return *floatMap->getByLValue(s);
 		}
 		boolean containFloat(String s){
-			return floatMap->contain(s);
+			return floatMap->containKeyByLValue(s);
 		}
 		void addString(String s, String i){
-			StringMap->add(s,i);
+			StringMap->addLValues(s,i);
 		}
 		void setString(String s, String i){
-			StringMap->set(s,i);
+			StringMap->setLValues(s,i);
 		}
 		boolean containString(String s){
-			return StringMap->contain(s);
+			return StringMap->containKeyByLValue(s);
 		}
 		String getString(String s){
-			return *StringMap->get(s);
+			return *StringMap->getByLValue(s);
 		}
 		void addBoolean(String s, bool i){
-			booleanMap->add(s,i);
+			booleanMap->addLValues(s,i);
 		}
 		void setBoolean(String s, bool i){
-			booleanMap->set(s,i);
+			booleanMap->setLValues(s,i);
 		}
 		bool getBoolean(String s){
-			return *booleanMap->get(s);
+			return *booleanMap->getByLValue(s);
 		}
 		bool containBoolean(String s){
-			return booleanMap->contain(s);
+			return booleanMap->containKeyByLValue(s);
 		}
 		void addCppObject(String s, cppObject *i){
-			cppObjectMap->add(s,i);
+			cppObjectMap->addPointer(s,i);
 		}
 		void setCppObject(String s, cppObject *i){
-			cppObjectMap->set(s,i);
+			cppObjectMap->setPointer(s,i);
 		}
 		cppObject *getCppObject(String s){
-			return cppObjectMap->get(s);
+			return cppObjectMap->getByLValue(s);
 		}
 		bool containCppObject(String s){
-			return cppObjectMap->contain(s);
+			return cppObjectMap->containKeyByLValue(s);
 		}
 	protected:
 		Map<String,int> *intMap;

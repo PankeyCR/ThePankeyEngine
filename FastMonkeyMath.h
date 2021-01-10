@@ -1,6 +1,6 @@
 
-#ifndef FastMath_h
-#define FastMath_h
+#ifndef FastMonkeyMath_h
+#define FastMonkeyMath_h
 
 #include "Vector3f.h"
 #include "Vector2f.h"
@@ -15,13 +15,12 @@
 #define INV_TWO_PI 1.0f / TWO_PI
 
 
-
-class FastMath{
+class FastMonkeyMath{
 	private:
 		static RealRandom *realRandom;
 		static int randomSize;
 		
-		FastMath();
+		// FastMonkeyMath();
     public:
 	
 	

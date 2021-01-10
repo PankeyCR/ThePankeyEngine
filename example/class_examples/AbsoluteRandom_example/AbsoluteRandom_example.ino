@@ -1,23 +1,27 @@
 
-#define Log 
-#define LogSerial 
+//#define LogApp
+//#define RealRandomLogApp
+//#define AbsoluteRandomLogApp
 
+#include "DefaultLogging.h"
 #include "AbsoluteRandom.h"
-#include "Logger.h"
 
-AbsoluteRandom *r;
+AbsoluteRandom* rnd;
   
 void setup() {
   Serial.begin(9600);
-  LogSerial(&Serial);
+  initializeLogger(new DefaultLogging(&Serial, true, false));
+  LogClass("AbsoluteRandom");
+  
   //the values of the seeds should be between 0 - 1000, but i prefer between 300 - 900
-  r = new AbsoluteRandom(875.85f);
-  r->setMax(10);
-  r->setMin(0);
-  r->setSeed(545.25f);
+  rnd = new AbsoluteRandom(875.85f);
+  rnd->setMax(10);
+  rnd->setMin(0);
+  rnd->setSeed(545.25f);
 }
 
 void loop() {
-  Serial.print("absolute ");Serial.println(r->getRandom());
-  //Serial.print("real     ");Serial.println(r->getSeed());
+  Log("AbsoluteRandom", "getRandom", "println","loop");
+  Serial.print("absolute ");Serial.println(rnd->getRandom());
+  //Serial.print("real     ");Serial.println(rnd->getSeed());
 }

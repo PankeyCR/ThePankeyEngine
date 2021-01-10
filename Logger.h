@@ -2,8 +2,6 @@
 #ifndef Logger_h
 #define Logger_h
 
-//#define LogApp 
-
 #ifdef LogApp
 	#define initializeLogger(loggingS) Logger::getLog()->setLog(loggingS)
 	#define Log(name,method,type,mns) Logger::StaticLog(name,method,type,mns)
@@ -13,7 +11,7 @@
 	#define UnLogMethod(name) Logger::removeMethod(name)
 #else
 	#define initializeLogger(loggingS) 
-	#define Log(name,method,type,mns)
+	#define Log(name,method,type,mns) 
 	#define LogClass(name) 
 	#define LogMethod(name) 
 	#define UnLogClass(name) 

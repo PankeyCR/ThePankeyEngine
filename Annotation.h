@@ -14,10 +14,10 @@ Annotation(R rtn){r=rtn;}
 ~Annotation(){}
 
 R invoke(T* intance, A a, P... p){
-	if(this->get(a) == nullptr){
+	if(this->getByLValue(a) == nullptr){
 		return r;
 	}
-	return ( intance->**this->get(a))(p...);
+	return ( intance->**this->getByLValue(a))(p...);
 }
 
 R invoke(T* intance, EventMethod* a, P... p){
@@ -38,8 +38,8 @@ virtual bool operator!=(Annotation<A,R,T,P...> a){
 }
 virtual void operator=(Annotation<A,R,T,P...> a){
 	this->resetDelete();
-	for(int x=0; x < a.getPos(); x++){
-		this->add(a.getKeyByPos(x),a.getByPos(x));
+	for(int x=0; x < a.getPosition(); x++){
+		this->addPointers(a.getKeyByPosition(x),a.getByPosition(x));
 	}
 }
 

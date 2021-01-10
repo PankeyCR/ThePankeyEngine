@@ -33,15 +33,15 @@
 		float tdx = ((float)(time/dx));
 		float tx = (((float)(tdx))-((long)(tdx)));
 		float x = d*tx;
-		Log("AbsoluteRandom", "getRandom", "println","");
-		Log("AbsoluteRandom", "getRandom", "println","absoluterandom");
-		Log("AbsoluteRandom", "getRandom", "print","time ");Log("AbsoluteRandom", "getRandom", "println",String(time));
-		Log("AbsoluteRandom", "getRandom", "print","d ");Log("AbsoluteRandom", "getRandom", "println",String(d));
-		Log("AbsoluteRandom", "getRandom", "print","dx ");Log("AbsoluteRandom", "getRandom", "println",String(dx));
-		Log("AbsoluteRandom", "getRandom", "print","tdx ");Log("AbsoluteRandom", "getRandom", "println",String(tdx));
-		Log("AbsoluteRandom", "getRandom", "print","tx ");Log("AbsoluteRandom", "getRandom", "println",String(tx));
-		Log("AbsoluteRandom", "getRandom", "print","x ");Log("AbsoluteRandom", "getRandom", "println",String(x));
-		Log("AbsoluteRandom", "getRandom", "println","");
+		AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println","");
+		AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println","absoluterandom");
+		AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","time ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",String(time));
+		AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","d ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",String(d));
+		AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","dx ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",String(dx));
+		AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","tdx ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",String(tdx));
+		AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","tx ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",String(tx));
+		AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","x ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",String(x));
+		AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println","");
 		return x+getMin();
 	}
 	

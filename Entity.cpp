@@ -22,15 +22,15 @@
 	}
 	
     void Entity::setData(String name, cppObject* obj){
-		if(this->data->contain(name)){
-			this->data->set(name,obj);
+		if(this->data->containKeyByLValue(name)){
+			this->data->setPointer(name,obj);
 			return;
 		}
-		this->data->add(name,obj);
+		this->data->addPointer(name,obj);
 	}
 	
     cppObject* Entity::getData(String name){
-		return this->data->get(name);
+		return this->data->getByLValue(name);
 	}
 	
 	String Entity::getClassName(){

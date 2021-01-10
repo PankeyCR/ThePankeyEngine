@@ -46,9 +46,10 @@
 		return SimpleTimer::getInstance();
 	}
 	
-	void DefaultApplication::setListener(Listener *l){
+	Listener* DefaultApplication::setListener(Listener *l){
 		listener = l;
 		listener->attach(this);
+		return l;
 	}
 	
 	Listener *DefaultApplication::getListener(){
@@ -56,10 +57,10 @@
 	}
 		
 	void DefaultApplication::update(){
-		if(listener != nullptr){
-			listener->InterruptEvent();
-		}
 		this->states->update();
+		if(listener != nullptr){
+			listener->InterruptEvent(this->states->tpc());
+		}
 	}
 	
 	//cppObject part

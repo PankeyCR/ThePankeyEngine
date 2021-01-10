@@ -2,6 +2,7 @@
 #ifndef DefaultLogging_h
 #define DefaultLogging_h
 
+#include "Logger.h"
 #include "Logging.h"
 #include "List.h"
 #include "PrimitiveList.h"
@@ -28,15 +29,17 @@ class DefaultLogging : public Logging{
 		
 		virtual void StaticLog(String className, String methodName, String type, String mns){
 			if(this->port == nullptr){
+				// Serial.println("this->port == nullptr");
 				return;
 			}
+			// Serial.println("StaticLog");
 			if(classActivation){
-				if(!this->ClassList->contain(className)){
+				if(!this->ClassList->containByLValue(className)){
 					return;
 				}
 			}
 			if(methodActivation){
-				if(!this->MethodList->contain(className)){
+				if(!this->MethodList->containByLValue(methodName)){
 					return;
 				}
 			}
@@ -59,18 +62,18 @@ class DefaultLogging : public Logging{
 			yield();
 		}
 		
-		virtual void addClass(String className){
-			this->ClassList->add(className);
+		virtual void addClass(String className){Serial.println("addClass");
+			this->ClassList->addLValue(className);
 		}
-		virtual void addMethod(String methodName){
-			this->MethodList->removeDelete(methodName);
+		virtual void addMethod(String methodName){Serial.println("addMethod");
+			this->MethodList->addLValue(methodName);
 		}
 		
 		virtual void removeClass(String className){
-			this->ClassList->add(className);
+			this->ClassList->removeDeleteByLValue(className);
 		}
 		virtual void removeMethod(String methodName){
-			this->MethodList->removeDelete(methodName);
+			this->MethodList->removeDeleteByLValue(methodName);
 		}
 		
 	protected:

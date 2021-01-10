@@ -20,15 +20,33 @@ class PMap : public Map<K,P>{
 			}
 		}
 		
-		~PMap(){
-			
+		PMap(bool own){
+			owner = own;
+			pos=0;
+			for(int x=0; x < size; x++){
+				keys[x] = nullptr;
+				values[x] = nullptr;
+			}
 		}
 		
-		void setPos(int p){
+		~PMap(){
+			if(owner){
+				for(int x=0; x < pos; x++){
+					delete keys[x];
+					delete values[x];
+				}
+			}
+		}
+
+		virtual bool isEmpty(){
+			return this->pos==0;
+		}
+		
+		void setPosition(int p){
 			pos = p;
 		}
 		
-		int getPos(){
+		int getPosition(){
 			return pos;
 		}
 		
@@ -36,7 +54,7 @@ class PMap : public Map<K,P>{
 			return size;
 		}
 		
-		void add(K *key, P *value){
+		void addPointers(K *key, P *value){
 			if(size < pos){
 				return;
 			}
@@ -45,25 +63,34 @@ class PMap : public Map<K,P>{
 			pos++;
 		}
 		
-		void add(K key, P value){
+		void addLValues(K key, P value){
 			if(size < pos){
 				return;
+			}
+			if(keys[pos] == nullptr){
+				keys[pos] = new K();
+			}
+			if(values[pos] == nullptr){
+				values[pos] = new P();
 			}
 			*keys[pos] = key;
 			*values[pos] = value;
 			pos++;
 		}
 		
-		void add(K key, P *value){
+		void addPointer(K key, P *value){
 			if(size < pos){
 				return;
+			}
+			if(keys[pos] == nullptr){
+				keys[pos] = new K();
 			}
 			*keys[pos] = key;
 			values[pos] = value;
 			pos++;
 		}
 		
-		void set(K *key, P *value){
+		void setPointers(K *key, P *value){
 			if(size < pos){
 				return;
 			}
@@ -74,7 +101,7 @@ class PMap : public Map<K,P>{
 			}
 		}
 		
-		void set(K key, P value){
+		void setLValues(K key, P value){
 			if(size < pos){
 				return;
 			}
@@ -85,7 +112,7 @@ class PMap : public Map<K,P>{
 			}
 		}
 		
-		void set(K key, P *value){
+		void setPointer(K key, P *value){
 			if(size < pos){
 				return;
 			}
@@ -96,35 +123,35 @@ class PMap : public Map<K,P>{
 			}
 		}
 		
-		void setKeyByPos(int p, K key){
+		void setKeyLValueByPosition(int p, K key){
 			if(size < p){
 				return;
 			}
 			*keys[p] = key;
 		}
 		
-		void setKeyByPos(int p, K *key){
+		void setKeyPointerByPosition(int p, K *key){
 			if(size < p){
 				return;
 			}
 			keys[p] = key;
 		}
 		
-		void setValueByPos(int p, P value){
+		void setValueByPosition(int p, P value){
 			if(size < p){
 				return;
 			}
 			*values[p] = value;
 		}
 		
-		void setValueByPos(int p, P *value){
+		void setValuePointerByPosition(int p, P *value){
 			if(size < p){
 				return;
 			}
 			values[p] = value;
 		}
 		
-		bool contain(K *key){
+		bool containKeyByPointer(K *key){
 			for(int x=0; x < pos; x++){
 				if(keys[x] == key ){
 					return true;
@@ -133,7 +160,7 @@ class PMap : public Map<K,P>{
 			return false;
 		}
 		
-		bool contain(K key){
+		bool containKeyByLValue(K key){
 			for(int x=0; x < pos; x++){
 				if(*keys[x] == key ){
 					return true;
@@ -142,7 +169,7 @@ class PMap : public Map<K,P>{
 			return false;
 		}
 		
-		bool containValue(P *value){
+		bool containValueByPointer(P *value){
 			for(int x=0; x < pos; x++){
 				if(values[x] == value ){
 					return true;
@@ -151,7 +178,7 @@ class PMap : public Map<K,P>{
 			return false;
 		}
 		
-		bool containValue(P value){
+		bool containValueByLValue(P value){
 			for(int x=0; x < pos; x++){
 				if(*values[x] == value ){
 					return true;
@@ -160,7 +187,7 @@ class PMap : public Map<K,P>{
 			return false;
 		}
 		
-		P *get(K *key){
+		P *getByPointer(K *key){
 			for(int x=0; x < pos; x++){
 				if(keys[x] == key ){
 					return values[x];
@@ -169,7 +196,7 @@ class PMap : public Map<K,P>{
 			return nullptr;
 		}
 		
-		P *get(K key){
+		P *getByLValue(K key){
 			for(int x=0; x < pos; x++){
 				if(*keys[x] == key ){
 					return values[x];
@@ -178,7 +205,7 @@ class PMap : public Map<K,P>{
 			return nullptr;
 		}
 		
-		P *getByPos(int p){
+		P *getByPosition(int p){
 			for(int x=0; x < pos; x++){
 				if(x == p){
 					return values[x];
@@ -187,7 +214,7 @@ class PMap : public Map<K,P>{
 			return nullptr;
 		}
 		
-		K *getKeyByPos(int p){
+		K *getKeyByPosition(int p){
 			for(int x=0; x < pos; x++){
 				if(x == p ){
 					return keys[x];
@@ -196,7 +223,7 @@ class PMap : public Map<K,P>{
 			return nullptr;
 		}
 		
-		K *getKey(P *value){
+		K *getKeyByPointer(P *value){
 			for(int x=0; x < pos; x++){
 				if(values[x] == value ){
 					return keys[x];
@@ -205,7 +232,7 @@ class PMap : public Map<K,P>{
 			return nullptr;
 		}
 		
-		K *getKey(P value){
+		K *getKeyByLValue(P value){
 			for(int x=0; x < pos; x++){
 				if(*values[x] == value ){
 					return keys[x];
@@ -219,162 +246,115 @@ class PMap : public Map<K,P>{
 		}
 		
 		void resetDelete(){
-			for(int x=0; x < pos; x++){
-				delete &values[x];
+			if(owner){
+				for(int x=0; x < pos; x++){
+					delete keys[x];
+					delete values[x];
+				}
 			}
 			pos=0;
 		}
 		
-		P *remove(K *key){
+		P *removeByPointer(K *key){
 			P *p = nullptr;
-			bool is=false;
+			int nv =0;
 			for(int x=0; x < pos; x++){
-				if(keys[x] == key ){
-					is = true;
+				if(keys[x] != key ){
+					keys[nv] = keys[x];
+					values[nv] = values[x];
+					nv++;
+				}else{
+					p = values[x];
 				}
 			}
-			if(is){
-				int nv =0;
-				for(int x=0; x < pos; x++){
-					if(keys[x] != key ){
-						keys[nv] = keys[x];
-						values[nv] = values[x];
-						nv++;
-					}else{
-						p=values[x];
-					}
-				}
-				pos = nv;
-			}
+			pos = nv;
 			return p;
 		}
 		
-		P *remove(K key){
+		P *removeByLValue(K key){
 			P *p = nullptr;
-			bool is=false;
+			int nv =0;
 			for(int x=0; x < pos; x++){
 				if(*keys[x] == key ){
-					is = true;
+					p = values[x];
+				}else{
+					keys[nv] = keys[x];
+					values[nv] = values[x];
+					nv++;
 				}
 			}
-			if(is){
-				int nv =0;
-				for(int x=0; x < pos; x++){
-					if(*keys[x] != key ){
-						keys[nv] = keys[x];
-						values[nv] = values[x];
-						nv++;
-					}else{
-						p=values[x];
-					}
-				}
-				pos = nv;
-			}
+			pos = nv;
 			return p;
 		}
 		
-		P *removeByPos(int ps){
+		P *removeByPosition(int ps){
 			P *p = nullptr;
-			bool is=false;
+			int nv =0;
 			for(int x=0; x < pos; x++){
 				if(x == ps ){
-					is = true;
+					p = values[x];
+				}else{
+					keys[nv] = keys[x];
+					values[nv] = values[x];
+					nv++;
 				}
 			}
-			if(is){
-				int nv =0;
-				for(int x=0; x < pos; x++){
-					if(x != ps ){
-						keys[nv] = keys[x];
-						values[nv] = values[x];
-						nv++;
-					}else{
-						p=values[x];
-					}
-				}
-				pos = nv;
-			}
+			pos = nv;
 			return p;
 		}
 		
-		void removeDelete(K *key){
-			P *p = nullptr;
-			bool is=false;
+		void removeDeleteByPointer(K *key){
+			int nv =0;
 			for(int x=0; x < pos; x++){
 				if(keys[x] == key ){
-					is = true;
+					delete keys[x];
+					delete values[x];
+				}else{
+					keys[nv] = keys[x];
+					values[nv] = values[x];
+					nv++;
 				}
 			}
-			if(is){
-				int nv =0;
-				for(int x=0; x < pos; x++){
-					if(keys[x] != key ){
-						keys[nv] = keys[x];
-						values[nv] = values[x];
-						nv++;
-					}else{
-						p=values[x];
-						delete p;
-					}
-				}
-				pos = nv;
-			}
+			pos = nv;
 		}
 		
-		void removeDelete(K key){
-			P *p = nullptr;
-			bool is=false;
+		void removeDeleteByLValue(K key){
+			int nv =0;
 			for(int x=0; x < pos; x++){
 				if(*keys[x] == key ){
-					is = true;
+					delete keys[x];
+					delete values[x];
+				}else{
+					keys[nv] = keys[x];
+					values[nv] = values[x];
+					nv++;
 				}
 			}
-			if(is){
-				int nv =0;
-				for(int x=0; x < pos; x++){
-					if(*keys[x] != key ){
-						keys[nv] = keys[x];
-						values[nv] = values[x];
-						nv++;
-					}else{
-						p=values[x];
-						delete p;
-					}
-				}
-				pos = nv;
-			}
+			pos = nv;
 		}
 		
-		void removeDeleteByPos(int ps){
-			P *p = nullptr;
-			bool is=false;
+		void removeDeleteByPosition(int ps){
+			int nv =0;
 			for(int x=0; x < pos; x++){
-				if(x == ps ){
-					is = true;
+				if(x == ps){
+					delete keys[x];
+					delete values[x];
+				}else{
+					keys[nv] = keys[x];
+					values[nv] = values[x];
+					nv++;
 				}
 			}
-			if(is){
-				int nv =0;
-				for(int x=0; x < pos; x++){
-					if(x != ps ){
-						keys[nv] = keys[x];
-						values[nv] = values[x];
-						nv++;
-					}else{
-						p=values[x];
-						delete p;
-					}
-				}
-				pos = nv;
-			}
+			pos = nv;
 		}
 		
 		void onDelete(){
-			for(int x=0; x < pos; x++){
-				delete values[x];
-				delete keys[x];
+			if(owner){
+				for(int x=0; x < pos; x++){
+					delete keys[x];
+					delete values[x];
+				}
 			}
-			delete this;
 		}
 		
 		String getClassName(){
@@ -385,29 +365,35 @@ class PMap : public Map<K,P>{
 			return pos;
 		}
 		
-		P getValue(){
-			return *this->getByPos(this->getIteration());
+		P getLValue(Iterator iterate){
+			return *this->getByPosition(iterate.getIteration());
 		}
 		
-		P *getPointer(){
-			return this->getByPos(this->getIteration());
+		P *getPointer(Iterator iterate){
+			return this->getByPosition(iterate.getIteration());
 		}
 		
-		K getKey(){
-			return *this->getKeyByPos(this->getIteration());
+		K getKey(Iterator iterate){
+			return *this->getKeyByPosition(iterate.getIteration());
 		}
 		
-		K *getKeyPointer(){
-			return this->getKeyByPos(this->getIteration());
+		K *getKeyPointer(Iterator iterate){
+			return this->getKeyByPosition(iterate.getIteration());
 		}
 		
 		Map<K,P>* clone(){
-			Map<K,P>* cloneMap = new PMap<K,P,size>();
-			
+			Map<K,P>* cloneMap = new PMap<K,P,size>(true);
 			for(int cm = 0; cm < pos; cm++){
-				cloneMap->add(keys[cm], values[cm]);
+				cloneMap->addLValues(*keys[cm], *values[cm]);
 			}
-			
+			return cloneMap;
+		}
+		
+		Map<K,P>* clone(bool owningMemory){
+			Map<K,P>* cloneMap = new PMap<K,P,size>(owningMemory);
+			for(int cm = 0; cm < pos; cm++){
+				cloneMap->addLValues(*keys[cm], *values[cm]);
+			}
 			return cloneMap;
 		}
 		
@@ -425,8 +411,9 @@ class PMap : public Map<K,P>{
 		
 		
 		
-	private:
+	protected:
 		int pos;
+		bool owner = false;
 };
 
 #endif 

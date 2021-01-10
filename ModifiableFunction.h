@@ -17,37 +17,37 @@ class ModifiableFunction : public Function<type, args...>, public Iterator{
 			if(constants == nullptr){
 				return;
 			}
-			constants->set(position, var);
+			constants->setLValue(position, var);
 		}
 		
 		virtual void setVariable(int position, type var){
 			if(variables == nullptr){
 				return;
 			}
-			variables->set(position, var);
+			variables->setLValue(position, var);
 		}
 		
 		virtual int getIterationSize()=0;
 		
-		virtual type getValue(){
+		virtual type getLValue(Iterator i){
 			if(variables == nullptr){
 				return -1;
 			}
-			return *variables->getByPos(this->getIteration());
+			return *variables->getByPosition(i.getIteration());
 		}
 		
-		virtual type* getPointer(){
+		virtual type* getPointer(Iterator i){
 			if(variables == nullptr){
 				return nullptr;
 			}
-			return variables->getByPos(this->getIteration());
+			return variables->getByPosition(i.getIteration());
 		}
 		
-		virtual void set(type var){
+		virtual void set(Iterator i, type var){
 			if(variables == nullptr){
 				return;
 			}
-			variables->set(this->getIteration(), var);
+			variables->setLValue(i.getIteration(), var);
 		}
 		virtual String getClassName(){return "ModifiableFunction";}
 		virtual String toString(){return "ModifiableFunction";}

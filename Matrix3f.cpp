@@ -110,73 +110,73 @@
         if (data->getSize() < 9) {
 			return data;
 		}
-        if (data->getPos() == 0) {
+        if (data->getPosition() == 0) {
             if (rowMajor) {
-				data->add( m00);
-				data->add( m01);
-				data->add( m02);
-				data->add( m10);
-				data->add( m11);
-				data->add( m12);
-				data->add( m20);
-				data->add( m21);
-				data->add( m22);
+				data->addLValue( m00);
+				data->addLValue( m01);
+				data->addLValue( m02);
+				data->addLValue( m10);
+				data->addLValue( m11);
+				data->addLValue( m12);
+				data->addLValue( m20);
+				data->addLValue( m21);
+				data->addLValue( m22);
             } else {
-				data->add( m00);
-				data->add( m10);
-				data->add( m20);
-				data->add( m01);
-				data->add( m11);
-				data->add( m21);
-				data->add( m02);
-				data->add( m12);
-				data->add( m22);
+				data->addLValue( m00);
+				data->addLValue( m10);
+				data->addLValue( m20);
+				data->addLValue( m01);
+				data->addLValue( m11);
+				data->addLValue( m21);
+				data->addLValue( m02);
+				data->addLValue( m12);
+				data->addLValue( m22);
             }
 			return data;
 		}
-        if (data->getPos() >= 9) {
+        if (data->getPosition() >= 9) {
             if (rowMajor) {
-				data->set(0, m00);
-				data->set(1, m01);
-				data->set(2, m02);
-				data->set(3, m10);
-				data->set(4, m11);
-				data->set(5, m12);
-				data->set(6, m20);
-				data->set(7, m21);
-				data->set(8, m22);
+				data->setLValue(0, m00);
+				data->setLValue(1, m01);
+				data->setLValue(2, m02);
+				data->setLValue(3, m10);
+				data->setLValue(4, m11);
+				data->setLValue(5, m12);
+				data->setLValue(6, m20);
+				data->setLValue(7, m21);
+				data->setLValue(8, m22);
             } else {
-				data->set(0, m00);
-				data->set(1, m10);
-				data->set(2, m20);
-				data->set(3, m01);
-				data->set(4, m11);
-				data->set(5, m21);
-				data->set(6, m02);
-				data->set(7, m12);
-				data->set(8, m22);
+				data->setLValue(0, m00);
+				data->setLValue(1, m10);
+				data->setLValue(2, m20);
+				data->setLValue(3, m01);
+				data->setLValue(4, m11);
+				data->setLValue(5, m21);
+				data->setLValue(6, m02);
+				data->setLValue(7, m12);
+				data->setLValue(8, m22);
             }
-        } else if (data->getPos() >= 16) {
+        } else if (data->getPosition() >= 16) {
             if (rowMajor) {
-				data->set(0, m00);
-				data->set(1, m01);
-				data->set(2, m02);
-				data->set(4, m10);
-				data->set(5, m11);
-				data->set(6, m12);
-				data->set(8, m20);
-				data->set(9, m21);
-				data->set(10, m22);
+				data->setLValue(0, m00);
+				data->setLValue(1, m01);
+				data->setLValue(2, m02);
+				data->setLValue(4, m10);
+				data->setLValue(5, m11);
+				data->setLValue(6, m12);
+				data->setLValue(8, m20);
+				data->setLValue(9, m21);
+				data->setLValue(10, m22);
             } else {
-				data->set(0, m00);
-				data->set(1, m10);
-				data->set(2, m20);
-				data->set(4, m01);
-				data->set(5, m11);
-				data->set(6, m21);
-				data->set(8, m02);
-				data->set(9, m12);
-				data->set(10, m22);
+				data->setLValue(0, m00);
+				data->setLValue(1, m10);
+				data->setLValue(2, m20);
+				data->setLValue(4, m01);
+				data->setLValue(5, m11);
+				data->setLValue(6, m21);
+				data->setLValue(8, m02);
+				data->setLValue(9, m12);
+				data->setLValue(10, m22);
             }
         }
 		return data;
@@ -315,25 +315,25 @@
 			return nullptr;
 		}
         if (columnMajor) {
-			f->set( 0, m00);
-			f->set( 1, m10);
-			f->set( 2, m20);
-			f->set( 3, m01);
-			f->set( 4, m11);
-			f->set( 5, m21);
-			f->set( 6, m02);
-			f->set( 7, m12);
-			f->set( 8, m22);
+			f->setLValue( 0, m00);
+			f->setLValue( 1, m10);
+			f->setLValue( 2, m20);
+			f->setLValue( 3, m01);
+			f->setLValue( 4, m11);
+			f->setLValue( 5, m21);
+			f->setLValue( 6, m02);
+			f->setLValue( 7, m12);
+			f->setLValue( 8, m22);
         } else {
-			f->set( 0, m00);
-			f->set( 1, m01);
-			f->set( 2, m02);
-			f->set( 3, m10);
-			f->set( 4, m11);
-			f->set( 5, m12);
-			f->set( 6, m20);
-			f->set( 7, m21);
-			f->set( 8, m22);
+			f->setLValue( 0, m00);
+			f->setLValue( 1, m01);
+			f->setLValue( 2, m02);
+			f->setLValue( 3, m10);
+			f->setLValue( 4, m11);
+			f->setLValue( 5, m12);
+			f->setLValue( 6, m20);
+			f->setLValue( 7, m21);
+			f->setLValue( 8, m22);
         }
 		return f;
     }
@@ -451,7 +451,7 @@
         }
     }
 	
-    // Matrix3f Matrix3f::set(float[3][3] matrix) {
+    // Matrix3f Matrix3f::setLValue(float[3][3] matrix) {
         // if (matrix.length != 3 || matrix[0].length != 3) {
 			// return Matrix3f(this);
         // }
@@ -493,39 +493,39 @@
     }
 	
     Matrix3f Matrix3f::set(List<float> *matrix, bool rowMajor) {
-        if (matrix->getPos() >= 9) {
+        if (matrix->getPosition() >= 9) {
 			return Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
         }
 
         if (rowMajor) {
-            this->m00 = *matrix->getByPos(0);
-            this->m01 = *matrix->getByPos(1);
-            this->m02 = *matrix->getByPos(2);
-            this->m10 = *matrix->getByPos(3);
-            this->m11 = *matrix->getByPos(4);
-            this->m12 = *matrix->getByPos(5);
-            this->m20 = *matrix->getByPos(6);
-            this->m21 = *matrix->getByPos(7);
-            this->m22 = *matrix->getByPos(8);
+            this->m00 = *matrix->getByPosition(0);
+            this->m01 = *matrix->getByPosition(1);
+            this->m02 = *matrix->getByPosition(2);
+            this->m10 = *matrix->getByPosition(3);
+            this->m11 = *matrix->getByPosition(4);
+            this->m12 = *matrix->getByPosition(5);
+            this->m20 = *matrix->getByPosition(6);
+            this->m21 = *matrix->getByPosition(7);
+            this->m22 = *matrix->getByPosition(8);
         } else {
-            this->m00 = *matrix->getByPos(0);
-            this->m01 = *matrix->getByPos(3);
-            this->m02 = *matrix->getByPos(6);
-            this->m10 = *matrix->getByPos(1);
-            this->m11 = *matrix->getByPos(4);
-            this->m12 = *matrix->getByPos(7);
-            this->m20 = *matrix->getByPos(2);
-            this->m21 = *matrix->getByPos(5);
-            this->m22 = *matrix->getByPos(8);
+            this->m00 = *matrix->getByPosition(0);
+            this->m01 = *matrix->getByPosition(3);
+            this->m02 = *matrix->getByPosition(6);
+            this->m10 = *matrix->getByPosition(1);
+            this->m11 = *matrix->getByPosition(4);
+            this->m12 = *matrix->getByPosition(7);
+            this->m20 = *matrix->getByPosition(2);
+            this->m21 = *matrix->getByPosition(5);
+            this->m22 = *matrix->getByPosition(8);
         }
         return Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    // Matrix3f Matrix3f::set(Quaternion q) {
+    // Matrix3f Matrix3f::setLValue(Quaternion q) {
 		// Matrix3f nm = q.toRotationMatrix(this);
 		// this->m00 = nm.m00;
 		// this->m01 = nm.m01;

@@ -1,5 +1,6 @@
 
 #include "cppObject.h"
+#include "MemoryFree.h"
 //for instanceof<class T> to work you need to implement the getClassName method and
 // the instanceof(String name) method on your derived classes
 //this example shows a easy way to go through all the derived classes
@@ -43,7 +44,11 @@ class Resume : public Stop{
 
 void setup() {
   Serial.begin(9600);
-  
+}
+
+void loop() {
+  Serial.println("start");
+  Serial.println(freeMemory());
   cppObject* a = new cppObject();
   cppObject* b = new Tick();
   cppObject* c = new Stop();
@@ -71,7 +76,10 @@ void setup() {
   Serial.print("d is instanceof Tick: ");Serial.println(d->instanceof<Tick>());
   Serial.print("d is instanceof Stop: ");Serial.println(d->instanceof<Stop>());
   Serial.print("d is instanceof Resume: ");Serial.println(d->instanceof<Resume>());
-}
-
-void loop() {
+  delete a;
+  delete b;
+  delete c;
+  delete d;
+  Serial.println("end");
+  Serial.println(freeMemory());
 }

@@ -6,52 +6,61 @@
 #include "Note.h"
 
 
-	Note::Note(){}
+	Note::Note(){
+		NoteLog("Note", "Constructor",  "println", "no parameters");
+	}
 	
 	Note::Note(int size,int expand): PrimitiveList(size,expand){
+		NoteLog("Note", "Constructor",  "println", "PrimitiveList(size,expand)");
 	}
 	
 	Note::Note(const char *cstr){
+		NoteLog("Note", "Constructor",  "println", "const char *cstr");
 		for(  ;  *cstr != empty; cstr++){
-			this->add(*cstr);
+			this->addLValue(*cstr);
 		}
 	}
 
 	Note::Note(const int& i){
+		NoteLog("Note", "Constructor",  "println", "const int& i");
 		char binary[7] = {0};
 		char* cstr = itoa(i,binary,10);
 		for(  ;  *cstr != empty; cstr++){
-			this->add(*cstr);
+			this->addLValue(*cstr);
 		}
 	}
 
 	Note::Note(const long& i){
+		NoteLog("Note", "Constructor",  "println", "const long& i");
 		char binary[11] = {0};
 		char* cstr = ltoa(i,binary,10);
 		for(  ;  *cstr != empty; cstr++){
-			this->add(*cstr);
+			this->addLValue(*cstr);
 		}
 	}
 
 	Note::Note(const char& i){
-		this->add(i);
+		NoteLog("Note", "Constructor",  "println", "const char& i");
+		this->addLValue(i);
 	}
 
 	Note::Note(const String& s){
+		NoteLog("Note", "Constructor",  "println", "const String& i");
 		if(s.length() >= this->size){
 			this->expandLocal(s.length()-this->size+5);
 		}        
         
 		for(int x=0; x< s.length();x++){
-			this->add(s.charAt(x));
+			this->addLValue(s.charAt(x));
 		}
 	}
 	
 	Note::~Note(){
+		NoteLog("Note", "Destructor",  "println", "");
 		//Serial.println("Note");
 	}
 		
-	char* Note::add(char* value){
+	char* Note::addPointer(char* value){
 		if(value == nullptr){
 			return nullptr;
 		}
@@ -66,7 +75,7 @@
 		return this->values[this->pos-1];
 	}
 		
-	char* Note::add(char value){
+	char* Note::addLValue(char value){
 		if(this->pos >= this->size){
 			this->expandLocal(this->expandSize);
 		}
@@ -84,20 +93,12 @@
 	}
 	
     size_t Note::printTo(Print& p) const{
-		// Serial.println("printTo");
-		// Serial.println(this->pos);
-		// for(int x = 0; x < this->pos; x++){
-			// if(this->values[x] != nullptr && *this->values[x] != empty){
-				// Serial.println("printing");
-				// Serial.println(this->pos);
-				// Serial.println(x);
-				// Serial.println(x < this->pos);
-				// Serial.println(*this->values[x]);
-				// p.print(*this->values[x]);
-			// }
-			
-		// }
-		// Serial.println("stop printing");
+		NoteLog("Note", "printTo",  "println", "");
+		for(int x = 0; x < this->pos; x++){
+			if(this->values[x] != nullptr && *this->values[x] != empty){
+				p.print(*this->values[x]);
+			}
+		}
 	}
 	
 	void Note::expandLocal(int add){
@@ -107,7 +108,11 @@
 		nT = new char*[nsize];
 		for(int x=0; x < nsize; x++){
 			if(x < this->pos){
-				nT[x] = this->values[x];
+				nT[x] = new char();
+				*nT[x] = *this->values[x];
+				delete this->values[x];
+			}else{
+				nT[x] = nullptr;
 			}
 		}
 		delete[] this->values;
@@ -119,7 +124,7 @@
 		int nsize = this->size+add;
 		Note* note = new Note(nsize,10);	
 		for(int x=0; x < this->pos; x++){
-			note->add(*this->values[x]);
+			note->addLValue(*this->values[x]);
 		}
 		return note;
 	}
@@ -138,9 +143,9 @@
 	
 	PrimitiveList<int> Note::getCharPositions(char chr){
 		PrimitiveList<int> list;
-		for(int x=0; x< this->getPos();x++){
-			if(*this->getByPos(x) == chr){
-				list.add(x);
+		for(int x=0; x< this->getPosition();x++){
+			if(*this->getByPosition(x) == chr){
+				list.addLValue(x);
 			}
 		}
 		return list;
@@ -148,8 +153,8 @@
 	
 	int Note::getCharPosition(char chr, int pos){
 		int apply=0;
-		for(int x=0; x< this->getPos();x++){
-			if(*this->getByPos(x) == chr){
+		for(int x=0; x< this->getPosition();x++){
+			if(*this->getByPosition(x) == chr){
 				if(pos == apply){
 					return x;
 				}
@@ -161,8 +166,8 @@
 	
 	int Note::getCharSize(char chr){
 		int apply=0;
-		for(int x=0; x< this->getPos();x++){
-			if(*this->getByPos(x) == chr){
+		for(int x=0; x< this->getPosition();x++){
+			if(*this->getByPosition(x) == chr){
 				apply++;
 			}
 		}
@@ -172,9 +177,9 @@
 	
 	PrimitiveList<int> Note::getSpacePositions(){
 		PrimitiveList<int> list;
-		for(int x=0; x< this->getPos();x++){
-			if(*this->getByPos(x) == space){
-				list.add(x);
+		for(int x=0; x< this->getPosition();x++){
+			if(*this->getByPosition(x) == space){
+				list.addLValue(x);
 			}
 		}
 		
@@ -183,8 +188,8 @@
 	
 	int Note::getSpaceSize(){
 		int apply=0;
-		for(int x=0; x< this->getPos();x++){
-			if(*this->getByPos(x) == space){
+		for(int x=0; x< this->getPosition();x++){
+			if(*this->getByPosition(x) == space){
 				apply++;
 			}
 		}
@@ -193,10 +198,10 @@
 	
 	int Note::getSpacingSize(){
 		int spacing=0;
-		for(int x=0; x< this->getPos();x++){
-			char c = *this->getByPos(x);
-			char* c1 = this->getByPos(x+1);
-			if(c1 == nullptr || (x+1) < this->getPos()){
+		for(int x=0; x< this->getPosition();x++){
+			char c = *this->getByPosition(x);
+			char* c1 = this->getByPosition(x+1);
+			if(c1 == nullptr || (x+1) < this->getPosition()){
 				return spacing;
 			}
 			if((c == space || c == enter) && (*c1 != space || *c1 != enter )){
@@ -210,8 +215,8 @@
 		PrimitiveList<int> list;
 		// int p[20];
 		// int apply=0;
-		// for(int x=0; x< this->getPos();x++){
-			// char c = *this->getByPos(x);
+		// for(int x=0; x< this->getPosition();x++){
+			// char c = *this->getByPosition(x);
 			//char s = 
 			// if(str == c){
 				// p[apply] = x;
@@ -224,16 +229,16 @@
 	
 	void Note::fixExtraSpace(){
 		int xspaces = 0;
-		for(int x = (this->getPos()-1); x >= 0; x--){
-			if(*this->getByPos(x) == space || *this->getByPos(x) == empty){
-				this->set(x, '\0');				
+		for(int x = (this->getPosition()-1); x >= 0; x--){
+			if(*this->getByPosition(x) == space || *this->getByPosition(x) == empty){
+				this->setLValue(x, '\0');				
 				xspaces++;
 			}else{
 				break;
 			}
 		}
 		if(xspaces>0){
-			this->setPos(this->getPos()-xspaces);
+			this->setPosition(this->getPosition()-xspaces);
 		}
 	}
 	
@@ -242,9 +247,9 @@
 	}
 	
 	void Note::fixEndLinePoint(){
-		// if(*this->getByPos(this->getPos()-1) == endLine){
-			// this->set(this->getPos()-1, empty);
-			// this->setPos(this->getPos()-1);
+		// if(*this->getByPosition(this->getPosition()-1) == endLine){
+			// this->set(this->getPosition()-1, empty);
+			// this->setPos(this->getPosition()-1);
 		// }
 		// this->remove(empty);	
 	}
@@ -463,12 +468,12 @@
 	
 	String Note::toString(){
 		String s;
-		for(int x = 0; x < this->getPos(); x++){
-			if(this->getByPos(x)!=nullptr){
+		for(int x = 0; x < this->getPosition(); x++){
+			if(this->getByPosition(x)!=nullptr){
 				Serial.print("toString: ");
-				Serial.println(*this->getByPos(x));
+				Serial.println(*this->getByPosition(x));
 				Serial.println(x);
-				s.concat(*this->getByPos(x));
+				s.concat(*this->getByPosition(x));
 			}
 		}
 		return s;
@@ -488,14 +493,14 @@
         s.toCharArray(Array, size);        
         
 		for(int x=0; x< s.length();x++){
-			this->add(Array[x]);
+			this->addLValue(Array[x]);
 		}
 	}
 	
 	void Note::operator=(const char* cstr){
 		this->resetDelete(); 
 		for(  ;  *cstr != empty; cstr++){
-			this->add(*cstr);
+			this->addLValue(*cstr);
 		}
 	}
 	
@@ -504,7 +509,7 @@
 		char binary[7] = {0};
 		char* cstr = itoa(i,binary,10);
 		for(  ;  *cstr != empty; cstr++){
-			this->add(*cstr);
+			this->addLValue(*cstr);
 		}
 	}
 	
@@ -513,36 +518,36 @@
 		char binary[11] = {0};
 		char* cstr = ltoa(i,binary,10);
 		for(  ;  *cstr != empty; cstr++){
-			this->add(*cstr);
+			this->addLValue(*cstr);
 		}
 	}
 	
 	void Note::operator=(const char& i){
 		this->resetDelete(); 
-		this->add(i);
+		this->addLValue(i);
 	}
 	
 	void Note::operator=(Note note){
 		this->resetDelete();
-		for(int x = 0 ; x < note.getPos(); x++){
-			this->add(*note.getByPos(x));
+		for(int x = 0 ; x < note.getPosition(); x++){
+			this->addLValue(*note.getByPosition(x));
 		}
 	}
 	
 	Note Note::operator+(Note note){
-		for(int x = 0 ; x < note.getPos(); x++){
-			this->add(note.getByPos(x));
+		for(int x = 0 ; x < note.getPosition(); x++){
+			this->addLValue(*note.getByPosition(x));
 		}
 		return *this;
 	}
 	
 	Note Note::operator+(const char* cstr){
 		Note n;
-		for(int x = 0 ; x < n.getPos(); x++){
-			this->add(*n.getByPos(x));
+		for(int x = 0 ; x < n.getPosition(); x++){
+			this->addLValue(*n.getByPosition(x));
 		}
 		for(  ;  *cstr != empty; cstr++){
-			n.add(*cstr);
+			n.addLValue(*cstr);
 		}
 		return n;
 	}
@@ -555,54 +560,54 @@
 			return;
 		}
 		for(  ;  *cstr != empty; cstr++){
-			this->add(*cstr);
+			this->addLValue(*cstr);
 		}
 	}
 	
 	Note Note::operator+(const char& chr){
-		this->add(chr);
+		this->addLValue(chr);
 		return *this;
 	}
 	
 	void Note::operator+=(const char& chr){
-		this->add(chr);
+		this->addLValue(chr);
 	}
 	/*
 	Note Note::operator+(const char *chr){
-		this->add(chr);
+		this->addLValue(chr);
 		return *this;
 	}*/
 	
 	void Note::operator+=(const String& s){
 		for(int x=0; x < s.length();x++){
-			this->add(s.charAt(x));
+			this->addLValue(s.charAt(x));
 		}
 	}
 	
 	void Note::operator<(const char* chr){
-		this->add(enter);
+		this->addLValue(enter);
         
 		for(  ;  *chr != empty; chr++){
-			this->add(*chr);
+			this->addLValue(*chr);
 		}
 	}
 	
 	void Note::operator<<(const char* chr){
-		this->add(enter);
-		this->add(enter);
+		this->addLValue(enter);
+		this->addLValue(enter);
         
 		for(  ;  *chr != empty; chr++){
-			this->add(*chr);
+			this->addLValue(*chr);
 		}
 	}
 	
 	bool Note::operator==(Note note){
 		int x = 0 ;
-		if(this->pos != note.getPos()){
+		if(this->pos != note.getPosition()){
 			return false;
 		}
 		for(int x = 0; x<this->pos; x++){
-			if(*note.getByPos(x) != *this->values[x]){
+			if(*note.getByPosition(x) != *this->values[x]){
 				return false;
 			}
 		}
@@ -611,11 +616,11 @@
 	
 	bool Note::operator!=(Note note){
 		int x = 0 ;
-		if(this->pos != note.getPos()){
+		if(this->pos != note.getPosition()){
 			return true;
 		}
 		for(int x = 0; x<this->pos; x++){
-			if(*note.getByPos(x) != *this->values[x]){
+			if(*note.getByPosition(x) != *this->values[x]){
 				return true;
 			}
 		}

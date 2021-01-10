@@ -95,41 +95,41 @@
         if (matrix == nullptr) {
 			return nullptr;
         }
-        if (matrix->getPos() == 0) {
+        if (matrix->getPosition() == 0) {
 			if (rowMajor) {
-				matrix->add(m00);
-				matrix->add(m01);
-				matrix->add(m02);
-				matrix->add(m03);
-				matrix->add(m10);
-				matrix->add(m11);
-				matrix->add(m12);
-				matrix->add(m13);
-				matrix->add(m20);
-				matrix->add(m21);
-				matrix->add(m22);
-				matrix->add(m23);
-				matrix->add(m30);
-				matrix->add(m31);
-				matrix->add(m32);
-				matrix->add(m33);
+				matrix->addLValue(m00);
+				matrix->addLValue(m01);
+				matrix->addLValue(m02);
+				matrix->addLValue(m03);
+				matrix->addLValue(m10);
+				matrix->addLValue(m11);
+				matrix->addLValue(m12);
+				matrix->addLValue(m13);
+				matrix->addLValue(m20);
+				matrix->addLValue(m21);
+				matrix->addLValue(m22);
+				matrix->addLValue(m23);
+				matrix->addLValue(m30);
+				matrix->addLValue(m31);
+				matrix->addLValue(m32);
+				matrix->addLValue(m33);
 			} else {
-				matrix->add(m00);
-				matrix->add(m10);
-				matrix->add(m20);
-				matrix->add(m30);
-				matrix->add(m01);
-				matrix->add(m11);
-				matrix->add(m21);
-				matrix->add(m31);
-				matrix->add(m02);
-				matrix->add(m12);
-				matrix->add(m22);
-				matrix->add(m32);
-				matrix->add(m03);
-				matrix->add(m13);
-				matrix->add(m23);
-				matrix->add(m33);
+				matrix->addLValue(m00);
+				matrix->addLValue(m10);
+				matrix->addLValue(m20);
+				matrix->addLValue(m30);
+				matrix->addLValue(m01);
+				matrix->addLValue(m11);
+				matrix->addLValue(m21);
+				matrix->addLValue(m31);
+				matrix->addLValue(m02);
+				matrix->addLValue(m12);
+				matrix->addLValue(m22);
+				matrix->addLValue(m32);
+				matrix->addLValue(m03);
+				matrix->addLValue(m13);
+				matrix->addLValue(m23);
+				matrix->addLValue(m33);
 			}
 		}
 		return matrix;
@@ -142,39 +142,39 @@
 	// List<float> Matrix4f::get(bool rowMajor) {
 		// ArrayList<float> matrix();
         // if (rowMajor) {
-            // matrix->add(m00);
-            // matrix->add(m01);
-            // matrix->add(m02);
-            // matrix->add(m03);
-            // matrix->add(m10);
-            // matrix->add(m11);
-            // matrix->add(m12);
-            // matrix->add(m13);
-            // matrix->add(m20);
-            // matrix->add(m21);
-            // matrix->add(m22);
-            // matrix->add(m23);
-            // matrix->add(m30);
-            // matrix->add(m31);
-            // matrix->add(m32);
-            // matrix->add(m33);
+            // matrix->addLValue(m00);
+            // matrix->addLValue(m01);
+            // matrix->addLValue(m02);
+            // matrix->addLValue(m03);
+            // matrix->addLValue(m10);
+            // matrix->addLValue(m11);
+            // matrix->addLValue(m12);
+            // matrix->addLValue(m13);
+            // matrix->addLValue(m20);
+            // matrix->addLValue(m21);
+            // matrix->addLValue(m22);
+            // matrix->addLValue(m23);
+            // matrix->addLValue(m30);
+            // matrix->addLValue(m31);
+            // matrix->addLValue(m32);
+            // matrix->addLValue(m33);
         // } else {
-            // matrix->add(m00);
-            // matrix->add(m10);
-            // matrix->add(m20);
-            // matrix->add(m30);
-            // matrix->add(m01);
-            // matrix->add(m11);
-            // matrix->add(m21);
-            // matrix->add(m31);
-            // matrix->add(m02);
-            // matrix->add(m12);
-            // matrix->add(m22);
-            // matrix->add(m32);
-            // matrix->add(m03);
-            // matrix->add(m13);
-            // matrix->add(m23);
-            // matrix->add(m33);
+            // matrix->addLValue(m00);
+            // matrix->addLValue(m10);
+            // matrix->addLValue(m20);
+            // matrix->addLValue(m30);
+            // matrix->addLValue(m01);
+            // matrix->addLValue(m11);
+            // matrix->addLValue(m21);
+            // matrix->addLValue(m31);
+            // matrix->addLValue(m02);
+            // matrix->addLValue(m12);
+            // matrix->addLValue(m22);
+            // matrix->addLValue(m32);
+            // matrix->addLValue(m03);
+            // matrix->addLValue(m13);
+            // matrix->addLValue(m23);
+            // matrix->addLValue(m33);
         // }
 		// return ArrayList<float>(&matrix);
     // }
@@ -237,31 +237,31 @@
         if (store == nullptr) {
 			return nullptr;
         }
-        if (store->getPos() == 0) {
+        if (store->getPosition() == 0) {
 			switch (i) {
 				case 0:
-					store->add(this->m00);
-					store->add(this->m10);
-					store->add(this->m20);
-					store->add(this->m30);
+					store->addLValue(this->m00);
+					store->addLValue(this->m10);
+					store->addLValue(this->m20);
+					store->addLValue(this->m30);
 					break;
 				case 1:
-					store->add(this->m01);
-					store->add(this->m11);
-					store->add(this->m21);
-					store->add(this->m31);
+					store->addLValue(this->m01);
+					store->addLValue(this->m11);
+					store->addLValue(this->m21);
+					store->addLValue(this->m31);
 					break;
 				case 2:
-					store->add(this->m02);
-					store->add(this->m12);
-					store->add(this->m22);
-					store->add(this->m32);
+					store->addLValue(this->m02);
+					store->addLValue(this->m12);
+					store->addLValue(this->m22);
+					store->addLValue(this->m32);
 					break;
 				case 3:
-					store->add(this->m03);
-					store->add(this->m13);
-					store->add(this->m23);
-					store->add(this->m33);
+					store->addLValue(this->m03);
+					store->addLValue(this->m13);
+					store->addLValue(this->m23);
+					store->addLValue(this->m33);
 					break;
 				default:
 					return nullptr;
@@ -278,33 +278,33 @@
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
         }
-        if (column->getPos() >= 4) {
+        if (column->getPosition() >= 4) {
 			
 		}
         switch (i) {
             case 0:
-                this->m00 = *column->getByPos(0);
-                this->m10 = *column->getByPos(1);
-                this->m20 = *column->getByPos(2);
-                this->m30 = *column->getByPos(3);
+                this->m00 = *column->getByPosition(0);
+                this->m10 = *column->getByPosition(1);
+                this->m20 = *column->getByPosition(2);
+                this->m30 = *column->getByPosition(3);
                 break;
             case 1:
-                this->m01 = *column->getByPos(0);
-                this->m11 = *column->getByPos(1);
-                this->m21 = *column->getByPos(2);
-                this->m31 = *column->getByPos(3);
+                this->m01 = *column->getByPosition(0);
+                this->m11 = *column->getByPosition(1);
+                this->m21 = *column->getByPosition(2);
+                this->m31 = *column->getByPosition(3);
                 break;
             case 2:
-                this->m02 = *column->getByPos(0);
-                this->m12 = *column->getByPos(1);
-                this->m22 = *column->getByPos(2);
-                this->m32 = *column->getByPos(3);
+                this->m02 = *column->getByPosition(0);
+                this->m12 = *column->getByPosition(1);
+                this->m22 = *column->getByPosition(2);
+                this->m32 = *column->getByPosition(3);
                 break;
             case 3:
-                this->m03 = *column->getByPos(0);
-                this->m13 = *column->getByPos(1);
-                this->m23 = *column->getByPos(2);
-                this->m33 = *column->getByPos(3);
+                this->m03 = *column->getByPosition(0);
+                this->m13 = *column->getByPosition(1);
+                this->m23 = *column->getByPosition(2);
+                this->m33 = *column->getByPosition(3);
                 break;
             default:
 			return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
@@ -521,44 +521,44 @@
         if (matrix == nullptr) {
             return nullptr;
         }
-        if (matrix->getPos() < 16) {
+        if (matrix->getPosition() < 16) {
             return matrix;
         }
 
         if (rowMajor) {
-            this->m00 = *matrix->getByPos(0);
-            this->m01 = *matrix->getByPos(1);
-            this->m02 = *matrix->getByPos(2);
-            this->m03 = *matrix->getByPos(3);
-            this->m10 = *matrix->getByPos(4);
-            this->m11 = *matrix->getByPos(5);
-            this->m12 = *matrix->getByPos(6);
-            this->m13 = *matrix->getByPos(7);
-            this->m20 = *matrix->getByPos(8);
-            this->m21 = *matrix->getByPos(9);
-            this->m22 = *matrix->getByPos(10);
-            this->m23 = *matrix->getByPos(11);
-            this->m30 = *matrix->getByPos(12);
-            this->m31 = *matrix->getByPos(13);
-            this->m32 = *matrix->getByPos(14);
-            this->m33 = *matrix->getByPos(15);
+            this->m00 = *matrix->getByPosition(0);
+            this->m01 = *matrix->getByPosition(1);
+            this->m02 = *matrix->getByPosition(2);
+            this->m03 = *matrix->getByPosition(3);
+            this->m10 = *matrix->getByPosition(4);
+            this->m11 = *matrix->getByPosition(5);
+            this->m12 = *matrix->getByPosition(6);
+            this->m13 = *matrix->getByPosition(7);
+            this->m20 = *matrix->getByPosition(8);
+            this->m21 = *matrix->getByPosition(9);
+            this->m22 = *matrix->getByPosition(10);
+            this->m23 = *matrix->getByPosition(11);
+            this->m30 = *matrix->getByPosition(12);
+            this->m31 = *matrix->getByPosition(13);
+            this->m32 = *matrix->getByPosition(14);
+            this->m33 = *matrix->getByPosition(15);
         } else {
-            this->m00 = *matrix->getByPos(0);
-            this->m01 = *matrix->getByPos(4);
-            this->m02 = *matrix->getByPos(8);
-            this->m03 = *matrix->getByPos(12);
-            this->m10 = *matrix->getByPos(1);
-            this->m11 = *matrix->getByPos(5);
-            this->m12 = *matrix->getByPos(9);
-            this->m13 = *matrix->getByPos(13);
-            this->m20 = *matrix->getByPos(2);
-            this->m21 = *matrix->getByPos(6);
-            this->m22 = *matrix->getByPos(10);
-            this->m23 = *matrix->getByPos(14);
-            this->m30 = *matrix->getByPos(3);
-            this->m31 = *matrix->getByPos(7);
-            this->m32 = *matrix->getByPos(11);
-            this->m33 = *matrix->getByPos(15);
+            this->m00 = *matrix->getByPosition(0);
+            this->m01 = *matrix->getByPosition(4);
+            this->m02 = *matrix->getByPosition(8);
+            this->m03 = *matrix->getByPosition(12);
+            this->m10 = *matrix->getByPosition(1);
+            this->m11 = *matrix->getByPosition(5);
+            this->m12 = *matrix->getByPosition(9);
+            this->m13 = *matrix->getByPosition(13);
+            this->m20 = *matrix->getByPosition(2);
+            this->m21 = *matrix->getByPosition(6);
+            this->m22 = *matrix->getByPosition(10);
+            this->m23 = *matrix->getByPosition(14);
+            this->m30 = *matrix->getByPosition(3);
+            this->m31 = *matrix->getByPosition(7);
+            this->m32 = *matrix->getByPosition(11);
+            this->m33 = *matrix->getByPosition(15);
         }
         return matrix;
     }
@@ -1181,7 +1181,7 @@
         return this;
     }
 	
-	Matrix4f Matrix4f::add(Matrix4f mat) {
+	Matrix4f Matrix4f::addLValue(Matrix4f mat) {
         Matrix4f result = new Matrix4f();
         result.m00 = this.m00 + mat.m00;
         result.m01 = this.m01 + mat.m01;
@@ -1202,7 +1202,7 @@
         return result;
     }
 	
-	void Matrix4f::addLocal(Matrix4f mat) {
+	void Matrix4f::addLValueLocal(Matrix4f mat) {
         m00 += mat.m00;
         m01 += mat.m01;
         m02 += mat.m02;

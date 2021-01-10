@@ -7,7 +7,10 @@
 
 void setup() {
   Serial.begin(9600);
-  
+}
+
+void loop() {
+  Serial.println("start");
   D2Map<float,2,2> map2d;
   //  vector(first parameter, econd parameter)
   //  first parameter = dimention
@@ -96,7 +99,5 @@ void setup() {
   map5d.vector(3,0);
   map5d.vector(4,0);
   Serial.println(map5d.get());
-}
-
-void loop() {
+  Serial.println("end");
 }

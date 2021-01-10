@@ -20,7 +20,7 @@ class ArrayList : public List<T>{
 	ArrayList<T,size>(T t[],int s){
 		pos=0;
 		for(int x=0; x<s; x++){
-			this->add(t[x]);
+			this->addLValue(t[x]);
 		}
 	}
 
@@ -28,11 +28,11 @@ class ArrayList : public List<T>{
 		return pos==0;
 	}
 
-	void setPos(int p){
+	void setPosition(int p){
 		pos=p;
 	}
 
-	int getPos(){
+	int getPosition(){
 		return pos;
 	}
 
@@ -40,19 +40,19 @@ class ArrayList : public List<T>{
 		return size;
 	}
 
-	T *getByPos(int x){
+	T *getByPosition(int x){
 		if(x >= pos){
 			return nullptr;
 		}
 		return &values[x];
 	}
 
-	void add(List<T> *list){
+	void addList(List<T> *list){
 		if(list == nullptr){
 			return;
 		}
-		for(int x=0; x < list->getSize() ; x++){
-			values[pos] = *list->getByPos(x);
+		for(int x=0; x < list->getPosition() ; x++){
+			values[pos] = *list->getByPosition(x);
 			pos++;
 		}
 	}
@@ -60,13 +60,14 @@ class ArrayList : public List<T>{
 	template<class... args>
 	void addPack(args... x){
 		T array[] = {x...};
-		for(const T &a : array){
-			add(a);
+		//for(const T &a : array){
+		for(T a : array){
+			addLValue(a);
 		}
 	}
 
 	template<class... Args>
-	T* add(Args... args){
+	T* addParameters(Args... args){
 		if(pos >= size){
 			return nullptr;
 		}
@@ -75,7 +76,7 @@ class ArrayList : public List<T>{
 		return &values[pos-1];
 	}
 
-	T* add(T *value){
+	T* addPointer(T *value){
 		if(pos >= size){
 			delete value;
 			return nullptr;
@@ -86,7 +87,7 @@ class ArrayList : public List<T>{
 		return &values[pos-1];
 	}
 
-	T* add(T value){
+	T* addLValue(T value){
 		if(pos >= size){
 			return nullptr;
 		}
@@ -95,7 +96,7 @@ class ArrayList : public List<T>{
 		return &values[pos-1];
 	}
 
-	T* set(int position,T value){
+	T* setLValue(int position,T value){
 		if(position >= size){
 			return nullptr;
 		}
@@ -103,7 +104,7 @@ class ArrayList : public List<T>{
 		return &values[position];
 	}
 
-	T* set(int position,T* value){
+	T* setPointer(int position,T* value){
 		if(position >= size){
 			return nullptr;
 		}
@@ -115,7 +116,7 @@ class ArrayList : public List<T>{
 		return &values[position];
 	}
 
-	T* insert(int position, T value){
+	T* insertLValue(int position, T value){
 		if(position >= size){
 			return nullptr;
 		}
@@ -134,7 +135,7 @@ class ArrayList : public List<T>{
 		return &values[position];
 	}
 
-	T* insert(int position, T* value){
+	T* insertPointer(int position, T* value){
 		if(position >= size){
 			return nullptr;
 		}
@@ -156,7 +157,7 @@ class ArrayList : public List<T>{
 		return &values[position];
 	}
 
-	T *get(T *key){
+	T *getByPointer(T *key){
 		for(int x=0; x < pos; x++){
 			if(values[x] == *key ){
 				return &values[x];
@@ -165,7 +166,7 @@ class ArrayList : public List<T>{
 		return nullptr;
 	}
 
-	T* get(T key){
+	T* getByLValue(T key){
 		for(int x=0; x < pos; x++){
 			if(values[x] == key ){
 				return &values[x];
@@ -174,7 +175,7 @@ class ArrayList : public List<T>{
 		return nullptr;
 	}
 
-	bool contain(T* key){
+	bool containByPointer(T* key){
 		for(int x=0; x < pos; x++){
 			if(values[x] == *key ){
 				return true;
@@ -183,7 +184,7 @@ class ArrayList : public List<T>{
 		return false;
 	}
 
-	bool contain(T key){
+	bool containByLValue(T key){
 		for(int x=0; x < pos; x++){
 			if(values[x] == key ){
 				return true;
@@ -192,7 +193,7 @@ class ArrayList : public List<T>{
 		return false;
 	}
 
-	int getIndex(T* key){
+	int getIndexByPointer(T* key){
 		for(int x=0; x < pos; x++){
 			if(values[x] == *key ){
 				return x;
@@ -201,7 +202,7 @@ class ArrayList : public List<T>{
 		return -1;
 	}
 
-	int getIndex(T key){
+	int getIndexByLValue(T key){
 		for(int x=0; x < pos; x++){
 			if(values[x] == key ){
 				return x;
@@ -218,7 +219,7 @@ class ArrayList : public List<T>{
 		pos=0;
 	}
 
-	T* remove(T* key){
+	T* removeByPointer(T* key){
 		T *t = nullptr;
 		bool is=false;
 		for(int x=0; x < pos; x++){
@@ -241,7 +242,7 @@ class ArrayList : public List<T>{
 		return t;
 	}
 
-	T* remove(T key){
+	T* removeByLValue(T key){
 		T *t = nullptr;
 		bool is=false;
 		for(int x=0; x < pos; x++){
@@ -264,7 +265,7 @@ class ArrayList : public List<T>{
 		return t;
 	}
 
-	T* removeByPos(int p){
+	T* removeByPosition(int p){
 		if(p >= pos){
 			return nullptr;
 		}
@@ -281,7 +282,7 @@ class ArrayList : public List<T>{
 		return t;
 	}
 
-	void removeDelete(T* key){
+	void removeDeleteByPointer(T* key){
 		bool is=false;
 		for(int x=0; x < pos; x++){
 			if(values[x] == *key ){
@@ -300,7 +301,7 @@ class ArrayList : public List<T>{
 		}
 	}
 
-	void removeDelete(T key){
+	void removeDeleteByLValue(T key){
 		bool is=false;
 		for(int x=0; x < pos; x++){
 			if(values[x] == key ){
@@ -319,7 +320,7 @@ class ArrayList : public List<T>{
 		}
 	}
 
-	void removeDeleteByPos(int p){
+	void removeDeleteByPosition(int p){
 		if(p >= pos){
 			return;
 		}
@@ -349,59 +350,65 @@ class ArrayList : public List<T>{
 		return pos;
 	}
 
-	T getValue(){
-		return *this->getByPos(this->getIteration());
+	T getLValue(Iterator iterate){
+		return *this->getByPosition(iterate.getIteration());
 	}
 
-	T* getPointer(){
-		return this->getByPos(this->getIteration());
+	T* getPointer(Iterator iterate){
+		return this->getByPosition(iterate.getIteration());
 	}
 
-	T* set(T s){
-		return this->set(this->getIteration() , s);
+	T* setLValue(Iterator iterate, T s){
+		return this->setLValue(iterate.getIteration() , s);
 	}
 
-	T* set(T* s){
-		return this->set(this->getIteration() , s);
+	T* setPointer(Iterator iterate, T* s){
+		return this->setPointer(iterate.getIteration() , s);
 	}
 
-	T* insert(T s){
-		int p = this->iterateCount;
-		this->iterateCount++;
-		return this->insert(p , s);
+	T* insertLValue(Iterator& iterate, T s){
+		int p = iterate.getIteration();
+		iterate.next();
+		return this->insertLValue(p , s);
 	}
 
-	T* insert(T* s){
-		int p = this->iterateCount;
-		this->iterateCount++;
-		return this->insert(p , s);
+	T* insertPointer(Iterator& iterate, T* s){
+		int p = iterate.getIteration();
+		iterate.next();
+		return this->insertPointer(p , s);
 	}
 
-	T* remove(){
-		int p = this->iterateCount;
-		this->iterateCount--;
-		return this->removeByPos(p);
+	T* remove(Iterator& iterate){
+		int p = iterate.getIteration();
+		iterate.last();
+		return this->removeByPosition(p);
 	}
 
-	void removeDelete(){
-		int p = this->iterateCount;
-		this->iterateCount--;
-		this->removeDeleteByPos(p);
+	void removeDelete(Iterator& iterate){
+		int p = iterate.getIteration();
+		iterate.last();
+		this->removeDeleteByPosition(p);
 	}
 
 	List<T>* clone(){
 		List<T>* list = new ArrayList<T,size>();
-		
 		for(int xl=0; xl < this->pos; xl++){
-			list->add(values[xl]);
+			list->addLValue(values[xl]);
 		}
-		
+		return list;
+	}
+
+	List<T>* clone(bool owningMemory){
+		List<T>* list = new ArrayList<T,size>();
+		for(int xl=0; xl < this->pos; xl++){
+			list->addLValue(values[xl]);
+		}
 		return list;
 	}
 
 	void operator =(ArrayList<T,size> t){
 		for(int xtst=0; xtst<size; xtst++){
-			values[xtst] == *t.getByPos(xtst);
+			values[xtst] == *t.getPointerByPos(xtst);
 		}
 	}
 

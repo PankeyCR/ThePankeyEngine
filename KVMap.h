@@ -20,12 +20,16 @@ class KVMap : public Map<K,P>{
 		virtual ~KVMap(){
 			
 		}
+
+		virtual bool isEmpty(){
+			return this->pos==0;
+		}
 		
-		void setPos(int p){
+		void setPosition(int p){
 			this->pos = p;
 		}
 		
-		int getPos(){
+		int getPosition(){
 			return this->pos;
 		}
 		
@@ -33,16 +37,18 @@ class KVMap : public Map<K,P>{
 			return size;
 		}
 		
-		void add(K *key, P *value){
+		void addPointers(K *key, P *value){
 			if(size < this->pos){
 				return;
 			}
 			this->keys[pos] = *key;
 			this->values[pos] = *value;
 			this->pos++;
+			delete key;
+			delete value;
 		}
 		
-		void add(K key, P value){
+		void addLValues(K key, P value){
 			if(size < this->pos){
 				return;
 			}
@@ -51,16 +57,17 @@ class KVMap : public Map<K,P>{
 			this->pos++;
 		}
 		
-		void add(K key, P *value){
+		void addPointer(K key, P *value){
 			if(size < this->pos){
 				return;
 			}
 			this->keys[pos] = key;
 			this->values[pos] = *value;
 			this->pos++;
+			delete value;
 		}
 		
-		void set(K *key, P *value){
+		void setPointers(K *key, P *value){
 			if(size < this->pos){
 				return;
 			}
@@ -71,7 +78,7 @@ class KVMap : public Map<K,P>{
 			}
 		}
 		
-		void set(K key, P value){
+		void setLValues(K key, P value){
 			if(size < this->pos){
 				return;
 			}
@@ -82,7 +89,7 @@ class KVMap : public Map<K,P>{
 			}
 		}
 		
-		void set(K key, P *value){
+		void setPointer(K key, P *value){
 			if(size < pos){
 				return;
 			}
@@ -93,35 +100,35 @@ class KVMap : public Map<K,P>{
 			}
 		}
 		
-		void setKeyByPos(int p, K key){
+		void setKeyLValueByPosition(int p, K key){
 			if(size < p){
 				return;
 			}
 			keys[p] = key;
 		}
 		
-		void setKeyByPos(int p, K *key){
+		void setKeyPointerByPosition(int p, K *key){
 			if(size < p){
 				return;
 			}
 			keys[p] = *key;
 		}
 		
-		void setValueByPos(int p, P value){
+		void setValueByPosition(int p, P value){
 			if(size < p){
 				return;
 			}
 			values[p] = value;
 		}
 		
-		void setValueByPos(int p, P *value){
+		void setValuePointerByPosition(int p, P *value){
 			if(size < p){
 				return;
 			}
 			values[p] = *value;
 		}
 		
-		bool contain(K *key){
+		bool containKeyByPointer(K *key){
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == *key ){
 					return true;
@@ -130,7 +137,7 @@ class KVMap : public Map<K,P>{
 			return false;
 		}
 		
-		bool contain(K key){
+		bool containKeyByLValue(K key){
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == key ){
 					return true;
@@ -139,7 +146,7 @@ class KVMap : public Map<K,P>{
 			return false;
 		}
 		
-		bool containValue(P *value){
+		bool containValueByPointer(P *value){
 			for(int x=0; x < this->pos; x++){
 				if(this->values[x] == *value ){
 					return true;
@@ -148,7 +155,7 @@ class KVMap : public Map<K,P>{
 			return false;
 		}
 		
-		bool containValue(P value){
+		bool containValueByLValue(P value){
 			for(int x=0; x < this->pos; x++){
 				if(this->values[x] == value ){
 					return true;
@@ -157,7 +164,7 @@ class KVMap : public Map<K,P>{
 			return false;
 		}
 		
-		P *get(K *key){
+		P *getByPointer(K *key){
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == *key ){
 					return &this->values[x];
@@ -166,7 +173,7 @@ class KVMap : public Map<K,P>{
 			return nullptr;
 		}
 		
-		P *get(K key){
+		P *getByLValue(K key){
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == key ){
 					return &this->values[x];
@@ -175,7 +182,7 @@ class KVMap : public Map<K,P>{
 			return nullptr;
 		}
 		
-		P *getByPos(int p){
+		P *getByPosition(int p){
 			for(int x=0; x < this->pos; x++){
 				if(x == p){
 					return &this->values[x];
@@ -184,7 +191,7 @@ class KVMap : public Map<K,P>{
 			return nullptr;
 		}
 		
-		K *getKeyByPos(int p){
+		K *getKeyByPosition(int p){
 			for(int x=0; x < this->pos; x++){
 				if(x == p ){
 					return &this->keys[x];
@@ -193,7 +200,7 @@ class KVMap : public Map<K,P>{
 			return nullptr;
 		}
 		
-		K *getKey(P *value){
+		K *getKeyByPointer(P *value){
 			for(int x=0; x < this->pos; x++){
 				if(this->values[x] == *value ){
 					return &this->keys[x];
@@ -202,7 +209,7 @@ class KVMap : public Map<K,P>{
 			return nullptr;
 		}
 	
-		K *getKey(P value){
+		K *getKeyByLValue(P value){
 			for(int x=0; x < this->pos; x++){
 				if(this->values[x] == value ){
 					return &this->keys[x];
@@ -216,13 +223,10 @@ class KVMap : public Map<K,P>{
 		}
 		
 		void resetDelete(){
-			for(int x=0; x < this->pos; x++){
-				delete &this->values[x];
-			}
-			pos=0;
+			this->pos=0;
 		}
 		
-		P *remove(K *key){
+		P *removeByPointer(K *key){
 			P *p =nullptr;
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
@@ -246,7 +250,7 @@ class KVMap : public Map<K,P>{
 			return p;
 		}
 		
-		P *remove(K key){
+		P *removeByLValue(K key){
 			P *p =nullptr;
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
@@ -270,7 +274,7 @@ class KVMap : public Map<K,P>{
 			return p;
 		}
 		
-		P *removeByPos(int ps){
+		P *removeByPosition(int ps){
 			P *p = nullptr;
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
@@ -294,7 +298,7 @@ class KVMap : public Map<K,P>{
 			return p;
 		}
 		
-		void removeDelete(K *key){
+		void removeDeleteByPointer(K *key){
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == *key ){
@@ -308,15 +312,13 @@ class KVMap : public Map<K,P>{
 						this->keys[nv] = keys[x];
 						this->values[nv] = values[x];
 						nv++;
-					}else{
-						delete &this->values[x];
 					}
 				}
 				this->pos = nv;
 			}
 		}
 		
-		void removeDelete(K key){
+		void removeDeleteByLValue(K key){
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == key ){
@@ -330,15 +332,13 @@ class KVMap : public Map<K,P>{
 						this->keys[nv] = keys[x];
 						this->values[nv] = values[x];
 						nv++;
-					}else{
-						delete &this->values[x];
 					}
 				}
 				this->pos = nv;
 			}
 		}
 		
-		void removeDeleteByPos(int ps){
+		void removeDeleteByPosition(int ps){
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
 				if(x == ps ){
@@ -352,8 +352,6 @@ class KVMap : public Map<K,P>{
 						this->keys[nv] = keys[x];
 						this->values[nv] = values[x];
 						nv++;
-					}else{
-						delete &this->values[x];
 					}
 				}
 				this->pos = nv;
@@ -372,29 +370,35 @@ class KVMap : public Map<K,P>{
 			return this->pos;
 		}
 		
-		P getValue(){
-			return *this->getByPos(this->getIteration());
+		P getLValue(Iterator iterate){
+			return *this->getByPosition(iterate.getIteration());
 		}
 		
-		P *getPointer(){
-			return this->getByPos(this->getIteration());
+		P *getPointer(Iterator iterate){
+			return this->getByPosition(iterate.getIteration());
 		}
 		
-		K getKey(){
-			return *this->getKeyByPos(this->getIteration());
+		K getKey(Iterator iterate){
+			return *this->getKeyByPosition(iterate.getIteration());
 		}
 		
-		K *getKeyPointer(){
-			return this->getKeyByPos(this->getIteration());
+		K *getKeyPointer(Iterator iterate){
+			return this->getKeyByPosition(iterate.getIteration());
 		}
 		
-		Map<K,P>* clone(){
+		Map<K,P>* clone(void){
 			Map<K,P>* cloneMap = new KVMap<K,P,size>();
-			
-			for(int cm = 0; cm < pos; cm++){
-				cloneMap->add(keys[cm], values[cm]);
+			for(int cm = 0; cm < this->pos; cm++){
+				cloneMap->addLValues(keys[cm], values[cm]);
 			}
-			
+			return cloneMap;
+		}
+		
+		Map<K,P>* clone(bool owningMemory){
+			Map<K,P>* cloneMap = new KVMap<K,P,size>();
+			for(int cm = 0; cm < this->pos; cm++){
+				cloneMap->addLValues(keys[cm], values[cm]);
+			}
 			return cloneMap;
 		}
 		

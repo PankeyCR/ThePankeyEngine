@@ -33,22 +33,24 @@ class DataSet : public Iterator , public cppObject{
 		virtual T *getPointer(){return nullptr;}
 		
 		virtual int spaceSize(){return 0;}
+		virtual int getSize(int i_space){return 0;}
+		virtual int getSize(int i_space, int i_dimention){return 0;}
 		virtual int dimentionSize(int i_space){return 0;}
 		virtual int positionSize(int i_dimention, int i_position){return 0;}
 		
-		virtual DataSet<T>* iterateSpace(int i_space){
+		virtual Iterator iterateSpace(int i_space){
 			m_iterateSpace = i_space;
-			return this;
+			return Iterator(0, getSize(i_space));
 		}
-		virtual DataSet<T>* iterateDimention(int i_space, int i_dimention){
+		virtual Iterator iterateDimention(int i_space, int i_dimention){
 			m_iterateSpace = i_space;
 			m_iterateDimention = i_dimention;
-			return this;
+			return Iterator(0, getSize(i_space,i_dimention));
 		}
-		virtual void setIteration(int iter){}
-		virtual int getIterationSize(){return 0;}
-		virtual void last(){}
-		virtual void next(){}
+		// virtual void setIteration(int iter){}
+		// virtual int getIterationSize(){return 0;}
+		// virtual void last(){}
+		// virtual void next(){}
 		
 		virtual int space(){return m_space;}
 		virtual int dimention(){return m_dimention;}
@@ -65,45 +67,33 @@ class DataSet : public Iterator , public cppObject{
 			if(b->getClassName() != this->getClassName()){
 				return false;
 			}
-			((DataSet<T>*)b)->setIteration(0);
-			this->setIteration(0);
-			iterate(this){
-				if(((DataSet<T>*)b)->getValue() != this->getValue()){
+			for(Iterator i : *this){
+				if(((DataSet<T>*)b)->getLValue(i) != this->getLValue(i)){
 					return false;
 				}
 				((DataSet<T>*)b)->next();
 			}
-			((DataSet<T>*)b)->setIteration(0);
-			this->setIteration(0);
 			return true;
 		}
 		
 		virtual void operator=(DataSet<T> b){}
 		virtual bool operator==(DataSet<T> b){
-			b.setIteration(0);
-			this->setIteration(0);
-			iterate(this){
+			for(Iterator i : *this){
 				if( b.getValue() != this->getValue()){
 					return false;
 				}
 				b.next();
 			}
-			b.setIteration(0);
-			this->setIteration(0);
 			return true;
 		}
 
 		virtual bool operator!=(DataSet<T> b){
-			b.setIteration(0);
-			this->setIteration(0);
-			iterate(this){
+			for(Iterator i : *this){
 				if( b.getValue() != this->getValue()){
 					return true;
 				}
 				b.next();
 			}
-			b.setIteration(0);
-			this->setIteration(0);
 			return false;
 		}
 	

@@ -61,13 +61,13 @@
 		}
 		if(this->functionsetup() == FunctionSetup::ZeroStart){
 			Log("MinimalError", "build", "println","FunctionSetup ZeroStart");
-			iterate(this->data->iterateSpace(this->inputD)){
+			for(Iterator i : this->data->iterateSpace(this->inputD)){
 				this->fx->setConstante(this->data->getIteration(), this->data->getValue());
 			}
 		}
 		if(this->functionsetup() == FunctionSetup::UnityStart){
 			Log("MinimalError", "build", "println","FunctionSetup UnityStart");
-			iterate(this->data->iterateSpace(this->inputD)){
+			for(Iterator i : this->data->iterateSpace(this->inputD)){
 				this->fx->setConstante(this->data->getIteration()+1, this->data->getValue());
 			}
 		}
@@ -87,7 +87,7 @@
 			float fun1 = 0;
 			float maxErrT1 = 0;
 			int maxErrT1Pos = 0;
-			iterate(this->data->iterateSpace(this->outputD)){
+			for(Iterator i : this->data->iterateSpace(this->outputD)){
 				int pos= this->data->getIteration();
 				float rf = this->fx->f(pos);
 				float errt1 = (rf - this->data->getValue());
@@ -112,20 +112,20 @@
 			bool learn = false;
 			float maxErrT2 = 0;
 			Log("MinimalError", "build", "println","funtion start ");
-			iterate(this->fx){
+			for(Iterator i : *this->fx){
 				yield();
 				Log("MinimalError", "build", "print","funtion iteration ");Log("MinimalError", "build", "println", String(this->fx->getIteration()));
-				float fv = this->fx->getValue();
+				float fv = this->fx->getLValue(i);
 				float randd = random.getRandom();
 				Log("MinimalError", "build", "print","random ");Log("MinimalError", "build", "println", String(randd));
-				this->fx->set(randd);
-				iterate(this->data->iterateSpace(this->outputD)){
+				this->fx->set(i, randd);
+				for(Iterator i : this->data->iterateSpace(this->outputD)){
 					int pos=0;
 					if(this->functionsetup() == FunctionSetup::ZeroStart){
-						pos=this->data->getIteration();
+						pos = i.getIteration();
 					}
 					if(this->functionsetup() == FunctionSetup::UnityStart){
-						pos=this->data->getIteration()+1;
+						pos = i.getIteration()+1;
 					}
 					float rf = this->fx->f(pos);
 					float errt2 = (rf - this->data->getValue());
@@ -150,7 +150,7 @@
 					}
 				}
 				if(!learn){
-					this->fx->set(fv);
+					this->fx->set(i, fv);
 					maxErrT2 = 0;
 					Log("MinimalError", "build", "println","unlearned ");
 				}

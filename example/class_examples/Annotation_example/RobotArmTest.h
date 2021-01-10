@@ -13,10 +13,10 @@ RobotArmTest(Stream *port,int Xpin,int Ypin,int Zpin){
 	annotation = false;
 	annotationString = "";
 
-	annotation.add("X",&RobotArmTest::MoveX);
-	annotation.add("Y",&RobotArmTest::MoveY);
-	annotation.add("Z",&RobotArmTest::MoveZ);
-	annotationString.add("stop",&RobotArmTest::Stop);
+	annotation.addLValues("X",&RobotArmTest::MoveX);
+	annotation.addLValues("Y",&RobotArmTest::MoveY);
+	annotation.addLValues("Z",&RobotArmTest::MoveZ);
+	annotationString.addLValues("stop",&RobotArmTest::Stop);
 
 	servos = new SimpleServo();
 	servos->setup(3);
