@@ -1,9 +1,7 @@
 
-
 #ifndef NMap_h
 #define NMap_h
 
-#include "Arduino.h"
 #include "List.h"
 #include "Map.h"
 
@@ -13,11 +11,6 @@ class NMap : public cppObject{
 	
     public:
 		virtual N getName()=0;
-		//virtual void addValueMap(N m, Map<K,V> map)=0;
-		//virtual void addValueMap(N m, Map<K,V> *map)=0;
-		//virtual void addValueMap(N *m, Map<K,V> *map)=0;
-		//virtual void addValueMap( Map<K,V> map)=0;
-		//virtual void addValueMap( Map<K,V> *map)=0;
 		virtual void addValueMap()=0;
 		virtual void addValueMap(N m)=0;
 		virtual void addValueMap(N *m)=0;

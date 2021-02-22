@@ -30,34 +30,19 @@ class DefaultPortProtocol : public PortProtocol{
 		}
 		
 		virtual void GlobalDisconect(SerialPort* port){
-			if(!this->serialState->containSerialPort(port)){
-				DefaultPortProtocolLog("DefaultPortProtocol", "GlobalDisconect",  "println", "!this->serialState->containSerialPort(port)");
-				return;
-			}
 			DefaultPortProtocolLog("DefaultPortProtocol", "GlobalDisconect",  "println", "");
 			port->flush();
 			port->stop();
-			this->serialState->removeDeleteSerialPort(port);
 		}
 		virtual void Disconect(SerialPort* port){
-			if(!this->serialState->containSerialPort(port)){
-				DefaultPortProtocolLog("DefaultPortProtocol", "Disconect",  "println", "!this->serialState->containSerialPort(port)");
-				return;
-			}
 			DefaultPortProtocolLog("DefaultPortProtocol", "Disconect",  "println", "");
 			port->flush();
 			port->stop();
-			this->serialState->removeDeleteSerialPort(port);
 		}
 		virtual void UpdateDisconect(SerialPort* port){
-			if(!this->serialState->containSerialPort(port)){
-				DefaultPortProtocolLog("DefaultPortProtocol", "UpdateDisconect",  "println", "!this->serialState->containSerialPort(port)");
-				return;
-			}
 			DefaultPortProtocolLog("DefaultPortProtocol", "UpdateDisconect",  "println", "");
 			port->flush();
 			port->stop();
-			this->serialState->removeDeleteSerialPort(port);
 		}
 		
 		virtual void BroadcastMessage(SerialPort* port, String mns){
@@ -79,6 +64,7 @@ class DefaultPortProtocol : public PortProtocol{
 				DefaultPortProtocolLog("DefaultPortProtocol", "Read",  "println", String("index: ") + String(index));
 				DefaultPortProtocolLog("DefaultPortProtocol", "Read",  "println", "raw");
 				Message* message = new Message();
+				message->name(port->getName());
 				message->text(messageText);
 				message->id(index);
 				message->type("raw");

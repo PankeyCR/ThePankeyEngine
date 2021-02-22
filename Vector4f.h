@@ -2,7 +2,7 @@
 #ifndef Vector4f_h
 #define Vector4f_h
 
-#include "FastMath.h"
+#include "FastMonkeyMath.h"
 #include "ArrayList.h"
 #include "cppObject.h"
 

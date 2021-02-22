@@ -3,21 +3,21 @@
 #ifndef Block_h
 #define Block_h
 
-#include "GameObject.h"
-#include "Arduino.h"
-#include "Map.h"
-#include "List.h"
+#include "Environment.h"
 
 class Block{
     public:
-		Block();
-		~Block();
+		Block(){}
+		virtual ~Block(){}
 		
-		virtual void operator=(Block b);
-		virtual bool operator==(Block b);
-		virtual bool operator!=(Block b);
+		virtual void setCode(String c){code = c;}
+		virtual Block* run(Environment* e){return nullptr;}
+		
+		virtual void operator=(Block b){code = b.code;}
+		virtual bool operator==(Block b){code == b.code;}
+		virtual bool operator!=(Block b){code != b.code;}
 	protected:
-		List<String>* syntaxList = nullptr;
+		String code;
 };
 
 #endif 

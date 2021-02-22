@@ -9,9 +9,6 @@ public:
 Vector(){
     this->name = "x";
 }
-Vector(const Vector& v){
-    name = v.getName();
-}
 Vector(const char* n){
     this->name = String(n);
 }
@@ -48,13 +45,6 @@ bool equal(cppObject* obj){
 	return false;
 }
 
-bool equal(const Vector& obj){
-	if(obj.getName() == this->getName()){
-		return true;
-	}
-	return false;
-}
-
 Vector* clone(){
 	Vector* cloner = new Vector(this->getName());
 	return cloner;
@@ -64,7 +54,7 @@ bool instanceof(String instance){
 return instance == "Vector" || cppObject::instanceof(instance);
 }
 
-void operator=(const Vector& v){
+void operator=(Vector v){
 	this->name =  v.getName();
 }
 
@@ -76,7 +66,7 @@ void operator=(const String& n){
 	this->name =  n;
 }
 
-bool operator==(const Vector& obj){
+bool operator==(Vector obj){
 	if(obj.getName() == this->getName()){
 		return true;
 	}
@@ -90,14 +80,14 @@ bool operator==(const char* n){
 	return false;
 }
 
-bool operator==(const String n){
+bool operator==(const String& n){
 	if(this->getName() == n){
 		return true;
 	}
 	return false;
 }
 
-bool operator!=(const Vector& obj){
+bool operator!=(Vector obj){
 	if(obj.getName() != this->getName()){
 		return true;
 	}
@@ -111,7 +101,7 @@ bool operator!=(const char* n){
 	return false;
 }
 
-bool operator!=(const String n){
+bool operator!=(const String& n){
 	if(this->getName() != n){
 		return true;
 	}

@@ -8,11 +8,15 @@
 		this->childs = new PrimitiveList<GameOn>();
 	}
 	
+	// GameObject::GameObject(const GameObject& obj){
+		// this->childs = new PrimitiveList<GameOn>();
+		// for(int x = 0; x < obj.getPosition(); x++){
+			// this->childs->addLValue(*obj.getByPosition(x));
+		// }
+	// }
+	
 	GameObject::~GameObject(){
-		if(this->childs != nullptr){
-			delete this->childs;
-			this->childs = nullptr;
-		}
+		delete this->childs;
 	}
 	
 	void GameObject::setId(int id){

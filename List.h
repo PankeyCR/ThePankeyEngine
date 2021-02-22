@@ -8,7 +8,7 @@
 template <class T>
 class List : public cppObject , public Iterator{	
 	public:
-	virtual bool isEmpty()=0;
+	virtual bool isEmpty()const=0;
 	virtual void setPosition(int p)=0;
 	virtual int getPosition()=0;
 	virtual int getSize()=0;

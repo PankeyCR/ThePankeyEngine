@@ -1,21 +1,21 @@
 
-
 #ifndef Lexer_h
 #define Lexer_h
 
 #include "Map.h"
 #include "List.h"
-#include "KVMap.h"
+#include "Token.h"
 #include "Stream.h"
 #include "Arduino.h"
 #include "ArrayList.h"
 #include "LinkedList.h"
+#include "Environment.h"
 #include "PrimitiveMap.h"
 
 class Lexer{
     public:
 		Lexer();
-		~Lexer();
+		virtual ~Lexer();
 		
 		virtual void capture(char chr);
 		
@@ -24,27 +24,20 @@ class Lexer{
 		virtual bool isInt(String s);
 		virtual bool isLong(String s);
 		virtual bool isDouble(String s);
+		virtual bool isToken(String s);
+		virtual bool isVariable(String s);
+		virtual Token getToken(String s);
 		
-		virtual String getToken(String tkn);
-		virtual String getActualToken();
-		virtual String getCapturedToken(int x);
-		virtual Map<String,String>* getCapturedToken();
+		virtual List<Token>* getCapturedTokens();
 		
-		virtual Lexer* addToken(String tok);
-		virtual Lexer* addPrimitiveClass(String cls);
+		virtual Lexer* addToken(Token* tok);
 		virtual Lexer* addBreakPoint(char brk);
-		virtual Lexer* addDelimiterToken(String name,String dlm);
+		
+		virtual void setEnvironment(Environment* e);
 		
 		virtual void printTokens(Stream* port);
+		virtual bool checkSyntax();
 		
 	protected:
-		Map<String,String>* captureToken = nullptr;
-		Map<String,String>* delimiterToken = nullptr;
-		List<String>* tokens = nullptr;
-		List<String>* primitiveClasses = nullptr;
-		List<char>* breakPoint = nullptr;
-		Map<String,int>* delimiterCatcher = nullptr;
-		String reading = "";
-		char captureChar;
 };
 #endif 

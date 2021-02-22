@@ -8,6 +8,12 @@
 class Message{
 public:
 Message(){}
+Message(const Message& b){
+	m_id = b.m_id;
+	m_name = b.m_name;
+	m_text = b.m_text;
+	m_type = b.m_type;
+}
 Message(String txt){
 	m_text = txt;
 }
@@ -52,7 +58,7 @@ virtual int id(){
 	return m_id;
 }
 virtual String name(){
-	return m_text;
+	return m_name;
 }
 virtual String text(){
 	return m_text;

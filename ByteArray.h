@@ -11,12 +11,20 @@
 class ByteArray : public PrimitiveList<byte> , public Printable{
 public:
 ByteArray(){}
+ByteArray(const ByteArray& i){
+	for(int x =0; x < i.pos; x++){
+		this->addLValue((byte)*i.values[x]);
+	}
+}
+ByteArray(const int i){
+	this->addLValue(i);
+}
 ByteArray(byte b){
-	this->add(b);
+	this->addLValue(b);
 }
 ByteArray(byte b[]){
-	for(int xx = 0; xx < sizeof(b)/sizeof(b[0]); xx++){
-		this->add(xx);
+	for(int x = 0; x < sizeof(b)/sizeof(b[0]); x++){
+		this->addLValue(b[x]);
 	}
 }
 virtual ~ByteArray(){}
@@ -44,13 +52,50 @@ virtual String toString(){
 	}
 	return array;
 }
-virtual int getBitSize(){
-	return this->getSize() * 8;
+virtual int getBitSize() const {
+	return this->pos * 8;
+}
+virtual int getByteSize() const {
+	return this->pos;
+}
+
+virtual void operator=(const ByteArray& i){
+	for(int x =0; x < i.pos; x++){
+		this->addLValue((byte)*i.values[x]);
+	}
+}
+
+virtual void operator=(const int i){
+	this->addLValue(i);
 }
 
 virtual void operator=(byte value){
 	this->resetDelete();
 	this->addLValue(value);
+}
+
+virtual bool operator==(ByteArray b){
+	if(b.getPosition() != this->getPosition()){
+		return false;
+	}
+	for(int x = 0; x < this->getPosition(); x++){
+		if(*b.getByPosition(x) != *this->getByPosition(x)){
+			return false;
+		}
+	}
+	return true;
+}
+
+virtual bool operator!=(ByteArray b){
+	if(b.getPosition() != this->getPosition()){
+		return true;
+	}
+	for(int x = 0; x < this->getPosition(); x++){
+		if(*b.getByPosition(x) != *this->getByPosition(x)){
+			return true;
+		}
+	}
+	return false;
 }
 
 virtual void operator+=(byte value){
@@ -163,12 +208,30 @@ virtual void toggleBit(int cell, int bit){
 	bitWrite((*c), bit, !bitRead((*c), bit));
 }
 
-virtual bool getBit(int cell, int bit){
-	byte* c = this->getByPosition(cell);
+virtual bool getBit(int cell, int bit) const {
+	byte* c = this->values[cell];
 	if(c == nullptr){
 		return false;
 	}
 	return bitRead((*c), bit);
+}
+
+virtual byte getByte(int x) const {
+	if(x >= this->pos){
+		return 0;
+	}
+	return (byte)*this->values[x];
+}
+
+virtual ByteArray getByteArray(int start, int end) const {
+	ByteArray array;
+	if(start >= this->pos || end >= this->pos){
+		return 0;
+	}
+	for(int x = start; x <= end; x++){
+		array.addLValue(*this->values[x]);
+	}
+	return array;
 }
 };
 

@@ -353,6 +353,36 @@ class PrimitiveMap : public Map<K,V>{
 			this->pos = 0;
 		}
 		
+		virtual void resetDeleteKey(){
+			for(int rd = 0; rd < this->pos; rd++){
+				if(this->owner){
+					if(this->keys[rd] == nullptr){
+						delete this->keys[rd];
+						this->keys[rd] = nullptr;
+					}
+					if(this->values[rd] == nullptr){
+						this->values[rd] = nullptr;
+					}
+				}
+			}
+			this->pos = 0;
+		}
+		
+		virtual void resetDeleteValue(){
+			for(int rd = 0; rd < this->pos; rd++){
+				if(this->owner){
+					if(this->keys[rd] == nullptr){
+						this->keys[rd] = nullptr;
+					}
+					if(this->values[rd] == nullptr){
+						delete this->values[rd];
+						this->values[rd] = nullptr;
+					}
+				}
+			}
+			this->pos = 0;
+		}
+		
 		virtual V *removeByPointer(K *key){
 			V *p = nullptr;
 			bool is=false;

@@ -15,6 +15,7 @@ class GameObject : public GameOn{
     public:
 		
 		GameObject();
+		// GameObject(const GameObject& obj);
 		virtual ~GameObject();
 		
         virtual void setId(int id);

@@ -35,6 +35,8 @@ class Map : public cppObject , public Iterator{
 		virtual K* getKeyByLValue(V value)=0;
 		virtual void reset()=0;
 		virtual void resetDelete()=0;
+		virtual void resetDeleteKey()=0;
+		virtual void resetDeleteValue()=0;
 		virtual V* removeByPointer(K* key)=0;
 		virtual V* removeByLValue(K key)=0;
 		virtual V* removeByPosition(int p)=0;

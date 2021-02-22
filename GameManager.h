@@ -23,9 +23,11 @@ class GameManager : public AppState{
 		GameObject* createGameObject();
 		
 		void deleteEntity(int entity);
+		void deleteGameObject(GameObject* obj);
 		void deleteAllEntities();
 		
 		void deleteEntityRequest(int entity);
+		void deleteGameObjectRequest(GameObject* obj);
 		void deleteAllEntitiesRequest();
 		
 		int getEntity(String entityClassName);
@@ -33,53 +35,53 @@ class GameManager : public AppState{
 		int getEntity(GameObject* obj);
 		GameObject* getGameObject(int entity);
 		
-		void addComponent(int entity, GameOn* component);
-		void addComponent(GameObject* obj, GameOn* component);
+		void addEntityComponent(int entity, GameOn* component);
+		void addGameObjectComponent(GameObject* obj, GameOn* component);
 		
-		void addComponentRequest(int entity, GameOn* component);
-		void addComponentRequest(GameObject* obj, GameOn* component);
+		void addEntityComponentRequest(int entity, GameOn* component);
+		void addGameObjectComponentRequest(GameObject* obj, GameOn* component);
 		
 		bool containComponent(String componentClassName);
-		bool containComponent(int entity, String componentClassName);
-		bool containComponent(GameObject* obj, String componentClassName);
+		bool containEntityComponent(int entity, String componentClassName);
+		bool containGameObjectComponent(GameObject* obj, String componentClassName);
 		
 		bool isEmpty();
 		
-		GameOn* getComponent(int entity, int index);
-		GameOn* getComponent(int entity, String componentClassName);
-		GameOn* getComponent(GameObject* obj, String componentClassName);
+		GameOn* getEntityComponent(int entity, int index);
+		GameOn* getEntityComponent(int entity, String componentClassName);
+		GameOn* getGameObjectComponent(GameObject* obj, String componentClassName);
 		
 		//returns the first component founded on the gameobjects list searched by the componentClassName
 		GameOn* getComponent(String componentClassName);
 		//returns the first entity founded with the componentClassName 
-		int getEntityComponent(String componentClassName);
+		int getEntityByComponent(String componentClassName);
 		
-		int getComponentIndex(int entity, String componentClassName);
-		int getComponentIndex(GameObject* obj, String componentClassName);
+		int getEntityComponentIndex(int entity, String componentClassName);
+		int getGameObjectComponentIndex(GameObject* obj, String componentClassName);
 		
 		//returns the position of the first component founded on the gameobjects list searched by the componentClassName
 		int getComponentEntity(String componentClassName);
 		
-		List<GameOn>* getComponents(int entity);
-		List<GameOn>* getComponents(GameObject* obj);
+		List<GameOn>* getEntityComponents(int entity);
+		List<GameOn>* getGameObjectComponents(GameObject* obj);
 		List<GameOn>* getComponents(String componentClassName);
 		
 		void deleteComponent(String componentClassName);
 		
-		GameOn* removeComponent(int entity, String componentClassName);
-		GameOn* removeComponent(GameObject* obj, String componentClassName);
+		GameOn* removeEntityComponent(int entity, String componentClassName);
+		GameOn* removeGameObjectComponent(GameObject* obj, String componentClassName);
 		
-		void deleteComponent(int entity, String componentClassName);
-		void deleteComponent(GameObject* obj, String componentClassName);
+		void deleteEntityComponent(int entity, String componentClassName);
+		void deleteGameObjectComponent(GameObject* obj, String componentClassName);
 		
-		void deleteComponentRequest(int entity, String componentClassName);
-		void deleteComponentRequest(GameObject* obj, String componentClassName);
+		void deleteEntityComponentRequest(int entity, String componentClassName);
+		void deleteGameObjectComponentRequest(GameObject* obj, String componentClassName);
 		
-		void removeComponent(int entity, GameOn* component);
-		void removeComponent(GameObject* obj, GameOn* component);
+		void removeEntityComponent(int entity, GameOn* component);
+		void removeGameObjectComponent(GameObject* obj, GameOn* component);
 		
-		void deleteComponent(int entity, GameOn* component);
-		void deleteComponent(GameObject* obj, GameOn* component);
+		void deleteEntityComponent(int entity, GameOn* component);
+		void deleteGameObjectComponent(GameObject* obj, GameOn* component);
 		
 		GameOn* removeComponentIterating(Iterator& i, List<GameOn>* listComponents);
 		
@@ -100,9 +102,9 @@ class GameManager : public AppState{
 		
 	protected:
 		bool deleteAllE = false;
-		List<int>* deleteERequest = nullptr;
-		Map<int,GameOn>* addRequest = nullptr;
-		Map<int,String>* deleteRequest = nullptr;
+		List<GameObject>* deleteERequest = nullptr;
+		Map<GameObject,GameOn>* addRequest = nullptr;
+		Map<GameObject,String>* deleteRequest = nullptr;
 		Map<String,PrimitiveList<GameOn>>* components = nullptr;
 		PrimitiveList<GameObject>* gameobjects = nullptr;
 };

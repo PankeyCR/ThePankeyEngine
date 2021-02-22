@@ -3,7 +3,6 @@
 #ifndef Application_h
 #define Application_h
 
-#include "Arduino.h"
 #include "AppStateManager.h"
 #include "AppSettings.h"
 #include "TimeControl.h"

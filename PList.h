@@ -39,7 +39,7 @@ class PList : public List<T>{
 			}
 		}
 
-		bool isEmpty(){
+		bool isEmpty()const{
 			return pos==0;
 		}
 		

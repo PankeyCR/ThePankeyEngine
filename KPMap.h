@@ -250,6 +250,19 @@ class KPMap : public Map<K,P>{
 			pos=0;
 		}
 		
+		void resetDeleteKey(){
+			pos=0;
+		}
+		
+		void resetDeleteValue(){
+			if(owner){
+				for(int x=0; x < pos; x++){
+					delete values[x];
+				}
+			}
+			pos=0;
+		}
+		
 		P *removeByPointer(K *key){
 			P *p = nullptr;
 			bool is=false;

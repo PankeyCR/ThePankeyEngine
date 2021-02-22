@@ -21,6 +21,12 @@ class SerialPort : public Stream , public cppObject{
 		virtual int read(){
 			return -1;
 		}
+		virtual byte readByte(){
+			return 255;
+		}
+		virtual String readString(){
+			return "";
+		}
 		virtual int peek(){
 			return -1;
 		}
@@ -31,6 +37,8 @@ class SerialPort : public Stream , public cppObject{
 			return false;
 		}
 		virtual void stop(){
+		}
+		virtual void send(String s){
 		}
 		
 		virtual void setName(String name){

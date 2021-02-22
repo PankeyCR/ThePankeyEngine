@@ -18,7 +18,7 @@ class ServerProtocol{
 			this->serialState = state;
 		}
 		
-		virtual SerialPort* getUpdateSerialPort(SerialServer* server){}
+		virtual SerialPort* getUpdateSerialPort(SerialServer* server){return nullptr;}
 		
 		virtual void UpdateSerialPort(SerialPort* port){}
 		

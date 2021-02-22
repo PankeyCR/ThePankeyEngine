@@ -7,6 +7,8 @@ class Command {
     private:
 	
     public:
+		Command(){}
+		virtual ~Command(){}
 		virtual void execute(C* c){
 			
 		}

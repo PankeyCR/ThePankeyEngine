@@ -207,17 +207,17 @@ class SerialMessageState : public AppState{
 		
 		bool containSerialPort(SerialPort* serial){
 			if(serial == nullptr){
-				SerialMessageStateLog("SerialMessageState", "addSerialPort",  "println", "containSerialPort serial == nullptr");
+				SerialMessageStateLog("SerialMessageState", "containSerialPort",  "println", "containSerialPort serial == nullptr");
 				return false;
 			}
 			for(int x = 0; x < ports->getPosition(); x++){
-				SerialMessageStateLog("SerialMessageState", "addSerialPort",  "println", "containSerialPort start ports->getPosition()");
+				SerialMessageStateLog("SerialMessageState", "containSerialPort",  "println", "containSerialPort start ports->getPosition()");
 				if(ports->getByPosition(x) == nullptr){
-					SerialMessageStateLog("SerialMessageState", "addSerialPort",  "println", "containSerialPort ports->getByPosition(x) == nullptr");
+					SerialMessageStateLog("SerialMessageState", "containSerialPort",  "println", "containSerialPort ports->getByPosition(x) == nullptr");
 					continue;
 				}
 				if(serial->equal(ports->getByPosition(x))){
-					SerialMessageStateLog("SerialMessageState", "addSerialPort",  "println", "containSerialPort equal");
+					SerialMessageStateLog("SerialMessageState", "containSerialPort",  "println", "containSerialPort equal");
 					return true;
 				}
 			}
@@ -266,8 +266,9 @@ class SerialMessageState : public AppState{
 		void removeDeleteSerialPort(SerialPort* serial){
 			int x = ports->getIndexByPointer(serial);
 			if(x == -1){
-				ports->removeByPointer(serial);
+				return;
 			}
+			SerialMessageStateLog("SerialMessageState", "removeDeleteSerialPort",  "println", "");
 			portProtocols->removeDeleteByPosition(x);
 			ports->removeDeleteByPointer(serial);
 		}
@@ -398,6 +399,8 @@ class SerialMessageState : public AppState{
 			for(int x = 0; x < portProtocols->getPosition(); x++){
 				portProtocols->getByPosition(x)->GlobalDisconect(ports->getByPosition(x));
 			}
+			ports->resetDelete();
+			portProtocols->resetDelete();
 		}
 		
 		void disconect(SerialPort* port) {
@@ -406,10 +409,19 @@ class SerialMessageState : public AppState{
 				return;
 			}
 			portProtocols->getByPosition(index)->Disconect(port);
+			this->removeDeleteSerialPort(port);
+		}
+		
+		virtual void deleteMessages(bool d){
+			deleteMns = d;
 		}
 		
 		void addReceivedMessage(Message* m){
 			receivedMessage->addPointer(m);
+		}
+		
+		List<Message>* getReceivedMessages(){
+			return receivedMessage;
 		}
 		
 		virtual void update(float tpc){
@@ -431,16 +443,20 @@ class SerialMessageState : public AppState{
 				if(port == nullptr || portProtocol == nullptr){
 					continue;
 				}
-				if(port->available() > 0) {
-					portProtocol->Read(index,port);
-				}
 				if(!port->connected()){
+					SerialMessageStateLog("SerialMessageState", "update",  "println", "!port->connected()");
 					portProtocol->UpdateDisconect(port);
+					portProtocols->removeDeleteByPosition(index);
+					ports->removeDeleteByPosition(index);
 					index--;
-					continue;
-				}
-				for(int x = 0; x < broadMessages->getPosition(); x++){
-					portProtocol->BroadcastMessage(port, *broadMessages->getByPosition(x));
+				}else{
+					if(port->available() > 0) {
+						portProtocol->Read(index,port);
+					}
+					for(int x = 0; x < broadMessages->getPosition(); x++){
+						portProtocol->BroadcastMessage(port, *broadMessages->getByPosition(x));
+					}
+					portProtocol->update(port,tpc);
 				}
 			}
 			broadMessages->resetDelete();
@@ -461,7 +477,9 @@ class SerialMessageState : public AppState{
 					listener->getByPosition(y)->execute(receivedMessage->getByPosition(x));
 				}
 			}
-			receivedMessage->resetDelete();
+			if(deleteMns){
+				receivedMessage->resetDelete();
+			}
 		}
 		
 		virtual String getClassName(){
@@ -485,6 +503,8 @@ class SerialMessageState : public AppState{
 		}
 		
 	protected:
+		bool deleteMns = true;
+		
 		List<String>* broadMessages = nullptr;
 		Map<int,String>* clientMessages = nullptr;
 		

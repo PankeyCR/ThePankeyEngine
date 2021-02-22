@@ -5,6 +5,13 @@
 
 #include "AppState.h"
 
+#ifdef GameSystemLogApp
+	#include "Logger.h"
+	#define GameSystemLog(name,method,type,mns) Log(name,method,type,mns)
+#else
+	#define GameSystemLog(name,method,type,mns)
+#endif
+
 template<class T>
 class GameSystem : public AppState{
 public:
@@ -34,15 +41,24 @@ virtual String setId(String i){
 	}
 }
 
-virtual void initialize(Application* app){
+virtual void initializeComponents(Application* app){
+	GameSystemLog("GameSystem", "initializeComponents",  "println", "");
 	manager = app->getStateManager()->getState<GameManager>();
 	if(manager == nullptr){
+		GameSystemLog("GameSystem", "initializeComponents",  "println", "manager == nullptr");
 		return;
 	}
 	T t;
 	String componentClassName = t.getClassName();
+	GameSystemLog("GameSystem", "initializeComponents",  "println", componentClassName);
 	components = manager->getComponents(componentClassName);
+}
+
+virtual void initialize(Application* app){
+	GameSystemLog("GameSystem", "initialize",  "println", "");
+	initializeComponents(app);
 	if(components == nullptr){
+		GameSystemLog("GameSystem", "initialize",  "println", "components == nullptr");
 		return;
 	}
 	initializeSystem(app);
@@ -58,9 +74,11 @@ virtual bool instanceof(String name){
 
 virtual void update(float tpc){
 	if(components == nullptr){
+		GameSystemLog("GameSystem", "update",  "println", "components == nullptr");
 		return;
 	}
-	for(int x = 0; x > components->getPosition(); x++){
+	for(int x = 0; x < components->getPosition(); x++){
+		GameSystemLog("GameSystem", "update",  "println", "iterating components");
 		T* c = (T*)components->getByPosition(x);
 		updateComponents(c, tpc);
 	}
@@ -68,15 +86,14 @@ virtual void update(float tpc){
 }
 
 virtual void updateComponents(T* component, float tpc){
-	
+	GameSystemLog("GameSystem", "updateComponents",  "println", "");
 }
 
 virtual void updateSystem(float tpc){
-	
 }
 
 virtual void initializeSystem(Application* app){
-	
+	GameSystemLog("GameSystem", "initializeSystem",  "println", "");
 }
 
 protected:

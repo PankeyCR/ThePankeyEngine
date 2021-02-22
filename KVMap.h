@@ -226,6 +226,14 @@ class KVMap : public Map<K,P>{
 			this->pos=0;
 		}
 		
+		void resetDeleteKey(){
+			this->pos=0;
+		}
+		
+		void resetDeleteValue(){
+			this->pos=0;
+		}
+		
 		P *removeByPointer(K *key){
 			P *p =nullptr;
 			bool is=false;

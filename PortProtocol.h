@@ -31,6 +31,8 @@ class PortProtocol{
 		//you need to send to message manually
 		virtual void PrivateMessage(SerialPort* port, String mns){}
 		
+		virtual void update(SerialPort* port, float tpc){}
+		
 		virtual void operator=(PortProtocol b){}
 		virtual bool operator==(PortProtocol b){return true;}
 		virtual bool operator!=(PortProtocol b){return true;}

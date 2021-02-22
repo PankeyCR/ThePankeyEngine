@@ -55,7 +55,7 @@ class LinkedList : public List<T>{
 			node = nullptr;
 		}
 
-		bool isEmpty(){
+		bool isEmpty()const{
 			return pos==0;
 		}
 		
