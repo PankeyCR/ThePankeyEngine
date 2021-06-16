@@ -5,6 +5,11 @@
 
 #include "Note.h"
 
+char Note::space = ' ';
+char Note::endLine = '.';
+char Note::enter = '\n';
+char Note::empty = '\0';
+
 
 	Note::Note(){
 		NoteLog("Note", "Constructor",  "println", "no parameters");

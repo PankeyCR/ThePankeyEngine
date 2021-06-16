@@ -47,22 +47,33 @@ class PList : public List<T>{
 			pos=p;
 		}
 		
-		int getPosition(){
+		int getPosition()const{
 			return pos;
 		}
 		
-		int getSize(){
+		int getSize()const{
 			return size;
 		}
 		
-		T* getByPosition(int x){
+		T* getByPosition(int x)const{
 			if(x >= pos){
 				return nullptr;
 			}
 			return values[x];
 		}
+	
+		virtual bool replace(int i, int j){
+			if(i >= pos || j >= pos){
+				return false;
+			}
+			T* it = values[i];
+			T* jt = values[j];
+			values[i] = jt;
+			values[j] = it;
+			return true;
+		}
 		
-		void addList(List<T> *list){
+		void addList(RawList<T> *list){
             if(list == nullptr){
 				return;
             }

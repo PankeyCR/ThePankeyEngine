@@ -7,16 +7,16 @@
 #include "MemoryFree.h"
 
 template<class T>
-class DefaultMemoryManager : public MemoryManager{
+class DefaultMemoryManager : public MemoryManager<T>{
     public:		
 		DefaultMemoryManager(){
 			listPointer = new PrimitiveList<T>();
 			// listSafeOverWrite = new PrimitiveList<T>();
-			// listTime = new PrimitiveList<long>(); 
+			listTime = new PrimitiveList<float>(); 
 		}
 		virtual ~DefaultMemoryManager(){
 			delete listPointer; 
-			// delete listTime; 
+			delete listTime; 
 			// delete listSafeOverWrite; 
 		}
 		
@@ -35,74 +35,73 @@ class DefaultMemoryManager : public MemoryManager{
 					// listSafeOverWrite->removeByPos(listSafeOverWrite->getPos()-1);
 				// }
 			}else{
-				// listTime->add(new long(0l));
+				listTime->addPointer(new float(0.0f));
 				p = (T*)malloc(size);
-				listPointer->add(p);
+				listPointer->addPointer(p);
 			}
 			//Serial.println(freeMemory());
 			//Serial.println("full allocateMemory");
 			return p;
 		}
-		void deleteMemory(void* pointerToDelete){
+		void deleteMemory(void* pointerToDelete,size_t sizeofMemory){
 			//Serial.println("starting full delete");
 			//Serial.println(freeMemory());
 			T* p = (T*)pointerToDelete;
 			//p->onDeleteMemory();
 			//Serial.println(freeMemory());
-			int x = listPointer->getIndex(p);
+			int x = listPointer->getIndexByPointer(p);
 			if(x == -1){
 				return;
 			}
-			// listTime->removeDeleteByPos(x);
+			listTime->removeDeleteByPosition(x);
 			// Serial.println(freeMemory());
-			// listSafeOverWrite->remove(p);
-			// Serial.println(freeMemory());
-			listPointer->remove(p);
+			listPointer->removeByPointer(p);
 			//Serial.println(freeMemory());
 			free((T*)p);
 			//Serial.println(freeMemory());
 			//Serial.println("full delete");
 		}
 		void watchdog(void* pointerToWatch){
-			// int x = listPointer->getIndex((T*)pointerToWatch);
-			// if(x == -1){
-				// return;
-			// }
-			// long* l = listTime->getByPos(x);
-			// (*l) = 0l;
+			int x = listPointer->getIndexByPointer((T*)pointerToWatch);
+			if(x == -1){
+				return;
+			}
+			listTime->setLValue(x, 0.0f);
 		}
 		
-		void maintain(float tpc){
-			// for(int m = 0; m < listTime->getPos(); m++){
-				// T* p = listPointer->getByPos(m);
-				// float t = *listTime->getByPos(m);
-				// if(t >= maxTimeLimit){
-					// Serial.println("delete maintain");
-					// deleteMemory(p);
-					// m--;
-					// continue;
-				// }
-				// if(t >= normalTimeLimit){
-					// if(!listSafeOverWrite->contain(p)){
-						// listSafeOverWrite->add(p);
-					// }
-				// }
-				// long* l = listTime->getByPos(m);
-				// (*l) += 1l;
-				//listTime->set(m, *listTime->getByPos(m) + 1l);
-			// }
+		void maintain(float tpc, size_t sizeofMemory){
+			for(int m = 0; m < listTime->getPosition(); m++){
+				T* p = listPointer->getByPosition(m);
+				float t = *listTime->getByPosition(m);
+				if(t >= maxTimeLimit){
+					// Serial.println("delete maintain maxTimeLimit");
+					deleteMemory(p,sizeofMemory);
+					m--;
+					continue;
+				}
+				if(freeMemory() < RamMinSize){
+					// Serial.println("delete maintain freeMemory");
+					deleteMemory(p,sizeofMemory);
+					m--;
+					continue;
+				}
+				listTime->setLValue(m, t + 1.0f);
+			}
 			// Serial.println("maintain");
 			// Serial.println(freeMemory());
 		}
-		
-		void setTimes(long max, long normal){
-			maxTimeLimit = max;
-			normalTimeLimit = normal;
+		virtual void addMemory(T* t){
+			listPointer->addPointer(t);
+		}
+		virtual void removeMemory(T* t){
+			listPointer->removeByPointer(t);
+		}
+		virtual bool containMemory(T* t){
+			return listPointer->containByPointer(t);
 		}
 		
-		void setTime(long max){
+		void setTime(float max){
 			maxTimeLimit = max;
-			normalTimeLimit = max+1;
 		}
 		
 		void setRamMinSize(long r){
@@ -111,10 +110,8 @@ class DefaultMemoryManager : public MemoryManager{
 		
 	protected:
 		PrimitiveList<T>* listPointer; 
-		// PrimitiveList<long>* listTime;
-		// PrimitiveList<T>* listSafeOverWrite;
-		long maxTimeLimit = 100l;
-		long normalTimeLimit = 10l;
+		PrimitiveList<float>* listTime;
+		float maxTimeLimit = 0.1f;
 		long RamMinSize = 1500l;
 };
 

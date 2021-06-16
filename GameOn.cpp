@@ -50,16 +50,16 @@
 		
 	}
 	
-	String GameOn::getClassName(){
-		return "GameOn";
+	cppObjectClass* GameOn::getClass(){
+		return Class<GameOn>::classType;
 	}
 	
 	String GameOn::toString(){
 		return "GameOn";
 	}
 	
-	bool GameOn::instanceof(String s){
-		return s == "GameOn" || cppObject::instanceof(s);
+	bool GameOn::instanceof(cppObjectClass* cls){
+		return cls == Class<GameOn>::classType || cppObject::instanceof(cls);
 	}
 	
 	GameOn GameOn::operator =(const GameOn& note){

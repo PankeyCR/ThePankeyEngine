@@ -68,3 +68,11 @@ long freeMemory() {
 }
 
 #endif
+
+#ifdef ARDUINO_ARCH_ESP32
+
+long freeMemory() {
+	return esp_get_free_heap_size();
+}
+
+#endif

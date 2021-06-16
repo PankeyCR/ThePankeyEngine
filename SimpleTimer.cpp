@@ -114,7 +114,7 @@ TimeControl* SimpleTimer::instance = nullptr;
 #elif defined(ARDUINO_ARCH_ESP8266)
 	
 	void ICACHE_RAM_ATTR onTime() {
-		for(int x = 0; x > ((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPosition(); x++){
+		for(int x = 0; x < ((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPosition(); x++){
 			((SimpleTimer*)SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(SimpleTimer::getInstance());
 		}
 		((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
@@ -176,7 +176,44 @@ TimeControl* SimpleTimer::instance = nullptr;
 	
 		return this;
 	}
+//esp32
+#elif defined(ARDUINO_ARCH_ESP32)
+
+	TimeControl* SimpleTimer::initialize(long timeperiod){
+		
+		setPeriod(timeperiod);
+		return this;
+	}
+
+	TimeControl* SimpleTimer::setPeriod(long timeperiod){
+		return this;
+	}
+
+	TimeControl* SimpleTimer::attachInterrupt(){
+		
+		return this;
+	}
+
+	TimeControl* SimpleTimer::detachInterrupt(){
+		
+		return this;
+	}
+
+	TimeControl* SimpleTimer::startInterrupt(){
+		
+		return this;
+	}
+
+	TimeControl* SimpleTimer::stopInterrupt(){
+		
+		return this;
+	}
+
+	TimeControl* SimpleTimer::resumeInterrupt(){ 
 	
+		return this;
+	}
+//feather m0
 #elif defined(ARDUINO_SAMD_ZERO)
 
 	TimeControl* SimpleTimer::initialize(long timeperiod){
@@ -255,8 +292,8 @@ TimeControl* SimpleTimer::instance = nullptr;
 		return "SimpleTimer";
 	}
 	
-	String SimpleTimer::getClassName() {
-		return "SimpleTimer";
+	cppObjectClass* SimpleTimer::getClass() {
+		return Class<SimpleTimer>::classType;
 	}
 	
 

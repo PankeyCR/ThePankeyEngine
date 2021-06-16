@@ -1,4 +1,4 @@
-/*
+
 #ifndef Lexer_cpp
 #define Lexer_cpp
 
@@ -6,118 +6,30 @@
 
 	
 	Lexer::Lexer(){
-		this->captureToken = new PrimitiveMap<String,String>();
-		this->delimiterToken = new PrimitiveMap<String,String>();
-		
-		this->tokens = new LinkedList<String>();
-		this->primitiveClasses = new LinkedList<String>();
-		this->breakPoint = new LinkedList<char>();
-		this->delimiterCatcher = new PrimitiveMap<String,int>();
+		this->tokens = new PrimitiveList<Token>();
+		this->capturedTokens = new PrimitiveList<Token>();
+		this->breakPoint = new PrimitiveList<char>();
 	}
 	
 	Lexer::~Lexer(){
-		delete this->captureToken;
-		delete this->delimiterToken;
 		delete this->tokens;
-		delete this->primitiveClasses;
+		delete this->capturedTokens;
 		delete this->breakPoint;
-		delete this->delimiterCatcher;
-	}
-	
-	void Lexer::capture(char chr){
-		this->captureChar = chr;
-		//Serial.println("start capture "+String(chr));
-		
-		if(this->delimiterCatcher->getPosition() >= 1){
-			bool deleteCatcher = false;
-			LinkedList<String> deleteCatcherList(false);
-			for(Iterator i : *this->delimiterCatcher){
-				int* delPosition = this->delimiterCatcher->getPointer(i);
-				String* delToken = this->delimiterCatcher->getKeyPointer(i);
-				
-				(*delPosition)++;
-				if(*delPosition == delToken->length() && this->delimiterCatcher->getPosition() == 1){
-					deleteCatcher = true;
-					break;
-				}
-				if(*delPosition == delToken->length() && this->delimiterCatcher->getPosition() > 1){
-					deleteCatcherList.addPointer(delToken);
-					continue;
-				}
-				
-				if(*delPosition <= delToken->length()){
-					if(chr != delToken->charAt(*delPosition)){
-						 deleteCatcherList.addPointer(delToken);
-					}
-				}
-			}
-			for(Iterator di : deleteCatcherList){
-				this->delimiterCatcher->removeDeleteByPointer(deleteCatcherList.getPointer(di));
-			}
-			if(deleteCatcher){
-				this->delimiterCatcher->resetDelete();
-				if(this->reading != ""){
-					String tkn = this->getToken(this->reading);
-					if(tkn != ""){
-						this->captureToken->addLValues(tkn,this->reading);
-						this->reading = "";
-					}
-				}
-			}
-		}
-		
-		if(this->delimiterCatcher->isEmpty()){
-			for(Iterator dt : *this->delimiterToken){
-				String delToken = this->delimiterToken->getLValue(dt);
-				if(delToken.charAt(0) == chr){
-					this->delimiterCatcher->addPointers(new String(delToken),new int(0));
-					if(this->reading != ""){
-						String tkn = this->getToken(this->reading);
-						if(tkn != ""){
-							this->captureToken->addLValues(tkn,this->reading);
-							this->reading = "";
-						}else{
-							this->captureToken->addLValues("Variable",this->reading);
-							this->reading = "";
-						}
-					}
-				}
-			}
-		}
-		
-		if(this->breakPoint->containByLValue(chr)){
-			if(this->reading != ""){
-				String tkn = this->getToken(this->reading);
-				if(tkn != ""){
-					this->captureToken->addLValues(tkn,this->reading);
-					this->reading = "";
-					return;
-				}else{
-					this->captureToken->addLValues("Variable",this->reading);
-					this->reading = "";
-					return;
-				}
-			}else{
-				return;
-			}
-		}
-		this->reading.concat(chr);
-		return;
 	}
 	
 	bool Lexer::isString(String mns){
         char mnsArray[mns.length()+1];
         mns.toCharArray(mnsArray, mns.length()+1);
 		
-		if(mnsArray[0]!='"'){
+		if(mnsArray[0]!='"' && mnsArray[0]!='\''){
 			return false;
 		}
-		if(mnsArray[mns.length()-1]!='"'){
+		if(mnsArray[mns.length()-1]!='"' && mnsArray[mns.length()-1]!='\''){
 			return false;
 		}
         for(int i=0; i < mns.length(); i++){
 			if(i!=0 && i!=mns.length()-1){
-				if(mnsArray[i]=='"'){
+				if(mnsArray[i]=='"' && mnsArray[i]=='\''){
 					return false;
 				}
 			}
@@ -212,58 +124,71 @@
 		return true;
 	}
 	
-	String Lexer::getToken(String tkn){
+	bool Lexer::isToken(String mns){
+		for(int x = 0; x < tokens->getPosition(); x++){
+			Token* t = tokens->getByPosition(x);
+			if(t->name == mns || t->type == mns){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	bool Lexer::isVariable(String mns){
+		if(environment == nullptr){
+			return false;
+		}
+		return environment->containVariable(mns);
+	}
+	
+	Token Lexer::getToken(String tkn){
 		if(this->isDouble(tkn)){
-			return "Double";
+			return Token(tkn,"Double","");
 		}
 		if(this->isFloat(tkn)){
-			return "Float";
+			return Token(tkn,"Float","");
 		}
 		if(this->isString(tkn)){
-			return "String";
+			return Token(tkn,"String","");
 		}
 		if(this->isInt(tkn)){
-			return "Int";
+			return Token(tkn,"Int","");
 		}
 		if(this->isLong(tkn)){
-			return "Long";
+			return Token(tkn,"Long","");
 		}
-		if(this->tokens->containByLValue(tkn)){
-			return tkn;
+		for(int x = 0; x < this->tokens->getPosition(); x++){
+			Token* t = this->tokens->getByPosition(x);
+			if(t->name == tkn || t->type == tkn){
+				return Token(t->name,t->type,t->info,t->text_Position,t->line_Position,t->list_Position);
+			}
 		}
-		if(this->primitiveClasses->containByLValue(tkn)){
-			return "ClassName";
+		if(environment == nullptr){
+			return Token("","","ERROR");
 		}
-		if(this->delimiterToken->containValueByLValue(tkn)){
-			return *this->delimiterToken->getKeyByLValue(tkn);
-		}
+		return environment->getToken(tkn);
+	}
+	
+	// LinkedList<Token> Lexer::getTokens(String s){
+		// LinkedList<Token> list;
 		
-		return "";
+		// return list;
+	// }
+	
+	bool Lexer::containBreakPoint(char brk){
+		return this->breakPoint->containByLValue(brk);
 	}
 	
-	String Lexer::getActualToken(){
-		return this->reading;
+	void Lexer::addCapturedTokens(Token tkn){
+		this->capturedTokens->addLValue(tkn);
 	}
 	
-	String Lexer::getCapturedToken(int x){
-		String* token = this->captureToken->getByPosition(x);
-		if(token == nullptr){
-			return "";
-		}
-		return *token;
+	List<Token>* Lexer::getCapturedTokens(){
+		return this->capturedTokens;
 	}
 	
-	Map<String,String>* Lexer::getCapturedToken(){
-		return this->captureToken;
-	}
-	
-	Lexer* Lexer::addToken(String tkn){
+	Lexer* Lexer::addTokenStructure(Token tkn){
 		this->tokens->addLValue(tkn);
-		return this;
-	}
-	
-	Lexer* Lexer::addPrimitiveClass(String cls){
-		this->primitiveClasses->addLValue(cls);
 		return this;
 	}
 	
@@ -272,18 +197,40 @@
 		return this;
 	}
 	
-	Lexer* Lexer::addDelimiterToken(String name,String dlm){
-		this->delimiterToken->addLValues(name,dlm);
-		return this;
+	void Lexer::setEnvironment(Environment* e){
+		this->environment = e;
+	}
+	
+	Environment* Lexer::getEnvironment(){
+		return this->environment;
 	}
 	
 	void Lexer::printTokens(Stream* port){
-		for(Iterator i : *this->getCapturedToken()){
-			port->print(this->getCapturedToken()->getKey(i));
-			port->print(" ");
-			port->println(this->getCapturedToken()->getLValue(i));
+		port->println("Printing Tokens:");
+		for(int x = 0; x < this->capturedTokens->getPosition(); x++){
+			Token* t = capturedTokens->getByPosition(x);
+			port->println(*t);
 		}
 	}
 	
+	bool Lexer::syntax(){
+		for(int x = 0; x < this->capturedTokens->getPosition(); x++){
+			Token* t = capturedTokens->getByPosition(x);
+			if(t->info == "error"){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	void Lexer::printError(Stream* port){
+		port->println("Printing Errors:");
+		// for(int x = 0; x < this->capturedTokens->getPosition(); x++){
+			// Token* t = capturedTokens->getByPosition(x);
+			// port->println(*t);
+		// }
+	}
+	
+	void Lexer::capture(char chr){}
+	
 #endif 
-*/

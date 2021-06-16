@@ -15,16 +15,16 @@
 	}
 	template<class T>
 	void ListEvent<T>::event(){
-		for(Iterator i : *this->list){
-			(**this->list->getPointer(i))(this->var);
+		for(int x = 0; x < this->list->getPosition(); x++){
+			(**this->list->getByPosition(x))(this->var);
 		}
 	}
 	template<class T>
 	void ListEvent<T>::event(T c){
 		if(this->var != c){
 			this->var = c;
-			for(Iterator i : *this->list){
-				(**this->list->getPointer(i))(this->var);
+			for(int x = 0; x < this->list->getPosition(); x++){
+				(**this->list->getByPosition(x))(this->var);
 			}
 		}
 	}

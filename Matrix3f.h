@@ -75,7 +75,7 @@ class Matrix3f {
 		Matrix3f transpose();
 		Matrix3f transposeNew();
 		String toString();
-		String getClassName();
+		cppObjectClass* getClass();
 		bool equals(cppObject *o);
 		//void write(JmeExporter e);
 		//void read(JmeImporter e);

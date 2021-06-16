@@ -2,22 +2,24 @@
 #ifndef Lexer_h
 #define Lexer_h
 
-#include "Map.h"
 #include "List.h"
 #include "Token.h"
 #include "Stream.h"
 #include "Arduino.h"
-#include "ArrayList.h"
 #include "LinkedList.h"
+#include "PrimitiveList.h"
 #include "Environment.h"
-#include "PrimitiveMap.h"
+
+#define LexerCaptureString(lexer,scriptText)		\
+  for(int x = 0; x < scriptText.length(); x++){		\
+    lexer->capture(scriptText.charAt(x));			\
+  }													\
+  
 
 class Lexer{
     public:
 		Lexer();
 		virtual ~Lexer();
-		
-		virtual void capture(char chr);
 		
 		virtual bool isString(String s);
 		virtual bool isFloat(String s);
@@ -27,17 +29,30 @@ class Lexer{
 		virtual bool isToken(String s);
 		virtual bool isVariable(String s);
 		virtual Token getToken(String s);
+		// virtual LinkedList<Token> getTokens(String s);
 		
+		virtual void addCapturedTokens(Token tok);
 		virtual List<Token>* getCapturedTokens();
 		
-		virtual Lexer* addToken(Token* tok);
+		virtual bool containBreakPoint(char brk);
+		
+		virtual Lexer* addTokenStructure(Token tok);
 		virtual Lexer* addBreakPoint(char brk);
 		
 		virtual void setEnvironment(Environment* e);
+		virtual Environment* getEnvironment();
 		
 		virtual void printTokens(Stream* port);
-		virtual bool checkSyntax();
+		
+		virtual void capture(char chr);
+		virtual bool syntax();
+		
+		virtual void printError(Stream* port);
 		
 	protected:
+		Environment* environment = nullptr;
+		List<char>* breakPoint = nullptr;
+		List<Token>* tokens = nullptr;
+		List<Token>* capturedTokens = nullptr;
 };
 #endif 

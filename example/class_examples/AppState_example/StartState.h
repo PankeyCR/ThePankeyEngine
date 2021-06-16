@@ -25,13 +25,17 @@ class StartState : public AppState{
 			App = app;
 		}
    
-		String getClassName(){
-			return "StartState";
-		}
+    bool instanceof(cppObjectClass* cls){
+      return cls == Class<StartState>::classType || AppState::instanceof(cls);
+    }
+   
+    cppObjectClass* getClass(){
+      return Class<StartState>::classType;
+    }
    		
 	private:
     Application *App;
-    Stream *serial=NULL;
+    Stream *serial = nullptr;
   
 };
 

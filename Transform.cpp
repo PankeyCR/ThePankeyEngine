@@ -1,91 +1,86 @@
 
+#ifndef Transform_cpp
+#define Transform_cpp
+
 #include "Arduino.h"
 #include "Transform.h"
-/*
-
-    static Transform *IDENTITY = new Transform();
 
 
+    const Transform* Transform::IDENTITY = new Transform();
+
+
+    Transform::Transform(){
+        this->translation = *Vector3f::ZERO;
+        // this->rot = *Quaternion::IDENTITY;
+    }
+
+    Transform::Transform(const Transform& t){
+        this->translation = t.translation;
+        this->rot = t.rot;
+        this->scale = t.scale;
+    }
+	
     Transform::Transform(Vector3f translation, Quaternion rot){
         this->translation = translation;
         this->rot = rot;
     }
     
     Transform::Transform(Vector3f translation, Quaternion rot, Vector3f scale){
-        this(translation, rot);
-        this.scale = scale;
+        this->translation = translation;
+        this->rot = rot;
+        this->scale = scale;
     }
 
     Transform::Transform(Vector3f translation){
-        this(translation, *Quaternion::IDENTITY);
+        this->translation = translation;
+        // this->rot = *Quaternion::IDENTITY;
     }
 
     Transform::Transform(Quaternion rot){
-        this(*Vector3f->ZERO, rot);
-    }
-
-    Transform::Transform(){
-        this(*Vector3f->ZERO, *Quaternion->IDENTITY);
-    }
-
-    Transform::Transform(Transform *t){
-        this(t->translation, t->rot);
+        this->translation = *Vector3f::ZERO;
+        this->rot = rot;
     }
 	
     Transform Transform::setRotation(Quaternion rot) {
         this->rot = rot;
-        return Transform(this);
+        return *this;
+    }
+	
+    Quaternion Transform::getRotation() {
+        return this->rot;
+    }
+	
+    Transform Transform::setTranslation(float x,float y, float z) {
+        this->translation.set(x,y,z);
+        return *this;
     }
 	
     Transform Transform::setTranslation(Vector3f trans) {
         this->translation = trans;
-        return Transform(this);
+        return *this;
     }
 	
     Vector3f Transform::getTranslation() {
-        return translation;
+        return this->translation;
+    }
+	
+    Transform Transform::setScale(float x, float y, float z) {
+        this->scale.set(x,y,z);
+        return *this;
     }
 	
     Transform Transform::setScale(Vector3f scale) {
         this->scale = scale;
-        return Transform(this);
+        return *this;
     }
 	
     Transform Transform::setScale(float scale) {
         this->scale = scale;
-        return Transform(this);
+        return *this;
     }
 	
     Vector3f Transform::getScale() {
-        return scale;
-    }
-	
-    Vector3f Transform::getTranslation(Vector3f *trans) {
-        if (trans== NULL){
-			trans=new Vector3f();
-		}
-        trans->set(this->translation);
-        return Vector3f(trans);
-    }
-	
-    Quaternion Transform::getRotation(Quaternion *quat) {
-        if (quat== NULL){
-			quat=new Quaternion();
-		}
-        quat->set(this->rot);
-        return Quaternion(quat);
-    }
-	
-    Quaternion Transform::getRotation() {
-        return rot;
-    }
-	
-    Vector3f Transform::getScale(Vector3f *scale) {
-        if (scale== NULL){
-			scale = new Vector3f();
-		}
-        scale->set(this->scale);
-        return Vector3f(scale);
+        return this->scale;
     }
 	
     void Transform::interpolateTransforms(Transform t1, Transform t2, float delta) {
@@ -99,7 +94,7 @@
         
 		scale.multLocal(parent.scale);
         
-		parent.rot.mult(rot, rot);
+		rot = parent.rot.mult(rot);
         
 		translation.multLocal(parent.scale);
         
@@ -108,69 +103,52 @@
             .multLocal(translation)
             .addLocal(parent.translation);
 
-        return Transform(this);
-    }
-	
-    Transform Transform::setTranslation(float x,float y, float z) {
-        translation.set(x,y,z);
-        return Transform(this);
-    }
-	
-    Transform Transform::setScale(float x, float y, float z) {
-        scale.set(x,y,z);
-        return Transform(this);
+        return parent;
     }
 
-    Vector3f Transform::transformVector(final Vector3f in, Vector3f store){
-        if (store == null)
-            store = new Vector3f();
-
-        return rot.mult(store.set(in).multLocal(scale), store).addLocal(translation);
+    Vector3f Transform::transformVector(Vector3f in, Vector3f store){
+		store = rot.mult(store.set(in).multLocal(scale));
+        store.addLocal(translation);
+        return store;
     }
 
-    Vector3f Transform::transformInverseVector(final Vector3f in, Vector3f store){
-        if (store == null)
-            store = new Vector3f();
-		
-        in.subtract(translation, store);
-        rot.inverse().mult(store, store);
+    Vector3f Transform::transformInverseVector(Vector3f in, Vector3f store){
+        store = in.subtract(translation);
+        store = rot.inverse().mult(store);
         store.divideLocal(scale);
 
         return store;
     }
 
-    Matrix4f Transform::toTransformMatrix() {
-        Matrix4f store();
-        store.setTranslation(translation);
-        rot.toTransformMatrix(store);
-        store.setScale(scale);
-        return Matrix4f(store);
-    }
+    // Matrix4f Transform::toTransformMatrix() {
+        // Matrix4f store;
+        // store.setTranslation(translation);
+        // rot.toTransformMatrix(store);
+        // store.setScale(scale);
+        // return store;
+    // }
 
-    Matrix4f Transform::toTransformMatrix(Matrix4f *store) {
-        if (store == NULL) {
-            store = new Matrix4f();
-        }
-        store->setTranslation(translation);
-        rot.toTransformMatrix(store);
-        store->setScale(scale);
-        return Matrix4f(store);
-    }
+    // Matrix4f Transform::toTransformMatrix(Matrix4f store) {
+        // store.setTranslation(translation);
+        // rot.toTransformMatrix(store);
+        // store->setScale(scale);
+        // return store;
+    // }
     
-   /* void Transform::fromTransformMatrix(Matrix4f mat) {
-        TempVars vars = TempVars.get();
-        translation.set(mat.toTranslationVector(vars.vect1));
-        rot.set(mat.toRotationQuat(vars.quat1));
-        scale.set(mat.toScaleVector(vars.vect2));
-        vars.release();
-    }
+    // void Transform::fromTransformMatrix(Matrix4f mat) {
+        // TempVars vars = TempVars.get();
+        // translation.set(mat.toTranslationVector(vars.vect1));
+        // rot.set(mat.toRotationQuat(vars.quat1));
+        // scale.set(mat.toScaleVector(vars.vect2));
+        // vars.release();
+    // }
     
-    Transform Transform::invert() {
-        Transform t = new Transform();
-        t.fromTransformMatrix(toTransformMatrix().invertLocal());
-        return t;
-    }*/
-	/*
+    // Transform Transform::invert() {
+        // Transform t;
+        // t.fromTransformMatrix(toTransformMatrix().invertLocal());
+        // return t;
+    // }
+	
     void Transform::loadIdentity() {
         translation.set(0, 0, 0);
         scale.set(1, 1, 1);
@@ -178,34 +156,33 @@
     }
 	
     bool Transform::isIdentity() {
-        return translation.x == 0f && translation.y == 0f && translation.z == 0f
-                && scale.x == 1f && scale.y == 1f && scale.z == 1f
-                && rot.w == 1f && rot.x == 0f && rot.y == 0f && rot.z == 0f;
+        return translation.x == 0.0f && translation.y == 0.0f && translation.z == 0.0f
+                && scale.x == 1.0f && scale.y == 1.0f && scale.z == 1.0f
+                && rot.w == 1.0f && rot.x == 0.0f && rot.y == 0.0f && rot.z == 0.0f;
     }
-	*/
-  /*  int Transform::hashCode() {
-        int hash = 7;
-        hash = 89 * hash + rot.hashCode();
-        hash = 89 * hash + translation.hashCode();
-        hash = 89 * hash + scale.hashCode();
-        return hash;
-    }*/
-	/*
-    bool equals(cppObject *obj) {
-        if (obj == NULL) {
+    // int Transform::hashCode() {
+        // int hash = 7;
+        // hash = 89 * hash + rot.hashCode();
+        // hash = 89 * hash + translation.hashCode();
+        // hash = 89 * hash + scale.hashCode();
+        // return hash;
+    // }
+	
+    bool Transform::equal(cppObject *obj) {
+        if (obj == nullptr) {
             return false;
         }
-        if (getClassName() != obj->getClassName()) {
+        if (this->getClass() != obj->getClass()) {
             return false;
         }
-        Transform *other = (*Transform) obj;
-        return this->translation.equals(&other->translation)
-                && this->scale.equals(&other->scale)
-                && this->rot.equals(&other->rot);
+        Transform* other = (Transform*) obj;
+        return this->translation.equal(&other->translation)
+                && this->scale.equal(&other->scale)
+                && this->rot.equal(&other->rot);
     }
 	
 	String Transform::toString(){
-        return getClassName() + "[ " + translation.x + ", " + translation.y + ", " + translation.z + "]\n"
+        return String("Transform[ ") + translation.x + ", " + translation.y + ", " + translation.z + "]\n"
                                           + "[ " + rot.x + ", " + rot.y + ", " + rot.z + ", " + rot.w + "]\n"
                                           + "[ " + scale.x + " , " + scale.y + ", " + scale.z + "]";
     }
@@ -214,9 +191,8 @@
         this->translation.set(matrixQuat.translation);
         this->rot.set(matrixQuat.rot);
         this->scale.set(matrixQuat.scale);
-        return 
+        return *this;
 	}
-	*/
 	/*
     void Transform::write(JmeExporter e){
         OutputCapsule capsule = e.getCapsule(this);
@@ -232,10 +208,21 @@
         translation.set((Vector3f)capsule.readSavable("translation", Vector3f.ZERO));
         scale.set((Vector3f)capsule.readSavable("scale", Vector3f.UNIT_XYZ));
     }*/
-	/*
-	Transform *Transform::clone() {
-		return new Transform(this);
+	
+	Transform* Transform::clone() {
+		return new Transform(*this);
     }
+	cppObjectClass* Transform::getClass(){
+		return Class<Transform>::classType;
+	}
+	bool Transform::instanceof(cppObjectClass* cls){
+		return cls == Class<Transform>::classType || cppObject::instanceof(cls);
+	}
 	
-	*/
+	void Transform::operator=(const Transform& t){
+        this->translation = t.translation;
+        this->rot = t.rot;
+        this->scale = t.scale;
+	}
 	
+#endif 

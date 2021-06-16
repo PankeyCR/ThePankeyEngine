@@ -326,7 +326,7 @@
     }
 	
     bool Vector4f::equals(cppObject *o) {
-        if ( o->getClassName() != "Vector4f" ) {
+        if ( o->getClass() != Class<Vector4f>::classType ) {
 			return false;
 		}
 

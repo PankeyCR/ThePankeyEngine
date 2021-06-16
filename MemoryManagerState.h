@@ -2,7 +2,6 @@
 #ifndef MemoryManagerState_h
 #define MemoryManagerState_h
 
-#include "MessageProtocol.h"
 #include "MemoryManager.h"
 #include "ManegedMemory.h"
 #include "DefaultMemoryManager.h"
@@ -15,7 +14,7 @@ class MemoryManagerState : public AppState{
     public:
 		MemoryManagerState(){
 		}
-		MemoryManagerState(MemoryManager* m){
+		MemoryManagerState(MemoryManager<T>* m){
 			manager = m;
 		}
 		virtual ~MemoryManagerState(){
@@ -40,16 +39,16 @@ class MemoryManagerState : public AppState{
 		
 		virtual void update(float tpc){
 			if(manager != nullptr){
-				manager->maintain(tpc);
+				manager->maintain(tpc,Memory<T>::objSize_t);
 			}
 		}
 		
-		virtual MemoryManager* getMemoryManager(){
+		virtual MemoryManager<T>* getMemoryManager(){
 			return manager;
 		}
 
 		
 	protected:
-		MemoryManager* manager = nullptr;
+		MemoryManager<T>* manager = nullptr;
 };
 #endif 

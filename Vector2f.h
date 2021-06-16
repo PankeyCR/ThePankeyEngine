@@ -20,6 +20,7 @@ class Vector2f : public cppObject{
 
     Vector2f(float xx, float yy);
     Vector2f();
+    Vector2f(const Vector2f& v);
 	
     Vector2f set(float x, float y);
     Vector2f set(Vector2f vec);
@@ -97,7 +98,7 @@ class Vector2f : public cppObject{
     Vector2f rotateAroundOriginLocal(float angle, bool cw);
 	Vector2f rotate(float angle);
 	Vector2f rotateLocal(float angle);
-	String getClassName();
+	cppObjectClass* getClass();
 	
 	Vector2f operator=(const Vector2f& a);
 	Vector2f operator=(const float& a);

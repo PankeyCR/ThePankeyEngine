@@ -4,24 +4,35 @@
 #define cppObject_h
 
 #include "Arduino.h"
-//#include "ManegedMemory.h"
+#include "cppObjectClass.h"
+#include "ClassType.h"
 
-class cppObject/* : public ManegedMemory<cppObject>*/{
+template<class cls>
+struct Class{
+	static ClassType<cls>* classType;
+};
+
+template<class cls> ClassType<cls>* Class<cls>::classType = new ClassType<cls>();
+
+//class cppObject/* : public ManegedMemory<cppObject>*/{
+class cppObject{
     public:
 		cppObject();
 		virtual ~cppObject();
 		virtual void onDelete();
-		virtual String getClassName();
 		virtual String toString();
 		virtual bool equal(cppObject *b);
 		template<class T>
 		bool instanceof(){
-			T t;
-			return this->instanceof(t.getClassName());
+			return this->instanceof(Class<T>::classType);
 		}
-		virtual bool instanceof(String name);
+		virtual bool instanceof(cppObjectClass* cls);
+		
 		virtual cppObject *clone(void);
 		virtual cppObject *clone(bool owningMemory);
+		
+		virtual cppObjectClass* getClass();
+		
 		virtual void operator=(cppObject b);
 		virtual bool operator==(cppObject b);
 		virtual bool operator!=(cppObject b);

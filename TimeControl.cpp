@@ -12,7 +12,6 @@
 	
 	TimeControl::~TimeControl() {
 		delete this->timeList;
-		this->timeList = nullptr;
 		Log("TimeControl", "Destructor", "println","TimeControl: delete instance of this class");
 	}
 	
@@ -53,9 +52,6 @@
 	}
 	
 	TimeElapsed *TimeControl::add(TimeElapsed *t){
-		if(this->timeList == nullptr){
-			return nullptr;
-		}
 		this->timeList->addPointer(t);
 		return t;
 	}

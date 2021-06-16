@@ -852,12 +852,12 @@
 				String(m22);
     }
 	
-    String Matrix3f::getClassName(){
-		return "Matrix3f";
+    cppObjectClass* Matrix3f::getClass(){
+		return Class<Matrix3f>::classType;
 	}
 	
     bool Matrix3f::equals(cppObject *o){
-        if (!(o->getClassName() == "Matrix3f") || o == nullptr) {
+        if (!(o->getClass() == Class<Matrix3f>::classType) || o == nullptr) {
             return false;
         }
 

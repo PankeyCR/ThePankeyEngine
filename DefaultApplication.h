@@ -1,5 +1,7 @@
+/*
+The listener memory is not manged by this class
 
-
+*/
 #ifndef DefaultApplication_h
 #define DefaultApplication_h
 
@@ -16,7 +18,7 @@
 class DefaultApplication : public Application{
     public:
 		DefaultApplication();
-		~DefaultApplication();
+		virtual ~DefaultApplication();
 		
 		virtual void setSettings(AppSettings *setting);
 		virtual AppSettings *getSettings();

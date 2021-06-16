@@ -6,6 +6,7 @@
 #include "TimeElapsed.h"
 #include "List.h"
 #include "PrimitiveList.h"
+#include "cppObjectClass.h"
 #include "Logger.h"
 
 
@@ -41,7 +42,7 @@ class SimpleTimer : public TimeControl{
 		TimeControl* resumeInterrupt();
 		
 		virtual String toString();
-		virtual String getClassName();
+		virtual cppObjectClass* getClass();
     
 	private:
 		static TimeControl *instance;

@@ -3,48 +3,20 @@
 #ifndef Annotation_h
 #define Annotation_h
 
-#include "PrimitiveMap.h"
+// #include "cppObjectClass.h"
+class cppObjectClass;
 
-template<class A,class R,class T,class... P>
-class Annotation : public PrimitiveMap<A,R (T::*)(P...)>{
+class Annotation{
 public:
-using EventMethod = R (T::*)(P...);
 Annotation(){}
-Annotation(R rtn){r=rtn;}
-~Annotation(){}
+virtual ~Annotation(){}
 
-R invoke(T* intance, A a, P... p){
-	if(this->getByLValue(a) == nullptr){
-		return r;
-	}
-	return ( intance->**this->getByLValue(a))(p...);
-}
+virtual cppObjectClass* getClass(){return nullptr;}
 
-R invoke(T* intance, EventMethod* a, P... p){
-	return ( intance->**a)(p...);
-}
-
-R invoke(T* intance, EventMethod a, P... p){
-	return ( intance->*a)(p...);
-}
-virtual void operator=(R rtn){r=rtn;}
-virtual bool operator==(Annotation<A,R,T,P...> a){
-	
-	return false;
-}
-virtual bool operator!=(Annotation<A,R,T,P...> a){
-	
-	return false;
-}
-virtual void operator=(Annotation<A,R,T,P...> a){
-	this->resetDelete();
-	for(int x=0; x < a.getPosition(); x++){
-		this->addPointers(a.getKeyByPosition(x),a.getByPosition(x));
-	}
-}
-
+virtual void operator=(Annotation b){}
+virtual bool operator==(Annotation b){return true;}
+virtual bool operator!=(Annotation b){return false;}
 protected:
-	R r;
 };
 
 #endif 

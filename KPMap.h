@@ -36,7 +36,7 @@ class KPMap : public Map<K,P>{
 			}
 		}
 
-		virtual bool isEmpty(){
+		virtual bool isEmpty()const{
 			return this->pos==0;
 		}
 		
@@ -44,11 +44,11 @@ class KPMap : public Map<K,P>{
 			pos = p;
 		}
 		
-		int getPosition(){
+		int getPosition()const{
 			return pos;
 		}
 		
-		int getSize(){
+		int getSize()const{
 			return size;
 		}
 		

@@ -9,69 +9,45 @@
 #include "AppSettings.h"
 #include "TimeControl.h"
 #include "SimpleTimer.h"
-#include "SimpleAppSettings.h"
-#include "SimpleStateManager.h"
 #include "Logger.h"
 #include "Listener.h"
+#include "Node.h"
+#include "DefaultSettings.h"
+#include "RenderStateManager.h"
 
-template <int StatesSize, int SettingsSize>
 class SimpleApplication : public Application{
     public:
-		SimpleApplication(){
-			states = new SimpleStateManager<StatesSize>();
-			settings = new SimpleAppSettings<SettingsSize>();
-			states->setApplication(this);
-			//Log("println","Start SimpleApplication ");
-		}
-		void setSettings(AppSettings *set){
-			if(this->settings != nullptr && this->settings != set){
-				delete this->settings;
-			}
-			this->settings = set;
-		}
-		AppSettings *getSettings(){
-			return settings;
-		}
-		void setStateManager(AppStateManager *manager){
-			if(this->states != nullptr && this->states != manager){
-				delete this->states;
-			}
-			this->states = manager;
-		}
-		AppStateManager *getStateManager(){
-			return states;
-		}
+		SimpleApplication();
+		virtual ~SimpleApplication();
 		
-		Listener* setListener(Listener* l){
-			listener = l;
-			listener->attach(this);
-			return l;
-		}
-		Listener* getListener(){
-			return listener;
-		}
-		void update(){
-			states->update();
-			if(listener != nullptr){
-				listener->InterruptEvent(this->states->tpc());
-			}
-		}
-		void setTimeControl(TimeControl *timecontrol){
-		}
-		TimeControl *getTimeControl(){
-			return SimpleTimer::getInstance();
-		}
-		String getClassName(){
-			return "SimpleApplication";
-		}
-		String toString(){
-			return "SimpleApplication";
-		}
-    
-	private:	
-	AppStateManager *states = nullptr;
-	AppSettings *settings = nullptr;
-	Listener *listener = nullptr;
+		virtual void setSettings(AppSettings *setting);
+		virtual AppSettings *getSettings();
+		
+		virtual void setStateManager(AppStateManager *appstate);
+		virtual AppStateManager *getStateManager();
+				
+		virtual void setTimeControl(TimeControl *timecontrol);
+		virtual TimeControl *getTimeControl();
+		
+		virtual Listener* setListener(Listener* l);
+		virtual Listener* getListener();
+		
+		virtual void update();
+		
+		virtual Node* getRootNode();
+		virtual Node* getGuiNode();
+		
+		//cppObject part
+		virtual String getClassName();
+		virtual String toString();
+		virtual bool instanceof(String name);
+		
+	private:
+		AppStateManager *states = nullptr;
+		AppSettings *settings = nullptr;
+		Listener *listener = nullptr;
+		Node* rootNode = nullptr;
+		Node* guiNode = nullptr;
 };
 
 #endif 

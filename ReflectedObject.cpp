@@ -42,7 +42,7 @@
 
 	template <>
 	Vector2f *ReflectedObject<Vector2f>::cast(cppObject *obj){
-		if(obj->getClassName() == "Vector2f"){
+		if(obj->getClass() == Class<Vector2f>::classType){
 			return (Vector2f*)obj;
 		}
 		return NULL;

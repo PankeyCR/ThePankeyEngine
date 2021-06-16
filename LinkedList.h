@@ -5,6 +5,9 @@
 #include "LinkedListNode.h"
 #include "List.h"
 
+// #include "LinkedIterator.h"
+// template<class T>class LinkedIterator;
+
 template<class T>
 class LinkedList : public List<T>{
 	protected:
@@ -15,7 +18,16 @@ class LinkedList : public List<T>{
 		
 		LinkedListNode<T>* start = nullptr;
 		LinkedListNode<T>* node = nullptr;
-		// LinkedListNode<T>* iteratorNode = nullptr;
+		
+		LinkedList<T>(const LinkedList<T>& l){
+			start = new LinkedListNode<T>();
+			node = start;
+			pos=0;
+			size=0;
+			for(int x=0; x < l.getPosition(); x++){
+				this->addLValue(*l.getByPosition(x));
+			}
+		}
 		
 		LinkedList<T>(){
 			start = new LinkedListNode<T>();
@@ -63,15 +75,27 @@ class LinkedList : public List<T>{
 			pos=p;
 		}
 		
-		int getPosition(){
+		int getPosition()const{
 			return pos;
 		}
 		
-		int getSize(){
+		int getSize()const{
 			return size;
 		}
+	
+		virtual bool replace(int i, int j){
+			if(i >= pos || j >= pos){
+				return false;
+			}
+			T* it = getByPosition(i);
+			T* jt = getByPosition(j);
+			// setPointer(i, jt);
+			// setPointer(j, it);
+			// return true;
+			return false;
+		}
 		
-		void addList(List<T> *list){
+		void addList(RawList<T> *list){
             if(list == nullptr){
 				return;
             }
@@ -291,7 +315,7 @@ class LinkedList : public List<T>{
 			return nullptr;
 		}
 		
-		T* getByPosition(int p){
+		T* getByPosition(int p)const{
 			if(p >= size){
 				return nullptr;
 			}
@@ -703,17 +727,44 @@ class LinkedList : public List<T>{
 			return l;
 		}
 		
-        void operator =(LinkedList<T> t){
+        void operator =(const LinkedList<T>& l){
+			this->resetDelete();
+			for(int x = 0; x < l.getPosition(); x++){
+				this->addLValue(*l.getByPosition(x));
+			}
+		}
+		
+        bool operator ==(LinkedList<T> l){
+			if(l.getPosition() != this->getPosition()){
+				return false;
+			}
+			for(int x = 0; x < l.getPosition(); x++){
+				this->addLValue(*l.getByPosition(x));
+				if(*l.getByPosition(x) != *this->getByPosition(x)){
+					return false;
+				}
+			}
+			return true;
+		}
+		
+        bool operator !=(LinkedList<T> l){
+			if(l.getPosition() == this->getPosition()){
+				return false;
+			}
+			for(int x = 0; x < l.getPosition(); x++){
+				this->addLValue(*l.getByPosition(x));
+				if(*l.getByPosition(x) == *this->getByPosition(x)){
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		virtual void cutLinkedList(int start, int end){
 			
 		}
-		
-        bool operator ==(LinkedList<T> t){
-			return this->getClassName() == t.getClassName();
-		}
-		
-        bool operator !=(LinkedList<T> t){
-			return this->getClassName() != t.getClassName();
-		}
 };
+
+#include "LinkedIterator.h"
 
 #endif 

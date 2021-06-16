@@ -3,7 +3,8 @@
 #ifndef Environment_h
 #define Environment_h
 
-#include "Arduino.h"
+#include "Kernel.h"
+#include "Token.h"
 #include "AppSettings.h"
 
 class Environment : public AppSettings{
@@ -11,14 +12,17 @@ class Environment : public AppSettings{
 		Environment(){}
 		virtual ~Environment(){}
 		
-		virtual bool invokeGlobal(String method){return false;}
-		virtual bool invokeGlobal(String method, String parameter1){return false;}
-		virtual bool invokeGlobal(String method, String parameter1, String parameter2){return false;}
-		virtual bool invoke(String method){return false;}
-		virtual bool invoke(String method, String parameter1){return false;}
-		virtual bool invoke(String method, String parameter1, String parameter2){return false;}
+		virtual void setKernel(Kernel k){this->kernel = k;}
+		virtual Kernel getKernel(){return this->kernel;}
 		
+		virtual bool containVariable(String var){
+			return false;
+		}
+		virtual Token getToken(String var){
+			return Token();
+		}
 	protected:
+		Kernel kernel;
 };
 
 #endif 

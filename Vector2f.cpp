@@ -16,6 +16,11 @@
         this->x = this->y = 0;
     }
 
+    Vector2f::Vector2f(const Vector2f& v) {
+        this->x = v.x;
+        this->y = v.y;
+    }
+
     Vector2f Vector2f::set(float xx, float yy) {
         this->x = xx;
         this->y = yy;
@@ -293,7 +298,7 @@
 	}
 
     bool Vector2f::equals(cppObject *o) {
-        if (!(o->getClassName() =="Vector2f")) {
+        if (!(o->getClass() == Class<Vector2f>::classType)) {
             return false;
         }
 
@@ -380,8 +385,8 @@
         return Vector2f(this->x, this->y);
     }
 	
-	String Vector2f::getClassName(){
-		return "Vector2f";
+	cppObjectClass* Vector2f::getClass(){
+		return Class<Vector2f>::classType;
 	}
 	
 

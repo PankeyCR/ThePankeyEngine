@@ -30,7 +30,11 @@
 	}
 	
 	int DefaultSettings::getInt(String s){
-		return *this->intMap->getByLValue(s);
+		int* i = this->intMap->getByLValue(s);
+		if(i == nullptr){
+			return -1;
+		}
+		return *i;
 	}
 	
 	bool DefaultSettings::containInt(String s){
@@ -46,7 +50,11 @@
 	}
 	
 	float DefaultSettings::getFloat(String s){
-		return *this->floatMap->getByLValue(s);
+		float* f = this->floatMap->getByLValue(s);
+		if(f == nullptr){
+			return -1;
+		}
+		return *f;
 	}
 	
 	bool DefaultSettings::containFloat(String s){
@@ -66,7 +74,11 @@
 	}
 	
 	String DefaultSettings::getString(String s){
-		return *this->StringMap->getByLValue(s);
+		String* st = this->StringMap->getByLValue(s);
+		if(st == nullptr){
+			return "";
+		}
+		return *st;
 	}
 	
 	void DefaultSettings::addBoolean(String s, bool i){
@@ -78,7 +90,11 @@
 	}
 	
 	bool DefaultSettings::getBoolean(String s){
-		return *this->boolMap->getByLValue(s);
+		bool* b = this->boolMap->getByLValue(s);
+		if(b == nullptr){
+			return false;
+		}
+		return *b;
 	}
 	
 	bool DefaultSettings::containBoolean(String s){

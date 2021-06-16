@@ -21,7 +21,7 @@ class KVMap : public Map<K,P>{
 			
 		}
 
-		virtual bool isEmpty(){
+		virtual bool isEmpty()const{
 			return this->pos==0;
 		}
 		
@@ -29,11 +29,11 @@ class KVMap : public Map<K,P>{
 			this->pos = p;
 		}
 		
-		int getPosition(){
+		int getPosition()const{
 			return this->pos;
 		}
 		
-		int getSize(){
+		int getSize()const{
 			return size;
 		}
 		

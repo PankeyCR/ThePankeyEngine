@@ -90,12 +90,9 @@ class Vector4f : public cppObject{
 		Vector4f interpolateLocal(Vector4f beginVec,
 						Vector4f finalVec, float changeAmnt);       
 		static bool isValidVector(Vector4f vector);
-		Vector4f *clone();
 		List<float> *toArray(List<float> *floats);
 		
-		bool equals(cppObject *o);
 		bool isSimilar(Vector4f other, float epsilon);
-		String toString();
 	//	void write(JmeExporter e);
 	//	void read(JmeImporter e);
 		float getX();
@@ -108,6 +105,10 @@ class Vector4f : public cppObject{
 		Vector4f setW(float w);
 		float get(int index);
 		void set(int index, float value);
+		
+		Vector4f *clone();
+		bool equals(cppObject *o);
+		String toString();
 		
 		Vector4f operator=(const Vector4f& a);
 		Vector4f operator=(const float& a);

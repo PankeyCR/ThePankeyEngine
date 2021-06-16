@@ -9,11 +9,21 @@ class Vector3f : public cppObject{
     private:
 	
     public:
+		const static Vector3f* ZERO;
+		// const static Vector3f* NAN;
+		const static Vector3f* UNIT_X;
+		const static Vector3f* UNIT_Y;
+		const static Vector3f* UNIT_Z;
+		const static Vector3f* UNIT_XYZ;
+		const static Vector3f* POSITIVE_INFINITY;
+		const static Vector3f* NEGATIVE_INFINITY;
+		
         float x;
         float y; 
         float z;  
 		
 		Vector3f();
+		Vector3f(const Vector3f& v);
 		Vector3f(float nx, float ny, float nz); 
 		
 		Vector3f set(float xx, float yy, float zz);
@@ -120,9 +130,9 @@ class Vector3f : public cppObject{
 		Vector3f rotateLocalZ(float angle);
 		
 		String toString();
-		String getClassName();
+		cppObjectClass* getClass();
 		
-		Vector3f operator=(const Vector3f& a);
+		void operator=(const Vector3f& a);
 		Vector3f operator=(const float& a);
 		Vector3f operator=(const int& a);
 		Vector3f operator=(const double& a);

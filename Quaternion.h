@@ -8,24 +8,22 @@
 #include "Matrix3f.h"
 #include "Matrix4f.h"
 
-//class Matrix3f;
-//class Matrix4f;
-
 
 class Quaternion : public cppObject{	
     private:
 		
     public:
-		static Quaternion *IDENTITY;
-    	static Quaternion *DIRECTION_Z;
-    	static Quaternion *ZERO;
+		const static Quaternion* IDENTITY;
+    	const static Quaternion* DIRECTION_Z;
+    	const static Quaternion* ZERO;
 	
-        float x;
-        float y;
-        float z;
-        float w; 
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
+        float w = 1.0f;
 		
-		Quaternion();   
+		Quaternion();
+		Quaternion(const Quaternion& q);
 		Quaternion(float x, float y, float z, float w);
 		Quaternion(List<float> *angles);
 		
@@ -109,7 +107,7 @@ class Quaternion : public cppObject{
 		
 		Vector3f mult(Vector3f v);
 		
-		//Vector3f multLocal(Vector3f v);
+		Vector3f multLocal(Vector3f v);
 		
 		Quaternion multLocal(Quaternion q);
 		Quaternion multLocal(float qx, float qy, float qz, float qw);
@@ -126,9 +124,7 @@ class Quaternion : public cppObject{
 		Quaternion inverseLocal();
 		Quaternion negate();
 		Quaternion negateLocal();
-		String toString();
-		String getClassName();
-		bool equals(cppObject *o);
+		
 		bool isSimilar(Quaternion other, float epsilon);
 	//	void readExternal(ObjectInput in);
 	//	void writeExternal(ObjectOutput out);
@@ -138,10 +134,14 @@ class Quaternion : public cppObject{
 		Quaternion opposite();
 		Quaternion opposite(Quaternion store);
 		Quaternion oppositeLocal();
-		Quaternion *clone();
+		
+		String toString();
+		cppObjectClass* getClass();
+		bool equals(cppObject *o);
+		Quaternion* clone();
 		
 		
-		Quaternion operator=(const Quaternion& a);
+		void operator=(const Quaternion& a);
 		Quaternion operator=(const float a[4]);
 		Quaternion operator=(const int& a);
 		bool operator==(const Quaternion& a);

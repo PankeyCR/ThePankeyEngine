@@ -2,7 +2,7 @@
 
 #ifndef MinimalError_cpp
 #define MinimalError_cpp
-
+/*
 #include "MinimalError.h"
 
 	
@@ -180,6 +180,6 @@
 		return this->fx;
 	}
 		
-		
+		*/
 		
 #endif 

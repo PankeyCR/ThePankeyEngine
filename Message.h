@@ -4,6 +4,7 @@
 #define Message_h
 
 #include "Note.h"
+#include "ByteArray.h"
 
 class Message{
 public:
@@ -13,6 +14,7 @@ Message(const Message& b){
 	m_name = b.m_name;
 	m_text = b.m_text;
 	m_type = b.m_type;
+	m_array = b.m_array;
 }
 Message(String txt){
 	m_text = txt;
@@ -35,6 +37,28 @@ Message(int i, String mname, String mType,String txt){
 	m_type = mType;
 	m_id = i;
 	m_text = txt;
+}
+Message(ByteArray b){
+	m_array = b;
+}
+Message(int i,ByteArray b){
+	m_id = i;
+	m_array = b;
+}
+Message(String mname,ByteArray b){
+	m_name = mname;
+	m_array = b;
+}
+Message(String mname, String mType,ByteArray b){
+	m_name = mname;
+	m_type = mType;
+	m_array = b;
+}
+Message(int i, String mname, String mType,ByteArray b){
+	m_name = mname;
+	m_type = mType;
+	m_id = i;
+	m_array = b;
 }
 // Message(Note txt){
 	// m_text = txt;
@@ -66,6 +90,9 @@ virtual String text(){
 virtual String type(){
 	return m_type;
 }
+virtual ByteArray array(){
+	return m_array;
+}
 // virtual String textString(){
 	// return m_text.toString();
 // }
@@ -84,6 +111,9 @@ virtual void text(String t){
 }
 virtual void type(String t){
 	m_type = t;
+}
+virtual void array(ByteArray t){
+	m_array = t;
 }
 // virtual void text(const Note& t){
 	// m_text = t;
@@ -114,6 +144,7 @@ int m_id = -1;
 String m_name;
 String m_text;
 String m_type;
+ByteArray m_array;
 };
 
 #endif 

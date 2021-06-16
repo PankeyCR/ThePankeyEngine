@@ -16,11 +16,11 @@
 		if(this->parent == nullptr){
 			return false;
 		}
-		return this->parent->getClassName() == "AnalogJoystick";
+		return this->parent->getClass() == Class<AnalogJoystick>::classType;
 	}
 	
-	String JoystickCalibrationControl::getClassName(){
-		return "JoystickCalibrationControl";
+	cppObjectClass* JoystickCalibrationControl::getClass(){
+		return Class<JoystickCalibrationControl>::classType;
 	}
 	
 	String JoystickCalibrationControl::toString(){
@@ -42,12 +42,12 @@
 	
 	void JoystickCalibrationControl::update(float tpc){
 		if(!this->isValidControl()){
-			((GameObject*)this->parent)->detach(this->getClassName());
+			((GameObject*)this->parent)->detach(this->getClass());
 			return;
 		}
 		Joystick *joystick= this->getJoystick();
 		joystick->setOrigin(analogRead(joystick->getPinX()),analogRead(joystick->getPinY()));
-		delete ((GameObject*)this->parent)->detach(this->getClassName());
+		delete ((GameObject*)this->parent)->detach(this->getClass());
 	}
 	
 	

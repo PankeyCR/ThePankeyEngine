@@ -14,12 +14,14 @@
 #define ListenerInputEvent 8
 
 class Application;
+
 #include "Arduino.h"
 #include "cppObject.h"
 #include "ListenerEvent.h"
 #include "PrimitiveList.h"
 
 #ifdef ListenerLogApp
+	#include "Logger.h"
 	#define ListenerLog(name,method,type,mns) Log(name,method,type,mns)
 #else
 	#define ListenerLog(name,method,type,mns)
@@ -34,15 +36,17 @@ struct IO_Set{
 	static int m_pin;
 	static int m_type;
 	static bool m_state;
+	static bool m_inverted;
 	static bool m_safe;
 	static float m_time;
 	static float m_timelimit;
 	static PrimitiveList<ListenerEvent>* m_events;
-	
 };
+
 template<int interrupt> int IO_Set<interrupt>::m_pin = -1;
 template<int interrupt> int  IO_Set<interrupt>::m_type = -1;
 template<int interrupt> bool  IO_Set<interrupt>::m_state = false;
+template<int interrupt> bool  IO_Set<interrupt>::m_inverted = false;
 template<int interrupt> bool  IO_Set<interrupt>::m_safe = false;
 template<int interrupt> float  IO_Set<interrupt>::m_time = 0.0f;
 template<int interrupt> float  IO_Set<interrupt>::m_timelimit = 0.1f;
@@ -65,18 +69,19 @@ template<int interrupt>
 void DebounceInput(float tpc){
 	ListenerLog("Listener", "DebounceInput",  "println", "");
 	int pin = IO_Set<interrupt>::m_pin;
-	IO_Set<interrupt>::m_time += tpc;
 	if(pin == -1){
 		ListenerLog("Listener", "DebounceInput",  "println", "pin == -1");
-		return;
-	}
-	if(IO_Set<interrupt>::m_time < IO_Set<interrupt>::m_timelimit){
-		ListenerLog("Listener", "DebounceInput",  "println", "IO_Set<interrupt>::m_time < IO_Set<interrupt>::m_timelimit");
 		return;
 	}
 	bool state = digitalRead(pin);
 	if(state == IO_Set<interrupt>::m_state){
 		ListenerLog("Listener", "DebounceInput",  "println", "state == IO_Set<interrupt>::m_state");
+		IO_Set<interrupt>::m_time = 0.0f;
+		return;
+	}
+	IO_Set<interrupt>::m_time += tpc;
+	if(IO_Set<interrupt>::m_time < IO_Set<interrupt>::m_timelimit){
+		ListenerLog("Listener", "DebounceInput",  "println", "IO_Set<interrupt>::m_time < IO_Set<interrupt>::m_timelimit");
 		return;
 	}
 	IO_Set<interrupt>::m_time = 0.0f;
@@ -88,26 +93,35 @@ template<int interrupt>
 void DebounceInterrupt(float tpc){
 	ListenerLog("Listener", "DebounceInterrupt",  "println", "");
 	int pin = IO_Set<interrupt>::m_pin;
-	IO_Set<interrupt>::m_time += tpc;
 	List<ListenerEvent>* events = IO_Set<interrupt>::m_events;
 	if(pin == -1 || events == nullptr){
 		ListenerLog("Listener", "DebounceInterrupt",  "println", "pin == -1 || events == nullptr");
 		return;
 	}
-	if(IO_Set<interrupt>::m_time < IO_Set<interrupt>::m_timelimit){
-		ListenerLog("Listener", "DebounceInterrupt",  "println", "IO_Set<interrupt>::m_time < IO_Set<interrupt>::m_timelimit");
-		return;
-	}
 	bool state = digitalRead(pin);
 	if(state == IO_Set<interrupt>::m_state){
 		ListenerLog("Listener", "DebounceInterrupt",  "println", "state == IO_Set<interrupt>::m_state");
+		IO_Set<interrupt>::m_time = 0.0f;
+		return;
+	}
+	IO_Set<interrupt>::m_time += tpc;
+	if(IO_Set<interrupt>::m_time < IO_Set<interrupt>::m_timelimit){
+		ListenerLog("Listener", "DebounceInterrupt",  "println", "IO_Set<interrupt>::m_time < IO_Set<interrupt>::m_timelimit");
 		return;
 	}
 	IO_Set<interrupt>::m_time = 0.0f;
 	IO_Set<interrupt>::m_state = state;
 	ListenerLog("Listener", "DebounceInterrupt",  "println", "start interrupt");
 	for(int x = 0; x < events->getPosition(); x++){
-		events->getByPosition(x)->event(interrupt, pin, state);
+		ListenerEvent* e =  events->getByPosition(x);
+		if(!e->isEnable()){
+			continue;
+		}
+		if(IO_Set<interrupt>::m_inverted){
+			e->event(interrupt, pin, !IO_Set<interrupt>::m_state);
+		}else{
+			e->event(interrupt, pin, IO_Set<interrupt>::m_state);
+		}
 	}
 	ListenerLog("Listener", "DebounceInterrupt",  "println", "end interrupt");
 }
@@ -123,7 +137,11 @@ void OutputInterrupt(){
 	}
 	ListenerLog("Listener", "OutputInterrupt",  "println", "start interrupt");
 	for(int x = 0; x < events->getPosition(); x++){
-		events->getByPosition(x)->event(interrupt, pin, IO_Set<interrupt>::m_state);
+		if(IO_Set<interrupt>::m_inverted){
+			events->getByPosition(x)->event(interrupt, pin, !IO_Set<interrupt>::m_state);
+		}else{
+			events->getByPosition(x)->event(interrupt, pin, IO_Set<interrupt>::m_state);
+		}
 	}
 	ListenerLog("Listener", "OutputInterrupt",  "println", "end interrupt");
 }
@@ -165,7 +183,11 @@ void Interrupt(){
 	IO_Set<interrupt>::m_state = !(state);
 	ListenerLog("Listener", "Interrupt",  "println", "start interrupt");
 	for(int x = 0; x < events->getPosition(); x++){
-		events->getByPosition(x)->event(interrupt, pin, IO_Set<interrupt>::m_state);
+		if(IO_Set<interrupt>::m_inverted){
+			events->getByPosition(x)->event(interrupt, pin, !IO_Set<interrupt>::m_state);
+		}else{
+			events->getByPosition(x)->event(interrupt, pin, IO_Set<interrupt>::m_state);
+		}
 	}
 	ListenerLog("Listener", "Interrupt",  "println", "end interrupt");
 }
@@ -219,7 +241,11 @@ void Interrupt(bool state){
 	}
 	ListenerLog("Listener", "Interrupt",  "println", "start interrupt");
 	for(int x = 0; x < events->getPosition(); x++){
-		events->getByPosition(x)->event(interrupt, pin, state);
+		if(IO_Set<interrupt>::m_inverted){
+			events->getByPosition(x)->event(interrupt, pin, !state);
+		}else{
+			events->getByPosition(x)->event(interrupt, pin, state);
+		}
 	}
 	ListenerLog("Listener", "Interrupt",  "println", "end interrupt");
 }
@@ -254,7 +280,7 @@ class Listener : public cppObject{
 			app = a;
 		}
 		virtual String getClassName(){return "Listener";}
-		virtual bool instanceof(String name){return name == "Listener" || cppObject::instanceof(name);}
+		virtual bool instanceof(cppObjectClass* cls){return cls == Class<cppObject>::classType;}
 		
 		template<int interrupt>
 		void Secure(){
@@ -320,11 +346,10 @@ class Listener : public cppObject{
 		template<int interrupt>
 		void createDebounceInterrupt(float l, int pin, bool state, bool owner){
 			IO_Set<interrupt>::m_pin = pin;
-			IO_Set<interrupt>::m_type = ListenerDebounceInput;
+			IO_Set<interrupt>::m_type = ListenerDebounceInterrupt;
 			IO_Set<interrupt>::m_state = state;
 			IO_Set<interrupt>::m_safe = true;
 			IO_Set<interrupt>::m_timelimit = l;
-			IO_Set<interrupt>::m_events = nullptr;
 			if(IO_Set<interrupt>::m_events == nullptr){
 				IO_Set<interrupt>::m_events = new PrimitiveList<ListenerEvent>(owner);
 			}
@@ -453,6 +478,21 @@ class Listener : public cppObject{
 		}
 		
 		template<int interrupt>
+		bool isInverted(){
+			return IO_Set<interrupt>::m_inverted;
+		}
+		
+		template<int interrupt>
+		void invert(bool s){
+			IO_Set<interrupt>::m_inverted = s;
+		}
+		
+		template<int interrupt>
+		void invert(){
+			IO_Set<interrupt>::m_inverted = !IO_Set<interrupt>::m_inverted;
+		}
+		
+		template<int interrupt>
 		void setPin(int pin){
 			if(IO_Set<interrupt>::m_type == -1){
 				return;
@@ -563,6 +603,11 @@ class Listener : public cppObject{
 				return;
 			}
 			IO_Set<interrupt>::m_events->removeDeleteByPointer(e);
+		}
+		
+		template<int interrupt>
+		void runEvents(bool state_e){
+			Interrupt<interrupt>(state_e);
 		}
 		
 	protected:

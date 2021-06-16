@@ -1,5 +1,4 @@
-
-
+/*
 #ifndef DefaultEnvironment_h
 #define DefaultEnvironment_h
 
@@ -41,3 +40,4 @@ class DefaultEnvironment : public Environment{
 };
 
 #endif 
+*/

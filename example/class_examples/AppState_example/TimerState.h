@@ -18,13 +18,17 @@ class TimerState : public AppState, TimeElapsed{
 		void Play(TimeControl *t){
 			serial->println(t->getTime());
 		}
-		
-		String getClassName(){
-		  return "TimerState";
-		}
+   
+    bool instanceof(cppObjectClass* cls){
+      return cls == Class<TimerState>::classType || AppState::instanceof(cls);
+    }
+   
+    cppObjectClass* getClass(){
+      return Class<TimerState>::classType;
+    }
 		
 	private:
-		Stream *serial=NULL;
+		Stream *serial = nullptr;
 };
 
 #endif 

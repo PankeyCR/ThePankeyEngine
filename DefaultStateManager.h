@@ -15,12 +15,16 @@ class DefaultStateManager : public AppStateManager{
 		virtual void setApplication(Application* app);
 		
 		virtual AppState* add(AppState* state);
-		virtual AppState* get(String classname);
-		virtual AppState* get(String appstateId,String classname);
-		virtual AppState* remove(String classname);
-		virtual AppState* remove(String appstateId,String classname);
-		virtual bool contain(String classname);
-		virtual bool contain(String appstateId,String classname);
+		
+		virtual AppState* get(cppObjectClass* cls);
+		virtual AppState* get(String appstateId, cppObjectClass* cls);
+		
+		virtual AppState* remove(cppObjectClass* cls);
+		virtual AppState* remove(String appstateId, cppObjectClass* cls);
+		
+		virtual bool contain(cppObjectClass* cls);
+		virtual bool contain(String appstateId, cppObjectClass* cls);
+		
 		virtual void removeAll();
 		virtual void removeDeleteAll();
 		
@@ -29,8 +33,9 @@ class DefaultStateManager : public AppStateManager{
 		virtual float tpc();
 		
 		//cppObject part
-		virtual String getClassName();
+		virtual cppObjectClass* getClass();
 		virtual String toString();
+		virtual bool instanceof(cppObjectClass* cls);
     
 	protected:
 		List<AppState> *appStateList;

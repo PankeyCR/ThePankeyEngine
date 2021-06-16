@@ -11,6 +11,13 @@
 #include "PrimitiveList.h"
 #include "List.h"
 
+#ifdef GameManagerLogApp
+	#include "Logger.h"
+	#define GameManagerLog(name,method,type,mns) Log(name,method,type,mns)
+#else
+	#define GameManagerLog(name,method,type,mns)
+#endif
+
 class GameManager : public AppState{
     public:		
 		GameManager();
@@ -30,10 +37,15 @@ class GameManager : public AppState{
 		void deleteGameObjectRequest(GameObject* obj);
 		void deleteAllEntitiesRequest();
 		
-		int getEntity(String entityClassName);
-		GameObject* getGameObject(String entityClassName);
+		int getEntity(cppObjectClass* cls);
+		GameObject* getGameObject(cppObjectClass* cls);
 		int getEntity(GameObject* obj);
 		GameObject* getGameObject(int entity);
+		
+		int getFirstEntity();
+		GameObject* getFirstGameObject();
+		int getLastEntity();
+		GameObject* getLastGameObject();
 		
 		void addEntityComponent(int entity, GameOn* component);
 		void addGameObjectComponent(GameObject* obj, GameOn* component);
@@ -41,41 +53,100 @@ class GameManager : public AppState{
 		void addEntityComponentRequest(int entity, GameOn* component);
 		void addGameObjectComponentRequest(GameObject* obj, GameOn* component);
 		
-		bool containComponent(String componentClassName);
-		bool containEntityComponent(int entity, String componentClassName);
-		bool containGameObjectComponent(GameObject* obj, String componentClassName);
+		bool containComponent(cppObjectClass* cls);
+		template<class... s>
+		bool containComponents(s... componentClass){
+			if(this->isEmpty()){
+				return false;
+			}
+			PrimitiveList<cppObjectClass> classNs;
+			classNs.addPack(componentClass...);
+			if(classNs.isEmpty()){
+				return false;
+			}
+			int ec = this->getEntityByComponent(classNs.getByPosition(0));
+			for(int x = 0; x < classNs.getPosition(); x++){
+				cppObjectClass* cls = *classNs.getByPosition(x);
+				int edec = this->getEntityByComponent(cls);
+				if(ec != edec){
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		bool containEntityComponent(int entity, cppObjectClass* cls);
+		template<class... s>
+		bool containEntityComponents(int entity, s... componentClass){
+			PrimitiveList<String> classNs;
+			classNs.addPack(componentClass...);
+			if(classNs.isEmpty()){
+				return false;
+			}
+			bool ec = false;
+			for(int x = 0; x < classNs.getPosition(); x++){
+				cppObjectClass* cls = classNs.getByPosition(x);
+				ec = containEntityComponent(entity, cls);
+				if(ec == false){
+					return false;
+				}
+			}
+			return ec;
+		}
+		bool containGameObjectComponent(GameObject* obj, cppObjectClass* cls);
 		
 		bool isEmpty();
 		
 		GameOn* getEntityComponent(int entity, int index);
-		GameOn* getEntityComponent(int entity, String componentClassName);
-		GameOn* getGameObjectComponent(GameObject* obj, String componentClassName);
+		GameOn* getEntityComponent(int entity, cppObjectClass* cls);
+		GameOn* getGameObjectComponent(GameObject* obj, cppObjectClass* cls);
 		
 		//returns the first component founded on the gameobjects list searched by the componentClassName
-		GameOn* getComponent(String componentClassName);
+		GameOn* getComponent(cppObjectClass* cls);
 		//returns the first entity founded with the componentClassName 
-		int getEntityByComponent(String componentClassName);
+		int getEntityByComponent(cppObjectClass* cls);
 		
-		int getEntityComponentIndex(int entity, String componentClassName);
-		int getGameObjectComponentIndex(GameObject* obj, String componentClassName);
+		template<class... s>
+		int getEntityByComponents(s... componentClass){
+			PrimitiveList<cppObjectClass> classNs;
+			classNs.addPack(componentClass...);
+			if(classNs.isEmpty()){
+				return -1;
+			}
+			int ec = -1;
+			for(int x = 0; x < classNs.getPosition(); x++){
+				cppObjectClass* cls = classNs.getByPosition(x);
+				ec = getEntityByComponent(cls);
+				if(ec == -1){
+					return -1;
+				}
+			}
+			return ec;
+		}
+		
+		int getEntityComponentIndex(int entity, cppObjectClass* cls);
+		int getGameObjectComponentIndex(GameObject* obj, cppObjectClass* cls);
 		
 		//returns the position of the first component founded on the gameobjects list searched by the componentClassName
-		int getComponentEntity(String componentClassName);
+		int getComponentEntity(cppObjectClass* cls);
 		
 		List<GameOn>* getEntityComponents(int entity);
 		List<GameOn>* getGameObjectComponents(GameObject* obj);
-		List<GameOn>* getComponents(String componentClassName);
+		List<GameOn>* getComponents(cppObjectClass* cls);
 		
-		void deleteComponent(String componentClassName);
+		void deleteComponent(cppObjectClass* cls);
 		
-		GameOn* removeEntityComponent(int entity, String componentClassName);
-		GameOn* removeGameObjectComponent(GameObject* obj, String componentClassName);
+		GameOn* removeEntityComponent(int entity, cppObjectClass* cls);
+		GameOn* removeGameObjectComponent(GameObject* obj, cppObjectClass* cls);
 		
-		void deleteEntityComponent(int entity, String componentClassName);
-		void deleteGameObjectComponent(GameObject* obj, String componentClassName);
+		void deleteEntityComponent(int entity, cppObjectClass* cls);
+		void deleteGameObjectComponent(GameObject* obj, cppObjectClass* cls);
 		
-		void deleteEntityComponentRequest(int entity, String componentClassName);
-		void deleteGameObjectComponentRequest(GameObject* obj, String componentClassName);
+		void deleteEntityComponents(int entity);
+		void deleteGameObjectComponents(GameObject* obj);
+		
+		void deleteEntityComponentRequest(int entity, cppObjectClass* cls);
+		void deleteGameObjectComponentRequest(GameObject* obj, cppObjectClass* cls);
 		
 		void removeEntityComponent(int entity, GameOn* component);
 		void removeGameObjectComponent(GameObject* obj, GameOn* component);
@@ -93,6 +164,8 @@ class GameManager : public AppState{
 		int getEntitySize();
 		int getComponentSize(int entity);
 		
+		void rearrange();
+		
 		String getClassName();
 		String toString();
 		bool equal(cppObject *b);
@@ -104,8 +177,8 @@ class GameManager : public AppState{
 		bool deleteAllE = false;
 		List<GameObject>* deleteERequest = nullptr;
 		Map<GameObject,GameOn>* addRequest = nullptr;
-		Map<GameObject,String>* deleteRequest = nullptr;
-		Map<String,PrimitiveList<GameOn>>* components = nullptr;
+		Map<GameObject,cppObjectClass>* deleteRequest = nullptr;
+		Map<cppObjectClass,PrimitiveList<GameOn>>* components = nullptr;
 		PrimitiveList<GameObject>* gameobjects = nullptr;
 };
 

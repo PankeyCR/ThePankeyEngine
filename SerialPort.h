@@ -4,6 +4,8 @@
 
 #include "Stream.h"
 #include "cppObject.h"
+#include "ByteArray.h"
+#include "IPAddress.h"
 
 class SerialPort : public Stream , public cppObject{	
     public:
@@ -36,9 +38,14 @@ class SerialPort : public Stream , public cppObject{
 		virtual bool connected(){
 			return false;
 		}
+		virtual bool conect(IPAddress ip, int port){
+			return false;
+		}
 		virtual void stop(){
 		}
 		virtual void send(String s){
+		}
+		virtual void send(ByteArray array){
 		}
 		
 		virtual void setName(String name){
@@ -51,10 +58,10 @@ class SerialPort : public Stream , public cppObject{
 		virtual void flush(){}
 		virtual operator bool(){return false;}
 		virtual void operator=(SerialPort b){}
-		virtual bool operator==(SerialPort b){return this->getClassName()==b.getClassName();}
-		virtual bool operator!=(SerialPort b){return this->getClassName()!=b.getClassName();}
+		virtual bool operator==(SerialPort b){return this->getClass()==b.getClass();}
+		virtual bool operator!=(SerialPort b){return this->getClass()!=b.getClass();}
 		
-		virtual String getClassName(){return "SerialPort";}
+		virtual cppObjectClass* getClass(){return Class<SerialPort>::classType;}
 		virtual String toString(){return "SerialPort";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
@@ -62,9 +69,9 @@ class SerialPort : public Stream , public cppObject{
 			}
 			return false;
 		}
-		virtual bool instanceof(String name){
+		virtual bool instanceof(cppObjectClass* cls){
 			//Serial.println("SerialPort instanceof");
-			return name == "SerialPort" || name == "cppObject";
+			return cls == Class<SerialPort>::classType || cppObject::instanceof(cls);
 		}
 		
 		virtual cppObject *clone(){return nullptr;}

@@ -43,11 +43,11 @@
 		Map<String,String>* map = (Map<String,String>*)instance;
 		String mapS="";
 		mapS.concat(String(map->getSize()));
-		for(Iterator i : *map){
-			mapS.concat(map->getKey(i));
-			mapS.concat(enter);
-			mapS.concat(map->getLValue(i));
-			mapS.concat(enter);
+		for(int x = 0; x < map->getPosition(); x++){
+			mapS.concat(*map->getKeyByPosition(x));
+			mapS.concat(Note::enter);
+			mapS.concat(*map->getByPosition(x));
+			mapS.concat(Note::enter);
 		}
 		file->write(path+".txt", mapS);
 		//Serial.println(file->read(path+".txt"));

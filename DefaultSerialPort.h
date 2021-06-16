@@ -38,7 +38,7 @@ class DefaultSerialPort : public SerialPort{
 		virtual bool operator==(DefaultSerialPort b){return b.port == this->port;}
 		virtual bool operator!=(DefaultSerialPort b){return b.port != this->port;}
 		
-		virtual String getClassName(){return "DefaultSerialPort";}
+		virtual cppObjectClass* getClass(){return Class<DefaultSerialPort>::classType;}
 		virtual String toString(){return "DefaultSerialPort";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
@@ -51,7 +51,7 @@ class DefaultSerialPort : public SerialPort{
 			}
 			return false;
 		}
-		virtual bool instanceof(String name){return name == "DefaultSerialPort" || SerialPort::instanceof(name);}
+		virtual bool instanceof(cppObjectClass* cls){return cls == Class<DefaultSerialPort>::classType || SerialPort::instanceof(cls);}
 		virtual cppObject *clone(){return nullptr;}
 	protected:
 		Stream* port = nullptr;

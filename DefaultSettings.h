@@ -9,34 +9,35 @@
 class DefaultSettings : public AppSettings{
     public:
 		DefaultSettings();
-		~DefaultSettings();
+		virtual ~DefaultSettings();
 		
-		void addInt(String s, int i);
-		void setInt(String s, int i);
-		int getInt(String s);
-		bool containInt(String s);
+		virtual void addInt(String s, int i);
+		virtual void setInt(String s, int i);
+		virtual int getInt(String s);
+		virtual bool containInt(String s);
 		
-		void addFloat(String s, float i);
-		void setFloat(String s, float i);
-		float getFloat(String s);
-		bool containFloat(String s);
+		virtual void addFloat(String s, float i);
+		virtual void setFloat(String s, float i);
+		virtual float getFloat(String s);
+		virtual bool containFloat(String s);
 		
-		void addString(String s, String i);
-		void setString(String s, String i);
-		String getString(String s);
-		bool containString(String s);
+		virtual void addString(String s, String i);
+		virtual void setString(String s, String i);
+		virtual String getString(String s);
+		virtual bool containString(String s);
 		
-		void addBoolean(String s, bool i);
-		void setBoolean(String s, bool i);
-		bool getBoolean(String s);
-		bool containBoolean(String s);
+		virtual void addBoolean(String s, bool i);
+		virtual void setBoolean(String s, bool i);
+		virtual bool getBoolean(String s);
+		virtual bool containBoolean(String s);
 		
-		void addCppObject(String s, cppObject *i);
-		void setCppObject(String s, cppObject *i);
-		cppObject *getCppObject(String s);
-		bool containCppObject(String s);
-		String toString();
-		String getClassName();
+		virtual void addCppObject(String s, cppObject *i);
+		virtual void setCppObject(String s, cppObject *i);
+		virtual cppObject *getCppObject(String s);
+		virtual bool containCppObject(String s);
+		
+		virtual String toString();
+		virtual String getClassName();
 		
 	protected:
 		Map<String,int> *intMap;

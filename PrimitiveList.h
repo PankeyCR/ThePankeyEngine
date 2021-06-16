@@ -5,6 +5,7 @@
 
 #include "List.h"
 #include "MemoryFree.h"
+// #include "ManegedMemory.h"
 
 template<class T>
 class PrimitiveList : public List<T>{
@@ -49,15 +50,26 @@ class PrimitiveList : public List<T>{
 			this->pos = p;
 		}
 		
-		virtual int getPosition(){
+		virtual int getPosition()const{
 			return this->pos;
 		}
 		
-		virtual int getSize(){
+		virtual int getSize()const{
 			return this->size;
 		}
+	
+		virtual bool replace(int i, int j){
+			if(i >= pos || j >= pos){
+				return false;
+			}
+			T* it = values[i];
+			T* jt = values[j];
+			values[i] = jt;
+			values[j] = it;
+			return true;
+		}
 		
-		virtual void addList(List<T>* list){
+		virtual void addList(RawList<T>* list){
 			for(int x=0; x < list->getPosition() ; x++){
 				this->addPointer(list->getByPosition(x));
 			}
@@ -97,6 +109,7 @@ class PrimitiveList : public List<T>{
 			}
 			this->values[this->pos] = value;
 			this->pos++;
+			//Memory<T>::(value);
 			return this->values[this->pos-1];
 		}
 		
@@ -197,7 +210,7 @@ class PrimitiveList : public List<T>{
 			return nullptr;
 		}
 		
-		virtual T* getByPosition(int x){
+		virtual T* getByPosition(int x)const{
 			if(x < this->pos){
 				return this->values[x];
 			}

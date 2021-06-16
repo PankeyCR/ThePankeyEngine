@@ -28,8 +28,8 @@
 	}
 	
     void GameObject::update(float tpc){
-		for(Iterator i : *this->childs){
-			this->childs->getPointer(i)->update(tpc);
+		for(int x = 0; x < this->childs->getPosition(); x++){
+			this->childs->getByPosition(x)->update(tpc);
 		}
 	}
 	
@@ -40,18 +40,18 @@
 		return gmo;
 	}
 	
-    GameOn* GameObject::getChild(String className){
+    GameOn* GameObject::getChild(cppObjectClass* cls){
 		for(int x = 0; x < this->childs->getPosition(); x++){
-			if(this->childs->getByPosition(x)->getClassName() == className){
+			if(this->childs->getByPosition(x)->getClass() == cls){
 				return this->childs->getByPosition(x);
 			}
 		}
 		return nullptr;
 	}
 	
-    GameOn* GameObject::detach(String className){
+    GameOn* GameObject::detach(cppObjectClass* cls){
 		for(int x = 0; x < this->childs->getPosition(); x++){
-			if(this->childs->getByPosition(x)->getClassName() == className){
+			if(this->childs->getByPosition(x)->getClass() == cls){
 				return this->childs->removeByPosition(x);
 			}
 		}
@@ -66,8 +66,8 @@
 		return this->childs;
 	}
 	
-	String GameObject::getClassName(){
-		return "GameObject";
+	cppObjectClass* GameObject::getClass(){
+		return Class<GameObject>::classType;
 	}
 	
 	String GameObject::toString(){

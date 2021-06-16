@@ -11,7 +11,11 @@
 template<class Input,class Control, class Output>
 class Controller : public GameOn{
 	public:
-		Controller(){
+		Controller(){}
+		Controller(Input* in, Control* ct, Output* ot){
+			this->input_m = in;
+			this->control_m = ct;
+			this->output_m = ot;
 		}
 		virtual ~Controller(){
 		}
@@ -38,7 +42,9 @@ class Controller : public GameOn{
 		virtual Output* output(){
 			return this->output_m;
 		}
-		
+		virtual bool instanceof(String name){
+			return name == "Controller" || GameOn::instanceof(name);
+		}
 		
 		//cppObject part
 		virtual String getClassName(){
@@ -48,7 +54,7 @@ class Controller : public GameOn{
 			return "Controller";
 		}
 		virtual Controller<Input,Control,Output>* clone(){
-			return nullptr;
+			return new Controller(this->input_m, this->control_m, this->output_m);
 		}
 		
 	protected:

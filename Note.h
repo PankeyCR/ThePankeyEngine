@@ -17,16 +17,17 @@
 	#define NoteLog(name,method,type,mns) 
 #endif
 
-#define space ' '
-#define endLine '.'
-#define enter '\n'
-#define empty '\0'
 
 class Note : public PrimitiveList<char> , public Printable{
 	protected:
 		int focus=0;
 		
     public:
+		static char space;
+		static char endLine;
+		static char enter;
+		static char empty;
+		
 		Note();
 		Note(int size,int expand);
 		Note(const char* cstr);

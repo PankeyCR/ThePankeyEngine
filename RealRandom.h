@@ -7,7 +7,7 @@
 #include "Logger.h"
 
 #ifdef RealRandomLogApp
-	#define RealRandomLog(name,method,type,mns) Logger::StaticLog(name,method,type,mns)
+	#define RealRandomLog(name,method,type,mns) Log(name,method,type,mns)
 #else
 	#define RealRandomLog(name,method,type,mns) 
 #endif

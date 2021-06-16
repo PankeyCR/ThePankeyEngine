@@ -25,15 +25,15 @@ class GameObject : public GameOn{
 		
         virtual GameOn* attach(GameOn* gameobject);
 		
-        virtual GameOn* getChild(String className);
+        virtual GameOn* getChild(cppObjectClass* cls);
 		
-        virtual GameOn* detach(String className);
+        virtual GameOn* detach(cppObjectClass* cls);
 		
         virtual void detach(GameOn* gameon);
 		
         virtual List<GameOn>* getChilds();
 		
-		virtual String getClassName();
+		virtual cppObjectClass* getClass();
 		virtual String toString();
 };
 

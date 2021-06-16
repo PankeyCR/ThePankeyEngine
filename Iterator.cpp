@@ -64,12 +64,20 @@
 		return this->iterateSize;
 	}
 	
-	void Iterator::last(){
+	bool Iterator::last(){
+		if(this->iterateCount < 0){
+			return false;
+		}
 		this->iterateCount--;
+		return true;
 	}
 	
-	void Iterator::next(){
+	bool Iterator::next(){
+		if(this->iterateCount > this->getIterationSize()){
+			return false;
+		}
 		this->iterateCount++;
+		return true;
 	}
 	
 	Iterator Iterator::begin(){
@@ -96,7 +104,6 @@
 	}
 	
 	Iterator& Iterator::operator =(const Iterator& i){
-		// Serial.println("operator =");
 		this->iR = i.iR;
 		this->iterateCount = i.iterateCount;
 		this->iterateSize = i.iterateSize;

@@ -73,18 +73,18 @@ class SerialMessageState : public AppState{
 			return servers->getByPosition(index);
 		}
 
-		SerialServer* getSerialServer(String classname){
+		SerialServer* getSerialServer(cppObjectClass* cls){
 			for(int x = 0; x < servers->getPosition(); x++){
-				if(servers->getByPosition(x)->getClassName() == classname){
+				if(servers->getByPosition(x)->getClass() == cls){
 					return servers->getByPosition(x);
 				}
 			}
 			return nullptr;
 		}
 
-		SerialServer* getSerialServer(String name, String classname){
+		SerialServer* getSerialServer(String name, cppObjectClass* cls){
 			for(int x = 0; x < servers->getPosition(); x++){
-				if(servers->getByPosition(x)->getClassName() == classname && 
+				if(servers->getByPosition(x)->getClass() == cls && 
 						servers->getByPosition(x)->getName() == name){
 					return servers->getByPosition(x);
 				}
@@ -115,9 +115,9 @@ class SerialMessageState : public AppState{
 			return false;
 		}
 		
-		bool containSerialServer(const char* serial){
+		bool containSerialServer(cppObjectClass* cls){
 			for(int x = 0; x < servers->getPosition(); x++){
-				if(servers->getByPosition(x)->getClassName() == serial){
+				if(servers->getByPosition(x)->getClass() == cls){
 					return true;
 				}
 			}
@@ -160,9 +160,18 @@ class SerialMessageState : public AppState{
 			return ports;
 		}
 		
-		SerialPort* getSerialPort(String name, String classname){
+		SerialPort* getSerialPort(String name){
 			for(int x = 0; x < ports->getPosition(); x++){
-				if(ports->getByPosition(x)->getName() == name && ports->getByPosition(x)->getClassName() == classname){
+				if(ports->getByPosition(x)->getName() == name){
+					return ports->getByPosition(x);
+				}
+			}
+			return nullptr;
+		}
+		
+		SerialPort* getSerialPort(String name, cppObjectClass* cls){
+			for(int x = 0; x < ports->getPosition(); x++){
+				if(ports->getByPosition(x)->getName() == name && ports->getByPosition(x)->getClass() == cls){
 					return ports->getByPosition(x);
 				}
 			}
@@ -173,9 +182,9 @@ class SerialMessageState : public AppState{
 			return ports->getByPosition(index);
 		}
 
-		SerialPort* getSerialPort(String classname){
+		SerialPort* getSerialPort(cppObjectClass* cls){
 			for(int x = 0; x < ports->getPosition(); x++){
-				if(ports->getByPosition(x)->getClassName() == classname){
+				if(ports->getByPosition(x)->getClass() == cls){
 					return ports->getByPosition(x);
 				}
 			}
@@ -186,9 +195,9 @@ class SerialMessageState : public AppState{
 			return ports->getPosition();
 		}
 
-		bool containSerialPort(String name, String classname){
+		bool containSerialPort(String name, cppObjectClass* cls){
 			for(int xp = 0; xp < ports->getPosition(); xp++){
-				if(ports->getByPosition(xp)->getClassName() == classname && 
+				if(ports->getByPosition(xp)->getClass() == cls && 
 					ports->getByPosition(xp)->getName() == name){
 					return true;
 				}
@@ -196,9 +205,9 @@ class SerialMessageState : public AppState{
 			return false;
 		}
 
-		bool containSerialPort(String classname){
+		bool containSerialPort(cppObjectClass* cls){
 			for(int x = 0; x < ports->getPosition(); x++){
-				if(ports->getByPosition(x)->getClassName() == classname){
+				if(ports->getByPosition(x)->getClass() == cls){
 					return true;
 				}
 			}
@@ -228,15 +237,6 @@ class SerialMessageState : public AppState{
 		bool containSerialPort(T serial){
 			for(int x = 0; x < ports->getPosition(); x++){
 				if(serial.equal(ports->getByPosition(x))){
-					return true;
-				}
-			}
-			return false;
-		}
-		
-		bool containSerialPort(const char* serial){
-			for(int x = 0; x < ports->getPosition(); x++){
-				if(ports->getByPosition(x)->getClassName() == serial){
 					return true;
 				}
 			}
@@ -313,6 +313,20 @@ class SerialMessageState : public AppState{
 			}
 			portProtocol->InstantPrivateMessage(port, mns);
 		}
+
+		void instantByteArraySend(String name, ByteArray array){
+			SerialMessageStateLog("SerialMessageState", "instantSend",  "println", "method with a String and a String as parameter");
+			// SerialMessageStateLog("SerialMessageState", "instantSend",  "println", String("Message: ") + array);
+			SerialMessageStateLog("SerialMessageState", "instantSend",  "println", String("name: ") + name);
+			SerialPort* port = this->getSerialPort(name);
+			int index = ports->getIndexByPointer(port);
+			PortProtocol* portProtocol = portProtocols->getByPosition(index);
+			if(port == nullptr || portProtocol == nullptr){
+				SerialMessageStateLog("SerialMessageState", "instantSend",  "println", "port == nullptr || protocol == nullptr");
+				return;
+			}
+			portProtocol->InstantPrivateByteArrayMessage(port, array);
+		}
 		
 		void instantSend(Message mns){
 			SerialMessageStateLog("SerialMessageState", "instantSend",  "println", "method with Message as parameter");
@@ -353,6 +367,7 @@ class SerialMessageState : public AppState{
 			for(int x = 0 ; x < ports->getPosition(); x++){
 				if(ports->getByPosition(x)->getName() == name){
 					clientMessages->addPointers(new int(x), new String(mns));
+					SerialMessageStateLog("SerialMessageState", "send",  "println", String("adding"));
 				}
 			}
 		}
@@ -446,9 +461,15 @@ class SerialMessageState : public AppState{
 				if(!port->connected()){
 					SerialMessageStateLog("SerialMessageState", "update",  "println", "!port->connected()");
 					portProtocol->UpdateDisconect(port);
-					portProtocols->removeDeleteByPosition(index);
-					ports->removeDeleteByPosition(index);
-					index--;
+					if(portProtocol->SafeDelete()){
+						portProtocols->removeDeleteByPosition(index);
+						ports->removeDeleteByPosition(index);
+						index--;
+					}else{
+						portProtocols->removeByPosition(index);
+						ports->removeByPosition(index);
+						index--;
+					}
 				}else{
 					if(port->available() > 0) {
 						portProtocol->Read(index,port);
@@ -482,8 +503,8 @@ class SerialMessageState : public AppState{
 			}
 		}
 		
-		virtual String getClassName(){
-			return "SerialMessageState";
+		virtual cppObjectClass* getClass(){
+			return Class<SerialMessageState>::classType;
 		}
 		
 		virtual PortProtocol* getPortProtocol(int index){

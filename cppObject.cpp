@@ -14,8 +14,8 @@
 	void cppObject::onDelete(){
 		
 	}
-	String cppObject::getClassName(){
-		return "cppObject";
+	cppObjectClass* cppObject::getClass(){
+		return Class<cppObject>::classType;
 	}
 	String cppObject::toString(){
 		return "cppObject";
@@ -24,21 +24,18 @@
 		if(b == this){
 			return true;
 		}
-		if(b->getClassName() == this->getClassName()){
+		if(b->getClass() == this->getClass()){
 			return true;
 		}
 		return false;
 	}
-	bool cppObject::instanceof(String s){
-		if(s == this->getClassName()){
-			return true;
-		}
-		return s == "cppObject";
+	bool cppObject::instanceof(cppObjectClass* cls){
+		return cls == this->getClass();
 	}
-	cppObject *cppObject::clone(void){
+	cppObject* cppObject::clone(void){
 		return this->clone(true);
 	}
-	cppObject *cppObject::clone(bool owningMemory){
+	cppObject* cppObject::clone(bool owningMemory){
 		return this;
 	}
 
@@ -47,11 +44,11 @@
 	}
 
 	bool cppObject::operator==(cppObject b){
-		return this->getClassName() == b.getClassName();
+		return this->getClass() == b.getClass();
 	}
 
 	bool cppObject::operator!=(cppObject b){
-		return this->getClassName() != b.getClassName();
+		return this->getClass() != b.getClass();
 	}
 
 

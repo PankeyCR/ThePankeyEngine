@@ -26,18 +26,18 @@
 		return state;
 	}
 	
-	AppState* DefaultStateManager::get(String classname){
+	AppState* DefaultStateManager::get(cppObjectClass* cls){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
-			if(this->appStateList->getByPosition(x)->getClassName() == classname){
+			if(this->appStateList->getByPosition(x)->getClass() == cls){
 				return this->appStateList->getByPosition(x);
 			}
 		}
 		return nullptr;
 	}
 	
-	AppState* DefaultStateManager::get(String appstateId,String classname){
+	AppState* DefaultStateManager::get(String appstateId, cppObjectClass* cls){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
-			if(this->appStateList->getByPosition(x)->getClassName() == classname &&
+			if(this->appStateList->getByPosition(x)->getClass() == cls &&
 							this->appStateList->getByPosition(x)->getId() == appstateId){
 				return this->appStateList->getByPosition(x);
 			}
@@ -45,10 +45,10 @@
 		return nullptr;
 	}
 	
-	AppState* DefaultStateManager::remove(String classname){
+	AppState* DefaultStateManager::remove(cppObjectClass* cls){
 		AppState *appstate = nullptr;
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
-			if(this->appStateList->getByPosition(x)->getClassName() == classname){
+			if(this->appStateList->getByPosition(x)->getClass() == cls){
 				appstate = this->appStateList->getByPosition(x);
 			}
 		}
@@ -60,10 +60,10 @@
 		return appstate;
 	}
 	
-	AppState* DefaultStateManager::remove(String appstateId,String classname){
+	AppState* DefaultStateManager::remove(String appstateId, cppObjectClass* cls){
 		AppState *appstate = nullptr;
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
-			if(this->appStateList->getByPosition(x)->getClassName() == classname &&
+			if(this->appStateList->getByPosition(x)->getClass() == cls &&
 							this->appStateList->getByPosition(x)->getId() == appstateId){
 				appstate = this->appStateList->getByPosition(x);
 			}
@@ -76,18 +76,18 @@
 		return appstate;
 	}
 	
-	bool DefaultStateManager::contain(String classname){
+	bool DefaultStateManager::contain(cppObjectClass* cls){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
-			if(this->appStateList->getByPosition(x)->getClassName() == classname){
+			if(this->appStateList->getByPosition(x)->getClass() == cls){
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	bool DefaultStateManager::contain(String appstateId,String classname){
+	bool DefaultStateManager::contain(String appstateId, cppObjectClass* cls){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
-			if(this->appStateList->getByPosition(x)->getClassName() == classname &&
+			if(this->appStateList->getByPosition(x)->getClass() == cls &&
 							this->appStateList->getByPosition(x)->getId() == appstateId){
 				return true;
 			}
@@ -105,7 +105,7 @@
 	void DefaultStateManager::removeDeleteAll(){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			this->appStateList->getByPosition(x)->onDisable();
-		}			
+		}
 		this->appStateList->resetDelete();
 	}
 	
@@ -122,12 +122,16 @@
 		return t;
 	}
 	
-	String DefaultStateManager::getClassName(){
-		return "DefaultStateManager";
+	cppObjectClass* DefaultStateManager::getClass(){
+		return Class<DefaultStateManager>::classType;
 	}
 	
 	String DefaultStateManager::toString(){
 		return "DefaultStateManager";
+	}
+	
+	bool DefaultStateManager::instanceof(cppObjectClass* cls){
+		return cls == Class<DefaultStateManager>::classType || AppStateManager::instanceof(cls);
 	}
     
 #endif

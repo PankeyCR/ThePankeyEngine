@@ -21,9 +21,9 @@ class GameOn : public cppObject{
 		
 		virtual void update(float tpc);
 		
-		virtual String getClassName();
+		virtual cppObjectClass* getClass();
 		virtual String toString();
-		virtual bool instanceof(String name);
+		virtual bool instanceof(cppObjectClass* cls);
 		
         virtual GameOn operator =(const GameOn& c);
         virtual bool operator ==(const GameOn& c);

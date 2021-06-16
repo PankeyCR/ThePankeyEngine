@@ -14,15 +14,19 @@ class LoopState : public AppState{
 			App = app;
 		}
 		void update(float tpc){
-		  serial->println(App->getTimeControl()->getTime());
+		  serial->println(tpc);
 		}
-		
-		String getClassName(){
-		  return "LoopState";
+   
+    bool instanceof(cppObjectClass* cls){
+      return cls == Class<LoopState>::classType || AppState::instanceof(cls);
+    }
+   
+    cppObjectClass* getClass(){
+		  return Class<LoopState>::classType;
 		}
 		
 	private:
-		Stream *serial=NULL;
+		Stream *serial = nullptr;
 };
 
 #endif 

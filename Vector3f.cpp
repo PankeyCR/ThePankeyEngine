@@ -5,10 +5,26 @@
 #include "Arduino.h"
 #include "Vector3f.h"
 
+const Vector3f* Vector3f::ZERO = new Vector3f(0,0,0);
+//const Vector3f* NAN = Vector3f(-1,-1,-1);
+const Vector3f* Vector3f::UNIT_X = new Vector3f(1,0,0);
+const Vector3f* Vector3f::UNIT_Y = new Vector3f(0,1,0);
+const Vector3f* Vector3f::UNIT_Z = new Vector3f(0,0,1);
+const Vector3f* Vector3f::UNIT_XYZ = new Vector3f(1,1,1);
+const Vector3f* Vector3f::POSITIVE_INFINITY = new Vector3f(1000,1000,1000);
+const Vector3f* Vector3f::NEGATIVE_INFINITY = new Vector3f(1000,1000,1000);
+
+
     Vector3f::Vector3f() {
         x = 0;
         y = 0;
         z = 0;
+    }
+
+    Vector3f::Vector3f(const Vector3f& v) {
+        x = v.x;
+        y = v.y;
+        z = v.z;
     }
 	
     Vector3f::Vector3f(float nx,float ny,float nz) {
@@ -400,7 +416,7 @@
 		}
 		
 
-		if(o->getClassName() != "Vector3f") {
+		if(o->getClass() != Class<Vector3f>::classType) {
 			return false;
 		}
 		
@@ -519,16 +535,15 @@
 			return "Vector3f(" + (String)x + " " + (String)y + " " + (String)z + ")";
 	}
 	
-	String Vector3f::getClassName(){
-		return "Vector3f";
+	cppObjectClass* Vector3f::getClass(){
+		return Class<Vector3f>::classType;
 	}
 	
 	
-	Vector3f Vector3f::operator=(const Vector3f& a) {
+	void Vector3f::operator=(const Vector3f& a) {
         this->x = a.x;
         this->y = a.y;
         this->z = a.z;
-		return Vector3f(this->x, this->y, this->z);
 	}
 	
 	Vector3f Vector3f::operator=(const float& a) {

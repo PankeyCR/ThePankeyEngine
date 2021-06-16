@@ -3,7 +3,9 @@
 #ifndef Token_h
 #define Token_h
 
-class Token{
+#include "Printable.h"
+
+class Token : public Printable{
 public:
 String name;
 String type;
@@ -61,16 +63,24 @@ virtual void operator=(const Token& t){
 	line_Position = t.line_Position;
 	list_Position = t.list_Position;
 }
-virtual void operator=(Token t){
-	name = t.name;
-	type = t.type;
-	info = t.info;
-	text_Position = t.text_Position;
-	line_Position = t.line_Position;
-	list_Position = t.list_Position;
-}
 virtual bool operator==(Token b){return type == b.type;}
 virtual bool operator!=(Token b){return type != b.type;}
+
+size_t printTo(Print& p) const{
+	p.print("Token(");
+	p.print(name);
+	p.print(" ");
+	p.print(type);
+	p.print(" ");
+	p.print(info);
+	p.print(" ");
+	p.print(text_Position);
+	p.print(" ");
+	p.print(line_Position);
+	p.print(" ");
+	p.print(list_Position);
+	p.print(")");
+}
 };
 
 #endif 

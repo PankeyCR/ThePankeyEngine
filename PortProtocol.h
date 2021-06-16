@@ -3,6 +3,7 @@
 #define PortProtocol_h
 
 #include "SerialPort.h"
+#include "ByteArray.h"
 class SerialMessageState;
 
 class PortProtocol{	
@@ -20,6 +21,8 @@ class PortProtocol{
 		//this method has control of the sending of the message, so remember sending it
 		virtual void InstantPrivateMessage(SerialPort* port, String mns){}
 		
+		virtual void InstantPrivateByteArrayMessage(SerialPort* port, ByteArray array){}
+		
 		virtual void GlobalDisconect(SerialPort* port){}
 		virtual void Disconect(SerialPort* port){}
 		virtual void UpdateDisconect(SerialPort* port){}
@@ -31,6 +34,9 @@ class PortProtocol{
 		//you need to send to message manually
 		virtual void PrivateMessage(SerialPort* port, String mns){}
 		
+		virtual void setSafeDelete(bool s){safeDelete = s;}
+		virtual bool SafeDelete(){return safeDelete;}
+		
 		virtual void update(SerialPort* port, float tpc){}
 		
 		virtual void operator=(PortProtocol b){}
@@ -38,6 +44,7 @@ class PortProtocol{
 		virtual bool operator!=(PortProtocol b){return true;}
 		
 	protected:
+		bool safeDelete = true;
 		SerialMessageState* serialState = nullptr;
 };
 #endif 

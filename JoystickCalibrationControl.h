@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "Joystick.h"
 #include "AnalogJoystick.h"
+#include "cppObjectClass.h"
 
 class JoystickCalibrationControl : public GameOn{
     private:
@@ -19,7 +20,7 @@ class JoystickCalibrationControl : public GameOn{
 		
         void update(float tpc);
 		
-		String getClassName();
+		cppObjectClass* getClass();
 		String toString();
 		
 		JoystickCalibrationControl *clone();

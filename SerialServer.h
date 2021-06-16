@@ -39,7 +39,7 @@ class SerialServer : public cppObject{
 		virtual bool operator==(SerialServer b){return this->getName()==b.getName();}
 		virtual bool operator!=(SerialServer b){return this->getName()!=b.getName();}
 		
-		virtual String getClassName(){return "SerialServer";}
+		virtual cppObjectClass* getClass(){return Class<SerialServer>::classType;}
 		virtual String toString(){return "SerialServer";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
@@ -47,7 +47,7 @@ class SerialServer : public cppObject{
 			}
 			return false;
 		}
-		virtual bool instanceof(String name){return name == "SerialServer" || cppObject::instanceof(name);}
+		virtual bool instanceof(cppObjectClass* cls){return cls == Class<SerialServer>::classType || cppObject::instanceof(cls);}
 		virtual cppObject *clone(){return nullptr;}
 		
 	protected:

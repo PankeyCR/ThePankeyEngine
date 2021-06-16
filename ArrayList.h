@@ -16,6 +16,13 @@ class ArrayList : public List<T>{
 	ArrayList<T,size>(){
 		pos=0;
 	}
+	
+	ArrayList<T,size>(const ArrayList<T,size>& l){
+		pos=0;
+		for(int x=0; x < l.getPosition(); x++){
+			this->addLValue(*l.getByPosition(x));
+		}
+	}
 
 	ArrayList<T,size>(T t[],int s){
 		pos=0;
@@ -32,22 +39,33 @@ class ArrayList : public List<T>{
 		pos=p;
 	}
 
-	int getPosition(){
+	int getPosition()const{
 		return pos;
 	}
 
-	int getSize(){
+	int getSize()const{
 		return size;
 	}
 
-	T *getByPosition(int x){
+	T *getByPosition(int x)const{
 		if(x >= pos){
 			return nullptr;
 		}
-		return &values[x];
+		return const_cast<T*>(&values[x]);
+	}
+	
+	virtual bool replace(int i, int j){
+		if(i >= pos || j >= pos){
+			return false;
+		}
+		T it = values[i];
+		T jt = values[j];
+		values[i] = jt;
+		values[j] = it;
+		return true;
 	}
 
-	void addList(List<T> *list){
+	void addList(RawList<T> *list){
 		if(list == nullptr){
 			return;
 		}
@@ -406,9 +424,10 @@ class ArrayList : public List<T>{
 		return list;
 	}
 
-	void operator =(ArrayList<T,size> t){
-		for(int xtst=0; xtst<size; xtst++){
-			values[xtst] == *t.getPointerByPos(xtst);
+	void operator =(const ArrayList<T,size>& t){
+		this->reset();
+		for(int x=0; x < t.getPosition(); x++){
+			values[x] == *t.getByPosition(x);
 		}
 	}
 

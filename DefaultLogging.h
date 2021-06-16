@@ -2,6 +2,7 @@
 #ifndef DefaultLogging_h
 #define DefaultLogging_h
 
+#include "Arduino.h"
 #include "Logger.h"
 #include "Logging.h"
 #include "List.h"
@@ -20,6 +21,7 @@ class DefaultLogging : public Logging{
 			this->MethodList = new PrimitiveList<String>();
 			classActivation = classA;
 			methodActivation = methodA;
+			// Serial.println("contructor");
 		}
 		
 		virtual ~DefaultLogging(){

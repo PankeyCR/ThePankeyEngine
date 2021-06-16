@@ -5,11 +5,11 @@
 
 #include "Arduino.h"
 #include "Random.h"
-#include "Logger.h"
 #include "RealRandom.h"
 
 #ifdef AbsoluteRandomLogApp
-	#define AbsoluteRandomLog(name,method,type,mns) Logger::StaticLog(name,method,type,mns)
+	#include "Logger.h"
+	#define AbsoluteRandomLog(name,method,type,mns) Log(name,method,type,mns)
 #else
 	#define AbsoluteRandomLog(name,method,type,mns) 
 #endif

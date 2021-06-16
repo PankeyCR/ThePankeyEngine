@@ -14,7 +14,7 @@
 	}
 	
 	MonkeyFile::MonkeyFile(int chip){
-		this->fileFunctions = new KPMap<String,MonkeyFileFunction,10>();
+		this->fileFunctions = new KPMap<cppObjectClass,MonkeyFileFunction,10>();
 		if (SD.begin(chip)) {
 			
 		}else{
@@ -22,7 +22,7 @@
 		}
 	}
 	
-	MonkeyFile::MonkeyFile(int chip, Map<String,MonkeyFileFunction>* functions){
+	MonkeyFile::MonkeyFile(int chip, Map<cppObjectClass,MonkeyFileFunction>* functions){
 		this->fileFunctions = functions;
 		if (SD.begin(chip)) {
 			
@@ -119,27 +119,27 @@
 		return SD.remove(this->rootPath+"/"+file);
 	}
 	
-	void MonkeyFile::addFileFunction(String className,MonkeyFileFunction* function){
-		this->fileFunctions->addPointer(className, function);
+	void MonkeyFile::addFileFunction(cppObjectClass* cls,MonkeyFileFunction* function){
+		this->fileFunctions->addPointers(cls, function);
 	}
 	
-	MonkeyFileFunction* MonkeyFile::getFileFunction(String className){
-		return this->fileFunctions->getByLValue(className);
+	MonkeyFileFunction* MonkeyFile::getFileFunction(cppObjectClass* cls){
+		return this->fileFunctions->getByPointer(cls);
 	}
 	
-	MonkeyFileFunction* MonkeyFile::removeFileFunction(String className){
-		return this->fileFunctions->removeByLValue(className);
+	MonkeyFileFunction* MonkeyFile::removeFileFunction(cppObjectClass* cls){
+		return this->fileFunctions->removeByPointer(cls);
 	}
 	
-	void MonkeyFile::removeDeleteFileFunction(String className){
-		MonkeyFileFunction* function = this->fileFunctions->removeByLValue(className);
+	void MonkeyFile::removeDeleteFileFunction(cppObjectClass* cls){
+		MonkeyFileFunction* function = this->fileFunctions->removeByPointer(cls);
 		if(function != nullptr){
 			delete function;
 		}
 	}
 	
 	bool MonkeyFile::save(cppObject* save,String path,String key){
-		MonkeyFileFunction* function = this->fileFunctions->getByLValue(save->getClassName());
+		MonkeyFileFunction* function = this->fileFunctions->getByPointer(save->getClass());
 		if(function != nullptr){
 			return function->SaveFileFunction(this, save, path, key);
 		}
@@ -147,39 +147,39 @@
 	}
 	
 	bool MonkeyFile::saveRoot(cppObject* save,String path,String key){
-		MonkeyFileFunction* function = this->fileFunctions->getByLValue(save->getClassName());
+		MonkeyFileFunction* function = this->fileFunctions->getByPointer(save->getClass());
 		if(function != nullptr){
 			return function->SaveFileFunction(this, save, this->rootPath+"/"+path, key);
 		}
 		return false;
 	}
 	
-	cppObject* MonkeyFile::load(String className,cppObject* l,String path,String key){
-		MonkeyFileFunction* function = this->fileFunctions->getByLValue(className);
+	cppObject* MonkeyFile::load(cppObjectClass* cls,cppObject* l,String path,String key){
+		MonkeyFileFunction* function = this->fileFunctions->getByPointer(cls);
 		if(function != nullptr){
 			return function->LoadFileFunction(this, l, path, key);
 		}
 		return nullptr;
 	}
 	
-	cppObject* MonkeyFile::loadRoot(String className,cppObject* l,String path,String key){
-		MonkeyFileFunction* function = this->fileFunctions->getByLValue(className);
+	cppObject* MonkeyFile::loadRoot(cppObjectClass* cls,cppObject* l,String path,String key){
+		MonkeyFileFunction* function = this->fileFunctions->getByPointer(cls);
 		if(function != nullptr){
 			return function->LoadFileFunction(this, l, this->rootPath+"/"+path, key);
 		}
 		return nullptr;
 	}
 	
-	bool MonkeyFile::deleting(String className,cppObject* l,String path,String key){
-		MonkeyFileFunction* function = this->fileFunctions->getByLValue(className);
+	bool MonkeyFile::deleting(cppObjectClass* cls,cppObject* l,String path,String key){
+		MonkeyFileFunction* function = this->fileFunctions->getByPointer(cls);
 		if(function != nullptr){
 			return function->DeleteFileFunction(this, l, this->rootPath+"/"+path, key);
 		}
 		return false;
 	}
 	
-	bool MonkeyFile::deletingRoot(String className,cppObject* l,String path,String key){
-		MonkeyFileFunction* function = this->fileFunctions->getByLValue(className);
+	bool MonkeyFile::deletingRoot(cppObjectClass* cls,cppObject* l,String path,String key){
+		MonkeyFileFunction* function = this->fileFunctions->getByPointer(cls);
 		if(function != nullptr){
 			return function->DeleteFileFunction(this, l, this->rootPath+"/"+path, key);
 		}

@@ -3,12 +3,13 @@
 #ifndef Quaternion_cpp
 #define Quaternion_cpp
 
+#include "Arduino.h"
 #include "Quaternion.h"
 
 
-    Quaternion *Quaternion::IDENTITY = new Quaternion();
-    Quaternion *Quaternion::DIRECTION_Z = new Quaternion();
-    Quaternion *Quaternion::ZERO = new Quaternion(0, 0, 0, 0);
+	const Quaternion* Quaternion::IDENTITY = new Quaternion();
+	const Quaternion* Quaternion::DIRECTION_Z = new Quaternion();
+	const Quaternion* Quaternion::ZERO = new Quaternion(0, 0, 0, 0);
     
     //static {
     //   DIRECTION_Z.fromAxes(Vector3f.UNIT_X, Vector3f.UNIT_Y, Vector3f.UNIT_Z);
@@ -19,6 +20,13 @@
         this->y = 0;
         this->z = 0;
         this->w = 1;
+    }
+	
+    Quaternion::Quaternion(const Quaternion& q) {
+        this->x = q.x;
+        this->y = q.y;
+        this->z = q.z;
+        this->w = q.w;
     }
 	
     Quaternion::Quaternion(float x, float y, float z, float w) {
@@ -950,19 +958,19 @@
         return Vector3f(store.x, store.y, store.z);
     }
 	
-    // Vector3f Quaternion::multLocal(Vector3f v) {
-        // float tempX, tempY;
-        // tempX = w * w * v.x + 2 * y * w * v.z - 2 * z * w * v.y + x * x * v.x
-                // + 2 * y * x * v.y + 2 * z * x * v.z - z * z * v.x - y * y * v.x;
-        // tempY = 2 * x * y * v.x + y * y * v.y + 2 * z * y * v.z + 2 * w * z
-                // * v.x - z * z * v.y + w * w * v.y - 2 * x * w * v.z - x * x
-                // * v.y;
-        // v.z = 2 * x * z * v.x + 2 * y * z * v.y + z * z * v.z - 2 * w * y * v.x
-                // - y * y * v.z + 2 * w * x * v.y - x * x * v.z + w * w * v.z;
-        // v.x = tempX;
-        // v.y = tempY;
-        // return Vector3f(v.x, v.y, v.z);
-    // }
+    Vector3f Quaternion::multLocal(Vector3f v) {
+        float tempX, tempY;
+        tempX = w * w * v.x + 2 * y * w * v.z - 2 * z * w * v.y + x * x * v.x
+                + 2 * y * x * v.y + 2 * z * x * v.z - z * z * v.x - y * y * v.x;
+        tempY = 2 * x * y * v.x + y * y * v.y + 2 * z * y * v.z + 2 * w * z
+                * v.x - z * z * v.y + w * w * v.y - 2 * x * w * v.z - x * x
+                * v.y;
+        v.z = 2 * x * z * v.x + 2 * y * z * v.y + z * z * v.z - 2 * w * y * v.x
+                - y * y * v.z + 2 * w * x * v.y - x * x * v.z + w * w * v.z;
+        v.x = tempX;
+        v.y = tempY;
+        return Vector3f(v.x, v.y, v.z);
+    }
 
     Quaternion Quaternion::multLocal(Quaternion q) {
         float x1 = this->x * q.w + this->y * q.z - this->z * q.y + this->w * q.x;
@@ -1071,13 +1079,13 @@
         return "Quaternion(" + String(this->x) + ", " + String(this->y) + ", " + String(this->z) + ", " + String(this->w) + ")";
     }
 	
-    String Quaternion::getClassName() {
-        return "Quaternion";
+    cppObjectClass* Quaternion::getClass() {
+		return Class<Quaternion>::classType;
     }
 	
     bool Quaternion::equals(cppObject *o) {
 
-        if (this == o || (o->getClassName() == "Quaternion")) {
+        if (this == o || (o->getClass() == Class<Quaternion>::classType)) {
             return true;
         }
 
@@ -1184,14 +1192,11 @@
 		return new Quaternion(this->x, this->y, this->z, this->w);
     }
 
-	
-	
-	Quaternion Quaternion::operator=(const Quaternion& a) {
-		this->x = a.x;
-		this->y = a.y;
-		this->z = a.z;
-		this->w = a.w;
-        return Quaternion(this->x, this->y, this->z, this->w);
+	void Quaternion::operator=(const Quaternion& q) {
+        this->x = q.x;
+        this->y = q.y;
+        this->z = q.z;
+        this->w = q.w;
 	}
 	
 	Quaternion Quaternion::operator=(const float a[4]) {

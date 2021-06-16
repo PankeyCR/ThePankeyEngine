@@ -27,8 +27,8 @@
 		
 	}
 	
-	bool AppState::instanceof(String name){
-		return name == "AppState" || cppObject::instanceof(name);
+	bool AppState::instanceof(cppObjectClass* cls){
+		return cls == Class<AppState>::classType || cppObject::instanceof(cls);
 	}
 	
 	void AppState::operator=(AppState b) {
@@ -36,11 +36,11 @@
 	}
 	
 	bool AppState::operator==(AppState b) {
-			return this->getClassName() == b.getClassName();
+			return this->getClass() == b.getClass();
 	}
 	
 	bool AppState::operator!=(AppState b) {
-			return this->getClassName() != b.getClassName();
+			return this->getClass() != b.getClass();
 	}
 	
 #endif 
