@@ -30,13 +30,13 @@ class DataSet : public Iterator , public cppObject{
 		virtual DataSet<T>* set(T t){return this;}
 		virtual DataSet<T>* remove(){return this;}
 		virtual T getValue(){}
-		virtual T *getPointer(){return nullptr;}
+		virtual T* getPointer(){return nullptr;}
 		
 		virtual int spaceSize(){return 0;}
 		virtual int getSize(int i_space){return 0;}
 		virtual int getSize(int i_space, int i_dimention){return 0;}
 		virtual int dimentionSize(int i_space){return 0;}
-		virtual int positionSize(int i_dimention, int i_position){return 0;}
+		// virtual int positionSize(int i_dimention, int i_position){return 0;}
 		
 		virtual Iterator iterateSpace(int i_space){
 			m_iterateSpace = i_space;
@@ -57,14 +57,17 @@ class DataSet : public Iterator , public cppObject{
 		virtual int position(){return m_position;}
     
 		//cppObject part
-		virtual String getClassName(){return "DataSet";}
+		virtual bool instanceof(cppObjectClass* cls){
+		return cppObject::instanceof(cls) || cls == Class<DataSet>::classType;
+		}
+		virtual cppObjectClass* getClass(){return Class<DataSet>::classType;}
 		virtual String toString(){return "DataSet";}
 		
 		virtual bool equal(cppObject *b){
 			if(b == this){
 				return true;
 			}
-			if(b->getClassName() != this->getClassName()){
+			if(!b->instanceof(Class<DataSet>::classType)){
 				return false;
 			}
 			for(Iterator i : *this){
@@ -88,6 +91,7 @@ class DataSet : public Iterator , public cppObject{
 		}
 
 		virtual bool operator!=(DataSet<T> b){
+			b.refreshIteration();
 			for(Iterator i : *this){
 				if( b.getValue() != this->getValue()){
 					return true;

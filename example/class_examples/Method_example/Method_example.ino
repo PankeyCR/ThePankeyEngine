@@ -1,6 +1,4 @@
 
-#include "Method.h"
-#include "ClassType.h"
 #include "RobotArmTest.h"
 
 RobotArmTest *arm;
@@ -12,11 +10,17 @@ void setup() {
 }
 
 void loop(){
+  Serial.println("start");
   Method* method = arm->getClass()->getMethod("X");
   if(method != nullptr){
-    invoke<RobotArmTest,bool,float>(arm,method,false,50.0f);
+    method->invoke<RobotArmTest,bool,float>(arm,false,50.0f);
   }
-  invoke<RobotArmTest,bool,float>(arm,"Y",false,60.0f);
-  invoke<RobotArmTest,bool,float>(arm,"Z",false,70.0f);
-  Serial.println(invoke<RobotArmTest,String>(arm,"stop","default"));
+  RawList<Method>* methods = arm->getClass()->getMethods();
+  if(methods == nullptr){
+    return;
+  }
+  for(int x = 0; x < methods->getPosition(); x++){
+    Method* m = methods->getByPosition(x);
+    m->invoke<RobotArmTest,bool,float>(arm,false,50.0f);
+  }
 }

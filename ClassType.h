@@ -4,7 +4,6 @@
 
 #include "cppObjectClass.h"
 #include "Method.h"
-#include "DefaultMethod.h"
 #include "Annotation.h"
 #include "RawList.h"
 #include "PrimitiveRawList.h"
@@ -35,6 +34,21 @@ template<class cls> String ClassName<cls>::className = "Default";
 template<class cls>
 struct ClassMethod{
 	static RawList<Method>* methods;
+	static void add(String n){
+		if(methods == nullptr){
+			return;
+		}
+		methods->addPointer(new Method(n));
+	}
+	static void addOnce(String n){
+		if(methods == nullptr){
+			return;
+		}
+		if(methods->containByLValue(n)){
+			return;
+		}
+		methods->addPointer(new Method(n));
+	}
 	static Method* getMethod(String n){
 		if(methods == nullptr){
 			return nullptr;
@@ -51,32 +65,32 @@ struct ClassMethod{
 
 template<class cls> RawList<Method>* ClassMethod<cls>::methods = new PrimitiveRawList<Method>();
 
-template<class cls, class R, class... Args>
-struct MethodType{
-	static RawList<DefaultMethod<cls,R,Args...>>* typeMethods;
-	static void add(DefaultMethod<cls,R,Args...>* m){
-		RawList<Method>* list = ClassMethod<cls>::methods;
-		if(list == nullptr || typeMethods == nullptr){
-			return;
-		}
-		list->addPointer(m);
-		typeMethods->addPointer(m);
-	}
-	static DefaultMethod<cls,R,Args...>* getMethod(String n){
-		if(typeMethods == nullptr){
-			return nullptr;
-		}
-		for(int x = 0; x < typeMethods->getPosition(); x++){
-			DefaultMethod<cls,R,Args...>* mm = typeMethods->getByPosition(x);
-			if(mm->getName() == n){
-				return mm;
-			}
-		}
-		return nullptr;
-	}
-};
+// template<class cls, class R, class... Args>
+// struct MethodType{
+	// static RawList<DefaultMethod<cls,R,Args...>>* typeMethods;
+	// static void add(DefaultMethod<cls,R,Args...>* m){
+		// RawList<Method>* list = ClassMethod<cls>::methods;
+		// if(list == nullptr || typeMethods == nullptr){
+			// return;
+		// }
+		// list->addPointer(m);
+		// typeMethods->addPointer(m);
+	// }
+	// static DefaultMethod<cls,R,Args...>* getMethod(String n){
+		// if(typeMethods == nullptr){
+			// return nullptr;
+		// }
+		// for(int x = 0; x < typeMethods->getPosition(); x++){
+			// DefaultMethod<cls,R,Args...>* mm = typeMethods->getByPosition(x);
+			// if(mm->getName() == n){
+				// return mm;
+			// }
+		// }
+		// return nullptr;
+	// }
+// };
 
-template<class cls, class R, class... Args> RawList<DefaultMethod<cls,R,Args...>>* MethodType<cls,R,Args...>::typeMethods = new PrimitiveRawList<DefaultMethod<cls,R,Args...>>();
+// template<class cls, class R, class... Args> RawList<DefaultMethod<cls,R,Args...>>* MethodType<cls,R,Args...>::typeMethods = new PrimitiveRawList<DefaultMethod<cls,R,Args...>>();
 
 template<class T>
 class ClassType : public cppObjectClass{	
@@ -121,34 +135,6 @@ class ClassType : public cppObjectClass{
 			return nullptr;
 		}
 };
-
-
-
-template<class I,class R,class... Args>
-R invoke(I* i, Method* mt, R r, Args... a){
-	Method* m = ClassMethod<I>::getMethod(mt->getName());
-	DefaultMethod<I,R,Args...>* dm = MethodType<I,R,Args...>::getMethod(mt->getName());
-	if(dm == nullptr){
-		return r;
-	}
-	if(dm == m){
-		return dm->invokeMethod(i,a...);
-	}
-	return r;
-}
-
-template<class I,class R,class... Args>
-R invoke(I* i, String n, R r, Args... a){
-	Method* m = ClassMethod<I>::getMethod(n);
-	DefaultMethod<I,R,Args...>* dm = MethodType<I,R,Args...>::getMethod(n);
-	if(dm == nullptr){
-		return r;
-	}
-	if(dm == m){
-		return dm->invokeMethod(i,a...);
-	}
-	return r;
-}
 
 	
 	

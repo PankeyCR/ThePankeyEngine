@@ -3,7 +3,6 @@
 #ifndef Annotation_h
 #define Annotation_h
 
-// #include "cppObjectClass.h"
 class cppObjectClass;
 
 class Annotation{

@@ -1,8 +1,12 @@
+
 /*
  * the SimpleApplication is meant to be used when you need to use the guiNode and the rootNode
+ * the DefaultApplication doesnt have guiNode or rootNode
  */
+ 
 #include "Application.h"
 #include "SimpleApplication.h"
+#include "DefaultApplication.h"
 #include "LoopState.h"
 #include "StartState.h"
 #include "TimerState.h"
@@ -10,8 +14,9 @@
  Application *app;
  
 void setup() {
-  Serial.begin(9600);   
+  Serial.begin(9600);
   app = new SimpleApplication();
+//  app = new DefaultApplication();
 
   Serial.println("setup");
   app->getStateManager()->add(new StartState(&Serial));//starts the timer

@@ -14,17 +14,17 @@ void setup() {
   data->setArray2(arr2);
   }
   Serial.println("iterate space 0");
-  iterate(data->iterateSpace(0)){
+  for(Iterator i : data->iterateSpace(0)){
     Serial.print("toString ");Serial.println(data->toString());
     //data->getValue();
   }
   
   Serial.println("full iterate");
-  iterate(data){
+  for(Iterator i : data){
     Serial.print("toString ");Serial.println(data->toString());
   }
   Serial.println("iterate space 1");
-  iterate(data->iterateSpace(1)){
+  for(Iterator i : data->iterateSpace(1)){
     Serial.print("toString ");Serial.println(data->toString());
   }
   

@@ -8,7 +8,7 @@
 class Tick : public cppObject{
   public:
   Tick(){}
-  ~Tick(){}
+  virtual ~Tick(){}
   cppObjectClass* getClass(){
     return Class<Tick>::classType;
   }
@@ -20,7 +20,7 @@ class Tick : public cppObject{
 class Stop : public Tick{
   public:
   Stop(){}
-  ~Stop(){}
+  virtual ~Stop(){}
   cppObjectClass* getClass(){
     return Class<Stop>::classType;
   }
@@ -32,7 +32,7 @@ class Stop : public Tick{
 class Resume : public Stop{
   public:
   Resume(){}
-  ~Resume(){}
+  virtual ~Resume(){}
   cppObjectClass* getClass(){
     return Class<Resume>::classType;
   }
@@ -53,28 +53,28 @@ void loop() {
   cppObject* c = new Stop();
   cppObject* d = new Resume();
   Serial.println("cppObject");
-  Serial.print("a is instanceof cppObject: ");Serial.println(a->instanceof(Class<cppObject>::classType));
-  Serial.print("a is instanceof Tick: ");Serial.println(a->instanceof(Class<Tick>::classType));
-  Serial.print("a is instanceof Stop: ");Serial.println(a->instanceof(Class<Stop>::classType));
-  Serial.print("a is instanceof Resume: ");Serial.println(a->instanceof(Class<Resume>::classType));
+  Serial.print("cppObject is instanceof cppObject: ");Serial.println(a->instanceof(Class<cppObject>::classType));
+  Serial.print("cppObject is instanceof Tick: ");Serial.println(a->instanceof(Class<Tick>::classType));
+  Serial.print("cppObject is instanceof Stop: ");Serial.println(a->instanceof(Class<Stop>::classType));
+  Serial.print("cppObject is instanceof Resume: ");Serial.println(a->instanceof(Class<Resume>::classType));
   Serial.println();
   Serial.println("Tick");
-  Serial.print("b is instanceof cppObject: ");Serial.println(b->instanceof(Class<cppObject>::classType));
-  Serial.print("b is instanceof Tick: ");Serial.println(b->instanceof(Class<Tick>::classType));
-  Serial.print("b is instanceof Stop: ");Serial.println(b->instanceof(Class<Stop>::classType));
-  Serial.print("b is instanceof Resume: ");Serial.println(b->instanceof(Class<Resume>::classType));
+  Serial.print("Tick is instanceof cppObject: ");Serial.println(b->instanceof(Class<cppObject>::classType));
+  Serial.print("Tick is instanceof Tick: ");Serial.println(b->instanceof(Class<Tick>::classType));
+  Serial.print("Tick is instanceof Stop: ");Serial.println(b->instanceof(Class<Stop>::classType));
+  Serial.print("Tick is instanceof Resume: ");Serial.println(b->instanceof(Class<Resume>::classType));
   Serial.println();
   Serial.println("Stop");
-  Serial.print("c is instanceof cppObject: ");Serial.println(c->instanceof(Class<cppObject>::classType));
-  Serial.print("c is instanceof Tick: ");Serial.println(c->instanceof(Class<Tick>::classType));
-  Serial.print("c is instanceof Stop: ");Serial.println(c->instanceof(Class<Stop>::classType));
-  Serial.print("c is instanceof Resume: ");Serial.println(c->instanceof(Class<Resume>::classType));
+  Serial.print("Stop is instanceof cppObject: ");Serial.println(c->instanceof(Class<cppObject>::classType));
+  Serial.print("Stop is instanceof Tick: ");Serial.println(c->instanceof(Class<Tick>::classType));
+  Serial.print("Stop is instanceof Stop: ");Serial.println(c->instanceof(Class<Stop>::classType));
+  Serial.print("Stop is instanceof Resume: ");Serial.println(c->instanceof(Class<Resume>::classType));
   Serial.println();
   Serial.println("Resume");
-  Serial.print("d is instanceof cppObject: ");Serial.println(d->instanceof(Class<cppObject>::classType));
-  Serial.print("d is instanceof Tick: ");Serial.println(d->instanceof(Class<Tick>::classType));
-  Serial.print("d is instanceof Stop: ");Serial.println(d->instanceof(Class<Stop>::classType));
-  Serial.print("d is instanceof Resume: ");Serial.println(d->instanceof(Class<Resume>::classType));
+  Serial.print("Resume is instanceof cppObject: ");Serial.println(d->instanceof(Class<cppObject>::classType));
+  Serial.print("Resume is instanceof Tick: ");Serial.println(d->instanceof(Class<Tick>::classType));
+  Serial.print("Resume is instanceof Stop: ");Serial.println(d->instanceof(Class<Stop>::classType));
+  Serial.print("Resume is instanceof Resume: ");Serial.println(d->instanceof(Class<Resume>::classType));
   delete a;
   delete b;
   delete c;

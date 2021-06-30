@@ -13,9 +13,9 @@ void loop() {
   Serial.println("start");
   Serial.println(freeMemory());
   fx = new CuadraticFunction<float>();
-  fx->setVariable(0, 1);
-  fx->setVariable(1, 0);
-  fx->setVariable(2, 0);
+  fx->set(0, 1);
+  fx->set(1, 0);
+  fx->set(2, 0);
   Serial.println(fx->f(2));
   
   fxyz = new CuadraticFunction<float,float,float>();

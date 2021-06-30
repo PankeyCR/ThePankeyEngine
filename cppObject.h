@@ -1,9 +1,9 @@
 
-
 #ifndef cppObject_h
 #define cppObject_h
 
 #include "Arduino.h"
+#include "Method.h"
 #include "cppObjectClass.h"
 #include "ClassType.h"
 

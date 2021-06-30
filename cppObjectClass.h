@@ -4,6 +4,7 @@
 
 #include "Arduino.h"
 #include "Annotation.h"
+#include "RawList.h"
 #include "Method.h"
 
 class cppObjectClass{	

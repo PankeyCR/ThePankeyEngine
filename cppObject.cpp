@@ -30,7 +30,7 @@
 		return false;
 	}
 	bool cppObject::instanceof(cppObjectClass* cls){
-		return cls == this->getClass();
+		return cls == this->getClass() || cls == Class<cppObject>::classType;
 	}
 	cppObject* cppObject::clone(void){
 		return this->clone(true);
