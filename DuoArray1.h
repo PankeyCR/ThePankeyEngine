@@ -90,7 +90,7 @@ class DuoArray1 : public DataSet<T>{
 			return -1;
 		}
 		
-		virtual T *getPointer(){
+		virtual T* getPointer(){
 			if(this->m_space == 0){
 				return &x1[xP1];
 			}
@@ -128,84 +128,12 @@ class DuoArray1 : public DataSet<T>{
 			return -1;
 		}
 		
-		virtual void setIteration(int iter){
-			this->iterateCount = iter;	
-			if(this->m_iterateSpace == -1){
-				if(iter >= xS1 + xS2){
-					return;
-				}
-				this->xP1 = iter;
-				this->xP2 = iter-xS1;
-				return;				
-			}
-			if(this->m_iterateSpace >= 2 || this->m_iterateDimention >= 1){
-				return;				
-			}
-			if(this->m_iterateSpace == 0){
-				this->m_space = 0;
-				if(iter < xS1){
-					this->xP1 = iter;
-				}
-				return;
-			}
-			if(this->m_iterateSpace == 1){
-				this->m_space = 1;
-				if(iter < xS2){
-					this->xP2 = iter;
-				}
-				return;
-			}
-			this->m_dimention = this->m_iterateDimention;
-			this->m_iterateSpace = -1;
-			this->m_iterateDimention = -1;
-		}
-		
 		int getIterationSize(){
-			if(this->m_iterateSpace >= 2 || this->m_iterateDimention >= 1){
-				return 0;				
-			}
-			if(this->m_iterateSpace == 0){
-				this->fullSize = xS1;
-				this->m_iterateSpace = -1;
-				this->m_iterateDimention = -1;
-				return this->fullSize;
-			}
-			if(this->m_iterateSpace == 1){
-				this->fullSize = xS2;
-				this->m_iterateSpace = -1;
-				this->m_iterateDimention = -1;
-				return this->fullSize;
-			}
-			this->m_iterateSpace = -1;
-			this->m_iterateDimention = -1;
-			this->fullSize = xS1 + xS2;
-			return this->fullSize;
+			return xS1 + xS2;
 		}
 		
-		virtual void last(){
-			this->iterateCount--;
-			this->xP1--;
-			this->xP2--;
-			this->xP1 = this->xP1 * (this->xP1 < xS1);
-			this->xP2 = this->xP2 * (this->xP2 < xS2);
-			this->m_space = this->iterateCount >= xS1;
-			this->m_iterateSpace = -1;
-			this->m_iterateDimention = -1;
-		}
-		
-		virtual void next(){
-			this->iterateCount++;
-			this->xP1++;
-			this->xP2++;
-			this->xP1 = this->xP1 * (this->xP1 < xS1);
-			this->xP2 = this->xP2 * (this->xP2 < xS2);
-			this->m_space = this->iterateCount >= xS1;
-			this->m_iterateSpace = -1;
-			this->m_iterateDimention = -1;
-		}
-		
-		virtual String getClassName(){
-			return "DuoArray1";
+		virtual cppObjectClass* getClass(){
+			return Class<DuoArray1<T,xS2,xS1>>::classType;
 		}
 		
 		virtual String toString(){
@@ -213,7 +141,7 @@ class DuoArray1 : public DataSet<T>{
 		}
 		
 		virtual DataSet<T>* clone(){
-			DuoArray1<T,xS2,xS1> *nset = new DuoArray1<T,xS2,xS1>();
+			DuoArray1<T,xS2,xS1>* nset = new DuoArray1<T,xS2,xS1>();
 			nset->setArray1(this->x1);
 			nset->setArray2(this->x2);
 			return nset;

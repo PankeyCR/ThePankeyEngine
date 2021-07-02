@@ -46,7 +46,7 @@ class CuadraticFunction : public ModifiableFunction<float,args...>{
 			return 10;
 		}
 		
-		virtual void setConstante(int position, float var){
+		virtual void set(int position, float var){
 			if(position == 0){
 				a = var;
 			}

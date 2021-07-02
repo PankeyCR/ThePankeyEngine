@@ -16,6 +16,7 @@ class Iterator{
 		virtual int getIteration();
 		virtual void setIterationSize(int size);
 		virtual int getIterationSize();
+		virtual void refreshIteration();
 		virtual bool last();
 		virtual bool next();
 		virtual Iterator begin();

@@ -20,23 +20,15 @@
 	
 	Iterator::Iterator(Iterator* i){
 		this->iR = i;
-		this->iterateCount = 0;
+		this->iterateCount = i->iterateCount;
 		this->iterateSize = i->iterateSize;
 	}
 	
 	Iterator::Iterator(const Iterator& i){
-		// Serial.println("contructor");
-		// Serial.println(i.iterateCount);
 		this->iR = i.iR;
 		this->iterateCount = i.iterateCount;
 		this->iterateSize = i.iterateSize;
 	}
-	
-	// Iterator::Iterator(Iterator&& i){
-		// this->iR = i;
-		// this->iterateCount = 0;
-		// this->iterateSize = i.getIteration();
-	// }
 
 	Iterator::~Iterator(){
 		
@@ -62,6 +54,13 @@
 			return this->iR->getIterationSize();
 		}
 		return this->iterateSize;
+	}
+	
+	void Iterator::refreshIteration(){
+		if(this->iR != nullptr){
+			this->iR->setIteration(0);
+		}
+		this->iterateCount = 0;
 	}
 	
 	bool Iterator::last(){
@@ -109,12 +108,5 @@
 		this->iterateSize = i.iterateSize;
 		return *this;
 	}
-	
-	// Iterator& Iterator::operator =(Iterator&& i){
-		// this->iR = i;
-		// this->iterateCount = 0;
-		// this->iterateSize = i.getIteration();
-		// return i;
-	// }
 	
 #endif 
