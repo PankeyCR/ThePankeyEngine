@@ -6,6 +6,9 @@
 #include "SerialServer.h"
 #include "SerialPort.h"
 #include "Message.h"
+
+namespace ame{
+	
 class SerialMessageState;
 
 class ServerProtocol{	
@@ -29,4 +32,7 @@ class ServerProtocol{
 	protected:
 		SerialMessageState* serialState = nullptr;
 };
+
+}
+
 #endif 

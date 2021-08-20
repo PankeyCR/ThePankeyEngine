@@ -4,12 +4,15 @@
 
 #include "Arduino.h"
 
+namespace ame{
+
 class Bluetooth {
     public:
       Bluetooth();
       String AtMode_List(int atmode_list);
-    private:  
-
-    
+    private:
 };
+
+}
+
 #endif 

@@ -4,6 +4,8 @@
 #define trilean_h
 #define unknown -1
 
+namespace ame{
+	
 class trilean{
 	protected:
 		
@@ -29,7 +31,8 @@ class trilean{
 		virtual bool operator!=(const int& b);
 		virtual bool operator!=(const float& b);
 		virtual bool operator!=(const double& b);
-		
 };
+
+}
 
 #endif 

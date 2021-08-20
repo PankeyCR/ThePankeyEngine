@@ -4,66 +4,66 @@
 
 #include "Iterator.h"
 
-	Iterator::Iterator(){
+	ame::Iterator::Iterator(){
 		
 	}
 	
-	Iterator::Iterator(int size){
+	ame::Iterator::Iterator(int size){
 		this->iterateCount = 0;
 		this->iterateSize = size;
 	}
 	
-	Iterator::Iterator(int count, int size){
+	ame::Iterator::Iterator(int count, int size){
 		this->iterateCount = count;
 		this->iterateSize = size;
 	}
 	
-	Iterator::Iterator(Iterator* i){
+	ame::Iterator::Iterator(ame::Iterator* i){
 		this->iR = i;
 		this->iterateCount = i->iterateCount;
 		this->iterateSize = i->iterateSize;
 	}
 	
-	Iterator::Iterator(const Iterator& i){
+	ame::Iterator::Iterator(const ame::Iterator& i){
 		this->iR = i.iR;
 		this->iterateCount = i.iterateCount;
 		this->iterateSize = i.iterateSize;
 	}
 
-	Iterator::~Iterator(){
+	ame::Iterator::~Iterator(){
 		
 	}
 	
-	void Iterator::setIteration(int iter){
+	void ame::Iterator::setIteration(int iter){
 		this->iterateCount = iter;
 	}
 	
-	int Iterator::getIteration(){
+	int ame::Iterator::getIteration(){
 		return this->iterateCount;
 	}
 	
-	void Iterator::setIterationSize(int size){
+	void ame::Iterator::setIterationSize(int size){
 		if(this->iR != nullptr){
 			this->iR->setIterationSize(size);
 		}
 		this->iterateSize = size;
 	}
 	
-	int Iterator::getIterationSize(){
+	int ame::Iterator::getIterationSize(){
 		if(this->iR != nullptr){
 			return this->iR->getIterationSize();
 		}
 		return this->iterateSize;
 	}
 	
-	void Iterator::refreshIteration(){
+	void ame::Iterator::refreshIteration(){
 		if(this->iR != nullptr){
 			this->iR->setIteration(0);
 		}
 		this->iterateCount = 0;
 	}
 	
-	bool Iterator::last(){
+	bool ame::Iterator::last(){
 		if(this->iterateCount < 0){
 			return false;
 		}
@@ -71,7 +71,7 @@
 		return true;
 	}
 	
-	bool Iterator::next(){
+	bool ame::Iterator::next(){
 		if(this->iterateCount > this->getIterationSize()){
 			return false;
 		}
@@ -79,30 +79,30 @@
 		return true;
 	}
 	
-	Iterator Iterator::begin(){
-		return Iterator(this);
+	ame::Iterator ame::Iterator::begin(){
+		return ame::Iterator(this);
 	}
 	
-	Iterator Iterator::end(){
-		return Iterator(this);
+	ame::Iterator ame::Iterator::end(){
+		return ame::Iterator(this);
 	}
 	
-	Iterator Iterator::operator *(){
-		return Iterator(this->getIteration(),this->getIterationSize());
+	ame::Iterator ame::Iterator::operator *(){
+		return ame::Iterator(this->getIteration(),this->getIterationSize());
 	}
 	
-	void Iterator::operator ++(){
+	void ame::Iterator::operator ++(){
 		this->next();
 	}
 	
-	bool Iterator::operator !=(Iterator i){
+	bool ame::Iterator::operator !=(ame::Iterator i){
 		if(this->getIteration() < i.getIterationSize()){
 			return true;
 		}
 		return false;
 	}
 	
-	Iterator& Iterator::operator =(const Iterator& i){
+	ame::Iterator& ame::Iterator::operator =(const ame::Iterator& i){
 		this->iR = i.iR;
 		this->iterateCount = i.iterateCount;
 		this->iterateSize = i.iterateSize;

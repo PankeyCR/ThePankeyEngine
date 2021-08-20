@@ -3,6 +3,8 @@
 #include "Event.h"
 #include "MemoryFree.h"
 
+using namespace ame;
+
 Event<String>* event;
 
 int deletememory;

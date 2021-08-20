@@ -5,7 +5,7 @@
 
 #include "Display7Segments.h"
 
-	Display7Segments::Display7Segments(int A,int B,int C,int D,int E,int F,int G){
+	ame::Display7Segments::Display7Segments(int A,int B,int C,int D,int E,int F,int G){
 		a=A;
 		b=B;
 		c=C;
@@ -22,7 +22,7 @@
 		pinMode(G,OUTPUT);	
 	}
 	
-	Display7Segments::Display7Segments(int A,int B,int C,int D,int E,int F,int G,int point){
+	ame::Display7Segments::Display7Segments(int A,int B,int C,int D,int E,int F,int G,int point){
 		a=A;
 		b=B;
 		c=C;
@@ -40,11 +40,11 @@
 		pinMode(G,OUTPUT);
 		pinMode(point,OUTPUT);		
 	}
-	Display7Segments::~Display7Segments(){
+	ame::Display7Segments::~Display7Segments(){
 		
 	}
 	
-	void Display7Segments::setDisplay(bool pinA,bool pinB,bool pinC,
+	void ame::Display7Segments::setDisplay(bool pinA,bool pinB,bool pinC,
 								 bool pinD,bool pinE,bool pinF,bool pinG){			
 		digitalWrite(a,pinA);						
 		digitalWrite(b,pinB);			
@@ -55,65 +55,65 @@
 		digitalWrite(g,pinG);
 	}
 	
-	void Display7Segments::setDisplayPoint(bool point){
+	void ame::Display7Segments::setDisplayPoint(bool point){
 		digitalWrite(p,point);
 	}
 	
-	int Display7Segments::getDisplay(){
+	int ame::Display7Segments::getDisplay(){
 		return digito;
 	}
 	
-	void Display7Segments::Number0(){
+	void ame::Display7Segments::Number0(){
 		/////////////////a,b,c,d,e,f,g
 		this->setDisplay(1,1,1,1,1,1,0);			
 	}
 	
-	void Display7Segments::Number1(){
+	void ame::Display7Segments::Number1(){
 		/////////////////a,b,c,d,e,f,g
 		this->setDisplay(0,1,1,0,0,0,0);			
 	}
 	
-	void Display7Segments::Number2(){
+	void ame::Display7Segments::Number2(){
 		/////////////////a,b,c,d,e,f,g
 		this->setDisplay(1,1,0,1,1,0,1);			
 	}
 	
-	void Display7Segments::Number3(){
+	void ame::Display7Segments::Number3(){
 		/////////////////a,b,c,d,e,f,g
 		this->setDisplay(1,1,1,1,0,0,1);			
 	}
 	
-	void Display7Segments::Number4(){
+	void ame::Display7Segments::Number4(){
 		/////////////////a,b,c,d,e,f,g
 		this->setDisplay(0,1,1,0,0,1,1);			
 	}
 	
-	void Display7Segments::Number5(){
+	void ame::Display7Segments::Number5(){
 		/////////////////a,b,c,d,e,f,g
 		this->setDisplay(1,0,1,1,0,1,1);			
 	}
 	
-	void Display7Segments::Number6(){
+	void ame::Display7Segments::Number6(){
 		/////////////////a,b,c,d,e,f,g
 		this->setDisplay(1,0,1,1,1,1,1);			
 	}
 	
-	void Display7Segments::Number7(){
+	void ame::Display7Segments::Number7(){
 		/////////////////a,b,c,d,e,f,g
 		this->setDisplay(1,1,1,0,0,0,0);			
 	}
 	
-	void Display7Segments::Number8(){
+	void ame::Display7Segments::Number8(){
 		/////////////////a,b,c,d,e,f,g
 		this->setDisplay(1,1,1,1,1,1,1);			
 	}
 	
-	void Display7Segments::Number9(){
+	void ame::Display7Segments::Number9(){
 		/////////////////a,b,c,d,e,f,g
 		this->setDisplay(1,1,1,1,0,1,1);			
 	}
 	
-	void Display7Segments::setDisplay(int digit){
+	void ame::Display7Segments::setDisplay(int digit){
 		this->digito = digit;
 		if(digit == 0){
 			this->Number0();

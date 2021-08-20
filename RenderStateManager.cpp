@@ -5,24 +5,24 @@
 #include "RenderStateManager.h"
 	
 	
-	RenderStateManager::RenderStateManager(){
+	ame::RenderStateManager::RenderStateManager(){
 		this->appStateRenderList = new PrimitiveList<RenderState>();
 		this->renderManager = new DefaultRenderManager();
 	}
 	
-	RenderStateManager::~RenderStateManager(){
+	ame::RenderStateManager::~RenderStateManager(){
 		delete this->appStateRenderList;
 		delete this->renderManager;
 	}
 	
-	void RenderStateManager::setApplication(Application *app){
+	void ame::RenderStateManager::setApplication(Application *app){
 		this->managerApp = app;
 		if(this->renderManager != nullptr){
 			this->renderManager->initialize(this->managerApp);
 		}
 	}
 	
-	AppState *RenderStateManager::add(AppState* state){
+	ame::AppState *ame::RenderStateManager::add(AppState* state){
 		this->appStateList->addPointer(state);
 		if(this->managerApp != nullptr){
 			state->initialize(this->managerApp);
@@ -34,7 +34,7 @@
 		return state;
 	}
 	
-	AppState* RenderStateManager::remove(cppObjectClass* cls){
+	ame::AppState* ame::RenderStateManager::remove(cppObjectClass* cls){
 		AppState *appstate = nullptr;
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			if(this->appStateList->getByPosition(x)->getClass() == cls){
@@ -52,7 +52,7 @@
 		return appstate;
 	}
 	
-	AppState* RenderStateManager::remove(String appstateId, cppObjectClass* cls){
+	ame::AppState* ame::RenderStateManager::remove(String appstateId, cppObjectClass* cls){
 		AppState *appstate = nullptr;
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			if(this->appStateList->getByPosition(x)->getClass() == cls &&
@@ -71,7 +71,7 @@
 		return appstate;
 	}
 	
-	void RenderStateManager::removeAll(){
+	void ame::RenderStateManager::removeAll(){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			this->appStateList->getByPosition(x)->onDisable();
 		}
@@ -79,7 +79,7 @@
 		this->appStateRenderList->reset();
 	}
 	
-	void RenderStateManager::removeDeleteAll(){
+	void ame::RenderStateManager::removeDeleteAll(){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			this->appStateList->getByPosition(x)->onDisable();
 		}
@@ -87,7 +87,7 @@
 		this->appStateList->resetDelete();
 	}
 	
-	void RenderStateManager::update(){
+	void ame::RenderStateManager::update(){
 		DefaultStateManager::update();
 		for(int x=0; x < appStateRenderList->getPosition(); x++){
 			RenderState* state = appStateRenderList->getByPosition(x);
@@ -95,14 +95,14 @@
 		}
 	}
 	
-	cppObjectClass* RenderStateManager::getClass(){
+	ame::cppObjectClass* ame::RenderStateManager::getClass(){
 		return Class<RenderStateManager>::classType;
 	}
 	
-	String RenderStateManager::toString(){
+	String ame::RenderStateManager::toString(){
 		return "RenderStateManager";
 	}
-	bool RenderStateManager::instanceof(cppObjectClass* cls){
+	bool ame::RenderStateManager::instanceof(cppObjectClass* cls){
 		return cls == Class<RenderStateManager>::classType || DefaultStateManager::instanceof(cls);
 	}
     

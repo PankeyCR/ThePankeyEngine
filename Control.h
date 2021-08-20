@@ -5,6 +5,8 @@
 #include "cppObject.h"
 #include "RenderManager.h"
 
+namespace ame{
+
 class Control : public cppObject{	
     public:
 		Control(){
@@ -12,11 +14,13 @@ class Control : public cppObject{
 		virtual ~Control(){
 		}
 		virtual void operator=(const Control& b){}
-		virtual bool operator==(Control b){return this->getClassName()==b.getClassName();}
-		virtual bool operator!=(Control b){return this->getClassName()!=b.getClassName();}
+		virtual bool operator==(Control b){return this->getClass()==b.getClass();}
+		virtual bool operator!=(Control b){return this->getClass()!=b.getClass();}
 		
-		virtual bool instanceof(String name){return name == "Control" || name == "cppObject";}
-		virtual String getClassName(){return "Control";}
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<Control>::classType || cppObject::instanceof(cls);
+		}
+		virtual cppObjectClass* getClass(){return Class<Control>::classType;}
 		virtual String toString(){return "Control";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
@@ -35,4 +39,7 @@ class Control : public cppObject{
 		}
 	protected:
 };
+
+}
+
 #endif 

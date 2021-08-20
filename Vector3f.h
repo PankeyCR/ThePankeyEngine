@@ -5,6 +5,8 @@
 #include "Arduino.h"
 #include "cppObject.h"
 
+namespace ame{
+
 class Vector3f : public cppObject{
     private:
 	
@@ -172,6 +174,8 @@ class Vector3f : public cppObject{
 		Vector3f operator/=(const int& a);
 		Vector3f operator/=(const double& a);
 };
+
+}
 
 
 #endif 

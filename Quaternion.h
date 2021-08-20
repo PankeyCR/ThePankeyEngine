@@ -8,6 +8,7 @@
 #include "Matrix3f.h"
 #include "Matrix4f.h"
 
+namespace ame{
 
 class Quaternion : public cppObject{	
     private:
@@ -164,6 +165,8 @@ class Quaternion : public cppObject{
 		Quaternion operator*=(const float a[4]);
 		// Quaternion operator/=(const Quaternion& a);
 		// Quaternion operator/=(const float [4]);
-		
 };
+
+}
+
 #endif 

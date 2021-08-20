@@ -14,6 +14,7 @@
 #define INV_PI 1.0f / PI
 #define INV_TWO_PI 1.0f / TWO_PI
 
+namespace ame{
 
 class FastMonkeyMath{
 	private:
@@ -94,7 +95,8 @@ class FastMonkeyMath{
     static bool approximateEquals(float a, float b);
     static float convertHalfToFloat(short half);
 	static short convertFloatToHalf(float flt);
-  
 };
+
+}
 
 #endif 

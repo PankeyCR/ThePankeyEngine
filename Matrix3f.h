@@ -10,6 +10,8 @@
 //class Quaternion;
 //class Matrix4f;
 
+namespace ame{
+
 class Matrix3f {
     private:
 	
@@ -112,4 +114,7 @@ class Matrix3f {
 		// Quaternion operator/=(const float [4]);
 	
 };
+
+}
+
 #endif 

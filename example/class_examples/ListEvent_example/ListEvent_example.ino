@@ -2,6 +2,8 @@
 #include "ListEvent.h"
 #include "Event.h"
 
+using namespace ame;
+
 Event<String>* event;
 
 void setup() {

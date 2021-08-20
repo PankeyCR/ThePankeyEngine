@@ -2,6 +2,8 @@
 #include "SimpleServo.h"
 #include "SerialController.h"
 
+using namespace ame;
+
 SimpleServo *servos;
 SerialController *serial;
 String buff;  

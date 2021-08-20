@@ -5,6 +5,8 @@
 
 #include "Processing.h"
 
+namespace ame{
+
 template<class P, class V>
 class ProcessEntry{
 	public:
@@ -17,7 +19,8 @@ class ProcessEntry{
 	protected:
 		P key;
 		Processing<V>* value;
-	
 };
+
+}
 
 #endif 

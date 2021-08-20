@@ -6,8 +6,11 @@
 #include "AppStateManager.h"
 #include "AppSettings.h"
 #include "TimeControl.h"
+#include "MemoryPool.h"
 #include "cppObject.h"
 #include "Listener.h"
+
+namespace ame{
 
 class Application : public cppObject{
     public:
@@ -30,13 +33,22 @@ class Application : public cppObject{
 		virtual AssetManager *getAssetManager(){
 			
 		}*/
+		
 		virtual Listener* setListener(Listener* listener)=0;
 		
 		virtual Listener* getListener()=0;
+		
+		virtual MemoryPool* setMemoryPool(MemoryPool* memory)=0;
+		
+		virtual MemoryPool* getMemoryPool()=0;
+		
+		virtual void initialize(){}
 		
 		virtual void update()=0;
     
 	private:
 };
+
+}
 
 #endif 

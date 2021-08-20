@@ -7,6 +7,8 @@
 #include "Iterator.h"
 #include "Function.h"
 
+namespace ame{
+
 template<class T, class... args>
 class ModifiableFunction : public Function<T, args...>, public Iterator{
 	public:
@@ -57,9 +59,8 @@ class ModifiableFunction : public Function<T, args...>, public Iterator{
 		PrimitiveList<T> constants;
 		PrimitiveList<T> multivariables;
 		PrimitiveList<T> modifiablevariables;
-		
-		
-	
 };
+
+}
 
 #endif 

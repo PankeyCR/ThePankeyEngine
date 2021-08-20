@@ -5,6 +5,8 @@
 #include "Function.h"
 #include "FunctionMetric.h"
 
+namespace ame{
+
 template<class T,class... args>
 class FunctionProtocol{
 	public:
@@ -35,5 +37,7 @@ class FunctionProtocol{
 		
 	protected:
 };
+
+}
 
 #endif 

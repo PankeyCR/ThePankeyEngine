@@ -8,6 +8,8 @@
 #include "MonkeyTime.h"
 #include "TimeRecorder.h"
 
+namespace ame{
+
 class SolenoidLock : public DelaySensor{
 	protected:
 		
@@ -21,7 +23,8 @@ class SolenoidLock : public DelaySensor{
 		virtual SolenoidLock* timecheck(TimeCheck tm);
 		virtual SolenoidLock* close();
 		virtual SolenoidLock* open();
-		
 };
+
+}
 
 #endif 

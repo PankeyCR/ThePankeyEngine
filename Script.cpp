@@ -5,25 +5,25 @@
 #include "Script.h"
 
 	
-	Script::Script(const String& name, List<Statement>* s){
+	ame::Script::Script(const String& name, ame::List<Statement>* s){
 	}
 	
-	Script::Script(const char* name, List<Statement>* s){
+	ame::Script::Script(const char* name, ame::List<Statement>* s){
 	}
 	
-	Script::~Script(){
+	ame::Script::~Script(){
 	}
 	
-	void Script::run(){
+	void ame::Script::run(){
 		
 	}
 	
-	String Script::name(){
+	String ame::Script::name(){
 		return m_name;
 	}
-	void Script::operator=(const Script& script){}
-	bool Script::operator==(const Script& script){return false;}
-	bool Script::operator!=(const Script& script){return false;}
+	void ame::Script::operator=(const ame::Script& sct){}
+	bool ame::Script::operator==(const ame::Script& sct){return false;}
+	bool ame::Script::operator!=(const ame::Script& sct){return false;}
 	
 	
 #endif 

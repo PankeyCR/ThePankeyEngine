@@ -1,6 +1,8 @@
 
 #include "SerialController.h"
 
+using namespace ame;
+
 SerialController *serial;
 String buff;  
 

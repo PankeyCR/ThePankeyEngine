@@ -3,6 +3,8 @@
 #ifndef MachineState_h
 #define MachineState_h
 
+namespace ame{
+
 template<class T>
 class StateMachineSystem;
 
@@ -17,5 +19,7 @@ class MachineState{
 		virtual bool operator!=(MachineState b){return true;}
 	protected:
 };
+
+}
 
 #endif 

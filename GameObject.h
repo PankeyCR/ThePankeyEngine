@@ -7,6 +7,8 @@
 #include "PrimitiveList.h"
 #include "List.h"
 
+namespace ame{
+
 class GameObject : public GameOn{
     protected:
 		List<GameOn>* childs = nullptr;
@@ -36,5 +38,7 @@ class GameObject : public GameOn{
 		virtual cppObjectClass* getClass();
 		virtual String toString();
 };
+
+}
 
 #endif 

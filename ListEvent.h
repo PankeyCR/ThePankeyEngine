@@ -7,6 +7,8 @@
 #include "ArrayList.h"
 #include "List.h"
 
+namespace ame{
+
 template<class T>
 class ListEvent : public Event<T>{
 	protected:
@@ -19,7 +21,8 @@ class ListEvent : public Event<T>{
 		virtual void event(T c);
 		virtual void add(EventMethod c);
 		virtual void add(T name, EventMethod c);
-		
 };
+
+}
 
 #endif 

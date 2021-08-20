@@ -3,6 +3,7 @@
 #ifndef AbstractTriangle_h
 #define AbstractTriangle_h
 
+namespace ame{
 
 class AbstractTriangle : public Collidable {
     public:

@@ -5,6 +5,8 @@
 #include "Arduino.h"
 #include "Annotation.h"
 
+namespace ame{
+
 template<class A,class R,class T,class P>
 class ClassEvent : public Annotation<A,R,T,P>{
 	protected:
@@ -205,5 +207,7 @@ class ClassEvent : public Annotation<A,R,T,P>{
 		}
 		
 };
+
+}
 
 #endif 

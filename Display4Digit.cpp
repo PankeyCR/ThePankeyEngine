@@ -5,7 +5,7 @@
 
 #include "Display4Digit.h"
 
-		Display4Digit::Display4Digit(int A,int B,int C,int D,int E,int F,int G,int point,
+		ame::Display4Digit::Display4Digit(int A,int B,int C,int D,int E,int F,int G,int point,
 										int digit1,int digit2,int digit3,int digit4){
 			a=A;
 			b=B;
@@ -33,7 +33,7 @@
 			pinMode(digit4,OUTPUT);		
 		}
 		
-		void Display4Digit::update(){
+		void ame::Display4Digit::update(){
 			actualDigit(count);
 			if(count == 0){
 				setNumber(num1);				
@@ -53,7 +53,7 @@
 			}
 		}
 		
-		void Display4Digit::setDigit(bool pinA,bool pinB,bool pinC,
+		void ame::Display4Digit::setDigit(bool pinA,bool pinB,bool pinC,
 								     bool pinD,bool pinE,bool pinF,bool pinG){			
 			digitalWrite(a,pinA);						
 			digitalWrite(b,pinB);			
@@ -64,7 +64,7 @@
 			digitalWrite(g,pinG);
 		}
 		
-		void Display4Digit::actualDigit(int num){
+		void ame::Display4Digit::actualDigit(int num){
 			if(num == 0){	
 				digitalWrite(d1,HIGH);		
 				digitalWrite(d2,LOW);		
@@ -91,7 +91,7 @@
 			}
 		}
 		
-		void Display4Digit::setNumber(int num){
+		void ame::Display4Digit::setNumber(int num){
 			if(num == 0){
 				Number0();
 			}
@@ -124,47 +124,47 @@
 			}
 		}
 		
-		void Display4Digit::Number0(){
+		void ame::Display4Digit::Number0(){
 			setDigit(0,0,0,0,0,0,1);			
 		}
 		
-		void Display4Digit::Number1(){
+		void ame::Display4Digit::Number1(){
 			setDigit(1,0,0,1,1,1,1);			
 		}
 		
-		void Display4Digit::Number2(){
+		void ame::Display4Digit::Number2(){
 			setDigit(0,0,1,0,0,1,0);			
 		}
 		
-		void Display4Digit::Number3(){
+		void ame::Display4Digit::Number3(){
 			setDigit(0,0,0,0,1,1,0);			
 		}
 		
-		void Display4Digit::Number4(){
+		void ame::Display4Digit::Number4(){
 			setDigit(0,0,0,0,0,0,0);			
 		}
 		
-		void Display4Digit::Number5(){
+		void ame::Display4Digit::Number5(){
 			setDigit(0,0,0,0,0,0,0);			
 		}
 		
-		void Display4Digit::Number6(){
+		void ame::Display4Digit::Number6(){
 			setDigit(0,0,0,0,0,0,0);			
 		}
 		
-		void Display4Digit::Number7(){
+		void ame::Display4Digit::Number7(){
 			setDigit(0,0,0,0,0,0,0);			
 		}
 		
-		void Display4Digit::Number8(){
+		void ame::Display4Digit::Number8(){
 			setDigit(0,0,0,0,0,0,0);			
 		}
 		
-		void Display4Digit::Number9(){
+		void ame::Display4Digit::Number9(){
 			setDigit(0,0,0,0,0,0,0);			
 		}
 		
-		void Display4Digit::setDigit(int digit,int num){
+		void ame::Display4Digit::setDigit(int digit,int num){
 			if(digit == 0){
 				num1 = num;
 			}
@@ -179,7 +179,7 @@
 			}		
 		}
 		
-		void Display4Digit::setTime(int hour,int min){
+		void ame::Display4Digit::setTime(int hour,int min){
 			if (hour<10){
 				num1 = 0;
 				num2 = hour;

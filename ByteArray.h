@@ -7,6 +7,7 @@
 #include "PrimitiveList.h"
 #include "Printable.h"
 
+namespace ame{
 
 class ByteArray : public PrimitiveList<byte> , public Printable{
 public:
@@ -36,8 +37,8 @@ size_t printTo(Print& p) const{
 	}
 }
 		
-virtual String getClassName(){
-	return "ByteArray";
+virtual cppObjectClass* getClass(){
+	return Class<ByteArray>::classType;
 }
 
 virtual String toString(){
@@ -233,6 +234,9 @@ virtual ByteArray getByteArray(int start, int end) const {
 	}
 	return array;
 }
+
 };
+
+}
 
 #endif

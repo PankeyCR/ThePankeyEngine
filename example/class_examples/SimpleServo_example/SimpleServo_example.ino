@@ -2,6 +2,8 @@
 #include "SimpleServo.h"
 #include "MemoryFree.h"
 
+using namespace ame;
+
 SimpleServo *servos;
 
 void setup() {

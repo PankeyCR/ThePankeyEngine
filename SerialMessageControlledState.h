@@ -5,7 +5,6 @@
 
 #include "AppState.h"
 #include "Arduino.h"
-#include "BaseInvoke.h"
 #include "SerialMessageState.h"
 
 #ifdef SerialMessageControlledStateLogApp
@@ -15,15 +14,20 @@
 	#define SerialMessageControlledStateLog(name,method,type,mns)
 #endif
 
-class SerialMessageControlledState : public AppState , public BaseInvoke{
+namespace ame{
+
+class SerialMessageControlledState : public AppState{
     public:
 		SerialMessageControlledState(){}
 		virtual ~SerialMessageControlledState(){}
-		bool instanceof(cppObjectClass* cls){return cls == Class<SerialMessageControlledState>::classType || AppState::instanceof(cls);}
+		bool instanceof(cppObjectClass* cls){
+			return cls == Class<SerialMessageControlledState>::classType || AppState::instanceof(cls);
+		}
 		cppObjectClass* getClass(){return Class<SerialMessageControlledState>::classType;}
 		
 		void initialize(Application *a){
 			app = a;
+			serialState = (SerialMessageState*)app->getStateManager()->get(Class<SerialMessageState>::classType);
 		}
 		
 		Application* getApplication(){return app;}
@@ -32,17 +36,22 @@ class SerialMessageControlledState : public AppState , public BaseInvoke{
 			if(app == nullptr){
 				return nullptr;
 			}
-			return (SerialMessageState*)app->getStateManager()->get(Class<SerialMessageState>::classType);
+			if(serialState == nullptr){
+				serialState = (SerialMessageState*)app->getStateManager()->get(Class<SerialMessageState>::classType);
+			}
+			return serialState;
 		}
 		
 		virtual void send(String mns){
 			if(app == nullptr){
 				return;
 			}
-			if(app->getStateManager()->get(Class<SerialMessageState>::classType) == nullptr){
-				return;
+			if(serialState == nullptr){
+				serialState = (SerialMessageState*)app->getStateManager()->get(Class<SerialMessageState>::classType);
+				if(serialState == nullptr){
+					return;
+				}
 			}
-			SerialMessageState* serialState = (SerialMessageState*)app->getStateManager()->get(Class<SerialMessageState>::classType);
 			serialState->send(mns);
 		}
 		
@@ -50,14 +59,19 @@ class SerialMessageControlledState : public AppState , public BaseInvoke{
 			if(app == nullptr){
 				return;
 			}
-			if(app->getStateManager()->get(Class<SerialMessageState>::classType) == nullptr){
-				return;
+			if(serialState == nullptr){
+				serialState = (SerialMessageState*)app->getStateManager()->get(Class<SerialMessageState>::classType);
+				if(serialState == nullptr){
+					return;
+				}
 			}
-			SerialMessageState* serialState = (SerialMessageState*)app->getStateManager()->get(Class<SerialMessageState>::classType);
 			serialState->send(name, mns);
 		}
 	protected:		
 		Application* app = nullptr;
+		SerialMessageState* serialState = nullptr;
 };
+
+}
 
 #endif 

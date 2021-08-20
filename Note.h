@@ -3,12 +3,9 @@
 #ifndef Note_h
 #define Note_h
 
-#include "Arduino.h"
-#include "List.h"
-#include "ArrayList.h"
-#include "PrimitiveList.h"
+#include "MemoryChunk.h"
 #include "Printable.h"
-#include "TemplateMath.h"
+#include "Arduino.h"
 #include "Logger.h"
 
 #ifdef NoteLogApp
@@ -17,38 +14,44 @@
 	#define NoteLog(name,method,type,mns) 
 #endif
 
+namespace ame{
 
-class Note : public PrimitiveList<char> , public Printable{
+
+// class Note : public Printable{
+class Note{
 	protected:
+		static MemoryChunk* charsChunk;
 		int focus=0;
+		char* m_string = nullptr;
 		
     public:
-		static char space;
-		static char endLine;
-		static char enter;
-		static char empty;
+		
+		void* operator new(size_t size);
+		void operator delete(void* pointerToDelete);
+		// static char space;
+		// static char endLine;
+		// static char enter;
+		// static char empty;
 		
 		Note();
-		Note(int size,int expand);
-		Note(const char* cstr);
-		Note(const char& i);
-		Note(const int& i);
-		Note(const long& i);
-		Note(const String& i);
-		virtual ~Note();
+		// Note(const char* cstr);
+		// Note(const char& i);
+		// Note(const int& i);
+		// Note(const long& i);
+		// Note(const String& i);
+		// virtual ~Note();
 		
-		virtual char* addPointer(char* value);
-		virtual char* addLValue(char value);
+		void init();
 		
-		virtual size_t printTo(Print& p) const;
+		// virtual size_t printTo(Print& p) const;
 		
-		virtual void expandLocal(int add);
-		virtual Note* expand(int add);
+		// virtual char* addPointer(char* value);
+		// virtual char* addLValue(char value);
 		
-		int length();
-		int getFocus();
-		void setFocus(int Focus);
-		
+		// int length();
+		// int getFocus();
+		// void setFocus(int Focus);
+		/*
 		PrimitiveList<int> getCharPositions(char chr);
 		int getCharPosition(char chr, int pos);
 		int getCharSize(char chr);
@@ -115,7 +118,9 @@ class Note : public PrimitiveList<char> , public Printable{
 		bool operator==(const char* chr);
 		bool operator!=(const char* chr);
 		void operator+=(const char& chr);
-		void operator+=(const String& s);
+		void operator+=(const String& s);*/
 };
+
+}
 
 #endif 

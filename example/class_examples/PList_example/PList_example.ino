@@ -4,6 +4,8 @@
 #include "Iterator.h"
 #include "MemoryFree.h"
 
+using namespace ame;
+
 List<String> *testList;
 
 void setup() {

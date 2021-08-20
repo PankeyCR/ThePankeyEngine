@@ -6,6 +6,8 @@
 #include "Event.h"
 #include "Map.h"
 
+namespace ame{
+	
 template<class T>
 class MapEvent : public Event{
 	protected:
@@ -21,5 +23,7 @@ class MapEvent : public Event{
 		virtual void add(T name, EventMethod c);
 		
 };
+
+}
 
 #endif 

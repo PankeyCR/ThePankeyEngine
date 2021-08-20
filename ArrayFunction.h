@@ -5,6 +5,8 @@
 #include "ArrayList.h"
 #include "ModifiableFunction.h"
 
+namespace ame{
+
 template<int C, int V, int S1, int S2, int S3, class T, class... args>
 class ArrayFunction : public ModifiableFunction<T,args...>{
 	public:
@@ -28,8 +30,8 @@ class ArrayFunction : public ModifiableFunction<T,args...>{
 		}
     
 		//cppObject part
-		String getClassName(){
-			return "ArrayFunction";
+		cppObjectClass* getClass(){
+			return Class<ArrayFunction>::classType;
 		}
 		String toString(){
 			return "ArrayFunction";
@@ -79,7 +81,9 @@ class ArrayFunction : public ModifiableFunction<T,args...>{
 		virtual int getIterationSize(){
 			return V;
 		}
-		virtual bool instanceof(String name){return name == "ArrayFunction" || name == "ModifiableFunction" || name == "Function";}
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<ArrayFunction>::classType || 
+			cls == Class<ModifiableFunction<T,args...>>::classType || name == Class<Function<T,args...>>::classType;}
 		
 	protected:
 		

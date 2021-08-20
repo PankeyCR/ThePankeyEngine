@@ -5,86 +5,86 @@
 #include "TimeControl.h"
 
 
-	TimeControl::TimeControl() {
+	ame::TimeControl::TimeControl() {
 		this->timeList = new PrimitiveList<TimeElapsed>();
-		Log("TimeControl", "Constructor", "println","TimeControl: new instance of this class");
+		Log("ame::TimeControl", "Constructor", "println","ame::TimeControl: new instance of this class");
 	}
 	
-	TimeControl::~TimeControl() {
+	ame::TimeControl::~TimeControl() {
 		delete this->timeList;
-		Log("TimeControl", "Destructor", "println","TimeControl: delete instance of this class");
+		Log("ame::TimeControl", "Destructor", "println","ame::TimeControl: delete instance of this class");
 	}
 	
-	long TimeControl::getTime() {
+	long ame::TimeControl::getTime() {
 		return this->time;
 	}
 	
-	TimeControl* TimeControl::initialize(long timeperiod){
+	ame::TimeControl* ame::TimeControl::initialize(long timeperiod){
 		return this;
 	}
 
-	TimeControl* TimeControl::setPeriod(long timeperiod){
+	ame::TimeControl* ame::TimeControl::setPeriod(long timeperiod){
 		return this;
 	}
 	
-	long TimeControl::getPeriod(){
+	long ame::TimeControl::getPeriod(){
 		return this->period;
 	}
 
-	TimeControl* TimeControl::attachInterrupt(){
+	ame::TimeControl* ame::TimeControl::attachInterrupt(){
 		return this;										
 	}
 
-	TimeControl* TimeControl::detachInterrupt(){
+	ame::TimeControl* ame::TimeControl::detachInterrupt(){
 		return this;
 	}
 
-	TimeControl* TimeControl::startInterrupt(){
+	ame::TimeControl* ame::TimeControl::startInterrupt(){
 		return this;
 	}
 
-	TimeControl* TimeControl::stopInterrupt(){
+	ame::TimeControl* ame::TimeControl::stopInterrupt(){
 		return this;
 	}
 
-	TimeControl* TimeControl::resumeInterrupt(){
+	ame::TimeControl* ame::TimeControl::resumeInterrupt(){
 		return this;
 	}
 	
-	TimeElapsed *TimeControl::add(TimeElapsed *t){
+	ame::TimeElapsed *ame::TimeControl::add(ame::TimeElapsed *t){
 		this->timeList->addPointer(t);
 		return t;
 	}
 	
-	TimeElapsed *TimeControl::remove(TimeElapsed *t){
+	ame::TimeElapsed *ame::TimeControl::remove(ame::TimeElapsed *t){
 		if(this->timeList == nullptr){
 			return nullptr;
 		}
 		return this->timeList->removeByPointer(t);
 	}
 	
-	TimeElapsed *TimeControl::removeByPos(int pos){
+	ame::TimeElapsed *ame::TimeControl::removeByPos(int pos){
 		if(this->timeList == nullptr){
 			return nullptr;
 		}
 		return this->timeList->removeByPosition(pos);
 	}
 		
-	List<TimeElapsed> *TimeControl::getTimeElapsedList(){
+	ame::List<ame::TimeElapsed> *ame::TimeControl::getTimeElapsedList(){
 		if(this->timeList == nullptr){
 			return nullptr;
 		}
 		return this->timeList;
 	}
 	
-	TimeElapsed *TimeControl::getTimeElapsed(int pos){
+	ame::TimeElapsed *ame::TimeControl::getTimeElapsed(int pos){
 		if(this->timeList == nullptr){
 			return nullptr;
 		}
 		return this->timeList->getByPosition(pos);
 	}
 	
-	TimeElapsed *TimeControl::getTimeElapsed(TimeElapsed *t){
+	ame::TimeElapsed *ame::TimeControl::getTimeElapsed(ame::TimeElapsed *t){
 		if(this->timeList == nullptr){
 			return nullptr;
 		}
@@ -92,12 +92,12 @@
 	}
 	
 	
-	String TimeControl::toString() {
-		return "TimeControl";
+	String ame::TimeControl::toString() {
+		return "ame::TimeControl";
 	}
 	
-	String TimeControl::getClassName() {
-		return "TimeControl";
+	ame::cppObjectClass* ame::TimeControl::getClass() {
+		return ame::Class<ame::TimeControl>::classType;
 	}
 
 

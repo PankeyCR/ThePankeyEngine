@@ -7,6 +7,8 @@
 #include "List.h"
 #include "PrimitiveList.h"
 
+namespace ame{
+
 class DefaultStateManager : public AppStateManager{
     public:
 		DefaultStateManager();
@@ -44,5 +46,7 @@ class DefaultStateManager : public AppStateManager{
 		long prev = 0;
 		float t = 0;
 };
+
+}
 
 #endif

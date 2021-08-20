@@ -2,6 +2,8 @@
 #ifndef LinkedListNode_h
 #define LinkedListNode_h
 
+namespace ame{
+
 template <class T>
 class LinkedListNode{
 	private:
@@ -17,5 +19,7 @@ class LinkedListNode{
 		~LinkedListNode<T>(){
 		}
 };
+
+}
 
 #endif 

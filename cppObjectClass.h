@@ -7,6 +7,8 @@
 #include "RawList.h"
 #include "Method.h"
 
+namespace ame{
+
 class cppObjectClass{	
 	public:
 		cppObjectClass(){}
@@ -41,4 +43,7 @@ class cppObjectClass{
 			return false;
 		}
 };
+
+}
+
 #endif 

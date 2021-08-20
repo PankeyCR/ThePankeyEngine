@@ -5,6 +5,8 @@
 
 #include "PrimitiveMap.h"
 
+namespace ame{
+
 template<class A,class R,class T,class... P>
 class AnnotationMap : public PrimitiveMap<A,R (T::*)(P...)>{
 public:
@@ -46,5 +48,7 @@ virtual void operator=(AnnotationMap<A,R,T,P...> a){
 protected:
 	R r;
 };
+
+}
 
 #endif 

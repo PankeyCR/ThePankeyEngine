@@ -5,6 +5,8 @@
 
 #include "Processing.h"
 
+namespace ame{
+	
 template<class P, class V>
 class GameProcess{
 	public:
@@ -26,7 +28,8 @@ class GameProcess{
 	protected:
 		P key;
 		Processing<V>* value;
-	
 };
+
+}
 
 #endif 

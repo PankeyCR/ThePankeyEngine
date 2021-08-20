@@ -5,19 +5,22 @@
 
 #include "GameOn.h"
 
+namespace ame{
+
 class GameAction : public GameOn{
     public:
 	
-		virtual String getClassName(){
-			return "GameAction";
+		virtual cppObjectClass* getClassName(){
+			return Class<GameAction>::classType;
 		}
 		
-		virtual bool instanceof(String s){
-			return s == "GameAction" || GameOn::instanceof(s);
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<GameAction>::classType || GameOn::instanceof(cls);
 		}
 	
 		virtual Action();
 };
 
+}
 
 #endif 

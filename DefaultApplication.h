@@ -15,33 +15,42 @@ The listener memory is not manged by this class
 #include "DefaultStateManager.h"
 #include "Listener.h"
 
+namespace ame{
+	
 class DefaultApplication : public Application{
-    public:
+	public:
 		DefaultApplication();
 		virtual ~DefaultApplication();
-		
+
 		virtual void setSettings(AppSettings *setting);
 		virtual AppSettings *getSettings();
-		
+
 		virtual void setStateManager(AppStateManager *appstate);
 		virtual AppStateManager *getStateManager();
 				
 		virtual void setTimeControl(TimeControl *timecontrol);
 		virtual TimeControl *getTimeControl();
-		
+
 		virtual Listener* setListener(Listener* l);
 		virtual Listener* getListener();
-		
+
+		virtual MemoryPool* setMemoryPool(MemoryPool* memory);
+		virtual MemoryPool* getMemoryPool();
+
 		virtual void update();
-		
+
 		//cppObject part
-		virtual String getClassName();
+		virtual cppObjectClass* getClass();
 		virtual String toString();
-		
+		virtual bool instanceof(cppObjectClass* cls);
+
 	private:
 		AppStateManager *states = nullptr;
 		AppSettings *settings = nullptr;
 		Listener *listener = nullptr;
+		MemoryPool *memory = nullptr;
 };
+
+}
 
 #endif 

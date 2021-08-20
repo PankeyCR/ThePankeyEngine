@@ -10,6 +10,8 @@
 #include "Script.h"
 #include "PrimitiveList.h"
 
+namespace ame{
+
 class ScriptState : public AppState{
     public:
 		ScriptState();
@@ -24,12 +26,14 @@ class ScriptState : public AppState{
 		virtual void runScript(const String& c);
 		virtual void runScript(const char* c);
 		
-		String getClassName();
+		cppObjectClass* getClass();
 		String toString();
 		
 	protected:
 		List<Script>* scripts = nullptr;
 		List<Script>* loopScripts = nullptr;
 };
+
+}
 
 #endif 

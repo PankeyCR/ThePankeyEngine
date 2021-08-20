@@ -2,6 +2,8 @@
 #ifndef DMap_h
 #define DMap_h
 
+namespace ame{
+
 template <class T>
 class DMap {
 	public:
@@ -11,8 +13,9 @@ class DMap {
 		virtual T get();
 		virtual int getDPos(int dimention);
 		virtual int size();
-    
 	private:
 };
+
+}
 
 #endif 

@@ -8,6 +8,8 @@
 #include "Application.h"
 #include "AppState.h"
 #include "Arduino.h"
+/*
+namespace ame{
 
 template<class T>
 class MemoryManagerState : public AppState{	
@@ -51,4 +53,7 @@ class MemoryManagerState : public AppState{
 	protected:
 		MemoryManager<T>* manager = nullptr;
 };
+
+}
+*/
 #endif 

@@ -4,16 +4,19 @@
 #define DataSetV3_h
 
 #include "DataSet.h"
-
+/*
 template<class T, int xS = 3, int yS = 2, int zS = 1>
 class DataSetV3 : public DataSet<T>{
 	public:
 		T x1[xS];
 		T x2[yS][xS];
 		T x3[zS][yS][xS];
+		T r;
 		
 		DataSetV3(){
-			this->spaceLimit = 3;
+		}
+		DataSetV3(T rr){
+			r = rr;
 		}
 		
 		virtual ~DataSetV3(){
@@ -43,39 +46,17 @@ class DataSetV3 : public DataSet<T>{
 			}
 		}
 		
-		virtual DataSet<T>* space(int i_space){
-			if(i_space < this->spaceLimit){
-				this->m_space = i_space;
-			}else{
-				this->m_space = -1;
-			}
-			return this;
-		}
-		
-		virtual DataSet<T>* dimention(int i_dimention){
-			if(this->m_space == 0 && i_dimention < 1){
-				this->m_dimention = i_dimention;
-			}
-			if(this->m_space == 1 && i_dimention < 2){
-				this->m_dimention = i_dimention;
-			}
-			if(this->m_space == 2 && i_dimention < 3){
-				this->m_dimention = i_dimention;
-			}
-			return this;
-		}
-		
 		virtual DataSet<T>* position(int i_position){
+			if(this->m_dimention == 0 && this->m_position < xS){
+				xP = i_position;
+			}
+			if(this->m_dimention == 1 && this->m_position < yS){
+				yP = i_position;
+			}
+			if(this->m_dimention == 2 && this->m_position < zS){
+				zP = i_position;
+			}
 			this->m_position = i_position;
-			if(this->m_dimention == 0 && i_position < xS){
-				this->xP = i_position;
-			}
-			if(this->m_dimention == 1 && i_position < yS){
-				this->yP = i_position;
-			}
-			if(this->m_dimention == 2 && i_position < zS){
-				this->zP = i_position;
-			}
 			return this;
 		}
 		
@@ -94,38 +75,38 @@ class DataSetV3 : public DataSet<T>{
 		
 		virtual DataSet<T>* remove(){
 			if(this->m_space == 0){
-				x1[xP] = -1;
+				x1[xP] = r;
 			}
 			if(this->m_space == 1){
-				x2[yP][xP] = -1;
+				x2[yP][xP] = r;
 			}
 			if(this->m_space == 2){
-				x3[zP][yP][xP] = -1;
+				x3[zP][yP][xP] = r;
 			}
 			return this;
 		}
 		
 		virtual T getValue(){
-			if(this->m_space == 0 && this->xP < xS){
+			if(this->m_space == 0){
 				return x1[xP];
 			}
-			if(this->m_space == 1 && this->xP < xS && this->yP < yS){
+			if(this->m_space == 1){
 				return x2[yP][xP];
 			}
-			if(this->m_space == 2 && this->xP < xS && this->yP < yS && this->zP < zS){
+			if(this->m_space == 2){
 				return x3[zP][yP][xP];
 			}
 			return -1;
 		}
 		
-		virtual T *getPointer(){
-			if(this->m_space == 0 && this->xP < xS){
+		virtual T* getPointer(){
+			if(this->m_space == 0){
 				return &x1[xP];
 			}
-			if(this->m_space == 1 && this->xP < xS && this->yP < yS){
+			if(this->m_space == 1){
 				return &x2[yP][xP];
 			}
-			if(this->m_space == 2 && this->xP < xS && this->yP < yS && this->zP < zS){
+			if(this->m_space == 2){
 				return &x3[zP][yP][xP];
 			}
 			return nullptr;
@@ -176,153 +157,8 @@ class DataSetV3 : public DataSet<T>{
 			return -1;
 		}
 		
-		virtual void setIteration(int iter){
-			// if(this->m_iterateSpace >= 0 && this->m_iterateSpace < 3){
-				// this->m_space = this->m_iterateSpace * (this->m_iterateSpace < 3);
-				// this->iterateCount = 0;
-				// this->m_dimention = 0;
-				// this->m_position = 0;
-				// this->xP = 0;
-				// this->yP = 0;
-				// this->zP = 0;
-				// this->m_iterateSpace = -1;
-				// this->m_iterateDimention = -1;
-				// return;
-			// }
-			// this->iterateCount = iter;
-			// if(iter == 0){
-				// this->m_space = 0;
-				// this->m_dimention = 0;
-				// this->m_position = 0;
-				// this->xP = 0;
-				// this->yP = 0;
-				// this->zP = 0;
-			// }
-			// if(iter == this->getIterationSize()-1){
-				// this->m_space = this->spaceLimit-1;
-				// this->m_dimention = 2;
-				// this->m_position = zS-1;
-				// this->xP = xS-1;
-				// this->yP = yS-1;
-				// this->zP = zS-1;
-			// }
-			// this->m_iterateSpace = -1;
-			// this->m_iterateDimention = -1;
-		}
-		
 		int getIterationSize(){
-			// if(this->m_iterateSpace >= 3){
-				// this->m_iterateSpace = -1;
-				// this->m_iterateDimention = -1;
-				// return 0;
-			// }
-			// if(this->m_iterateSpace >= 0){
-				// if(this->m_iterateSpace == 0){
-					// this->fullSize = xS;
-				// }
-				// if(this->m_iterateSpace == 1){
-					// this->fullSize = xS*yS;
-				// }
-				// if(this->m_iterateSpace == 2){
-					// this->fullSize = xS*yS*zS;
-				// }
-				// this->m_iterateSpace = -1;
-				// return this->fullSize;
-			// }
-			// this->fullSize = xS + xS*yS + xS*yS*zS;
-			return this->fullSize;
-		}
-		
-		virtual bool last(){
-			this->iterateCount--;
-			xP--;
-			if(xP >= 0){
-				xP = xS;
-				yP--;
-				if(yP < 0){
-					yP = yS;
-					zP--;
-					if(zP < 0){
-						zP = zS;
-					}
-				}
-			}
-			if(this->iterateCount == xS){
-				this->m_space++;
-				this->xP = xS-1;
-				this->yP = yS-1;
-				this->zP = zS-1;
-			}
-			if(this->iterateCount == xS + xS*yS){
-				this->m_space++;
-				this->xP = xS-1;
-				this->yP = yS-1;
-				this->zP = zS-1;
-			}
-			return true;
-		}
-		
-		virtual bool next(){
-			this->iterateCount++;
-			// if(this->m_iterateSpace >= 0){
-				// if(this->m_iterateSpace == 0){
-					// xP++;
-				// }
-				// if(this->m_iterateSpace == 1){
-					// xP++;
-					// if(xP >= xS){
-						// xP = 0;
-						// yP++;
-					// }
-				// }
-				// if(this->m_iterateSpace == 2){
-					// xP++;
-					// if(xP >= xS){
-						// xP = 0;
-						// yP++;
-						// if(yP >= yS){
-							// yP = 0;
-							// zP++;
-							// if(zP >= zS){
-								// zP = 0;
-							// }
-						// }
-					// }
-				// }
-				// this->m_iterateSpace = -1;
-				// return true;
-			// }
-			// xP++;
-			// if(xP >= xS){
-				// xP = 0;
-				// yP++;
-				// if(yP >= yS){
-					// yP = 0;
-					// zP++;
-					// if(zP >= zS){
-						// zP = 0;
-					// }
-				// }
-			// }
-			// if(this->iterateCount == xS){
-				// this->m_space++;
-				// this->xP = 0;
-				// this->yP = 0;
-				// this->zP = 0;
-			// }
-			// if(this->iterateCount == xS + xS*yS){
-				// this->m_space++;
-				// this->xP = 0;
-				// this->yP = 0;
-				// this->zP = 0;
-			// }
-			// if(this->iterateCount == xS + xS*yS + xS*yS*zS){
-				// this->m_space++;
-				// this->xP = 0;
-				// this->yP = 0;
-				// this->zP = 0;
-			// }
-			return true;
+			return xS + xS*yS + xS*yS*zS;
 		}
 		
 		virtual cppObjectClass* getClass(){
@@ -333,7 +169,7 @@ class DataSetV3 : public DataSet<T>{
 			return "DataSetV3 " + String(this->m_space) + " " + String(zP) + " "  + String(yP) + " "  + String(xP) + " = "  + String(getValue());
 		}
 		
-		virtual DataSet<T>* clone(){
+		virtual DataSet<T>* clone(bool mem){
 			DataSetV3<T,xS,yS,zS> *nset = new DataSetV3<T,xS,yS,zS>();
 			nset->setArray(this->x1);
 			nset->setArray(this->x2);
@@ -341,12 +177,152 @@ class DataSetV3 : public DataSet<T>{
 			return nset;
 		}
 		
+		virtual DataSet<T>* set(Iterator i,T t){
+			int x = i.getIteration();
+			if(x < xS){
+				x1[x] = t;
+			}
+			if(x >= xS && x < xS + xS){
+				x2[0][x-xS] = t;
+			}
+			if(x >=  xS + xS && x < xS + xS*yS){
+				float a = (x-xS-xS)/xS;
+				float s = a-(int)a;
+				x2[(int)a][s*xS] = t;
+			}
+			if(x >= xS + xS*yS && x < xS + xS*yS + xS*yS*zS){
+				float a = (x-xS-xS)/xS;
+				float s = a-(int)a;
+				x3[0][0][x-xS / yS] = t;
+			}
+			return this;
+		}
+		virtual DataSet<T>* remove(Iterator i){
+			int x = i.getIteration();
+			if(x < xS){
+				x1[x] = r;
+			}else{
+				x2[x-xS] = r;
+			}
+			return this;
+		}
+		virtual T getValue(Iterator i){
+			int x = i.getIteration();
+			if(x < xS){
+				return x1[x];
+			}
+			if(x-xS < xS){
+				return x2[x-xS];
+			}
+			return r;
+		}
+		virtual T* getPointer(Iterator i){
+			int x = i.getIteration();
+			if(x < xS){
+				return &x1[x];
+			}else{
+				return &x2[x-xS];
+			}
+			return nullptr;
+		}
+		virtual String toString(Iterator i){
+			int x = i.getIteration();
+			T t;
+			int s;
+			if(x < xS){
+				s = 0;
+				t = x1[x];
+			}else{
+				s = 1;
+				t = x2[x-xS];
+			}
+			return  String("DuoArray1(") + 
+					String(x) + 
+					", " + 
+					String(s) + 
+					", " + 
+					String(0) + 
+					" = "  + 
+					String(t) + 
+					")";
+		}
+		
+		virtual T getInSpace(int i_space, Iterator i){
+			int x = i.getIteration();
+			if(i_space == 0){
+				return x1[x];
+			}
+			if(i_space == 1){
+				return x2[x];
+			}
+			return r;
+		}
+		virtual T getInDimention(int i_space, int i_dimention, Iterator i){
+			int x = i.getIteration();
+			if(i_dimention != 0){
+				return r;
+			}
+			if(i_space == 0){
+				return x1[x];
+			}
+			if(i_space == 1){
+				return x2[x];
+			}
+			return r;
+		}
+		
+		virtual T* getPointerInSpace(int i_space, Iterator i){
+			int x = i.getIteration();
+			if(i_space == 0){
+				return &x1[x];
+			}
+			if(i_space == 1){
+				return &x2[x];
+			}
+			return nullptr;
+		}
+		virtual T* getPointerInDimention(int i_space, int i_dimention, Iterator i){
+			int x = i.getIteration();
+			if(i_dimention != 0){
+				return nullptr;
+			}
+			if(i_space == 0){
+				return &x1[x];
+			}
+			if(i_space == 1){
+				return &x2[x];
+			}
+			return nullptr;
+		}
+		
+		virtual int space(Iterator i){
+			int x = i.getIteration();
+			if(x < xS){
+				return 0;
+			}else{
+				return 1;
+			}
+			return -1;
+		}
+		virtual int dimention(Iterator i){
+			return 0;
+		}
+		virtual int position(Iterator i){
+			int x = i.getIteration();
+			if(x < xS){
+				return x;
+			}else{
+				return x-xS;
+			}
+			return -1;
+		}
+		
 	protected:
 		int xP = 0;
 		int yP = 0;
 		int zP = 0;
-		int spaceLimit = 0;
-		int fullSize = 0;
 };
+
+*/
 
 #endif 

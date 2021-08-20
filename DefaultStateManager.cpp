@@ -5,19 +5,19 @@
 #include "DefaultStateManager.h"
 	
 	
-	DefaultStateManager::DefaultStateManager(){
+	ame::DefaultStateManager::DefaultStateManager(){
 		this->appStateList = new PrimitiveList<AppState>();
 	}
 	
-	DefaultStateManager::~DefaultStateManager(){
+	ame::DefaultStateManager::~DefaultStateManager(){
 		delete this->appStateList;
 	}
 	
-	void DefaultStateManager::setApplication(Application *app){
+	void ame::DefaultStateManager::setApplication(ame::Application *app){
 		this->managerApp = app;
 	}
 	
-	AppState *DefaultStateManager::add(AppState* state){
+	ame::AppState *ame::DefaultStateManager::add(ame::AppState* state){
 		this->appStateList->addPointer(state);
 		if(this->managerApp != nullptr){
 			state->initialize(this->managerApp);
@@ -26,7 +26,7 @@
 		return state;
 	}
 	
-	AppState* DefaultStateManager::get(cppObjectClass* cls){
+	ame::AppState* ame::DefaultStateManager::get(ame::cppObjectClass* cls){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			if(this->appStateList->getByPosition(x)->getClass() == cls){
 				return this->appStateList->getByPosition(x);
@@ -35,7 +35,7 @@
 		return nullptr;
 	}
 	
-	AppState* DefaultStateManager::get(String appstateId, cppObjectClass* cls){
+	ame::AppState* ame::DefaultStateManager::get(String appstateId, ame::cppObjectClass* cls){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			if(this->appStateList->getByPosition(x)->getClass() == cls &&
 							this->appStateList->getByPosition(x)->getId() == appstateId){
@@ -45,8 +45,8 @@
 		return nullptr;
 	}
 	
-	AppState* DefaultStateManager::remove(cppObjectClass* cls){
-		AppState *appstate = nullptr;
+	ame::AppState* ame::DefaultStateManager::remove(ame::cppObjectClass* cls){
+		ame::AppState *appstate = nullptr;
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			if(this->appStateList->getByPosition(x)->getClass() == cls){
 				appstate = this->appStateList->getByPosition(x);
@@ -60,8 +60,8 @@
 		return appstate;
 	}
 	
-	AppState* DefaultStateManager::remove(String appstateId, cppObjectClass* cls){
-		AppState *appstate = nullptr;
+	ame::AppState* ame::DefaultStateManager::remove(String appstateId, ame::cppObjectClass* cls){
+		ame::AppState *appstate = nullptr;
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			if(this->appStateList->getByPosition(x)->getClass() == cls &&
 							this->appStateList->getByPosition(x)->getId() == appstateId){
@@ -76,7 +76,7 @@
 		return appstate;
 	}
 	
-	bool DefaultStateManager::contain(cppObjectClass* cls){
+	bool ame::DefaultStateManager::contain(ame::cppObjectClass* cls){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			if(this->appStateList->getByPosition(x)->getClass() == cls){
 				return true;
@@ -85,7 +85,7 @@
 		return false;
 	}
 	
-	bool DefaultStateManager::contain(String appstateId, cppObjectClass* cls){
+	bool ame::DefaultStateManager::contain(String appstateId, ame::cppObjectClass* cls){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			if(this->appStateList->getByPosition(x)->getClass() == cls &&
 							this->appStateList->getByPosition(x)->getId() == appstateId){
@@ -95,21 +95,21 @@
 		return false;
 	}
 	
-	void DefaultStateManager::removeAll(){
+	void ame::DefaultStateManager::removeAll(){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			this->appStateList->getByPosition(x)->onDisable();
 		}			
 		this->appStateList->reset();
 	}
 	
-	void DefaultStateManager::removeDeleteAll(){
+	void ame::DefaultStateManager::removeDeleteAll(){
 		for(int x = 0; x < this->appStateList->getPosition(); x++){
 			this->appStateList->getByPosition(x)->onDisable();
 		}
 		this->appStateList->resetDelete();
 	}
 	
-	void DefaultStateManager::update(){
+	void ame::DefaultStateManager::update(){
 		this->now = micros();
 		this->t = (float)(this->now - this->prev)/1000000;
 		this->prev = this->now;
@@ -118,19 +118,19 @@
 		}			
 	}
 		
-	float DefaultStateManager::tpc(){
+	float ame::DefaultStateManager::tpc(){
 		return t;
 	}
 	
-	cppObjectClass* DefaultStateManager::getClass(){
-		return Class<DefaultStateManager>::classType;
+	ame::cppObjectClass* ame::DefaultStateManager::getClass(){
+		return ame::Class<DefaultStateManager>::classType;
 	}
 	
-	String DefaultStateManager::toString(){
+	String ame::DefaultStateManager::toString(){
 		return "DefaultStateManager";
 	}
 	
-	bool DefaultStateManager::instanceof(cppObjectClass* cls){
+	bool ame::DefaultStateManager::instanceof(ame::cppObjectClass* cls){
 		return cls == Class<DefaultStateManager>::classType || AppStateManager::instanceof(cls);
 	}
     

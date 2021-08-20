@@ -1,6 +1,8 @@
 
 #include "trilean.h"
 
+using namespace ame;
+
 trilean state;
 
 void setup() {

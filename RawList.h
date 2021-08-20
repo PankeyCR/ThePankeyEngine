@@ -2,6 +2,8 @@
 #ifndef RawList_h
 #define RawList_h
 
+namespace ame{
+
 template <class T>
 class RawList{	
 	public:
@@ -42,4 +44,6 @@ class RawList{
 	virtual T& operator[](int x)=0;
 	private:
 };
+
+}
 #endif 

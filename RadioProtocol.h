@@ -12,6 +12,8 @@
 	#define RadioProtocolLog(name,method,type,mns) 
 #endif
 
+namespace ame{
+
 enum class RadioType{
 	SPY
 };
@@ -90,4 +92,7 @@ class RadioProtocol : public PortProtocol{
 		RadioType radioType = RadioType::SPY;
 		String messageText = "";
 };
+
+}
+
 #endif 

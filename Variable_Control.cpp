@@ -4,11 +4,11 @@
 
 #include "Variable_Control.h"
 
-	Variable_Control::Variable_Control() {
+	ame::Variable_Control::Variable_Control() {
 	   
 	}
 
-	char Variable_Control::Chars(char charhaha){
+	char ame::Variable_Control::Chars(char charhaha){
 		char charno;
 		if(charhaha == 'a'){charno = 'a';}
 		if(charhaha == 'A'){charno = 'A';}

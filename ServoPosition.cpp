@@ -5,15 +5,15 @@
 
 #include "ServoPosition.h"
 
-	ServoPosition::ServoPosition(int pin){
+	ame::ServoPosition::ServoPosition(int pin){
 		this->servo.attach(pin);
 	}
 	
-	ServoPosition::~ServoPosition(){
+	ame::ServoPosition::~ServoPosition(){
 		
 	}
 	
-	void ServoPosition::setPosition(int posicion){
+	void ame::ServoPosition::setPosition(int posicion){
 		if(posicion == 0){
 			this->servo.write(this->position0);
 		}
@@ -32,7 +32,7 @@
 		
 	}
 	
-	void ServoPosition::set5Points(int pos1, int pos2, int pos3, int pos4, int pos5){
+	void ame::ServoPosition::set5Points(int pos1, int pos2, int pos3, int pos4, int pos5){
 		this->position0 = pos1;
 		this->position1 = pos2;
 		this->position2 = pos3;

@@ -5,6 +5,8 @@
 
 #include "MetricPrefix.h"
 
+namespace ame{
+
 class MetricScale {
 	public:
 		MetricScale();
@@ -20,5 +22,7 @@ class MetricScale {
 		long scale = 1;
 		float scaleInverse = 1;
 };
+
+}
 
 #endif 

@@ -5,20 +5,23 @@
 
 #include "GameOn.h"
 
+namespace ame{
+
 class GameMind : public GameOn{
     public:
 	
-		virtual String getClassName(){
-			return "GameMind";
+		virtual cppObjectClass* getClass(){
+			return Class<GameMind>::classType;
 		}
 		
-		virtual bool instanceof(String s){
-			return s == "GameMind" || GameOn::instanceof(s);
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<GameMind>::classType || GameOn::instanceof(cls);
 		}
 	
 		virtual void think();
 		virtual bool doneThinking();
 };
 
+}
 
 #endif 

@@ -4,64 +4,67 @@
 
 #include "Logger.h"
 
-    Logger *Logger::log = nullptr;
+    ame::Logger *ame::Logger::log = nullptr;
 
-	Logger::Logger(){
+	ame::Logger::Logger(){
     }
 	
-	Logger::~Logger(){
+	ame::Logger::~Logger(){
+		if(this->logging != nullptr){
+			delete this->logging;
+		}
     }
 	
-	void Logger::setLog(Logging* l){
+	void ame::Logger::setLog(ame::Logging* l){
 		this->logging = l;
     }
 	
-	Logger* Logger::getLog(){
-		if(Logger::log == nullptr){
-			Logger::log = new Logger();
+	ame::Logger* ame::Logger::getLog(){
+		if(ame::Logger::log == nullptr){
+			ame::Logger::log = new ame::Logger();
 		}
-		return Logger::log;
+		return ame::Logger::log;
     }
 	
-	void Logger::StaticLog(String className, String methodName, String type, String mns){
-		Logger* logger = Logger::getLog();
-		if(logger->logging == nullptr){
-			// Serial.println("logger->logging == nullptr");
+	void ame::Logger::StaticLog(String className, String methodName, String type, String mns){
+		ame::Logger* m_lg = ame::Logger::getLog();
+		if(m_lg->logging == nullptr){
+			// Serial.println("m_lg->logging == nullptr");
 			return;
 		}
-		logger->logging->StaticLog(className, methodName, type, mns);
+		m_lg->logging->StaticLog(className, methodName, type, mns);
     }
 	
-	void Logger::addClass(String className){
-		Logger* logger = Logger::getLog();
-		if(logger->logging == nullptr){
+	void ame::Logger::addClass(String className){
+		ame::Logger* m_lg = ame::Logger::getLog();
+		if(m_lg->logging == nullptr){
 			return;
 		}
-		logger->logging->addClass(className);
+		m_lg->logging->addClass(className);
     }
 	
-	void Logger::addMethod(String methodName){
-		Logger* logger = Logger::getLog();
-		if(logger->logging == nullptr){
+	void ame::Logger::addMethod(String methodName){
+		ame::Logger* m_lg = ame::Logger::getLog();
+		if(m_lg->logging == nullptr){
 			return;
 		}
-		logger->logging->addMethod(methodName);
+		m_lg->logging->addMethod(methodName);
     }
 	
-	void Logger::removeClass(String className){
-		Logger* logger = Logger::getLog();
-		if(logger->logging == nullptr){
+	void ame::Logger::removeClass(String className){
+		ame::Logger* m_lg = ame::Logger::getLog();
+		if(m_lg->logging == nullptr){
 			return;
 		}
-		logger->logging->removeClass(className);
+		m_lg->logging->removeClass(className);
     }
 	
-	void Logger::removeMethod(String methodName){
-		Logger* logger = Logger::getLog();
-		if(logger->logging == nullptr){
+	void ame::Logger::removeMethod(String methodName){
+		ame::Logger* m_lg = ame::Logger::getLog();
+		if(m_lg->logging == nullptr){
 			return;
 		}
-		logger->logging->removeMethod(methodName);
+		m_lg->logging->removeMethod(methodName);
     }
 	
 	

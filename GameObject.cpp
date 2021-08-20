@@ -4,43 +4,43 @@
 
 #include "GameObject.h"
 	
-	GameObject::GameObject(){
-		this->childs = new PrimitiveList<GameOn>();
+	ame::GameObject::GameObject(){
+		this->childs = new PrimitiveList<ame::GameOn>();
 	}
 	
-	// GameObject::GameObject(const GameObject& obj){
-		// this->childs = new PrimitiveList<GameOn>();
+	// ame::GameObject::GameObject(const ame::GameObject& obj){
+		// this->childs = new PrimitiveList<ame::GameOn>();
 		// for(int x = 0; x < obj.getPosition(); x++){
 			// this->childs->addLValue(*obj.getByPosition(x));
 		// }
 	// }
 	
-	GameObject::~GameObject(){
+	ame::GameObject::~GameObject(){
 		delete this->childs;
 	}
 	
-	void GameObject::setId(int id){
+	void ame::GameObject::setId(int id){
 		this->gameId = id;
 	}
 	
-	int GameObject::getId(){
+	int ame::GameObject::getId(){
 		return this->gameId;
 	}
 	
-    void GameObject::update(float tpc){
+    void ame::GameObject::update(float tpc){
 		for(int x = 0; x < this->childs->getPosition(); x++){
 			this->childs->getByPosition(x)->update(tpc);
 		}
 	}
 	
-    GameOn* GameObject::attach(GameOn* gmo){
+    ame::GameOn* ame::GameObject::attach(ame::GameOn* gmo){
 		gmo->setParent(this);
 		gmo->setId(this->getId());
 		this->childs->addPointer(gmo);
 		return gmo;
 	}
 	
-    GameOn* GameObject::getChild(cppObjectClass* cls){
+    ame::GameOn* ame::GameObject::getChild(ame::cppObjectClass* cls){
 		for(int x = 0; x < this->childs->getPosition(); x++){
 			if(this->childs->getByPosition(x)->getClass() == cls){
 				return this->childs->getByPosition(x);
@@ -49,7 +49,7 @@
 		return nullptr;
 	}
 	
-    GameOn* GameObject::detach(cppObjectClass* cls){
+    ame::GameOn* ame::GameObject::detach(ame::cppObjectClass* cls){
 		for(int x = 0; x < this->childs->getPosition(); x++){
 			if(this->childs->getByPosition(x)->getClass() == cls){
 				return this->childs->removeByPosition(x);
@@ -58,19 +58,19 @@
 		return nullptr;
 	}
 	
-    void GameObject::detach(GameOn* gameon){
-		this->childs->removeByPointer(gameon);
+    void ame::GameObject::detach(ame::GameOn* gon){
+		this->childs->removeByPointer(gon);
 	}
 	
-	List<GameOn>* GameObject::getChilds(){
+	ame::List<ame::GameOn>* ame::GameObject::getChilds(){
 		return this->childs;
 	}
 	
-	cppObjectClass* GameObject::getClass(){
-		return Class<GameObject>::classType;
+	ame::cppObjectClass* ame::GameObject::getClass(){
+		return ame::Class<ame::GameObject>::classType;
 	}
 	
-	String GameObject::toString(){
+	String ame::GameObject::toString(){
 		return "GameObject";
 	}
 

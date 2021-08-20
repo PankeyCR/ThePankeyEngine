@@ -12,6 +12,8 @@
 	#define GameSystemLog(name,method,type,mns)
 #endif
 
+namespace ame{
+	
 template<class T>
 class GameSystem : public AppState{
 public:
@@ -49,9 +51,9 @@ virtual void initializeComponents(Application* app){
 		return;
 	}
 	T t;
-	String componentClassName = t.getClassName();
-	GameSystemLog("GameSystem", "initializeComponents",  "println", componentClassName);
-	components = manager->getComponents(componentClassName);
+	cppObjectClass* componentClass = t.getClass();
+	GameSystemLog("GameSystem", "initializeComponents",  "println", componentClass);
+	components = manager->getComponents(componentClass);
 }
 
 virtual void initialize(Application* app){
@@ -64,12 +66,12 @@ virtual void initialize(Application* app){
 	initializeSystem(app);
 }
 
-virtual String getClassName(){
-	return "GameSystem";
+virtual cppObjectClass* getClass(){
+	return Class<GameSystem>::classType;
 }
 
-virtual bool instanceof(String name){
-	return name == "GameSystem" || AppState::instanceof(name);
+virtual bool instanceof(cppObjectClass* cls){
+	return cls == Class<GameSystem>::classType || AppState::instanceof(cls);
 }
 
 virtual void update(float tpc){
@@ -100,5 +102,7 @@ protected:
 List<GameOn>* components = nullptr;
 GameManager* manager = nullptr;
 };
+
+}
 
 #endif 

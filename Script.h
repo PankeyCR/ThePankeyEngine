@@ -1,9 +1,10 @@
 
-
 #ifndef Script_h
 #define Script_h
 
 #include "Statement.h"
+
+namespace ame{
 
 class Script{
     public:
@@ -21,5 +22,7 @@ class Script{
 		List<Statement>* statements = nullptr;
 		String m_name;
 };
+
+}
 
 #endif 

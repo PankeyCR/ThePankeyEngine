@@ -7,6 +7,8 @@
 #include "KPMap.h"
 #include "AppSettings.h"
 
+namespace ame{
+
 template <int size>
 class SimpleAppSettings : public AppSettings{
     public:
@@ -27,8 +29,8 @@ class SimpleAppSettings : public AppSettings{
 		String toString(){
 			return "SimpleAppSettings";
 		}
-		String getClassName(){
-			return "SimpleAppSettings";
+		cppObjectClass* getClass(){
+			return Class<SimpleAppSettings>::classType;
 		}
 		SimpleAppSettings *clone(){
 			return new SimpleAppSettings();

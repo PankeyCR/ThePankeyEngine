@@ -11,7 +11,11 @@
 
 #include "Arduino.h"
 
+namespace ame{
+
 class MonkeyFile;
+
+}
 
 #include "Map.h"
 #include "KPMap.h"
@@ -20,11 +24,13 @@ class MonkeyFile;
 #include <SPI.h>
 #include <SD.h>
 
+namespace ame{
+
 class MonkeyFile{
     public:
 		MonkeyFile();
 		MonkeyFile(int chip);
-		MonkeyFile(int chip, Map<cppObjectClass,MonkeyFileFunction>* functions);
+		MonkeyFile(int chip, Map<cppObjectClass, MonkeyFileFunction>* functions);
 		virtual ~MonkeyFile();
 		
 		virtual void setRootPathFile(String filepath);
@@ -45,7 +51,7 @@ class MonkeyFile{
 		virtual bool deleteFile(String file);
 		virtual bool deleteRootFile(String file);
 		
-		virtual void addFileFunction(cppObjectClass* cls,MonkeyFileFunction* funtion);
+		virtual void addFileFunction(cppObjectClass* cls, MonkeyFileFunction* funtion);
 		virtual MonkeyFileFunction* getFileFunction(cppObjectClass* cls);
 		virtual MonkeyFileFunction* removeFileFunction(cppObjectClass* cls);
 		virtual void removeDeleteFileFunction(cppObjectClass* cls);
@@ -62,5 +68,7 @@ class MonkeyFile{
 		String rootPath;
 		Map<cppObjectClass, MonkeyFileFunction>* fileFunctions = nullptr;
 };
+
+}
 
 #endif 

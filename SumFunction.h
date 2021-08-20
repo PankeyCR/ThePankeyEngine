@@ -4,6 +4,8 @@
 
 #include "Function.h"
 
+namespace ame{
+
 template<class T, class... any>
 class SumFunction : public Function<T,any...>{
 	public:
@@ -22,7 +24,7 @@ class SumFunction : public Function<T,any...>{
 		}
 		
 		//cppObject part
-		String getClassName(){return "SumFunction";}
+		cppObjectClass* getClass(){return Class<SumFunction>::classType;}
 		String toString(){return "SumFunction";}
 		
 	protected:
@@ -30,6 +32,8 @@ class SumFunction : public Function<T,any...>{
 template<>
 float SumFunction<float,float>::f(float x){
 	return x;
+}
+
 }
 
 #endif 

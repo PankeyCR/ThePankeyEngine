@@ -4,6 +4,8 @@
 
 #include "cppObject.h"
 
+namespace ame{
+
 class VectorDirection : public cppObject{
 public:
 VectorDirection(){
@@ -20,8 +22,8 @@ VectorDirection(const char* n, const bool& d){
 }
 virtual ~VectorDirection(){}
     
-String getClassName(){
-	return "VectorDirection";
+cppObjectClass* getClass(){
+	return Class<VectorDirection>::classType;
 }
     
 String toString(){
@@ -69,8 +71,8 @@ VectorDirection* clone(){
 	return cloner;
 }
 
-bool instanceof(String instance){
-return instance == "VectorDirection" || cppObject::instanceof(instance);
+bool instanceof(cppObjectClass* instance){
+return instance == Class<VectorDirection>::classType || cppObject::instanceof(instance);
 }
 
 bool operator==(const VectorDirection& obj){
@@ -109,5 +111,7 @@ protected:
 Vector vector;
 bool direction;
 };
+
+}
 
 #endif

@@ -7,6 +7,8 @@
 #include "cppObjectClass.h"
 #include "ClassType.h"
 
+namespace ame{
+
 template<class cls>
 struct Class{
 	static ClassType<cls>* classType;
@@ -14,7 +16,6 @@ struct Class{
 
 template<class cls> ClassType<cls>* Class<cls>::classType = new ClassType<cls>();
 
-//class cppObject/* : public ManegedMemory<cppObject>*/{
 class cppObject{
     public:
 		cppObject();
@@ -28,15 +29,19 @@ class cppObject{
 		}
 		virtual bool instanceof(cppObjectClass* cls);
 		
+		virtual cppObjectClass* getClass();
+		
 		virtual cppObject *clone(void);
 		virtual cppObject *clone(bool owningMemory);
 		
-		virtual cppObjectClass* getClass();
+		virtual void invoke(String methodName);
 		
 		virtual void operator=(cppObject b);
 		virtual bool operator==(cppObject b);
 		virtual bool operator!=(cppObject b);
 	private:
 };
+
+}
 
 #endif 

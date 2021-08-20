@@ -4,6 +4,9 @@
 #define Easing_h
 
 #include "EaseFunction.h"
+
+namespace ame{
+	
 class ConstantEasing;
 class LinearEasing;
 class InQuadEasing;
@@ -162,5 +165,7 @@ class InvertEasing : public EaseFunction {
 	private:
 		EaseFunction *func;
 };
+
+}
 
 #endif 

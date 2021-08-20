@@ -7,6 +7,8 @@
 #include "ArrayList.h"
 #include "cppObject.h"
 
+namespace ame{
+
 class DipSwitch : public cppObject{
     private:
 		void readPins();
@@ -26,5 +28,7 @@ class DipSwitch : public cppObject{
         bool operator ==(const int& t);
         bool operator !=(const int& t);
 };
+
+}
 
 #endif 

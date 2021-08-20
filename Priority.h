@@ -3,6 +3,8 @@
 #ifndef Priority_h
 #define Priority_h
 
+namespace ame{
+
 enum class Priority {
 	First,
 	Second,
@@ -15,5 +17,7 @@ enum class Priority {
 	AlphaOmega,
 	Lucky
 };
+
+}
 
 #endif 

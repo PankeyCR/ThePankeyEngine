@@ -5,6 +5,8 @@
 
 #include "cppObject.h"
 
+namespace ame{
+
 class GameOn : public cppObject{
     public:		
 		GameOn();
@@ -34,5 +36,6 @@ class GameOn : public cppObject{
 		bool enabler = false;
 };
 
+}
 
 #endif 

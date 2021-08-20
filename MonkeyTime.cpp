@@ -5,18 +5,18 @@
 
 #include "MonkeyTime.h"
 
-	MonkeyTime::MonkeyTime(){
+	ame::MonkeyTime::MonkeyTime(){
         this->computeTime();
 	}
-	MonkeyTime::~MonkeyTime(){
+	ame::MonkeyTime::~MonkeyTime(){
 			
 	}
 	
-    void MonkeyTime::run() {
+    void ame::MonkeyTime::run() {
         this->running=true;
     }
 	
-    void MonkeyTime::computeManualTime(long time) {
+    void ame::MonkeyTime::computeManualTime(long time) {
         if(this->running){
 			this->microTimer = time - this->startTime;
 			this->tpcTimer = time -this->currentTimer;
@@ -24,7 +24,7 @@
         }
     }
 	
-    void MonkeyTime::computeTime() {
+    void ame::MonkeyTime::computeTime() {
         if(this->running){
             long mm = micros();
 			this->tpcTimer = mm -this->currentTimer;
@@ -33,7 +33,7 @@
         }
     }
 	
-    void MonkeyTime::computeTime(long time) {
+    void ame::MonkeyTime::computeTime(long time) {
         if(this->running){
             long mm = micros();
 			this->microTimer = this->currentTimer - this->startTime;
@@ -46,127 +46,127 @@
         }
     }
 		
-	void MonkeyTime::setStartTime(long time){
+	void ame::MonkeyTime::setStartTime(long time){
         this->startTime = time;
 	}
 	
-	long MonkeyTime::getStartTime() {
+	long ame::MonkeyTime::getStartTime() {
         return this->startTime;
 	}
 	
-	void MonkeyTime::setCurrentTime(long time){
+	void ame::MonkeyTime::setCurrentTime(long time){
         this->currentTimer = time;
 	}
 
-	long MonkeyTime::getCurrentTimer(){
+	long ame::MonkeyTime::getCurrentTimer(){
         return this->currentTimer;
 	}
 
-	void MonkeyTime::setTime(long time){
+	void ame::MonkeyTime::setTime(long time){
         this->microTimer = time;
 	}
 
-	long MonkeyTime::getTime(){
+	long ame::MonkeyTime::getTime(){
         return this->microTimer;
 	}
 
-	void MonkeyTime::setEndTime(long time){
+	void ame::MonkeyTime::setEndTime(long time){
         this->endTime = time;
 	}
 
-	long MonkeyTime::getEndTime() {
+	long ame::MonkeyTime::getEndTime() {
         return this->endTime;
 	}
 
-	void MonkeyTime::start(long time){
+	void ame::MonkeyTime::start(long time){
         this->running= true;
         this->startTime = time;
 	}
 
-	void MonkeyTime::start(){
+	void ame::MonkeyTime::start(){
         this->running= true;
         this->currentTimer= micros();
         this->startTime= this->currentTimer;
 	}
 
-	void MonkeyTime::end(long time){
+	void ame::MonkeyTime::end(long time){
         this->running= false;
         this->endTime = time;
 	}
 
-	void MonkeyTime::end(){
+	void ame::MonkeyTime::end(){
         this->running= false;
         this->endTime = this->currentTimer;
 	}
 
-	void MonkeyTime::restart(long time){
+	void ame::MonkeyTime::restart(long time){
         this->running= true;
         this->startTime= time;
         this->endTime = 0;
 	}
 
-	void MonkeyTime::restart(){
+	void ame::MonkeyTime::restart(){
         this->running= true;
         this->currentTimer= micros();
         this->startTime= this->currentTimer;
         this->endTime = 0;
 	}
 
-	bool MonkeyTime::isRunning(){
+	bool ame::MonkeyTime::isRunning(){
         return this->running;
 	}
 
-	int MonkeyTime::getTPC(){
+	int ame::MonkeyTime::getTPC(){
         return this->tpcTimer;
 	}
 
-	int MonkeyTime::getTPCandRestart(){
+	int ame::MonkeyTime::getTPCandRestart(){
         int tpc = this->getTPC();
         this->restartTPC();
         return tpc;
 	}
 
-	void MonkeyTime::restartTPC(){
+	void ame::MonkeyTime::restartTPC(){
         this->tpcTimer=0;   
 	}
 
-	void MonkeyTime::Tick(){
+	void ame::MonkeyTime::Tick(){
         this->tickTimer++;
 	}
 
-	void MonkeyTime::setTick(long tick){
+	void ame::MonkeyTime::setTick(long tick){
         this->tickTimer = tick;
 	}
 
-	long MonkeyTime::getTick(){
+	long ame::MonkeyTime::getTick(){
         return this->tickTimer;
 	}
 
-	void MonkeyTime::resetTick(){
+	void ame::MonkeyTime::resetTick(){
         this->tickTimer = 0;
 	}
 
-	bool MonkeyTime::isNow(float time){
+	bool ame::MonkeyTime::isNow(float time){
 		return Now::is(TimeCheck::InBetween, this->getTime(), time,0.01f);
 	}
 
-	bool MonkeyTime::isNow(float time,float offset){
+	bool ame::MonkeyTime::isNow(float time,float offset){
 		return Now::is(TimeCheck::InBetween, this->getTime(), time,offset);
 	}
 
-	bool MonkeyTime::isNow(TimeCheck check,float time){
+	bool ame::MonkeyTime::isNow(TimeCheck check,float time){
 		return Now::is(check, this->getTime(), time,0.01f);
 	}
 
-	bool MonkeyTime::isNow(TimeCheck check,float time,float offset){
+	bool ame::MonkeyTime::isNow(TimeCheck check,float time,float offset){
 		return Now::is(check, this->getTime(), time,offset);
 	}
 
-	void MonkeyTime::setTimeOffset(TimeCheck check){
+	void ame::MonkeyTime::setTimeOffset(TimeCheck check){
         this->timecheck = check;
 	}
 
-	TimeCheck MonkeyTime::getTimeOffset(){
+	ame::TimeCheck ame::MonkeyTime::getTimeOffset(){
         return this->timecheck;
 	}
 

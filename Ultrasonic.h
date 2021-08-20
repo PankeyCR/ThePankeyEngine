@@ -2,6 +2,8 @@
 #ifndef Ultrasonic_h
 #define Ultrasonic_h
 
+namespace ame{
+
 class Ultrasonic {
     public:
 		Ultrasonic(){}
@@ -9,10 +11,9 @@ class Ultrasonic {
 			setTriggerPin(t);
 			setReadPin(r);
 		}
-		Ultrasonic(int triggerP, int readP, int zoneV, float max, float min, float scaleV){
+		Ultrasonic(int triggerP, int readP, float max, float min, float scaleV){
 			setTriggerPin(triggerP);
 			setReadPin(readP);
-			m_zone = zoneV;
 			m_maxLimit = max;
 			m_minLimit = min;
 			m_scale = scaleV;
@@ -22,7 +23,7 @@ class Ultrasonic {
 		virtual void initialize(Application *app){}
 		
 		virtual void setTriggerPin(int p){
-			pinMode(p, INPUT);
+			pinMode(p, OUTPUT);
 			t_pin = p;
 		}
 		virtual int triggerPin(){return t_pin;}
@@ -33,12 +34,13 @@ class Ultrasonic {
 		}
 		virtual int readPin(){return r_pin;}
 		
-		virtual void setScale(int p){
+		virtual void setScale(float p){
 			m_scale = p;
 		}
-		virtual int scale(){return m_scale;}
+		virtual float scale(){return m_scale;}
 		
 		virtual bool isTriggering(){return m_triggering;}
+		
 		virtual void startTrigger(){
 			m_triggering = true;
 			digitalWrite(t_pin, HIGH);
@@ -48,14 +50,20 @@ class Ultrasonic {
 			digitalWrite(t_pin, LOW);
 		}
 		
-		//distance on centimeters
-		virtual float read(){
-			m_read = analogRead(r_pin) * m_scale;
-			return m_read;
+		//distance
+		virtual float rawRead(){
+			return analogRead(r_pin);
 		}
 		
-		virtual void setZone(int z){m_zone = z;}
-		virtual int zone(){return m_zone;}
+		//distance
+		virtual float read(){
+			m_read = analogRead(r_pin) * m_scale;
+			// Serial.println(analogRead(r_pin));
+			if(m_read > m_maxLimit || m_read < m_minLimit){
+				return -1.0f;
+			}
+			return m_read;
+		}
 		
 		virtual void setMaxLimit(float l){m_maxLimit = l;}
 		virtual void setMinLimit(float l){m_minLimit = l;}
@@ -63,26 +71,25 @@ class Ultrasonic {
 		virtual float getMaxLimit(){return m_maxLimit;}
 		virtual float getMinLimit(){return m_minLimit;}
 		
-		virtual bool online(){
-			m_safeReading++;
-			if(m_safeReading < 10000l && m_read >= 0){
-				m_safeReading = 0;
-			}
-			if(m_safeReading > 10000l && m_read < 0.0f){
-				return false;
-			}
-			return true;
-		}
+		virtual bool isEnable(){return m_enable;}
+		virtual void enable(){m_enable = true;}
+		virtual void disable(){m_enable = false;}
+		
+		virtual void operator=(Ultrasonic b){}
+		virtual bool operator==(Ultrasonic b){return true;}
+		virtual bool operator!=(Ultrasonic b){return true;}
 		
     protected: 
-		long m_safeReading = 0l;
+		bool m_enable = false;
 		float m_read = -1.0f;
 		bool m_triggering = false;
 		int r_pin = 0;
 		int t_pin = 0;
-		int m_zone = 0;
 		float m_maxLimit = 500.0f;
 		float m_minLimit = 30.0f;
 		float m_scale = 0.4761f;
 };
+
+}
+
 #endif

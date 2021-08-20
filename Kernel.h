@@ -3,27 +3,31 @@
 #ifndef Kernel_h
 #define Kernel_h
 
-#include "ByteArray.h"
+#include "Note.h"
+
+namespace ame{
+	
+class OS;
 
 class Kernel{
     public:
 		Kernel(){}
-		Kernel(const Kernel& k){}
 		virtual ~Kernel(){}
 		
-		virtual void run(ByteArray array){}
-		
-		virtual void operator =(const Kernel& k){
-			
-		}
-		virtual bool operator ==(const Kernel& k){
-			return true;
-		}
-		virtual bool operator !=(const Kernel& k){
-			return true;
+		void setOS(OS* m){
+			os = m;
 		}
 		
+		virtual void run(Note cmd){
+		}
+		
+		virtual void initialize(){}
+		
+		virtual void update(){}
 	protected:
+		OS* os = nullptr;
 };
+
+}
 
 #endif 

@@ -3,6 +3,8 @@
 #ifndef Annotation_h
 #define Annotation_h
 
+namespace ame{
+
 class cppObjectClass;
 
 class Annotation{
@@ -17,5 +19,7 @@ virtual bool operator==(Annotation b){return true;}
 virtual bool operator!=(Annotation b){return false;}
 protected:
 };
+
+}
 
 #endif 

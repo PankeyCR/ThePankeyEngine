@@ -11,6 +11,8 @@
 #include "GameOn.h"
 #include "Map.h"
 
+namespace ame{
+
 template <class K,class V>
 class PrimitiveMap : public Map<K,V>{	
     public:
@@ -576,4 +578,6 @@ class PrimitiveMap : public Map<K,V>{
 		int expandSize=5;
 		bool owner = true;
 };
+
+}
 #endif 

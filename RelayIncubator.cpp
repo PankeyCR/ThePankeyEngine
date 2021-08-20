@@ -5,15 +5,15 @@
 #include "RelayIncubator.h"
 
 	
-	RelayIncubator::RelayIncubator(){
-		this->temperature = new TemperatureNTC();
-		this->fanPulse = new FixPulseGenerator();
-		this->relayPulse = new FixPulseGenerator();
-		this->scale = new MetricScale();
-		this->average = new Average<float>();
+	ame::RelayIncubator::RelayIncubator(){
+		this->temperature = new ame::TemperatureNTC();
+		this->fanPulse = new ame::FixPulseGenerator();
+		this->relayPulse = new ame::FixPulseGenerator();
+		this->scale = new ame::MetricScale();
+		this->average = new ame::Average<float>();
 	}
 	
-	RelayIncubator::~RelayIncubator(){
+	ame::RelayIncubator::~RelayIncubator(){
 		if(this->temperature != nullptr){
 			delete this->temperature;
 		}
@@ -31,32 +31,32 @@
 		}
 	}
 	
-	void RelayIncubator::setMaxTemperature(float t){
+	void ame::RelayIncubator::setMaxTemperature(float t){
 		this->maxT = t;
 	}
 	
-	void RelayIncubator::setTemeraturePin(int pin){
+	void ame::RelayIncubator::setTemeraturePin(int pin){
 		pinMode(pin, INPUT);
 		this->tpin = pin;
 	}
 	
-	void RelayIncubator::setRelayPin(int pin){
+	void ame::RelayIncubator::setRelayPin(int pin){
 		this->relayPulse->setPin(pin);
 	}
 	
-	void RelayIncubator::setFanPin(int pin){
+	void ame::RelayIncubator::setFanPin(int pin){
 		this->fanPulse->setPin(pin);
 	}
 	
-	String RelayIncubator::getClassName(){
-		return "RelayIncubator";
+	ame::cppObjectClass* ame::RelayIncubator::getClass(){
+		return ame::Class<ame::RelayIncubator>::classType;
 	}
 	
-	String RelayIncubator::toString(){
-		return "RelayIncubator";
+	String ame::RelayIncubator::toString(){
+		return "ame::RelayIncubator";
 	}
 	
-	void RelayIncubator::initialize(Application *app){
+	void ame::RelayIncubator::initialize(ame::Application *app){
 		this->temperature->initialize();
 		
 		this->relayPulse->getMonkeyTime()->restart();
@@ -65,16 +65,16 @@
 		this->fanPulse->getMonkeyTime()->restart();
 		app->getTimeControl()->add(this->fanPulse);
 		
-		this->scale->setScaleTransform(MetricPrefix::micro, MetricPrefix::none);
+		this->scale->setScaleTransform(ame::MetricPrefix::micro, ame::MetricPrefix::none);
 		
 		// this->relayPulse->enable(false);
 		// this->fanPulse->enable(false);
 		this->relayPulse->enable(true);
 		this->fanPulse->enable(true);
-		Log("RelayIncubator", "initialize", "println","RelayIncubator initialize");
+		Log("ame::RelayIncubator", "initialize", "println","ame::RelayIncubator initialize");
 	}
 	
-	void RelayIncubator::update(){
+	void ame::RelayIncubator::update(){
 		float temp = this->temperature->getTemperature(this->tpin);
 		float deltaT = 0;
 		
@@ -86,7 +86,7 @@
 		}else{
 			return;
 		}
-		Log("RelayIncubator", "update", "print","temperature ");Log("RelayIncubator", "update", "println",String(temp));
+		Log("ame::RelayIncubator", "update", "print","temperature ");Log("ame::RelayIncubator", "update", "println",String(temp));
 		
 		if(temp < this->maxT){
 			this->relayPulse->setHighTime(deltaT*this->scale->getValue(4));

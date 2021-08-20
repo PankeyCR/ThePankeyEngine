@@ -5,17 +5,17 @@
 #include "CommandPulseGenerator.h"
 
 	
-	CommandPulseGenerator::CommandPulseGenerator(){
+	ame::CommandPulseGenerator::CommandPulseGenerator(){
 		this->timer = new MonkeyTime();
 	}
 	
-	CommandPulseGenerator::~CommandPulseGenerator(){
+	ame::CommandPulseGenerator::~CommandPulseGenerator(){
 		if(this->timer != nullptr){
 			delete this->timer;
 		}
 	}
 	
-	void CommandPulseGenerator::Play(TimeControl *t){
+	void ame::CommandPulseGenerator::Play(ame::TimeControl *t){
 		if(!this->en){
 			return;
 		}
@@ -30,24 +30,24 @@
 		Serial.println(this->timer->getTime());
 	}
 	
-	void CommandPulseGenerator::setPulseTime(long t){
+	void ame::CommandPulseGenerator::setPulseTime(long t){
 		this->newtimepulse = t;
 	}
 	
-	long CommandPulseGenerator::getPulseTime(){
+	long ame::CommandPulseGenerator::getPulseTime(){
 		return this->timepulse;
 	}
 	
-	MonkeyTime* CommandPulseGenerator::getMonkeyTime(){
+	ame::MonkeyTime* ame::CommandPulseGenerator::getMonkeyTime(){
 		return this->timer;
 	}
 	
-	void CommandPulseGenerator::setCommand(Command<CommandPulseGenerator>* cmd){
+	void ame::CommandPulseGenerator::setCommand(Command<CommandPulseGenerator>* cmd){
 		this->command = cmd;
 	}
 	
-	void CommandPulseGenerator::enable(bool e){
+	void ame::CommandPulseGenerator::enable(bool e){
 		this->en = e;
 	}
-	
+
 #endif 

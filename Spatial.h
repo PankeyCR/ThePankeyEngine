@@ -9,6 +9,8 @@
 #include "Control.h"
 #include "RenderManager.h"
 
+namespace ame{
+
 class Node;
 
 class Spatial : public cppObject{	
@@ -26,14 +28,16 @@ class Spatial : public cppObject{
 			controls = s.controls;
 		}
 		virtual bool operator==(Spatial b){
-			return this->getClassName()==b.getClassName();
+			return this->getClass()==b.getClass();
 		}
 		virtual bool operator!=(Spatial b){
-			return this->getClassName()!=b.getClassName();
+			return this->getClass()!=b.getClass();
 		}
 		
-		virtual bool instanceof(String name){return name == "Spatial" || name == "cppObject";}
-		virtual String getClassName(){return "Spatial";}
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<Spatial>::classType || cppObject::instanceof(cls);
+		}
+		virtual cppObjectClass* getClass(){return Class<Spatial>::classType;}
 		virtual String toString(){return "Spatial";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
@@ -81,4 +85,7 @@ class Spatial : public cppObject{
 		Node* parent;
 		String name_m;
 };
+
+}
+
 #endif 

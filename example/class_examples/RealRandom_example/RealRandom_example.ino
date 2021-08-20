@@ -5,6 +5,8 @@
 #include "RealRandom.h"
 #include "Logger.h"
 
+using namespace ame;
+
 RealRandom r;
   
 void setup() {

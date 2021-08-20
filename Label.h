@@ -5,6 +5,8 @@
 #include "cppObject.h"
 #include "Panel.h"
 
+namespace ame{
+
 class Label : public Panel{	
     public:
 		Label(){
@@ -14,11 +16,13 @@ class Label : public Panel{
 		virtual ~Label(){
 		}
 		virtual void operator=(const Label& b){}
-		virtual bool operator==(Label b){return this->getClassName()==b.getClassName();}
-		virtual bool operator!=(Label b){return this->getClassName()!=b.getClassName();}
+		virtual bool operator==(Label b){return this->getClass()==b.getClass();}
+		virtual bool operator!=(Label b){return this->getClass()!=b.getClass();}
 		
-		virtual bool instanceof(String name){return name == "Label" || Panel::instanceof(name);}
-		virtual String getClassName(){return "Label";}
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<Label>::classType || Panel::instanceof(cls);
+		}
+		virtual cppObjectClass* getClass(){return Class<Label>::classType;}
 		virtual String toString(){return "Label";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
@@ -31,4 +35,7 @@ class Label : public Panel{
 		
 	protected:
 };
+
+}
+
 #endif 

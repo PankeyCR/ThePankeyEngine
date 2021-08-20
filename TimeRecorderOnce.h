@@ -10,6 +10,8 @@
 #include "TimeCheck.h"
 #include "TimeRecorder.h"
 
+namespace ame{
+	
 #define isRecorder() 
 class TimeRecorderOnce : public TimeRecorder{
     public:		
@@ -56,5 +58,6 @@ class TimeRecorderOnce : public TimeRecorder{
 		List<float>* once = nullptr;
 };
 
+}
 
 #endif 

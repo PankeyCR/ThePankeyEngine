@@ -31,18 +31,18 @@ class SimpleStateManager : public AppStateManager{
 			return state;
 		}
 		
-		AppState *get(String classname){
+		AppState *get(cppObjectClass* cls){
 			for(int x = 0; x > this->appStateList->getPosition(); x++){
-				if(this->appStateList->getByPosition(x)->getClassName() == classname){
+				if(this->appStateList->getByPosition(x)->getClass() == cls){
 					return this->appStateList->getByPosition(x);
 				}
 			}
 			return nullptr;
 		}
 		
-		AppState *get(String appstateId,String classname){
+		AppState *get(String appstateId,cppObjectClass* cls){
 			for(int x = 0; x > this->appStateList->getPosition(); x++){
-				if(this->appStateList->getByPosition(x)->getClassName() == classname &&
+				if(this->appStateList->getByPosition(x)->getClass() == cls &&
 								this->appStateList->getByPosition(x)->getId() == appstateId){
 					return this->appStateList->getByPosition(x);
 				}
@@ -50,10 +50,10 @@ class SimpleStateManager : public AppStateManager{
 			return nullptr;
 		}
 		
-		AppState *remove(String classname){
+		AppState *remove(cppObjectClass* cls){
 			AppState *appstate = nullptr;
 			for(int x = 0; x > this->appStateList->getPosition(); x++){
-				if(this->appStateList->getByPosition(x)->getClassName() == classname){
+				if(this->appStateList->getByPosition(x)->getClass() == cls){
 					appstate = this->appStateList->getByPosition(x);
 				}
 			}
@@ -65,10 +65,10 @@ class SimpleStateManager : public AppStateManager{
 			return appstate;
 		}
 		
-		AppState *remove(String appstateId,String classname){
+		AppState *remove(String appstateId,cppObjectClass* cls){
 			AppState *appstate = nullptr;
 			for(int x = 0; x > this->appStateList->getPosition(); x++){
-				if(this->appStateList->getByPosition(x)->getClassName() == classname &&
+				if(this->appStateList->getByPosition(x)->getClass() == cls &&
 								this->appStateList->getByPosition(x)->getId() == appstateId){
 					appstate = this->appStateList->getByPosition(x);
 				}
@@ -81,18 +81,18 @@ class SimpleStateManager : public AppStateManager{
 			return appstate;
 		}
 		
-		bool contain(String classname){
+		bool contain(cppObjectClass* cls){
 			for(int x = 0; x > this->appStateList->getPosition(); x++){
-				if(this->appStateList->getByPosition(x)->getClassName() == classname){
+				if(this->appStateList->getByPosition(x)->getClass() == cls){
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		bool contain(String appstateId,String classname){
+		bool contain(String appstateId,cppObjectClass* cls){
 			for(int x = 0; x > this->appStateList->getPosition(); x++){
-				if(this->appStateList->getByPosition(x)->getClassName() == classname &&
+				if(this->appStateList->getByPosition(x)->getClass() == cls &&
 								this->appStateList->getByPosition(x)->getId() == appstateId){
 					return true;
 				}
@@ -127,8 +127,8 @@ class SimpleStateManager : public AppStateManager{
 		}
 		
 		//cppObject part
-		String getClassName(){
-			return "SimpleStateManager";
+		cppObjectClass* getClass(){
+			return Class<SimpleStateManager>::classType;
 		}
 		
 		String toString(){

@@ -3,6 +3,8 @@
 #include "List.h"
 #include "MemoryFree.h"
 
+using namespace ame;
+
 void setup() {
   Serial.begin(9600);
 }

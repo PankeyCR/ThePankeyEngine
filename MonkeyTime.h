@@ -7,6 +7,8 @@
 #include "Now.h"
 #include "TimeCheck.h"
 
+namespace ame{
+
 class MonkeyTime {
     public:		
 		MonkeyTime();
@@ -61,5 +63,6 @@ class MonkeyTime {
 		long _micros = 1000000;
 };
 
+}
 
 #endif 

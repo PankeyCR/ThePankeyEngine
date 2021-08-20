@@ -4,14 +4,14 @@
 
 #include "Matrix4f.h"
 
-	Matrix4f *Matrix4f::ZERO = new Matrix4f(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    Matrix4f *Matrix4f::IDENTITY = new Matrix4f();
+	ame::Matrix4f *ame::Matrix4f::ZERO = new ame::Matrix4f(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    ame::Matrix4f *ame::Matrix4f::IDENTITY = new ame::Matrix4f();
 
-	Matrix4f::Matrix4f() {
+	ame::Matrix4f::Matrix4f() {
         //this->loadIdentity();
     }
 
-	Matrix4f::Matrix4f(float m00, float m01, float m02, float m03,
+	ame::Matrix4f::Matrix4f(float m00, float m01, float m02, float m03,
             float m10, float m11, float m12, float m13,
             float m20, float m21, float m22, float m23,
             float m30, float m31, float m32, float m33) {
@@ -34,12 +34,12 @@
         this->m33 = m33;
     }
 
-	Matrix4f::Matrix4f(List<float> *array) {
+	ame::Matrix4f::Matrix4f(ame::List<float> *array) {
 		
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Matrix4f Matrix4f::fromFrame(Vector3f location, Vector3f direction, Vector3f up, Vector3f left) {
+    ame::Matrix4f ame::Matrix4f::fromFrame(Vector3f location, Vector3f direction, Vector3f up, Vector3f left) {
         // TempVars vars = TempVars.get();
         // try {
             // Vector3f fwdVector = vars.vect1.set(direction);
@@ -68,14 +68,14 @@
         // } finally {
             // vars.release();
         // }
-        return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+        return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
     }
-    Matrix4f Matrix4f::fromFrameLocal(Vector3f location, Vector3f direction, Vector3f up, Vector3f left) {
+    ame::Matrix4f ame::Matrix4f::fromFrameLocal(Vector3f location, Vector3f direction, Vector3f up, Vector3f left) {
 		
-        return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+        return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
@@ -87,11 +87,11 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	List<float> *Matrix4f::get(List<float> *matrix) {
+	ame::List<float> *ame::Matrix4f::get(ame::List<float> *matrix) {
         return this->get(matrix, true);
     }
 
-	List<float> *Matrix4f::get(List<float> *matrix, bool rowMajor) {
+	ame::List<float> *ame::Matrix4f::get(ame::List<float> *matrix, bool rowMajor) {
         if (matrix == nullptr) {
 			return nullptr;
         }
@@ -135,12 +135,12 @@
 		return matrix;
     }
 	
-	// List<float> Matrix4f::get() {
+	// ame::List<float> ame::Matrix4f::get() {
         // return get(true);
     // }
 
-	// List<float> Matrix4f::get(bool rowMajor) {
-		// ArrayList<float> matrix();
+	// ame::List<float> ame::Matrix4f::get(bool rowMajor) {
+		// Arrayame::List<float> matrix();
         // if (rowMajor) {
             // matrix->addLValue(m00);
             // matrix->addLValue(m01);
@@ -176,10 +176,10 @@
             // matrix->addLValue(m23);
             // matrix->addLValue(m33);
         // }
-		// return ArrayList<float>(&matrix);
+		// return Arrayame::List<float>(&matrix);
     // }
 
-	float Matrix4f::get(int i, int j) {
+	float ame::Matrix4f::get(int i, int j) {
         switch (i) {
             case 0:
                 switch (j) {
@@ -229,11 +229,11 @@
 		return 0.0f;
     }
 
-	// List<float> Matrix4f::getColumn(int i) {
+	// ame::List<float> ame::Matrix4f::getColumn(int i) {
         // return getColumn(i, NULL);
     // }
 
-	List<float> *Matrix4f::getColumn(int i, List<float> *store) {
+	ame::List<float> *ame::Matrix4f::getColumn(int i, ame::List<float> *store) {
         if (store == nullptr) {
 			return nullptr;
         }
@@ -270,10 +270,10 @@
         return store;
     }
 
-	Matrix4f Matrix4f::setColumn(int i, List<float> *column) {
+	ame::Matrix4f ame::Matrix4f::setColumn(int i, ame::List<float> *column) {
 
         if (column == nullptr) {
-			return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+			return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
@@ -307,42 +307,42 @@
                 this->m33 = *column->getByPosition(3);
                 break;
             default:
-			return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+			return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
         }
-        return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+        return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
     }
 
-	Matrix4f Matrix4f::set(int i, int j, float value) {
+	ame::Matrix4f ame::Matrix4f::set(int i, int j, float value) {
         switch (i) {
             case 0:
                 switch (j) {
                     case 0:
                         this->m00 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                     case 1:
                         this->m01 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                     case 2:
                         this->m02 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                     case 3:
                         this->m03 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
@@ -351,25 +351,25 @@
                 switch (j) {
                     case 0:
                         this->m10 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                     case 1:
                         this->m11 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                     case 2:
                         this->m12 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                     case 3:
                         this->m13 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
@@ -378,25 +378,25 @@
                 switch (j) {
                     case 0:
                         this->m20 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                     case 1:
                         this->m21 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                     case 2:
                         this->m22 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                     case 3:
                         this->m23 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
@@ -405,37 +405,37 @@
                 switch (j) {
                     case 0:
                         this->m30 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                     case 1:
                         this->m31 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                     case 2:
                         this->m32 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                     case 3:
                         this->m33 = value;
-						return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+						return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
                 }
         }
-        return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+        return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
     }
 
-	// Matrix4f Matrix4f::set(float[4][4] matrix) {
+	// ame::Matrix4f ame::Matrix4f::set(float[4][4] matrix) {
         // if (matrix.length != 4 || matrix[0].length != 4) {
 			// return;
         // }
@@ -456,13 +456,13 @@
         // this->m31 = matrix[3][1];
         // this->m32 = matrix[3][2];
         // this->m33 = matrix[3][3];
-        // return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+        // return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						// this->m10, this->m11, this->m12, this->m13, 
 						// this->m20, this->m21, this->m22, this->m23, 
 						// this->m30, this->m31, this->m32, this->m33);
     // }
     
-	Matrix4f Matrix4f::set(float m00, float m01, float m02, float m03,
+	ame::Matrix4f ame::Matrix4f::set(float m00, float m01, float m02, float m03,
             float m10, float m11, float m12, float m13,
             float m20, float m21, float m22, float m23,
             float m30, float m31, float m32, float m33) {
@@ -483,13 +483,13 @@
         this->m31 = m31;
         this->m32 = m32;
         this->m33 = m33;
-        return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+        return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
     }
 
-	Matrix4f Matrix4f::set(Matrix4f matrix) {
+	ame::Matrix4f ame::Matrix4f::set(ame::Matrix4f matrix) {
         this->m00 = matrix.m00;
         this->m01 = matrix.m01;
         this->m02 = matrix.m02;
@@ -506,18 +506,18 @@
         this->m31 = matrix.m31;
         this->m32 = matrix.m32;
         this->m33 = matrix.m33;
-        return Matrix4f(this->m00, this->m01, this->m02, this->m03, 
+        return ame::Matrix4f(this->m00, this->m01, this->m02, this->m03, 
 						this->m10, this->m11, this->m12, this->m13, 
 						this->m20, this->m21, this->m22, this->m23, 
 						this->m30, this->m31, this->m32, this->m33);
     }
 	/////////////////////////////////////////////////////////////////////////////////////////
 	/*
-	List<float> *Matrix4f::set(List<float> *matrix) {
+	ame::List<float> *ame::Matrix4f::set(ame::List<float> *matrix) {
         return this->set(matrix, true);
     }
 	
-	List<float> *Matrix4f::set(List<float> *matrix, bool rowMajor) {
+	ame::List<float> *ame::Matrix4f::set(ame::List<float> *matrix, bool rowMajor) {
         if (matrix == nullptr) {
             return nullptr;
         }
@@ -563,13 +563,13 @@
         return matrix;
     }
 
-    Matrix4f Matrix4f::transpose() {
+    ame::Matrix4f ame::Matrix4f::transpose() {
         float tmp[16];
         get(tmp, true);
-        return Matrix4f(tmp);
+        return ame::Matrix4f(tmp);
     }
 	
-	Matrix4f Matrix4f::transposeLocal() {
+	ame::Matrix4f ame::Matrix4f::transposeLocal() {
         float tmp = m01;
         m01 = m10;
         m10 = tmp;
@@ -594,10 +594,10 @@
         m23 = m32;
         m32 = tmp;
 
-        return Matrix4f(this);
+        return ame::Matrix4f(this);
     }
 		
-    void Matrix4f::loadIdentity() {
+    void ame::Matrix4f::loadIdentity() {
         m01 = m02 = m03 = 0.0f;
         m10 = m12 = m13 = 0.0f;
         m20 = m21 = m23 = 0.0f;
@@ -605,7 +605,7 @@
         m00 = m11 = m22 = m33 = 1.0f;
     }
 
-    void Matrix4f::fromFrustum(float near, float far, float left, float right, float top, float bottom, bool parallel) {
+    void ame::Matrix4f::fromFrustum(float near, float far, float left, float right, float top, float bottom, bool parallel) {
         loadIdentity();
         if (parallel) {
             // scale
@@ -640,12 +640,12 @@
         }
     }
 	
-	void Matrix4f::fromAngleAxis(float angle, Vector3f axis) {
+	void ame::Matrix4f::fromAngleAxis(float angle, Vector3f axis) {
         Vector3f normAxis = axis.normalize();
         fromAngleNormalAxis(angle, normAxis);
     }
 	
-	void Matrix4f::fromAngleNormalAxis(float angle, Vector3f axis) {
+	void ame::Matrix4f::fromAngleNormalAxis(float angle, Vector3f axis) {
         zero();
         m33 = 1;
 
@@ -673,7 +673,7 @@
         m22 = fZ2 * fOneMinusCos + fCos;
     }
 	
-	void Matrix4f::multLocal(float scalar) {
+	void ame::Matrix4f::multLocal(float scalar) {
         m00 *= scalar;
         m01 *= scalar;
         m02 *= scalar;
@@ -692,26 +692,26 @@
         m33 *= scalar;
     }
 
-    Matrix4f Matrix4f::mult(float scalar) {
-        Matrix4f out = new Matrix4f();
+    ame::Matrix4f ame::Matrix4f::mult(float scalar) {
+        ame::Matrix4f out = new ame::Matrix4f();
         out.set(this);
         out.multLocal(scalar);
         return out;
     }
 
-    Matrix4f Matrix4f::mult(float scalar, Matrix4f store) {
+    ame::Matrix4f ame::Matrix4f::mult(float scalar, ame::Matrix4f store) {
         store.set(this);
         store.multLocal(scalar);
         return store;
     }
 	
-	Matrix4f Matrix4f::mult(Matrix4f in2) {
+	ame::Matrix4f ame::Matrix4f::mult(ame::Matrix4f in2) {
         return mult(in2, null);
     }
 	
-	Matrix4f Matrix4f::mult(Matrix4f in2, Matrix4f store) {
+	ame::Matrix4f ame::Matrix4f::mult(ame::Matrix4f in2, ame::Matrix4f store) {
         if (store == null) {
-            store = new Matrix4f();
+            store = new ame::Matrix4f();
         }
 
         float temp00, temp01, temp02, temp03;
@@ -807,15 +807,15 @@
         return store;
     }
 	
-	Matrix4f Matrix4f::multLocal(Matrix4f in2) {
+	ame::Matrix4f ame::Matrix4f::multLocal(ame::Matrix4f in2) {
         return mult(in2, this);
     }
 	
-	Vector3f Matrix4f::mult(Vector3f vec) {
+	Vector3f ame::Matrix4f::mult(Vector3f vec) {
         return mult(vec, null);
     }
 	
-	Vector3f Matrix4f::mult(Vector3f vec, Vector3f store) {
+	Vector3f ame::Matrix4f::mult(Vector3f vec, Vector3f store) {
         if (store == null) {
             store = new Vector3f();
         }
@@ -828,11 +828,11 @@
         return store;
     }
 	
-	Vector4f Matrix4f::mult(Vector4f vec) {
+	Vector4f ame::Matrix4f::mult(Vector4f vec) {
         return mult(vec, null);
     }
 	
-	Vector4f Matrix4f::mult(Vector4f vec, Vector4f store) {
+	Vector4f ame::Matrix4f::mult(Vector4f vec, Vector4f store) {
         if (null == vec) {
             logger.warning("Source vector is null, null result returned.");
             return null;
@@ -850,11 +850,11 @@
         return store;
     }
 	
-	Vector4f Matrix4f::multAcross(Vector4f vec) {
+	Vector4f ame::Matrix4f::multAcross(Vector4f vec) {
         return multAcross(vec, null);
     }
 	
-	Vector4f Matrix4f::multAcross(Vector4f vec, Vector4f store) {
+	Vector4f ame::Matrix4f::multAcross(Vector4f vec, Vector4f store) {
         if (null == vec) {
             logger.warning("Source vector is null, null result returned.");
             return null;
@@ -872,7 +872,7 @@
         return store;
     }
 	
-	Vector3f Matrix4f::multNormal(Vector3f vec, Vector3f store) {
+	Vector3f ame::Matrix4f::multNormal(Vector3f vec, Vector3f store) {
         if (store == null) {
             store = new Vector3f();
         }
@@ -885,7 +885,7 @@
         return store;
     }
 	
-	Vector3f Matrix4f::multNormalAcross(Vector3f vec, Vector3f store) {
+	Vector3f ame::Matrix4f::multNormalAcross(Vector3f vec, Vector3f store) {
         if (store == null) {
             store = new Vector3f();
         }
@@ -898,7 +898,7 @@
         return store;
     }
 	
-	float Matrix4f::multProj(Vector3f vec, Vector3f store) {
+	float ame::Matrix4f::multProj(Vector3f vec, Vector3f store) {
         float vx = vec.x, vy = vec.y, vz = vec.z;
         store.x = m00 * vx + m01 * vy + m02 * vz + m03;
         store.y = m10 * vx + m11 * vy + m12 * vz + m13;
@@ -906,7 +906,7 @@
         return m30 * vx + m31 * vy + m32 * vz + m33;
     }
 	
-	Vector3f Matrix4f::multAcross(Vector3f vec, Vector3f store) {
+	Vector3f ame::Matrix4f::multAcross(Vector3f vec, Vector3f store) {
         if (null == vec) {
             logger.warning("Source vector is null, null result returned.");
             return null;
@@ -923,7 +923,7 @@
         return store;
     }
 	
-	Quaternion Matrix4f::mult(Quaternion vec, Quaternion store) {
+	Quaternion ame::Matrix4f::mult(Quaternion vec, Quaternion store) {
 
         if (null == vec) {
             logger.warning("Source vector is null, null result returned.");
@@ -945,7 +945,7 @@
         return store;
     }
 	
-	float *Matrix4f::mult(float[] vec4f) {
+	float *ame::Matrix4f::mult(float[] vec4f) {
         if (null == vec4f || vec4f.length != 4) {
             logger.warning("invalid array given, must be nonnull and length 4");
             return null;
@@ -961,7 +961,7 @@
         return vec4f;
     }
 	
-	float *Matrix4f::multAcross(float[] vec4f) {
+	float *ame::Matrix4f::multAcross(float[] vec4f) {
         if (null == vec4f || vec4f.length != 4) {
             logger.warning("invalid array given, must be nonnull and length 4");
             return null;
@@ -977,13 +977,13 @@
         return vec4f;
     }
 	
-	Matrix4f Matrix4f::invert() {
+	ame::Matrix4f ame::Matrix4f::invert() {
         return invert(null);
     }
 	
-	Matrix4f Matrix4f::invert(Matrix4f store) {
+	ame::Matrix4f ame::Matrix4f::invert(ame::Matrix4f store) {
         if (store == null) {
-            store = new Matrix4f();
+            store = new ame::Matrix4f();
         }
 
         float fA0 = m00 * m11 - m01 * m10;
@@ -1027,7 +1027,7 @@
         return store;
     }
 	
-	Matrix4f Matrix4f::invertLocal() {
+	ame::Matrix4f ame::Matrix4f::invertLocal() {
 
         float fA0 = m00 * m11 - m01 * m10;
         float fA1 = m00 * m12 - m02 * m10;
@@ -1087,11 +1087,11 @@
         return this;
     }
 	
-	Matrix4f Matrix4f::adjoint() {
+	ame::Matrix4f ame::Matrix4f::adjoint() {
         return adjoint(null);
     }
 	
-	void Matrix4f::setTransform(Vector3f position, Vector3f scale, Matrix3f rotMat) {
+	void ame::Matrix4f::setTransform(Vector3f position, Vector3f scale, Matrix3f rotMat) {
         // Ordering:
         //    1. Scale
         //    2. Rotate
@@ -1118,9 +1118,9 @@
         m33 = 1;
     }
 	
-	Matrix4f Matrix4f::adjoint(Matrix4f store) {
+	ame::Matrix4f ame::Matrix4f::adjoint(ame::Matrix4f store) {
         if (store == null) {
-            store = new Matrix4f();
+            store = new ame::Matrix4f();
         }
 
         float fA0 = m00 * m11 - m01 * m10;
@@ -1156,7 +1156,7 @@
         return store;
     }
 	
-	float Matrix4f::determinant() {
+	float ame::Matrix4f::determinant() {
         float fA0 = m00 * m11 - m01 * m10;
         float fA1 = m00 * m12 - m02 * m10;
         float fA2 = m00 * m13 - m03 * m10;
@@ -1173,7 +1173,7 @@
         return fDet;
     }
 	
-	Matrix4f Matrix4f::zero() {
+	ame::Matrix4f ame::Matrix4f::zero() {
         m00 = m01 = m02 = m03 = 0.0f;
         m10 = m11 = m12 = m13 = 0.0f;
         m20 = m21 = m22 = m23 = 0.0f;
@@ -1181,8 +1181,8 @@
         return this;
     }
 	
-	Matrix4f Matrix4f::addLValue(Matrix4f mat) {
-        Matrix4f result = new Matrix4f();
+	ame::Matrix4f ame::Matrix4f::addLValue(ame::Matrix4f mat) {
+        ame::Matrix4f result = new ame::Matrix4f();
         result.m00 = this.m00 + mat.m00;
         result.m01 = this.m01 + mat.m01;
         result.m02 = this.m02 + mat.m02;
@@ -1202,7 +1202,7 @@
         return result;
     }
 	
-	void Matrix4f::addLValueLocal(Matrix4f mat) {
+	void ame::Matrix4f::addLValueLocal(ame::Matrix4f mat) {
         m00 += mat.m00;
         m01 += mat.m01;
         m02 += mat.m02;
@@ -1221,29 +1221,29 @@
         m33 += mat.m33;
     }
 
-    Vector3f Matrix4f::toTranslationVector() {
+    Vector3f ame::Matrix4f::toTranslationVector() {
         return new Vector3f(m03, m13, m23);
     }
 
-    void Matrix4f::toTranslationVector(Vector3f vector) {
+    void ame::Matrix4f::toTranslationVector(Vector3f vector) {
         vector.set(m03, m13, m23);
     }
 
-    Quaternion Matrix4f::toRotationQuat() {
+    Quaternion ame::Matrix4f::toRotationQuat() {
         Quaternion quat = new Quaternion();
         quat.fromRotationMatrix(toRotationMatrix());
         return quat;
     }
 
-    void Matrix4f::toRotationQuat(Quaternion q) {
+    void ame::Matrix4f::toRotationQuat(Quaternion q) {
         q.fromRotationMatrix(toRotationMatrix());
     }
 
-    Matrix3f Matrix4f::toRotationMatrix() {
+    Matrix3f ame::Matrix4f::toRotationMatrix() {
         return new Matrix3f(m00, m01, m02, m10, m11, m12, m20, m21, m22);
     }
 	
-	void Matrix4f::toRotationMatrix(Matrix3f mat) {
+	void ame::Matrix4f::toRotationMatrix(Matrix3f mat) {
         mat.m00 = m00;
         mat.m01 = m01;
         mat.m02 = m02;
@@ -1255,20 +1255,20 @@
         mat.m22 = m22;
 	}
 	
-	Vector3f Matrix4f::toScaleVector() {
+	Vector3f ame::Matrix4f::toScaleVector() {
 		Vector3f result = new Vector3f();
 		this.toScaleVector(result);
 		return result;
 	}
 	
-	void Matrix4f::toScaleVector(Vector3f vector) {
+	void ame::Matrix4f::toScaleVector(Vector3f vector) {
 		float scaleX = (float) Math.sqrt(m00 * m00 + m10 * m10 + m20 * m20);
 		float scaleY = (float) Math.sqrt(m01 * m01 + m11 * m11 + m21 * m21);
 		float scaleZ = (float) Math.sqrt(m02 * m02 + m12 * m12 + m22 * m22);
 		vector.set(scaleX, scaleY, scaleZ);
     }
 	
-	void Matrix4f::setScale(float x, float y, float z) {
+	void ame::Matrix4f::setScale(float x, float y, float z) {
         TempVars vars = TempVars.get();
         vars.vect1.set(m00, m10, m20);
         vars.vect1.normalizeLocal().multLocal(x);
@@ -1290,11 +1290,11 @@
         vars.release();
     }
 	
-	void Matrix4f::setScale(Vector3f scale) {
+	void ame::Matrix4f::setScale(Vector3f scale) {
         this.setScale(scale.x, scale.y, scale.z);
     }
 	
-	void Matrix4f::setTranslation(float[] translation) {
+	void ame::Matrix4f::setTranslation(float[] translation) {
         if (translation.length != 3) {
             throw new IllegalArgumentException(
                     "Translation size must be 3.");
@@ -1304,19 +1304,19 @@
         m23 = translation[2];
     }
 	
-	void Matrix4f::setTranslation(float x, float y, float z) {
+	void ame::Matrix4f::setTranslation(float x, float y, float z) {
         m03 = x;
         m13 = y;
         m23 = z;
     }
 	
-	void Matrix4f::setTranslation(Vector3f translation) {
+	void ame::Matrix4f::setTranslation(Vector3f translation) {
         m03 = translation.x;
         m13 = translation.y;
         m23 = translation.z;
     }
 	
-	void Matrix4f::setInverseTranslation(float[] translation) {
+	void ame::Matrix4f::setInverseTranslation(float[] translation) {
         if (translation.length != 3) {
             throw new IllegalArgumentException(
                     "Translation size must be 3.");
@@ -1326,7 +1326,7 @@
         m23 = -translation[2];
     }
 	
-	void Matrix4f::angleRotation(Vector3f angles) {
+	void ame::Matrix4f::angleRotation(Vector3f angles) {
         float angle;
         float sr, sp, sy, cr, cp, cy;
 
@@ -1355,11 +1355,11 @@
         m23 = 0.0f;
     }
 	
-	void Matrix4f::setRotationQuaternion(Quaternion quat) {
+	void ame::Matrix4f::setRotationQuaternion(Quaternion quat) {
         quat.toRotationMatrix(this);
     }
 	
-	void Matrix4f::setInverseRotationRadians(float[] angles) {
+	void ame::Matrix4f::setInverseRotationRadians(float[] angles) {
         if (angles.length != 3) {
             throw new IllegalArgumentException(
                     "Angles must be of size 3.");
@@ -1387,7 +1387,7 @@
         m22 = (float) (cr * cp);
     }
 	
-	void Matrix4f::setInverseRotationDegrees(float[] angles) {
+	void ame::Matrix4f::setInverseRotationDegrees(float[] angles) {
         if (angles.length != 3) {
             throw new IllegalArgumentException(
                     "Angles must be of size 3.");
@@ -1399,7 +1399,7 @@
         setInverseRotationRadians(vec);
     }
 
-	void Matrix4f::inverseTranslateVect(float[] vec) {
+	void ame::Matrix4f::inverseTranslateVect(float[] vec) {
         if (vec.length != 3) {
             throw new IllegalArgumentException(
                     "vec must be of size 3.");
@@ -1410,19 +1410,19 @@
         vec[2] = vec[2] - m23;
     }
 	
-    void Matrix4f::inverseTranslateVect(Vector3f data) {
+    void ame::Matrix4f::inverseTranslateVect(Vector3f data) {
         data.x -= m03;
         data.y -= m13;
         data.z -= m23;
     }
 	
-    void Matrix4f::translateVect(Vector3f data) {
+    void ame::Matrix4f::translateVect(Vector3f data) {
         data.x += m03;
         data.y += m13;
         data.z += m23;
     }
 	
-    void Matrix4f::inverseRotateVect(Vector3f vec) {
+    void ame::Matrix4f::inverseRotateVect(Vector3f vec) {
         float vx = vec.x, vy = vec.y, vz = vec.z;
 
         vec.x = vx * m00 + vy * m10 + vz * m20;
@@ -1430,7 +1430,7 @@
         vec.z = vx * m02 + vy * m12 + vz * m22;
     }
 
-    void Matrix4f::rotateVect(Vector3f vec) {
+    void ame::Matrix4f::rotateVect(Vector3f vec) {
         float vx = vec.x, vy = vec.y, vz = vec.z;
 
         vec.x = vx * m00 + vy * m01 + vz * m02;
@@ -1438,8 +1438,8 @@
         vec.z = vx * m20 + vy * m21 + vz * m22;
     }
 	
-    String Matrix4f::toString() {
-        StringBuilder result = new StringBuilder("Matrix4f\n[\n");
+    String ame::Matrix4f::toString() {
+        StringBuilder result = new StringBuilder("ame::Matrix4f\n[\n");
         result.append(" ");
         result.append(m00);
         result.append("  ");
@@ -1479,8 +1479,8 @@
         return result.toString();
     }
 
-    bool Matrix4f::equals(Object *o) {
-        if (!(o instanceof Matrix4f) || o == null) {
+    bool ame::Matrix4f::equals(Object *o) {
+        if (!(o instanceof ame::Matrix4f) || o == null) {
             return false;
         }
 
@@ -1488,7 +1488,7 @@
             return true;
         }
 
-        Matrix4f comp = (Matrix4f) o;
+        ame::Matrix4f comp = (ame::Matrix4f) o;
         if (Float.compare(m00, comp.m00) != 0) {
             return false;
         }
@@ -1588,14 +1588,14 @@
         // m33 = cap.readFloat("m33", 1);
     // }
 	
-    bool Matrix4f::isIdentity() {
+    bool ame::Matrix4f::isIdentity() {
         return (m00 == 1 && m01 == 0 && m02 == 0 && m03 == 0)
                 && (m10 == 0 && m11 == 1 && m12 == 0 && m13 == 0)
                 && (m20 == 0 && m21 == 0 && m22 == 1 && m23 == 0)
                 && (m30 == 0 && m31 == 0 && m32 == 0 && m33 == 1);
     }
 	
-    void Matrix4f::scale(Vector3f scale) {
+    void ame::Matrix4f::scale(Vector3f scale) {
         m00 *= scale.getX();
         m10 *= scale.getX();
         m20 *= scale.getX();
@@ -1610,7 +1610,7 @@
         m32 *= scale.getZ();
     }
 
-    bool Matrix4f::equalIdentity(Matrix4f mat) {
+    bool ame::Matrix4f::equalIdentity(ame::Matrix4f mat) {
         if (Math.abs(mat.m00 - 1) > 1e-4) {
             return false;
         }
@@ -1667,15 +1667,15 @@
         return true;
     }
 
-	void Matrix4f::multLocal(Quaternion rotation) {
+	void ame::Matrix4f::multLocal(Quaternion rotation) {
         Vector3f axis = new Vector3f();
         float angle = rotation.toAngleAxis(axis);
-        Matrix4f matrix4f = new Matrix4f();
-        matrix4f.fromAngleAxis(angle, axis);
-        multLocal(matrix4f);
+        ame::Matrix4f ame::Matrix4f = new ame::Matrix4f();
+        ame::Matrix4f.fromAngleAxis(angle, axis);
+        multLocal(ame::Matrix4f);
     }
 
-    Matrix4f *Matrix4f::clone() {
+    ame::Matrix4f *ame::Matrix4f::clone() {
 		
     }
 */

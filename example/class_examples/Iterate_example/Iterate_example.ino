@@ -2,6 +2,8 @@
 #include "Iterator.h"
 #include "ArrayList.h"
 
+using namespace ame;
+
 ArrayList<int,10> list;
 
 void setup() {

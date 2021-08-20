@@ -7,6 +7,8 @@
 #include "ByteArray.h"
 #include "IPAddress.h"
 
+namespace ame{
+
 class SerialPort : public Stream , public cppObject{	
     public:
 		SerialPort(){
@@ -79,4 +81,7 @@ class SerialPort : public Stream , public cppObject{
 	protected:
 	String m_name = "";
 };
+
+}
+
 #endif 

@@ -5,14 +5,14 @@
 
 #include "trilean.h"
 
-	trilean::trilean(){
+	ame::trilean::trilean(){
 		
 	}
-	trilean::trilean(const bool& b){
+	ame::trilean::trilean(const bool& b){
 		this->tbool=b;
 		this->known=true;
 	}
-	trilean::trilean(const int& b){
+	ame::trilean::trilean(const int& b){
 		if(b == 1){
 			this->tbool=true;
 			this->known=true;
@@ -26,14 +26,14 @@
 			this->known=false;
 		}
 	}
-	trilean::~trilean(){
+	ame::trilean::~trilean(){
 		
 	}
-	void trilean::operator=(const bool& b){
+	void ame::trilean::operator=(const bool& b){
 		this->tbool=b;
 		this->known=true;
 	}
-	void trilean::operator=(const int& b){
+	void ame::trilean::operator=(const int& b){
 		if(b == 1){
 			this->tbool=true;
 			this->known=true;
@@ -47,7 +47,7 @@
 			this->known=false;
 		}
 	}
-	void trilean::operator=(const float& b){
+	void ame::trilean::operator=(const float& b){
 		if(b == 1.0f){
 			this->tbool=true;
 			this->known=true;
@@ -61,7 +61,7 @@
 			this->known=false;
 		}
 	}
-	void trilean::operator=(const double& b){
+	void ame::trilean::operator=(const double& b){
 		if(b == 1.0d){
 			this->tbool=true;
 			this->known=true;
@@ -75,13 +75,13 @@
 			this->known=false;
 		}
 	}
-	bool trilean::operator==(const bool& b){
+	bool ame::trilean::operator==(const bool& b){
 		if(!this->known){
 			return false;
 		}
 		return b == this->tbool;
 	}
-	bool trilean::operator==(const int& b){
+	bool ame::trilean::operator==(const int& b){
 		if(!this->known){
 			if(b == 1){
 				return false;
@@ -115,7 +115,7 @@
 			}
 		}
 	}
-	bool trilean::operator==(const float& b){
+	bool ame::trilean::operator==(const float& b){
 		if(!this->known){
 			if(b == 1.0f){
 				return false;
@@ -149,7 +149,7 @@
 			}
 		}
 	}
-	bool trilean::operator==(const double& b){
+	bool ame::trilean::operator==(const double& b){
 		if(!this->known){
 			if(b == 1.0d){
 				return false;
@@ -183,13 +183,13 @@
 			}
 		}
 	}
-	bool trilean::operator!=(const bool& b){
+	bool ame::trilean::operator!=(const bool& b){
 		if(!this->known){
 			return true;
 		}
 		return b != this->tbool;
 	}
-	bool trilean::operator!=(const int& b){
+	bool ame::trilean::operator!=(const int& b){
 		if(!this->known){
 			if(b == 1){
 				return true;
@@ -223,7 +223,7 @@
 			}
 		}
 	}
-	bool trilean::operator!=(const float& b){
+	bool ame::trilean::operator!=(const float& b){
 		if(!this->known){
 			if(b == 1.0f){
 				return true;
@@ -257,7 +257,7 @@
 			}
 		}
 	}
-	bool trilean::operator!=(const double& b){
+	bool ame::trilean::operator!=(const double& b){
 		if(!this->known){
 			if(b == 1.0d){
 				return true;

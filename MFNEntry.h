@@ -3,6 +3,8 @@
 
 #include "Function.h"
 
+namespace ame{
+	
 template<class function_return, class... arr>
 class MFNEntry {
 	public:
@@ -23,5 +25,7 @@ class MFNEntry {
 		int outputE=1;
 		Function<function_return,arr...>* functionE;
 };
+
+}
 
 #endif

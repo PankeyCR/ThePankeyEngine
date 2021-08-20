@@ -4,6 +4,8 @@
 #include "LinkedList.h"
 #include "PrimitiveList.h"
 
+using namespace ame;
+
 //when to use one type of list over another
 
 //the best list are the primitive list and the linked list, because they grow dynamically,

@@ -6,6 +6,8 @@
 #include "TimeControl.h"
 #include "TimeElapsed.h"
 
+namespace ame{
+
 class X9C10x : public AbstractRead , public TimeElapsed{
     public:
 		X9C10x();
@@ -34,4 +36,6 @@ class X9C10x : public AbstractRead , public TimeElapsed{
 		virtual float getReading(){}
 	protected:
 };
+
+}
 #endif 

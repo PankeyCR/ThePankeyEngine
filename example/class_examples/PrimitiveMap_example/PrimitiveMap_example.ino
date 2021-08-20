@@ -2,6 +2,8 @@
 #include "PrimitiveMap.h"
 #include "MemoryFree.h"
 
+using namespace ame;
+
 Map<String,String> *mapp;
 
 void setup() {

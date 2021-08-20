@@ -5,7 +5,7 @@
 
 #include "SimpleApplication.h"
 
-	SimpleApplication::SimpleApplication(){
+	ame::SimpleApplication::SimpleApplication(){
 		this->states = new RenderStateManager();
 		this->settings = new DefaultSettings();
 		this->states->setApplication(this);
@@ -13,79 +13,91 @@
 		this->guiNode = new Node();
 	}
 	
-	SimpleApplication::~SimpleApplication(){
+	ame::SimpleApplication::~SimpleApplication(){
 		delete this->states;
 		delete this->settings;
 		delete this->rootNode;
 		delete this->guiNode;
 	}
 	
-	void SimpleApplication::setSettings(AppSettings *set){
+	void ame::SimpleApplication::setSettings(AppSettings *set){
 		if(set != nullptr && this->settings != set){
 			delete this->settings;
 		}
 		this->settings = set;
 	}
 	
-	AppSettings *SimpleApplication::getSettings(){
+	ame::AppSettings *ame::SimpleApplication::getSettings(){
 		return this->settings;
 	}
 	
-	void SimpleApplication::setStateManager(AppStateManager *manager){
+	void ame::SimpleApplication::setStateManager(AppStateManager *manager){
 		if(manager != nullptr && this->states != manager){
 			delete this->states;
 		}
 		this->states = manager;
 	}
 	
-	AppStateManager *SimpleApplication::getStateManager(){
+	ame::AppStateManager *ame::SimpleApplication::getStateManager(){
 		return this->states;
 	}
 	
-	void SimpleApplication::setTimeControl(TimeControl *timecontrol){
+	void ame::SimpleApplication::setTimeControl(TimeControl *timecontrol){
 		
 	}
 	
-	TimeControl *SimpleApplication::getTimeControl(){
+	ame::TimeControl *ame::SimpleApplication::getTimeControl(){
 		return SimpleTimer::getInstance();
 	}
 	
-	Listener* SimpleApplication::setListener(Listener *l){
+	ame::Listener* ame::SimpleApplication::setListener(Listener *l){
 		listener = l;
 		listener->attach(this);
 		return l;
 	}
 	
-	Listener *SimpleApplication::getListener(){
+	ame::Listener *ame::SimpleApplication::getListener(){
 		return listener;
 	}
+	
+	ame::MemoryPool* ame::SimpleApplication::setMemoryPool(MemoryPool *l){
+		memory = l;
+		return l;
+	}
+	
+	ame::MemoryPool *ame::SimpleApplication::getMemoryPool(){
+		return memory;
+	}
 		
-	void SimpleApplication::update(){
+	void ame::SimpleApplication::update(){
 		this->states->update();
 		if(listener != nullptr){
 			listener->InterruptEvent(this->states->tpc());
 		}
+		if(memory != nullptr){
+			memory->update(this->states->tpc());
+		}
 	}
 	
-	Node* SimpleApplication::getRootNode(){
+	ame::Node* ame::SimpleApplication::getRootNode(){
 		return this->rootNode;
 	}
 	
-	Node* SimpleApplication::getGuiNode(){
+	ame::Node* ame::SimpleApplication::getGuiNode(){
 		return this->guiNode;
 	}
 	
 	//cppObject part
-	String SimpleApplication::getClassName(){
+	ame::cppObjectClass* ame::SimpleApplication::getClass(){
+		return Class<SimpleApplication>::classType;
+	}
+	
+	String ame::SimpleApplication::toString(){
 		return "SimpleApplication";
 	}
 	
-	String SimpleApplication::toString(){
-		return "SimpleApplication";
-	}
-	
-	bool SimpleApplication::instanceof(String name){
-		return name == "SimpleApplication" || name == "Application";
+	bool ame::SimpleApplication::instanceof(ame::cppObjectClass* cls){
+		return cls == ame::Class<SimpleApplication>::classType || ame::Application::instanceof(cls);
 	}
 	
 		

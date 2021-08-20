@@ -3,6 +3,8 @@
 #include "Map.h"
 #include "MemoryFree.h"
 
+using namespace ame;
+
 Map<int,String> *testMap;
 
 void setup() {

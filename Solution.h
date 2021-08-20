@@ -2,6 +2,8 @@
 #ifndef Solution_h
 #define Solution_h
 
+namespace ame{
+
 template<class T>
 class Solution{
     public:
@@ -31,4 +33,7 @@ class Solution{
 	protected:
 		T t;
 };
+
+}
+
 #endif 

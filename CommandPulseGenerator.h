@@ -6,6 +6,8 @@
 #include "MonkeyTime.h"
 #include "Command.h"
 
+namespace ame{
+	
 class CommandPulseGenerator : public TimeElapsed, public Command<int>{
     public:
 		CommandPulseGenerator();
@@ -25,5 +27,7 @@ class CommandPulseGenerator : public TimeElapsed, public Command<int>{
 		long newtimepulse = 0;
 		bool en = true;
 };
+
+}
 
 #endif 

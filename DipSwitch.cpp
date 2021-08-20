@@ -5,49 +5,49 @@
 #include "DipSwitch.h"
 
 
-	DipSwitch::DipSwitch(){
+	ame::DipSwitch::DipSwitch(){
 		pinList = new ArrayList<int,10>();
 	}
 	
-	int DipSwitch::getValue(){
+	int ame::DipSwitch::getValue(){
 		
 		return value;
 	}
 	
-	void DipSwitch::addPin(int pin){
+	void ame::DipSwitch::addPin(int pin){
 		pinList->addLValue(pin);
 	}
     
-	int DipSwitch::operator &(){
+	int ame::DipSwitch::operator &(){
 		return value;
 	}
     
-	void DipSwitch::operator =(const DipSwitch& d){
-		DipSwitch nd;
+	void ame::DipSwitch::operator =(const ame::DipSwitch& d){
+		ame::DipSwitch nd;
 		nd.value = d.value;
 			
 	}
 	
-    void DipSwitch::operator =(const int& t){
+    void ame::DipSwitch::operator =(const int& t){
 		value = t;
 	}
     
-	bool DipSwitch::operator ==(const int& t){
+	bool ame::DipSwitch::operator ==(const int& t){
 		this->readPins();
 		return this->value==t;
 	}
     
-	bool DipSwitch::operator !=(const int& t){
+	bool ame::DipSwitch::operator !=(const int& t){
 		this->readPins();
 		return this->value!=t;
 	}
     
-	void DipSwitch::onDelete(){
+	void ame::DipSwitch::onDelete(){
 		pinList->onDelete();
 		delete this;
 	}
     
-	void DipSwitch::readPins(){
+	void ame::DipSwitch::readPins(){
 		value = 0;
 		for(int x =0; x < pinList->getPosition(); x++){
 			value += digitalRead(*pinList->getByPosition(x)) * pow(2,x);

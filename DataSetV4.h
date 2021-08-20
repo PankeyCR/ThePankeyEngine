@@ -5,6 +5,8 @@
 
 #include "DataSet.h"
 
+/*
+
 template<class T, int xS = 2, int yS = 3, int zS = 2, int wS = 1>
 class DataSetV4 : public DataSet<T>{
 	public:
@@ -449,5 +451,7 @@ class DataSetV4 : public DataSet<T>{
 		int spaceLimit = 0;
 		int fullSize = 0;
 };
+
+*/
 
 #endif 

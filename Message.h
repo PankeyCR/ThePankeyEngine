@@ -3,8 +3,10 @@
 #ifndef Message_h
 #define Message_h
 
-#include "Note.h"
+// #include "Note.h"
 #include "ByteArray.h"
+
+namespace ame{
 
 class Message{
 public:
@@ -142,9 +144,12 @@ virtual bool operator!=(const Message& b){
 protected:
 int m_id = -1;
 String m_name;
-String m_text;
 String m_type;
+
+String m_text;
 ByteArray m_array;
 };
+
+}
 
 #endif 

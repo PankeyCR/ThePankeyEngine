@@ -2,6 +2,8 @@
 #ifndef Average_h
 #define Average_h
 
+namespace ame{
+
 template<class T>
 class Average{
 	public:
@@ -46,7 +48,11 @@ class Average{
 			this->size++;
 		}
 		
-		virtual void addLValue(T t){
+		void addLValue(T t){
+			this->addLValue(t);
+		}
+		
+		virtual void add(T t){
 			*this->value += t;
 			this->size++;
 		}
@@ -70,5 +76,7 @@ class Average{
 		int size = 0;
 		bool mm = true;
 };
+
+}
 
 #endif 

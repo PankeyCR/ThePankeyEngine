@@ -15,19 +15,23 @@
 #include "PrimitiveMap.h"
 #include "Note.h"
 
+namespace ame{
+
 template<class K,class V>
 class MapFileFunction : public MonkeyFileFunction{
     public:
 		MapFileFunction();
 		virtual ~MapFileFunction();
 		
-    	virtual bool SaveFileFunction(MonkeyFile* file,cppObject* instance,String path,String key);
-    	virtual cppObject* LoadFileFunction(MonkeyFile* file,cppObject* attachable,String path,String key);
-    	virtual bool DeleteFileFunction(MonkeyFile* file,cppObject* attachable,String path,String key);
+    	virtual bool SaveFileFunction(MonkeyFile* file, cppObject* instance,String path,String key);
+    	virtual cppObject* LoadFileFunction(MonkeyFile* file, cppObject* attachable,String path,String key);
+    	virtual bool DeleteFileFunction(MonkeyFile* file, cppObject* attachable,String path,String key);
 		
 	protected:
 	
 	
 };
+
+}
 
 #endif 

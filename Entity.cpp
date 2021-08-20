@@ -4,24 +4,24 @@
 
 #include "Entity.h"
 	
-	Entity::Entity(){
+	ame::Entity::Entity(){
 		// this->childs = new PrimitiveList<GameOn>();
-		this->data = new PrimitiveMap<String,cppObject>();
+		this->data = new ame::PrimitiveMap<String,ame::cppObject>();
 	}
 	
-	Entity::Entity(int idEntity){
+	ame::Entity::Entity(int idEntity){
 		this->setId(idEntity);
-		this->childs = new PrimitiveList<GameOn>();
-		this->data = new PrimitiveMap<String,cppObject>();
+		this->childs = new ame::PrimitiveList<ame::GameOn>();
+		this->data = new ame::PrimitiveMap<String,ame::cppObject>();
 	}
 	
-	Entity::~Entity(){
+	ame::Entity::~Entity(){
 		if(this->data != nullptr){
 			delete this->data;
 		}
 	}
 	
-    void Entity::setData(String name, cppObject* obj){
+    void ame::Entity::setData(String name, ame::cppObject* obj){
 		if(this->data->containKeyByLValue(name)){
 			this->data->setPointer(name,obj);
 			return;
@@ -29,16 +29,16 @@
 		this->data->addPointer(name,obj);
 	}
 	
-    cppObject* Entity::getData(String name){
+    ame::cppObject* ame::Entity::getData(String name){
 		return this->data->getByLValue(name);
 	}
 	
-	String Entity::getClassName(){
-		return "Entity";
+	ame::cppObjectClass* ame::Entity::getClass(){
+		return ame::Class<Entity>::classType;
 	}
 	
-	String Entity::toString(){
-		return "Entity";
+	String ame::Entity::toString(){
+		return "ame::Entity";
 	}
 
 #endif 

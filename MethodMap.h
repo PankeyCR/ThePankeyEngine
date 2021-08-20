@@ -4,9 +4,12 @@
 
 #include "PrimitiveRawMap.h"
 
+namespace ame{
+
 template<class T,class R,class... P>
 class MethodMap : public PrimitiveRawMap<String,R (T::*)(P...)>{
 public:
+R r;
 using EventMethod = R (T::*)(P...);
 MethodMap(){}
 MethodMap(R rtn){r=rtn;}
@@ -54,7 +57,8 @@ virtual void operator=(MethodMap<T,R,P...> a){
 }
 
 protected:
-	R r;
 };
+
+}
 
 #endif 

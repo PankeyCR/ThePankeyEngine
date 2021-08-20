@@ -20,6 +20,8 @@
   // generic, non-platform specific code
 #endif
 
+namespace ame{
+
 class Application;
 #define RESOLUTION 65536
 
@@ -48,9 +50,12 @@ class SimpleTimer : public TimeControl{
 		static TimeControl *instance;
 		
 		SimpleTimer();
-	 
-	
+		
+		#if defined(ARDUINO_ESP32_DEV)
+		hw_timer_t * timer = nullptr;
+		#endif
 };
 
+}
 
 #endif 

@@ -5,71 +5,87 @@
 
 #include "DefaultApplication.h"
 
-	DefaultApplication::DefaultApplication(){
-		this->states = new DefaultStateManager();
-		this->settings = new DefaultSettings();
+	ame::DefaultApplication::DefaultApplication(){
+		this->states = new ame::DefaultStateManager();
+		this->settings = new ame::DefaultSettings();
 		this->states->setApplication(this);
 	}
 	
-	DefaultApplication::~DefaultApplication(){
+	ame::DefaultApplication::~DefaultApplication(){
 		delete this->states;
 		delete this->settings;
 	}
 	
-	void DefaultApplication::setSettings(AppSettings *set){
+	void ame::DefaultApplication::setSettings(ame::AppSettings *set){
 		if(set != nullptr && this->settings != set){
 			delete this->settings;
 		}
 		this->settings = set;
 	}
 	
-	AppSettings *DefaultApplication::getSettings(){
+	ame::AppSettings *ame::DefaultApplication::getSettings(){
 		return this->settings;
 	}
 	
-	void DefaultApplication::setStateManager(AppStateManager *manager){
+	void ame::DefaultApplication::setStateManager(ame::AppStateManager *manager){
 		if(manager != nullptr && this->states != manager){
 			delete this->states;
 		}
 		this->states = manager;
 	}
 	
-	AppStateManager *DefaultApplication::getStateManager(){
+	ame::AppStateManager *ame::DefaultApplication::getStateManager(){
 		return this->states;
 	}
 	
-	void DefaultApplication::setTimeControl(TimeControl *timecontrol){
+	void ame::DefaultApplication::setTimeControl(ame::TimeControl *timecontrol){
 		
 	}
 	
-	TimeControl *DefaultApplication::getTimeControl(){
-		return SimpleTimer::getInstance();
+	ame::TimeControl *ame::DefaultApplication::getTimeControl(){
+		return ame::SimpleTimer::getInstance();
 	}
 	
-	Listener* DefaultApplication::setListener(Listener *l){
+	ame::Listener* ame::DefaultApplication::setListener(ame::Listener *l){
 		listener = l;
 		listener->attach(this);
 		return l;
 	}
 	
-	Listener *DefaultApplication::getListener(){
+	ame::Listener *ame::DefaultApplication::getListener(){
 		return listener;
 	}
+	
+	ame::MemoryPool* ame::DefaultApplication::setMemoryPool(ame::MemoryPool *l){
+		memory = l;
+		return l;
+	}
+	
+	ame::MemoryPool *ame::DefaultApplication::getMemoryPool(){
+		return memory;
+	}
 		
-	void DefaultApplication::update(){
+	void ame::DefaultApplication::update(){
 		this->states->update();
 		if(listener != nullptr){
 			listener->InterruptEvent(this->states->tpc());
 		}
+		if(memory != nullptr){
+			memory->update(this->states->tpc());
+		}
 	}
 	
 	//cppObject part
-	String DefaultApplication::getClassName(){
+	ame::cppObjectClass* ame::DefaultApplication::getClass(){
+		return ame::Class<DefaultApplication>::classType;
+	}
+	
+	String ame::DefaultApplication::toString(){
 		return "DefaultApplication";
 	}
 	
-	String DefaultApplication::toString(){
-		return "DefaultApplication";
+	bool ame::DefaultApplication::instanceof(ame::cppObjectClass* cls){
+		return cls == ame::Class<DefaultApplication>::classType || ame::Application::instanceof(cls);
 	}
 	
 		

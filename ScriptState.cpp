@@ -5,10 +5,10 @@
 #include "ScriptState.h"
 
 	
-	ScriptState::ScriptState(){
+	ame::ScriptState::ScriptState(){
 	}
 	
-	ScriptState::~ScriptState(){
+	ame::ScriptState::~ScriptState(){
 		if(this->scripts != nullptr){
 			delete this->scripts;
 			this->scripts = nullptr;
@@ -19,31 +19,31 @@
 		}
 	}
 	
-	String ScriptState::getClassName(){
+	ame::cppObjectClass* ame::ScriptState::getClass(){
+		return ame::Class<ame::ScriptState>::classType;
+	}
+	
+	String ame::ScriptState::toString(){
 		return "ScriptState";
 	}
 	
-	String ScriptState::toString(){
-		return "ScriptState";
+	void ame::ScriptState::initialize(ame::Application *app){
 	}
 	
-	void ScriptState::initialize(Application *app){
+	void ame::ScriptState::update(){
 	}
 	
-	void ScriptState::update(){
-	}
-	
-	void ScriptState::addScript(Script* script){
+	void ame::ScriptState::addScript(ame::Script* script){
 		
 	}
-	void ScriptState::addLoopScript(Script* script){
+	void ame::ScriptState::addLoopScript(ame::Script* script){
 		
 	}
 	
-	void ScriptState::runScript(const String& c){
+	void ame::ScriptState::runScript(const String& c){
 		
 	}
-	void ScriptState::runScript(const char* c){
+	void ame::ScriptState::runScript(const char* c){
 		
 	}
 	

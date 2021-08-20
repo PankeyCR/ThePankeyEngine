@@ -6,35 +6,35 @@
 #include "DefaultSerialConnection.h"
 
 
-ArrayList<char,100>* DefaultSerialConnection::validChars = 0;
+ame::ArrayList<char,100>* ame::DefaultSerialConnection::validChars = 0;
 
 
-	DefaultSerialConnection::DefaultSerialConnection() {
+	ame::DefaultSerialConnection::DefaultSerialConnection() {
 	}
 	
-	DefaultSerialConnection::~DefaultSerialConnection() {
+	ame::DefaultSerialConnection::~DefaultSerialConnection() {
 		validChars->onDelete();
 	}
 	
-	void DefaultSerialConnection::setPort(Stream *serial) {
+	void ame::DefaultSerialConnection::setPort(Stream *serial) {
 		port = serial;
 	}
 	
-	Stream *DefaultSerialConnection::getPort() {
+	Stream *ame::DefaultSerialConnection::getPort() {
 		if(this->port == NULL){
 			return NULL;			
 		}
 		return port;
 	}
 	
-	bool DefaultSerialConnection::available() {
+	bool ame::DefaultSerialConnection::available() {
 		if(this->port == NULL){
 			return false;			
 		}
 		return port->available();
 	}
 	
-	String DefaultSerialConnection::getString(){
+	String ame::DefaultSerialConnection::getString(){
 		if(this->port == NULL){
 			return "";			
 		}
@@ -49,7 +49,7 @@ ArrayList<char,100>* DefaultSerialConnection::validChars = 0;
         return mns;
     }
 	
-	String DefaultSerialConnection::getStringln(){
+	String ame::DefaultSerialConnection::getStringln(){
 		if(this->port == NULL){
 			return "";			
 		}
@@ -67,7 +67,7 @@ ArrayList<char,100>* DefaultSerialConnection::validChars = 0;
         return mns;
     }
 	
-	String DefaultSerialConnection::getStringUntil(char end){
+	String ame::DefaultSerialConnection::getStringUntil(char end){
 		if(this->port == NULL){
 			return "";			
 		}
@@ -85,7 +85,7 @@ ArrayList<char,100>* DefaultSerialConnection::validChars = 0;
         return mns;
     }
 	
-	String DefaultSerialConnection::getStringUntil(char startChar,char endChar){
+	String ame::DefaultSerialConnection::getStringUntil(char startChar,char endChar){
 		if(this->port == NULL){
 			return "";			
 		}
@@ -107,7 +107,7 @@ ArrayList<char,100>* DefaultSerialConnection::validChars = 0;
         return mns;
     }
 	
-	String DefaultSerialConnection::safeReceive(char start,char end){
+	String ame::DefaultSerialConnection::safeReceive(char start,char end){
 		char read = (char)port->read();
 		String mns="";
 		if(receive && isValidChar(read)){
@@ -126,7 +126,7 @@ ArrayList<char,100>* DefaultSerialConnection::validChars = 0;
 		return mns;
     }
 	
-	String DefaultSerialConnection::safeReceive(List<String> *list,String responce,char start,char end){
+	String ame::DefaultSerialConnection::safeReceive(ame::List<String> *list,String responce,char start,char end){
 		char read = (char)port->read();
 		String mns="";
 		if(start == read){
@@ -148,35 +148,35 @@ ArrayList<char,100>* DefaultSerialConnection::validChars = 0;
 		return mns;
     }
 	
-	char DefaultSerialConnection::read(){
+	char ame::DefaultSerialConnection::read(){
         return (char)port->read();
     }
 	
-	void DefaultSerialConnection::print(String sendd){
+	void ame::DefaultSerialConnection::print(String sendd){
         port->print(sendd);
     }
 	
-	void DefaultSerialConnection::println(String sendd){
+	void ame::DefaultSerialConnection::println(String sendd){
         port->println(sendd);
     }
 	
-	void DefaultSerialConnection::println(int sendd){
+	void ame::DefaultSerialConnection::println(int sendd){
         port->println(String(sendd));
     }
 	
-	void DefaultSerialConnection::print(int sendd){ 
+	void ame::DefaultSerialConnection::print(int sendd){ 
         port->print(String(sendd));
     }
 	
-	void DefaultSerialConnection::write(char sendd){
+	void ame::DefaultSerialConnection::write(char sendd){
         port->write(sendd);
     }
 	
-	void DefaultSerialConnection::write(int sendd){
+	void ame::DefaultSerialConnection::write(int sendd){
         port->write(sendd);
     }
 	
-	void DefaultSerialConnection::writeln(String sendd){
+	void ame::DefaultSerialConnection::writeln(String sendd){
 		int sendd_len = sendd.length() + 1; 
 		char sendd_array[sendd_len];
 		sendd.toCharArray(sendd_array, sendd_len);
@@ -185,15 +185,15 @@ ArrayList<char,100>* DefaultSerialConnection::validChars = 0;
         port->write('\n');
     }
 	
-	void DefaultSerialConnection::writeln(int sendd){ 
+	void ame::DefaultSerialConnection::writeln(int sendd){ 
         port->write(sendd);
         port->write('\r');
         port->write('\n');
     }
 	
-	bool DefaultSerialConnection::isValidChar(char chr){
+	bool ame::DefaultSerialConnection::isValidChar(char chr){
 		if(validChars == 0){
-			validChars = new ArrayList<char,100>();
+			validChars = new ame::ArrayList<char,100>();
 			validChars->addLValue('a');
 			validChars->addLValue('A');
 			validChars->addLValue('b');

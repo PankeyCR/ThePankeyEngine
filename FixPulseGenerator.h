@@ -8,6 +8,8 @@
 #include "MonkeyTime.h"
 #include "Command.h"
 
+namespace ame{
+
 class FixPulseGenerator : public TimeElapsed, public Command<int>{
     public:
 		FixPulseGenerator();
@@ -35,5 +37,7 @@ class FixPulseGenerator : public TimeElapsed, public Command<int>{
 		long pin = 1;
 		bool en = true;
 };
+
+}
 
 #endif 

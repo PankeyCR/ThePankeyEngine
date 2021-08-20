@@ -5,6 +5,8 @@
 #include "cppObject.h"
 #include "Map.h"
 
+namespace ame{
+
 template <class K,class P,int size>
 class KPMap : public Map<K,P>{
 	
@@ -421,8 +423,8 @@ class KPMap : public Map<K,P>{
 			}
 		}
 		
-		String getClassName(){
-			return "KPMap";
+		cppObjectClass* getClass(){
+			return Class<KPMap>::classType;
 		}
 		
 		int getIterationSize(){
@@ -466,11 +468,11 @@ class KPMap : public Map<K,P>{
 		}
 		
         bool operator ==(KPMap<K,P,size> t){
-			return this->getClassName() == t->getClassName();
+			return this->getClass() == t->getClass();
 		}
 		
         bool operator !=(KPMap<K,P,size> t){
-			return this->getClassName() != t->getClassName();
+			return this->getClass() != t->getClass();
 		}
 		
 		
@@ -478,5 +480,7 @@ class KPMap : public Map<K,P>{
 	private:
 		int pos;
 };
+
+}
 
 #endif 

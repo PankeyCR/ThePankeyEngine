@@ -17,6 +17,8 @@
 	#define MinimalErrorLog(name,method,type,mns)
 #endif
 
+namespace ame{
+
 template<class T,class... args>
 class MinimalError : public FunctionProtocol<T,args...>{
 	public:
@@ -117,5 +119,7 @@ class MinimalError : public FunctionProtocol<T,args...>{
 	protected:
 		ModifiableFunction<T,args...>* fx = nullptr;
 };
+
+}
 
 #endif 

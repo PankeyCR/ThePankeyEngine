@@ -6,6 +6,8 @@
 #include "ModifiableFunction.h"
 #include "Logger.h"
 
+namespace ame{
+
 class DuoArray1Neuron : public Neuron<float,float,float>{
 	public:
 		DuoArray1Neuron(){}
@@ -30,5 +32,7 @@ class DuoArray1Neuron : public Neuron<float,float,float>{
 		}
 	protected:
 };
+
+}
 
 #endif

@@ -18,6 +18,8 @@
 	#define GameManagerLog(name,method,type,mns)
 #endif
 
+namespace ame{
+
 class GameManager : public AppState{
     public:		
 		GameManager();
@@ -166,7 +168,7 @@ class GameManager : public AppState{
 		
 		void rearrange();
 		
-		String getClassName();
+		cppObjectClass* getClass();
 		String toString();
 		bool equal(cppObject *b);
 		cppObject *clone();
@@ -179,8 +181,9 @@ class GameManager : public AppState{
 		Map<GameObject,GameOn>* addRequest = nullptr;
 		Map<GameObject,cppObjectClass>* deleteRequest = nullptr;
 		Map<cppObjectClass,PrimitiveList<GameOn>>* components = nullptr;
-		PrimitiveList<GameObject>* gameobjects = nullptr;
+		PrimitiveList<GameObject>* m_gobjects = nullptr;
 };
 
+}
 
 #endif 

@@ -2,6 +2,8 @@
 #include "KPMap.h"
 #include "Map.h"
 
+using namespace ame;
+
 Map<String,int> *testMap;
 
 void setup() {

@@ -1,6 +1,8 @@
 #ifndef Pointer_h
 #define Pointer_h
 
+namespace ame{
+
 template<class P>
 class Pointer{
 	public:
@@ -19,5 +21,7 @@ class Pointer{
 	protected:
 		P* pointer;
 };
+
+}
 
 #endif

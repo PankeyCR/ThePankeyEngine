@@ -8,6 +8,8 @@
 #include "MonkeyTime.h"
 #include <Servo.h> 
 
+namespace ame{
+
 class ServoDoor : public DelaySensor{
 	protected:
 		Servo servo;
@@ -26,7 +28,8 @@ class ServoDoor : public DelaySensor{
 		virtual ServoDoor* delay(float tm);
 		virtual ServoDoor* offset(float tm);
 		virtual ServoDoor* timecheck(TimeCheck tm);
-		
 };
+
+}
 
 #endif 

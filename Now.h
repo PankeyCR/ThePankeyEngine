@@ -5,6 +5,8 @@
 
 #include "TimeCheck.h"
 
+namespace ame{
+
 class Now {
 	private:
 	
@@ -13,5 +15,6 @@ class Now {
 		static bool is(TimeCheck check,float time,float istimeNow,float offset);
 };
 
+}
 
 #endif 

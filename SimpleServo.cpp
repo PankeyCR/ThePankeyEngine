@@ -5,17 +5,17 @@
 
 #include "SimpleServo.h"
 
-		SimpleServo::SimpleServo(){
+		ame::SimpleServo::SimpleServo(){
 			
 		}
 		
-		SimpleServo::~SimpleServo(){
+		ame::SimpleServo::~SimpleServo(){
 			for(int x=0; x < this->servoSize; x++){
 				delete this->servos[x];				
 			}
 			delete[] this->servos;		
 		}
-		void SimpleServo::setup(int size){
+		void ame::SimpleServo::setup(int size){
 			this->servoSize = size;
 			this->servos = new Servo*[size];
 			for(int x=0; x < size; x++){
@@ -23,28 +23,28 @@
 			}
 		}
 		
-		Servo *SimpleServo::getServo(int sel){
+		Servo *ame::SimpleServo::getServo(int sel){
 			if(sel >= this->servoSize){
 				return nullptr;
 			}
 			return this->servos[sel];
 		}
 		
-		void SimpleServo::attach(int sel,int i){
+		void ame::SimpleServo::attach(int sel,int i){
 			if(sel >= this->servoSize){
 				return;
 			}
 			this->servos[sel]->attach(i);
 		}
 		
-		void SimpleServo::detach(int sel,int i){
+		void ame::SimpleServo::detach(int sel,int i){
 			if(sel >= this->servoSize){
 				return;
 			}
 			this->servos[sel]->detach();
 		}
 		
-		int SimpleServo::MoveServo(int sel,int angle){
+		int ame::SimpleServo::MoveServo(int sel,int angle){
 			if(sel >= this->servoSize){
 				return angle;
 			}

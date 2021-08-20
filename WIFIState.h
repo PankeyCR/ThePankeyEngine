@@ -5,12 +5,14 @@
 
 #include "AppState.h"
 #include "Arduino.h"
-#include "BaseInvoke.h"
 #include "SerialMessageState.h"
 #include "List.h"
 #include "PrimitiveList.h"
-#include "Annotation.h"
+#include "AnnotationMap.h"
 #include "SerialMessageControlledState.h"
+#include "WIFISerialPort.h"
+#include "DefaultPortProtocol.h"
+// #include "MemoryFree.h"
 
 #if defined(ARDUINO_ARCH_ESP8266)
 	#include "WiFi.h"
@@ -25,15 +27,15 @@
 	#define WIFIStateLog(name,method,type,mns)
 #endif
 
+namespace ame{
 
-class WIFIState : public SerialMessageControlledState{
+template<class T>
+class WIFIState : public SerialMessageControlledState , public T{
     public:
 		WIFIState(){
+			WIFIStateLog("WIFIState", "Constructor",  "println", "");
 			requests = new PrimitiveList<String>();
 			events = false;
-			annotation1 = false;
-			annotation2 = false;
-			annotation3 = false;
 			
 			events.addLValues("ConectWifi",&WIFIState::ConectWifi);
 			events.addLValues("DisconectWifi",&WIFIState::DisconectWifi);
@@ -42,39 +44,23 @@ class WIFIState : public SerialMessageControlledState{
 			events.addLValues("containnet",&WIFIState::SendContainID);
 			events.addLValues("wifistate",&WIFIState::WifiState);
 			events.addLValues("ConectPort",&WIFIState::ConectPort);
-			
-			annotation3.addLValues("requestConnexionWifi",&WIFIState::requestConnexionWifi);
-			annotation1.addLValues("requestDisconnexionWifi",&WIFIState::requestDisconnexionWifi);
-			annotation1.addLValues("requestSendScan",&WIFIState::requestSendScan);
-			annotation1.addLValues("requestSendNetworkSize",&WIFIState::requestSendNetworkSize);
-			annotation2.addLValues("requestSendContainNetwork",&WIFIState::requestSendContainNetwork);
-			annotation1.addLValues("requestWifiState",&WIFIState::requestWifiState);
-			annotation3.addLValues("requestPortConnexion",&WIFIState::requestPortConnexion);
 		}
 		virtual ~WIFIState(){
+			WIFIStateLog("WIFIState", "Destructor",  "println", "");
 			delete requests;
 		}
-		bool instanceof(String name){return name == "WIFIState" || SerialMessageControlledState::instanceof(name);}
-		String getClassName(){return "WIFIState";}
-		
-		virtual bool invoke(String method){
-			WIFIStateLog("WIFIState", "invoke",  "println", "invoke method without parameters");
-			return annotation1.invoke(this,method);
+		bool instanceof(cppObjectClass* cls){
+			return cls == Class<WIFIState>::classType || SerialMessageControlledState::instanceof(cls);
 		}
-		virtual bool invoke(String method, String parameter1){
-			WIFIStateLog("WIFIState", "invoke",  "println", "invoke method with 1 parameter");
-			return annotation2.invoke(this,method,parameter1);
-		}
-		virtual bool invoke(String method, String parameter1, String parameter2){
-			WIFIStateLog("WIFIState", "invoke",  "println", "invoke method with 1 parameter");
-			return annotation3.invoke(this,method,parameter1,parameter2);
-		}
+		cppObjectClass* getClass(){return Class<WIFIState>::classType;}
 		
 		void update(float tpc){
 			time += tpc;
 			if(time > timeLimit){
+				// WIFIStateLog("WIFIState", "update",  "println", String("Time limit: ") + String(timeLimit));
 				time = 0.0f;
 				if(requests->isEmpty()){
+					// Serial.println(freeMemory());
 					WIFIStateLog("WIFIState", "update",  "println", "requests->isEmpty()");
 					return;
 				}
@@ -95,68 +81,95 @@ class WIFIState : public SerialMessageControlledState{
 			}
 		}
 		
-		bool requestPortConnexion(String host, String port){
+		void requestPortConnexion(String host, String port){
+			WIFIStateLog("WIFIState", "requestPortConnexion",  "println", String("host: ") + host);
+			WIFIStateLog("WIFIState", "requestPortConnexion",  "println", String("port: ") + port);
 			connexionHost = host;
 			connexionPort = port;
 			requests->addLValue("ConectPort");
-			return true;
 		}
 		
-		bool requestConnexionWifi(String name, String password){
+		void requestConnexionWifi(String name, String password){
+			WIFIStateLog("WIFIState", "requestConnexionWifi",  "println", String("name: ") + name);
+			WIFIStateLog("WIFIState", "requestConnexionWifi",  "println", String("password: ") + password);
 			conexionName = name;
 			conexionPassword = password;
 			requests->addLValue("ConectWifi");
-			return true;
 		}
 		
-		bool requestDisconnexionWifi(){
+		void requestDisconnexionWifi(){
+			WIFIStateLog("WIFIState", "requestDisconnexionWifi",  "println", "");
 			requests->addLValue("DisconectWifi");
-			return true;
 		}
 		
-		bool requestSendScan(){
+		void requestSendScan(){
+			WIFIStateLog("WIFIState", "requestSendScan",  "println", "");
 			requests->addLValue("SendScan");
-			return true;
 		}
 		
-		bool requestSendNetworkSize(){
+		void requestSendNetworkSize(){
+			WIFIStateLog("WIFIState", "requestSendNetworkSize",  "println", "");
 			requests->addLValue("netsize");
-			return true;
 		}
 		
-		bool requestSendContainNetwork(String name){
+		void requestSendContainNetwork(String name){
+			WIFIStateLog("WIFIState", "requestSendContainNetwork",  "println", String("name: ") + name);
 			containId_S = name;
 			requests->addLValue("containnet");
-			return true;
 		}
 		
-		bool requestWifiState(){
+		void requestWifiState(){
+			WIFIStateLog("WIFIState", "requestWifiState",  "println", "");
 			requests->addLValue("wifistate");
-			return true;
 		}
 	protected:
 	
 		bool ConectPort(){
+			WIFIStateLog("WIFIState", "ConectPort",  "println", "");
+			WiFiClient client;
 			if(client.connect(connexionHost.c_str(), connexionPort.toInt())){
-				this->send(String("clientconnected ") + connexionHost + connexionPort);
+				SerialMessageState* serialState = this->getSerialMessageState();
+				if(serialState == nullptr){
+					return false;
+				}
+				serialState->addSerialPort(new WIFISerialPort(client), new DefaultPortProtocol());
 			}
 			return true;
 		}
 		bool ConectWifi(){
+			WIFIStateLog("WIFIState", "ConectWifi",  "println", "");
 			if(conexionState){
 				WiFi.disconnect();
 			}
+			#if defined(ARDUINO_ARCH_ESP8266)
+			char mnsArray[conexionName.length()+1];
+			conexionName.toCharArray(mnsArray, conexionName.length()+1);
+			WiFi.begin(mnsArray, conexionPassword.c_str());
+			WIFIStateLog("WIFIState", "ConectWifi",  "println", "WiFi.begin");
+			#elif defined(ARDUINO_ESP32_DEV)
 			WiFi.begin(conexionName.c_str(), conexionPassword.c_str());
+			WIFIStateLog("WIFIState", "ConectWifi",  "println", "WiFi.begin");
+			#elif defined(LILYGO_WATCH_2020_V1) || defined(LILYGO_WATCH_2020_V2) || defined(LILYGO_WATCH_2020_V3)
+			WiFi.begin(conexionName.c_str(), conexionPassword.c_str());
+			WIFIStateLog("WIFIState", "ConectWifi",  "println", "WiFi.begin");
+			#endif 
 			conexionState = true;
+			WIFIStateLog("WIFIState", "ConectWifi",  "println", "connected");
 			return true;
 		}
 		bool DisconectWifi(){
+			WIFIStateLog("WIFIState", "DisconectWifi",  "println", "");
 			conexionState = false;
 			WiFi.disconnect();
 			return true;
 		}
 		bool SendScan(){
+			WIFIStateLog("WIFIState", "SendScan",  "println", "");
 			int x = this->getNetworkSize();
+			if(x == -1){
+				WIFIStateLog("WIFIState", "SendScan",  "println", "no wifi networks");
+				return false;
+			}
 			this->send("sendingscan");
 			for(int s = 0; s < x; s++){
 				this->send(String("id ") + String(s) + String(" ") + this->getID(s));
@@ -164,14 +177,18 @@ class WIFIState : public SerialMessageControlledState{
 			return true;
 		}
 		bool SendNetworkSize(){
+			WIFIStateLog("WIFIState", "SendNetworkSize",  "println", "");
 			int x = this->getNetworkSize();
 			this->send(String("networksize ") + String(x));
 			return true;
 		}
 		int getNetworkSize(){
+			WIFIStateLog("WIFIState", "getNetworkSize",  "println", "");
 			#if defined(ARDUINO_ARCH_ESP8266)
+				WIFIStateLog("WIFIState", "getNetworkSize",  "println", "esp8266 hardware");
 				return WiFi.scanNetworks();
 			#elif defined(ARDUINO_ARCH_ESP32)
+				WIFIStateLog("WIFIState", "getNetworkSize",  "println", "esp32 hardware");
 				return WiFi.scanNetworks();
 			#else
 				return -1;
@@ -179,6 +196,7 @@ class WIFIState : public SerialMessageControlledState{
 		}
 		
 		String getID(int i){
+			WIFIStateLog("WIFIState", "getID",  "println", "");
 			#if defined(ARDUINO_ARCH_ESP8266)
 				return WiFi.SSID(i);
 			#elif defined(ARDUINO_ARCH_ESP32)
@@ -189,6 +207,7 @@ class WIFIState : public SerialMessageControlledState{
 		}
 		
 		bool containID(String i){
+			WIFIStateLog("WIFIState", "containID",  "println", "");
 			int x = getNetworkSize();
 			for(int s = 0; s < x; s++){
 				if(this->getID(s) == i){
@@ -199,6 +218,7 @@ class WIFIState : public SerialMessageControlledState{
 		}
 		
 		bool SendContainID(){
+			WIFIStateLog("WIFIState", "SendContainID",  "println", "");
 			int x = getNetworkSize();
 			this->send("sendingcontainid");
 			for(int s = 0; s < x; s++){
@@ -210,6 +230,7 @@ class WIFIState : public SerialMessageControlledState{
 			return true;
 		}
 		bool WifiState(){
+			WIFIStateLog("WIFIState", "WifiState",  "println", "");
 			this->send(String("wifistate ") + String(WiFi.status() == WL_CONNECTED));
 			if(WiFi.status() == WL_CONNECTED){
 				this->send(String("conectedwifiID ") + conexionName);
@@ -217,7 +238,6 @@ class WIFIState : public SerialMessageControlledState{
 			return true;
 		}
 		
-		WiFiClient client;
 		String connexionHost = "";
 		String connexionPort = "";
 		String containId_S = "";
@@ -227,12 +247,70 @@ class WIFIState : public SerialMessageControlledState{
 		String conexionName = "";
 		String conexionPassword = "";
 		float time = 0.0f;
-		float timeLimit = 0.0f;
-		Annotation<String,bool,WIFIState> events;
+		float timeLimit = 5.0f;
+		AnnotationMap<String,bool,WIFIState> events;
 		List<String>* requests = nullptr;
-		Annotation<String,bool,WIFIState> annotation1;
-		Annotation<String,bool,WIFIState,String> annotation2;
-		Annotation<String,bool,WIFIState,String,String> annotation3;
 };
+
+template<class T>
+void requestConnexionWifi(T* t, String n, String n2){
+	t->requestConnexionWifi(n,n2);
+}
+
+template<class T>
+void requestDisconnexionWifi(T* t){
+	t->requestDisconnexionWifi();
+}
+
+template<class T>
+void requestSendScan(T* t){
+	t->requestSendScan();
+}
+
+template<class T>
+void requestSendNetworkSize(T* t){
+	t->requestSendNetworkSize();
+}
+
+template<class T>
+void requestSendContainNetwork(T* t, String n){
+	t->requestSendContainNetwork(n);
+}
+
+template<class T>
+void requestWifiState(T* t){
+	t->requestWifiState();
+}
+
+template<class T>
+void requestPortConnexion(T* t, String n, String n2){
+	t->requestPortConnexion(n,n2);
+}
+
+template<class T>
+void initializeWIFIStateAnnotations(){
+  ClassMethod<WIFIState<T>>::add("requestConnexionWifi");
+  ClassMethod<WIFIState<T>>::add("requestDisconnexionWifi");
+  ClassMethod<WIFIState<T>>::add("requestSendScan");
+  ClassMethod<WIFIState<T>>::add("requestSendNetworkSize");
+  ClassMethod<WIFIState<T>>::add("requestSendContainNetwork");
+  ClassMethod<WIFIState<T>>::add("requestWifiState");
+  ClassMethod<WIFIState<T>>::add("requestPortConnexion");
+  
+  StaticMethodMap<String,T*>* map = StaticInvoker<T,T*>::getMap();
+  map->add("requestDisconnexionWifi",&requestDisconnexionWifi<T>);
+  map->add("requestSendScan",&requestSendScan<T>);
+  map->add("requestSendNetworkSize",&requestSendNetworkSize<T>);
+  map->add("requestWifiState",&requestWifiState<T>);
+  
+  StaticMethodMap<String,T*,String>* map1 = StaticInvoker<T,T*,String>::getMap();
+  map1->add("requestSendContainNetwork",&requestSendContainNetwork<T>);
+  
+  StaticMethodMap<String,T*,String,String>* map2 = StaticInvoker<T,T*,String,String>::getMap();
+  map2->add("requestConnexionWifi",&requestConnexionWifi<T>);
+  map2->add("requestPortConnexion",&requestPortConnexion<T>);
+}
+
+}
 
 #endif 

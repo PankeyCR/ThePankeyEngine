@@ -4,6 +4,7 @@
 #include "D3Map.h"
 #include "D2Map.h"
 
+using namespace ame;
 
 void setup() {
   Serial.begin(9600);

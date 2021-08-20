@@ -6,6 +6,8 @@
 #include "SimpleServo.h"
 #include "cppObject.h"
 
+using namespace ame;
+
 class RobotArmTest : public cppObject{
 public:
 RobotArmTest(Stream *port,int Xpin,int Ypin,int Zpin){

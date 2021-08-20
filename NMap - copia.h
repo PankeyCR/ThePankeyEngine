@@ -1,7 +1,7 @@
 
 #ifndef NMap_h
 #define NMap_h
-
+/*
 #include "List.h"
 #include "Map.h"
 
@@ -169,6 +169,6 @@ public:
 	virtual bool containsFluxInfoMap(N list)=0;
 	virtual bool containsFluxInfoMap(N *list)=0;
 	virtual NMap<N,K,V,L> *clone()=0;
-};
+};*/
 
 #endif

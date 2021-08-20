@@ -5,7 +5,9 @@
 #include "cppObject.h"
 #include "Spatial.h"
 
-class Node : public Spatial{	
+namespace ame{
+
+class Node : public Spatial{
     public:
 		Node(){
 		}
@@ -20,11 +22,11 @@ class Node : public Spatial{
 		virtual void operator=(const Node& n){
 			children = n.children;
 		}
-		virtual bool operator==(Node n){return this->getClassName()==n.getClassName();}
-		virtual bool operator!=(Node n){return this->getClassName()!=n.getClassName();}
+		virtual bool operator==(Node n){return this->getClass()==n.getClass();}
+		virtual bool operator!=(Node n){return this->getClass()!=n.getClass();}
 		
-		virtual bool instanceof(String name){return name == "Node" || Spatial::instanceof(name);}
-		virtual String getClassName(){return "Node";}
+		virtual bool instanceof(cppObjectClass* cls){return cls == Class<Node>::classType || Spatial::instanceof(cls);}
+		virtual cppObjectClass* getClass(){return Class<Node>::classType;}
 		virtual String toString(){return "Node";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
@@ -118,4 +120,7 @@ class Node : public Spatial{
 	protected:
 		PrimitiveList<Spatial> children;
 };
+
+}
+
 #endif 

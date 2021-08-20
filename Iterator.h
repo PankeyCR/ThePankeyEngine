@@ -4,6 +4,8 @@
 
 #include "Arduino.h"
 
+namespace ame{
+
 class Iterator{
 	public:
 		Iterator();
@@ -30,5 +32,7 @@ class Iterator{
 		int iterateSize = 0;
 		Iterator* iR = nullptr;
 };
+
+}
 
 #endif 

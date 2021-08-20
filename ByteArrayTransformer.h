@@ -7,6 +7,8 @@
 #include "Iterator.h"
 #include "ByteArrayForm.h"
 
+namespace ame{
+
 template<class T>
 class ByteTransformer{
 public:
@@ -70,5 +72,7 @@ T ByteArrayForm(const ByteArray& array){
 	return t;
 }
 };
+
+}
 
 #endif

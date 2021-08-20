@@ -4,6 +4,8 @@
 
 #include "Arduino.h"
 
+namespace ame{
+
 class Logging {
 	public:
 		Logging(Stream *p){
@@ -45,4 +47,7 @@ class Logging {
 	protected:
 		Stream *port = nullptr;
 };
+
+}
+
 #endif 

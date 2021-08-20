@@ -1,16 +1,18 @@
 
-//#define Log 
-//#define LogSerial 
+#define LogApp
 
+#include "DefaultLogging.h"
 #include "Logger.h"
 #include "MemoryFree.h"
 
+using namespace ame;
 
 void setup() {
   Serial.begin(9600);
   int startmemory = freeMemory();
-  LogSerial(&Serial);
-  Log("println","logger");
+  initializeLogger(new DefaultLogging(&Serial, true, false));
+  LogClass("main");
+  Log("main","setup","println","logger");
   int instancememory = freeMemory();
   delete Logger::getLog();
   int deletememory = freeMemory();

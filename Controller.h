@@ -8,6 +8,8 @@
 #include "Map.h"
 #include "List.h"
 
+namespace ame{
+
 template<class Input,class Control, class Output>
 class Controller : public GameOn{
 	public:
@@ -42,13 +44,13 @@ class Controller : public GameOn{
 		virtual Output* output(){
 			return this->output_m;
 		}
-		virtual bool instanceof(String name){
-			return name == "Controller" || GameOn::instanceof(name);
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Controller>::classType || GameOn::instanceof(cls);
 		}
 		
 		//cppObject part
-		virtual String getClassName(){
-			return "Controller";
+		virtual cppObjectClass* getClass(){
+			return Class<Controller>::classType;
 		}
 		virtual String toString(){
 			return "Controller";

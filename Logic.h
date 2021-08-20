@@ -4,6 +4,8 @@
 
 #include "ByteArray.h"
 
+namespace ame{
+
 class Logic{
 public:
 Logic(){}
@@ -15,5 +17,7 @@ virtual ByteArray logic(const ByteArray& array){
 
 protected:
 };
+
+}
 
 #endif

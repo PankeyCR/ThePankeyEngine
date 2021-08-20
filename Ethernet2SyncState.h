@@ -13,6 +13,8 @@
 #include <SPI.h>
 #include <Ethernet2.h>
 
+namespace ame{
+
 class Ethernet2SyncState : public AppState{	
     public:
 		Ethernet2SyncState(int s, IPAddress IP, IPAddress GATEWAY, IPAddress SUBNET, byte MAC[6]):server(s){
@@ -167,8 +169,8 @@ class Ethernet2SyncState : public AppState{
 			receivedMessage->resetDelete();
 		}
 		
-		virtual String getClassName(){
-			return "Ethernet2SyncState";
+		virtual cppObjectClass* getClass(){
+			return Class<Ethernet2SyncState>::classType;
 		}
 		
 	protected:
@@ -191,4 +193,7 @@ class Ethernet2SyncState : public AppState{
 		List<bool>* isRecording = nullptr;
 		List<String>* whatsRecording = nullptr;
 };
+
+}
+
 #endif 

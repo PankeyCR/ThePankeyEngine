@@ -5,23 +5,23 @@
 
 #include "Now.h"
 
-	bool Now::is(TimeCheck ofst,float time,float isNow,float offset){
-		if(ofst == TimeCheck::Equal){
+	bool ame::Now::is(ame::TimeCheck ofst,float time,float isNow,float offset){
+		if(ofst == ame::TimeCheck::Equal){
 			return time == isNow;
 		}
-		if(ofst == TimeCheck::LessThan){
+		if(ofst == ame::TimeCheck::LessThan){
 			return time < isNow;
 		}
-		if(ofst == TimeCheck::GreaterThan){
+		if(ofst == ame::TimeCheck::GreaterThan){
 			return time > isNow;
 		}
-		if(ofst == TimeCheck::GreaterEqualThan){
+		if(ofst == ame::TimeCheck::GreaterEqualThan){
 			return time >= isNow;
 		}
-		if(ofst == TimeCheck::LessEqualThan){
+		if(ofst == ame::TimeCheck::LessEqualThan){
 			return time <= isNow;
 		}
-		if(ofst == TimeCheck::InBetween){
+		if(ofst == ame::TimeCheck::InBetween){
 			return isNow<=time+offset && isNow>=time-offset; 
 		} 
 		return false;

@@ -5,6 +5,8 @@
 
 #include "Arduino.h"
 
+namespace ame{
+
 class TemperatureNTC{
     public:
 		TemperatureNTC();
@@ -52,5 +54,7 @@ class TemperatureNTC{
 		// float TempK=0.0;   // [K]        Temperature output in Kelvin
 		// float TempC=0.0;   // [ºC]       Temperature output in Celsius
 };
+
+}
 
 #endif 

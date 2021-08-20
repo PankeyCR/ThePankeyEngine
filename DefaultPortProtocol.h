@@ -13,6 +13,8 @@
 	#define DefaultPortProtocolLog(name,method,type,mns) 
 #endif
 
+namespace ame{
+
 class DefaultPortProtocol : public PortProtocol{	
     public:
 		DefaultPortProtocol(){}
@@ -30,6 +32,18 @@ class DefaultPortProtocol : public PortProtocol{
 			port->print(mns+'\n');
 		}
 		
+		virtual void BroadcastMessage(SerialPort* port, String mns){
+			DefaultPortProtocolLog("DefaultPortProtocol", "BroadcastMessage",  "println", port->getName());
+			DefaultPortProtocolLog("DefaultPortProtocol", "BroadcastMessage",  "println", mns);
+			port->print(mns+'\n');
+		}
+		
+		virtual void PrivateMessage(SerialPort* port, String mns){
+			DefaultPortProtocolLog("DefaultPortProtocol", "PrivateMessage",  "println", port->getName());
+			DefaultPortProtocolLog("DefaultPortProtocol", "PrivateMessage",  "println", mns);
+			port->print(mns+'\n');
+		}
+		
 		virtual void GlobalDisconect(SerialPort* port){
 			DefaultPortProtocolLog("DefaultPortProtocol", "GlobalDisconect",  "println", "");
 			port->flush();
@@ -44,17 +58,6 @@ class DefaultPortProtocol : public PortProtocol{
 			DefaultPortProtocolLog("DefaultPortProtocol", "UpdateDisconect",  "println", "");
 			port->flush();
 			port->stop();
-		}
-		
-		virtual void BroadcastMessage(SerialPort* port, String mns){
-			DefaultPortProtocolLog("DefaultPortProtocol", "BroadcastMessage",  "println", port->getName());
-			DefaultPortProtocolLog("DefaultPortProtocol", "BroadcastMessage",  "println", mns);
-			port->print(mns+'\n');
-		}
-		virtual void PrivateMessage(SerialPort* port, String mns){
-			DefaultPortProtocolLog("DefaultPortProtocol", "PrivateMessage",  "println", port->getName());
-			DefaultPortProtocolLog("DefaultPortProtocol", "PrivateMessage",  "println", mns);
-			port->print(mns+'\n');
 		}
 		
 		virtual void Read(int index, SerialPort* port){
@@ -82,4 +85,7 @@ class DefaultPortProtocol : public PortProtocol{
 	protected:
 		String messageText = "";
 };
+
+}
+
 #endif 

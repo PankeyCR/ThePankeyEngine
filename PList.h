@@ -5,6 +5,8 @@
 #include "cppObject.h"
 #include "List.h"
 
+namespace ame{
+
 template <class T,int size>
 class PList : public List<T>{
 	private:
@@ -449,8 +451,8 @@ class PList : public List<T>{
 			return *values[x];
 		}
 		
-		String getClassName(){
-			return "PList";
+		cppObjectClass* getClass(){
+			return Class<PList>::classType;
 		}
 		
 		int getIterationSize(){
@@ -525,5 +527,7 @@ class PList : public List<T>{
 			return this->getClassName() != t.getClassName();
 		}
 };
+
+}
 
 #endif 

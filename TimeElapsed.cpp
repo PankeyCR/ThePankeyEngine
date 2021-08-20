@@ -5,19 +5,19 @@
 #include "TimeElapsed.h"
 
 	
-	void TimeElapsed::Play(TimeControl *t){
+	void ame::TimeElapsed::Play(ame::TimeControl *t){
 		
 	}
 	
-	void TimeElapsed::operator=(TimeElapsed b) {
+	void ame::TimeElapsed::operator=(ame::TimeElapsed b) {
 		
 	}
 	
-	bool TimeElapsed::operator==(TimeElapsed b) {
+	bool ame::TimeElapsed::operator==(ame::TimeElapsed b) {
 			return true;
 	}
 	
-	bool TimeElapsed::operator!=(TimeElapsed b) {
+	bool ame::TimeElapsed::operator!=(ame::TimeElapsed b) {
 			return false;
 	}
 	

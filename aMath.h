@@ -5,6 +5,8 @@
 
 #include "Arduino.h"
 
+namespace ame{
+
 class aMath{
     public:
 	
@@ -27,5 +29,7 @@ class aMath{
   
 	private:	
 };
+
+}
 
 #endif 

@@ -4,12 +4,15 @@
 
 #include "Arduino.h"
 
+namespace ame{
+
 class Variable_Control {
     public:
       Variable_Control();
       char Chars(char charhaha);
-    private:  
-
-    
+    private:
 };
+
+}
+
 #endif 

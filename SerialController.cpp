@@ -5,32 +5,32 @@
 
 #include "SerialController.h"
 
-	SerialController::SerialController() {
+	ame::SerialController::SerialController() {
 	}
 	
-	SerialController::~SerialController() {
+	ame::SerialController::~SerialController() {
 		if(validChars != nullptr){
 			delete validChars;
 		}
 	}
 	
-	String SerialController::getClassName(){
+	ame::cppObjectClass* ame::SerialController::getClass(){
+		return ame::Class<ame::SerialController>::classType;
+	}
+	
+	String ame::SerialController::toString(){
 		return "SerialController";
 	}
 	
-	String SerialController::toString(){
-		return "SerialController";
-	}
-	
-	SerialController* SerialController::clone(){
-		SerialController *serialc = new SerialController();
+	ame::SerialController* ame::SerialController::clone(){
+		ame::SerialController *serialc = new ame::SerialController();
 		serialc->port = this->port;
 		serialc->message = this->message;
 		serialc->receive = this->receive;
 		return serialc;
 	}
   
-	String SerialController::Split(String divide,int parte, char limiter){     
+	String ame::SerialController::Split(String divide,int parte, char limiter){     
         String return_1="";     
         int delimiter=0;  
         int respuesta_len = divide.length() + 1; 
@@ -47,7 +47,7 @@
         return return_1;
     }
   
-	int SerialController::SplitLenght(String divide,int parte, char limiter){     
+	int ame::SerialController::SplitLenght(String divide,int parte, char limiter){     
         String return_1="";     
         int delimiter=0;  
         int respuesta_len = divide.length() + 1; 
@@ -61,7 +61,7 @@
         return delimiter;
     }
   
-	String SerialController::Split(String divide,int parte, char limiter, char fin){     
+	String ame::SerialController::Split(String divide,int parte, char limiter, char fin){     
         String return_1="";     
         int delimiter=0;  
         int respuesta_len = divide.length() + 1; 

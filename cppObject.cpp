@@ -5,22 +5,22 @@
 
 #include "cppObject.h"
 
-	cppObject::cppObject(){
+	ame::cppObject::cppObject(){
 		
 	}
-	cppObject::~cppObject(){
+	ame::cppObject::~cppObject(){
 		
 	}
-	void cppObject::onDelete(){
+	void ame::cppObject::onDelete(){
 		
 	}
-	cppObjectClass* cppObject::getClass(){
-		return Class<cppObject>::classType;
+	ame::cppObjectClass* ame::cppObject::getClass(){
+		return ame::Class<cppObject>::classType;
 	}
-	String cppObject::toString(){
+	String ame::cppObject::toString(){
 		return "cppObject";
 	}
-	bool cppObject::equal(cppObject *b){
+	bool ame::cppObject::equal(ame::cppObject *b){
 		if(b == this){
 			return true;
 		}
@@ -29,25 +29,29 @@
 		}
 		return false;
 	}
-	bool cppObject::instanceof(cppObjectClass* cls){
-		return cls == this->getClass() || cls == Class<cppObject>::classType;
+	bool ame::cppObject::instanceof(ame::cppObjectClass* cls){
+		return cls == this->getClass() || cls == ame::Class<cppObject>::classType;
 	}
-	cppObject* cppObject::clone(void){
+	ame::cppObject* ame::cppObject::clone(void){
 		return this->clone(true);
 	}
-	cppObject* cppObject::clone(bool owningMemory){
+	ame::cppObject* ame::cppObject::clone(bool owningMemory){
 		return this;
 	}
 
-	void cppObject::operator=(cppObject b){
+	void ame::cppObject::invoke(String methodName){
 		
 	}
 
-	bool cppObject::operator==(cppObject b){
+	void ame::cppObject::operator=(ame::cppObject b){
+		
+	}
+
+	bool ame::cppObject::operator==(ame::cppObject b){
 		return this->getClass() == b.getClass();
 	}
 
-	bool cppObject::operator!=(cppObject b){
+	bool ame::cppObject::operator!=(ame::cppObject b){
 		return this->getClass() != b.getClass();
 	}
 

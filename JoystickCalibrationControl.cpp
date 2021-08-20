@@ -4,50 +4,50 @@
 
 #include "JoystickCalibrationControl.h"
 	
-	JoystickCalibrationControl::JoystickCalibrationControl(){
+	ame::JoystickCalibrationControl::JoystickCalibrationControl(){
 		
 	}
 	
-	JoystickCalibrationControl::~JoystickCalibrationControl(){
+	ame::JoystickCalibrationControl::~JoystickCalibrationControl(){
 		
 	}
 	
-	bool JoystickCalibrationControl::isValidControl(){
+	bool ame::JoystickCalibrationControl::isValidControl(){
 		if(this->parent == nullptr){
 			return false;
 		}
-		return this->parent->getClass() == Class<AnalogJoystick>::classType;
+		return this->parent->getClass() == ame::Class<AnalogJoystick>::classType;
 	}
 	
-	cppObjectClass* JoystickCalibrationControl::getClass(){
-		return Class<JoystickCalibrationControl>::classType;
+	ame::cppObjectClass* ame::JoystickCalibrationControl::getClass(){
+		return ame::Class<ame::JoystickCalibrationControl>::classType;
 	}
 	
-	String JoystickCalibrationControl::toString(){
+	String ame::JoystickCalibrationControl::toString(){
 		return "JoystickCalibrationControl";
 	}
 	
-	JoystickCalibrationControl *JoystickCalibrationControl::clone(){
-		JoystickCalibrationControl *control = new JoystickCalibrationControl();
+	ame::JoystickCalibrationControl *ame::JoystickCalibrationControl::clone(){
+		ame::JoystickCalibrationControl *control = new ame::JoystickCalibrationControl();
 		control->parent = this->parent;
 		return control;
 	}
 	
-	AnalogJoystick *JoystickCalibrationControl::getJoystick(){
+	ame::AnalogJoystick *ame::JoystickCalibrationControl::getJoystick(){
 		if(!this->isValidControl()){
 			return nullptr;
 		}
 		return (AnalogJoystick*)this->parent;
 	}
 	
-	void JoystickCalibrationControl::update(float tpc){
+	void ame::JoystickCalibrationControl::update(float tpc){
 		if(!this->isValidControl()){
-			((GameObject*)this->parent)->detach(this->getClass());
+			((ame::GameObject*)this->parent)->detach(this->getClass());
 			return;
 		}
-		Joystick *joystick= this->getJoystick();
+		ame::Joystick *joystick= this->getJoystick();
 		joystick->setOrigin(analogRead(joystick->getPinX()),analogRead(joystick->getPinY()));
-		delete ((GameObject*)this->parent)->detach(this->getClass());
+		delete ((ame::GameObject*)this->parent)->detach(this->getClass());
 	}
 	
 	

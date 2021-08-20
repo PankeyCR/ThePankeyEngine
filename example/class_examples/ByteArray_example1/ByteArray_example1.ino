@@ -5,6 +5,8 @@
 //when you print, it will show the value of each byte on a secuence, that way it can be transfer as
 //as fast as posible, but when its displayed it doesnt shows the first ceros of the byte
 
+using namespace ame;
+
 void setup() {
   Serial.begin(9600);
 }

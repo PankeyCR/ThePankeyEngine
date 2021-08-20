@@ -7,6 +7,8 @@
 #include "Map.h"
 #include "NMap.h"
 
+namespace ame{
+
 template <class N,class K,class V,class L>
 class FluxNMap{
 public:

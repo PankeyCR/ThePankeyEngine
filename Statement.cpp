@@ -5,20 +5,20 @@
 #include "Statement.h"
 
 	
-	Statement::Statement(){
+	ame::Statement::Statement(){
 	}
 	
-	Statement::~Statement(){
+	ame::Statement::~Statement(){
 	}
 	
-	void Statement::operator=(Statement b) {
+	void ame::Statement::operator=(ame::Statement b) {
 	}
 	
-	bool Statement::operator==(Statement b) {
+	bool ame::Statement::operator==(ame::Statement b) {
 			return true;
 	}
 	
-	bool Statement::operator!=(Statement b) {
+	bool ame::Statement::operator!=(ame::Statement b) {
 			return false;
 	}
 	

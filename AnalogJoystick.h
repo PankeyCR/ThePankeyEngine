@@ -6,6 +6,8 @@
 #include "Joystick.h"
 #include "GameObject.h"
 
+namespace ame{
+	
 class AnalogJoystick : public Joystick , public GameObject {
     private:
 	
@@ -43,8 +45,11 @@ class AnalogJoystick : public Joystick , public GameObject {
 		bool isClick();
 		
         void update(float tpc);
-		String getClassName();
+		cppObjectClass* getClass();
 		String toString();
 		AnalogJoystick *clone();
 };
+
+}
+
 #endif 

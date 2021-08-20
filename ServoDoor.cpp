@@ -5,56 +5,56 @@
 
 #include "ServoDoor.h"
 
-	ServoDoor::ServoDoor(){
+	ame::ServoDoor::ServoDoor(){
 		
 	}
-	ServoDoor::~ServoDoor(){
+	ame::ServoDoor::~ServoDoor(){
 		
 	}
 	
-	ServoDoor* ServoDoor::monkeytime(MonkeyTime* tim){
+	ame::ServoDoor* ame::ServoDoor::monkeytime(ame::MonkeyTime* tim){
 		this->timer = tim;
 		return this;
 	}
 	
-	ServoDoor* ServoDoor::delay(float tm){
+	ame::ServoDoor* ame::ServoDoor::delay(float tm){
 		this->timing = tm;
 		return this;
 	}
 	
-	ServoDoor* ServoDoor::offset(float tm){
+	ame::ServoDoor* ame::ServoDoor::offset(float tm){
 		this->offsetm = tm;
 		return this;
 	}
 	
-	ServoDoor* ServoDoor::timecheck(TimeCheck tm){
+	ame::ServoDoor* ame::ServoDoor::timecheck(ame::TimeCheck tm){
 		this->timecheckm = tm;
 		return this;
 	}
-	ServoDoor* ServoDoor::attach(int pin){
+	ame::ServoDoor* ame::ServoDoor::attach(int pin){
 		this->slpin = pin;
 		this->servo.attach(pin);
 		return this;
 	}
-	ServoDoor* ServoDoor::close(){
+	ame::ServoDoor* ame::ServoDoor::close(){
 		this->state = false;
 		this->closem = false;
 		this->openm = false;
 		this->servo.write(this->cAngle);
 		return this;
 	}
-	ServoDoor* ServoDoor::open(){
+	ame::ServoDoor* ame::ServoDoor::open(){
 		this->state = true;
 		this->closem = false;
 		this->openm = false;
 		this->servo.write(this->oAngle);
 		return this;
 	}
-	ServoDoor* ServoDoor::openAngle(int angle){
+	ame::ServoDoor* ame::ServoDoor::openAngle(int angle){
 		this->oAngle = angle;
 		return this;
 	}
-	ServoDoor* ServoDoor::closeAngle(int angle){
+	ame::ServoDoor* ame::ServoDoor::closeAngle(int angle){
 		this->cAngle = angle;
 		return this;
 	}

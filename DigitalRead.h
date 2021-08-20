@@ -6,6 +6,8 @@
 #include "Arduino.h"
 #include "AbstractRead.h"
 
+namespace ame{
+
 class DigitalRead : public AbstractRead{
   public:    
 		DigitalRead(int pin);
@@ -14,5 +16,7 @@ class DigitalRead : public AbstractRead{
   private:
 		int Rpin=0;
 };
+
+}
 
 #endif 

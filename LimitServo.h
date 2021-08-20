@@ -8,6 +8,8 @@
 #include "List.h"
 #include "PList.h"
 
+namespace ame{
+
 template<int size>
 class LimitServo : public MultiServo{
 	private:
@@ -107,5 +109,7 @@ class LimitServo : public MultiServo{
 			return out;
 		}
 };
+
+}
 
 #endif 

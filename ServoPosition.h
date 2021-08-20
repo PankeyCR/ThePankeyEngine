@@ -5,6 +5,8 @@
 
 #include <Servo.h>
 
+namespace ame{
+
 class ServoPosition{
 	private:
 		int position0 = 20;
@@ -20,5 +22,7 @@ class ServoPosition{
 		void setPosition(int posicion);
 		void set5Points(int pos1, int pos2, int pos3, int pos4, int pos5);
 };
+
+}
 
 #endif 

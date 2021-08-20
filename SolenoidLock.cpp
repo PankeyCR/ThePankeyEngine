@@ -5,45 +5,45 @@
 
 #include "SolenoidLock.h"
 
-	SolenoidLock::SolenoidLock(){
+	ame::SolenoidLock::SolenoidLock(){
 		
 	}
-	SolenoidLock::~SolenoidLock(){
+	ame::SolenoidLock::~SolenoidLock(){
 		
 	}
 	
-	SolenoidLock* SolenoidLock::monkeytime(MonkeyTime* tim){
+	ame::SolenoidLock* ame::SolenoidLock::monkeytime(ame::MonkeyTime* tim){
 		this->timer = tim;
 		return this;
 	}
 	
-	SolenoidLock* SolenoidLock::delay(float tm){
+	ame::SolenoidLock* ame::SolenoidLock::delay(float tm){
 		this->timing = tm;
 		return this;
 	}
 	
-	SolenoidLock* SolenoidLock::offset(float tm){
+	ame::SolenoidLock* ame::SolenoidLock::offset(float tm){
 		this->offsetm = tm;
 		return this;
 	}
 	
-	SolenoidLock* SolenoidLock::timecheck(TimeCheck tm){
+	ame::SolenoidLock* ame::SolenoidLock::timecheck(TimeCheck tm){
 		this->timecheckm = tm;
 		return this;
 	}
-	SolenoidLock* SolenoidLock::attach(int pin){
+	ame::SolenoidLock* ame::SolenoidLock::attach(int pin){
 		this->slpin = pin;
 		pinMode(this->slpin, OUTPUT);
 		return this;
 	}
-	SolenoidLock* SolenoidLock::close(){
+	ame::SolenoidLock* ame::SolenoidLock::close(){
 		this->state = false;
 		this->closem = false;
 		this->openm = false;
 		digitalWrite(this->slpin,LOW);
 		return this;
 	}
-	SolenoidLock* SolenoidLock::open(){
+	ame::SolenoidLock* ame::SolenoidLock::open(){
 		this->state = true;
 		this->closem = false;
 		this->openm = false;

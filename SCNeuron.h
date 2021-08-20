@@ -4,6 +4,8 @@
 #include "DataSet.h"
 #include "Function.h"
 
+namespace ame{
+
 class SCNeuron : public Neuron<float,float,float>{
 	public:
 		SCNeuron(){}
@@ -43,5 +45,7 @@ class SCNeuron : public Neuron<float,float,float>{
 		int outputDimention = 0;
 		int outputSpace = 0;
 };
+
+}
 
 #endif

@@ -1,6 +1,6 @@
 #ifndef ReflectionUtil_cpp
 #define ReflectionUtil_cpp
-
+/*
 #include "ReflectedObject.h"
 
 	
@@ -74,5 +74,5 @@
 		}
 		return false;
 	}
-
+*/
 #endif 

@@ -4,13 +4,13 @@
 
 #include "GPRS_V1_1b.h"
 
-   GPRS_V1_1b::GPRS_V1_1b() {
+   ame::GPRS_V1_1b::GPRS_V1_1b() {
    }
    
-   GPRS_V1_1b::~GPRS_V1_1b() {
+   ame::GPRS_V1_1b::~GPRS_V1_1b() {
    }
    
-	String GPRS_V1_1b::AtMode_List(int atmode_list){
+	String ame::GPRS_V1_1b::AtMode_List(int atmode_list){
 		String at="";
 		if(atmode_list == 0){ at="AT"; }
 		if(atmode_list == 1){ at="ATA"; }
@@ -57,7 +57,7 @@
 
 
 
-	void GPRS_V1_1b::SendSim800cMns(Stream *port,String telefono,String mns){
+	void ame::GPRS_V1_1b::SendSim800cMns(Stream *port,String telefono,String mns){
 		port->println("AT+CMGF=1");
 		delay(500);
 		port->println("AT+CSMP=17,167,0,16");
@@ -70,7 +70,7 @@
 		delay(1000);
 	}
 
-	void GPRS_V1_1b::SendSim800cLongMns(Stream *port,String telefono,String mns[],int sizee){
+	void ame::GPRS_V1_1b::SendSim800cLongMns(Stream *port,String telefono,String mns[],int sizee){
 		port->println("AT+CMGF=1");
 		delay(500);
 		port->println("AT+CSMP=17,167,0,16");
@@ -86,7 +86,7 @@
 	}
 
 
-	void GPRS_V1_1b::ListenerSim800cMns(Stream *port){
+	void ame::GPRS_V1_1b::ListenerSim800cMns(Stream *port){
 		port->println("AT+CMGF=1");
 		delay(1000);
 		port->println("AT+CNMI=2,2,0,0,0");
@@ -94,7 +94,7 @@
 	}
 
 
-	String GPRS_V1_1b::ReceiveSim800cMns(Stream *port){    
+	String ame::GPRS_V1_1b::ReceiveSim800cMns(Stream *port){    
 	char reading =' ';
 	boolean wipe= false;
 	inputStringGprs="";
@@ -119,7 +119,7 @@
 
 
 
-	String GPRS_V1_1b::Sim800cSplit(String cmd,int parte, char limiter){ 
+	String ame::GPRS_V1_1b::Sim800cSplit(String cmd,int parte, char limiter){ 
 		String return_1="";     
 		if(cmd!=""){   
 			int delimiter=-1;  

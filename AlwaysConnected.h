@@ -19,6 +19,7 @@
 	#define AlwaysConnectedLog(name,method,type,mns)
 #endif
 
+namespace ame{
 
 class AlwaysConnected : public AppState{
     public:
@@ -26,8 +27,10 @@ class AlwaysConnected : public AppState{
 		}
 		virtual ~AlwaysConnected(){
 		}
-		virtual bool instanceof(cppObjectClass* cls){return cls == Class<AlwaysConnected>::classType || AppState::instanceof(cls);}
-		virtual cppObjectClass* getClassName(){return Class<AlwaysConnected>::classType;}
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<AlwaysConnected>::classType || AppState::instanceof(cls);
+		}
+		virtual cppObjectClass* getClass(){return Class<AlwaysConnected>::classType;}
 		
 		void initialize(Application *a){
 			AlwaysConnectedLog("AlwaysConnected", "initialize",  "println", "");
@@ -65,7 +68,7 @@ class AlwaysConnected : public AppState{
 				}
 			}
 		}
-		virtual void add(String n, IPAddress i, int pt, SerialPort* s, PortProtocol* p){
+		virtual void add(String n, IPAddress i, int pt, ame::SerialPort* s, ame::PortProtocol* p){
 			s->setName(n);
 			ips.addLValue(i);
 			ports.addLValue(pt);
@@ -99,5 +102,7 @@ class AlwaysConnected : public AppState{
 		float time = 0;
 		float time_limite = 5.5f;
 };
+
+}
 
 #endif 

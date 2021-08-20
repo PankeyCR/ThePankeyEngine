@@ -8,6 +8,8 @@
 #include "AnalogJoystick.h"
 #include "cppObjectClass.h"
 
+namespace ame{
+
 class JoystickCalibrationControl : public GameOn{
     private:
 	
@@ -25,5 +27,7 @@ class JoystickCalibrationControl : public GameOn{
 		
 		JoystickCalibrationControl *clone();
 };
+
+}
 
 #endif 

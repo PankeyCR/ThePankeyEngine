@@ -4,57 +4,57 @@
 
 #include "AnalogJoystick.h"
 
-	AnalogJoystick::AnalogJoystick(){
+	ame::AnalogJoystick::AnalogJoystick(){
 		
 	}
 
-	AnalogJoystick::~AnalogJoystick(){
+	ame::AnalogJoystick::~AnalogJoystick(){
 		
 	}
 
-	void AnalogJoystick::setOrigin(float x, float y){
+	void ame::AnalogJoystick::setOrigin(float x, float y){
 		defaultX=x;
 		defaultY=y;		
 	}
 
-	float AnalogJoystick::getX(){
+	float ame::AnalogJoystick::getX(){
 		return x;
 	}
 
-	float AnalogJoystick::getY(){
+	float ame::AnalogJoystick::getY(){
 		return y;
 	}
 
-	int AnalogJoystick::getRawX(){
+	int ame::AnalogJoystick::getRawX(){
 		return rawX;
 	}
 
-	int AnalogJoystick::getRawY(){
+	int ame::AnalogJoystick::getRawY(){
 		return rawY;
 	}
 
-	bool AnalogJoystick::isPressed(){
+	bool ame::AnalogJoystick::isPressed(){
 		return pressed;
 	}
 
-	bool AnalogJoystick::isReleased(){
+	bool ame::AnalogJoystick::isReleased(){
 		return released;
 	}
 
-	bool AnalogJoystick::isClick(){
+	bool ame::AnalogJoystick::isClick(){
 		return clicked;
 	}
 
-	String AnalogJoystick::getClassName(){
-		return "AnalogJoystick";
+	ame::cppObjectClass* ame::AnalogJoystick::getClass(){
+		return ame::Class<AnalogJoystick>::classType;
 	}
 
-	String AnalogJoystick::toString(){
+	String ame::AnalogJoystick::toString(){
 		return "AnalogJoystick "+String(x)+" "+String(y);
 	}
 
-	AnalogJoystick *AnalogJoystick::clone(){
-		AnalogJoystick *analog = new AnalogJoystick();
+	ame::AnalogJoystick *ame::AnalogJoystick::clone(){
+		ame::AnalogJoystick *analog = new ame::AnalogJoystick();
 		analog->defaultX=this->defaultX;
 		analog->defaultY=this->defaultY;
 		analog->x=this->x;
@@ -67,7 +67,7 @@
 		return analog;
 	}
 
-	void AnalogJoystick::setPins(int analgoX, int analgoY, int button){
+	void ame::AnalogJoystick::setPins(int analgoX, int analgoY, int button){
 		pinX = analgoX;
 		pinY = analgoY;
 		pinButton = button;
@@ -76,23 +76,23 @@
 		pinMode(pinButton, INPUT);
 	}
 
-	int AnalogJoystick::getPinX(){
+	int ame::AnalogJoystick::getPinX(){
 		return pinX;
 	}
 
-	int AnalogJoystick::getPinY(){
+	int ame::AnalogJoystick::getPinY(){
 		return pinY;
 	}
 
-	int AnalogJoystick::getPinButton(){
+	int ame::AnalogJoystick::getPinButton(){
 		return pinButton;
 	}
 
-	void AnalogJoystick::setScale(float Scale){
+	void ame::AnalogJoystick::setScale(float Scale){
 		scale = Scale;
 	}
 
-	void AnalogJoystick::update(float tpc){
+	void ame::AnalogJoystick::update(float tpc){
 		rawX = analogRead(pinX);
 		rawY = analogRead(pinY);
 		x = (rawX-defaultX)*scale;

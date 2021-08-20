@@ -20,6 +20,9 @@
 
 #include "Stream.h"
 #include "Logging.h"
+
+namespace ame{
+
 class Logger {
 	public:
 		virtual ~Logger();
@@ -38,4 +41,7 @@ class Logger {
 		static Logger *log;
 		Logging* logging = nullptr;
 };
+
+}
+
 #endif 

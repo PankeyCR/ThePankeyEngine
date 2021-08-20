@@ -3,6 +3,8 @@
 #ifndef ListenerEvent_h
 #define ListenerEvent_h
 
+namespace ame{
+
 class ListenerEvent{
     public:
 		ListenerEvent(){}
@@ -19,5 +21,7 @@ class ListenerEvent{
 	protected:
 		bool enable_m = true;
 };
+
+}
 
 #endif 

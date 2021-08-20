@@ -5,65 +5,26 @@
 
 #include "MemoryManager.h"
 
-template<class T> struct Memory{
-	static MemoryManager<T>* manager;
-	static size_t objSize_t;
-	template<class... args>
-	static T* createMemory(bool maneged,args... x){
-		T* t = new T(x...);
-		if(manager != nullptr && !maneged){
-			manager->removeMemory(t);
-		}
-		return t;
-	}
-	static void addMemory(T* t){
-		if(manager != nullptr){
-			manager->addMemory(t);
-		}
-	}
-	static void removeMemory(T* t){
-		if(manager != nullptr){
-			manager->removeMemory(t);
-		}
-	}
-	static void containMemory(T* t){
-		if(manager != nullptr){
-			manager->containMemory(t);
-		}
-	}
-};
-template<class T> MemoryManager<T>* Memory<T>::manager = nullptr;
-template<class T> size_t Memory<T>::objSize_t;
+namespace ame{
 
-template<class T>
 class ManegedMemory{
-    public:		
+    public:
 		ManegedMemory(){}
 		virtual ~ManegedMemory(){}
 		
 		void* operator new(size_t size){
-			Memory<T>::objSize_t = size;
-			if(Memory<T>::manager == nullptr){
+			if(Memory::manager == nullptr){
 				return malloc(size);
 			}
-			return Memory<T>::manager->allocateMemory(size);
+			return Memory::manager->allocateMemory(size);
 		}
 		
 		void operator delete(void* pointerToDelete){
-			if(Memory<T>::manager == nullptr){
-				free((T*)pointerToDelete);
+			if(Memory::manager == nullptr){
+				free(pointerToDelete);
 				return;
 			}
-			Memory<T>::manager->deleteMemory(pointerToDelete,Memory<T>::objSize_t);
-		}
-
-		virtual void watchdog(){
-			if(Memory<T>::manager != nullptr){
-				Memory<T>::manager->watchdog(this);
-			}
-		}
-		virtual size_t getsize_t(){
-			return Memory<T>::objSize_t;
+			Memory::manager->deleteMemory(pointerToDelete);
 		}
 
 		virtual void onRecycleMemory(){}
@@ -73,5 +34,6 @@ class ManegedMemory{
 	protected:
 };
 
+}
 
 #endif 

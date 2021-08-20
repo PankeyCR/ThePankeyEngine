@@ -23,6 +23,7 @@
 	#define GuiStateLog(name,method,type,mns)
 #endif
 
+namespace ame{
 
 class GuiState : public SerialMessageControlledState{
     public:
@@ -41,8 +42,10 @@ class GuiState : public SerialMessageControlledState{
 			delete activeScenes;
 		}
 
-		bool instanceof(String name){return name == "GuiState" || SerialMessageControlledState::instanceof(name);}
-		String getClassName(){return "GuiState";}
+		bool instanceof(cppObjectClass* cls){
+			return cls == Class<GuiState>::classType || SerialMessageControlledState::instanceof(cls);
+		}
+		cppObjectClass* getClass(){return Class<GuiState>::classType;}
 		
 		virtual bool invoke(String method){
 			GuiStateLog("GuiState", "invoke",  "println", "invoke method without parameters");

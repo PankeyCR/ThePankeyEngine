@@ -4,6 +4,9 @@
 
 #include "SerialPort.h"
 #include "ByteArray.h"
+
+namespace ame{
+	
 class SerialMessageState;
 
 class SerialNetworkProtocol{	
@@ -47,4 +50,7 @@ class SerialNetworkProtocol{
 		bool safeDelete = true;
 		SerialMessageState* serialState = nullptr;
 };
+
+}
+
 #endif 

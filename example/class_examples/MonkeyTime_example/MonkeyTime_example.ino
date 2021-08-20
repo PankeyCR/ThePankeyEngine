@@ -3,6 +3,8 @@
 #include "MonkeyTime.h"
 #include "TimeRecorder.h"
 
+using namespace ame;
+
 MonkeyTime timer;
 TimeRecorder recorder;
 

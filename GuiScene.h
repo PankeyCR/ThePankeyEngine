@@ -5,6 +5,8 @@
 
 #include "Vector3f.h"
 
+namespace ame{
+
 class GuiState;
 
 class GuiScene{
@@ -21,5 +23,7 @@ class GuiScene{
 		virtual bool operator!=(GuiScene g){return true;}
 	protected:
 };
+
+}
 
 #endif 

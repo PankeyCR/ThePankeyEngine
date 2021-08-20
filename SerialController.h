@@ -8,12 +8,14 @@
 #include "ArrayList.h"
 #include "List.h"
 
+namespace ame{
+
 class SerialController : public SerialConnection , public GameObject{
     public:
 		SerialController();
 		~SerialController();
 		
-		String getClassName();
+		cppObjectClass* getClass();
 		String toString();
 		SerialController *clone();
 		
@@ -21,7 +23,8 @@ class SerialController : public SerialConnection , public GameObject{
 		int SplitLenght(String divide,int parte, char limiter);
 		String Split(String divide,int parte, char limiter, char fin);
     private:
-		
 };
+
+}
 
 #endif 

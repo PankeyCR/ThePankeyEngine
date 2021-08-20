@@ -6,6 +6,8 @@
 #include "Arduino.h"
 #include "PrimitiveList.h"
 
+namespace ame{
+
 template<class T,class... args>
 class Order : public cppObject{
 public:
@@ -22,16 +24,16 @@ Order(const Order<T,args...>& o){
 }
 virtual ~Order(){}
     
-String getClassName(){
-	return "Order";
+cppObjectClass* getClass(){
+	return Class<Order>::classType;
 }
     
 String toString(){
 	return String("Order: ") + name;
 }
 
-bool instanceof(String instance){
-return instance == "Order" || cppObject::instanceof(instance);
+bool instanceof(cppObjectClass* instance){
+return instance == Class<Order>::classType || cppObject::instanceof(instance);
 }
 
 String getName(){
@@ -102,5 +104,7 @@ protected:
     String name;
     PrimitiveList<T> order;
 };
+
+}
 
 #endif

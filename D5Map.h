@@ -5,6 +5,8 @@
 
 #include "DMap.h"
 
+namespace ame{
+
 template <class T,int i0,int i1,int i2,int i3,int i4>
 class D5Map : DMap<T>{
 	public:
@@ -74,5 +76,7 @@ class D5Map : DMap<T>{
 		int x3 = 0;
 		int x4 = 0;
 };
+
+}
 
 #endif 

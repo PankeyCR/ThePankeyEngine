@@ -5,14 +5,14 @@
 
 #include "Matrix3f.h"
 
-    Matrix3f *Matrix3f::ZERO = new Matrix3f(0, 0, 0, 0, 0, 0, 0, 0, 0);
-    Matrix3f *Matrix3f::IDENTITY = new Matrix3f();
+    ame::Matrix3f *ame::Matrix3f::ZERO = new ame::Matrix3f(0, 0, 0, 0, 0, 0, 0, 0, 0);
+    ame::Matrix3f *ame::Matrix3f::IDENTITY = new ame::Matrix3f();
 
-    Matrix3f::Matrix3f() {
+    ame::Matrix3f::Matrix3f() {
         this->loadIdentity();
     }
 	
-    Matrix3f::Matrix3f(float m00, float m01, float m02, float m10, float m11,
+    ame::Matrix3f::Matrix3f(float m00, float m01, float m02, float m10, float m11,
             float m12, float m20, float m21, float m22) {
 
         this->m00 = m00;
@@ -26,7 +26,7 @@
         this->m22 = m22;
     }
 	
-    Matrix3f Matrix3f::absolute() {
+    ame::Matrix3f ame::Matrix3f::absolute() {
         float mm00 = abs(this->m00);
         float mm01 = abs(this->m01);
         float mm02 = abs(this->m02);
@@ -36,12 +36,12 @@
         float mm20 = abs(this->m20);
         float mm21 = abs(this->m21);
         float mm22 = abs(this->m22);
-        return Matrix3f(mm00, mm01, mm02, 
+        return ame::Matrix3f(mm00, mm01, mm02, 
 						mm10, mm11, mm12, 
 						mm20, mm21, mm22);
     }
 	
-    Matrix3f Matrix3f::absoluteLocal() {
+    ame::Matrix3f ame::Matrix3f::absoluteLocal() {
         this->m00 = abs(this->m00);
         this->m01 = abs(this->m01);
         this->m02 = abs(this->m02);
@@ -51,12 +51,12 @@
         this->m20 = abs(this->m20);
         this->m21 = abs(this->m21);
         this->m22 = abs(this->m22);
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    Matrix3f Matrix3f::set(Matrix3f matrix) {
+    ame::Matrix3f ame::Matrix3f::set(ame::Matrix3f matrix) {
 		this->m00 = matrix.m00;
 		this->m01 = matrix.m01;
 		this->m02 = matrix.m02;
@@ -66,12 +66,12 @@
 		this->m20 = matrix.m20;
 		this->m21 = matrix.m21;
 		this->m22 = matrix.m22;
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 
-    float Matrix3f::get(int i, int j) {
+    float ame::Matrix3f::get(int i, int j) {
         switch (i) {
             case 0:
                 switch (j) {
@@ -103,7 +103,7 @@
         }
     }
 	
-    List<float> *Matrix3f::get(List<float> *data, bool rowMajor) {
+    ame::List<float> *ame::Matrix3f::get(ame::List<float> *data, bool rowMajor) {
         if (data == nullptr) {
 			return nullptr;
 		}
@@ -182,8 +182,8 @@
 		return data;
     }
 	
-    Matrix3f Matrix3f::normalize() {
-		Matrix3f store;
+    ame::Matrix3f ame::Matrix3f::normalize() {
+		ame::Matrix3f store;
 
         float mag = 1.0f / sqrt(
                 m00 * m00
@@ -206,13 +206,13 @@
         store.m02 = store.m10 * store.m21 - store.m11 * store.m20;
         store.m12 = store.m01 * store.m20 - store.m00 * store.m21;
         store.m22 = store.m00 * store.m11 - store.m01 * store.m10;
-        return Matrix3f(store.m00, store.m01, store.m02, 
+        return ame::Matrix3f(store.m00, store.m01, store.m02, 
 						store.m10, store.m11, store.m12, 
 						store.m20, store.m21, store.m22);
     }
 	
-    Matrix3f Matrix3f::normalizeLocal() {
-		Matrix3f store;
+    ame::Matrix3f ame::Matrix3f::normalizeLocal() {
+		ame::Matrix3f store;
         float mag = 1.0f / sqrt(
                 m00 * m00
                 + m10 * m10
@@ -235,13 +235,13 @@
         store.m12 = store.m01 * store.m20 - store.m00 * store.m21;
         store.m22 = store.m00 * store.m11 - store.m01 * store.m10;
 		this->set(store);
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    Vector3f Matrix3f::getColumn(int i) {
-		Vector3f store;
+    ame::Vector3f ame::Matrix3f::getColumn(int i) {
+		ame::Vector3f store;
         switch (i) {
             case 0:
                 store.x = m00;
@@ -259,13 +259,13 @@
                 store.z = m22;
                 break;
             default:
-			return Vector3f(store.x, store.y, store.z);
+			return ame::Vector3f(store.x, store.y, store.z);
         }
-        return Vector3f(store.x, store.y, store.z);
+        return ame::Vector3f(store.x, store.y, store.z);
     }
 	
-    Vector3f Matrix3f::getRow(int i) {
-		Vector3f store;
+    ame::Vector3f ame::Matrix3f::getRow(int i) {
+		ame::Vector3f store;
         switch (i) {
             case 0:
                 store.x = m00;
@@ -283,12 +283,12 @@
                 store.z = m22;
                 break;
             default:
-				return Vector3f(store.x, store.y, store.z);
+				return ame::Vector3f(store.x, store.y, store.z);
         }
-        return Vector3f(store.x, store.y, store.z);
+        return ame::Vector3f(store.x, store.y, store.z);
     }
 	
-    // FloatBuffer Matrix3f::toFloatBuffer() {
+    // FloatBuffer ame::Matrix3f::toFloatBuffer() {
         // FloatBuffer fb = BufferUtils.createFloatBuffer(9);
 
         // fb.put(m00).put(m01).put(m02);
@@ -298,7 +298,7 @@
         // return fb;
     // }
 	
-    // FloatBuffer Matrix3f::fillFloatBuffer(FloatBuffer fb, boolean columnMajor) {
+    // FloatBuffer ame::Matrix3f::fillFloatBuffer(FloatBuffer fb, boolean columnMajor) {
         // TempVars vars = TempVars.get();
 
 
@@ -310,7 +310,7 @@
         // return fb;
     // }
 
-    List<float> *Matrix3f::fillFloatArray(List<float> *f, bool columnMajor) {
+    ame::List<float> *ame::Matrix3f::fillFloatArray(ame::List<float> *f, bool columnMajor) {
         if (f == nullptr) {
 			return nullptr;
 		}
@@ -338,7 +338,7 @@
 		return f;
     }
 
-    Matrix3f Matrix3f::setColumn(int i, Vector3f column) {
+    ame::Matrix3f ame::Matrix3f::setColumn(int i, ame::Vector3f column) {
         switch (i) {
             case 0:
                 this->m00 = column.x;
@@ -356,16 +356,16 @@
                 this->m22 = column.z;
                 break;
             default:
-				return Matrix3f(this->m00, this->m01, this->m02, 
+				return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
         }
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    Matrix3f Matrix3f::setRow(int i, Vector3f row) {
+    ame::Matrix3f ame::Matrix3f::setRow(int i, ame::Vector3f row) {
         switch (i) {
             case 0:
                 this->m00 = row.x;
@@ -383,32 +383,32 @@
                 this->m22 = row.z;
                 break;
             default:
-				return Matrix3f(this->m00, this->m01, this->m02, 
+				return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
         }
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    Matrix3f Matrix3f::set(int i, int j, float value) {
+    ame::Matrix3f ame::Matrix3f::set(int i, int j, float value) {
         switch (i) {
             case 0:
                 switch (j) {
                     case 0:
                         this->m00 = value;
-						return Matrix3f(this->m00, this->m01, this->m02, 
+						return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
                     case 1:
                         this->m01 = value;
-						return Matrix3f(this->m00, this->m01, this->m02, 
+						return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
                     case 2:
                         this->m02 = value;
-						return Matrix3f(this->m00, this->m01, this->m02, 
+						return ame::Matrix3f(this->m00, this->m01, this->m02, 
 							this->m10, this->m11, this->m12, 
 							this->m20, this->m21, this->m22);
                 }
@@ -416,17 +416,17 @@
                 switch (j) {
                     case 0:
                         this->m10 = value;
-						return Matrix3f(this->m00, this->m01, this->m02, 
+						return ame::Matrix3f(this->m00, this->m01, this->m02, 
 							this->m10, this->m11, this->m12, 
 							this->m20, this->m21, this->m22);
                     case 1:
                         this->m11 = value;
-						return Matrix3f(this->m00, this->m01, this->m02, 
+						return ame::Matrix3f(this->m00, this->m01, this->m02, 
 							this->m10, this->m11, this->m12, 
 							this->m20, this->m21, this->m22);
                     case 2:
                         this->m12 = value;
-						return Matrix3f(this->m00, this->m01, this->m02, 
+						return ame::Matrix3f(this->m00, this->m01, this->m02, 
 							this->m10, this->m11, this->m12, 
 							this->m20, this->m21, this->m22);
                 }
@@ -434,26 +434,26 @@
                 switch (j) {
                     case 0:
                         this->m20 = value;
-						return Matrix3f(this->m00, this->m01, this->m02, 
+						return ame::Matrix3f(this->m00, this->m01, this->m02, 
 							this->m10, this->m11, this->m12, 
 							this->m20, this->m21, this->m22);
                     case 1:
                         this->m21 = value;
-						return Matrix3f(this->m00, this->m01, this->m02, 
+						return ame::Matrix3f(this->m00, this->m01, this->m02, 
 							this->m10, this->m11, this->m12, 
 							this->m20, this->m21, this->m22);
                     case 2:
                         this->m22 = value;
-						return Matrix3f(this->m00, this->m01, this->m02, 
+						return ame::Matrix3f(this->m00, this->m01, this->m02, 
 							this->m10, this->m11, this->m12, 
 							this->m20, this->m21, this->m22);
                 }
         }
     }
 	
-    // Matrix3f Matrix3f::setLValue(float[3][3] matrix) {
+    // ame::Matrix3f ame::Matrix3f::setLValue(float[3][3] matrix) {
         // if (matrix.length != 3 || matrix[0].length != 3) {
-			// return Matrix3f(this);
+			// return ame::Matrix3f(this);
         // }
 
         // this->m00 = matrix[0][0];
@@ -466,12 +466,12 @@
         // this->m21 = matrix[2][1];
         // this->m22 = matrix[2][2];
 
-        // return Matrix3f(this->m00, this->m01, this->m02, 
+        // return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						// this->m10, this->m11, this->m12, 
 						// this->m20, this->m21, this->m22);
     // }
 	
-    Matrix3f Matrix3f::fromAxes(Vector3f uAxis, Vector3f vAxis, Vector3f wAxis) {
+    ame::Matrix3f ame::Matrix3f::fromAxes(ame::Vector3f uAxis, ame::Vector3f vAxis, ame::Vector3f wAxis) {
         this->m00 = uAxis.x;
         this->m10 = uAxis.y;
         this->m20 = uAxis.z;
@@ -483,18 +483,18 @@
         this->m02 = wAxis.x;
         this->m12 = wAxis.y;
         this->m22 = wAxis.z;
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    Matrix3f Matrix3f::set(List<float> *matrix) {
+    ame::Matrix3f ame::Matrix3f::set(ame::List<float> *matrix) {
         return set(matrix, true);
     }
 	
-    Matrix3f Matrix3f::set(List<float> *matrix, bool rowMajor) {
+    ame::Matrix3f ame::Matrix3f::set(ame::List<float> *matrix, bool rowMajor) {
         if (matrix->getPosition() >= 9) {
-			return Matrix3f(this->m00, this->m01, this->m02, 
+			return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
         }
@@ -520,13 +520,13 @@
             this->m21 = *matrix->getByPosition(5);
             this->m22 = *matrix->getByPosition(8);
         }
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    // Matrix3f Matrix3f::setLValue(Quaternion q) {
-		// Matrix3f nm = q.toRotationMatrix(this);
+    // ame::Matrix3f ame::Matrix3f::setLValue(Quaternion q) {
+		// ame::Matrix3f nm = q.toRotationMatrix(this);
 		// this->m00 = nm.m00;
 		// this->m01 = nm.m01;
 		// this->m02 = nm.m02;
@@ -536,28 +536,28 @@
 		// this->m20 = nm.m20;
 		// this->m21 = nm.m21;
 		// this->m22 = nm.m22;
-        // return Matrix3f(this->m00, this->m01, this->m02, 
+        // return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						// this->m10, this->m11, this->m12, 
 						// this->m20, this->m21, this->m22);
     // }
 	
-    void Matrix3f::loadIdentity() {
+    void ame::Matrix3f::loadIdentity() {
         this->m01 = this->m02 = this->m10 = this->m12 = this->m20 = this->m21 = 0;
         this->m00 = this->m11 = this->m22 = 1;
     }
 	
-    bool Matrix3f::isIdentity() {
+    bool ame::Matrix3f::isIdentity() {
         return (this->m00 == 1 && this->m01 == 0 && this->m02 == 0)
                 && (this->m10 == 0 && this->m11 == 1 && this->m12 == 0)
                 && (this->m20 == 0 && this->m21 == 0 && this->m22 == 1);
     }
 	
-    Matrix3f Matrix3f::fromAngleAxis(float angle, Vector3f axis) {
-        Vector3f normAxis = axis.normalize();
+    ame::Matrix3f ame::Matrix3f::fromAngleAxis(float angle, ame::Vector3f axis) {
+        ame::Vector3f normAxis = axis.normalize();
         return this->fromAngleNormalAxis(angle, normAxis);
     }
 	
-    Matrix3f Matrix3f::fromAngleNormalAxis(float angle, Vector3f axis) {
+    ame::Matrix3f ame::Matrix3f::fromAngleNormalAxis(float angle, ame::Vector3f axis) {
         float fCos = cos(angle);
         float fSin = sin(angle);
         // float fCos = FastMath.cos(angle);
@@ -582,17 +582,17 @@
         float fm20 = fXZM - fYSin;
         float fm21 = fYZM + fXSin;
         float fm22 = fZ2 * fOneMinusCos + fCos;
-        return Matrix3f(fm00, fm01, fm02, 
+        return ame::Matrix3f(fm00, fm01, fm02, 
 						fm10, fm11, fm12, 
 						fm20, fm21, fm22);
     }
 	
-    Matrix3f Matrix3f::fromAngleAxisLocal(float angle, Vector3f axis) {
-        Vector3f normAxis = axis.normalize();
+    ame::Matrix3f ame::Matrix3f::fromAngleAxisLocal(float angle, ame::Vector3f axis) {
+        ame::Vector3f normAxis = axis.normalize();
         return this->fromAngleNormalAxisLocal(angle, normAxis);
     }
 	
-    Matrix3f Matrix3f::fromAngleNormalAxisLocal(float angle, Vector3f axis) {
+    ame::Matrix3f ame::Matrix3f::fromAngleNormalAxisLocal(float angle, ame::Vector3f axis) {
         float fCos = cos(angle);
         float fSin = sin(angle);
         // float fCos = FastMath.cos(angle);
@@ -617,17 +617,17 @@
         this->m20 = fXZM - fYSin;
         this->m21 = fYZM + fXSin;
         this->m22 = fZ2 * fOneMinusCos + fCos;
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    Matrix3f Matrix3f::mult(Matrix3f mat) {
+    ame::Matrix3f ame::Matrix3f::mult(ame::Matrix3f mat) {
 		float temp00, temp01, temp02;
         float temp10, temp11, temp12;
         float temp20, temp21, temp22;
 
-        Matrix3f product;
+        ame::Matrix3f product;
 		
         temp00 = m00 * mat.m00 + m01 * mat.m10 + m02 * mat.m20;
         temp01 = m00 * mat.m01 + m01 * mat.m11 + m02 * mat.m21;
@@ -649,12 +649,12 @@
         product.m21 = temp21;
         product.m22 = temp22;
 
-        return Matrix3f(product.m00, product.m01, product.m02, 
+        return ame::Matrix3f(product.m00, product.m01, product.m02, 
 						product.m10, product.m11, product.m12, 
 						product.m20, product.m21, product.m22);
     }
 	
-    Vector3f Matrix3f::mult(Vector3f vec) {
+    ame::Vector3f ame::Matrix3f::mult(ame::Vector3f vec) {
         float x = vec.x;
         float y = vec.y;
         float z = vec.z;
@@ -662,10 +662,10 @@
         float nx = this->m00 * x + this->m01 * y + this->m02 * z;
         float ny = this->m10 * x + this->m11 * y + this->m12 * z;
         float nz = this->m20 * x + this->m21 * y + this->m22 * z;
-        return Vector3f(nx , ny , nz);
+        return ame::Vector3f(nx , ny , nz);
     }
 	
-    Matrix3f Matrix3f::multLocal(float scale) {
+    ame::Matrix3f ame::Matrix3f::multLocal(float scale) {
         this->m00 *= scale;
         this->m01 *= scale;
         this->m02 *= scale;
@@ -675,12 +675,12 @@
         this->m20 *= scale;
         this->m21 *= scale;
         this->m22 *= scale;
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    Matrix3f Matrix3f::multLocal(Matrix3f mat) {
+    ame::Matrix3f ame::Matrix3f::multLocal(ame::Matrix3f mat) {
 		float temp00, temp01, temp02;
         float temp10, temp11, temp12;
         float temp20, temp21, temp22;
@@ -705,12 +705,12 @@
         this->m21 = temp21;
         this->m22 = temp22;
 
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    Matrix3f Matrix3f::transposeLocal() {
+    ame::Matrix3f ame::Matrix3f::transposeLocal() {
         float tmp = m01;
         m01 = m10;
         m10 = tmp;
@@ -723,19 +723,19 @@
         m12 = m21;
         m21 = tmp;
 
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    Matrix3f Matrix3f::invert() {
+    ame::Matrix3f ame::Matrix3f::invert() {
 		float det = determinant();
         if (abs(det) <= FLT_EPSILON) {
-			return Matrix3f(ZERO->m00, ZERO->m01, ZERO->m02, 
+			return ame::Matrix3f(ZERO->m00, ZERO->m01, ZERO->m02, 
 						ZERO->m10, ZERO->m11, ZERO->m12, 
 						ZERO->m20, ZERO->m21, ZERO->m22);
         }
-		Matrix3f store;
+		ame::Matrix3f store;
         store.m00 = m11 * m22 - m12 * m21;
         store.m01 = m02 * m21 - m01 * m22;
         store.m02 = m01 * m12 - m02 * m11;
@@ -747,12 +747,12 @@
         store.m22 = m00 * m11 - m01 * m10;
 
         store.multLocal(1.0f / det);
-        return Matrix3f(store.m00, store.m01, store.m02, 
+        return ame::Matrix3f(store.m00, store.m01, store.m02, 
 						store.m10, store.m11, store.m12, 
 						store.m20, store.m21, store.m22);
     }
 	
-    Matrix3f Matrix3f::invertLocal() {
+    ame::Matrix3f ame::Matrix3f::invertLocal() {
         float det = determinant();
         if (abs(det) <= 0.0f) {
             return zero();
@@ -779,12 +779,12 @@
         this->m22 = f22;
 
         multLocal(1.0f / det);
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    Matrix3f Matrix3f::adjoint() {
+    ame::Matrix3f ame::Matrix3f::adjoint() {
         float nm00 = m11 * m22 - m12 * m21;
         float nm01 = m02 * m21 - m01 * m22;
         float nm02 = m01 * m12 - m02 * m11;
@@ -795,10 +795,10 @@
         float nm21 = m01 * m20 - m00 * m21;
         float nm22 = m00 * m11 - m01 * m10;
 
-        return Matrix3f(nm00,nm01,nm02,nm10,nm11,nm12,nm20,nm21,nm22);
+        return ame::Matrix3f(nm00,nm01,nm02,nm10,nm11,nm12,nm20,nm21,nm22);
     }
 	
-    float Matrix3f::determinant() {
+    float ame::Matrix3f::determinant() {
         float fCo00 = m11 * m22 - m12 * m21;
         float fCo10 = m12 * m20 - m10 * m22;
         float fCo20 = m10 * m21 - m11 * m20;
@@ -806,14 +806,14 @@
         return fDet;
     }
 	
-    Matrix3f Matrix3f::zero() {
+    ame::Matrix3f ame::Matrix3f::zero() {
         m00 = m01 = m02 = m10 = m11 = m12 = m20 = m21 = m22 = 0.0f;
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    Matrix3f Matrix3f::transpose() {
+    ame::Matrix3f ame::Matrix3f::transpose() {
         float tm00 = this->m00;
         float tm01 = this->m01;
         float tm02 = this->m02;
@@ -836,36 +836,36 @@
         tm12 = tm21;
         tm21 = tmp;
 
-        return Matrix3f(tm00, tm01, tm02, 
+        return ame::Matrix3f(tm00, tm01, tm02, 
 						tm10, tm11, tm12, 
 						tm20, tm21, tm22);
     }
 	
-    Matrix3f Matrix3f::transposeNew() {
-        return Matrix3f(this->m00, this->m10, this->m20, this->m01, this->m11, this->m21, this->m02, this->m12, this->m22);
+    ame::Matrix3f ame::Matrix3f::transposeNew() {
+        return ame::Matrix3f(this->m00, this->m10, this->m20, this->m01, this->m11, this->m21, this->m02, this->m12, this->m22);
     }
     
-    String Matrix3f::toString() {
-		return "Matrix3f "+String(m00), " "+String(m10), " "+
+    String ame::Matrix3f::toString() {
+		return "ame::Matrix3f "+String(m00), " "+String(m10), " "+
 				String(m20), " "+String(m01), " "+String(m11), " "+
 				String(m21), " "+String(m02), " "+String(m12), " "+
 				String(m22);
     }
 	
-    cppObjectClass* Matrix3f::getClass(){
-		return Class<Matrix3f>::classType;
+    ame::cppObjectClass* ame::Matrix3f::getClass(){
+		return ame::Class<ame::Matrix3f>::classType;
 	}
 	
-    bool Matrix3f::equals(cppObject *o){
-        if (!(o->getClass() == Class<Matrix3f>::classType) || o == nullptr) {
+    bool ame::Matrix3f::equals(ame::cppObject *o){
+        if (!(o->getClass() == Class<ame::Matrix3f>::classType) || o == nullptr) {
             return false;
         }
 
-        if (this == (Matrix3f*) o) {
+        if (this == (ame::Matrix3f*) o) {
             return true;
         }
 
-        Matrix3f *comp = (Matrix3f*) o;
+        ame::Matrix3f *comp = (ame::Matrix3f*) o;
         if (this->m00 != comp->m00) {
             return false;
         }
@@ -899,7 +899,7 @@
         return true;
     }
 
-    // void Matrix3f::write(JmeExporter e){
+    // void ame::Matrix3f::write(JmeExporter e){
         // OutputCapsule cap = e.getCapsule(this);
         // cap.write(m00, "m00", 1);
         // cap.write(m01, "m01", 0);
@@ -912,7 +912,7 @@
         // cap.write(m22, "m22", 1);
     // }
 
-    // void Matrix3f::read(JmeImporter e){
+    // void ame::Matrix3f::read(JmeImporter e){
         // InputCapsule cap = e.getCapsule(this);
         // m00 = cap.readFloat("m00", 1);
         // m01 = cap.readFloat("m01", 0);
@@ -927,8 +927,8 @@
 
 	
 	
-    Matrix3f Matrix3f::fromStartEndVectorsLocal(Vector3f start, Vector3f end) {
-        Vector3f v = start.cross(end);
+    ame::Matrix3f ame::Matrix3f::fromStartEndVectorsLocal(ame::Vector3f start, ame::Vector3f end) {
+        ame::Vector3f v = start.cross(end);
         float e, h, f;
 
         //start.cross(end, v);
@@ -937,8 +937,8 @@
 
         // if "from" and "to" vectors are nearly parallel
         if (f > 1.0f - ZERO_TOLERANCE) {
-            Vector3f u = Vector3f();
-            Vector3f x = Vector3f();
+            ame::Vector3f u = ame::Vector3f();
+            ame::Vector3f x = ame::Vector3f();
             float c1, c2, c3; // coefficients for later use 
             int i, j;
 
@@ -1006,17 +1006,17 @@
             set(2, 2, e + hvz * v.z);
         }
     }
-    Matrix3f Matrix3f::fromStartEndVectors(Vector3f start, Vector3f end) {
-		Matrix3f store = Matrix3f(this->m00, this->m01, this->m02, 
+    ame::Matrix3f ame::Matrix3f::fromStartEndVectors(ame::Vector3f start, ame::Vector3f end) {
+		ame::Matrix3f store = ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
 		store.fromStartEndVectors(start, end);
-        return Matrix3f(store.m00, store.m01, store.m02, 
+        return ame::Matrix3f(store.m00, store.m01, store.m02, 
 						store.m10, store.m11, store.m12, 
 						store.m20, store.m21, store.m22);
 	}
 	
-    Matrix3f Matrix3f::scaleLocal(Vector3f scale) {
+    ame::Matrix3f ame::Matrix3f::scaleLocal(ame::Vector3f scale) {
         this->m00 *= scale.x;
         this->m10 *= scale.x;
         this->m20 *= scale.x;
@@ -1026,12 +1026,12 @@
         this->m02 *= scale.z;
         this->m12 *= scale.z;
         this->m22 *= scale.z;
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-    Matrix3f Matrix3f::scale(Vector3f scale) {
+    ame::Matrix3f ame::Matrix3f::scale(ame::Vector3f scale) {
         float mm00 = this->m00 * scale.x;
         float mm10 = this->m10 * scale.x;
         float mm20 = this->m20 * scale.x;
@@ -1041,12 +1041,12 @@
         float mm02 = this->m02 * scale.z;
         float mm12 = this->m12 * scale.z;
         float mm22 = this->m22 * scale.z;
-        return Matrix3f(mm00, mm01, mm02, 
+        return ame::Matrix3f(mm00, mm01, mm02, 
 						mm10, mm11, mm12, 
 						mm20, mm21, mm22);
     }
 
-    bool Matrix3f::equalIdentity(Matrix3f mat) {
+    bool ame::Matrix3f::equalIdentity(ame::Matrix3f mat) {
         if (abs(mat.m00 - 1) > 1e-4) {
             return false;
         }
@@ -1081,13 +1081,13 @@
         return true;
     }
 	
-    Matrix3f *Matrix3f::clone() {
-        return new Matrix3f(this->m00, this->m01, this->m02, 
+    ame::Matrix3f *ame::Matrix3f::clone() {
+        return new ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
     }
 	
-	Matrix3f Matrix3f::operator=(const Matrix3f& a) {
+	ame::Matrix3f ame::Matrix3f::operator=(const ame::Matrix3f& a) {
 		this->m00 = a.m00;
 		this->m01 = a.m01;
 		this->m02 = a.m02;
@@ -1097,11 +1097,11 @@
 		this->m20 = a.m20;
 		this->m21 = a.m21;
 		this->m22 = a.m22;
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
 	}
-	Matrix3f Matrix3f::operator=(const float a[9]) {
+	ame::Matrix3f ame::Matrix3f::operator=(const float a[9]) {
 		this->m00 = a[0];
 		this->m01 = a[1];
 		this->m02 = a[2];
@@ -1111,11 +1111,11 @@
 		this->m20 = a[6];
 		this->m21 = a[7];
 		this->m22 = a[8];
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
 	}
-	bool Matrix3f::operator==(const Matrix3f& a) {
+	bool ame::Matrix3f::operator==(const ame::Matrix3f& a) {
         if (this->m00 != a.m00) {
             return false;
         }
@@ -1148,7 +1148,7 @@
 
         return true;
 	}
-	bool Matrix3f::operator!=(const Matrix3f& a) {
+	bool ame::Matrix3f::operator!=(const ame::Matrix3f& a) {
         if (this->m00 == a.m00) {
             return false;
         }
@@ -1193,12 +1193,12 @@
 	// Quaternion Quaternion::operator-(const float a[4]) {
 		// return Quaternion(this->x-a[0] ,this->y-a[1] ,this->z - a[2] ,this->w - a[3]);
 	// }
-	Matrix3f Matrix3f::operator*(const Matrix3f& mat) {
+	ame::Matrix3f ame::Matrix3f::operator*(const ame::Matrix3f& mat) {
 		float temp00, temp01, temp02;
         float temp10, temp11, temp12;
         float temp20, temp21, temp22;
 
-        Matrix3f product;
+        ame::Matrix3f product;
 		
         temp00 = this->m00 * mat.m00 + this->m01 * mat.m10 + this->m02 * mat.m20;
         temp01 = this->m00 * mat.m01 + this->m01 * mat.m11 + this->m02 * mat.m21;
@@ -1220,17 +1220,17 @@
         product.m21 = temp21;
         product.m22 = temp22;
 
-        return Matrix3f(product.m00, product.m01, product.m02, 
+        return ame::Matrix3f(product.m00, product.m01, product.m02, 
 						product.m10, product.m11, product.m12, 
 						product.m20, product.m21, product.m22);
 	}
-	Matrix3f Matrix3f::operator*(const float a[9]) {
+	ame::Matrix3f ame::Matrix3f::operator*(const float a[9]) {
 		float temp00, temp01, temp02;
         float temp10, temp11, temp12;
         float temp20, temp21, temp22;
 
-        Matrix3f product;
-        Matrix3f mat;
+        ame::Matrix3f product;
+        ame::Matrix3f mat;
         mat.m00 = a[0];
         mat.m01 = a[1];
         mat.m02 = a[2];
@@ -1261,7 +1261,7 @@
         product.m21 = temp21;
         product.m22 = temp22;
 
-        return Matrix3f(product.m00, product.m01, product.m02, 
+        return ame::Matrix3f(product.m00, product.m01, product.m02, 
 						product.m10, product.m11, product.m12, 
 						product.m20, product.m21, product.m22);
 	}
@@ -1304,7 +1304,7 @@
 	
 	
 	
-	Matrix3f Matrix3f::operator*=(const Matrix3f& mat) {
+	ame::Matrix3f ame::Matrix3f::operator*=(const ame::Matrix3f& mat) {
 		float temp00, temp01, temp02;
         float temp10, temp11, temp12;
         float temp20, temp21, temp22;
@@ -1329,16 +1329,16 @@
         this->m21 = temp21;
         this->m22 = temp22;
 
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
 	}
-	Matrix3f Matrix3f::operator*=(const float a[4]) {
+	ame::Matrix3f ame::Matrix3f::operator*=(const float a[4]) {
 		float temp00, temp01, temp02;
         float temp10, temp11, temp12;
         float temp20, temp21, temp22;
 		
-        Matrix3f mat;
+        ame::Matrix3f mat;
         mat.m00 = a[0];
         mat.m01 = a[1];
         mat.m02 = a[2];
@@ -1369,7 +1369,7 @@
         this->m21 = temp21;
         this->m22 = temp22;
 
-        return Matrix3f(this->m00, this->m01, this->m02, 
+        return ame::Matrix3f(this->m00, this->m01, this->m02, 
 						this->m10, this->m11, this->m12, 
 						this->m20, this->m21, this->m22);
 	}

@@ -1,16 +1,22 @@
 
 
-#ifndef StaticMethods_h
-#define StaticMethods_h
+#ifndef StaticMethodMap_h
+#define StaticMethodMap_h
 
-#include "PrimitiveMap.h"
+#include "PrimitiveRawMap.h"
+
+namespace ame{
 
 template<class A,class... P>
-class StaticMethods : public PrimitiveMap<A,void (*)(P...)>{
+class StaticMethodMap : public PrimitiveRawMap<A,void (*)(P...)>{
 public:
 using StaticEventMethod = void (*)(P...);
-StaticMethods(){}
-virtual ~StaticMethods(){}
+StaticMethodMap(){}
+virtual ~StaticMethodMap(){}
+
+void add(String n, StaticEventMethod m){
+	this->addLValues(n,m);
+}
 
 void invoke(A a, P... p){
 	if(this->getByLValue(a) == nullptr){
@@ -25,15 +31,15 @@ void invoke(P... p){
 	}
 }
 
-virtual bool operator==(StaticMethods<A,P...> a){
+virtual bool operator==(StaticMethodMap<A,P...> a){
 	
 	return true;
 }
-virtual bool operator!=(StaticMethods<A,P...> a){
+virtual bool operator!=(StaticMethodMap<A,P...> a){
 	
 	return false;
 }
-virtual void operator=(StaticMethods<A,P...> a){
+virtual void operator=(StaticMethodMap<A,P...> a){
 	this->resetDelete();
 	for(int x=0; x < a.getPosition(); x++){
 		this->addPointers(a.getKeyByPosition(x),a.getByPosition(x));
@@ -42,5 +48,7 @@ virtual void operator=(StaticMethods<A,P...> a){
 
 protected:
 };
+
+}
 
 #endif 

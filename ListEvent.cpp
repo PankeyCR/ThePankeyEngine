@@ -6,21 +6,21 @@
 #include "ListEvent.h"
 
 	template<class T>
-	ListEvent<T>::ListEvent(){
+	ame::ListEvent<T>::ListEvent(){
 		this->list = new ArrayList<EventMethod,10>();
 	}
 	template<class T>
-	ListEvent<T>::~ListEvent(){
+	ame::ListEvent<T>::~ListEvent(){
 		delete this->list;
 	}
 	template<class T>
-	void ListEvent<T>::event(){
+	void ame::ListEvent<T>::event(){
 		for(int x = 0; x < this->list->getPosition(); x++){
 			(**this->list->getByPosition(x))(this->var);
 		}
 	}
 	template<class T>
-	void ListEvent<T>::event(T c){
+	void ame::ListEvent<T>::event(T c){
 		if(this->var != c){
 			this->var = c;
 			for(int x = 0; x < this->list->getPosition(); x++){
@@ -29,15 +29,15 @@
 		}
 	}
 	template<class T>
-	void ListEvent<T>::add(EventMethod c){
+	void ame::ListEvent<T>::add(EventMethod c){
 		this->list->addLValue(c);
 	}
 	template<class T>
-	void ListEvent<T>::add(T name, EventMethod c){
+	void ame::ListEvent<T>::add(T name, EventMethod c){
 		
 	}
 
-	template class ListEvent<String>;
-	template class ListEvent<int>;
-	template class ListEvent<float>;
+	template class ame::ListEvent<String>;
+	template class ame::ListEvent<int>;
+	template class ame::ListEvent<float>;
 #endif 

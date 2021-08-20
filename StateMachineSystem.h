@@ -10,6 +10,8 @@
 #include "PrimitiveList.h"
 #include "MachineState.h"
 
+namespace ame{
+
 template<class T>
 class StateMachineSystem : public AppState{	
     public:
@@ -126,4 +128,7 @@ class StateMachineSystem : public AppState{
 		Application* App = nullptr;
 		MachineState<T>* actualState = nullptr;
 };
+
+}
+
 #endif 

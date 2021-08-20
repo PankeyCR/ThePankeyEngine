@@ -4,7 +4,9 @@
 
 #include "AppState.h"
 
-class TimerState : public AppState, TimeElapsed{
+using namespace ame;
+
+class TimerState : public AppState, public TimeElapsed{
 	public:
 	
 		TimerState(Stream *port){

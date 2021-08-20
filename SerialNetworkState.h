@@ -12,6 +12,8 @@
 #include "PrimitiveList.h"
 #include "Message.h"
 
+namespace ame{
+
 class SerialNetworkState : public AppState{	
     public:
 		SerialNetworkState();
@@ -83,4 +85,7 @@ class SerialNetworkState : public AppState{
 		
 		PrimitiveList<Command<Message>> listener;
 };
+
+}
+
 #endif

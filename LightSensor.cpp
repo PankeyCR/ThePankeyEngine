@@ -5,44 +5,44 @@
 
 #include "LightSensor.h"
 
-	LightSensor::LightSensor(){
+	ame::LightSensor::LightSensor(){
 		
 	}
-	LightSensor::~LightSensor(){
+	ame::LightSensor::~LightSensor(){
 		
 	}
 	
-	LightSensor* LightSensor::monkeytime(MonkeyTime* tim){
+	ame::LightSensor* ame::LightSensor::monkeytime(ame::MonkeyTime* tim){
 		this->timer = tim;
 		return this;
 	}
 	
-	LightSensor* LightSensor::delay(float tm){
+	ame::LightSensor* ame::LightSensor::delay(float tm){
 		this->timing = tm;
 		return this;
 	}
 	
-	LightSensor* LightSensor::offset(float tm){
+	ame::LightSensor* ame::LightSensor::offset(float tm){
 		this->offsetm = tm;
 		return this;
 	}
 	
-	LightSensor* LightSensor::timecheck(TimeCheck tm){
+	ame::LightSensor* ame::LightSensor::timecheck(TimeCheck tm){
 		this->timecheckm = tm;
 		return this;
 	}
 	
-	LightSensor* LightSensor::close(){
+	ame::LightSensor* ame::LightSensor::close(){
 		this->state = false;
 		return this;
 	}
 	
-	LightSensor* LightSensor::open(){
+	ame::LightSensor* ame::LightSensor::open(){
 		this->state = true;
 		return this;
 	}
 	
-	void LightSensor::update(){
+	void ame::LightSensor::update(){
 		if(this->timer == nullptr){
 			return;
 		}
@@ -63,16 +63,16 @@
 			this->closem = true;
 		}
 	}
-	LightSensor* LightSensor::attach(int pin){
+	ame::LightSensor* ame::LightSensor::attach(int pin){
 		this->slpin = pin;
 		pinMode(this->slpin , INPUT);
 		return this;
 	}
-	LightSensor* LightSensor::limit(int lm){
+	ame::LightSensor* ame::LightSensor::limit(int lm){
 		this->limitt = lm;
 		return this;
 	}
-	int LightSensor::getValue(){
+	int ame::LightSensor::getValue(){
 		return this->value;
 	}
 #endif 

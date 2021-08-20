@@ -5,11 +5,11 @@
 
 #include "SerialNetworkState.h"
 
-	SerialNetworkState::SerialNetworkState(){}
+	ame::SerialNetworkState::SerialNetworkState(){}
 	
-	SerialNetworkState::~SerialNetworkState(){}
+	ame::SerialNetworkState::~SerialNetworkState(){}
 	
-	void SerialNetworkState::setId(String s){
+	void ame::SerialNetworkState::setId(String s){
 		if(this->id == nullptr){
 			this->id = new String(s);
 			return;
@@ -18,26 +18,26 @@
 		this->id = new String(s);
 	}
 	
-	cppObjectClass* SerialNetworkState::getClass(){
-		return Class<SerialNetworkState>::classType;
+	ame::cppObjectClass* ame::SerialNetworkState::getClass(){
+		return ame::Class<ame::SerialNetworkState>::classType;
 	}
-	bool SerialNetworkState::instanceof(cppObjectClass* cls){
-		return cls == Class<SerialNetworkState>::classType || AppState::instanceof(cls);
+	bool ame::SerialNetworkState::instanceof(ame::cppObjectClass* cls){
+		return cls == ame::Class<ame::SerialNetworkState>::classType ||ame:: AppState::instanceof(cls);
 	}
 	
-	void SerialNetworkState::addSerialNetwork(SerialNetwork* serial, SerialNetworkProtocol* protocol){
+	void ame::SerialNetworkState::addSerialNetwork(ame::SerialNetwork* serial, ame::SerialNetworkProtocol* protocol){
 		networks.addPointer(serial);
 		protocols.addPointer(protocol);
 	}
 
-	SerialNetwork* SerialNetworkState::getSerialNetwork(int index){
+	ame::SerialNetwork* ame::SerialNetworkState::getSerialNetwork(int index){
 		if(networks.getPosition() >= index){
 			return nullptr;
 		}
 		return networks.getByPosition(index);
 	}
 
-	SerialNetwork* SerialNetworkState::getSerialNetwork(cppObjectClass* cls){
+	ame::SerialNetwork* ame::SerialNetworkState::getSerialNetwork(ame::cppObjectClass* cls){
 		for(int x = 0; x < networks.getPosition(); x++){
 			SerialNetwork* net = networks.getByPosition(x);
 			if(net->getClass() == cls){
@@ -47,7 +47,7 @@
 		return nullptr;
 	}
 
-	SerialNetwork* SerialNetworkState::getSerialNetwork(String name, cppObjectClass* cls){
+	ame::SerialNetwork* ame::SerialNetworkState::getSerialNetwork(String name, ame::cppObjectClass* cls){
 		for(int x = 0; x < networks.getPosition(); x++){
 			SerialNetwork* net = networks.getByPosition(x);
 			if(net->getClass() == cls && net->getName() == name){
@@ -57,15 +57,15 @@
 		return nullptr;
 	}
 	
-	int SerialNetworkState::getSerialNetworkSize(){
+	int ame::SerialNetworkState::getSerialNetworkSize(){
 		return networks.getPosition();
 	}
 	
-	bool SerialNetworkState::containSerialNetwork(SerialNetwork* serial){
+	bool ame::SerialNetworkState::containSerialNetwork(ame::SerialNetwork* serial){
 		return networks.containByPointer(serial);
 	}
 	
-	bool SerialNetworkState::containSerialNetwork(cppObjectClass* cls){
+	bool ame::SerialNetworkState::containSerialNetwork(ame::cppObjectClass* cls){
 		for(int x = 0; x < networks.getPosition(); x++){
 			SerialNetwork* net = networks.getByPosition(x);
 			if(net->getClass() == cls){
@@ -75,7 +75,7 @@
 		return false;
 	}
 	
-	bool SerialNetworkState::containSerialNetwork(String name, cppObjectClass* cls){
+	bool ame::SerialNetworkState::containSerialNetwork(String name, ame::cppObjectClass* cls){
 		for(int x = 0; x < networks.getPosition(); x++){
 			SerialNetwork* net = networks.getByPosition(x);
 			if(net->getClass() == cls && net->getName() == name){
@@ -85,87 +85,87 @@
 		return false;
 	}
 	
-	SerialNetwork* SerialNetworkState::removeSerialNetwork(SerialNetwork* serial){
+	ame::SerialNetwork* ame::SerialNetworkState::removeSerialNetwork(ame::SerialNetwork* serial){
 		
 	}
 	
-	SerialNetwork* SerialNetworkState::removeSerialNetwork(cppObjectClass* cls){
+	ame::SerialNetwork* ame::SerialNetworkState::removeSerialNetwork(ame::cppObjectClass* cls){
 		
 	}
 	
-	SerialNetwork* SerialNetworkState::removeSerialNetwork(int index){
+	ame::SerialNetwork* ame::SerialNetworkState::removeSerialNetwork(int index){
 		
 	}
 	
-	void SerialNetworkState::removeDeleteSerialNetwork(SerialNetwork* serial){
+	void ame::SerialNetworkState::removeDeleteSerialNetwork(ame::SerialNetwork* serial){
 		
 	}
 	
-	void SerialNetworkState::removeDeleteSerialNetwork(cppObjectClass* cls){
+	void ame::SerialNetworkState::removeDeleteSerialNetwork(ame::cppObjectClass* cls){
 		
 	}
 	
-	void SerialNetworkState::removeDeleteSerialNetwork(int index){
+	void ame::SerialNetworkState::removeDeleteSerialNetwork(int index){
 		
 	}
 
-	void SerialNetworkState::removeDeleteAllSerialNetwork(){
+	void ame::SerialNetworkState::removeDeleteAllSerialNetwork(){
 		
 	}
 	
-	void SerialNetworkState::instantSend(ByteArray array){
+	void ame::SerialNetworkState::instantSend(ame::ByteArray array){
 		
 	}
-	void SerialNetworkState::instantSend(int index, ByteArray array){
+	void ame::SerialNetworkState::instantSend(int index, ame::ByteArray array){
 		
 	}
-	void SerialNetworkState::instantSend(String name, ByteArray array){
-		
-	}
-	
-	void SerialNetworkState::instantSend(Message mns){
+	void ame::SerialNetworkState::instantSend(String name, ame::ByteArray array){
 		
 	}
 	
-	void SerialNetworkState::send(ByteArray array){
-		
-	}
-	void SerialNetworkState::send(int index, ByteArray array){
-		
-	}
-	void SerialNetworkState::send(String name, ByteArray array){
+	void ame::SerialNetworkState::instantSend(Message mns){
 		
 	}
 	
-	void SerialNetworkState::send(Message mns){
+	void ame::SerialNetworkState::send(ame::ByteArray array){
+		
+	}
+	void ame::SerialNetworkState::send(int index, ame::ByteArray array){
+		
+	}
+	void ame::SerialNetworkState::send(String name, ame::ByteArray array){
 		
 	}
 	
-	void SerialNetworkState::addListener(Command<Message>* mnsCmd){
+	void ame::SerialNetworkState::send(ame::Message mns){
+		
+	}
+	
+	void ame::SerialNetworkState::addListener(ame::Command<Message>* mnsCmd){
 		
 	}
 
-	void SerialNetworkState::removeDeleteListener(int index){
+	void ame::SerialNetworkState::removeDeleteListener(int index){
 		
 	}
 
-	void SerialNetworkState::removeAllListener(){
+	void ame::SerialNetworkState::removeAllListener(){
 		
 	}
 
-	void SerialNetworkState::disconect(void){
+	void ame::SerialNetworkState::disconect(void){
 		
 	}
 	
-	void SerialNetworkState::disconect(SerialNetwork* port){
+	void ame::SerialNetworkState::disconect(ame::SerialNetwork* port){
 		
 	}
 	
-	void SerialNetworkState::addReceivedMessage(Message* m){
+	void ame::SerialNetworkState::addReceivedMessage(ame::Message* m){
 		
 	}
 	
-	void SerialNetworkState::update(float tpc){
+	void ame::SerialNetworkState::update(float tpc){
 	}
 	
 

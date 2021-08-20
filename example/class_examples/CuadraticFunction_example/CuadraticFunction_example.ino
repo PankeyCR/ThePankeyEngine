@@ -2,6 +2,8 @@
 #include "CuadraticFunction.h"
 #include "MemoryFree.h"
 
+using namespace ame;
+
 CuadraticFunction<float,float,float>* fxyz;
 CuadraticFunction<float>* fx;
 

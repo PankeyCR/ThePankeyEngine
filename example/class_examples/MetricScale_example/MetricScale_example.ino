@@ -1,6 +1,8 @@
 
 #include "MetricScale.h"
 
+using namespace ame;
+
 void setup() {
   Serial.begin(9600);
   MetricScale scale;

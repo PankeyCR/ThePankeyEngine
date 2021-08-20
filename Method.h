@@ -5,6 +5,27 @@
 #include "RawList.h"
 #include "MethodMap.h"
 #include "Annotation.h"
+#include "StaticMethodMap.h"
+#include "TypeErasedInvoke.h"
+
+namespace ame{
+
+template<class T,class... Args>
+struct StaticInvoker{
+	static StaticMethodMap<String,Args...>* methods;
+	static StaticMethodMap<String,Args...>* getMap(){
+		return methods;
+	}
+	static void invoke(String n, Args... a){
+		if(methods == nullptr){
+			return;
+		}
+		methods->invoke(n,a...);
+	}
+};
+
+template<class T,class... Args> StaticMethodMap<String,Args...>* StaticInvoker<T,Args...>::methods = new StaticMethodMap<String,Args...>();
+
 
 template<class T, class R, class... Args>
 struct Invoker{
@@ -14,13 +35,13 @@ struct Invoker{
 	}
 	static R invoke(String n, T* c, Args... a){
 		if(methods == nullptr){
-			return nullptr;
+			return methods->r;
 		}
 		return methods->invoke(n,c,a...);
 	}
 	static R invoke(String n, T* c, R r, Args... a){
 		if(methods == nullptr){
-			return nullptr;
+			return r;
 		}
 		return methods->invoke(n,c,r,a...);
 	}
@@ -45,6 +66,11 @@ public:
 		return m_name;
 	}
 	
+	template<class T,class... Args>
+	void staticInvoke(Args... a){
+		StaticInvoker<T,Args...>::invoke(m_name,a...);
+	}
+	
 	template<class T,class R,class... Args>
 	R invoke(T* t, Args... a){
 		return Invoker<T,R,Args...>::invoke(m_name,t,a...);
@@ -53,6 +79,11 @@ public:
 	template<class T,class R,class... Args>
 	R invoke(T* t, R r, Args... a){
 		return Invoker<T,R,Args...>::invoke(m_name,t,r,a...);
+	}
+	
+	template<class... Args>
+	void invokeObject(const TypeErasedInvoke<Args...>& t, Args... a){
+		t->invoke(m_name,a...);
 	}
 		
 	virtual RawList<Annotation>* getAnnotations(){
@@ -70,5 +101,7 @@ public:
 protected:
 	String m_name;
 };
+
+}
 
 #endif

@@ -4,6 +4,8 @@
 #include "Vector2f.h"
 #include "Vector3f.h"
 
+using namespace ame;
+
 DefaultSettings *settings;
 
 void setup() {

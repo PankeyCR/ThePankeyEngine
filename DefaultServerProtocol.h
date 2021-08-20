@@ -16,6 +16,8 @@
 	#define DefaultServerProtocolLog(name,method,type,mns) 
 #endif
 
+namespace ame{
+
 class DefaultServerProtocol : public ServerProtocol{	
     public:
 		DefaultServerProtocol(){}
@@ -26,7 +28,8 @@ class DefaultServerProtocol : public ServerProtocol{
 				DefaultServerProtocolLog("DefaultServerProtocol", "getUpdateSerialPort",  "println", "this->serialState == nullptr");
 				return nullptr;
 			}
-			SerialPort* port = server->accept();
+			SerialPort* port = nullptr;
+			port = server->accept();
 			if(port == nullptr){
 				return nullptr;
 			}
@@ -50,4 +53,7 @@ class DefaultServerProtocol : public ServerProtocol{
 		
 	protected:
 };
+
+}
+
 #endif 

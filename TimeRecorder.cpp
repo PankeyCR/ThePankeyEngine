@@ -5,78 +5,78 @@
 
 #include "TimeRecorder.h"
 
-	TimeRecorder::TimeRecorder(){
+	ame::TimeRecorder::TimeRecorder(){
 			
 	}
-	TimeRecorder::~TimeRecorder(){
+	ame::TimeRecorder::~TimeRecorder(){
 			
 	}
 
-	float TimeRecorder::record(float tick){
+	float ame::TimeRecorder::record(float tick){
 		this->recordtimeh+=tick;
 	}
 
-	float TimeRecorder::getRecord(){
+	float ame::TimeRecorder::getRecord(){
 		return this->recordtimeh;
 	}
 
-	void TimeRecorder::resetRecord(){
+	void ame::TimeRecorder::resetRecord(){
 		this->recordtimeh=0;
 	}
 
-	void TimeRecorder::setRecord(float time){
+	void ame::TimeRecorder::setRecord(float time){
 		this->recordtimeh=time;
 	}
 
-	bool TimeRecorder::isNow(float time,float offset){
+	bool ame::TimeRecorder::isNow(float time,float offset){
 		return Now::is(TimeCheck::InBetween, this->getRecord(), time,offset);
 	}
 
-	bool TimeRecorder::isNow(TimeCheck check,float time,float offset){
+	bool ame::TimeRecorder::isNow(TimeCheck check,float time,float offset){
 		return Now::is(check, this->getRecord(), time,offset);
 	}
 
-	void TimeRecorder::operator=(const float& time){
+	void ame::TimeRecorder::operator=(const float& time){
 		this->recordtimeh=time;
 	}
 
-	void TimeRecorder::operator+=(const float& tick){
+	void ame::TimeRecorder::operator+=(const float& tick){
 		this->recordtimeh+=tick;
 	}
 
-	void TimeRecorder::operator-=(const float& tick){
+	void ame::TimeRecorder::operator-=(const float& tick){
 		this->recordtimeh-=tick;
 	}
 
-	bool TimeRecorder::operator==(const float& time){
+	bool ame::TimeRecorder::operator==(const float& time){
 		return this->recordtimeh==time;
 	}
 
-	bool TimeRecorder::operator!=(const float& time){
+	bool ame::TimeRecorder::operator!=(const float& time){
 		return this->recordtimeh!=time;
 	}
 
-	bool TimeRecorder::operator==(const float time[2]){
+	bool ame::TimeRecorder::operator==(const float time[2]){
 		return this->recordtimeh<=time[0]+time[1] && this->recordtimeh>=time[0]-time[1];
 	}
 
-	bool TimeRecorder::operator!=(const float time[2]){
+	bool ame::TimeRecorder::operator!=(const float time[2]){
 		return this->recordtimeh>=time[0]+time[1] && this->recordtimeh<=time[0]-time[1];
 	}
 
-	bool TimeRecorder::operator<=(const float& time){
+	bool ame::TimeRecorder::operator<=(const float& time){
 		return this->recordtimeh<=time;
 	}
 
-	bool TimeRecorder::operator>=(const float& time){
+	bool ame::TimeRecorder::operator>=(const float& time){
 		return this->recordtimeh>=time;
 	}
 
-	bool TimeRecorder::operator<(const float& time){
+	bool ame::TimeRecorder::operator<(const float& time){
 		return this->recordtimeh<time;
 	}
 
-	bool TimeRecorder::operator>(const float& time){
+	bool ame::TimeRecorder::operator>(const float& time){
 		return this->recordtimeh>time;
 	}
 

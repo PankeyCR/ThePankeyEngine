@@ -5,6 +5,8 @@
 #include "cppObject.h"
 #include "Map.h"
 
+namespace ame{
+
 template <class K,class P,int size>
 class PMap : public Map<K,P>{
 	
@@ -375,8 +377,8 @@ class PMap : public Map<K,P>{
 			}
 		}
 		
-		String getClassName(){
-			return "PMap";
+		cppObjectClass* getClass(){
+			return Class<PMap>::classType;
 		}
 		
 		int getIterationSize(){
@@ -433,5 +435,7 @@ class PMap : public Map<K,P>{
 		int pos;
 		bool owner = false;
 };
+
+}
 
 #endif 

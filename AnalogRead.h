@@ -6,6 +6,8 @@
 #include "Arduino.h"
 #include "AbstractRead.h"
 
+namespace ame{
+	
 class AnalogRead : public AbstractRead{
 	public:
 		AnalogRead(int pin);
@@ -14,5 +16,7 @@ class AnalogRead : public AbstractRead{
 	private:
 		int Rpin=0;
 };
+
+}
 
 #endif 

@@ -7,6 +7,8 @@
 #include "MetricScale.h"
 #include "MetricPrefix.h"
 
+using namespace ame;
+
 class StartState : public AppState{
 	public:
  

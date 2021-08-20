@@ -6,6 +6,8 @@
 #include "DefaultLogging.h"
 #include "AbsoluteRandom.h"
 
+using namespace ame;
+
 AbsoluteRandom* rnd;
   
 void setup() {

@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "cppObject.h"
 #include "Vector2f.h"
-
+/*
 template <class R>
 class ReflectedObject{	
     public:
@@ -15,5 +15,5 @@ class ReflectedObject{
 		
 		
 	private:
-};
+};*/
 #endif 

@@ -2,6 +2,8 @@
 #include "LinkedList.h"
 #include "MemoryFree.h"
 
+using namespace ame;
+
 LinkedList<String> list;
 
 void setup() {

@@ -5,10 +5,11 @@
 #include "PrimitiveList.h"
 #include "DefaultStateManager.h"
 #include "List.h"
-#include "PrimitiveList.h"
 #include "RenderState.h"
 #include "RenderManager.h"
 #include "DefaultRenderManager.h"
+
+namespace ame{
 
 class RenderStateManager : public DefaultStateManager{
     public:
@@ -19,7 +20,7 @@ class RenderStateManager : public DefaultStateManager{
 		
 		virtual AppState* add(AppState* state);
 		virtual AppState* remove(cppObjectClass* cls);
-		virtual AppState* remove(String appstateId,cppObjectClass* cls);
+		virtual AppState* remove(String appstateId, cppObjectClass* cls);
 		virtual void removeAll();
 		virtual void removeDeleteAll();
 		virtual void update();
@@ -33,5 +34,7 @@ class RenderStateManager : public DefaultStateManager{
 		List<RenderState>* appStateRenderList = nullptr;
 		RenderManager* renderManager = nullptr;
 };
+
+}
 
 #endif

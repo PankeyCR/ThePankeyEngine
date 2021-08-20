@@ -6,6 +6,8 @@
 #include "cppObjectClass.h"
 #include "ClassType.h"
 
+namespace ame{
+
 class Application;
 
 class AppStateManager : public cppObject{
@@ -72,5 +74,7 @@ class AppStateManager : public cppObject{
 		}
 	private:
 };
+
+}
 
 #endif

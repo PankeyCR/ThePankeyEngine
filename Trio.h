@@ -3,6 +3,8 @@
 #ifndef Trio_h
 #define Trio_h
 
+namespace ame{
+
 template<class T,class M,class B>
 class Trio{
     public:
@@ -52,5 +54,7 @@ class Trio{
 	protected:
 		bool owner = false;
 };
+
+}
 
 #endif 

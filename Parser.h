@@ -13,6 +13,7 @@
 #include "Block.h"
 #include "List.h"
 #include "Map.h"
+/*
 
 class Parser{
     public:
@@ -51,5 +52,6 @@ class Parser{
 		String enterToken = "enter";
 		String blockName = "BLOCK";
 };
+*/
 
 #endif 

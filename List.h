@@ -6,6 +6,8 @@
 #include "cppObject.h"
 #include "RawList.h"
 
+namespace ame{
+
 template <class T>
 class List : public cppObject , public Iterator , public RawList<T>{	
 	public:
@@ -31,4 +33,7 @@ class List : public cppObject , public Iterator , public RawList<T>{
 	// }
 	private:
 };
+
+}
+
 #endif 

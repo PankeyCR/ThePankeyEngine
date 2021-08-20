@@ -5,6 +5,8 @@
 #include "ArrayList.h"
 #include "ModifiableFunction.h"
 
+namespace ame{
+
 template<class... args>
 class CuadraticFunction : public ModifiableFunction<float,args...>{
 	public:
@@ -91,5 +93,7 @@ class CuadraticFunction : public ModifiableFunction<float,args...>{
 	protected:
 	
 };
+
+}
 
 #endif 

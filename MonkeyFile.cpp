@@ -5,7 +5,7 @@
 #include "MonkeyFile.h"
 
 	
-	MonkeyFile::MonkeyFile(){
+	ame::MonkeyFile::MonkeyFile(){
 		if (SD.begin(53)) {
 			
 		}else{
@@ -13,8 +13,8 @@
 		}
 	}
 	
-	MonkeyFile::MonkeyFile(int chip){
-		this->fileFunctions = new KPMap<cppObjectClass,MonkeyFileFunction,10>();
+	ame::MonkeyFile::MonkeyFile(int chip){
+		this->fileFunctions = new ame::KPMap<cppObjectClass,MonkeyFileFunction,10>();
 		if (SD.begin(chip)) {
 			
 		}else{
@@ -22,7 +22,7 @@
 		}
 	}
 	
-	MonkeyFile::MonkeyFile(int chip, Map<cppObjectClass,MonkeyFileFunction>* functions){
+	ame::MonkeyFile::MonkeyFile(int chip, ame::Map<ame::cppObjectClass,ame::MonkeyFileFunction>* functions){
 		this->fileFunctions = functions;
 		if (SD.begin(chip)) {
 			
@@ -31,33 +31,33 @@
 		}
 	}
 	
-	MonkeyFile::~MonkeyFile(){
+	ame::MonkeyFile::~MonkeyFile(){
 		if(this->fileFunctions != nullptr){
 			delete this->fileFunctions;
 		}
 	}
 	
-	void MonkeyFile::setRootPathFile(String filepath){
+	void ame::MonkeyFile::setRootPathFile(String filepath){
 		this->rootPath = filepath;
 	}
 	
-	String MonkeyFile::getRootPathFile(){
+	String ame::MonkeyFile::getRootPathFile(){
 		return this->rootPath;
 	}
 	
-	bool MonkeyFile::create(String file){
+	bool ame::MonkeyFile::create(String file){
 		File myFile = SD.open(file, FILE_WRITE);
 		myFile.close();
 		return true;
 	}
 	
-	bool MonkeyFile::createRoot(String file){
+	bool ame::MonkeyFile::createRoot(String file){
 		File myFile = SD.open(this->rootPath+"/"+file, FILE_WRITE);
 		myFile.close();
 		return true;
 	}
 	
-	bool MonkeyFile::write(String file, String text){
+	bool ame::MonkeyFile::write(String file, String text){
 		if(!SD.exists(file)){
 			return false;
 		}
@@ -67,7 +67,7 @@
 		return true;
 	}
 	
-	bool MonkeyFile::writeRoot(String file, String text){
+	bool ame::MonkeyFile::writeRoot(String file, String text){
 		if(!SD.exists(this->rootPath+"/"+file)){
 			return false;
 		}
@@ -77,7 +77,7 @@
 		return true;
 	}
 	
-	String MonkeyFile::read(String file){
+	String ame::MonkeyFile::read(String file){
 		if(!SD.exists(file)){
 			return "";
 		}
@@ -90,7 +90,7 @@
 		return r;
 	}
 	
-	String MonkeyFile::readRoot(String file){
+	String ame::MonkeyFile::readRoot(String file){
 		if(!SD.exists(this->rootPath+"/"+file)){
 			return "";
 		}
@@ -103,58 +103,58 @@
 		return r;
 	}
 	
-	bool MonkeyFile::exist(String file){
+	bool ame::MonkeyFile::exist(String file){
 		return SD.exists(file);
 	}
 	
-	bool MonkeyFile::existRoot(String file){
+	bool ame::MonkeyFile::existRoot(String file){
 		return SD.exists(this->rootPath+"/"+file);
 	}
 	
-	bool MonkeyFile::deleteFile(String file){
+	bool ame::MonkeyFile::deleteFile(String file){
 		return SD.remove(file);
 	}
 	
-	bool MonkeyFile::deleteRootFile(String file){
+	bool ame::MonkeyFile::deleteRootFile(String file){
 		return SD.remove(this->rootPath+"/"+file);
 	}
 	
-	void MonkeyFile::addFileFunction(cppObjectClass* cls,MonkeyFileFunction* function){
+	void ame::MonkeyFile::addFileFunction(ame::cppObjectClass* cls, ame::MonkeyFileFunction* function){
 		this->fileFunctions->addPointers(cls, function);
 	}
 	
-	MonkeyFileFunction* MonkeyFile::getFileFunction(cppObjectClass* cls){
+	ame::MonkeyFileFunction* ame::MonkeyFile::getFileFunction(ame::cppObjectClass* cls){
 		return this->fileFunctions->getByPointer(cls);
 	}
 	
-	MonkeyFileFunction* MonkeyFile::removeFileFunction(cppObjectClass* cls){
+	ame::MonkeyFileFunction* ame::MonkeyFile::removeFileFunction(cppObjectClass* cls){
 		return this->fileFunctions->removeByPointer(cls);
 	}
 	
-	void MonkeyFile::removeDeleteFileFunction(cppObjectClass* cls){
+	void ame::MonkeyFile::removeDeleteFileFunction(ame::cppObjectClass* cls){
 		MonkeyFileFunction* function = this->fileFunctions->removeByPointer(cls);
 		if(function != nullptr){
 			delete function;
 		}
 	}
 	
-	bool MonkeyFile::save(cppObject* save,String path,String key){
-		MonkeyFileFunction* function = this->fileFunctions->getByPointer(save->getClass());
+	bool ame::MonkeyFile::save(ame::cppObject* save,String path,String key){
+		ame::MonkeyFileFunction* function = this->fileFunctions->getByPointer(save->getClass());
 		if(function != nullptr){
 			return function->SaveFileFunction(this, save, path, key);
 		}
 		return false;
 	}
 	
-	bool MonkeyFile::saveRoot(cppObject* save,String path,String key){
-		MonkeyFileFunction* function = this->fileFunctions->getByPointer(save->getClass());
+	bool ame::MonkeyFile::saveRoot(ame::cppObject* save,String path,String key){
+		ame::MonkeyFileFunction* function = this->fileFunctions->getByPointer(save->getClass());
 		if(function != nullptr){
 			return function->SaveFileFunction(this, save, this->rootPath+"/"+path, key);
 		}
 		return false;
 	}
 	
-	cppObject* MonkeyFile::load(cppObjectClass* cls,cppObject* l,String path,String key){
+	ame::cppObject* ame::MonkeyFile::load(ame::cppObjectClass* cls, ame::cppObject* l,String path,String key){
 		MonkeyFileFunction* function = this->fileFunctions->getByPointer(cls);
 		if(function != nullptr){
 			return function->LoadFileFunction(this, l, path, key);
@@ -162,24 +162,24 @@
 		return nullptr;
 	}
 	
-	cppObject* MonkeyFile::loadRoot(cppObjectClass* cls,cppObject* l,String path,String key){
-		MonkeyFileFunction* function = this->fileFunctions->getByPointer(cls);
+	ame::cppObject* ame::MonkeyFile::loadRoot(ame::cppObjectClass* cls, ame::cppObject* l,String path,String key){
+		ame::MonkeyFileFunction* function = this->fileFunctions->getByPointer(cls);
 		if(function != nullptr){
 			return function->LoadFileFunction(this, l, this->rootPath+"/"+path, key);
 		}
 		return nullptr;
 	}
 	
-	bool MonkeyFile::deleting(cppObjectClass* cls,cppObject* l,String path,String key){
-		MonkeyFileFunction* function = this->fileFunctions->getByPointer(cls);
+	bool ame::MonkeyFile::deleting( ame::cppObjectClass* cls, ame::cppObject* l,String path,String key){
+		ame::MonkeyFileFunction* function = this->fileFunctions->getByPointer(cls);
 		if(function != nullptr){
 			return function->DeleteFileFunction(this, l, this->rootPath+"/"+path, key);
 		}
 		return false;
 	}
 	
-	bool MonkeyFile::deletingRoot(cppObjectClass* cls,cppObject* l,String path,String key){
-		MonkeyFileFunction* function = this->fileFunctions->getByPointer(cls);
+	bool ame::MonkeyFile::deletingRoot(ame::cppObjectClass* cls, ame::cppObject* l,String path,String key){
+		ame::MonkeyFileFunction* function = this->fileFunctions->getByPointer(cls);
 		if(function != nullptr){
 			return function->DeleteFileFunction(this, l, this->rootPath+"/"+path, key);
 		}

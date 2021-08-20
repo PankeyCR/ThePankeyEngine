@@ -4,6 +4,8 @@
 
 #include "Button.h"
 
+namespace ame{
+
 class Joystick : public Button{
     private:
 	
@@ -19,4 +21,7 @@ class Joystick : public Button{
 		virtual int getRawX()=0;
 		virtual int getRawY()=0;
 };
+
+}
+
 #endif 

@@ -5,6 +5,8 @@
 
 #include "Arduino.h"
 
+namespace ame{
+
 class Display7Segments{
     public:
 		int a,b,c,d,e,f,g,p=0;
@@ -31,5 +33,7 @@ class Display7Segments{
 		void Number8();
 		void Number9();
 };
+
+}
 
 #endif 

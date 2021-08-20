@@ -15,6 +15,8 @@
 	#define FunctionMetricLog(name,method,type,mns)
 #endif
 
+namespace ame{
+
 template<class type,class... args>
 class FunctionMetric : public cppObject{
 	public:
@@ -88,8 +90,8 @@ class FunctionMetric : public cppObject{
 		type getError(){
 			return m_error;
 		}
-		virtual bool instanceof(String name){
-			return name == "FunctionMetric" || name == "cppObject";
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<FunctionMetric>::classType || cppObject::instanceof(cls);
 		}
 		virtual void operator=(FunctionMetric b){
 			
@@ -108,5 +110,7 @@ class FunctionMetric : public cppObject{
 		long m_epochs = 100;
 		type m_error;
 };
+
+}
 
 #endif 

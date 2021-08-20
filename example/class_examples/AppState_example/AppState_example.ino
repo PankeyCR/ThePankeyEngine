@@ -11,6 +11,8 @@
 #include "StartState.h"
 #include "TimerState.h"
 
+using namespace ame;
+
  Application *app;
  
 void setup() {

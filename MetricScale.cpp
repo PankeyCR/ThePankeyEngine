@@ -5,13 +5,13 @@
 #include "MetricScale.h"
 
 	
-	MetricScale::MetricScale(){
+	ame::MetricScale::MetricScale(){
 	}
 	
-	MetricScale::~MetricScale(){
+	ame::MetricScale::~MetricScale(){
 	}
 	
-	long MetricScale::metricscaleSetup(MetricPrefix prefix){
+	long ame::MetricScale::metricscaleSetup(ame::MetricPrefix prefix){
 		long scaler = 1;
 		if(prefix == MetricPrefix::micro){
 			scaler = 1l;
@@ -40,7 +40,7 @@
 		return scaler;
 	}
 	
-	float MetricScale::getValue(float in){
+	float ame::MetricScale::getValue(float in){
 		if(this->input > this->output){
 			return in*this->scaleInverse;
 		}
@@ -50,7 +50,7 @@
 		return in;
 	}
 	
-	void MetricScale::setScaleTransform(MetricPrefix in, MetricPrefix out){
+	void ame::MetricScale::setScaleTransform(ame::MetricPrefix in, ame::MetricPrefix out){
 		this->input = metricscaleSetup(in);
 		this->output = metricscaleSetup(out);
 		if(this->input > this->output){

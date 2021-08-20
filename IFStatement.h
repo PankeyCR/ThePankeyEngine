@@ -6,15 +6,15 @@
 #include "cppObject.h"
 #include "Annotation.h"
 
-class IFStatement : public GameOn{
+namespace ame{
+
+class IFStatement : public ame::GameOn{
     public:		
 		IFStatement();
 		virtual ~IFStatement();
-		
-    
-	protected:	
-	
+	protected:
 };
 
+}
 
 #endif 

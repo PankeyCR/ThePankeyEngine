@@ -5,6 +5,8 @@
 #include "List.h"
 #include "Map.h"
 
+namespace ame{
+
 template <class N,class K,class V,class L>
 class NMap : public cppObject{
 	private:	
@@ -55,5 +57,7 @@ class NMap : public cppObject{
 		virtual L *getList(N m, int list)=0;
 		virtual L *getList(N *m, int list)=0;
 };
+
+}
 
 #endif 

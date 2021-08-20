@@ -6,6 +6,8 @@
 #include "Arduino.h"
 #include "AbstractRead.h"
 
+namespace ame{
+
 class ACFrequencyMeasure : public AbstractRead{
 	public:
 		ACFrequencyMeasure(){
@@ -27,5 +29,7 @@ class ACFrequencyMeasure : public AbstractRead{
 		long actualTime = 0;
 		int freqPin = -1;
 };
+
+}
 
 #endif 

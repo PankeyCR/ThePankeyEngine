@@ -4,44 +4,55 @@
 
 #include "SimpleTimer.h"
 
-TimeControl* SimpleTimer::instance = nullptr;
+ame::TimeControl* ame::SimpleTimer::instance = nullptr;
 
 
 
-	TimeControl *SimpleTimer::getInstance(){
+	ame::TimeControl *ame::SimpleTimer::getInstance(){
 		if (instance == nullptr){
-			instance = new SimpleTimer();
+			instance = new ame::SimpleTimer();
 		}
 		return instance;
 	}
 	
-	SimpleTimer::SimpleTimer(){
-		this->timeList = new PrimitiveList<TimeElapsed>();
-		Log("SimpleTimer", "Constructor", "println","SimpleTimer: new instance of this class");
-	}
+	// ame::SimpleTimer::SimpleTimer(){
+		// this->timeList = new PrimitiveList<TimeElapsed>();
+		// Log("SimpleTimer", "Constructor", "println","ame::SimpleTimer: new instance of this class");
+	// }
 	
-	SimpleTimer::~SimpleTimer(){
-		delete this->timeList;
-		this->timeList = nullptr;
-		Log("SimpleTimer", "Destructor", "println","SimpleTimer: delete instance of this class");
-	}
+	// ame::SimpleTimer::~SimpleTimer(){
+		// delete this->timeList;
+		// this->timeList = nullptr;
+		// Log("SimpleTimer", "Destructor", "println","ame::SimpleTimer: delete instance of this class");
+	// }
 	
 #if defined(ARDUINO_ARCH_AVR)
 	ISR(TIMER1_OVF_vect){
-		for(int x = 0; x > ((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPosition(); x++){
-			((SimpleTimer*)SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(SimpleTimer::getInstance());
+		for(int x = 0; x < ((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getPosition(); x++){
+			((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(ame::SimpleTimer::getInstance());
 		}
-		((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
+		((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->time+=1;
+	}
+	
+	ame::SimpleTimer::SimpleTimer(){
+		this->timeList = new PrimitiveList<TimeElapsed>();
+		Log("SimpleTimer", "Constructor", "println","ame::SimpleTimer: new instance of this class");
+	}
+	
+	ame::SimpleTimer::~SimpleTimer(){
+		delete this->timeList;
+		this->timeList = nullptr;
+		Log("SimpleTimer", "Destructor", "println","ame::SimpleTimer: delete instance of this class");
 	}
 
-	TimeControl* SimpleTimer::initialize(long timeperiod){
+	ame::TimeControl* ame::SimpleTimer::initialize(long timeperiod){
 		TCCR1A = 0;
 		TCCR1B = _BV(WGM13);
 		setPeriod(timeperiod);
 		return this;
 	}
 
-	TimeControl* SimpleTimer::setPeriod(long timeperiod){
+	ame::TimeControl* ame::SimpleTimer::setPeriod(long timeperiod){
 		this->period = timeperiod;
 		long cycles = (F_CPU / 2000000) * timeperiod;        // the counter runs backwards after TOP, interrupt is at BOTTOM so divide microseconds by 2
 		if(cycles < RESOLUTION)              clockSelectBits = _BV(CS10);              // no prescale, full xtal
@@ -61,7 +72,7 @@ TimeControl* SimpleTimer::instance = nullptr;
 		return this;
 	}
 
-	TimeControl* SimpleTimer::attachInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::attachInterrupt(){
 		TIMSK1 = _BV(TOIE1);                                     // sets the timer overflow interrupt enable bit
 		// might be running with interrupts disabled (eg inside an ISR), so don't touch the global state
 		//  sei();
@@ -69,13 +80,13 @@ TimeControl* SimpleTimer::instance = nullptr;
 		return this;											
 	}
 
-	TimeControl* SimpleTimer::detachInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::detachInterrupt(){
 		TIMSK1 &= ~_BV(TOIE1);                                   // clears the timer overflow interrupt enable bit 
 																// timer continues to count without calling the isr
 		return this;
 	}
 
-	TimeControl* SimpleTimer::startInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::startInterrupt(){
 		unsigned int tcnt1;
 
 		TIMSK1 &= ~_BV(TOIE1);        // AR added 
@@ -98,35 +109,58 @@ TimeControl* SimpleTimer::instance = nullptr;
 		return this;
 	}
 
-	TimeControl* SimpleTimer::stopInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::stopInterrupt(){
 		TCCR1B &= ~(_BV(CS10) | _BV(CS11) | _BV(CS12));          // clears all clock selects bits
 		return this;
 	}
 
-	TimeControl* SimpleTimer::resumeInterrupt(){ 
+	ame::TimeControl* ame::SimpleTimer::resumeInterrupt(){ 
 		TCCR1B |= clockSelectBits;
 		return this;
 	}
 	
 
 #elif defined(ARDUINO_ARCH_SAM)
+	
+	ame::SimpleTimer::SimpleTimer(){
+		this->timeList = new PrimitiveList<TimeElapsed>();
+		Log("SimpleTimer", "Constructor", "println","ame::SimpleTimer: new instance of this class");
+	}
+	
+	ame::SimpleTimer::~SimpleTimer(){
+		delete this->timeList;
+		this->timeList = nullptr;
+		Log("SimpleTimer", "Destructor", "println","ame::SimpleTimer: delete instance of this class");
+	}
+	
   // SAM-specific code
 #elif defined(ARDUINO_ARCH_ESP8266)
 	
 	void ICACHE_RAM_ATTR onTime() {
-		for(int x = 0; x < ((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPosition(); x++){
-			((SimpleTimer*)SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(SimpleTimer::getInstance());
+		for(int x = 0; x < ((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getPosition(); x++){
+			((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(ame::SimpleTimer::getInstance());
 		}
-		((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
+		((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->time+=1;
+	}
+	
+	ame::SimpleTimer::SimpleTimer(){
+		this->timeList = new PrimitiveList<TimeElapsed>();
+		Log("SimpleTimer", "Constructor", "println","ame::SimpleTimer: new instance of this class");
+	}
+	
+	ame::SimpleTimer::~SimpleTimer(){
+		delete this->timeList;
+		this->timeList = nullptr;
+		Log("SimpleTimer", "Destructor", "println","ame::SimpleTimer: delete instance of this class");
 	}
 
-	TimeControl* SimpleTimer::initialize(long timeperiod){
+	ame::TimeControl* ame::SimpleTimer::initialize(long timeperiod){
 		timer1_isr_init();
 		setPeriod(timeperiod);
 		return this;
 	}
 
-	TimeControl* SimpleTimer::setPeriod(long timeperiod){
+	ame::TimeControl* ame::SimpleTimer::setPeriod(long timeperiod){
 		//timer1_write(100000000);//5 ticks per us from TIM_DIV16
 		//timer1_write((long)((timeperiod) * 80));//5 ticks per us from TIM_DIV1
 		//timer1_write((long)((timeperiod) * 5));//5 ticks per us from TIM_DIV16
@@ -139,7 +173,7 @@ TimeControl* SimpleTimer::instance = nullptr;
 		return this;
 	}
 
-	TimeControl* SimpleTimer::attachInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::attachInterrupt(){
 		timer1_attachInterrupt(onTime);
 		//timer1_enable(TIM_DIV1, TIM_EDGE, TIM_LOOP);
 		//timer1_enable(TIM_DIV16, TIM_EDGE, TIM_LOOP);
@@ -157,143 +191,195 @@ TimeControl* SimpleTimer::instance = nullptr;
 		return this;
 	}
 
-	TimeControl* SimpleTimer::detachInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::detachInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::startInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::startInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::stopInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::stopInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::resumeInterrupt(){ 
+	ame::TimeControl* ame::SimpleTimer::resumeInterrupt(){ 
 	
 		return this;
 	}
 //esp32
-#elif defined(ARDUINO_ARCH_ESP32)
+#elif defined(ARDUINO_ESP32_DEV)
 
-	TimeControl* SimpleTimer::initialize(long timeperiod){
+	void IRAM_ATTR onTime(){
+		for(int x = 0; x < ((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getPosition(); x++){
+			((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(ame::SimpleTimer::getInstance());
+		}
+		((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->time+=1;
+	}
+	
+	ame::SimpleTimer::SimpleTimer(){
+		this->timeList = new PrimitiveList<TimeElapsed>();
+		timer = timerBegin(0, 80, true);  
+		Log("SimpleTimer", "Constructor", "println","ame::SimpleTimer: new instance of this class");
+	}
+	
+	ame::SimpleTimer::~SimpleTimer(){
+		delete this->timeList;
+		this->timeList = nullptr;
+		Log("SimpleTimer", "Destructor", "println","ame::SimpleTimer: delete instance of this class");
+	}
+	
+	ame::TimeControl* ame::SimpleTimer::initialize(long timeperiod){
 		
 		setPeriod(timeperiod);
 		return this;
 	}
 
-	TimeControl* SimpleTimer::setPeriod(long timeperiod){
+	ame::TimeControl* ame::SimpleTimer::setPeriod(long timeperiod){//microseconds
+		//12.5ns *80 = 1000ns = 1 us             
+		if(timer == nullptr){
+			return this;
+		}
+		timerAlarmWrite(timer, timeperiod, true);           
+		timerAlarmEnable(timer);
 		return this;
 	}
 
-	TimeControl* SimpleTimer::attachInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::attachInterrupt(){
+		if(timer == nullptr){
+			return this;
+		}
+		timerAttachInterrupt(timer, &onTime, true);   
+		return this;
+	}
+
+	ame::TimeControl* ame::SimpleTimer::detachInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::detachInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::startInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::startInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::stopInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::stopInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::resumeInterrupt(){
 		
-		return this;
-	}
-
-	TimeControl* SimpleTimer::resumeInterrupt(){ 
-	
 		return this;
 	}
 //feather m0
 #elif defined(ARDUINO_SAMD_ZERO)
 
-	TimeControl* SimpleTimer::initialize(long timeperiod){
+	
+	ame::SimpleTimer::SimpleTimer(){
+		this->timeList = new PrimitiveList<TimeElapsed>();
+		Log("SimpleTimer", "Constructor", "println","ame::SimpleTimer: new instance of this class");
+	}
+	
+	ame::SimpleTimer::~SimpleTimer(){
+		delete this->timeList;
+		this->timeList = nullptr;
+		Log("SimpleTimer", "Destructor", "println","ame::SimpleTimer: delete instance of this class");
+	}
+	
+	ame::TimeControl* ame::SimpleTimer::initialize(long timeperiod){
 		
 		setPeriod(timeperiod);
 		return this;
 	}
 
-	TimeControl* SimpleTimer::setPeriod(long timeperiod){
+	ame::TimeControl* ame::SimpleTimer::setPeriod(long timeperiod){
 		return this;
 	}
 
-	TimeControl* SimpleTimer::attachInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::attachInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::detachInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::detachInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::startInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::startInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::stopInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::stopInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::resumeInterrupt(){ 
+	ame::TimeControl* ame::SimpleTimer::resumeInterrupt(){ 
 	
 		return this;
 	}
 #else
 
-	TimeControl* SimpleTimer::initialize(long timeperiod){
+	
+	ame::SimpleTimer::SimpleTimer(){
+		this->timeList = new PrimitiveList<TimeElapsed>();
+		Log("SimpleTimer", "Constructor", "println","ame::SimpleTimer: new instance of this class");
+	}
+	
+	ame::SimpleTimer::~SimpleTimer(){
+		delete this->timeList;
+		this->timeList = nullptr;
+		Log("SimpleTimer", "Destructor", "println","ame::SimpleTimer: delete instance of this class");
+	}
+	
+	ame::TimeControl* ame::SimpleTimer::initialize(long timeperiod){
 		
 		setPeriod(timeperiod);
 		return this;
 	}
 
-	TimeControl* SimpleTimer::setPeriod(long timeperiod){
+	ame::TimeControl* ame::SimpleTimer::setPeriod(long timeperiod){
 		return this;
 	}
 
-	TimeControl* SimpleTimer::attachInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::attachInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::detachInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::detachInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::startInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::startInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::stopInterrupt(){
+	ame::TimeControl* ame::SimpleTimer::stopInterrupt(){
 		
 		return this;
 	}
 
-	TimeControl* SimpleTimer::resumeInterrupt(){ 
+	ame::TimeControl* ame::SimpleTimer::resumeInterrupt(){ 
 	
 		return this;
 	}
 #endif
 	
-	String SimpleTimer::toString() {
+	String ame::SimpleTimer::toString() {
 		return "SimpleTimer";
 	}
 	
-	cppObjectClass* SimpleTimer::getClass() {
-		return Class<SimpleTimer>::classType;
+	ame::cppObjectClass* ame::SimpleTimer::getClass() {
+		return ame::Class<ame::SimpleTimer>::classType;
 	}
 	
 

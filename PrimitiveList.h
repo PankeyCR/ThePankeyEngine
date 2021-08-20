@@ -7,6 +7,8 @@
 #include "MemoryFree.h"
 // #include "ManegedMemory.h"
 
+namespace ame{
+
 template<class T>
 class PrimitiveList : public List<T>{
 	public:
@@ -341,13 +343,29 @@ class PrimitiveList : public List<T>{
 		
 		virtual T& operator[](int x){
 			if(x > this->pos){
-				return *this->values[this->pos-1];
+				return *this->values[this->pos - 1];
+			}
+			if(x < this->pos){
+				return *this->values[x];
+			}
+			if(x >= this->size){
+				this->expandLocal(this->expandSize);
 			}
 			if(this->pos == x){
 				this->pos++;
 			}
 			this->values[x] = new T();
 			return *this->values[x];
+		}
+		
+		virtual T operator[](int x) const{
+			if(x >= this->pos){
+				return *this->values[this->pos - 1];
+			}
+			if(x < this->pos){
+				return *this->values[x];
+			}
+			return T();
 		}
 		
 		
@@ -466,5 +484,7 @@ class PrimitiveList : public List<T>{
 		int size=10;
 		bool owner = true;
 };
+
+}
 
 #endif 

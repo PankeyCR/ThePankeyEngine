@@ -2,6 +2,8 @@
 #include "AnalogJoystick.h"
 #include "JoystickCalibrationControl.h"
 
+using namespace ame;
+
 AnalogJoystick *joy;
  
 void setup() {

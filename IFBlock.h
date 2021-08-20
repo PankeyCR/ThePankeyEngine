@@ -5,6 +5,8 @@
 
 #include "Environment.h"
 
+namespace ame{
+
 class IFBlock{
     public:
 		IFBlock(){}
@@ -32,5 +34,7 @@ class IFBlock{
 		Block* ifB_m = nullptr;
 		Block* elseB_m = nullptr;
 };
+
+}
 
 #endif 

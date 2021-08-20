@@ -4,6 +4,8 @@
 
 #include "AppState.h"
 
+using namespace ame;
+
 class LoopState : public AppState{
 	public:
 		Application *App;

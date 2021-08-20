@@ -12,6 +12,7 @@
 #include "GridIncrementor.h"
 #include "Order.h"
 
+namespace ame{
 
 class Life : public GameObject{
 public:
@@ -104,5 +105,7 @@ PrimitiveList<ByteLogic>* singleLogic = nullptr;
 PrimitiveList<ByteArrayLogic>* complexLogic = nullptr;
 ByteArray* cells = nullptr;
 };
+
+}
 
 #endif

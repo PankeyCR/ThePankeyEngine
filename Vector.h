@@ -4,6 +4,8 @@
 
 #include "cppObject.h"
 
+namespace ame{
+
 class Vector : public cppObject , public Printable{
 public:
 Vector(){
@@ -25,8 +27,8 @@ String getName(){
 	return this->name;
 }
     
-String getClassName(){
-	return "Vector";
+cppObjectClass* getClass(){
+	return Class<Vector>::classType;
 }
     
 String toString(){
@@ -50,8 +52,8 @@ Vector* clone(){
 	return cloner;
 }
 
-bool instanceof(String instance){
-return instance == "Vector" || cppObject::instanceof(instance);
+bool instanceof(cppObjectClass* instance){
+return instance == Class<Vector>::classType || cppObject::instanceof(instance);
 }
 
 void operator=(Vector v){
@@ -111,5 +113,7 @@ bool operator!=(const String& n){
 protected:
 String name; 
 };
+
+}
 
 #endif

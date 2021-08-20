@@ -13,8 +13,6 @@
 #define ListenerOutputEvent 7
 #define ListenerInputEvent 8
 
-class Application;
-
 #include "Arduino.h"
 #include "cppObject.h"
 #include "ListenerEvent.h"
@@ -26,6 +24,10 @@ class Application;
 #else
 	#define ListenerLog(name,method,type,mns)
 #endif
+
+namespace ame{
+
+class Application;
 
 static PrimitiveList<void (*)()>* ThreadMap_m = nullptr;
 static PrimitiveList<void (*)(float)>* LoopMap_m = nullptr;
@@ -180,7 +182,11 @@ void Interrupt(){
 		ListenerLog("Listener", "Interrupt",  "println", "pin == -1 || events == nullptr");
 		return;
 	}
-	IO_Set<interrupt>::m_state = !(state);
+	if(IO_Set<interrupt>::m_safe){
+		IO_Set<interrupt>::m_state = digitalRead(pin);
+	}else{
+		IO_Set<interrupt>::m_state = !(state);
+	}
 	ListenerLog("Listener", "Interrupt",  "println", "start interrupt");
 	for(int x = 0; x < events->getPosition(); x++){
 		if(IO_Set<interrupt>::m_inverted){
@@ -378,11 +384,11 @@ class Listener : public cppObject{
 		}
 		
 		template<int interrupt>
-		void createInterrupt(int pin, bool state, bool owner){
+		void createInterrupt(int pin, bool state, bool safe, bool owner){
 			IO_Set<interrupt>::m_pin = pin;
 			IO_Set<interrupt>::m_type = ListenerInterrupt;
 			IO_Set<interrupt>::m_state = state;
-			IO_Set<interrupt>::m_safe = true;
+			IO_Set<interrupt>::m_safe = safe;
 			if(IO_Set<interrupt>::m_events == nullptr){
 				IO_Set<interrupt>::m_events = new PrimitiveList<ListenerEvent>(owner);
 			}
@@ -391,8 +397,13 @@ class Listener : public cppObject{
 		}
 		
 		template<int interrupt>
+		void createInterrupt(int pin, bool state, bool safe){
+			createInterrupt<interrupt>(pin, state, safe, true);
+		}
+		
+		template<int interrupt>
 		void createInterrupt(int pin, bool state){
-			createInterrupt<interrupt>(pin, state, true);
+			createInterrupt<interrupt>(pin, state, true, true);
 		}
 		
 		template<int interrupt>
@@ -613,5 +624,7 @@ class Listener : public cppObject{
 	protected:
 	Application* app = nullptr;
 };
+
+}
 
 #endif 

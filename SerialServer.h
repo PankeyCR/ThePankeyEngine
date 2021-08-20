@@ -5,6 +5,8 @@
 #include "cppObject.h"
 #include "SerialPort.h"
 
+namespace ame{
+
 class SerialServer : public cppObject{	
     public:
 		SerialServer(){
@@ -47,11 +49,16 @@ class SerialServer : public cppObject{
 			}
 			return false;
 		}
-		virtual bool instanceof(cppObjectClass* cls){return cls == Class<SerialServer>::classType || cppObject::instanceof(cls);}
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<SerialServer>::classType || cppObject::instanceof(cls);
+		}
 		virtual cppObject *clone(){return nullptr;}
 		
 	protected:
 	float m_timeout = -1.0;
 	String m_name = "";
 };
+
+}
+
 #endif 

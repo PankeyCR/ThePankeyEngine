@@ -6,6 +6,8 @@
 #include "Arduino.h"
 #include "cppObject.h"
 
+namespace ame{
+
 class Application;
 
 class AppState : public cppObject{
@@ -22,5 +24,7 @@ class AppState : public cppObject{
 	protected:
 		String *id=nullptr;
 };
+
+}
 
 #endif 

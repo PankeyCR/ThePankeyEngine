@@ -1,6 +1,8 @@
 
 #include "RobotArmTest.h"
 
+using namespace ame;
+
 RobotArmTest *arm;
  
 void setup() {

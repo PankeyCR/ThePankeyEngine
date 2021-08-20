@@ -1,6 +1,8 @@
 
 #include "MonkeyFile.h"
 
+using namespace ame;
+
 void setup() {
   Serial.begin(9600);
   MonkeyFile* file = new MonkeyFile(53);

@@ -7,6 +7,8 @@
 #include "Now.h"
 #include "TimeCheck.h"
 
+namespace ame{
+
 #define isRecorder() 
 class TimeRecorder {
     public:		
@@ -36,5 +38,6 @@ class TimeRecorder {
 		float recordtimeh = 0.0f;
 };
 
+}
 
 #endif 

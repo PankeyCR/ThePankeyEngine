@@ -1,6 +1,8 @@
 
 #include "PirSensor.h"
 
+using namespace ame;
+
 PirSensor pir;
 
 void setup() {

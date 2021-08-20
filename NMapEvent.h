@@ -9,6 +9,8 @@
 #include "KPMap.h"
 #include "KVMap.h"
 
+namespace ame{
+
 template <class N,class K,class V,class L>
 class NMapEvent : public NMap<N,K,V,L>{
 public:
@@ -19,8 +21,8 @@ public:
 	}
 	
 	
-	String getClassName(){
-		return "NMapEvent";
+	cppObejctClass* getClass(){
+		return Class<NMapEvent>::classType;
 	}
 	String toString(){
 		return "NMapEvent";
@@ -318,5 +320,7 @@ private:
 	KPMap<N,ArrayList<L,Ls>,Nl> *listMap;
 	N name;
 };
+
+}
 
 #endif 

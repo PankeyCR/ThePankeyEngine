@@ -15,6 +15,8 @@
 #include "Environment.h"
 #include "ScriptState.h"
 
+namespace ame{
+
 class ScriptInvokeListener : public Command<Message>{
     public:
 		ScriptInvokeListener(Application* app){
@@ -200,5 +202,7 @@ Environment* environment = nullptr;
 ScriptState* scriptState = nullptr;
 	
 };
+
+}
 
 #endif 

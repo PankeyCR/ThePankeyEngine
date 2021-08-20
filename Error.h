@@ -2,9 +2,10 @@
 #ifndef Error_h
 #define Error_h
 
+namespace ame{
+	
 //Error defines
 #define NO_WIFI_CONEXION_ERROR 0
-
 
 class NoErrorClass{
     public:
@@ -80,4 +81,7 @@ class ErrorMannager{
 	protected:
 		bool hasError = false;
 };
+
+}
+
 #endif 

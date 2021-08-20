@@ -5,6 +5,8 @@
 #include "Button.h"
 #include "Vector2f.h"
 
+namespace ame{
+
 class ScreenButton : public Button{
     private:
 	
@@ -12,4 +14,7 @@ class ScreenButton : public Button{
 		virtual Vector2f getCursor()=0;
 		virtual int getPressure()=0;
 };
+
+}
+
 #endif 

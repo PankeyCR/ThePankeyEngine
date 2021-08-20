@@ -3,6 +3,8 @@
 #include "Vector2f.h"
 #include "Vector3f.h"
 
+using namespace ame;
+
 void setup() {
   Serial.begin(9600);
 }

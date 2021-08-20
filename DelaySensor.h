@@ -7,6 +7,8 @@
 #include "TimeRecorder.h"
 #include "trilean.h"
 
+namespace ame{
+
 class DelaySensor{
 	protected:
 		bool closem = false;
@@ -36,5 +38,7 @@ class DelaySensor{
 		virtual float openTime();
 		
 };
+
+}
 
 #endif 

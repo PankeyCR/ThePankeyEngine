@@ -30,6 +30,7 @@
 	#define LoraStateLog(name,method,type,mns)
 #endif
 
+namespace ame{
 
 class LoraState : public SerialMessageControlledState{
     public:
@@ -52,8 +53,8 @@ class LoraState : public SerialMessageControlledState{
 		virtual ~LoraState(){
 			delete requests;
 		}
-		bool instanceof(String name){return name == "LoraState" || SerialMessageControlledState::instanceof(name);}
-		String getClassName(){return "LoraState";}
+		bool instanceof(cppObjectClass* cls){return cls == Class<LoraState>::classType || SerialMessageControlledState::instanceof(cls);}
+		cppObjectClass* getClass(){return Class<LoraState>::classType;}
 		
 		virtual bool invoke(String method){
 			LoraStateLog("LoraState", "invoke",  "println", "invoke method without parameters");

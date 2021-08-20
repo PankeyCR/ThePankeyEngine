@@ -5,15 +5,15 @@
 
 #include "DigitalRead.h"
 
-    DigitalRead::DigitalRead(int pin){
+    ame::DigitalRead::DigitalRead(int pin){
 		this->Rpin = pin;
 		pinMode(pin,INPUT);
     }
 
-    DigitalRead::~DigitalRead(){
+    ame::DigitalRead::~DigitalRead(){
     }
     
-    void DigitalRead::Read(){
+    void ame::DigitalRead::Read(){
 		this->read = digitalRead(this->Rpin);
     }
     

@@ -7,6 +7,8 @@
 #include "DelaySensor.h"
 #include "MonkeyTime.h"
 
+namespace ame{
+
 class LightSensor : public DelaySensor{
 	protected:
 		int value = 0;
@@ -25,7 +27,8 @@ class LightSensor : public DelaySensor{
 		virtual LightSensor* limit(int lm);
 		virtual int getValue();
 		virtual void update();
-		
 };
+
+}
 
 #endif 

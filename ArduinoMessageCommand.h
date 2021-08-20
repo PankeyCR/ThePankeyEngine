@@ -4,6 +4,8 @@
 
 #include "Annotation.h"
 
+namespace ame{
+
 class ArduinoMessageCommand : public Annotation{
     public:
 		ArduinoMessageCommand(String n, String t, int p){
@@ -24,5 +26,7 @@ class ArduinoMessageCommand : public Annotation{
 		String m_type;
 		int m_par;
 };
+
+}
 
 #endif 

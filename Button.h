@@ -2,6 +2,8 @@
 #ifndef Button_h
 #define Button_h
 
+namespace ame{
+	
 class Button {
     private:
 	
@@ -10,4 +12,7 @@ class Button {
 		virtual bool isReleased()=0;
 		virtual bool isClick()=0;
 };
+
+}
+
 #endif 

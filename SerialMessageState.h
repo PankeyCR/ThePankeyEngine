@@ -12,16 +12,18 @@
 #include "Command.h"
 #include "List.h"
 #include "PrimitiveList.h"
-#include "Pair.h"
-#include "Message.h"
 #include "Map.h"
 #include "PrimitiveMap.h"
+#include "Pair.h"
+#include "Message.h"
 
 #ifdef SerialMessageStateLogApp
 	#define SerialMessageStateLog(name,method,type,mns) Log(name,method,type,mns)
 #else
 	#define SerialMessageStateLog(name,method,type,mns) 
 #endif
+
+namespace ame{
 
 class SerialMessageState : public AppState{	
     public:
@@ -124,6 +126,15 @@ class SerialMessageState : public AppState{
 			return false;
 		}
 		
+		bool containSerialServer(String name){
+			for(int x = 0; x < servers->getPosition(); x++){
+				if(servers->getByPosition(x)->getName() == name){
+					return true;
+				}
+			}
+			return false;
+		}
+		
 		SerialServer* removeSerialServer(SerialServer* serial){
 			int index = servers->getIndexByPointer(serial);
 			serverProtocols->removeDeleteByPosition(index);
@@ -134,6 +145,11 @@ class SerialMessageState : public AppState{
 			int index = servers->getIndexByPointer(serial);
 			serverProtocols->removeDeleteByPosition(index);
 			servers->removeDeleteByPointer(serial);
+		}
+		
+		SerialServer* removeSerialServer(int index){
+			serverProtocols->removeByPosition(index);
+			return servers->removeByPosition(index);
 		}
 		
 		void removeDeleteSerialServer(int index){
@@ -237,6 +253,15 @@ class SerialMessageState : public AppState{
 		bool containSerialPort(T serial){
 			for(int x = 0; x < ports->getPosition(); x++){
 				if(serial.equal(ports->getByPosition(x))){
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		bool containSerialPort(String serial){
+			for(int x = 0; x < ports->getPosition(); x++){
+				if(ports->getByPosition(x)->getName() == serial){
 					return true;
 				}
 			}
@@ -427,16 +452,32 @@ class SerialMessageState : public AppState{
 			this->removeDeleteSerialPort(port);
 		}
 		
-		virtual void deleteMessages(bool d){
-			deleteMns = d;
-		}
-		
 		void addReceivedMessage(Message* m){
 			receivedMessage->addPointer(m);
 		}
 		
 		List<Message>* getReceivedMessages(){
 			return receivedMessage;
+		}
+		
+		virtual PortProtocol* getPortProtocol(int index){
+			return portProtocols->getByPosition(index);
+		}
+		
+		virtual PortProtocol* getPortProtocol(SerialPort* port){
+			return portProtocols->getByPosition(ports->getIndexByPointer(port));
+		}
+		
+		virtual ServerProtocol* getServerProtocol(int index){
+			return serverProtocols->getByPosition(index);
+		}
+		
+		virtual ServerProtocol* getServerProtocol(SerialServer* server){
+			return serverProtocols->getByPosition(servers->getIndexByPointer(server));
+		}
+		
+		virtual cppObjectClass* getClass(){
+			return Class<SerialMessageState>::classType;
 		}
 		
 		virtual void update(float tpc){
@@ -498,34 +539,10 @@ class SerialMessageState : public AppState{
 					listener->getByPosition(y)->execute(receivedMessage->getByPosition(x));
 				}
 			}
-			if(deleteMns){
-				receivedMessage->resetDelete();
-			}
-		}
-		
-		virtual cppObjectClass* getClass(){
-			return Class<SerialMessageState>::classType;
-		}
-		
-		virtual PortProtocol* getPortProtocol(int index){
-			return portProtocols->getByPosition(index);
-		}
-		
-		virtual PortProtocol* getPortProtocol(SerialPort* port){
-			return portProtocols->getByPosition(ports->getIndexByPointer(port));
-		}
-		
-		virtual ServerProtocol* getServerProtocol(int index){
-			return serverProtocols->getByPosition(index);
-		}
-		
-		virtual ServerProtocol* getServerProtocol(SerialServer* server){
-			return serverProtocols->getByPosition(servers->getIndexByPointer(server));
+			receivedMessage->resetDelete();
 		}
 		
 	protected:
-		bool deleteMns = true;
-		
 		List<String>* broadMessages = nullptr;
 		Map<int,String>* clientMessages = nullptr;
 		
@@ -539,4 +556,7 @@ class SerialMessageState : public AppState{
 		
 		List<Command<Message>>* listener = nullptr;
 };
+
+}
+
 #endif

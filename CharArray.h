@@ -10,6 +10,8 @@
 #define enter '\n'
 #define empty '\0'
 
+namespace ame{
+
 class CharArray : public List<char>{
 	private:
 		
@@ -47,5 +49,7 @@ class CharArray : public List<char>{
 		virtual CharArray operator+(char chr);
 		virtual void operator+=(char chr);
 };
+
+}
 
 #endif 

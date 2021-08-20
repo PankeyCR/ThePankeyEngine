@@ -7,6 +7,8 @@
 #include "cppObject.h"
 #include "Printable.h"
 
+namespace ame{
+
 class ElementId : public cppObject , public Printable{
 	public:
 		ElementId(){}
@@ -81,7 +83,7 @@ class ElementId : public cppObject , public Printable{
 		virtual bool operator!=(const ElementId& b){return id != b.id;}
 		virtual ElementId operator+(const ElementId& b){return ElementId(id + b.id);}
 		
-		virtual String getClassName(){return "ElementId";}
+		virtual cppObjectClass* getClass(){return Class<ElementId>::classType;}
 		virtual String toString(){return String("ElementId: ") + id;}
 		virtual bool equal(cppObject *b){
 			if(b == this){
@@ -97,8 +99,8 @@ class ElementId : public cppObject , public Printable{
 			}
 			return true;
 		}
-		virtual bool instanceof(String name){
-			return name == "ElementId" || cppObject::instanceof(name);
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == "ElementId" || cppObject::instanceof(cls);
 		}
 	
 		size_t printTo(Print& p) const{

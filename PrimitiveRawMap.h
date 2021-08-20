@@ -4,6 +4,8 @@
 
 #include "RawMap.h"
 
+namespace ame{
+
 template <class K,class V>
 class PrimitiveRawMap : public RawMap<K,V>{	
     public:
@@ -520,4 +522,6 @@ class PrimitiveRawMap : public RawMap<K,V>{
 		int expandSize=5;
 		bool owner = true;
 };
+
+}
 #endif 

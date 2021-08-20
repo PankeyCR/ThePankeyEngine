@@ -5,18 +5,18 @@
 #include "FixPulseGenerator.h"
 
 	
-	FixPulseGenerator::FixPulseGenerator(){
+	ame::FixPulseGenerator::FixPulseGenerator(){
 		this->timer = new MonkeyTime();
 		this->timer->start();
 	}
 	
-	FixPulseGenerator::~FixPulseGenerator(){
+	ame::FixPulseGenerator::~FixPulseGenerator(){
 		if(this->timer != nullptr){
 			delete this->timer;
 		}
 	}
 	
-	void FixPulseGenerator::Play(TimeControl *t){
+	void ame::FixPulseGenerator::Play(TimeControl *t){
 		if(!this->en){
 			return;
 		}
@@ -39,46 +39,46 @@
 		Serial.println(this->timer->getTime());
 	}
 	
-	void FixPulseGenerator::setPin(int p){
+	void ame::FixPulseGenerator::setPin(int p){
 		pinMode(pin, OUTPUT);
 		this->pin = p;
 	}
 	
-	void FixPulseGenerator::setHighTime(long t){
+	void ame::FixPulseGenerator::setHighTime(long t){
 		this->newhighTime = t;
 	}
 	
-	void FixPulseGenerator::forceHighTime(long t){
+	void ame::FixPulseGenerator::forceHighTime(long t){
 		this->highTime = t;
 		this->timer->restart();
 	}
 	
-	long FixPulseGenerator::getHighTime(){
+	long ame::FixPulseGenerator::getHighTime(){
 		return this->highTime;
 	}
 	
-	void FixPulseGenerator::setLowTime(long t){
+	void ame::FixPulseGenerator::setLowTime(long t){
 		this->newlowTime = t;
 	}
 	
-	void FixPulseGenerator::forceLowTime(long t){
+	void ame::FixPulseGenerator::forceLowTime(long t){
 		this->lowTime = t;
 		this->timer->restart();
 	}
 	
-	long FixPulseGenerator::getLowTime(){
+	long ame::FixPulseGenerator::getLowTime(){
 		return this->lowTime;
 	}
 	
-	bool FixPulseGenerator::isHigh(){
+	bool ame::FixPulseGenerator::isHigh(){
 		return this->statePulse;
 	}
 	
-	MonkeyTime* FixPulseGenerator::getMonkeyTime(){
+	ame::MonkeyTime* ame::FixPulseGenerator::getMonkeyTime(){
 		return this->timer;
 	}
 	
-	void FixPulseGenerator::enable(bool e){
+	void ame::FixPulseGenerator::enable(bool e){
 		this->en = e;
 	}
 	

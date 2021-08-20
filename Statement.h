@@ -7,6 +7,8 @@
 #include "Arduino.h"
 #include "List.h"
 
+namespace ame{
+
 class Statement{
     public:
 		Statement();
@@ -18,5 +20,7 @@ class Statement{
 	protected:
 		List<String>* syntaxList = nullptr;
 };
+
+}
 
 #endif 

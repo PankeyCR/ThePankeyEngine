@@ -5,34 +5,34 @@
 
 #include "Random.h"
 	
-	Random::~Random(){
+	ame::Random::~Random(){
 	}
 	
-	void Random::setMax(float Max){
+	void ame::Random::setMax(float Max){
 		max = Max;
 	}
 	
-	void Random::setMin(float Min){
+	void ame::Random::setMin(float Min){
 		min = Min;
 	}
 	
-	float Random::getMax(){
+	float ame::Random::getMax(){
 		return max;
 	}
 	
-	float Random::getMin(){
+	float ame::Random::getMin(){
 		return min;
 	}
 	
-	void Random::setSeed(float Seed){
+	void ame::Random::setSeed(float Seed){
 		seed = Seed;
 	}
 	
-	float Random::getSeed(){
+	float ame::Random::getSeed(){
 		return seed;
 	}
 	
-	float Random::getRandom(){
+	float ame::Random::getRandom(){
 		return 0;
 	}
 	

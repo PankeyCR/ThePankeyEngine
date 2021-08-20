@@ -5,72 +5,72 @@
 
 #include "GameOn.h"
 
-	GameOn::GameOn(){
+	ame::GameOn::GameOn(){
 		
 	}
 	
-	GameOn::~GameOn(){
+	ame::GameOn::~GameOn(){
 		parent = nullptr;
 	}
 	
-	void GameOn::setParent(GameOn *parent){
+	void ame::GameOn::setParent(ame::GameOn *parent){
 		this->parent = parent;
 	}
 	
-	GameOn *GameOn::getParent(){
+	ame::GameOn *ame::GameOn::getParent(){
 		return this->parent;
 	}
 	
-	void GameOn::setId(int id){
+	void ame::GameOn::setId(int id){
 		if(this->parent != nullptr){
 			this->parent->setId(id);
 		}
 	}
 	
-	int GameOn::getId(){
+	int ame::GameOn::getId(){
 		if(this->parent != nullptr){
 			return this->parent->getId();
 		}
 		return -1;
 	}
 		
-	bool GameOn::isEnable(){
+	bool ame::GameOn::isEnable(){
 		return this->enabler;
 	}
 		
-	void GameOn::enable(){
+	void ame::GameOn::enable(){
 		this->enabler = true;
 	}
 	
-	void GameOn::disable(){
+	void ame::GameOn::disable(){
 		this->enabler = false;
 	}
 	
-	void GameOn::update(float tpc){
+	void ame::GameOn::update(float tpc){
 		
 	}
 	
-	cppObjectClass* GameOn::getClass(){
-		return Class<GameOn>::classType;
+	ame::cppObjectClass* ame::GameOn::getClass(){
+		return ame::Class<ame::GameOn>::classType;
 	}
 	
-	String GameOn::toString(){
+	String ame::GameOn::toString(){
 		return "GameOn";
 	}
 	
-	bool GameOn::instanceof(cppObjectClass* cls){
-		return cls == Class<GameOn>::classType || cppObject::instanceof(cls);
+	bool ame::GameOn::instanceof(ame::cppObjectClass* cls){
+		return cls == ame::Class<ame::GameOn>::classType || ame::cppObject::instanceof(cls);
 	}
 	
-	GameOn GameOn::operator =(const GameOn& note){
+	ame::GameOn ame::GameOn::operator =(const ame::GameOn& note){
 		
 	}
 	
-	bool GameOn::operator ==(const GameOn& note){
+	bool ame::GameOn::operator ==(const ame::GameOn& note){
 		return false;
 	}
 	
-	bool GameOn::operator !=(const GameOn& note){
+	bool ame::GameOn::operator !=(const ame::GameOn& note){
 		return false;
 	}
 	

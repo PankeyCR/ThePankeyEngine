@@ -1,6 +1,9 @@
 
 #include "ByteArray.h"
 //Set individual bits, checking if bits are true and if array contains byte, ByteArray:
+
+using namespace ame;
+
 void setup() {
   Serial.begin(9600);
 }

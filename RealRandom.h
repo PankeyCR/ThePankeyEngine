@@ -12,6 +12,8 @@
 	#define RealRandomLog(name,method,type,mns) 
 #endif
 
+namespace ame{
+
 //seed from 0 - 1000
 class RealRandom : public Random{
 	private:
@@ -21,7 +23,8 @@ class RealRandom : public Random{
 		RealRandom();
 		virtual ~RealRandom();
 		virtual float getRandom();
-		
 };
+
+}
 
 #endif 

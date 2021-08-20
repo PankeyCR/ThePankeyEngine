@@ -3,6 +3,8 @@
 #ifndef Random_h
 #define Random_h
 
+namespace ame{
+
 class Random{
 	protected:
 		float max=1;
@@ -18,7 +20,8 @@ class Random{
 		virtual float getSeed();
 		virtual void setSeed(float Seed);
 		virtual float getRandom();
-		
 };
+
+}
 
 #endif 

@@ -4,16 +4,16 @@
 
 #include "Pulsador.h"
 
-	Pulsador::Pulsador(int pin){
+	ame::Pulsador::Pulsador(int pin){
 		this->pinPulsador=pin;
 		pinMode(pin,OUTPUT);
 	}
 	
-	Pulsador::~Pulsador(){
+	ame::Pulsador::~Pulsador(){
 		
 	}
 	
-	void Pulsador::update(){
+	void ame::Pulsador::update(){
 		int valor = digitalRead(this->pinPulsador);
 		
         if(valor == 1){
@@ -38,15 +38,15 @@
         }
 	}
 	
-	bool Pulsador::isPressed(){
+	bool ame::Pulsador::isPressed(){
 		return this->pressed;	
 	}
 	
-	bool Pulsador::isReleased(){
+	bool ame::Pulsador::isReleased(){
 		return this->released;	
 	}
 	
-	bool Pulsador::isClick(){
+	bool ame::Pulsador::isClick(){
 		return this->clicked;	
 	}
 

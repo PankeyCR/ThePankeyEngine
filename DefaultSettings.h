@@ -6,6 +6,8 @@
 #include "PrimitiveMap.h"
 #include "AppSettings.h"
 
+namespace ame{
+
 class DefaultSettings : public AppSettings{
     public:
 		DefaultSettings();
@@ -37,7 +39,7 @@ class DefaultSettings : public AppSettings{
 		virtual bool containCppObject(String s);
 		
 		virtual String toString();
-		virtual String getClassName();
+		virtual cppObjectClass* getClass();
 		
 	protected:
 		Map<String,int> *intMap;
@@ -46,5 +48,7 @@ class DefaultSettings : public AppSettings{
 		Map<String,bool> *boolMap;
 		Map<String,cppObject> *cppObjectMap;
 };
+
+}
 
 #endif 

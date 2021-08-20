@@ -6,6 +6,8 @@
 #include "DataSet.h"
 #include "KVMap.h"
 
+/*
+
 template<int xS = 3>
 class ArraySet : public DataSet<float>{
 	public:
@@ -167,5 +169,5 @@ class ArraySet : public DataSet<float>{
 		int dimentionMap = 0;
 		int fullSize = 0;
 };
-
+*/
 #endif 

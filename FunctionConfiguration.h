@@ -15,6 +15,8 @@
 	#define FunctionConfigurationLog(name,method,type,mns)
 #endif
 
+namespace ame{
+
 template<class T,class... args>
 class FunctionConfiguration{
 	public:

@@ -6,34 +6,34 @@
 #include "SerialConnection.h"
 
 
-ArrayList<char,84>* SerialConnection::validChars = nullptr;
+ame::ArrayList<char,84>* ame::SerialConnection::validChars = nullptr;
 
 
-	SerialConnection::SerialConnection() {
+	ame::SerialConnection::SerialConnection() {
 	}
 	
-	SerialConnection::~SerialConnection() {
+	ame::SerialConnection::~SerialConnection() {
 		if(validChars != nullptr){
 			delete validChars;
 		}
 	}
 	
-	void SerialConnection::setPort(Stream *serial) {
+	void ame::SerialConnection::setPort(Stream *serial) {
 		port = serial;
 	}
 	
-	Stream *SerialConnection::getPort() {
+	Stream *ame::SerialConnection::getPort() {
 		return port;
 	}
 	
-	bool SerialConnection::available() {
+	bool ame::SerialConnection::available() {
 		if(this->port == nullptr){
 			return false;			
 		}
 		return port->available();
 	}
 	
-	String SerialConnection::getString(){
+	String ame::SerialConnection::getString(){
 		if(this->port == nullptr){
 			return "";			
 		}
@@ -48,7 +48,7 @@ ArrayList<char,84>* SerialConnection::validChars = nullptr;
         return mns;
     }
 	
-	String SerialConnection::getStringln(){
+	String ame::SerialConnection::getStringln(){
 		if(this->port == NULL){
 			return "";			
 		}
@@ -66,7 +66,7 @@ ArrayList<char,84>* SerialConnection::validChars = nullptr;
         return mns;
     }
 	
-	String SerialConnection::getStringUntil(char end){
+	String ame::SerialConnection::getStringUntil(char end){
 		if(this->port == nullptr){
 			return "";			
 		}
@@ -84,7 +84,7 @@ ArrayList<char,84>* SerialConnection::validChars = nullptr;
         return mns;
     }
 	
-	String SerialConnection::getStringUntil(char startChar,char endChar){
+	String ame::SerialConnection::getStringUntil(char startChar,char endChar){
 		if(this->port == nullptr){
 			return "";			
 		}
@@ -106,7 +106,7 @@ ArrayList<char,84>* SerialConnection::validChars = nullptr;
         return mns;
     }
 	
-	String SerialConnection::safeReceive(char start,char end){
+	String ame::SerialConnection::safeReceive(char start,char end){
 		if(this->port == nullptr){
 			return "";			
 		}
@@ -128,7 +128,7 @@ ArrayList<char,84>* SerialConnection::validChars = nullptr;
 		return mns;
     }
 	
-	String SerialConnection::safeReceive(List<String> *list,String responce,char start,char end){
+	String ame::SerialConnection::safeReceive(ame::List<String> *list,String responce,char start,char end){
 		if(this->port == nullptr){
 			return "";			
 		}
@@ -156,35 +156,35 @@ ArrayList<char,84>* SerialConnection::validChars = nullptr;
 		return mns;
     }
 	
-	char SerialConnection::read(){
+	char ame::SerialConnection::read(){
         return (char)port->read();
     }
 	
-	void SerialConnection::print(String sendd){
+	void ame::SerialConnection::print(String sendd){
         port->print(sendd);
     }
 	
-	void SerialConnection::println(String sendd){
+	void ame::SerialConnection::println(String sendd){
         port->println(sendd);
     }
 	
-	void SerialConnection::println(int sendd){
+	void ame::SerialConnection::println(int sendd){
         port->println(String(sendd));
     }
 	
-	void SerialConnection::print(int sendd){ 
+	void ame::SerialConnection::print(int sendd){ 
         port->print(String(sendd));
     }
 	
-	void SerialConnection::write(char sendd){
+	void ame::SerialConnection::write(char sendd){
         port->write(sendd);
     }
 	
-	void SerialConnection::write(int sendd){
+	void ame::SerialConnection::write(int sendd){
         port->write(sendd);
     }
 	
-	void SerialConnection::writeln(String sendd){
+	void ame::SerialConnection::writeln(String sendd){
 		int sendd_len = sendd.length() + 1; 
 		char sendd_array[sendd_len];
 		sendd.toCharArray(sendd_array, sendd_len);
@@ -193,13 +193,13 @@ ArrayList<char,84>* SerialConnection::validChars = nullptr;
         port->write('\n');
     }
 	
-	void SerialConnection::writeln(int sendd){ 
+	void ame::SerialConnection::writeln(int sendd){ 
         port->write(sendd);
         port->write('\r');
         port->write('\n');
     }
 	
-	bool SerialConnection::isValidChar(char chr){
+	bool ame::SerialConnection::isValidChar(char chr){
 		if(validChars == nullptr){
 			validChars = new ArrayList<char,84>();
 			validChars->addLValue('a');

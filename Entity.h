@@ -9,6 +9,8 @@
 #include "PrimitiveList.h"
 #include "PrimitiveMap.h"
 
+namespace ame{
+
 class Entity : public GameObject{
     protected:
 		Map<String,cppObject>* data = nullptr;
@@ -22,8 +24,10 @@ class Entity : public GameObject{
 		virtual void setData(String name, cppObject* obj);
 		virtual cppObject* getData(String name);
 		
-		virtual String getClassName();
+		virtual cppObjectClass* getClass();
 		virtual String toString();
 };
+
+}
 
 #endif 

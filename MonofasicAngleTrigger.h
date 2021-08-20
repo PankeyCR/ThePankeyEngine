@@ -8,6 +8,8 @@
 #include "TimeElapsed.h"
 #include "Arduino.h"
 
+namespace ame{
+
 class MonofasicAngleTrigger : public ACFrequencyMeasure , public TimeElapsed {
     public:
 		MonofasicAngleTrigger(){
@@ -81,5 +83,7 @@ class MonofasicAngleTrigger : public ACFrequencyMeasure , public TimeElapsed {
 		long triggerTimer = 0;
 		bool doEnding = true;
 };
+
+}
 
 #endif 

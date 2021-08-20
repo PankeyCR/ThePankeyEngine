@@ -4,6 +4,8 @@
 
 #include "RawList.h"
 
+namespace ame{
+
 template<class T>
 class PrimitiveRawList : public RawList<T>{
 	public:
@@ -375,5 +377,7 @@ class PrimitiveRawList : public RawList<T>{
 		int size=10;
 		bool owner = true;
 };
+
+}
 
 #endif 

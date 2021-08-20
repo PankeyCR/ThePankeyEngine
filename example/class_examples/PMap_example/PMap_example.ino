@@ -4,6 +4,8 @@
 #include "Map.h"
 #include "MemoryFree.h"
 
+using namespace ame;
+
 Map<String,int> *testMap;
 
 void setup() {

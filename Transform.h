@@ -9,6 +9,8 @@
 #include "cppObject.h"
 #include "cppObjectClass.h"
 
+namespace ame{
+
 class Transform : public cppObject{
     public:
 		const static Transform *IDENTITY;
@@ -61,4 +63,7 @@ class Transform : public cppObject{
 		Vector3f translation;
 		Vector3f scale = *Vector3f::UNIT_XYZ;
 };
+
+}
+
 #endif 

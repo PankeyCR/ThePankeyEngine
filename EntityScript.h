@@ -8,6 +8,8 @@
 #include "GameOn.h"
 #include "Method.h"
 
+namespace ame{
+
 class EntityScript : public Method{
 public:
 
@@ -69,5 +71,6 @@ GameManager* manager = nullptr;
 Stream* serial = nullptr;
 };
 
+}
 
 #endif 

@@ -3,6 +3,8 @@
 #ifndef MetricPrefix_h
 #define MetricPrefix_h
 
+namespace ame{
+
 enum class MetricPrefix {
 	exa,
 	peta,
@@ -22,5 +24,7 @@ enum class MetricPrefix {
 	femto,
 	atto
 };
+
+}
 
 #endif 

@@ -5,6 +5,8 @@
 #include "cppObject.h"
 #include "Iterator.h"
 
+namespace ame{
+
 template <class K,class V>
 class RawMap{	
     public:
@@ -15,6 +17,9 @@ class RawMap{
 		virtual int getSize()const=0;
 		virtual void addPointers(K* key, V* value)=0;
 		virtual void addLValues(K key, V value)=0;
+		virtual void add(K key, V value){
+			addLValues(key,value);
+		}
 		virtual void addPointer(K key, V* value)=0;
 		virtual void setPointers(K* key, V* value)=0;
 		virtual void setLValues(K key, V value)=0;
@@ -45,4 +50,6 @@ class RawMap{
 		virtual void removeDeleteByPosition(int p)=0;
 	private:
 };
+
+}
 #endif 

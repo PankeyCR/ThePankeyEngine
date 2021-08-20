@@ -8,6 +8,8 @@
 #include "Map.h"
 #include "List.h"
 
+namespace ame{
+
 template<class T>
 class PIDController : public Controller<T,T,T>{
 	public:
@@ -40,8 +42,8 @@ class PIDController : public Controller<T,T,T>{
 		}
 		
 		//cppObject part
-		virtual String getClassName(){
-			return "PIDController";
+		virtual cppObjectClass* getClass(){
+			return Class<PIDController>::classType;
 		}
 		virtual String toString(){
 			return "PIDController";
@@ -64,5 +66,7 @@ class PIDController : public Controller<T,T,T>{
 		
 		T iSum;
 };
+
+}
 
 #endif 

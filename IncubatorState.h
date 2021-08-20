@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <math.h>
 
+namespace ame{
 
 class IncubatorState : public AppState{
     public:
@@ -70,9 +71,9 @@ class IncubatorState : public AppState{
 		float getTempK(){
 			return Vout;
 		}
-		
-    
 	private:
 };
+
+}
 
 #endif 

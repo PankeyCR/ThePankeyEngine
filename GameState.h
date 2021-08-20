@@ -3,6 +3,8 @@
 #ifndef GameState_h
 #define GameState_h
 
+namespace ame{
+
 template<class T>
 class GameState{
 public:
@@ -45,5 +47,7 @@ virtual bool operator !=(T v){
 }
 	protected:
 };
+
+}
 
 #endif 

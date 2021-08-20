@@ -8,6 +8,8 @@
 #include "RawList.h"
 #include "PrimitiveRawList.h"
 
+namespace ame{
+
 template<class cls>
 struct ClassAnnotation{
 	static RawList<Annotation>* annotations;
@@ -135,6 +137,8 @@ class ClassType : public cppObjectClass{
 			return nullptr;
 		}
 };
+
+}
 
 	
 	

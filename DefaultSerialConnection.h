@@ -8,6 +8,8 @@
 #include "PList.h"
 #include "List.h"
 
+namespace ame{
+
 class DefaultSerialConnection : public SerialConnection{		
     private:
 		Stream *port=NULL;
@@ -37,7 +39,8 @@ class DefaultSerialConnection : public SerialConnection{
 		void writeln(String Send);
 		void writeln(int Send);
 		static bool isValidChar(char chr);
-		
 };
+
+}
 
 #endif 

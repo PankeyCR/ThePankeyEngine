@@ -4,42 +4,42 @@
 
 #include "AppState.h"
 
-	void AppState::initialize(Application *app){
+	void ame::AppState::initialize(ame::Application *app){
 		
 	}
 	
-	void AppState::onEnable(){
+	void ame::AppState::onEnable(){
 		
 	}
 	
-	void AppState::onDisable(){
+	void ame::AppState::onDisable(){
 		
 	}
 	
-	String AppState::getId(){
+	String ame::AppState::getId(){
 		if(this->id == nullptr){
 			return "";
 		}
 		return *this->id;
 	}
 	
-	void AppState::update(float tpc){
+	void ame::AppState::update(float tpc){
 		
 	}
 	
-	bool AppState::instanceof(cppObjectClass* cls){
-		return cls == Class<AppState>::classType || cppObject::instanceof(cls);
+	bool ame::AppState::instanceof(ame::cppObjectClass* cls){
+		return cls == ame::Class<AppState>::classType || ame::cppObject::instanceof(cls);
 	}
 	
-	void AppState::operator=(AppState b) {
+	void ame::AppState::operator=(AppState b) {
 		this->id = b.id;
 	}
 	
-	bool AppState::operator==(AppState b) {
+	bool ame::AppState::operator==(ame::AppState b) {
 			return this->getClass() == b.getClass();
 	}
 	
-	bool AppState::operator!=(AppState b) {
+	bool ame::AppState::operator!=(ame::AppState b) {
 			return this->getClass() != b.getClass();
 	}
 	

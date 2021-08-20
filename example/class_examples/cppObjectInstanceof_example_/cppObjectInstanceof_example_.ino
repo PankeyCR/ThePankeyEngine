@@ -5,6 +5,8 @@
 // the instanceof(cppObjectClass* cls) method on your derived classes
 //this example shows a easy way to go through all the derived classes
 
+using namespace ame;
+
 class Tick : public cppObject{
   public:
   Tick(){}

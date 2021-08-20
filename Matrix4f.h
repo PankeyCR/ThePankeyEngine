@@ -13,6 +13,8 @@
 //class Matrix3f;
 //class Quaternion;
 
+namespace ame{
+
 class Matrix4f {
     private:
 	
@@ -134,4 +136,7 @@ class Matrix4f {
 	*/
 	
 };
+
+}
+
 #endif 

@@ -3,6 +3,8 @@
 #ifndef Processing_h
 #define Processing_h
 
+namespace ame{
+
 template<class V>
 class Processing{
 	public:
@@ -12,7 +14,8 @@ class Processing{
 		virtual V processing(V plantValue, V controlValue);
 		
 	protected:
-	
 };
+
+}
 
 #endif 

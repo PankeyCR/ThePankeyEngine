@@ -5,41 +5,41 @@
 
 #include "DelaySensor.h"
 
-	DelaySensor::~DelaySensor(){
+	ame::DelaySensor::~DelaySensor(){
 		
 	}
 	
-	DelaySensor* DelaySensor::monkeytime(MonkeyTime* tim){
+	ame::DelaySensor* ame::DelaySensor::monkeytime(ame::MonkeyTime* tim){
 		this->timer = tim;
 		return this;
 	}
 	
-	DelaySensor* DelaySensor::delay(float tm){
+	ame::DelaySensor* ame::DelaySensor::delay(float tm){
 		this->timing = tm;
 		return this;
 	}
 	
-	DelaySensor* DelaySensor::offset(float tm){
+	ame::DelaySensor* ame::DelaySensor::offset(float tm){
 		this->offsetm = tm;
 		return this;
 	}
 	
-	DelaySensor* DelaySensor::timecheck(TimeCheck tm){
+	ame::DelaySensor* ame::DelaySensor::timecheck(TimeCheck tm){
 		this->timecheckm = tm;
 		return this;
 	}
 	
-	DelaySensor* DelaySensor::close(){
+	ame::DelaySensor* ame::DelaySensor::close(){
 		this->state = false;
 		return this;
 	}
 	
-	DelaySensor* DelaySensor::open(){
+	ame::DelaySensor* ame::DelaySensor::open(){
 		this->state = true;
 		return this;
 	}
 	
-	void DelaySensor::update(){
+	void ame::DelaySensor::update(){
 		if(this->timer == nullptr){
 			return;
 		}
@@ -63,24 +63,24 @@
 		}
 	}
 	
-	DelaySensor* DelaySensor::attach(int pin){
+	ame::DelaySensor* ame::DelaySensor::attach(int pin){
 		this->slpin = pin;
 		return this;
 	}
 	
-	bool DelaySensor::isClose(){
+	bool ame::DelaySensor::isClose(){
 		return this->closem;
 	}
 	
-	bool DelaySensor::isOpen(){
+	bool ame::DelaySensor::isOpen(){
 		return this->openm;
 	}
 	
-	float DelaySensor::closeTime(){
+	float ame::DelaySensor::closeTime(){
 		return this->openRecorder.getRecord();
 	}
 	
-	float DelaySensor::openTime(){
+	float ame::DelaySensor::openTime(){
 		return this->closeRecorder.getRecord();
 	}
 #endif 

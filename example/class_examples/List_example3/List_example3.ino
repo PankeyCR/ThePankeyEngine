@@ -7,6 +7,8 @@
 #include "Vector3f.h"
 #include "MemoryFree.h"
 
+using namespace ame;
+
 void setup() {
   Serial.begin(9600);
 }

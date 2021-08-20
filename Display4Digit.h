@@ -5,6 +5,8 @@
 
 #include "Arduino.h"
 
+namespace ame{
+
 class Display4Digit{
     public:
 		int a,b,c,d,e,f,g,p,d1,d2,d3,d4,count=0;
@@ -31,5 +33,7 @@ class Display4Digit{
 		void Number8();
 		void Number9();
 };
+
+}
 
 #endif 

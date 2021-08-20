@@ -5,31 +5,44 @@
 #include "Lexer.h"
 
 	
-	Lexer::Lexer(){
-		this->tokens = new PrimitiveList<Token>();
-		this->capturedTokens = new PrimitiveList<Token>();
-		this->breakPoint = new PrimitiveList<char>();
+	ame::Lexer::Lexer(){
+		this->typeTokens = new ame::PrimitiveList<ame::Token>();
+		this->delimiterTokens = new ame::PrimitiveList<ame::Token>();
+		this->capturedTokens = new ame::PrimitiveList<ame::Token>();
+		this->breakPoint = new ame::PrimitiveList<char>();
 	}
 	
-	Lexer::~Lexer(){
-		delete this->tokens;
+	ame::Lexer::~Lexer(){
+		delete this->typeTokens;
+		delete this->delimiterTokens;
 		delete this->capturedTokens;
 		delete this->breakPoint;
 	}
 	
-	bool Lexer::isString(String mns){
+	String ame::Lexer::extractString(String mns){
         char mnsArray[mns.length()+1];
         mns.toCharArray(mnsArray, mns.length()+1);
 		
-		if(mnsArray[0]!='"' && mnsArray[0]!='\''){
-			return false;
+		if(mnsArray[0] != '"' && mnsArray[mns.length()-1] != '"'){
+			return mns;
 		}
-		if(mnsArray[mns.length()-1]!='"' && mnsArray[mns.length()-1]!='\''){
+		String extract = "";
+        for(int i=1; i < mns.length() - 1; i++){
+			extract.concat(mnsArray[i]);
+		}
+		return extract;
+	}
+	
+	bool ame::Lexer::isString(String mns){
+        char mnsArray[mns.length()+1];
+        mns.toCharArray(mnsArray, mns.length()+1);
+		
+		if(mnsArray[0]!='"' && mnsArray[mns.length()-1]!='"'){
 			return false;
 		}
         for(int i=0; i < mns.length(); i++){
 			if(i!=0 && i!=mns.length()-1){
-				if(mnsArray[i]=='"' && mnsArray[i]=='\''){
+				if(mnsArray[i]=='"'){
 					return false;
 				}
 			}
@@ -37,7 +50,7 @@
 		return true;
 	}
 	
-	bool Lexer::isFloat(String mns){ 
+	bool ame::Lexer::isFloat(String mns){ 
         char mnsArray[mns.length() + 1];
         mns.toCharArray(mnsArray, mns.length() + 1);
 		
@@ -64,7 +77,7 @@
 		return true;
 	}
 	
-	bool Lexer::isInt(String mns){
+	bool ame::Lexer::isInt(String mns){
         char mnsArray[mns.length() + 1];
         mns.toCharArray(mnsArray, mns.length() + 1);
 		
@@ -77,7 +90,7 @@
 		return true;
 	}
 	
-	bool Lexer::isLong(String mns){
+	bool ame::Lexer::isLong(String mns){
         char mnsArray[mns.length() + 1];
         mns.toCharArray(mnsArray, mns.length() + 1);
 		
@@ -96,7 +109,7 @@
 		return true;
 	}
 	
-	bool Lexer::isDouble(String mns){ 
+	bool ame::Lexer::isDouble(String mns){ 
         char mnsArray[mns.length() + 1];
         mns.toCharArray(mnsArray, mns.length() + 1);
 		
@@ -124,96 +137,151 @@
 		return true;
 	}
 	
-	bool Lexer::isToken(String mns){
-		for(int x = 0; x < tokens->getPosition(); x++){
-			Token* t = tokens->getByPosition(x);
-			if(t->name == mns || t->type == mns){
+	bool ame::Lexer::isTypeToken(String mns){
+		for(int x = 0; x < typeTokens->getPosition(); x++){
+			Token* t = typeTokens->getByPosition(x);
+			if(t->name == mns){
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	bool Lexer::isVariable(String mns){
+	bool ame::Lexer::isVariable(String mns){
 		if(environment == nullptr){
 			return false;
 		}
 		return environment->containVariable(mns);
 	}
 	
-	Token Lexer::getToken(String tkn){
+	ame::Token ame::Lexer::getToken(String tkn){
 		if(this->isDouble(tkn)){
-			return Token(tkn,"Double","");
+			return Token("Double",tkn,"");
 		}
 		if(this->isFloat(tkn)){
-			return Token(tkn,"Float","");
+			return Token("Float",tkn,"");
 		}
 		if(this->isString(tkn)){
-			return Token(tkn,"String","");
+			return Token("String",tkn,"");
 		}
 		if(this->isInt(tkn)){
-			return Token(tkn,"Int","");
+			return Token("Int",tkn,"");
 		}
 		if(this->isLong(tkn)){
-			return Token(tkn,"Long","");
+			return Token("Long",tkn,"");
 		}
-		for(int x = 0; x < this->tokens->getPosition(); x++){
-			Token* t = this->tokens->getByPosition(x);
-			if(t->name == tkn || t->type == tkn){
-				return Token(t->name,t->type,t->info,t->text_Position,t->line_Position,t->list_Position);
+		for(int x = 0; x < this->typeTokens->getPosition(); x++){
+			ame::Token* t = this->typeTokens->getByPosition(x);
+			if(t->name == tkn){
+				return Token(tkn,tkn);
 			}
 		}
-		if(environment == nullptr){
-			return Token("","","ERROR");
+		for(int x = 0; x < this->delimiterTokens->getPosition(); x++){
+			ame::Token* t = this->delimiterTokens->getByPosition(x);
+			if(t->value == tkn){
+				return Token(*t);
+			}
 		}
-		return environment->getToken(tkn);
+		if(environment != nullptr){
+			return environment->getToken(tkn);
+		}
+		return Token("Variable",tkn);
 	}
 	
-	// LinkedList<Token> Lexer::getTokens(String s){
+	// LinkedList<Token> ame::Lexer::getTokens(String s){
 		// LinkedList<Token> list;
 		
 		// return list;
 	// }
 	
-	bool Lexer::containBreakPoint(char brk){
-		return this->breakPoint->containByLValue(brk);
-	}
-	
-	void Lexer::addCapturedTokens(Token tkn){
+	void ame::Lexer::addCapturedTokens(Token tkn){
 		this->capturedTokens->addLValue(tkn);
 	}
 	
-	List<Token>* Lexer::getCapturedTokens(){
+	int ame::Lexer::getCapturedTokensPosiotion(){
+		return this->capturedTokens->getPosition();
+	}
+	
+	ame::List<ame::Token>* ame::Lexer::getCapturedTokens(){
 		return this->capturedTokens;
 	}
 	
-	Lexer* Lexer::addTokenStructure(Token tkn){
-		this->tokens->addLValue(tkn);
-		return this;
-	}
-	
-	Lexer* Lexer::addBreakPoint(char brk){
+	ame::Lexer* ame::Lexer::addBreakPoint(char brk){
 		this->breakPoint->addLValue(brk);
 		return this;
 	}
 	
-	void Lexer::setEnvironment(Environment* e){
+	bool ame::Lexer::containBreakPoint(char brk){
+		return this->breakPoint->containByLValue(brk);
+	}
+	
+	ame::Lexer* ame::Lexer::addTypeToken(Token tkn){
+		this->typeTokens->addLValue(tkn);
+		return this;
+	}
+	
+	bool ame::Lexer::containTypeToken(String t){
+		for(int x = 0; x < this->typeTokens->getPosition(); x++){
+			Token* token = this->typeTokens->getByPosition(x);
+			if(t == token->name){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	ame::Lexer* ame::Lexer::addDelimiterToken(Token tkn){
+		this->delimiterTokens->addLValue(tkn);
+		return this;
+	}
+	
+	bool ame::Lexer::containDelimiterToken(String t){
+		for(int x = 0; x < this->delimiterTokens->getPosition(); x++){
+			Token* token = this->delimiterTokens->getByPosition(x);
+			if(t == token->value){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	bool ame::Lexer::containDelimiterTokenChar(int x, char c){
+		for(int xc = 0; xc < this->delimiterTokens->getPosition(); xc++){
+			Token* token = this->delimiterTokens->getByPosition(xc);
+			String t = token->value;
+			char mnsArray[t.length() + 1];
+			t.toCharArray(mnsArray, t.length() + 1);
+			
+			if( (t.length()-1) < x ){
+				continue;
+			}
+			if(mnsArray[x] == c){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	int ame::Lexer::getDelimiterTokenSize(){
+		return this->delimiterTokens->getPosition();
+	}
+	
+	void ame::Lexer::setEnvironment(Environment* e){
 		this->environment = e;
 	}
 	
-	Environment* Lexer::getEnvironment(){
+	ame::Environment* ame::Lexer::getEnvironment(){
 		return this->environment;
 	}
 	
-	void Lexer::printTokens(Stream* port){
-		port->println("Printing Tokens:");
+	void ame::Lexer::printTokens(Stream* port){
 		for(int x = 0; x < this->capturedTokens->getPosition(); x++){
 			Token* t = capturedTokens->getByPosition(x);
 			port->println(*t);
 		}
 	}
 	
-	bool Lexer::syntax(){
+	bool ame::Lexer::syntax(){
 		for(int x = 0; x < this->capturedTokens->getPosition(); x++){
 			Token* t = capturedTokens->getByPosition(x);
 			if(t->info == "error"){
@@ -223,7 +291,7 @@
 		return true;
 	}
 	
-	void Lexer::printError(Stream* port){
+	void ame::Lexer::printError(Stream* port){
 		port->println("Printing Errors:");
 		// for(int x = 0; x < this->capturedTokens->getPosition(); x++){
 			// Token* t = capturedTokens->getByPosition(x);
@@ -231,6 +299,10 @@
 		// }
 	}
 	
-	void Lexer::capture(char chr){}
+	void ame::Lexer::capture(char chr, bool capturing){}
+	
+	void ame::Lexer::reset(){
+		capturedTokens->resetDelete();
+	}
 	
 #endif 

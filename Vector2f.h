@@ -7,6 +7,8 @@
 #include "List.h"
 #include "cppObject.h"
 
+namespace ame{
+	
 class Vector2f : public cppObject{
     private:
 	
@@ -141,6 +143,8 @@ class Vector2f : public cppObject{
 	Vector2f operator/=(const int& a);
 	Vector2f operator/=(const double& a);
 };
+
+}
 
 
 #endif

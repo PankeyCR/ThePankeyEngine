@@ -5,15 +5,15 @@
 
 #include "AnalogRead.h"
 
-    AnalogRead::AnalogRead(int pin){
+    ame::AnalogRead::AnalogRead(int pin){
 		this->Rpin = pin;
 		pinMode(pin,INPUT);
     }
 
-    AnalogRead::~AnalogRead(){
+    ame::AnalogRead::~AnalogRead(){
     }
     
-    void AnalogRead::Read(){
+    void ame::AnalogRead::Read(){
 		this->read = analogRead(this->Rpin);
     }
     

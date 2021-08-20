@@ -4,6 +4,8 @@
 
 #include "ByteArray.h"
 
+namespace ame{
+	
 class ByteArrayForm{
 public:
 ByteArrayForm(){}
@@ -13,5 +15,7 @@ virtual void setByteArray(const ByteArray& array){}
 
 virtual ByteArray getByteArray(){return 0;}
 };
+
+}
 
 #endif

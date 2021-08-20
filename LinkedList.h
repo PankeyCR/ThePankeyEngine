@@ -5,8 +5,7 @@
 #include "LinkedListNode.h"
 #include "List.h"
 
-// #include "LinkedIterator.h"
-// template<class T>class LinkedIterator;
+namespace ame{
 
 template<class T>
 class LinkedList : public List<T>{
@@ -764,6 +763,8 @@ class LinkedList : public List<T>{
 			
 		}
 };
+
+}
 
 #include "LinkedIterator.h"
 

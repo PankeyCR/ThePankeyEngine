@@ -5,6 +5,8 @@
 #include "Function.h"
 #include "Logger.h"
 
+namespace ame{
+
 template<class T,class... args>
 class Neuron{
 	public:
@@ -26,5 +28,7 @@ class Neuron{
 		Operator<T,Function<T,args...>>* functionOperator = nullptr;
 		float weight = 1;
 };
+
+}
 
 #endif

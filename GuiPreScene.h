@@ -3,6 +3,8 @@
 #ifndef GuiPreScene_h
 #define GuiPreScene_h
 
+namespace ame{
+
 class GuiState;
 
 class GuiPreScene{
@@ -17,5 +19,7 @@ class GuiPreScene{
 		virtual bool operator!=(GuiPreScene g){return true;}
 	protected:
 };
+
+}
 
 #endif 

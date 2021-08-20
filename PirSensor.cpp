@@ -4,25 +4,25 @@
 
 #include "PirSensor.h"
 
-	PirSensor::PirSensor(){
+	ame::PirSensor::PirSensor(){
 	
 	}
-	PirSensor::PirSensor(int sensor){
+	ame::PirSensor::PirSensor(int sensor){
 		Sensor = sensor;
 	}
-	void PirSensor::addPin(int sensor){
+	void ame::PirSensor::addPin(int sensor){
 		Sensor = sensor;	
 	}
-	bool PirSensor::isPressed(){
+	bool ame::PirSensor::isPressed(){
 		return pressed;
 	}
-	bool PirSensor::isReleased(){
+	bool ame::PirSensor::isReleased(){
 		return released;		
 	}
-	bool PirSensor::isClick(){
+	bool ame::PirSensor::isClick(){
 		return clicked;		
 	}
-	bool PirSensor::update(){
+	bool ame::PirSensor::update(){
 		valor = digitalRead(Sensor);
 		
         if(valor == HIGH){

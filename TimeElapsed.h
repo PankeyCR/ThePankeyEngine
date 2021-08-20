@@ -3,6 +3,8 @@
 #ifndef TimeElapsed_h
 #define TimeElapsed_h
 
+namespace ame{
+
 class TimeControl;
 
 class TimeElapsed {
@@ -13,5 +15,7 @@ class TimeElapsed {
 		virtual bool operator!=(TimeElapsed a);
 	private:	
 };
+
+}
 
 #endif 

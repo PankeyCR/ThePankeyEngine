@@ -13,6 +13,8 @@
 #include "TemperatureNTC.h"
 #include "FixPulseGenerator.h"
 
+namespace ame{
+	
 class RelayIncubator : public AppState{
     public:
 		RelayIncubator();
@@ -26,7 +28,7 @@ class RelayIncubator : public AppState{
 		virtual void initialize(Application *app);
 		virtual void update();
 		
-		String getClassName();
+		cppObjectClass* getClass();
 		String toString();
 		
 	protected:
@@ -38,5 +40,7 @@ class RelayIncubator : public AppState{
 		float maxT = 38;
 		Average<float>* average;
 };
+
+}
 
 #endif 

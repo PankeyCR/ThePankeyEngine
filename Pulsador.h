@@ -4,6 +4,8 @@
 
 #include "Arduino.h"
 
+namespace ame{
+
 class Pulsador {
     private:
 		int pinPulsador=0;
@@ -19,4 +21,7 @@ class Pulsador {
 		bool isReleased();
 		bool isClick();
 };
+
+}
+
 #endif 

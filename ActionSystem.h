@@ -5,6 +5,8 @@
 
 #include "GameSystem.h"
 
+namespace ame{
+
 template<class T>
 class ActionSystem : public GameSystem<T>{
 	public:
@@ -13,12 +15,12 @@ class ActionSystem : public GameSystem<T>{
 
 	virtual ~ActionSystem(){}
 
-	virtual String getClassName(){
-		return "ActionSystem";
+	virtual cppObjectClass* getClass(){
+		return Class<ActionSystem>::classType;
 	}
 
-	virtual bool instanceof(String name){
-		return name == "ActionSystem" || GameSystem<T>::instanceof(name);
+	virtual bool instanceof(cppObjectClass* cls){
+		return cls == Class<ActionSystem>::classType || GameSystem<T>::instanceof(cls);
 	}
 
 	virtual void update(float tpc){
@@ -34,5 +36,7 @@ class ActionSystem : public GameSystem<T>{
 		this->updateSystem(tpc);
 	}
 };
+
+}
 
 #endif 

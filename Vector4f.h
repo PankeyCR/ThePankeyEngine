@@ -6,6 +6,8 @@
 #include "ArrayList.h"
 #include "cppObject.h"
 
+namespace ame{
+
 class Vector4f : public cppObject{
     private:
 	
@@ -150,9 +152,8 @@ class Vector4f : public cppObject{
 		Vector4f operator/=(const float& a);
 		Vector4f operator/=(const int& a);
 		Vector4f operator/=(const double& a);
-		
-		
 };
 
+}
 
 #endif 

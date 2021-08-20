@@ -5,6 +5,8 @@
 
 #include "Arduino.h"
 
+namespace ame{
+
 template<class T>
 class Event{
 	protected:
@@ -19,7 +21,8 @@ class Event{
 		virtual void setName(T n){}
 		virtual void add(EventMethod c){}
 		virtual void add(T name, EventMethod c){}
-		
 };
+
+}
 
 #endif 

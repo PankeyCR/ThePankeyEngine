@@ -2,7 +2,7 @@
 
 #include "GameManager.h"
 #include "Application.h"
-#include "SimpleApplication.h"
+#include "DefaultApplication.h"
 #include "NTCRelay.h"
 #include "NTC.h"
 #include "TemperatureNTCSystem.h"
@@ -17,7 +17,7 @@ void setup() {
   manager->addComponent(entity, new NTC(A4));
   manager->addComponent(entity, new NTCRelay(46,40));
 
-  app = new SimpleApplication<4,2>();
+  app = new DefaultApplication();
   app->getStateManager()->add(manager);//gamemanager has to be added firts
   app->getStateManager()->add(new TemperatureNTCSystem());
   app->getStateManager()->add(new TemperatureNTCRelaySystem());

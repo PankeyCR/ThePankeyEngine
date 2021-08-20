@@ -15,6 +15,8 @@
 #include "DefaultSettings.h"
 #include "RenderStateManager.h"
 
+namespace ame{
+
 class SimpleApplication : public Application{
     public:
 		SimpleApplication();
@@ -32,22 +34,28 @@ class SimpleApplication : public Application{
 		virtual Listener* setListener(Listener* l);
 		virtual Listener* getListener();
 		
+		virtual MemoryPool* setMemoryPool(MemoryPool* memory);
+		virtual MemoryPool* getMemoryPool();
+		
 		virtual void update();
 		
 		virtual Node* getRootNode();
 		virtual Node* getGuiNode();
 		
 		//cppObject part
-		virtual String getClassName();
+		virtual cppObjectClass* getClass();
 		virtual String toString();
-		virtual bool instanceof(String name);
+		virtual bool instanceof(cppObjectClass* cls);
 		
 	private:
-		AppStateManager *states = nullptr;
-		AppSettings *settings = nullptr;
-		Listener *listener = nullptr;
+		AppStateManager* states = nullptr;
+		AppSettings* settings = nullptr;
+		Listener* listener = nullptr;
+		MemoryPool* memory = nullptr;
 		Node* rootNode = nullptr;
 		Node* guiNode = nullptr;
 };
+
+}
 
 #endif 

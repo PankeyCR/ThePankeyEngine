@@ -8,6 +8,8 @@
 #include "List.h"
 #include "PrimitiveList.h"
 
+namespace ame{
+
 class DefaultLogging : public Logging{
 	public:
 		DefaultLogging(Stream *p){
@@ -64,10 +66,10 @@ class DefaultLogging : public Logging{
 			yield();
 		}
 		
-		virtual void addClass(String className){Serial.println("addClass");
+		virtual void addClass(String className){
 			this->ClassList->addLValue(className);
 		}
-		virtual void addMethod(String methodName){Serial.println("addMethod");
+		virtual void addMethod(String methodName){
 			this->MethodList->addLValue(methodName);
 		}
 		
@@ -84,4 +86,6 @@ class DefaultLogging : public Logging{
 		bool classActivation = true;
 		bool methodActivation = false;
 };
+
+}
 #endif 

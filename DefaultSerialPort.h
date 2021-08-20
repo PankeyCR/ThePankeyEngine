@@ -5,6 +5,8 @@
 #include "SerialPort.h"
 #include "Stream.h"
 
+namespace ame{
+
 class DefaultSerialPort : public SerialPort{	
     public:
 		DefaultSerialPort(){
@@ -51,9 +53,14 @@ class DefaultSerialPort : public SerialPort{
 			}
 			return false;
 		}
-		virtual bool instanceof(cppObjectClass* cls){return cls == Class<DefaultSerialPort>::classType || SerialPort::instanceof(cls);}
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<DefaultSerialPort>::classType || SerialPort::instanceof(cls);
+		}
 		virtual cppObject *clone(){return nullptr;}
 	protected:
 		Stream* port = nullptr;
 };
+
+}
+
 #endif 

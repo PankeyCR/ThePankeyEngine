@@ -2,6 +2,8 @@
 #ifndef Command_h
 #define Command_h
 
+namespace ame{
+
 template<class C>
 class Command {
     private:
@@ -22,4 +24,7 @@ class Command {
 			return false;
 		}
 };
+
+}
+
 #endif 

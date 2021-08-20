@@ -6,6 +6,8 @@
 #include <Servo.h>
 #include <MultiServo.h>
 
+namespace ame{
+
 class SimpleServo : public MultiServo{
 	private:
 	
@@ -20,5 +22,7 @@ class SimpleServo : public MultiServo{
 		void detach(int sel,int i);
 		int MoveServo(int sel,int angle);
 };
+
+}
 
 #endif 

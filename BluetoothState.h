@@ -25,6 +25,7 @@
 	#define BluetoothStateLog(name,method,type,mns)
 #endif
 
+namespace ame{
 
 class BluetoothState : public SerialMessageControlledState{
     public:
@@ -42,8 +43,11 @@ class BluetoothState : public SerialMessageControlledState{
 		virtual ~BluetoothState(){
 			delete requests;
 		}
-		bool instanceof(String name){return name == "BluetoothState" || SerialMessageControlledState::instanceof(name);}
-		String getClassName(){return "BluetoothState";}
+		bool instanceof(cppObjectClass* cls){
+			return name == Class<BluetoothState>::classType || 
+			SerialMessageControlledState::instanceof(cls);
+		}
+		cppObjectClass* getClass(){return Class<BluetoothState>classType;}
 		
 		virtual bool invoke(String method){
 			BluetoothStateLog("BluetoothState", "invoke",  "println", "invoke method without parameters");

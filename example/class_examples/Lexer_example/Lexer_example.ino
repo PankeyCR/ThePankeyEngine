@@ -2,6 +2,8 @@
 #include "Lexer.h"
 #include "MemoryFree.h"
 
+using namespace ame;
+
 String scriptText = String("//simple script class\n")+
   "class ScriptClass{\n"+
   " int value=0;\n"+
@@ -19,22 +21,22 @@ void loop() {
   Serial.println(freeMemory());
 //  Serial.println(scriptText);
   Lexer* lexer = new Lexer();
-  lexer->   addToken("if")->
-            addToken("while")->
-            addToken("iterate")->
-            addToken("for")->
-            addToken("class")->
-            addToken("interface")->
-            addToken("extend")->
-            addToken("implement")->
-            addToken("void")->
-            addToken("fun")->
+  lexer->   addTypeToken(Token("if"))->
+            addTypeToken(Token("while"))->
+            addTypeToken(Token("iterate"))->
+            addTypeToken(Token("for"))->
+            addTypeToken(Token("class"))->
+            addTypeToken(Token("interface"))->
+            addTypeToken(Token("extend"))->
+            addTypeToken(Token("implement"))->
+            addTypeToken(Token("void"))->
+            addTypeToken(Token("fun"))->
             
-            addPrimitiveClass("String")->
-            addPrimitiveClass("int")->
-            addPrimitiveClass("long")->
-            addPrimitiveClass("double")->
-            addPrimitiveClass("float")->
+            addTypeToken(Token("String"))->
+            addTypeToken(Token("int"))->
+            addTypeToken(Token("long"))->
+            addTypeToken(Token("double"))->
+            addTypeToken(Token("float"))->
             
             addBreakPoint(' ')->
             addBreakPoint('\r')->
@@ -44,38 +46,36 @@ void loop() {
     //  \n can be a breaking point or a delimiter, that depends on the parser
     // and the lenguaje design
     
-         //   addDelimiterToken("enter","\n")->
-            addDelimiterToken("comments","/*")->
-            addDelimiterToken("linecomments","//")->
-            addDelimiterToken("classDelimiter","->")->
-            addDelimiterToken("Lparenthesis","(")->
-            addDelimiterToken("Rparenthesis",")")->
-            addDelimiterToken("LCurlyB","{")->
-            addDelimiterToken("RCurlyB","}")->
-            addDelimiterToken("endCodeLine",";")->
-            addDelimiterToken("Dpoint",":")->
-            addDelimiterToken("coma",",")->
+         //   addDelimiterToken("enter","\n"))->
+            addDelimiterToken(Token("comments","/*"))->
+            addDelimiterToken(Token("linecomments","//"))->
+            addDelimiterToken(Token("classDelimiter","->"))->
+            addDelimiterToken(Token("Lparenthesis","("))->
+            addDelimiterToken(Token("Rparenthesis",")"))->
+            addDelimiterToken(Token("LCurlyB","{"))->
+            addDelimiterToken(Token("RCurlyB","}"))->
+            addDelimiterToken(Token("endCodeLine",";"))->
+            addDelimiterToken(Token("Dpoint",":"))->
+            addDelimiterToken(Token("coma",","))->
             
-            addDelimiterToken("equal","=")->
-            addDelimiterToken("isEqual", "==")->
-            addDelimiterToken("notEqual", "!=")->
-            addDelimiterToken("smallerEqual", "<=")->
-            addDelimiterToken("greatterEqual", ">=")->
-            addDelimiterToken("smaller", "<")->
-            addDelimiterToken("greatter", ">")->
+            addDelimiterToken(Token("equal","="))->
+            addDelimiterToken(Token("isEqual", "=="))->
+            addDelimiterToken(Token("notEqual", "!="))->
+            addDelimiterToken(Token("smallerEqual", "<="))->
+            addDelimiterToken(Token("greatterEqual", ">="))->
+            addDelimiterToken(Token("smaller", "<"))->
+            addDelimiterToken(Token("greatter", ">"))->
             
-            addDelimiterToken("sum","+")->
-            addDelimiterToken("sub","-")->
-            addDelimiterToken("mul","*")->
-            addDelimiterToken("div","/")->
-            addDelimiterToken("exclamation","!")->
-            addDelimiterToken("question","?");
+            addDelimiterToken(Token("sum","+"))->
+            addDelimiterToken(Token("sub","-"))->
+            addDelimiterToken(Token("mul","*"))->
+            addDelimiterToken(Token("div","/"))->
+            addDelimiterToken(Token("exclamation","!"))->
+            addDelimiterToken(Token("question","?"));
 
 
   Serial.println("starting lexer capture");
-  for(int x = 0; x < scriptText.length(); x++){
-    lexer->capture(scriptText.charAt(x));
-  }
+  LexerCaptureString(lexer,scriptText);
   
   Serial.println("printing tokens");
   lexer->printTokens(&Serial);

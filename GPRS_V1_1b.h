@@ -5,6 +5,8 @@
 #include "Arduino.h"
 #include "Stream.h"
 
+namespace ame{
+
 class GPRS_V1_1b {
     public:
 		GPRS_V1_1b();
@@ -19,6 +21,8 @@ class GPRS_V1_1b {
     private:  
 		Stream *port;
 		String inputStringGprs="";
-    
 };
+
+}
+
 #endif 

@@ -6,6 +6,8 @@
 #include "SimpleEvent.h"
 #include "DelaySensor.h"
 
+using namespace ame;
+
 SimpleEvent<String>* DoorActivations;
 
 MonkeyTime* timer;

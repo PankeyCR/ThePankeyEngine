@@ -4,6 +4,8 @@
 
 #include "cppObject.h"
 
+namespace ame{
+
 class VectorValue : public cppObject{
 public:
 VectorValue(){
@@ -36,8 +38,8 @@ Vector getVector(){
 	return vector;
 }
     
-String getClassName(){
-	return "VectorValue";
+cppObjectClass* getClass(){
+	return Class<VectorValue>::classType;
 }
     
 String toString(){
@@ -68,8 +70,8 @@ VectorValue* clone(){
 	return cloner;
 }
 
-bool instanceof(String instance){
-return instance == "VectorValue" || cppObject::instanceof(instance);
+bool instanceof(cppObjectClass* instance){
+return instance == Class<VectorValue>::classType || cppObject::instanceof(instance);
 }
 
 void operator=(const VectorValue& v){
@@ -123,5 +125,7 @@ protected:
 float value;
 Vector vector;
 };
+
+}
 
 #endif

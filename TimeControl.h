@@ -10,6 +10,8 @@
 #include "TimeElapsed.h"
 #include "Logger.h"
 
+namespace ame{
+
 class Application;
 
 class TimeControl : public cppObject{
@@ -41,11 +43,13 @@ class TimeControl : public cppObject{
 		virtual TimeElapsed *getTimeElapsed(TimeElapsed *t);
 				
 		virtual String toString();
-		virtual String getClassName();
+		virtual cppObjectClass* getClass();
 		
 	protected:
 	
 };
+
+}
 
 
 #endif 

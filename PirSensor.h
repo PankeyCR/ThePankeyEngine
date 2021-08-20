@@ -5,6 +5,8 @@
 #include "Arduino.h"
 #include "Button.h"
 
+namespace ame{
+
 class PirSensor : public Button{
     private:
 		int Sensor=2;
@@ -22,4 +24,7 @@ class PirSensor : public Button{
 		bool isClick();
 		bool update();
 };
+
+}
+
 #endif 

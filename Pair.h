@@ -3,6 +3,8 @@
 #ifndef Pair_h
 #define Pair_h
 
+namespace ame{
+
 template<class K,class V>
 class Pair{
     public:
@@ -45,5 +47,7 @@ class Pair{
 	protected:
 		bool owner = false;
 };
+
+}
 
 #endif 

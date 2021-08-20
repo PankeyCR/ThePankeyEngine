@@ -5,74 +5,74 @@
 
 #include "GameManager.h"
 
-	GameManager::GameManager(){
-		this->deleteERequest = new PrimitiveList<GameObject>();
-		this->addRequest = new PrimitiveMap<GameObject,GameOn>();
-		this->deleteRequest = new PrimitiveMap<GameObject,cppObjectClass>();
-		this->components = new PrimitiveMap<cppObjectClass,PrimitiveList<GameOn>>();
-		this->gameobjects = new PrimitiveList<GameObject>();
+	ame::GameManager::GameManager(){
+		this->deleteERequest = new ame::PrimitiveList<ame::GameObject>();
+		this->addRequest = new ame::PrimitiveMap<ame::GameObject,ame::GameOn>();
+		this->deleteRequest = new ame::PrimitiveMap<ame::GameObject,ame::cppObjectClass>();
+		this->components = new ame::PrimitiveMap<ame::cppObjectClass,ame::PrimitiveList<ame::GameOn>>();
+		this->m_gobjects = new ame::PrimitiveList<ame::GameObject>();
 	}
 	
-	GameManager::~GameManager(){
+	ame::GameManager::~GameManager(){
 		delete this->deleteERequest;
 		delete this->addRequest;
 		delete this->deleteRequest;
 		delete this->components;
-		delete this->gameobjects;
+		delete this->m_gobjects;
 	}
 	
-	int GameManager::createEntity(GameObject* obj){
+	int ame::GameManager::createEntity(ame::GameObject* obj){
 		GameManagerLog("GameManager", "createEntity",  "println", "with parameters");
-		GameManagerLog("GameManager", "createEntity",  "println", String(this->gameobjects->getPosition()));
-		obj->setId(this->gameobjects->getPosition());
-		this->gameobjects->addPointer(obj);
+		GameManagerLog("GameManager", "createEntity",  "println", String(this->m_gobjects->getPosition()));
+		obj->setId(this->m_gobjects->getPosition());
+		this->m_gobjects->addPointer(obj);
 		return obj->getId();
 	}
 	
-	GameObject* GameManager::createGameObject(GameObject* obj){
-		GameManagerLog("GameManager", "createGameObject",  "println", "with parameters");
-		GameManagerLog("GameManager", "createGameObject",  "println", String(this->gameobjects->getPosition()));
-		obj->setId(this->gameobjects->getPosition());
-		this->gameobjects->addPointer(obj);
+	ame::GameObject* ame::GameManager::createGameObject(ame::GameObject* obj){
+		GameManagerLog("GameManager", "createame::GameObject",  "println", "with parameters");
+		GameManagerLog("GameManager", "createame::GameObject",  "println", String(this->m_gobjects->getPosition()));
+		obj->setId(this->m_gobjects->getPosition());
+		this->m_gobjects->addPointer(obj);
 		return obj;
 	}
 	
-	int GameManager::createEntity(){
+	int ame::GameManager::createEntity(){
 		GameManagerLog("GameManager", "createEntity",  "println", "no parameters");
-		GameManagerLog("GameManager", "createEntity",  "println", String(this->gameobjects->getPosition()));
-		GameObject* obj = new GameObject();
-		obj->setId(this->gameobjects->getPosition());
-		this->gameobjects->addPointer(obj);
+		GameManagerLog("GameManager", "createEntity",  "println", String(this->m_gobjects->getPosition()));
+		ame::GameObject* obj = new ame::GameObject();
+		obj->setId(this->m_gobjects->getPosition());
+		this->m_gobjects->addPointer(obj);
 		return obj->getId();
 	}
 	
-	GameObject* GameManager::createGameObject(){
-		GameManagerLog("GameManager", "createGameObject",  "println", "no parameters");
-		GameManagerLog("GameManager", "createGameObject",  "println", String(this->gameobjects->getPosition()));
-		GameObject* obj = new GameObject();
-		obj->setId(this->gameobjects->getPosition());
-		this->gameobjects->addPointer(obj);
+	ame::GameObject* ame::GameManager::createGameObject(){
+		GameManagerLog("GameManager", "createame::GameObject",  "println", "no parameters");
+		GameManagerLog("GameManager", "createame::GameObject",  "println", String(this->m_gobjects->getPosition()));
+		ame::GameObject* obj = new ame::GameObject();
+		obj->setId(this->m_gobjects->getPosition());
+		this->m_gobjects->addPointer(obj);
 		return obj;
 	}
 	
-	void GameManager::deleteEntity(int entity){
+	void ame::GameManager::deleteEntity(int entity){
 		GameManagerLog("GameManager", "deleteEntity",  "println", String(entity));
-		GameObject* obj = this->gameobjects->getByPosition(entity);
+		ame::GameObject* obj = this->m_gobjects->getByPosition(entity);
 		if(obj == nullptr){
 			GameManagerLog("GameManager", "deleteEntity",  "println", "obj == nullptr");
 			return;
 		}
-		List<GameOn>* objChilds = obj->getChilds();
+		ame::List<ame::GameOn>* objChilds = obj->getChilds();
 		if(objChilds == nullptr){
 			GameManagerLog("GameManager", "deleteEntity",  "println", "objChilds == nullptr");
 			return;
 		}
 		GameManagerLog("GameManager", "deleteEntity",  "println", "start to look for the childs on the component lists");
 		for(int x = 0; x < objChilds->getPosition(); x++){
-			GameOn* child = objChilds->getByPosition(x);
-			cppObjectClass* classT = child->getClass();
+			ame::GameOn* child = objChilds->getByPosition(x);
+			ame::cppObjectClass* classT = child->getClass();
 			GameManagerLog("GameManager", "deleteEntity",  "println", String("child class name: ") + classnamae);
-			PrimitiveList<GameOn>* list = this->components->getByPointer(classT);
+			ame::PrimitiveList<ame::GameOn>* list = this->components->getByPointer(classT);
 			if(list == nullptr){
 				GameManagerLog("GameManager", "deleteEntity",  "println", "list == nullptr");
 				continue;
@@ -80,81 +80,81 @@
 			GameManagerLog("GameManager", "deleteEntity",  "println", "removing from the component list");
 			list->removeByPointer(child);
 		}
-		GameManagerLog("GameManager", "deleteEntity",  "println", "removing-deleting from the gameobjects list");
-		this->gameobjects->removeDeleteByPosition(entity);
+		GameManagerLog("GameManager", "deleteEntity",  "println", "removing-deleting from the ame::GameObjects list");
+		this->m_gobjects->removeDeleteByPosition(entity);
 	}
 	
-	void GameManager::deleteGameObject(GameObject* obj){
-		GameManagerLog("GameManager", "deleteGameObject",  "println", "");
-		if(!this->gameobjects->containByPointer(obj)){
-			GameManagerLog("GameManager", "deleteGameObject",  "println", "gameobjects dont contains obj");
+	void ame::GameManager::deleteGameObject(ame::GameObject* obj){
+		GameManagerLog("GameManager", "deleteame::GameObject",  "println", "");
+		if(!this->m_gobjects->containByPointer(obj)){
+			GameManagerLog("GameManager", "deleteame::GameObject",  "println", "ame::GameObjects dont contains obj");
 			return;
 		}
-		List<GameOn>* objChilds = obj->getChilds();
+		ame::List<ame::GameOn>* objChilds = obj->getChilds();
 		if(objChilds == nullptr){
-			GameManagerLog("GameManager", "deleteGameObject",  "println", "objChilds == nullptr");
+			GameManagerLog("GameManager", "deleteame::GameObject",  "println", "objChilds == nullptr");
 			return;
 		}
-		GameManagerLog("GameManager", "deleteGameObject",  "println", "start to look for the childs on the component lists");
+		GameManagerLog("GameManager", "deleteame::GameObject",  "println", "start to look for the childs on the component lists");
 		for(int x = 0; x < objChilds->getPosition(); x++){
 			GameOn* child = objChilds->getByPosition(x);
 			cppObjectClass* cls = child->getClass();
-			GameManagerLog("GameManager", "deleteGameObject",  "println", String("child class name: ") + classnamae);
-			PrimitiveList<GameOn>* list = this->components->getByPointer(cls);
+			GameManagerLog("GameManager", "deleteame::GameObject",  "println", String("child class name: ") + classnamae);
+			PrimitiveList<ame::GameOn>* list = this->components->getByPointer(cls);
 			if(list == nullptr){
-				GameManagerLog("GameManager", "deleteGameObject",  "println", "list == nullptr");
+				GameManagerLog("GameManager", "deleteame::GameObject",  "println", "list == nullptr");
 				continue;
 			}
-			GameManagerLog("GameManager", "deleteGameObject",  "println", "removing from the component list");
+			GameManagerLog("GameManager", "deleteame::GameObject",  "println", "removing from the component list");
 			list->removeByPointer(child);
 		}
-		GameManagerLog("GameManager", "deleteGameObject",  "println", "removing-deleting from the gameobjects list");
-		this->gameobjects->removeDeleteByPointer(obj);
+		GameManagerLog("GameManager", "deleteame::GameObject",  "println", "removing-deleting from the ame::GameObjects list");
+		this->m_gobjects->removeDeleteByPointer(obj);
 	}
 	
-	void GameManager::deleteAllEntities(){
+	void ame::GameManager::deleteAllEntities(){
 		GameManagerLog("GameManager", "deleteAllEntities",  "println", "");
 		for(int x = 0; x < this->components->getPosition(); x++){
-			List<GameOn>* childs = this->components->getByPosition(x);
+			ame::List<ame::GameOn>* childs = this->components->getByPosition(x);
 			childs->reset();
 		}
-		this->gameobjects->resetDelete();
+		this->m_gobjects->resetDelete();
 	}
 	
-	void GameManager::deleteEntityRequest(int entity){
+	void ame::GameManager::deleteEntityRequest(int entity){
 		GameManagerLog("GameManager", "deleteEntityRequest",  "println", String(entity));
-		GameObject* obj = this->gameobjects->getByPosition(entity);
+		ame::GameObject* obj = this->m_gobjects->getByPosition(entity);
 		if(obj == nullptr){
 			return;
 		}
 		deleteERequest->addPointer(obj);
 	}
 	
-	void GameManager::deleteGameObjectRequest(GameObject* obj){
-		GameManagerLog("GameManager", "deleteGameObjectRequest",  "println", "");
-		if(!this->gameobjects->containByPointer(obj)){
+	void ame::GameManager::deleteGameObjectRequest(ame::GameObject* obj){
+		GameManagerLog("GameManager", "deleteame::GameObjectRequest",  "println", "");
+		if(!this->m_gobjects->containByPointer(obj)){
 			return;
 		}
 		deleteERequest->addPointer(obj);
 	}
 	
-	void GameManager::deleteAllEntitiesRequest(){
+	void ame::GameManager::deleteAllEntitiesRequest(){
 		GameManagerLog("GameManager", "deleteAllEntitiesRequest",  "println", "");
 		deleteAllE = true;
 	}
 	
-	int GameManager::getEntity(GameObject* obj){
+	int ame::GameManager::getEntity(ame::GameObject* obj){
 		GameManagerLog("GameManager", "getEntity",  "println", String(obj->getId()));
-		if(gameobjects->containByPointer(obj)){
+		if(this->m_gobjects->containByPointer(obj)){
 			return obj->getId();
 		}
 		return -1;
 	}
 	
-	int GameManager::getEntity(cppObjectClass* cls){
+	int ame::GameManager::getEntity(cppObjectClass* cls){
 		GameManagerLog("GameManager", "getEntity",  "println", entityClassName);
-		for(int x = 0; x < gameobjects->getPosition(); x++){
-			GameOn* child = gameobjects->getByPosition(x);
+		for(int x = 0; x < this->m_gobjects->getPosition(); x++){
+			GameOn* child = this->m_gobjects->getByPosition(x);
 			if(child->getClass() == cls){
 				return x;
 			}
@@ -162,10 +162,10 @@
 		return -1;
 	}
 	
-	GameObject* GameManager::getGameObject(cppObjectClass* cls){
-		GameManagerLog("GameManager", "getGameObject",  "println", entityClassName);
-		for(int x = 0; x < gameobjects->getPosition(); x++){
-			GameObject* obj = gameobjects->getByPosition(x);
+	ame::GameObject* ame::GameManager::getGameObject(ame::cppObjectClass* cls){
+		GameManagerLog("GameManager", "getame::GameObject",  "println", entityClassName);
+		for(int x = 0; x < this->m_gobjects->getPosition(); x++){
+			ame::GameObject* obj = this->m_gobjects->getByPosition(x);
 			if(obj->getClass() == cls){
 				return obj;
 			}
@@ -173,56 +173,56 @@
 		return nullptr;
 	}
 	
-	GameObject* GameManager::getGameObject(int entity){
-		GameManagerLog("GameManager", "getGameObject",  "println", String(entity));
-		return this->gameobjects->getByPosition(entity);
+	ame::GameObject* ame::GameManager::getGameObject(int entity){
+		GameManagerLog("GameManager", "getame::GameObject",  "println", String(entity));
+		return this->m_gobjects->getByPosition(entity);
 	}
 	
-	int GameManager::getLastEntity(){
+	int ame::GameManager::getLastEntity(){
 		GameManagerLog("GameManager", "getLastEntity",  "println", "");
-		int position = this->gameobjects->getPosition();
+		int position = this->m_gobjects->getPosition();
 		if(position <= 0){
 			return -1;
 		}
 		return position-1;
 	}
 	
-	GameObject* GameManager::getLastGameObject(){
-		GameManagerLog("GameManager", "getLastGameObject",  "println", "");
-		int position = this->gameobjects->getPosition();
+	ame::GameObject* ame::GameManager::getLastGameObject(){
+		GameManagerLog("GameManager", "getLastame::GameObject",  "println", "");
+		int position = this->m_gobjects->getPosition();
 		if(position <= 0){
 			return nullptr;
 		}
-		return this->gameobjects->getByPosition(position-1);
+		return this->m_gobjects->getByPosition(position-1);
 	}
 	
-	int GameManager::getFirstEntity(){
+	int ame::GameManager::getFirstEntity(){
 		GameManagerLog("GameManager", "getFirstEntity",  "println", "");
-		int position = this->gameobjects->getPosition();
+		int position = this->m_gobjects->getPosition();
 		if(position <= 0){
 			return -1;
 		}
 		return 0;
 	}
 	
-	GameObject* GameManager::getFirstGameObject(){
-		GameManagerLog("GameManager", "getFirstGameObject",  "println", "");
-		int position = this->gameobjects->getPosition();
+	ame::GameObject* ame::GameManager::getFirstGameObject(){
+		GameManagerLog("GameManager", "getFirstame::GameObject",  "println", "");
+		int position = this->m_gobjects->getPosition();
 		if(position <= 0){
 			return nullptr;
 		}
-		return this->gameobjects->getByPosition(0);
+		return this->m_gobjects->getByPosition(0);
 	}
 	
-	void GameManager::addEntityComponent(int entity, GameOn* component){
+	void ame::GameManager::addEntityComponent(int entity, ame::GameOn* component){
 		GameManagerLog("GameManager", "addEntityComponent",  "println", "");
-		GameObject* obj = this->gameobjects->getByPosition(entity);
+		ame::GameObject* obj = this->m_gobjects->getByPosition(entity);
 		if(obj == nullptr){
 			return;
 		}
-		PrimitiveList<GameOn>* list = this->components->getByPointer(component->getClass());
+		ame::PrimitiveList<ame::GameOn>* list = this->components->getByPointer(component->getClass());
 		if(list == nullptr){
-			list = new PrimitiveList<GameOn>(false);
+			list = new PrimitiveList<ame::GameOn>(false);
 			this->components->addPointers(component->getClass(),list);
 		}
 		if(!list->containByPointer(component)){
@@ -233,12 +233,12 @@
 		}
 	}
 	
-	void GameManager::addGameObjectComponent(GameObject* obj, GameOn* component){
-		GameManagerLog("GameManager", "addGameObjectComponent",  "println", "");
+	void ame::GameManager::addGameObjectComponent(ame::GameObject* obj, GameOn* component){
+		GameManagerLog("GameManager", "addame::GameObjectComponent",  "println", "");
 		if(obj == nullptr){
 			return;
 		}
-		if(!this->gameobjects->containByPointer(obj)){
+		if(!this->m_gobjects->containByPointer(obj)){
 			return;
 		}
 		if(obj->getChilds()->containByPointer(component)){
@@ -246,9 +246,9 @@
 		}
 		obj->attach(component);
 		
-		PrimitiveList<GameOn>* list = this->components->getByPointer(component->getClass());
+		PrimitiveList<ame::GameOn>* list = this->components->getByPointer(component->getClass());
 		if(list == nullptr){
-			list = new PrimitiveList<GameOn>(false);
+			list = new PrimitiveList<ame::GameOn>(false);
 			this->components->addPointers(component->getClass(),list);
 			list->addPointer(component);
 		}else{
@@ -256,31 +256,31 @@
 		}
 	}
 	
-	void GameManager::addEntityComponentRequest(int entity, GameOn* component){
+	void ame::GameManager::addEntityComponentRequest(int entity, GameOn* component){
 		GameManagerLog("GameManager", "addEntityComponentRequest",  "println", "");
-		GameObject* obj = this->gameobjects->getByPosition(entity);
+		ame::GameObject* obj = this->m_gobjects->getByPosition(entity);
 		if(obj == nullptr){
 			return;
 		}
 		addRequest->addPointers(obj,component);
 	}
 	
-	void GameManager::addGameObjectComponentRequest(GameObject* obj, GameOn* component){
-		GameManagerLog("GameManager", "addGameObjectComponentRequest",  "println", "");
-		if(!this->gameobjects->containByPointer(obj)){
+	void ame::GameManager::addGameObjectComponentRequest(ame::GameObject* obj, GameOn* component){
+		GameManagerLog("GameManager", "addame::GameObjectComponentRequest",  "println", "");
+		if(!this->m_gobjects->containByPointer(obj)){
 			return;
 		}
 		addRequest->addPointers(obj,component);
 	}
 	
-	bool GameManager::containComponent(cppObjectClass* cls){
+	bool ame::GameManager::containComponent(cppObjectClass* cls){
 		GameManagerLog("GameManager", "containComponent",  "println", "");
-		for(int xxs = 0; xxs < gameobjects->getPosition(); xxs++){
-			GameObject* obj = gameobjects->getByPosition(xxs);
+		for(int xxs = 0; xxs < this->m_gobjects->getPosition(); xxs++){
+			ame::GameObject* obj = this->m_gobjects->getByPosition(xxs);
 			if(obj == nullptr){
 				return false;
 			}
-			List<GameOn>* objChilds = obj->getChilds();
+			ame::List<ame::GameOn>* objChilds = obj->getChilds();
 			if(objChilds == nullptr){
 				return false;
 			}
@@ -297,9 +297,9 @@
 		return false;
 	}
 	
-	bool GameManager::containEntityComponent(int entity, cppObjectClass* cls){
+	bool ame::GameManager::containEntityComponent(int entity, ame::cppObjectClass* cls){
 		GameManagerLog("GameManager", "containEntityComponent",  "println", "");
-		List<GameOn>* list = this->getEntityComponents(entity);
+		ame::List<ame::GameOn>* list = this->getEntityComponents(entity);
 		
 		if(list == nullptr){
 			return false;
@@ -312,12 +312,12 @@
 		return false;
 	}
 	
-	bool GameManager::containGameObjectComponent(GameObject* obj, cppObjectClass* cls){
-		GameManagerLog("GameManager", "containGameObjectComponent",  "println", "");
+	bool ame::GameManager::containGameObjectComponent(ame::GameObject* obj, ame::cppObjectClass* cls){
+		GameManagerLog("GameManager", "containame::GameObjectComponent",  "println", "");
 		if(obj == nullptr){
 			return false;
 		}
-		List<GameOn>* list = obj->getChilds();
+		ame::List<ame::GameOn>* list = obj->getChilds();
 		
 		if(list == nullptr){
 			return false;
@@ -330,23 +330,23 @@
 		return false;
 	}
 	
-	GameOn* GameManager::getEntityComponent(int entity, int index){
+	ame::GameOn* ame::GameManager::getEntityComponent(int entity, int index){
 		GameManagerLog("GameManager", "getEntityComponent",  "println", "");
-		GameObject* obj = this->gameobjects->getByPosition(entity);
+		ame::GameObject* obj = this->m_gobjects->getByPosition(entity);
 		if(obj == nullptr){
 			return nullptr;
 		}
 		return obj->getChilds()->getByPosition(index);
 	}
 	
-	bool GameManager::isEmpty(){
+	bool ame::GameManager::isEmpty(){
 		GameManagerLog("GameManager", "isEmpty",  "println", "");
-		return gameobjects->isEmpty();
+		return this->m_gobjects->isEmpty();
 	}
 	
-	GameOn* GameManager::getEntityComponent(int entity, cppObjectClass* cls){
+	ame::GameOn* ame::GameManager::getEntityComponent(int entity, ame::cppObjectClass* cls){
 		GameManagerLog("GameManager", "getEntityComponent",  "println", "");
-		List<GameOn>* list = this->getEntityComponents(entity);
+		ame::List<ame::GameOn>* list = this->getEntityComponents(entity);
 		
 		if(list == nullptr){
 			return nullptr;
@@ -359,12 +359,12 @@
 		return nullptr;
 	}
 	
-	GameOn* GameManager::getGameObjectComponent(GameObject* obj, cppObjectClass* cls){
-		GameManagerLog("GameManager", "getGameObjectComponent",  "println", "");
+	ame::GameOn* ame::GameManager::getGameObjectComponent(ame::GameObject* obj, ame::cppObjectClass* cls){
+		GameManagerLog("GameManager", "getame::GameObjectComponent",  "println", "");
 		if(obj == nullptr){
 			return nullptr;
 		}
-		List<GameOn>* list = obj->getChilds();
+		ame::List<ame::GameOn>* list = obj->getChilds();
 		
 		if(list == nullptr){
 			return nullptr;
@@ -377,26 +377,26 @@
 		return nullptr;
 	}
 	
-	GameOn* GameManager::getComponent(cppObjectClass* cls){
+	ame::GameOn* ame::GameManager::getComponent(ame::cppObjectClass* cls){
 		GameManagerLog("GameManager", "getComponent",  "println", "");
-		for(int x = 0; x < gameobjects->getPosition(); x++){
-			for(int xc = 0; xc < gameobjects->getByPosition(x)->getChilds()->getPosition(); xc++){
-				if(gameobjects->getByPosition(x)->getChilds()->getByPosition(xc)->getClass() == cls){
-					return gameobjects->getByPosition(x)->getChilds()->getByPosition(xc);
+		for(int x = 0; x < this->m_gobjects->getPosition(); x++){
+			for(int xc = 0; xc < this->m_gobjects->getByPosition(x)->getChilds()->getPosition(); xc++){
+				if(this->m_gobjects->getByPosition(x)->getChilds()->getByPosition(xc)->getClass() == cls){
+					return this->m_gobjects->getByPosition(x)->getChilds()->getByPosition(xc);
 				}
 			}
 		}
 		return nullptr;
 	}
 	
-	int GameManager::getEntityByComponent(cppObjectClass* cls){
+	int ame::GameManager::getEntityByComponent(ame::cppObjectClass* cls){
 		GameManagerLog("GameManager", "getEntityByComponent",  "println", "");
-		for(int x = 0; x < gameobjects->getPosition(); x++){
-			GameObject* obj = gameobjects->getByPosition(x);
+		for(int x = 0; x < this->m_gobjects->getPosition(); x++){
+			ame::GameObject* obj = this->m_gobjects->getByPosition(x);
 			if(obj == nullptr){
 				return -1;
 			}
-			List<GameOn>* list = obj->getChilds();
+			ame::List<ame::GameOn>* list = obj->getChilds();
 			if(list == nullptr){
 				return -1;
 			}
@@ -413,9 +413,9 @@
 		return -1;
 	}
 	
-	int GameManager::getEntityComponentIndex(int entity, cppObjectClass* cls){
+	int ame::GameManager::getEntityComponentIndex(int entity, ame::cppObjectClass* cls){
 		GameManagerLog("GameManager", "getEntityComponentIndex",  "println", "");
-		List<GameOn>* list = this->getEntityComponents(entity);
+		ame::List<ame::GameOn>* list = this->getEntityComponents(entity);
 		
 		if(list == nullptr){
 			return -1;
@@ -428,12 +428,12 @@
 		return -1;
 	}
 	
-	int GameManager::getGameObjectComponentIndex(GameObject* obj, cppObjectClass* cls){
-		GameManagerLog("GameManager", "getGameObjectComponentIndex",  "println", "");
+	int ame::GameManager::getGameObjectComponentIndex(ame::GameObject* obj, ame::cppObjectClass* cls){
+		GameManagerLog("GameManager", "getame::GameObjectComponentIndex",  "println", "");
 		if(obj == nullptr){
 			return -1;
 		}
-		List<GameOn>* list = obj->getChilds();
+		ame::List<ame::GameOn>* list = obj->getChilds();
 		
 		if(list == nullptr){
 			return -1;
@@ -446,11 +446,11 @@
 		return -1;
 	}
 	
-	int GameManager::getComponentEntity(cppObjectClass* cls){
+	int ame::GameManager::getComponentEntity(ame::cppObjectClass* cls){
 		GameManagerLog("GameManager", "getComponentEntity",  "println", "");
-		for(int x = 0; x < gameobjects->getPosition(); x++){
-			GameObject* obj = gameobjects->getByPosition(x);
-			List<GameOn>* list = obj->getChilds();
+		for(int x = 0; x < this->m_gobjects->getPosition(); x++){
+			ame::GameObject* obj = m_gobjects->getByPosition(x);
+			ame::List<ame::GameOn>* list = obj->getChilds();
 			for(int xs = 0; xs < list->getPosition(); xs++){
 				GameOn* child = list->getByPosition(xs);
 				if(child->getClass() == cls){
@@ -461,42 +461,42 @@
 		return -1;
 	}
 	
-	List<GameOn>* GameManager::getEntityComponents(int entity){
+	ame::List<ame::GameOn>* ame::GameManager::getEntityComponents(int entity){
 		GameManagerLog("GameManager", "getEntityComponents",  "println", "");
-		GameObject* obj = this->gameobjects->getByPosition(entity);
+		ame::GameObject* obj = this->m_gobjects->getByPosition(entity);
 		if(obj != nullptr){
 			return obj->getChilds();
 		}
 		return nullptr;
 	}
 	
-	List<GameOn>* GameManager::getGameObjectComponents(GameObject* obj){
-		GameManagerLog("GameManager", "getGameObjectComponents",  "println", "");
+	ame::List<ame::GameOn>* ame::GameManager::getGameObjectComponents(ame::GameObject* obj){
+		GameManagerLog("GameManager", "getame::GameObjectComponents",  "println", "");
 		if(obj != nullptr){
 			return obj->getChilds();
 		}
 		return nullptr;
 	}
 	
-	List<GameOn>* GameManager::getComponents(cppObjectClass* cls){
+	ame::List<ame::GameOn>* ame::GameManager::getComponents(ame::cppObjectClass* cls){
 		GameManagerLog("GameManager", "getComponents",  "println", "");
-		PrimitiveList<GameOn>* list = this->components->getByPointer(cls);
+		ame::PrimitiveList<ame::GameOn>* list = this->components->getByPointer(cls);
 		if(list == nullptr){
-			list = new PrimitiveList<GameOn>(false);
+			list = new PrimitiveList<ame::GameOn>(false);
 			this->components->addPointers(cls,list);
 		}
 		return list;
 	}
 	
-	void GameManager::deleteComponent(cppObjectClass* cls){
+	void ame::GameManager::deleteComponent(ame::cppObjectClass* cls){
 		GameManagerLog("GameManager", "deleteComponent",  "println", "");
-		for(int x= 0; x < gameobjects->getPosition(); x++){
-			GameOn* gameon = nullptr;
-			GameObject* obj = this->gameobjects->getByPosition(x);
+		for(int x= 0; x < this->m_gobjects->getPosition(); x++){
+			ame::GameOn* gameon = nullptr;
+			ame::GameObject* obj = this->m_gobjects->getByPosition(x);
 			if(obj != nullptr){
 				gameon = obj->detach(cls);
 			}
-			PrimitiveList<GameOn>* list = this->components->getByPointer(cls);
+			ame::PrimitiveList<ame::GameOn>* list = this->components->getByPointer(cls);
 			if(list != nullptr){
 				list->removeByPointer(gameon);
 			}
@@ -507,42 +507,42 @@
 		}
 	}
 	
-	GameOn* GameManager::removeEntityComponent(int entity, cppObjectClass* cls){
+	ame::GameOn* ame::GameManager::removeEntityComponent(int entity, ame::cppObjectClass* cls){
 		GameManagerLog("GameManager", "removeEntityComponent",  "println", "");
-		GameOn* gameon = nullptr;
-		GameObject* obj = this->gameobjects->getByPosition(entity);
+		ame::GameOn* gameon = nullptr;
+		ame::GameObject* obj = this->m_gobjects->getByPosition(entity);
 		if(obj != nullptr){
 			gameon = obj->detach(cls);
 		}
-		PrimitiveList<GameOn>* list = this->components->getByPointer(cls);
+		ame::PrimitiveList<ame::GameOn>* list = this->components->getByPointer(cls);
 		if(list != nullptr){
 			list->removeByPointer(gameon);
 		}
 		return gameon;
 	}
 	
-	GameOn* GameManager::removeGameObjectComponent(GameObject* obj, cppObjectClass* cls){
-		GameManagerLog("GameManager", "removeGameObjectComponent",  "println", "");
-		GameOn* gameon = nullptr;
+	ame::GameOn* ame::GameManager::removeGameObjectComponent(ame::GameObject* obj, ame::cppObjectClass* cls){
+		GameManagerLog("GameManager", "removeame::GameObjectComponent",  "println", "");
+		ame::GameOn* gameon = nullptr;
 		if(obj != nullptr){
 			gameon = obj->detach(cls);
 		}
-		PrimitiveList<GameOn>* list = this->components->getByPointer(cls);
+		PrimitiveList<ame::GameOn>* list = this->components->getByPointer(cls);
 		if(list != nullptr){
 			list->removeByPointer(gameon);
 		}
 		return gameon;
 	}
 	
-	void GameManager::deleteEntityComponent(int entity, cppObjectClass* cls){
+	void ame::GameManager::deleteEntityComponent(int entity, ame::cppObjectClass* cls){
 		GameManagerLog("GameManager", "deleteEntityComponent",  "println", "");
-		GameObject* obj = this->gameobjects->getByPosition(entity);
+		ame::GameObject* obj = this->m_gobjects->getByPosition(entity);
 		if(obj == nullptr){
 			return;
 		}
 		
-		GameOn* gon = obj->detach(cls);
-		PrimitiveList<GameOn>* list = this->components->getByPointer(cls);
+		ame::GameOn* gon = obj->detach(cls);
+		ame::PrimitiveList<ame::GameOn>* list = this->components->getByPointer(cls);
 		if(list != nullptr){
 			list->removeByPointer(gon);
 		}
@@ -551,14 +551,14 @@
 		}
 	}
 	
-	void GameManager::deleteGameObjectComponent(GameObject* obj, cppObjectClass* cls){
-		GameManagerLog("GameManager", "deleteGameObjectComponent",  "println", "");
+	void ame::GameManager::deleteGameObjectComponent(ame::GameObject* obj, ame::cppObjectClass* cls){
+		GameManagerLog("GameManager", "deleteame::GameObjectComponent",  "println", "");
 		if(obj == nullptr){
 			return;
 		}
 		
-		GameOn* gon = obj->detach(cls);
-		PrimitiveList<GameOn>* list = this->components->getByPointer(cls);
+		ame::GameOn* gon = obj->detach(cls);
+		ame::PrimitiveList<ame::GameOn>* list = this->components->getByPointer(cls);
 		if(list != nullptr){
 			list->removeByPointer(gon);
 		}
@@ -567,25 +567,25 @@
 		}
 	}
 	
-	void GameManager::deleteEntityComponents(int entity){
+	void ame::GameManager::deleteEntityComponents(int entity){
 		GameManagerLog("GameManager", "deleteEntityComponents",  "println", "");
-		GameObject* obj = this->gameobjects->getByPosition(entity);
+		ame::GameObject* obj = this->m_gobjects->getByPosition(entity);
 		if(obj == nullptr){
 			return;
 		}
 		
-		List<GameOn>* list = obj->getChilds();
+		ame::List<ame::GameOn>* list = obj->getChilds();
 		if(list == nullptr){
 			return;
 		}
-		PrimitiveList<cppObjectClass> classT;
+		ame::PrimitiveList<ame::cppObjectClass> classT;
 		for(int x = 0; x < list->getPosition(); x++){
 			GameOn* gon = list->getByPosition(x);
 			classT.addPointer(gon->getClass());
 		}
 		for(int x = 0; x < classT.getPosition(); x++){
 			cppObjectClass* cls = classT.getByPosition(x);
-			PrimitiveList<GameOn>* list2 = this->components->getByPointer(cls);
+			PrimitiveList<ame::GameOn>* list2 = this->components->getByPointer(cls);
 			if(list2 == nullptr){
 				continue;
 			}
@@ -598,28 +598,28 @@
 		}
 	}
 	
-	void GameManager::deleteGameObjectComponents(GameObject* obj){
-		GameManagerLog("GameManager", "deleteGameObjectComponents",  "println", "");
+	void ame::GameManager::deleteGameObjectComponents(ame::GameObject* obj){
+		GameManagerLog("GameManager", "deleteame::GameObjectComponents",  "println", "");
 		if(obj == nullptr){
 			return;
 		}
 		
-		List<GameOn>* list = obj->getChilds();
+		ame::List<ame::GameOn>* list = obj->getChilds();
 		if(list == nullptr){
 			return;
 		}
-		PrimitiveList<cppObjectClass> classT;
+		ame::PrimitiveList<ame::cppObjectClass> classT;
 		for(int x = 0; x < list->getPosition(); x++){
 			GameOn* gon = list->getByPosition(x);
 			classT.addPointer(gon->getClass());
 		}
 		for(int x = 0; x < classT.getPosition(); x++){
-			cppObjectClass* cls = classT.getByPosition(x);
-			PrimitiveList<GameOn>* list2 = this->components->getByPointer(cls);
+			ame::cppObjectClass* cls = classT.getByPosition(x);
+			ame::PrimitiveList<ame::GameOn>* list2 = this->components->getByPointer(cls);
 			if(list2 == nullptr){
 				continue;
 			}
-			GameOn* gon = obj->detach(cls);
+			ame::GameOn* gon = obj->detach(cls);
 			if(gon == nullptr){
 				continue;
 			}
@@ -628,55 +628,55 @@
 		}
 	}
 	
-	void GameManager::deleteEntityComponentRequest(int entity, cppObjectClass* cls){
+	void ame::GameManager::deleteEntityComponentRequest(int entity, ame::cppObjectClass* cls){
 		GameManagerLog("GameManager", "deleteEntityComponentRequest",  "println", "");
-		GameObject* obj = this->gameobjects->getByPosition(entity);
+		ame::GameObject* obj = this->m_gobjects->getByPosition(entity);
 		if(obj == nullptr){
 			return;
 		}
 		deleteRequest->addPointers(obj,cls);
 	}
 	
-	void GameManager::deleteGameObjectComponentRequest(GameObject* obj, cppObjectClass* cls){
-		GameManagerLog("GameManager", "deleteGameObjectComponentRequest",  "println", "");
-		if(!this->gameobjects->containByPointer(obj)){
+	void ame::GameManager::deleteGameObjectComponentRequest(ame::GameObject* obj, ame::cppObjectClass* cls){
+		GameManagerLog("GameManager", "deleteame::GameObjectComponentRequest",  "println", "");
+		if(!this->m_gobjects->containByPointer(obj)){
 			return;
 		}
 		deleteRequest->addPointers(obj,cls);
 	}
 	
-	void GameManager::removeEntityComponent(int entity, GameOn* component){
+	void ame::GameManager::removeEntityComponent(int entity, ame::GameOn* component){
 		GameManagerLog("GameManager", "removeEntityComponent",  "println", "");
-		GameObject* obj = this->gameobjects->getByPosition(entity);
+		ame::GameObject* obj = this->m_gobjects->getByPosition(entity);
 		if(obj != nullptr){
 			obj->detach(component);
 		}
-		PrimitiveList<GameOn>* list = this->components->getByPointer(component->getClass());
+		ame::PrimitiveList<ame::GameOn>* list = this->components->getByPointer(component->getClass());
 		if(list != nullptr){
 			list->removeByPointer(component);
 		}
 	}
 	
-	void GameManager::removeGameObjectComponent(GameObject* obj, GameOn* component){
-		GameManagerLog("GameManager", "removeGameObjectComponent",  "println", "");
+	void ame::GameManager::removeGameObjectComponent(ame::GameObject* obj, ame::GameOn* component){
+		GameManagerLog("GameManager", "removeame::GameObjectComponent",  "println", "");
 		if(obj != nullptr){
 			 obj->detach(component);
 		}
-		PrimitiveList<GameOn>* list = this->components->getByPointer(component->getClass());
+		ame::PrimitiveList<ame::GameOn>* list = this->components->getByPointer(component->getClass());
 		if(list != nullptr){
 			list->removeByPointer(component);
 		}
 	}
 	
-	void GameManager::deleteEntityComponent(int entity, GameOn* component){
+	void ame::GameManager::deleteEntityComponent(int entity, ame::GameOn* component){
 		GameManagerLog("GameManager", "deleteEntityComponent",  "println", "");
 		if(component != nullptr){
-			GameObject* obj = this->gameobjects->getByPosition(entity);
+			ame::GameObject* obj = this->m_gobjects->getByPosition(entity);
 			if(obj == nullptr){
 				return;
 			}
 			obj->detach(component);
-			PrimitiveList<GameOn>* list = this->components->getByPointer(component->getClass());
+			ame::PrimitiveList<ame::GameOn>* list = this->components->getByPointer(component->getClass());
 			if(list != nullptr){
 				list->removeByPointer(component);
 			}
@@ -684,31 +684,31 @@
 		}
 	}
 	
-	void GameManager::deleteGameObjectComponent(GameObject* obj, GameOn* component){
-		GameManagerLog("GameManager", "deleteGameObjectComponent",  "println", "");
+	void ame::GameManager::deleteGameObjectComponent(ame::GameObject* obj, ame::GameOn* component){
+		GameManagerLog("GameManager", "deleteame::GameObjectComponent",  "println", "");
 		if(component == nullptr){
 			return;
 		}
 		if(obj == nullptr){
 			return;
 		}
-		if(!this->gameobjects->containByPointer(obj)){
+		if(!this->m_gobjects->containByPointer(obj)){
 			return;
 		}
 		obj->detach(component);
-		PrimitiveList<GameOn>* list = this->components->getByPointer(component->getClass());
+		ame::PrimitiveList<ame::GameOn>* list = this->components->getByPointer(component->getClass());
 		if(list != nullptr){
 			list->removeByPointer(component);
 		}
 		delete component;
 	}
 	
-	GameOn* GameManager::removeComponentIterating(Iterator& i, List<GameOn>* listComponents){
+	ame::GameOn* ame::GameManager::removeComponentIterating(ame::Iterator& i, ame::List<ame::GameOn>* listComponents){
 		GameManagerLog("GameManager", "removeComponentIterating",  "println", "");
 		if(listComponents != nullptr){
-			GameOn* gameon = listComponents->getPointer(i);
+			ame::GameOn* gameon = listComponents->getPointer(i);
 			listComponents->remove(i);
-			GameObject* obj = this->gameobjects->getByPosition(gameon->getId());
+			ame::GameObject* obj = this->m_gobjects->getByPosition(gameon->getId());
 			if(obj != nullptr){
 				obj->detach(gameon);
 			}
@@ -718,12 +718,12 @@
 		return nullptr;
 	}
 	
-	void GameManager::deleteComponentIterating(Iterator& i, List<GameOn>* listComponents){
+	void ame::GameManager::deleteComponentIterating(ame::Iterator& i, ame::List<ame::GameOn>* listComponents){
 		GameManagerLog("GameManager", "deleteComponentIterating",  "println", "");
 		if(listComponents != nullptr){
-			GameOn* gameon = listComponents->getPointer(i);
+			ame::GameOn* gameon = listComponents->getPointer(i);
 			listComponents->remove(i);
-			GameObject* obj = this->gameobjects->getByPosition(gameon->getId());
+			ame::GameObject* obj = this->m_gobjects->getByPosition(gameon->getId());
 			if(obj == nullptr){
 				return;
 			}
@@ -733,7 +733,7 @@
 		}
 	}
 	
-	void GameManager::deleteComponentsFromList(PrimitiveList<GameOn>* listComponents){
+	void ame::GameManager::deleteComponentsFromList(ame::PrimitiveList<ame::GameOn>* listComponents){
 		GameManagerLog("GameManager", "deleteComponentsFromList",  "println", "");
 		if(listComponents == nullptr){
 			return;
@@ -741,15 +741,15 @@
 		if(listComponents->isEmpty()){
 			return;
 		}
-		cppObjectClass* s = this->components->getKeyByPointer(listComponents);
+		ame::cppObjectClass* s = this->components->getKeyByPointer(listComponents);
 		if(s == nullptr){
 			return;
 		}
-		for(int x = 0; x > this->gameobjects->getPosition(); x++){
-			GameObject* obj = this->gameobjects->getByPosition(x);
-			List<GameOn>* list = obj->getChilds();
+		for(int x = 0; x > this->m_gobjects->getPosition(); x++){
+			ame::GameObject* obj = this->m_gobjects->getByPosition(x);
+			ame::List<ame::GameOn>* list = obj->getChilds();
 			for(int x = 0; x < list->getPosition(); x++){
-				GameOn* gameon = list->getByPosition(x);
+				ame::GameOn* gameon = list->getByPosition(x);
 				if(gameon->getClass() == s){
 					list->removeDeleteByPosition(x);
 					x--;
@@ -759,36 +759,36 @@
 		listComponents->reset();
 	}
 	
-	int GameManager::getEntitySize(){
+	int ame::GameManager::getEntitySize(){
 		GameManagerLog("GameManager", "getEntitySize",  "println", "");
-		return gameobjects->getPosition();
+		return this->m_gobjects->getPosition();
 	}
 	
-	int GameManager::getComponentSize(int entity){
+	int ame::GameManager::getComponentSize(int entity){
 		GameManagerLog("GameManager", "getComponentSize",  "println", "");
-		if(gameobjects->getByPosition(entity)==nullptr){
+		if(this->m_gobjects->getByPosition(entity)==nullptr){
 			return -1;
 		}
-		return gameobjects->getByPosition(entity)->getChilds()->getPosition();
+		return this->m_gobjects->getByPosition(entity)->getChilds()->getPosition();
 	}
 	
-	void GameManager::rearrange(){
+	void ame::GameManager::rearrange(){
 		GameManagerLog("GameManager", "rearrange",  "println", "");
-		for(int x = 0; x < gameobjects->getPosition(); x++){
-			GameOn* gameon = gameobjects->getByPosition(x);
+		for(int x = 0; x < this->m_gobjects->getPosition(); x++){
+			GameOn* gameon = this->m_gobjects->getByPosition(x);
 			gameon->setId(x);
 		}
 	}
 	
-	String GameManager::getClassName(){
-		return "GameManager";
+	ame::cppObjectClass* ame::GameManager::getClass(){
+		return ame::Class<GameManager>::classType;
 	}
 	
-	String GameManager::toString(){
-		return "GameManager"+String(gameobjects->getSize());
+	String ame::GameManager::toString(){
+		return "GameManager"+String(this->m_gobjects->getSize());
 	}
 	
-	bool GameManager::equal(cppObject *b){
+	bool ame::GameManager::equal(ame::cppObject *b){
 		if(b == this){
 			return true;
 		}
@@ -798,12 +798,12 @@
 		return false;
 	}
 	
-	cppObject* GameManager::clone(){
-		return new GameManager();
+	ame::cppObject* ame::GameManager::clone(){
+		return new ame::GameManager();
 	}
 	
-	void GameManager::update(float tpc){
-		// Serial.println("start gamemanager update");
+	void ame::GameManager::update(float tpc){
+		// Serial.println("start ame::GameManager update");
 		for(int txp = 0; txp < this->addRequest->getPosition(); txp++){
 			GameManagerLog("GameManager", "update",  "println", "addRequest");
 			this->addGameObjectComponent(this->addRequest->getKeyByPosition(txp), this->addRequest->getByPosition(txp));
@@ -827,7 +827,7 @@
 			deleteAllE = false;
 			this->deleteAllEntities();
 		}
-		// Serial.println("end gamemanager update");
+		// Serial.println("end ame::GameManager update");
 	}
 	
 

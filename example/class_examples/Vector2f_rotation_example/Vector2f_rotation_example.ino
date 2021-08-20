@@ -1,6 +1,8 @@
 
 #include "Vector2f.h"
 
+using namespace ame;
+
 Vector2f line;
 
 void setup() {

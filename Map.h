@@ -6,6 +6,8 @@
 #include "Iterator.h"
 #include "RawMap.h"
 
+namespace ame{
+
 template <class K,class V>
 class Map : public cppObject , public Iterator , public RawMap<K,V>{	
     public:
@@ -20,4 +22,6 @@ class Map : public cppObject , public Iterator , public RawMap<K,V>{
 		virtual Map<K,V>* clone(bool owningMemory)=0;
 	private:
 };
+
+}
 #endif 

@@ -6,6 +6,8 @@
 #include "ArrayList.h"
 #include "List.h"
 
+namespace ame{
+
 class SerialConnection {
     public:
 		SerialConnection();
@@ -39,5 +41,7 @@ class SerialConnection {
 		bool receive=false;
 		static ArrayList<char,84>* validChars;
 };
+
+}
 
 #endif 

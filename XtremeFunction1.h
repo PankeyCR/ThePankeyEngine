@@ -11,6 +11,8 @@
 	#define XtremeFunction1Log(name,method,type,mns)
 #endif
 
+namespace ame{
+
 template<class T, class... args>
 class XtremeFunction1 : public ModifiableFunction<T,args...>{
 	public:
@@ -34,8 +36,8 @@ class XtremeFunction1 : public ModifiableFunction<T,args...>{
 		}
     
 		//cppObject part
-		String getClassName(){
-			return "XtremeFunction1";
+		cppObjectClass* getClass(){
+			return Class<XtremeFunction1>::classType;
 		}
 		String toString(){
 			return "XtremeFunction1";
@@ -87,7 +89,9 @@ class XtremeFunction1 : public ModifiableFunction<T,args...>{
 		virtual int getIterationSize(){
 			return 200;
 		}
-		virtual bool instanceof(String name){return name == "XtremeFunction1" || name == "ModifiableFunction" || name == "Function";}
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<XtremeFunction1>::classType || ModifiableFunction::instanceof(cls);
+			}
 		
 	protected:
 		

@@ -12,6 +12,8 @@
 #include "NMapEvent.h"
 #include "Arduino.h"
 
+namespace ame{
+
 template <class N,class K,class V,class L>
 class FluxEvent : public NMapEvent<N,Nm,Nl,K,V,Ms,L,Ls> , public FluxNMap<N,K,V,L>{
 public:	
@@ -92,7 +94,7 @@ public:
 			}		
 	}
 	
-	void NestMap(N mainName,List<N> *arrayMap){
+	void NestMap(N mainName, List<N> *arrayMap){
 		int size = arrayMap->getPos();
 		if(size == 0){
 			return;
@@ -114,7 +116,7 @@ public:
 		}			
 	}
 	
-	void NestMap(N *mainName,List<N> *arrayMap){
+	void NestMap(N *mainName, List<N> *arrayMap){
 		int size = arrayMap->getPos();
 		if(size == 0){
 			return;
