@@ -1,13 +1,13 @@
 
-#ifndef MinimalError_h
-#define MinimalError_h
+#ifndef MinimalError_hpp
+#define MinimalError_hpp
 
-#include "FunctionConfiguration.h"
-#include "ModifiableFunction.h"
-#include "XtremeFunction1.h"
-#include "AbsoluteRandom.h"
-#include "DataSet.h"
-#include "ArrayFunction.h"
+#include "FunctionConfiguration.hpp"
+#include "ModifiableFunction.hpp"
+#include "XtremeFunction1.hpp"
+#include "AbsoluteRandom.hpp"
+#include "DataSet.hpp"
+#include "ArrayFunction.hpp"
 #include "Stream.h"
 
 #ifdef MinimalErrorLogApp

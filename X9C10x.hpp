@@ -1,10 +1,10 @@
 
-#ifndef X9C10x_h
-#define X9C10x_h
+#ifndef X9C10x_hpp
+#define X9C10x_hpp
 
-#include "AbstractRead.h"
-#include "TimeControl.h"
-#include "TimeElapsed.h"
+#include "AbstractRead.hpp"
+#include "TimeControl.hpp"
+#include "TimeElapsed.hpp"
 
 namespace ame{
 

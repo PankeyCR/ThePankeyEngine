@@ -1,9 +1,9 @@
-#ifndef ReflectedObject_h
-#define ReflectedObject_h
 
-#include "Arduino.h"
-#include "cppObject.h"
-#include "Vector2f.h"
+#ifndef ReflectedObject_hpp
+#define ReflectedObject_hpp
+
+#include "cppObject.hpp"
+#include "Vector2f.hpp"
 /*
 template <class R>
 class ReflectedObject{	

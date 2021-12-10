@@ -23,12 +23,12 @@ namespace ame{
 
 class Statement{
     public:
-		Statement();
-		virtual ~Statement();
+		Statement(){}
+		virtual ~Statement(){}
 		
-		virtual void operator=(Statement b);
-		virtual bool operator==(Statement b);
-		virtual bool operator!=(Statement b);
+		virtual void operator=(Statement b){}
+		virtual bool operator==(Statement b){return false;}
+		virtual bool operator!=(Statement b){return false;}
 	protected:
 		List<String>* syntaxList = nullptr;
 };

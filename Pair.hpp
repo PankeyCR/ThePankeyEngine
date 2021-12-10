@@ -1,7 +1,7 @@
 
 
-#ifndef Pair_h
-#define Pair_h
+#ifndef Pair_hpp
+#define Pair_hpp
 
 namespace ame{
 

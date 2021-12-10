@@ -17,8 +17,8 @@ The listener memory is not manged by this class
 	#include "DefaultStateManager.hpp"
 #endif 
 #if defined(ame_untilLevel_6)
-	#include "TimeControl.h"
-	#include "SimpleTimer.h"
+	#include "TimeControl.hpp"
+	#include "SimpleTimer.hpp"
 #endif 
 #if defined(ame_untilLevel_6)
 	#include "Listener.hpp"

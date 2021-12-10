@@ -13,7 +13,7 @@
 #include "AppSettings.hpp"
 #endif 
 #if defined(ame_untilLevel_6)
-#include "TimeControl.h"
+#include "TimeControl.hpp"
 #endif 
 #if defined(ame_untilLevel_8)
 #include "MemoryPool.hpp"

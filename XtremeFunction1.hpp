@@ -1,11 +1,11 @@
 
-#ifndef XtremeFunction1_h
-#define XtremeFunction1_h
+#ifndef XtremeFunction1_hpp
+#define XtremeFunction1_hpp
 
-#include "ModifiableFunction.h"
+#include "ModifiableFunction.hpp"
 
 #ifdef XtremeFunction1LogApp
-	#include "Logger.h"
+	#include "Logger.hpp"
 	#define XtremeFunction1Log(name,method,type,mns) Log(name,method,type,mns)
 #else
 	#define XtremeFunction1Log(name,method,type,mns)

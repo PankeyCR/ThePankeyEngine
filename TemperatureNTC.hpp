@@ -1,7 +1,7 @@
 
 
-#ifndef TemperatureNTC_h
-#define TemperatureNTC_h
+#ifndef TemperatureNTC_hpp
+#define TemperatureNTC_hpp
 
 #include "Arduino.h"
 
@@ -9,13 +9,37 @@ namespace ame{
 
 class TemperatureNTC{
     public:
-		TemperatureNTC();
-		virtual ~TemperatureNTC();
+		TemperatureNTC(){}
+		virtual ~TemperatureNTC(){}
 		
-		void initialize();
-		float getTemperature(int pin);
-		float getResistance(int pin);
-		float getVolt(int pin);
+		void initialize(){
+			//Global parameters calculation
+			beta=(log(RT1/RT2))/((1/T1)-(1/T2));
+			Rinf=R0*exp(-beta/T0);
+		}
+		
+		float getTemperature(int pin){
+			float valor= analogRead(pin);  
+			Vout = (valor/1023)*5; 
+			Rout = (Raux*Vout/(Vin-Vout));
+
+			TempK=(beta/log(Rout/Rinf));
+			TempC=TempK-273.15;
+			return TempC;
+		}
+		
+		float getResistance(int pin){
+			float valor= analogRead(pin);  
+			Vout = (valor/1023)*5; 
+			Rout = (Raux*Vout/(Vin-Vout));
+			return Rout;
+		}
+		
+		float getVolt(int pin){
+			float valor= analogRead(pin);  
+			float v = (valor/1023)*5; 
+			return v;
+		}
 	protected:
 		float Vin=5.0;     // [V]        Supply voltage in the Voltage-Divider
 		float Raux=10000;  // [ohm]      Secondary resistor in the Voltage-Divider
