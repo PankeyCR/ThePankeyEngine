@@ -1,7 +1,7 @@
 
-#include "KVMap.h"
-#include "Map.h"
-#include "MemoryFree.h"
+#include "KVMap.hpp"
+#include "Map.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
@@ -12,7 +12,7 @@ void setup() {
 }
 void loop(){
   Serial.println("////////////start");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
   testMap = new KVMap<String,int,10>();
   
   testMap->addLValues("test", 15);
@@ -27,10 +27,10 @@ void loop(){
   Serial.print("Total Size Available:  ");Serial.println(testMap->getSize());
   Serial.print("Total Size Used:  ");Serial.println(testMap->getPosition());
   
-  for(Iterator i : *testMap){
-    Serial.print("Actual Position:  ");Serial.println(i.getIteration());
-    Serial.print("Actual Key:  ");Serial.println(testMap->getKey(i));
-    Serial.print("Actual Value:  ");Serial.println(testMap->getLValue(i));
+  for(int x = 0; x < testMap->getPosition(); x++){
+    Serial.print("Actual Position:  ");Serial.println(x);
+    Serial.print("Actual Key:  ");Serial.println(testMap->getKey(x));
+    Serial.print("Actual Value:  ");Serial.println(testMap->getValue(x));
   }
 
   
@@ -47,12 +47,12 @@ void loop(){
   Serial.print("Total Size Available:  ");Serial.println(testMap->getSize());
   Serial.print("Total Size Used:  ");Serial.println(testMap->getPosition());
   
-  for(Iterator i : *testMap){
-    Serial.print("Actual Position:  ");Serial.println(i.getIteration());
-    Serial.print("Actual Key:  ");Serial.println(testMap->getKey(i));
-    Serial.print("Actual Value:  ");Serial.println(testMap->getLValue(i));
+  for(int x = 0; x < testMap->getPosition(); x++){
+    Serial.print("Actual Position:  ");Serial.println(x);
+    Serial.print("Actual Key:  ");Serial.println(testMap->getKey(x));
+    Serial.print("Actual Value:  ");Serial.println(testMap->getValue(x));
   }
   delete testMap;
   Serial.println("////////////end");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 }

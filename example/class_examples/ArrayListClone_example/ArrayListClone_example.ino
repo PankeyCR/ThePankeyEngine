@@ -1,7 +1,7 @@
 
-#include "ArrayList.h"
-#include "List.h"
-#include "MemoryFree.h"
+#include "ArrayList.hpp"
+#include "List.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
@@ -10,26 +10,28 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(freeMemory());
+  Serial.println("///////////////////////////start");
+  Serial.println(getRamSize());
   ArrayList<String,10> testList;
 
-  testList.addLValue("names");
-  testList.addLValue("node");
-  testList.addLValue("pankey");
-  testList.addLValue("test");
-  testList.addLValue("monkey");
+  testList.add("names");
+  testList.add("node");
+  testList.add("pankey");
+  testList.add("test");
+  testList.add("monkey");
   
   Serial.println("testList Iterator");
-  for(Iterator i : testList){
-    Serial.println(testList.getLValue(i));
+  for(String& i : testList){
+    Serial.println(i);
   }
   
   List<String>* cloneList = testList.clone();
   
   Serial.println("cloneList Iterator");
-  for(Iterator i : *cloneList){
-    Serial.println(cloneList->getLValue(i));
+  for(int x = 0; x < cloneList->getPosition(); x++){
+    Serial.println(*cloneList->getByPosition(x));
   }
   delete cloneList;
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
+  Serial.println("///////////////////////////end");
 }

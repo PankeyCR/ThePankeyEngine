@@ -1,7 +1,7 @@
 
-#include "KVMap.h"
-#include "Map.h"
-#include "MemoryFree.h"
+#include "KVMap.hpp"
+#include "Map.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
@@ -13,7 +13,7 @@ void setup() {
 
 void loop() {
   Serial.println("////////////start");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
   testMap = new KVMap<int,String,10>();
 
   testMap->addPointers(new int(85),new String("names"));
@@ -22,21 +22,21 @@ void loop() {
   testMap->addPointers(new int(7),new String("test"));
   testMap->addPointers(new int(0),new String("monkey"));
   
-  for(Iterator i : *testMap){
-    Serial.print(testMap->getKey(i));
+  for(int x = 0; x < testMap->getPosition(); x++){
+    Serial.print(testMap->getKey(x));
     Serial.print(" ");
-    Serial.println(testMap->getLValue(i));
+    Serial.println(testMap->getValue(x));
   }
 
   Map<int,String>* cloneMap = testMap->clone(true);
   delete testMap;//
   
-  for(Iterator i : *cloneMap){
-    Serial.print(cloneMap->getKey(i));
+  for(int x = 0; x < cloneMap->getPosition(); x++){
+    Serial.print(cloneMap->getKey(x));
     Serial.print(" ");
-    Serial.println(cloneMap->getLValue(i));
+    Serial.println(cloneMap->getValue(x));
   }
   delete cloneMap;
   Serial.println("////////////end");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 }

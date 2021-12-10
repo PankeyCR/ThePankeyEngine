@@ -3,16 +3,15 @@
 #define SimpleTimer_h
 
 #include "TimeControl.h"
-#include "TimeElapsed.h"
-#include "List.h"
-#include "PrimitiveList.h"
-#include "cppObjectClass.h"
-#include "Logger.h"
+#include "TimeElapsed.hpp"
+#include "List.hpp"
+#include "PrimitiveList.hpp"
+#include "cppObjectClass.hpp"
 
 
 #if defined(ARDUINO_ARCH_AVR)
-	#include <avr/interrupt.h>
-	#include <avr/io.h>
+	#include <avr/interrupt.hpp>
+	#include <avr/io.hpp>
 
 #elif defined(ARDUINO_ARCH_SAM)
   // SAM-specific code

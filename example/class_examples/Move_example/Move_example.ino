@@ -1,6 +1,6 @@
 
-#include "MemoryFree.h"
-#include "Cast.h"
+#include "MemoryRam.h"
+#include "Cast.hpp"
 
 class MoveExample{
   public:
@@ -48,7 +48,7 @@ void setup() {
 
 void loop() {
   Serial.println("//////////////////////////start");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 
   Serial.println("Test 1");
   Test_1();
@@ -64,7 +64,7 @@ void loop() {
   Test_6();
 
   Serial.println("//////////////////////////end");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 }
 
 void Test_1(){

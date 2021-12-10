@@ -1,7 +1,7 @@
 
-#include "Average.h"
-#include "Vector3f.h"
-#include "MemoryFree.h"
+#include "Average.hpp"
+#include "Vector3f.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
@@ -10,7 +10,8 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(freeMemory());
+  Serial.println("//////////////////////start");
+  Serial.println(getRamSize());
   Vector3f *size = new Vector3f();
 
   //The average class can have 0, 1 or 2 parameters
@@ -34,5 +35,7 @@ void loop() {
   
   Serial.println(average.getAverage().toString());
   }
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
+  
+  Serial.println("//////////////////////end");
 }

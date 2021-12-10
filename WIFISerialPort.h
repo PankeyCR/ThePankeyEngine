@@ -7,6 +7,12 @@
 #include "IPAddress.h"
 #include "SerialMessageState.h"
 
+#if defined(ARDUINO_ARCH_ESP8266)
+	#include "WiFi.h"
+#elif defined(ARDUINO_ARCH_ESP32)
+	#include "WiFi.h"
+#endif
+
 #ifdef WIFISerialPortLogApp
 	#include "Logger.h"
 	#define WIFISerialPortLog(name,method,type,mns) Log(name,method,type,mns)
@@ -38,6 +44,9 @@ class WIFISerialPort : public SerialPort{
 
 	virtual ~WIFISerialPort(){
 		WIFISerialPortLog("WIFISerialPort", "Destructor",  "println", "");
+		if(connected()){
+			stop();
+		}
 	}
 	uint8_t status(){
 		WIFISerialPortLog("WIFISerialPort", "status",  "println", "");

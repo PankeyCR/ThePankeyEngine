@@ -1,10 +1,10 @@
 
-#include "List.h"
-#include "PList.h"
-#include "ArrayList.h"
-#include "LinkedList.h"
-#include "PrimitiveList.h"
-#include "MemoryFree.h"
+#include "List.hpp"
+#include "PList.hpp"
+#include "ArrayList.hpp"
+#include "LinkedList.hpp"
+#include "PrimitiveList.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
@@ -14,7 +14,7 @@ void setup() {
 
 void loop() {
   Serial.println("////////////start");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
   ArrayList<int,15> list;
   //PList<int,15> list(true);
   //PrimitiveList<int> list;
@@ -24,10 +24,10 @@ void loop() {
   list.addPack(0,1,2,5,4);
   list.addPack(0,1,2,5,4,1,2,5,4);
   
-  for(Iterator i : list){
-    Serial.println(list.getLValue(i));
+  for(int& i : list){
+    Serial.println(i);
   }
   Serial.println();
   Serial.println("////////////end");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 }

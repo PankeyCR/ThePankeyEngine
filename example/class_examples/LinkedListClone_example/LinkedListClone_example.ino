@@ -1,11 +1,11 @@
 
-#include "LinkedList.h"
-#include "List.h"
-#include "MemoryFree.h"
+#include "LinkedList.hpp"
+#include "List.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
-List<String> *testList;
+LinkedList<String> *testList;
 
 void setup() {
   Serial.begin(9600);
@@ -13,7 +13,7 @@ void setup() {
 
 void loop() {
   Serial.println("////////////start");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
   testList = new LinkedList<String>();
 
   testList->addPointer(new String("names"));
@@ -22,17 +22,17 @@ void loop() {
   testList->addPointer(new String("test"));
   testList->addPointer(new String("monkey"));
   
-  for(Iterator i : *testList){
-    Serial.println(testList->getLValue(i));
+  for(String& i : *testList){
+    Serial.println(i);
   }
   
   List<String>* cloneList = testList->clone(true);
   delete testList;
   
-  for(Iterator i : *cloneList){
-    Serial.println(cloneList->getLValue(i));
+  for(int x = 0; x < cloneList->getPosition(); x++){
+    Serial.println(*cloneList->getByPosition(x));
   }
   delete cloneList;
   Serial.println("////////////end");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 }

@@ -1,5 +1,5 @@
 
-#include "PirSensor.h"
+#include "PirSensor.hpp"
 
 using namespace ame;
 

@@ -1,6 +1,6 @@
 
-#include "cppObject.h"
-#include "MemoryFree.h"
+#include "cppObject.hpp"
+#include "MemoryRam.h"
 //for instanceof to work you need to implement the getClass method and
 // the instanceof(cppObjectClass* cls) method on your derived classes
 //this example shows a easy way to go through all the derived classes
@@ -49,7 +49,7 @@ void setup() {
 
 void loop() {
   Serial.println("start");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
   cppObject* a = new cppObject();
   cppObject* b = new Tick();
   cppObject* c = new Stop();
@@ -82,5 +82,5 @@ void loop() {
   delete c;
   delete d;
   Serial.println("end");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 }

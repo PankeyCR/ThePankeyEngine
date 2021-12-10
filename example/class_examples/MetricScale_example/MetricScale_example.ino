@@ -1,5 +1,5 @@
 
-#include "MetricScale.h"
+#include "MetricScale.hpp"
 
 using namespace ame;
 

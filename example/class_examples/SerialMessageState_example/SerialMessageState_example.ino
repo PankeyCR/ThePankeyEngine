@@ -4,23 +4,24 @@
 #define DefaultSerialPortLogApp
 #define DefaultPortProtocolLogApp
 
-#include "DefaultLogging.h"
-#include "Logger.h"
+#include "DefaultLogging.hpp"
+#include "Logger.hpp"
 
-#include "Application.h"
-#include "DefaultApplication.h"
-#include "SerialMessageState.h"
-#include "DefaultSerialPort.h"
-#include "DefaultPortProtocol.h"
-#include "Message.h"
-#include "Command.h"
-#include "MemoryFree.h"
+#include "Application.hpp"
+#include "DefaultApplication.hpp"
+#include "SerialMessageState.hpp"
+#include "DefaultSerialPort.hpp"
+#include "DefaultPortProtocol.hpp"
+#include "Message.hpp"
+#include "Command.hpp"
+#include "SerialListener.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
 Application* app;
 
-class Example : public Command<Message>{
+class Example : public SerialListener{
   public:
 	Example(){}
 	void execute(Message* mns){
@@ -49,5 +50,5 @@ void setup() {
 
 void loop() {
   app->update();
-//  Serial.println(freeMemory());
+//  Serial.println(getRamSize());
 }

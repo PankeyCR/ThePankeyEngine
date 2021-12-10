@@ -7,6 +7,12 @@
 #include "IPAddress.h"
 #include "WIFISerialPort.h"
 
+#if defined(ARDUINO_ARCH_ESP8266)
+	#include "WiFi.h"
+#elif defined(ARDUINO_ARCH_ESP32)
+	#include "WiFi.h"
+#endif
+
 #ifdef WIFISerialServerLogApp
 	#include "Logger.h"
 	#define WIFISerialServerLog(name,method,type,mns) Log(name,method,type,mns)
@@ -75,6 +81,10 @@ class WIFISerialServer : public SerialServer{
 			return new WIFISerialPort(client,"ethernet");
 		}
 		return nullptr;
+	}
+	
+	virtual WiFiServer getServer(){
+		return server;
 	}
 	
 	virtual cppObjectClass* getClass(){return Class<WIFISerialServer>::classType;}

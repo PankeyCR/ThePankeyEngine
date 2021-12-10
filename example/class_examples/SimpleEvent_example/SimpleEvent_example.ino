@@ -1,7 +1,7 @@
 
-#include "SimpleEvent.h"
-#include "Event.h"
-#include "MemoryFree.h"
+#include "SimpleEvent.hpp"
+#include "Event.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
@@ -13,15 +13,15 @@ int instancememory;
 
 void setup() {
   Serial.begin(9600);
-  startmemory = freeMemory();
+  startmemory = getRamSize();
   event = new SimpleEvent<String>();
   event->add(&eventMethod);
   event->event("start");
-  instancememory = freeMemory();
+  instancememory = getRamSize();
 
   delete event;
 
-  deletememory = freeMemory();
+  deletememory = getRamSize();
   Serial.print("startmemory ");Serial.println(startmemory);
   Serial.print("instancememory ");Serial.println(instancememory);
   Serial.print("instance ");Serial.println(startmemory-instancememory);

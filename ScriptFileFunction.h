@@ -9,24 +9,24 @@
 #ifndef ScriptFileFunction_h
 #define ScriptFileFunction_h
 
-#include "Arduino.h"
-#include "cppObject.h"
-#include "MonkeyFile.h"
+//#include "Arduino.h"
+//#include "cppObject.h"
+//#include "MonkeyFile.h"
 
-namespace ame{
+//namespace ame{
 
-class ScriptFileFunction : public MonkeyFileFunction{
-    public:
-		ScriptFileFunction();
-		virtual ~ScriptFileFunction();
+//class ScriptFileFunction : public MonkeyFileFunction{
+    //public:
+		//ScriptFileFunction();
+		//virtual ~ScriptFileFunction();
 		
-    	virtual bool SaveFileFunction(MonkeyFile* file, cppObject* instance,String path,String key);
-    	virtual cppObject* LoadFileFunction(MonkeyFile* file, cppObject* attachable,String path,String key);
-    	virtual bool DeleteFileFunction(MonkeyFile* file, cppObject* attachable,String path,String key);
+    	//virtual bool SaveFileFunction(MonkeyFile* file, cppObject* instance,String path,String key);
+    	//virtual cppObject* LoadFileFunction(MonkeyFile* file, cppObject* attachable,String path,String key);
+    	//virtual bool DeleteFileFunction(MonkeyFile* file, cppObject* attachable,String path,String key);
 		
-	protected:
-};
+	//protected:
+//};
 
-}
+//}
 
 #endif 

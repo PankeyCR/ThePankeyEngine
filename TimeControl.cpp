@@ -7,12 +7,10 @@
 
 	ame::TimeControl::TimeControl() {
 		this->timeList = new PrimitiveList<TimeElapsed>();
-		Log("ame::TimeControl", "Constructor", "println","ame::TimeControl: new instance of this class");
 	}
 	
 	ame::TimeControl::~TimeControl() {
 		delete this->timeList;
-		Log("ame::TimeControl", "Destructor", "println","ame::TimeControl: delete instance of this class");
 	}
 	
 	long ame::TimeControl::getTime() {

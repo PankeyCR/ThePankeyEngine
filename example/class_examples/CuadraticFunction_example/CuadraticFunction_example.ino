@@ -1,6 +1,6 @@
 
-#include "CuadraticFunction.h"
-#include "MemoryFree.h"
+#include "CuadraticFunction.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
@@ -13,7 +13,7 @@ void setup() {
 
 void loop() {
   Serial.println("start");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
   fx = new CuadraticFunction<float>();
   fx->set(0, 1);
   fx->set(1, 0);
@@ -25,5 +25,5 @@ void loop() {
   delete fx;
   delete fxyz;
   Serial.println("end");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 }

@@ -1,7 +1,7 @@
 
-#include "FastMonkeyMath.h"
-#include "Vector2f.h"
-#include "Vector3f.h"
+#include "FastMonkeyMath.hpp"
+#include "Vector2f.hpp"
+#include "Vector3f.hpp"
 
 using namespace ame;
 

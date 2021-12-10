@@ -4,12 +4,12 @@
  * the DefaultApplication doesnt have guiNode or rootNode
  */
  
-#include "Application.h"
-#include "SimpleApplication.h"
-#include "DefaultApplication.h"
-#include "LoopState.h"
-#include "StartState.h"
-#include "TimerState.h"
+#include "Application.hpp"
+#include "SimpleApplication.hpp"
+#include "DefaultApplication.hpp"
+#include "LoopState.hpp"
+#include "StartState.hpp"
+#include "TimerState.hpp"
 
 using namespace ame;
 

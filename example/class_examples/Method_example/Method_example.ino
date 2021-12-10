@@ -1,5 +1,5 @@
 
-#include "RobotArmTest.h"
+#include "RobotArmTest.hpp"
 
 using namespace ame;
 
@@ -8,7 +8,7 @@ RobotArmTest *arm;
 void setup() {
   Serial.begin(9600);
   //remember to change the pins values to any allowed pin on your board
-  arm = new RobotArmTest(&Serial,16,5,4);
+  arm = new RobotArmTest(&Serial);
 }
 
 void loop(){

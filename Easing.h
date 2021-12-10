@@ -3,7 +3,7 @@
 #ifndef Easing_h
 #define Easing_h
 
-#include "EaseFunction.h"
+#include "EaseFunction.hpp"
 
 namespace ame{
 	

@@ -1,11 +1,11 @@
 
-#include "List.h"
-#include "PList.h"
-#include "ArrayList.h"
-#include "LinkedList.h"
-#include "PrimitiveList.h"
-#include "Vector3f.h"
-#include "MemoryFree.h"
+#include "List.hpp"
+#include "PList.hpp"
+#include "ArrayList.hpp"
+#include "LinkedList.hpp"
+#include "PrimitiveList.hpp"
+#include "Vector3f.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
@@ -15,7 +15,7 @@ void setup() {
 
 void loop() {
   Serial.println("////////////start");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
   //if you whant to have a variable of an element of the list, is better to do it like this,
   //is not absolutely necessary for the plist, linked list or primitive list, 
   //but to the array list it is because the pointer will be replace
@@ -35,5 +35,5 @@ void loop() {
   Serial.println(direction.toString());
   Serial.println();
   Serial.println("////////////end");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 }

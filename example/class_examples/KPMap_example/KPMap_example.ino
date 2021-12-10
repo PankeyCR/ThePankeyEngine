@@ -1,6 +1,6 @@
 
-#include "KPMap.h"
-#include "Map.h"
+#include "KPMap.hpp"
+#include "Map.hpp"
 
 using namespace ame;
 
@@ -25,11 +25,10 @@ void loop(){
   Serial.print("Total Size Available:  ");Serial.println(testMap->getSize());
   Serial.print("Total Size Used:  ");Serial.println(testMap->getPosition());
   
-  for(Iterator i : *testMap){
-    Serial.print("Actual Position:  ");Serial.println(i.getIteration());
-    Serial.print("Actual Key:  ");Serial.println(testMap->getKey(i));
-    Serial.print("Actual Value:  ");Serial.println(testMap->getLValue(i));
-    //Serial.print("Actual Pointer:  ");Serial.println(testMap->getPointer(i));
+  for(int x = 0; x < testMap->getPosition(); x++){
+    Serial.print("Actual Position:  ");Serial.println(x);
+    Serial.print("Actual Key:  ");Serial.println(testMap->getKey(x));
+    Serial.print("Actual Value:  ");Serial.println(testMap->getValue(x));
   }
 
   
@@ -46,11 +45,10 @@ void loop(){
   Serial.print("Total Size Available:  ");Serial.println(testMap->getSize());
   Serial.print("Total Size Used:  ");Serial.println(testMap->getPosition());
   
-  for(Iterator i : *testMap){
-    Serial.print("Actual Position:  ");Serial.println(i.getIteration());
-    Serial.print("Actual Key:  ");Serial.println(testMap->getKey(i));
-    Serial.print("Actual Value:  ");Serial.println(testMap->getLValue(i));
-    //Serial.print("Actual Pointer:  ");Serial.println(testMap->getPointer());
+  for(int x = 0; x < testMap->getPosition(); x++){
+    Serial.print("Actual Position:  ");Serial.println(x);
+    Serial.print("Actual Key:  ");Serial.println(testMap->getKey(x));
+    Serial.print("Actual Value:  ");Serial.println(testMap->getValue(x));
   }
 
   delete testMap;

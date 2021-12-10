@@ -1,5 +1,5 @@
 
-#include "trilean.h"
+#include "trilean.hpp"
 
 using namespace ame;
 
@@ -7,7 +7,11 @@ trilean state;
 
 void setup() {
   Serial.begin(9600);
+}
 
+void loop() {
+  Serial.println("////////////////////start");
+  
   state=true;
   Serial.println(state==true);
   Serial.println(state!=true);
@@ -33,9 +37,5 @@ void setup() {
   Serial.println(state!=unknown);
   Serial.println(unknown);
   
-}
-
-void loop() {
-
-
+  Serial.println("////////////////////end");
 }

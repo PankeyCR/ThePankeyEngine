@@ -1,10 +1,10 @@
 
-#include "List.h"
-#include "PList.h"
-#include "ArrayList.h"
-#include "LinkedList.h"
-#include "PrimitiveList.h"
-#include "MemoryFree.h"
+#include "List.hpp"
+#include "PList.hpp"
+#include "ArrayList.hpp"
+#include "LinkedList.hpp"
+#include "PrimitiveList.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
@@ -14,7 +14,7 @@ void setup() {
 
 void loop() {
   Serial.println("////////////start");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
   //when your adding stuff to any of this lists, they will work the same,
   //but with different mechanisms inside
   //ArrayList<int,5> list;
@@ -30,8 +30,8 @@ void loop() {
 
   //to add stuff to the list with the [] operator and use the iterator, you have to add stuff in order
   Serial.println("list after adding throught []");
-  for(Iterator i : list){
-    Serial.println(list.getLValue(i));
+  for(int& i : list){
+    Serial.println(i);
   }
 
   //the arraylist wont delete delete any pointer, but it will make the list to reset, because its and stack array
@@ -46,8 +46,8 @@ void loop() {
   list.addLValue(22222);
   
   Serial.println("list after adding with the add(lvalue) method");
-  for(Iterator i : list){
-    Serial.println(list.getLValue(i));
+  for(int& i : list){
+    Serial.println(i);
   }
 
   list.resetDelete();
@@ -62,9 +62,9 @@ void loop() {
   //just to prevent any memory leak
   //for the plist, linked list and primitive list, the pointer added is the pointer saved on the list
   Serial.println("list after adding with the add(pointer) method");
-  for(Iterator i : list){
-    Serial.println(list.getLValue(i));
+  for(int& i : list){
+    Serial.println(i);
   }
   Serial.println("////////////end");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 }

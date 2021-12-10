@@ -1,9 +1,9 @@
 
 
-#ifndef ProcessEntry_h
-#define ProcessEntry_h
+#ifndef ProcessEntry_hpp
+#define ProcessEntry_hpp
 
-#include "Processing.h"
+#include "Processing.hpp"
 
 namespace ame{
 

@@ -2,40 +2,40 @@
 #ifndef MapFileFunction_cpp
 #define MapFileFunction_cpp
 
-#include "MapFileFunction.h"
+//#include "MapFileFunction.h"
 
-	template<class K,class V>
-	ame::MapFileFunction<K,V>::MapFileFunction(){
+	//template<class K,class V>
+	//ame::MapFileFunction<K,V>::MapFileFunction(){
 		
-	}
+	//}
 	
-	template<class K,class V>
-	ame::MapFileFunction<K,V>::~MapFileFunction(){
-		// if(this->fileFunctions != nullptr){
-			// delete this->fileFunctions;
-		// }
-	}
+	//template<class K,class V>
+	//ame::MapFileFunction<K,V>::~MapFileFunction(){
+		//// if(this->fileFunctions != nullptr){
+			//// delete this->fileFunctions;
+		//// }
+	//}
 	
-	template<class K,class V>
-	bool ame::MapFileFunction<K,V>::SaveFileFunction(ame::MonkeyFile* file, ame::cppObject* instance,String path,String key){
+	//template<class K,class V>
+	//bool ame::MapFileFunction<K,V>::SaveFileFunction(ame::MonkeyFile* file, ame::cppObject* instance,String path,String key){
 		
 		
-		return false;
-	}
+		//return false;
+	//}
 	
-	template<class K,class V>
-	ame::cppObject* ame::MapFileFunction<K,V>::LoadFileFunction(ame::MonkeyFile* file, ame::cppObject* attachable,String path,String key){
+	//template<class K,class V>
+	//ame::cppObject* ame::MapFileFunction<K,V>::LoadFileFunction(ame::MonkeyFile* file, ame::cppObject* attachable,String path,String key){
 		
 		
-		return nullptr;
-	}
+		//return nullptr;
+	//}
 	
-	template<class K,class V>
-	bool ame::MapFileFunction<K,V>::DeleteFileFunction(ame::MonkeyFile* file, ame::cppObject* attachable,String path,String key){
+	//template<class K,class V>
+	//bool ame::MapFileFunction<K,V>::DeleteFileFunction(ame::MonkeyFile* file, ame::cppObject* attachable,String path,String key){
 		
 		
-		return false;
-	}
+		//return false;
+	//}
 	
 	// template<>
 	// bool ame::MapFileFunction<String,String>::SaveFileFunction(ame::MonkeyFile* file, ame::cppObject* instance,String path,String key){

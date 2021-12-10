@@ -1,8 +1,8 @@
 
-#include "DefaultSettings.h"
-#include "AppSettings.h"
-#include "Vector2f.h"
-#include "Vector3f.h"
+#include "DefaultSettings.hpp"
+#include "AppSettings.hpp"
+#include "Vector2f.hpp"
+#include "Vector3f.hpp"
 
 using namespace ame;
 

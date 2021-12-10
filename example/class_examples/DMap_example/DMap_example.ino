@@ -1,8 +1,8 @@
 
-#include "D5Map.h"
-#include "D4Map.h"
-#include "D3Map.h"
-#include "D2Map.h"
+#include "D5Map.hpp"
+#include "D4Map.hpp"
+#include "D3Map.hpp"
+#include "D2Map.hpp"
 
 using namespace ame;
 

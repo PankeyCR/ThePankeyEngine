@@ -1,6 +1,6 @@
 
-#include "LinkedList.h"
-#include "MemoryFree.h"
+#include "LinkedList.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
@@ -12,15 +12,16 @@ void setup() {
 
 void loop() {
   Serial.println("////////////start");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
+  
   LinkedList<String> list;
-  list.addLValue("pika");
-  list.addLValue("chu");
-  list.addLValue("adventure");
+  list.add("pika");
+  list.add("chu");
+  list.add("adventure");
 
-  for(Iterator i : list){
-    Serial.println(list.getLValue(i));
+  for(String& i : list){
+    Serial.println(i);
   }
   Serial.println("////////////end");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 }

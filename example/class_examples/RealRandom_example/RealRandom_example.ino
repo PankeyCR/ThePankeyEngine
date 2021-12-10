@@ -2,8 +2,8 @@
 #define Log 
 #define LogSerial 
 
-#include "RealRandom.h"
-#include "Logger.h"
+#include "RealRandom.hpp"
+#include "Logger.hpp"
 
 using namespace ame;
 

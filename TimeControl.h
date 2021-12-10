@@ -3,12 +3,22 @@
 #ifndef TimeControl_h
 #define TimeControl_h
 
-#include "Arduino.h"
-#include "cppObject.h"
-#include "PrimitiveList.h"
-#include "List.h"
-#include "TimeElapsed.h"
-#include "Logger.h"
+#ifndef ame_Enviroment_Defined
+	#include "Arduino.h"
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
+#include "cppObject.hpp"
+#include "PrimitiveList.hpp"
+#include "List.hpp"
+#include "TimeElapsed.hpp"
 
 namespace ame{
 

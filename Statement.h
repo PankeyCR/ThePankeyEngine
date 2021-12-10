@@ -3,9 +3,21 @@
 #ifndef Statement_h
 #define Statement_h
 
-#include "GameObject.h"
-#include "Arduino.h"
-#include "List.h"
+#ifndef ame_Enviroment_Defined
+	#include "Arduino.h"
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
+
+#include "GameObject.hpp"
+#include "List.hpp"
 
 namespace ame{
 
