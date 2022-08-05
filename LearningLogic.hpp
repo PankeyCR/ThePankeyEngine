@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_LearningLogic)
+	#define LearningLogic_hpp
+#endif
+
 #ifndef LearningLogic_h
 #define LearningLogic_h
+#define LearningLogic_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "ByteArray.h"
 #include "Logic.h"

@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_GameAction)
+	#define GameAction_hpp
+#endif
 
 #ifndef GameAction_hpp
 #define GameAction_hpp
+#define GameAction_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "GameOn.hpp"
 
@@ -26,6 +41,4 @@ class GameAction : public GameOn{
 
 }
 
-#endif 
-
-#endif 
+#endif

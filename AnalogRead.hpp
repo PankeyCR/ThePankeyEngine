@@ -1,12 +1,26 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_AnalogRead)
+	#define AnalogRead_hpp
+#endif
 
 #ifndef AnalogRead_hpp
 #define AnalogRead_hpp
+#define AnalogRead_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
 #include "AbstractRead.hpp"
 
 namespace ame{
@@ -27,6 +41,4 @@ class AnalogRead : public AbstractRead{
 
 }
 
-#endif 
-
-#endif 
+#endif

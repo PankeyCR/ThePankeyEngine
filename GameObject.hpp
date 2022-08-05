@@ -1,12 +1,26 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_GameObject)
+	#define GameObject_hpp
+#endif
 
 #ifndef GameObject_hpp
 #define GameObject_hpp
+#define GameObject_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
 #include "GameOn.hpp"
 #include "PrimitiveList.hpp"
 #include "List.hpp"
@@ -49,6 +63,7 @@ class GameObject : public GameOn{
 			for(int x = 0; x < obj.childs.getPosition(); x++){
 				childs.addPointer(obj.childs.getByPosition(x)->clone());
 			}
+			return *this;
 		}
 		
 		virtual bool operator==(const GameObject& obj){
@@ -157,7 +172,7 @@ class GameObject : public GameOn{
 					GameOn::instanceof(cls);
 		}
 		
-		virtual String toString(){
+		virtual Note toNote(){
 			return "GameObject";
 		}
 		
@@ -168,6 +183,4 @@ class GameObject : public GameOn{
 
 }
 
-#endif 
-
-#endif 
+#endif

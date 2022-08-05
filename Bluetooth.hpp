@@ -1,20 +1,47 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_Bluetooth)
+	#define Bluetooth_hpp
+#endif
 
 #ifndef Bluetooth_hpp
 #define Bluetooth_hpp
+#define Bluetooth_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
+#define MODE_SLAVE 0
+#define MODE_MASTER 1
+#define STATE_DISCONNECTED 0
+#define STATE_CONNECTED 1
+#define STATE_ATMODE_1 2
+#define STATE_ATMODE_2 3
 
 namespace ame{
 
 class Bluetooth {
 	public:
 		Bluetooth(){}
-		String AtMode_List(int atmode_list){
-			String at="AT";
+		
+		int getMode(){
+			return -1;
+		}
+		int getState(){
+			return -1;
+		}
+		Note AtMode_List(int atmode_list){
+			Note at="AT";
 			if(atmode_list == 0){ at="AT"; }
 			if(atmode_list == 1){ at="AT+CMODE=0"; }
 			if(atmode_list == 2){ at="AT+INQM=0,5,9"; }
@@ -54,6 +81,4 @@ class Bluetooth {
 
 }
 
-#endif 
-
-#endif 
+#endif

@@ -1,8 +1,29 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_PrimitiveMap)
+	#define PrimitiveMap_hpp
+#endif
+
 #ifndef PrimitiveMap_hpp
 #define PrimitiveMap_hpp
+#define PrimitiveMap_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Map.hpp"
+#include "Note.hpp"
+#include "Class.hpp"
 
 namespace ame{
 
@@ -358,18 +379,18 @@ class PrimitiveMap : public Map<K,V>{
 			return nullptr;
 		}
 		
-		virtual V *getByPosition(int p) const{
-			if(p >= this->size){
-				return nullptr;
+		virtual V *getByPosition(int x) const{
+			if(x < this->pos){
+				return this->values[x];
 			}
-			return this->values[p];
+			return nullptr;
 		}
 		
-		virtual K *getKeyByPosition(int p) const{
-			if(p >= this->size){
-				return nullptr;
+		virtual K *getKeyByPosition(int x) const{
+			if(x < this->pos){
+				return this->keys[x];
 			}
-			return this->keys[p];
+			return nullptr;
 		}
 		
 		virtual K *getKeyByPointer(V *value){
@@ -806,7 +827,7 @@ class PrimitiveMap : public Map<K,V>{
 		virtual cppObjectClass* getClass(){
 			return Class<PrimitiveMap>::classType;
 		}
-		virtual String toString(){
+		virtual Note toNote(){
 			return "PrimitiveMap";
 		}
 		virtual Map<K,V>* clone(){
@@ -881,4 +902,5 @@ class PrimitiveMap : public Map<K,V>{
 };
 
 }
-#endif 
+
+#endif

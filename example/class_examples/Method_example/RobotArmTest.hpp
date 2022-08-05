@@ -4,6 +4,7 @@
 
 #include "Stream.h"
 #include "cppObject.hpp"
+#include "ClassMethod.hpp"
 
 using namespace ame;
 

@@ -1,7 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_NMapEvent)
+	#define NMapEvent_hpp
+#endif
 
 #ifndef NMapEvent_hpp
 #define NMapEvent_hpp
+#define NMapEvent_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "NMap.hpp"
 #include "List.hpp"
@@ -24,7 +42,7 @@ public:
 	cppObejctClass* getClass(){
 		return Class<NMapEvent>::classType;
 	}
-	String toString(){
+	Note toNote(){
 		return "NMapEvent";
 	}
  
@@ -323,4 +341,4 @@ private:
 
 }
 
-#endif 
+#endif

@@ -1,7 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_MapEvent)
+	#define MapEvent_hpp
+#endif
 
 #ifndef MapEvent_hpp
 #define MapEvent_hpp
+#define MapEvent_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Event.hpp"
 #include "Map.hpp"
@@ -26,4 +44,4 @@ class MapEvent : public Event{
 
 }
 
-#endif 
+#endif

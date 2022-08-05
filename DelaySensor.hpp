@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_1)
+#if defined(DISABLE_DelaySensor)
+	#define DelaySensor_hpp
+#endif
 
 #ifndef DelaySensor_hpp
 #define DelaySensor_hpp
+#define DelaySensor_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "MonkeyTime.hpp"
 #include "TimeRecorder.hpp"
@@ -105,6 +120,4 @@ class DelaySensor{
 
 }
 
-#endif 
-
-#endif 
+#endif

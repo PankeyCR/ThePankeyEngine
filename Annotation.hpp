@@ -1,8 +1,13 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Annotation)
+	#define Annotation_hpp
+#endif
+
 #ifndef Annotation_hpp
 #define Annotation_hpp
-
-#if defined(ame_untilLevel_10)
+#define Annotation_AVAILABLE
 
 namespace ame{
 
@@ -23,6 +28,4 @@ protected:
 
 }
 
-#endif 
-
-#endif 
+#endif

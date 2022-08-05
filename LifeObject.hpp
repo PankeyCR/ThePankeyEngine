@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_LifeObject)
+	#define LifeObject_hpp
+#endif
+
 #ifndef LifeObject_hpp
 #define LifeObject_hpp
+#define LifeObject_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "ByteArray.hpp"
 

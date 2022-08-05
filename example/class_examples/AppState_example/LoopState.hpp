@@ -16,6 +16,7 @@ class LoopState : public AppState{
 			App = app;
 		}
 		void update(float tpc){
+		  serial->println("LoopState");
 		  serial->println(tpc);
 		}
    

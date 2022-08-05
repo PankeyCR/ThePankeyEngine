@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Panel)
+	#define Panel_hpp
+#endif
+
 #ifndef Panel_hpp
 #define Panel_hpp
+#define Panel_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
 #include "Node.hpp"
@@ -21,7 +40,7 @@ class Panel : public Node{
 			return cls == Class<Panel>::classType || Node::instanceof(cls);
 		}
 		virtual cppObjectClass* getClass(){return Class<Panel>::classType;}
-		virtual String toString(){return "Panel";}
+		virtual Note toNote(){return "Panel";}
 		
 		virtual Panel* clone(){return nullptr;}
 		
@@ -34,4 +53,7 @@ class Panel : public Node{
 		}
 	protected:
 };
-#endif 
+
+}
+
+#endif

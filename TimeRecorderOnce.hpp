@@ -1,9 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_TimeRecorderOnce)
+	#define TimeRecorderOnce_hpp
+#endif
+
 #ifndef TimeRecorderOnce_hpp
 #define TimeRecorderOnce_hpp
+#define TimeRecorderOnce_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -70,4 +77,4 @@ class TimeRecorderOnce : public TimeRecorder{
 
 }
 
-#endif 
+#endif

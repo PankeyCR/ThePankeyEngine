@@ -1,9 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_MonofasicAngleTrigger)
+	#define MonofasicAngleTrigger_hpp
+#endif
+
 #ifndef MonofasicAngleTrigger_hpp
 #define MonofasicAngleTrigger_hpp
+#define MonofasicAngleTrigger_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -61,22 +68,22 @@ class MonofasicAngleTrigger : public ACFrequencyMeasure , public TimeElapsed {
 		template<int frequency, int period, int angleStart>
 		void setAngle(){
 			this->angleTriggerTime = ((float)(((1.0f/frequency)/period)*1000000l)/180.0f)*angleStart;
-			Serial.println("trigger "+String(this->angleTriggerTime));
+			Serial.println("trigger "+Note(this->angleTriggerTime));
 			this->doEnding = false;
 		}
 		
 		template<int frequency, int period, int angleStart, int angleStop>
 		void setAngles(){
 			this->angleTriggerTime = ((float)(((1.0f/frequency)/period)*1000000l)/180.0f)*angleStart;
-			Serial.println("trigger "+String(this->angleTriggerTime));
+			Serial.println("trigger "+Note(this->angleTriggerTime));
 			this->angleStopTime = ((float)(((1.0f/frequency)/period)*1000000l)/180.0f)*angleStop;
-			Serial.println("stop "+String(this->angleStopTime));
+			Serial.println("stop "+Note(this->angleStopTime));
 			this->doEnding = true;
 		}
 		
 		void setAngle(float frequency, float period, float angleStart){
 			this->angleTriggerTime = ((float)(((1.0f/frequency)/period)*1000000l)/180.0f)*angleStart;
-			Serial.println("trigger "+String(this->angleTriggerTime));
+			Serial.println("trigger "+Note(this->angleTriggerTime));
 			this->doEnding = false;
 		}
 		
@@ -96,4 +103,4 @@ class MonofasicAngleTrigger : public ACFrequencyMeasure , public TimeElapsed {
 
 }
 
-#endif 
+#endif

@@ -1,12 +1,28 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_1)
+#if defined(DISABLE_KVMap)
+	#define KVMap_hpp
+#endif
 
 #ifndef KVMap_h
 #define KVMap_h
+#define KVMap_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
+#include "Class.hpp"
 #include "Map.hpp"
 
 namespace ame{
@@ -658,5 +674,3 @@ class KVMap : public Map<K,P>{
 }
 
 #endif
-
-#endif 

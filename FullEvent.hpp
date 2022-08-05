@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_FullEvent)
+	#define FullEvent_hpp
+#endif
 
 #ifndef FullEvent_hpp
 #define FullEvent_hpp
+#define FullEvent_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Event.hpp"
 #include "List.hpp"
@@ -30,6 +45,4 @@ class FullEvent : public Event{
 
 }
 
-#endif 
-
-#endif 
+#endif

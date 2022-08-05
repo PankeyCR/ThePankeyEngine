@@ -1,20 +1,50 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_6)
+#if defined(DISABLE_DefaultPortProtocol)
+	#define DefaultPortProtocol_hpp
+#endif
 
 #ifndef DefaultPortProtocol_hpp
 #define DefaultPortProtocol_hpp
+#define DefaultPortProtocol_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "PortProtocol.hpp"
 #include "SerialPort.hpp"
-#include "Message.hpp"
+#include "Note.hpp"
 
-#ifdef DefaultPortProtocolLogApp
-	#include "Logger.hpp"
-	#define DefaultPortProtocolLog(name,method,type,mns) Log(name,method,type,mns)
+#ifdef DefaultPortProtocol_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+	
+	#define DefaultPortProtocolLog(location,method,type,mns) ame_Log(this,location,"DefaultPortProtocol",method,type,mns)
+	#define const_DefaultPortProtocolLog(location,method,type,mns) 
+	#define StaticDefaultPortProtocolLog(pointer,location,method,type,mns) ame_Log(pointer,location,"DefaultPortProtocol",method,type,mns)
 #else
-	#define DefaultPortProtocolLog(name,method,type,mns) 
+	#ifdef DefaultApplication_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+		
+		#define DefaultPortProtocolLog(location,method,type,mns) ame_LogDebug(this,location,"DefaultPortProtocol",method,type)
+		#define const_DefaultPortProtocolLog(location,method,type,mns) 
+		#define StaticDefaultPortProtocolLog(pointer,location,method,type,mns) ame_LogDebug(pointer,location,"DefaultPortProtocol",method,type)
+	#else
+		#define DefaultPortProtocolLog(location,method,type,mns) 
+		#define const_DefaultPortProtocolLog(location,method,type,mns) 
+		#define StaticDefaultPortProtocolLog(pointer,location,method,type,mns) 
+	#endif
 #endif
 
 namespace ame{
@@ -25,76 +55,81 @@ class DefaultPortProtocol : public PortProtocol{
 		DefaultPortProtocol(bool s){
 			this->safeDelete = s;
 		}
+		DefaultPortProtocol(ProtocolMessageDelivery* c_delivery){
+			this->delivery = c_delivery;
+		}
 		virtual ~DefaultPortProtocol(){}
 		
-		virtual void InstantBroadcastMessage(SerialPort* port, String mns){
-			DefaultPortProtocolLog("DefaultPortProtocol", "InstantBroadcastMessage",  "println", port->getName());
-			DefaultPortProtocolLog("DefaultPortProtocol", "InstantBroadcastMessage",  "println", mns);
+		virtual void InstantBroadcastMessage(SerialPort* port, Note mns){
+			DefaultPortProtocolLog(ame_Log_Statement, "InstantBroadcastMessage",  "println", port->getName());
+			DefaultPortProtocolLog(ame_Log_Statement, "InstantBroadcastMessage",  "println", mns);
 			port->print(mns+'\n');
 		}
 		
-		virtual void InstantPrivateMessage(SerialPort* port, String mns){
-			DefaultPortProtocolLog("DefaultPortProtocol", "InstantPrivateMessage",  "println", port->getName());
-			DefaultPortProtocolLog("DefaultPortProtocol", "InstantPrivateMessage",  "println", mns);
+		virtual void InstantPrivateMessage(SerialPort* port, Note mns){
+			DefaultPortProtocolLog(ame_Log_Statement, "InstantPrivateMessage",  "println", port->getName());
+			DefaultPortProtocolLog(ame_Log_Statement, "InstantPrivateMessage",  "println", mns);
 			port->print(mns+'\n');
 		}
 		
-		virtual void BroadcastMessage(SerialPort* port, String mns){
-			DefaultPortProtocolLog("DefaultPortProtocol", "BroadcastMessage",  "println", port->getName());
-			DefaultPortProtocolLog("DefaultPortProtocol", "BroadcastMessage",  "println", mns);
+		virtual void BroadcastMessage(SerialPort* port, Note mns){
+			DefaultPortProtocolLog(ame_Log_Statement, "BroadcastMessage",  "println", port->getName());
+			DefaultPortProtocolLog(ame_Log_Statement, "BroadcastMessage",  "println", mns);
 			port->print(mns+'\n');
 		}
 		
-		virtual void PrivateMessage(SerialPort* port, String mns){
-			DefaultPortProtocolLog("DefaultPortProtocol", "PrivateMessage",  "println", port->getName());
-			DefaultPortProtocolLog("DefaultPortProtocol", "PrivateMessage",  "println", mns);
+		virtual void PrivateMessage(SerialPort* port, Note mns){
+			DefaultPortProtocolLog(ame_Log_Statement, "PrivateMessage",  "println", port->getName());
+			DefaultPortProtocolLog(ame_Log_Statement, "PrivateMessage",  "println", mns);
 			port->print(mns+'\n');
+		}
+		
+		virtual void GlobalConect(SerialPort* port){
+			DefaultPortProtocolLog(ame_Log_Statement, "GlobalConect",  "println", "");
+		}
+		virtual void Conect(SerialPort* port){
+			DefaultPortProtocolLog(ame_Log_Statement, "Conect",  "println", "");
+		}
+		virtual void UpdateConect(SerialPort* port){
+			DefaultPortProtocolLog(ame_Log_Statement, "UpdateConect",  "println", "");
 		}
 		
 		virtual void GlobalDisconect(SerialPort* port){
-			DefaultPortProtocolLog("DefaultPortProtocol", "GlobalDisconect",  "println", "");
+			DefaultPortProtocolLog(ame_Log_Statement, "GlobalDisconect",  "println", "");
 			port->flush();
 			port->stop();
 		}
 		virtual void Disconect(SerialPort* port){
-			DefaultPortProtocolLog("DefaultPortProtocol", "Disconect",  "println", "");
+			DefaultPortProtocolLog(ame_Log_Statement, "Disconect",  "println", "");
 			port->flush();
 			port->stop();
 		}
 		virtual void UpdateDisconect(SerialPort* port){
-			DefaultPortProtocolLog("DefaultPortProtocol", "UpdateDisconect",  "println", "");
+			DefaultPortProtocolLog(ame_Log_Statement, "UpdateDisconect",  "println", "");
 			port->flush();
 			port->stop();
 		}
 		
-		virtual void Read(int index, SerialPort* port){
+		void Read(int index, SerialPort* port){
 			char m = port->read();
 			if((m == '\n') && messageText.length() != 0){
-				DefaultPortProtocolLog("DefaultPortProtocol", "Read",  "println", "adding Message to serialState");
-				DefaultPortProtocolLog("DefaultPortProtocol", "Read",  "println", String("messageText: ") + messageText);
-				DefaultPortProtocolLog("DefaultPortProtocol", "Read",  "println", String("index: ") + String(index));
-				DefaultPortProtocolLog("DefaultPortProtocol", "Read",  "println", "raw");
-				Message* message = new Message();
-				message->name(port->getName());
-				message->text(messageText);
-				message->id(index);
-				message->type("raw");
-				this->serialState->addReceivedMessage(message);
+				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", "adding Message to serialState");
+				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", Note("messageText: ") + messageText);
+				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", Note("index: ") + Note(index));
+				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", "raw");
+				this->SaveMessage(port, messageText);
 				messageText = "";
-				return;
 			}
 			if(m != '\r' || m != '\n'){
-				DefaultPortProtocolLog("DefaultPortProtocol", "Read",  "println", String("adding char to messageText: ") + String(m));
+				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", Note("adding char to messageText: ") + Note(m));
 				messageText.concat(m);
 			}
 		}
 		
 	protected:
-		String messageText = "";
+		Note messageText = "";
 };
 
 }
 
-#endif 
-
-#endif 
+#endif

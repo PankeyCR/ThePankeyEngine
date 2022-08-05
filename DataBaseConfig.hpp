@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_DataBaseConfig)
+	#define DataBaseConfig_hpp
+#endif
+
 #ifndef DataBaseConfig_hpp
 #define DataBaseConfig_hpp
+#define DataBaseConfig_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "MonkeyFile.hpp"
 #include "SerialMessageState.hpp"
@@ -26,6 +45,7 @@ class DataBaseConfig{
 		virtual void copy(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file, SerialMessageState* serialState){}
 		virtual void cut(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file, SerialMessageState* serialState){}
 		virtual void update(float tpc){}
+		virtual void setFileSize(int s){}
 		
 		virtual void operator=(DataBaseConfig db){}
 		virtual bool operator==(DataBaseConfig db){return false;}
@@ -34,5 +54,4 @@ class DataBaseConfig{
 
 }
 
-#endif 
-
+#endif

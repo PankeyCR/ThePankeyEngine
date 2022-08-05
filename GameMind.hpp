@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_GameMind)
+	#define GameMind_hpp
+#endif
 
 #ifndef GameMind_hpp
 #define GameMind_hpp
+#define GameMind_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "GameOn.hpp"
 
@@ -27,6 +42,4 @@ class GameMind : public GameOn{
 
 }
 
-#endif 
-
-#endif 
+#endif

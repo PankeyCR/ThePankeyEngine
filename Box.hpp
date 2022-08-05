@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Box)
+	#define Box_hpp
+#endif
+
 #ifndef Box_hpp
 #define Box_hpp
+#define Box_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Mesh.hpp"
 
@@ -49,4 +68,4 @@ class Box : public Mesh{
 
 }
 
-#endif 
+#endif

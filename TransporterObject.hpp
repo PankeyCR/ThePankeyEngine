@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_TransporterObject)
+	#define TransporterObject_hpp
+#endif
+
 #ifndef TransporterObject_hpp
 #define TransporterObject_hpp
+#define TransporterObject_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "ElementId.hpp"
 #include "MonkeyExporter.hpp"
@@ -15,7 +34,7 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 		TransporterObject(const TransporterObject& obj){
 			intMap = obj.intMap;
 			floatMap = obj.floatMap;
-			stringMap = obj.stringMap;
+			NoteMap = obj.NoteMap;
 			longMap = obj.longMap;
 			byteMap = obj.byteMap;
 			emptyInstance = obj.emptyInstance;
@@ -26,7 +45,7 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 			size_t size = 0;
 			size += p.print("Integers: \n");
 			for(int x = 0; x < intMap.getPosition(); x++){
-				String iName = *intMap.getKeyByPosition(x);
+				Note iName = *intMap.getKeyByPosition(x);
 				int iVar = *intMap.getByPosition(x);
 				size += p.print("Int Name: ");
 				size += p.print(iName);
@@ -37,7 +56,7 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 			size += p.print('\n');
 			size += p.print("Float: \n");
 			for(int x = 0; x < floatMap.getPosition(); x++){
-				String iName = *floatMap.getKeyByPosition(x);
+				Note iName = *floatMap.getKeyByPosition(x);
 				float iVar = *floatMap.getByPosition(x);
 				size += p.print("Float Name: ");
 				size += p.print(iName);
@@ -46,20 +65,20 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 				size += p.print('\n');
 			}
 			size += p.print('\n');
-			size += p.print("String: \n");
-			for(int x = 0; x < stringMap.getPosition(); x++){
-				String iName = *stringMap.getKeyByPosition(x);
-				String iVar = *stringMap.getByPosition(x);
-				size += p.print("String Name: ");
+			size += p.print("Note: \n");
+			for(int x = 0; x < NoteMap.getPosition(); x++){
+				Note iName = *NoteMap.getKeyByPosition(x);
+				Note iVar = *NoteMap.getByPosition(x);
+				size += p.print("Note Name: ");
 				size += p.print(iName);
-				size += p.print(" String Value: ");
+				size += p.print(" Note Value: ");
 				size += p.print(iVar);
 				size += p.print('\n');
 			}
 			size += p.print('\n');
 			size += p.print("Long: \n");
 			for(int x = 0; x < longMap.getPosition(); x++){
-				String iName = *longMap.getKeyByPosition(x);
+				Note iName = *longMap.getKeyByPosition(x);
 				long iVar = *longMap.getByPosition(x);
 				size += p.print("Long Name: ");
 				size += p.print(iName);
@@ -70,7 +89,7 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 			size += p.print('\n');
 			size += p.print("ByteArray: \n");
 			for(int x = 0; x < byteMap.getPosition(); x++){
-				String iName = *byteMap.getKeyByPosition(x);
+				Note iName = *byteMap.getKeyByPosition(x);
 				ByteArray iVar = *byteMap.getByPosition(x);
 				size += p.print("ByteArray Name: ");
 				size += p.print(iName);
@@ -81,7 +100,7 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 			size += p.print('\n');
 			size += p.print("Instances: \n");
 			for(int x = 0; x < emptyInstance.getPosition(); x++){
-				String iName = *emptyInstance.getByPosition(x);
+				Note iName = *emptyInstance.getByPosition(x);
 				size += p.print("Class Name: ");
 				size += p.print(iName);
 				size += p.print('\n');
@@ -93,21 +112,21 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 		//////////////////////////////////////////////////////////////////////////////
 		
 		virtual int putInt(const char* s, int i){
-			intMap.put(String(s),i);
+			intMap.put(Note(s),i);
 			return i;
 		}
-		virtual int putInt(String s, int i){
+		virtual int putInt(Note s, int i){
 			intMap.put(s,i);
 			return i;
 		}
-		virtual int getInt(String s, int defaultV){
+		virtual int getInt(Note s, int defaultV){
 			int* i = intMap.getByLValue(s);
 			if(i == nullptr){
 				return defaultV;
 			}
 			return *i;
 		}
-		virtual bool containInt(String s){
+		virtual bool containInt(Note s){
 			return intMap.getByLValue(s) != nullptr;
 		}
 		
@@ -130,21 +149,21 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 		//////////////////////////////////////////////////////////////////////////////
 		
 		virtual float putFloat(const char* s, float i){
-			floatMap.put(String(s),i);
+			floatMap.put(Note(s),i);
 			return i;
 		}
-		virtual float putFloat(String s, float i){
+		virtual float putFloat(Note s, float i){
 			floatMap.put(s,i);
 			return i;
 		}
-		virtual float getFloat(String s, float defaultV){
+		virtual float getFloat(Note s, float defaultV){
 			float* i = floatMap.getByLValue(s);
 			if(i == nullptr){
 				return defaultV;
 			}
 			return *i;
 		}
-		virtual bool containFloat(String s){
+		virtual bool containFloat(Note s){
 			return floatMap.getByLValue(s) != nullptr;
 		}
 		
@@ -163,66 +182,66 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 			return floatMap.getByLValue(s.getId()) != nullptr;
 		}
 		
-		//String
+		//Note
 		//////////////////////////////////////////////////////////////////////////////
 		
-		virtual String putString(const char* s, const char* i){
-			stringMap.put(String(s),String(i));
+		virtual Note putNote(const char* s, const char* i){
+			NoteMap.put(Note(s),Note(i));
 			return i;
 		}
-		virtual String putString(const char* s, String i){
-			stringMap.put(String(s),i);
+		virtual Note putNote(const char* s, Note i){
+			NoteMap.put(Note(s),i);
 			return i;
 		}
-		virtual String putString(String s, String i){
-			stringMap.put(s,i);
+		virtual Note putNote(Note s, Note i){
+			NoteMap.put(s,i);
 			return i;
 		}
-		virtual String getString(String s, String defaultV){
-			String* i = stringMap.getByLValue(s);
+		virtual Note getNote(Note s, Note defaultV){
+			Note* i = NoteMap.getByLValue(s);
 			if(i == nullptr){
 				return defaultV;
 			}
 			return *i;
 		}
-		virtual bool containString(String s){
-			return stringMap.getByLValue(s) != nullptr;
+		virtual bool containNote(Note s){
+			return NoteMap.getByLValue(s) != nullptr;
 		}
 		
-		virtual String putString(ElementId s, String i){
-			stringMap.put(s.getId(),i);
+		virtual Note putNote(ElementId s, Note i){
+			NoteMap.put(s.getId(),i);
 			return i;
 		}
-		virtual String getString(ElementId s, String defaultV){
-			String* i = stringMap.getByLValue(s.getId());
+		virtual Note getNote(ElementId s, Note defaultV){
+			Note* i = NoteMap.getByLValue(s.getId());
 			if(i == nullptr){
 				return defaultV;
 			}
 			return *i;
 		}
-		virtual bool containString(ElementId s){
-			return stringMap.getByLValue(s.getId()) != nullptr;
+		virtual bool containNote(ElementId s){
+			return NoteMap.getByLValue(s.getId()) != nullptr;
 		}
 		
 		//Boolean
 		//////////////////////////////////////////////////////////////////////////////
 		
 		virtual bool putBoolean(const char* s, bool i){
-			booleanMap.put(String(s),i);
+			booleanMap.put(Note(s),i);
 			return i;
 		}
-		virtual bool putBoolean(String s, bool i){
+		virtual bool putBoolean(Note s, bool i){
 			booleanMap.put(s,i);
 			return i;
 		}
-		virtual bool getBoolean(String s, bool defaultV){
+		virtual bool getBoolean(Note s, bool defaultV){
 			bool* i = booleanMap.getByLValue(s);
 			if(i == nullptr){
 				return defaultV;
 			}
 			return *i;
 		}
-		virtual bool containBoolean(String s){
+		virtual bool containBoolean(Note s){
 			return booleanMap.getByLValue(s) != nullptr;
 		}
 		
@@ -245,21 +264,21 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 		//////////////////////////////////////////////////////////////////////////////
 		
 		virtual long putLong(const char* s, long i){
-			longMap.put(String(s),i);
+			longMap.put(Note(s),i);
 			return i;
 		}
-		virtual long putLong(String s, long i){
+		virtual long putLong(Note s, long i){
 			longMap.put(s,i);
 			return i;
 		}
-		virtual long getLong(String s, long defaultV){
+		virtual long getLong(Note s, long defaultV){
 			long* i = longMap.getByLValue(s);
 			if(i == nullptr){
 				return defaultV;
 			}
 			return *i;
 		}
-		virtual bool containLong(String s){
+		virtual bool containLong(Note s){
 			return longMap.getByLValue(s) != nullptr;
 		}
 		
@@ -282,21 +301,21 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 		//////////////////////////////////////////////////////////////////////////////
 		
 		virtual ByteArray putByteArray(const char* s, ByteArray i){
-			byteMap.put(String(s),i);
+			byteMap.put(Note(s),i);
 			return i;
 		}
-		virtual ByteArray putByteArray(String s, ByteArray i){
+		virtual ByteArray putByteArray(Note s, ByteArray i){
 			byteMap.put(s,i);
 			return i;
 		}
-		virtual ByteArray getByteArray(String s, ByteArray defaultV){
+		virtual ByteArray getByteArray(Note s, ByteArray defaultV){
 			ByteArray* i = byteMap.getByLValue(s);
 			if(i == nullptr){
 				return defaultV;
 			}
 			return *i;
 		}
-		virtual bool containByteArray(String s){
+		virtual bool containByteArray(Note s){
 			return byteMap.getByLValue(s) != nullptr;
 		}
 		
@@ -319,13 +338,13 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 		//////////////////////////////////////////////////////////////////////////////
 		
 		virtual void putObject(const char* s){
-			int index = emptyInstance.getIndexByLValue(String(s));
+			int index = emptyInstance.getIndexByLValue(Note(s));
 			if(index != -1){
 				return;
 			}
-			emptyInstance.add(String(s));
+			emptyInstance.add(Note(s));
 		}
-		virtual void putObject(String s){
+		virtual void putObject(Note s){
 			int index = emptyInstance.getIndexByLValue(s);
 			if(index == -1){
 				return;
@@ -342,38 +361,38 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 		
 		virtual void putObject(ElementId s, TransporterObject i){
 			for(int x = 0; x < i.intMap.getPosition(); x++){
-				String iName = *i.intMap.getKeyByPosition(x);
+				Note iName = *i.intMap.getKeyByPosition(x);
 				int iInt = *i.intMap.getByPosition(x);
 				intMap.put(s.child(iName).getId(), iInt);
 			}
 			for(int x = 0; x < i.floatMap.getPosition(); x++){
-				String iName = *i.floatMap.getKeyByPosition(x);
+				Note iName = *i.floatMap.getKeyByPosition(x);
 				float iFloat = *i.floatMap.getByPosition(x);
 				floatMap.put(s.child(iName).getId(), iFloat);
 			}
-			for(int x = 0; x < i.stringMap.getPosition(); x++){
-				String iName = *i.stringMap.getKeyByPosition(x);
-				String iString = *i.stringMap.getByPosition(x);
-				stringMap.put(s.child(iName).getId(), iString);
+			for(int x = 0; x < i.NoteMap.getPosition(); x++){
+				Note iName = *i.NoteMap.getKeyByPosition(x);
+				Note iNote = *i.NoteMap.getByPosition(x);
+				NoteMap.put(s.child(iName).getId(), iNote);
 			}
 			for(int x = 0; x < i.booleanMap.getPosition(); x++){
-				String iName = *i.booleanMap.getKeyByPosition(x);
+				Note iName = *i.booleanMap.getKeyByPosition(x);
 				bool iBool = *i.booleanMap.getByPosition(x);
 				booleanMap.put(s.child(iName).getId(), iBool);
 			}
 			for(int x = 0; x < i.longMap.getPosition(); x++){
-				String iName = *i.longMap.getKeyByPosition(x);
+				Note iName = *i.longMap.getKeyByPosition(x);
 				long ilong = *i.longMap.getByPosition(x);
 				longMap.put(s.child(iName).getId(), ilong);
 			}
 			for(int x = 0; x < i.byteMap.getPosition(); x++){
-				String iName = *i.byteMap.getKeyByPosition(x);
+				Note iName = *i.byteMap.getKeyByPosition(x);
 				ByteArray iVar = *i.byteMap.getByPosition(x);
 				byteMap.put(s.child(iName).getId(), iVar);
 			}
 			for(int x = 0; x < i.emptyInstance.getPosition(); x++){
-				String iName = *i.emptyInstance.getByPosition(x);
-				String ns = s.child(iName).getId();
+				Note iName = *i.emptyInstance.getByPosition(x);
+				Note ns = s.child(iName).getId();
 				if(i.emptyInstance.containByLValue(ns)){
 					continue;
 				}
@@ -385,7 +404,7 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 			TransporterObject t;
 			
 			for(int x = 0; x < intMap.getPosition(); x++){
-				String iName = *intMap.getKeyByPosition(x);
+				Note iName = *intMap.getKeyByPosition(x);
 				int iVar = *intMap.getByPosition(x);
 				if(!s.containChild(iName)){
 					continue;
@@ -393,23 +412,23 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 				t.putInt(s, iVar);
 			}
 			for(int x = 0; x < floatMap.getPosition(); x++){
-				String iName = *floatMap.getKeyByPosition(x);
+				Note iName = *floatMap.getKeyByPosition(x);
 				float iVar = *floatMap.getByPosition(x);
 				if(!s.containChild(iName)){
 					continue;
 				}
 				t.putFloat(s, iVar);
 			}
-			for(int x = 0; x < stringMap.getPosition(); x++){
-				String iName = *stringMap.getKeyByPosition(x);
-				String iVar = *stringMap.getByPosition(x);
+			for(int x = 0; x < NoteMap.getPosition(); x++){
+				Note iName = *NoteMap.getKeyByPosition(x);
+				Note iVar = *NoteMap.getByPosition(x);
 				if(!s.containChild(iName)){
 					continue;
 				}
-				t.putString(s, iVar);
+				t.putNote(s, iVar);
 			}
 			for(int x = 0; x < booleanMap.getPosition(); x++){
-				String iName = *booleanMap.getKeyByPosition(x);
+				Note iName = *booleanMap.getKeyByPosition(x);
 				bool iVar = *booleanMap.getByPosition(x);
 				if(!s.containChild(iName)){
 					continue;
@@ -417,7 +436,7 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 				t.putBoolean(s, iVar);
 			}
 			for(int x = 0; x < longMap.getPosition(); x++){
-				String iName = *longMap.getKeyByPosition(x);
+				Note iName = *longMap.getKeyByPosition(x);
 				long iVar = *longMap.getByPosition(x);
 				if(!s.containChild(iName)){
 					continue;
@@ -425,7 +444,7 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 				t.putLong(s, iVar);
 			}
 			for(int x = 0; x < byteMap.getPosition(); x++){
-				String iName = *byteMap.getKeyByPosition(x);
+				Note iName = *byteMap.getKeyByPosition(x);
 				ByteArray iVar = *byteMap.getByPosition(x);
 				if(!s.containChild(iName)){
 					continue;
@@ -433,7 +452,7 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 				t.putByteArray(s, iVar);
 			}
 			for(int x = 0; x < emptyInstance.getPosition(); x++){
-				String iName = *emptyInstance.getByPosition(x);
+				Note iName = *emptyInstance.getByPosition(x);
 				if(!s.containChild(iName)){
 					continue;
 				}
@@ -445,49 +464,49 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 		
 		virtual bool containObject(ElementId s){
 			for(int x = 0; x < intMap.getPosition(); x++){
-				String iName = *intMap.getKeyByPosition(x);
+				Note iName = *intMap.getKeyByPosition(x);
 				int iVar = *intMap.getByPosition(x);
 				if(s.containChild(iName)){
 					return true;
 				}
 			}
 			for(int x = 0; x < floatMap.getPosition(); x++){
-				String iName = *floatMap.getKeyByPosition(x);
+				Note iName = *floatMap.getKeyByPosition(x);
 				float iVar = *floatMap.getByPosition(x);
 				if(s.containChild(iName)){
 					return true;
 				}
 			}
-			for(int x = 0; x < stringMap.getPosition(); x++){
-				String iName = *stringMap.getKeyByPosition(x);
-				String iVar = *stringMap.getByPosition(x);
+			for(int x = 0; x < NoteMap.getPosition(); x++){
+				Note iName = *NoteMap.getKeyByPosition(x);
+				Note iVar = *NoteMap.getByPosition(x);
 				if(s.containChild(iName)){
 					return true;
 				}
 			}
 			for(int x = 0; x < booleanMap.getPosition(); x++){
-				String iName = *booleanMap.getKeyByPosition(x);
+				Note iName = *booleanMap.getKeyByPosition(x);
 				bool iVar = *booleanMap.getByPosition(x);
 				if(s.containChild(iName)){
 					return true;
 				}
 			}
 			for(int x = 0; x < longMap.getPosition(); x++){
-				String iName = *longMap.getKeyByPosition(x);
+				Note iName = *longMap.getKeyByPosition(x);
 				long iVar = *longMap.getByPosition(x);
 				if(s.containChild(iName)){
 					return true;
 				}
 			}
 			for(int x = 0; x < byteMap.getPosition(); x++){
-				String iName = *byteMap.getKeyByPosition(x);
+				Note iName = *byteMap.getKeyByPosition(x);
 				ByteArray iVar = *byteMap.getByPosition(x);
 				if(s.containChild(iName)){
 					return true;
 				}
 			}
 			for(int x = 0; x < emptyInstance.getPosition(); x++){
-				String iName = *emptyInstance.getByPosition(x);
+				Note iName = *emptyInstance.getByPosition(x);
 				if(s.containChild(iName)){
 					return true;
 				}
@@ -498,36 +517,36 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 		
     	virtual void write(ElementId id, MonkeyExporter* exporter){
 			for(int x = 0; x < emptyInstance.getPosition(); x++){
-				String iName = *emptyInstance.getByPosition(x);
-				exporter->write(id.child(iName).child("instance"), String());
+				Note iName = *emptyInstance.getByPosition(x);
+				exporter->write(id.child(iName).child("instance"), Note());
 			}
 			for(int x = 0; x < intMap.getPosition(); x++){
-				String iName = *intMap.getKeyByPosition(x);
+				Note iName = *intMap.getKeyByPosition(x);
 				int iVar = *intMap.getByPosition(x);
 				exporter->write(id.child(iName), iVar);
 			}
 			for(int x = 0; x < floatMap.getPosition(); x++){
-				String iName = *floatMap.getKeyByPosition(x);
+				Note iName = *floatMap.getKeyByPosition(x);
 				float iVar = *floatMap.getByPosition(x);
 				exporter->write(id.child(iName), iVar);
 			}
-			for(int x = 0; x < stringMap.getPosition(); x++){
-				String iName = *stringMap.getKeyByPosition(x);
-				String iVar = *stringMap.getByPosition(x);
+			for(int x = 0; x < NoteMap.getPosition(); x++){
+				Note iName = *NoteMap.getKeyByPosition(x);
+				Note iVar = *NoteMap.getByPosition(x);
 				exporter->write(id.child(iName), iVar);
 			}
 			for(int x = 0; x < booleanMap.getPosition(); x++){
-				String iName = *booleanMap.getKeyByPosition(x);
+				Note iName = *booleanMap.getKeyByPosition(x);
 				bool iVar = *booleanMap.getByPosition(x);
 				exporter->write(id.child(iName), iVar);
 			}
 			for(int x = 0; x < longMap.getPosition(); x++){
-				String iName = *longMap.getKeyByPosition(x);
+				Note iName = *longMap.getKeyByPosition(x);
 				long iVar = *longMap.getByPosition(x);
 				exporter->write(id.child(iName), iVar);
 			}
 			for(int x = 0; x < byteMap.getPosition(); x++){
-				String iName = *byteMap.getKeyByPosition(x);
+				Note iName = *byteMap.getKeyByPosition(x);
 				ByteArray iVar = *byteMap.getByPosition(x);
 				exporter->write(id.child(iName), iVar);
 			}
@@ -537,7 +556,7 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 			PrimitiveList<ElementId> ids = importer->getIds();
 			for(int x = 0; x < ids.getPosition(); x++){
 				ElementId id = ids[x];
-				String typeVar = importer->readType(id);
+				Note typeVar = importer->readType(id);
 				if(typeVar == "int"){
 					int i = importer->read(id,-1);
 					intMap.add(id.remove(parent).getId(),i);
@@ -546,13 +565,13 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 					float i = importer->read(id,-1.0f);
 					floatMap.add(id.remove(parent).getId(),i);
 				}
-				if(typeVar == "String"){
-					if(id.hppasPart("instance")){
+				if(typeVar == "Note"){
+					if(id.hasPart("instance")){
 						emptyInstance.add(id.remove(parent).removePart("instance").getId());
 						continue;
 					}
-					String i = importer->read(id,String());
-					stringMap.add(id.remove(parent).getId(),i);
+					Note i = importer->read(id,Note());
+					NoteMap.add(id.remove(parent).getId(),i);
 				}
 				if(typeVar == "bool"){
 					bool i = importer->read(id,false);
@@ -569,15 +588,15 @@ class TransporterObject : public MonkeyTransporter, public Printable{
 			}
 		}
 	protected:
-		PrimitiveMap<String,int> intMap;
-		PrimitiveMap<String,float> floatMap;
-		PrimitiveMap<String,String> stringMap;
-		PrimitiveMap<String,bool> booleanMap;
-		PrimitiveMap<String,long> longMap;
-		PrimitiveMap<String,ByteArray> byteMap;
-		PrimitiveList<String> emptyInstance;
+		PrimitiveMap<Note,int> intMap;
+		PrimitiveMap<Note,float> floatMap;
+		PrimitiveMap<Note,Note> NoteMap;
+		PrimitiveMap<Note,bool> booleanMap;
+		PrimitiveMap<Note,long> longMap;
+		PrimitiveMap<Note,ByteArray> byteMap;
+		PrimitiveList<Note> emptyInstance;
 };
 
 }
 
-#endif 
+#endif

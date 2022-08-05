@@ -1,63 +1,57 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_cppObject)
+	#define cppObject_hpp
+#endif
+
 #ifndef cppObject_hpp
 #define cppObject_hpp
+#define cppObject_AVAILABLE
 
-#include "ame_Level.hpp"
+#ifndef ame_Enviroment_Defined
 
-#include "Arduino.h"
-#include "Method.hpp"
-#include "cppObjectClass.hpp"
-#include "ClassType.hpp"
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
+#include "Note.hpp"
 
 namespace ame{
 
-#if defined(ame_untilLevel_10)
-
-template<class cls>
-struct Class{
-	static ClassType<cls>* classType;
-};
-
-template<class cls> ClassType<cls>* Class<cls>::classType = new ClassType<cls>();
-
-// #elif defined(ame_untilLevel_1)
-#else
-
-template<class cls>
-struct Class{
-	static cppObjectClass* classType;
-};
-
-template<class cls> cppObjectClass* Class<cls>::classType = new cppObjectClass();
-
-#endif
+class cppObjectClass;
 
 class cppObject{
     public:
 		cppObject(){}
 		virtual ~cppObject(){}
+		
 		virtual void onDelete(){}
-		virtual String toString(){return "cppObject";}
-		virtual bool equal(cppObject *b){return this == b;}
-		template<class T>
-		bool instanceof(){
-			return this->instanceof(Class<T>::classType);
-		}
-		virtual bool instanceof(cppObjectClass* cls){return cls == Class<cppObject>::classType;}
+		virtual bool copy(cppObject* obj){return false;}
+		virtual bool move(cppObject* obj){return false;}
+		virtual bool equal(cppObject* obj){return this == obj;}
 		
-		virtual cppObjectClass* getClass(){return Class<cppObject>::classType;}
-		
-		virtual cppObject *clone(void){return nullptr;}
-		virtual cppObject *clone(bool owningMemory){return nullptr;}
-		
-		virtual void invoke(String methodName){}
-		
-		virtual void operator=(cppObject b){}
-		virtual bool operator==(cppObject b){return false;}
-		virtual bool operator!=(cppObject b){return false;}
+		virtual bool instanceof(cppObjectClass* cls){return false;}
+		virtual cppObjectClass* getClass(){return nullptr;}
+
+		virtual cppObject* clone(void){return nullptr;}
+		virtual cppObject* clone(bool owningMemory){return nullptr;}
+
+		virtual Note toNote(){return Note("cppObject");}
+		virtual void invoke(Note methodName){}
+
+		virtual void operator=(cppObject obj){}
+		virtual bool operator==(cppObject obj){return false;}
+		virtual bool operator!=(cppObject obj){return false;}
 	private:
 };
 
 }
 
-#endif 
+#endif

@@ -1,12 +1,23 @@
 
-#include "ame_Level.hpp"
-
-#if defined(ame_untilLevel_7)
+#include "ame_Enviroment.hpp"
 
 #ifndef Controller_hpp
 #define Controller_hpp
 
-#include "Arduino.h"
+#if defined(ame_untilLevel_1)
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
 #include "GameOn.hpp"
 #include "Map.hpp"
 #include "List.hpp"

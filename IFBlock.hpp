@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_IFBlock)
+	#define IFBlock_hpp
+#endif
 
 #ifndef IFBlock_hpp
 #define IFBlock_hpp
+#define IFBlock_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Environment.hpp"
 
@@ -40,6 +55,4 @@ class IFBlock{
 
 }
 
-#endif 
-
-#endif 
+#endif

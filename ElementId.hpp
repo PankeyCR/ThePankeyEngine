@@ -1,14 +1,30 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_1)
+#if defined(DISABLE_ElementId)
+	#define ElementId_hpp
+#endif
 
 #ifndef ElementId_hpp
 #define ElementId_hpp
+#define ElementId_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
+
 #include "cppObject.hpp"
-#include "Printable.h"
+#include "Note.hpp"
+#include "Class.hpp"
 
 #ifdef ElementIdLogApp
 	#include "Logger.hpp"
@@ -19,37 +35,44 @@
 
 namespace ame{
 
+
+#ifdef ame_Windows
+class ElementId : public cppObject{
+#endif
+
+#ifdef ame_ArduinoIDE
 class ElementId : public cppObject , public Printable{
+#endif
 	public:
 		ElementId(){
-			ElementIdLog("ElementId", "Contructor 1",  "println", String("id ") + id);
-			ElementIdLog("ElementId", "Contructor 1",  "println", String("delimiter ") + m_delimiter);
+			ElementIdLog("ElementId", "Contructor 1",  "println", Note("id ") + id);
+			ElementIdLog("ElementId", "Contructor 1",  "println", Note("delimiter ") + m_delimiter);
 		}
 		
 		ElementId(const char* i){
 			id = i;
-			ElementIdLog("ElementId", "Contructor 2",  "println", String("id ") + id);
-			ElementIdLog("ElementId", "Contructor 2",  "println", String("delimiter ") + m_delimiter);
+			ElementIdLog("ElementId", "Contructor 2",  "println", Note("id ") + id);
+			ElementIdLog("ElementId", "Contructor 2",  "println", Note("delimiter ") + m_delimiter);
 		}
 		
-		ElementId(const String& i){
+		ElementId(const Note& i){
 			id = i;
-			ElementIdLog("ElementId", "Contructor 3",  "println", String("id ") + id);
-			ElementIdLog("ElementId", "Contructor 3",  "println", String("delimiter ") + m_delimiter);
+			ElementIdLog("ElementId", "Contructor 3",  "println", Note("id ") + id);
+			ElementIdLog("ElementId", "Contructor 3",  "println", Note("delimiter ") + m_delimiter);
 		}
 		
 		ElementId(const char* i, const char* i2){
 			id = i;
 			m_delimiter = i2;
-			ElementIdLog("ElementId", "Contructor 4",  "println", String("id ") + id);
-			ElementIdLog("ElementId", "Contructor 4",  "println", String("delimiter ") + m_delimiter);
+			ElementIdLog("ElementId", "Contructor 4",  "println", Note("id ") + id);
+			ElementIdLog("ElementId", "Contructor 4",  "println", Note("delimiter ") + m_delimiter);
 		}
 		
-		ElementId(const String& i, const String& i2){
+		ElementId(const Note& i, const Note& i2){
 			id = i;
 			m_delimiter = i2;
-			ElementIdLog("ElementId", "Contructor 5",  "println", String("id ") + id);
-			ElementIdLog("ElementId", "Contructor 5",  "println", String("delimiter ") + m_delimiter);
+			ElementIdLog("ElementId", "Contructor 5",  "println", Note("id ") + id);
+			ElementIdLog("ElementId", "Contructor 5",  "println", Note("delimiter ") + m_delimiter);
 		}
 		
 		virtual ~ElementId(){
@@ -57,15 +80,15 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		ElementId child(const char* childId){
-			ElementIdLog("ElementId", "child",  "println", String(childId));
+			ElementIdLog("ElementId", "child",  "println", Note(childId));
 			if(id == ""){
 				return ElementId(childId);
 			}
 			return ElementId(id + m_delimiter + childId);
 		}
 		
-		ElementId child(const String& childId){
-			ElementIdLog("ElementId", "child",  "println", String(childId));
+		ElementId child(const Note& childId){
+			ElementIdLog("ElementId", "child",  "println", Note(childId));
 			if(id == ""){
 				return ElementId(childId);
 			}
@@ -80,30 +103,30 @@ class ElementId : public cppObject , public Printable{
 			return ElementId(id + m_delimiter + childId.getId());
 		}
 		
-		virtual void setId(String i){
+		virtual void setId(Note i){
 			ElementIdLog("ElementId", "setId",  "println", i);
 			id = i;
 		}
 		
-		virtual String getId()const{
+		virtual Note getId()const{
 			ElementIdLog("ElementId", "getId",  "println", id);
 			return id;
 		}
 		
-		virtual String getPart(int x)const{
+		virtual Note getPart(int x)const{
 			ElementIdLog("ElementId", "getPart",  "println", "");
-			String part = "";
+			Note part = "";
 			int delimiter = 0;
 			int delimiterSize = m_delimiter.length();
 			int delimiterEqual = 0;
 			bool startConcat = false;
-			ElementIdLog("ElementId", "getPart",  "println", String("id.length() ") + String(id.length()));
+			ElementIdLog("ElementId", "getPart",  "println", Note("id.length() ") + Note(id.length()));
 			for(int i=0; i < id.length(); i++){
 				char c = id.charAt(i);
 				char c2 = m_delimiter.charAt(delimiterEqual);
-				ElementIdLog("ElementId", "getPart",  "println", String("iteration ") + String(i));
-				ElementIdLog("ElementId", "getPart",  "println", String("char ") + String(c));
-				ElementIdLog("ElementId", "getPart",  "println", String("char delimiter ") + String(c2));
+				ElementIdLog("ElementId", "getPart",  "println", Note("iteration ") + Note(i));
+				ElementIdLog("ElementId", "getPart",  "println", Note("char ") + Note(c));
+				ElementIdLog("ElementId", "getPart",  "println", Note("char delimiter ") + Note(c2));
 				if(c == c2){
 					ElementIdLog("ElementId", "getPart",  "println", "c == c2");
 					delimiterEqual++;
@@ -126,7 +149,7 @@ class ElementId : public cppObject , public Printable{
 					return part;
 				}
 			}
-			ElementIdLog("ElementId", "getPart",  "println", String("Part ") + part);
+			ElementIdLog("ElementId", "getPart",  "println", Note("Part ") + part);
 			return part;
 		}
 		
@@ -181,7 +204,7 @@ class ElementId : public cppObject , public Printable{
 			return true;
 		}
 		
-		virtual bool hasPart(String s){
+		virtual bool hasPart(Note s){
 			ElementIdLog("ElementId", "hasPart",  "println", "");
 			int sizeOriginal = getSize();
 			for(int x = 0; x < sizeOriginal; x++){
@@ -192,18 +215,18 @@ class ElementId : public cppObject , public Printable{
 			return false;
 		}
 		
-		virtual ElementId removePart(String s){
+		virtual ElementId removePart(Note s){
 			ElementIdLog("ElementId", "removePart",  "println", "");
-			String newId = "";
+			Note newId = "";
 			int sizeOriginal = getSize();
 			for(int x = 0; x < sizeOriginal; x++){
-				String partE = getPart(x);
+				Note partE = getPart(x);
 				if(s != partE){
 					if(newId == ""){
 						newId = partE;
 						continue;
 					}
-					newId += String(".") + partE;
+					newId += Note(".") + partE;
 				}
 			}
 			return ElementId(newId);
@@ -220,8 +243,8 @@ class ElementId : public cppObject , public Printable{
 			int positionNID = 0;
 			bool startN = false;
 			for(int x = 0; x < sizeOriginal; x++){
-				String partE = getPart(x);
-				String partN = nid.getPart(positionNID);
+				Note partE = getPart(x);
+				Note partN = nid.getPart(positionNID);
 				if(partE == partN){
 					positionNID++;
 					startN = true;
@@ -240,36 +263,36 @@ class ElementId : public cppObject , public Printable{
 		
 		virtual ElementId removeParent(){
 			ElementIdLog("ElementId", "removeParent",  "println", "");
-			String newId = "";
+			Note newId = "";
 			int sizeOriginal = getSize();
 			for(int x = 1; x < sizeOriginal; x++){
-				String partE = getPart(x);
+				Note partE = getPart(x);
 				if(newId == ""){
 					newId = partE;
 					continue;
 				}
-				newId += String(".") + partE;
+				newId += Note(".") + partE;
 			}
 			return ElementId(newId);
 		}
 		
-		virtual ElementId changeDelimiter(String n_delimiter){
+		virtual ElementId changeDelimiter(Note n_delimiter){
 			ElementIdLog("ElementId", "changeDelimiter",  "println", "");
-			String newId = "";
+			Note newId = "";
 			int sizeOriginal = getSize();
 			for(int x = 0; x < sizeOriginal; x++){
-				String partE = getPart(x);
+				Note partE = getPart(x);
 				newId += m_delimiter + partE;
 			}
 			return ElementId(newId, n_delimiter);
 		}
 		
-		virtual ElementId changeDelimiterLocal(String n_delimiter){
+		virtual ElementId changeDelimiterLocal(Note n_delimiter){
 			ElementIdLog("ElementId", "changeDelimiterLocal",  "println", "");
-			String newId = "";
+			Note newId = "";
 			int sizeOriginal = getSize();
 			for(int x = 0; x < sizeOriginal; x++){
-				String partE = getPart(x);
+				Note partE = getPart(x);
 				if(newId == ""){
 					newId = partE;
 				}else{
@@ -290,7 +313,7 @@ class ElementId : public cppObject , public Printable{
 			ElementIdLog("ElementId", "operator+=",  "println", "");
 			int sizeNew = b.getSize();
 			for(int x = 1; x < sizeNew; x++){
-				String partE = b.getPart(x);
+				Note partE = b.getPart(x);
 				if(id == ""){
 					id = partE;
 					continue;
@@ -299,7 +322,7 @@ class ElementId : public cppObject , public Printable{
 			}
 		}
 		
-		virtual void operator+=(String b){
+		virtual void operator+=(Note b){
 			ElementIdLog("ElementId", "operator+=",  "println", "");
 			if(id == ""){
 				id = b;
@@ -318,12 +341,12 @@ class ElementId : public cppObject , public Printable{
 			return id != b.id;
 		}
 		
-		virtual bool operator==(const String& b){
+		virtual bool operator==(const Note& b){
 			ElementIdLog("ElementId", "operator==",  "println", "");
 			return id == b;
 		}
 		
-		virtual bool operator!=(const String& b){
+		virtual bool operator!=(const Note& b){
 			ElementIdLog("ElementId", "operator!=",  "println", "");
 			return id != b;
 		}
@@ -348,9 +371,9 @@ class ElementId : public cppObject , public Printable{
 			return Class<ElementId>::classType;
 		}
 		
-		virtual String toString(){
-			ElementIdLog("ElementId", "toString",  "println", "");
-			return String("ElementId: ") + id;
+		virtual Note toNote(){
+			ElementIdLog("ElementId", "toNote",  "println", "");
+			return Note("ElementId: ") + id;
 		}
 		
 		virtual bool equal(cppObject *b){
@@ -369,17 +392,18 @@ class ElementId : public cppObject , public Printable{
 			return cls == Class<ElementId>::classType || cppObject::instanceof(cls);
 		}
 	
+
+#ifdef ame_ArduinoIDE
 		size_t printTo(Print& p) const{
 			ElementIdLog("ElementId", "printTo",  "println", "");
 			return p.print(id);
 		}
+#endif 
 	protected:
-		String id = "";
-		String m_delimiter = ".";
+		Note id = "";
+		Note m_delimiter = ".";
 };
 
 }
 
-#endif 
-
-#endif 
+#endif

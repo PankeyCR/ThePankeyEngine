@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_GameBuilder)
+	#define GameBuilder_hpp
+#endif
 
 #ifndef GameBuilder_hpp
 #define GameBuilder_hpp
+#define GameBuilder_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 namespace ame{
 
@@ -17,7 +32,5 @@ class GameBuilder {
 };
 
 }
-
-#endif
 
 #endif

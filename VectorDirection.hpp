@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_VectorDirection)
+	#define VectorDirection_hpp
+#endif
+
 #ifndef VectorDirection_hpp
 #define VectorDirection_hpp
+#define VectorDirection_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
 
@@ -26,8 +45,8 @@ cppObjectClass* getClass(){
 	return Class<VectorDirection>::classType;
 }
     
-String toString(){
-	return this->vector.getName() + String(" ") + String (this->direction);
+Note toNote(){
+	return this->vector.getName() + Note(" ") + Note (this->direction);
 }
     
 Vector getVector(){

@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_GameState)
+	#define GameState_hpp
+#endif
 
 #ifndef GameState_hpp
 #define GameState_hpp
+#define GameState_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 namespace ame{
 
@@ -53,6 +68,4 @@ virtual bool operator !=(T v){
 
 }
 
-#endif 
-
-#endif 
+#endif

@@ -1,8 +1,28 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_PrimitiveRawList)
+	#define PrimitiveRawList_hpp
+#endif
+
 #ifndef PrimitiveRawList_hpp
 #define PrimitiveRawList_hpp
+#define PrimitiveRawList_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "RawList.hpp"
+#include "ListIterator.hpp"
 
 namespace ame{
 
@@ -66,12 +86,6 @@ class PrimitiveRawList : public RawList<T>{
 			values[i] = jt;
 			values[j] = it;
 			return true;
-		}
-		
-		virtual void addList(RawList<T>* list){
-			for(int x=0; x < list->getPosition() ; x++){
-				this->addPointer(list->getByPosition(x));
-			}
 		}
 	
 		template<class... args>
@@ -311,27 +325,76 @@ class PrimitiveRawList : public RawList<T>{
 			this->pos--;
 			return t;
 		}
-		
-		virtual void removeDeleteByPointer(T* key){
-			T* t = this->removeByPointer(key);
-			if(t != nullptr && owner){
-				delete t;
+	
+		////////////////////////////////////////////special removes part///////////////////////////////////////////////
+		virtual bool removeAll(T value){
+			bool r_val = false;
+			int p_x = 0;
+			for(int x = 0; x < pos; x++){
+				if(value == *values[x]){
+					if(owner){
+						delete values[x];
+					}
+					r_val = true;
+				}else{
+					values[p_x] = values[x];
+					p_x++;
+				}
 			}
+			pos = p_x;
+			return r_val;
 		}
 		
-		virtual void removeDeleteByLValue(T key){
-			T* t = this->removeByLValue(key);
-			if(t != nullptr && owner){
-				delete t;
+		virtual bool removeFirst(T value){
+			bool r_val = false;
+			bool r_once = true;
+			int p_x = 0;
+			for(int x = 0; x < pos; x++){
+				if(value == *values[x] && r_once){
+					if(owner){
+						delete values[x];
+					}
+					r_once = false;
+					r_val = true;
+				}else{
+					values[p_x] = values[x];
+					p_x++;
+				}
 			}
+			pos = p_x;
+			return r_val;
 		}
 		
-		virtual void removeDeleteByPosition(int p){
-			T* t = this->removeByPosition(p);
-			if(t != nullptr && owner){
-				delete t;
+		virtual bool removeLast(T value){
+			int r_pos = pos;
+			for(int x = pos - 1; x >= 0; x--){
+				if(value == *values[x]){
+					r_pos = x;
+					break;
+				}
 			}
+			
+			bool r_val = false;
+			bool r_once = true;
+			int p_x = r_pos;
+			for(int x = p_x; x < pos; x++){
+				if(value == *values[x] && r_once){
+					if(owner){
+						delete values[x];
+					}
+					r_once = false;
+					r_val = true;
+				}else{
+					values[p_x] = values[x];
+					p_x++;
+				}
+			}
+			pos = p_x;
+			return r_val;
 		}
+	
+		////////////////////////////////////////////operator part///////////////////////////////////////////////
+		
 		
 		virtual T& operator[](int x){
 			if(x > this->pos){
@@ -370,6 +433,16 @@ class PrimitiveRawList : public RawList<T>{
 			}
 			return nprimitive;
 		}
+	
+		////////////////////////////////////////////Iterator part///////////////////////////////////////////////
+		
+		ListIterator<T> begin(){
+		  return ListIterator<T>(this, 0, this->getPosition());
+		}
+		
+		ListIterator<T> end(){
+		  return ListIterator<T>(this, this->getPosition(), this->getPosition());
+		}
 		
 	protected:
 		T **values = nullptr;
@@ -380,4 +453,4 @@ class PrimitiveRawList : public RawList<T>{
 
 }
 
-#endif 
+#endif

@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_4)
+#if defined(DISABLE_Command)
+	#define Command_hpp
+#endif
 
 #ifndef Command_hpp
 #define Command_hpp
+#define Command_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 namespace ame{
 
@@ -31,6 +46,4 @@ class Command {
 
 }
 
-#endif 
-
-#endif 
+#endif

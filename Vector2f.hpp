@@ -1,13 +1,20 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Vector2f)
+	#define Vector2f_hpp
+#endif
+
 #ifndef Vector2f_hpp
 #define Vector2f_hpp
+#define Vector2f_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
-
+    #define _USE_MATH_DEFINES
 #endif
 
 #ifdef ame_ArduinoIDE
@@ -18,35 +25,36 @@
 #include "List.hpp"
 #include "LinkedList.hpp"
 #include "cppObject.hpp"
+#include "Class.hpp"
 
 namespace ame{
-	
+
 class Vector2f : public cppObject{
     private:
-	
+
     public:
- 
+
     const static Vector2f *ZERO;
     const static Vector2f *UNIT_XY;
-    
-    float x;
-    float y;
+
+    float x = 0;
+    float y = 0;
 
     Vector2f(float xx, float yy){
 		this->x = xx;
 		this->y = yy;
 	}
-	
+
     Vector2f(){
 		this->x = this->y = 0;
 	}
-	
+
     Vector2f(const Vector2f& v){
 		this->x = v.x;
 		this->y = v.y;
 	}
 
-	
+
     Vector2f set(float xx, float yy){
 		this->x = xx;
 		this->y = yy;
@@ -59,7 +67,7 @@ class Vector2f : public cppObject{
 		return *this;
 	}
 
-	
+
     Vector2f add(float scalar){
 		return Vector2f(this->x + scalar, this->y + scalar);
 	}
@@ -73,7 +81,7 @@ class Vector2f : public cppObject{
 		float yy = this->y + addY;
 		return Vector2f(xx, yy);
 	}
-	
+
     Vector2f addLocal(Vector2f vec){
 		this->x += vec.x;
 		this->y += vec.y;
@@ -92,7 +100,7 @@ class Vector2f : public cppObject{
 		return *this;
 	}
 
-	
+
     float dot(Vector2f vec){
 		return this->x * vec.x + this->y * vec.y;
 	}
@@ -108,7 +116,7 @@ class Vector2f : public cppObject{
     float determinant(float XX, float YY){
 		return (this->x * YY) - (this->y * XX);
 	}
-	
+
     Vector2f interpolateLocal(Vector2f finalVec, float changeAmnt){
 		this->x = (1 - changeAmnt) * this->x + changeAmnt * finalVec.x;
 		this->y = (1 - changeAmnt) * this->y + changeAmnt * finalVec.y;
@@ -137,7 +145,7 @@ class Vector2f : public cppObject{
     float lengthSquared() const{
 		return this->x * this->x + this->y * this->y;
 	}
-	
+
     float distanceSquared(Vector2f v){
 		double dx = this->x - v.x;
 		double dy = this->y - v.y;
@@ -158,11 +166,11 @@ class Vector2f : public cppObject{
 		return sqrt(distanceSquared(XX, YY));
 	}
 
-	
+
     Vector2f mult(float scalar){
 		return Vector2f(this->x * scalar, this->y * scalar);
 	}
-	
+
     Vector2f mult(Vector2f vec){
 		return Vector2f(this->x * vec.x, this->y * vec.y);
 	}
@@ -171,7 +179,7 @@ class Vector2f : public cppObject{
 		return Vector2f(this->x * mulX, this->y * mulY);
 	}
 
-	
+
     Vector2f multLocal(float scalar){
 		this->x *= scalar;
 		this->y *= scalar;
@@ -190,7 +198,7 @@ class Vector2f : public cppObject{
 		return *this;
 	}
 
-	
+
     Vector2f divide(float scalar){
 		return Vector2f(this->x / scalar, this->y / scalar);
 	}
@@ -203,7 +211,7 @@ class Vector2f : public cppObject{
 		return Vector2f(this->x / vec.x, this->y / vec.y);
 	}
 
-	
+
     Vector2f divideLocal(float scalar){
 		this->x /= scalar;
 		this->y /= scalar;
@@ -222,7 +230,7 @@ class Vector2f : public cppObject{
 		return *this;
 	}
 
-	
+
     Vector2f negate(){
 		return Vector2f(-this->x, -this->y);
 	}
@@ -233,7 +241,7 @@ class Vector2f : public cppObject{
 		return *this;
 	}
 
-	
+
     Vector2f subtract(Vector2f vec){
 		return Vector2f(this->x - vec.x , this->y - vec.y);
 	}
@@ -245,7 +253,7 @@ class Vector2f : public cppObject{
     Vector2f subtract(float valX, float valY){
 		return Vector2f(this->x - valX, this->y - valY);
 	}
-	
+
     Vector2f subtractLocal(float scalar){
 		this->x -= scalar;
 		this->y -= scalar;
@@ -264,7 +272,7 @@ class Vector2f : public cppObject{
 		return *this;
 	}
 
-	
+
     Vector2f normalize(){
 		float lengthN = this->length();
 		if (lengthN != 0) {
@@ -283,7 +291,7 @@ class Vector2f : public cppObject{
 		return this->divideLocal(1);
 	}
 
-	
+
     float smallestAngleBetween(Vector2f otherVector){
 		float dotProduct = dot(otherVector);
 		float angle = acos(dotProduct);
@@ -295,7 +303,7 @@ class Vector2f : public cppObject{
 				- atan2(this->y, this->x);
 		return angle;
 	}
-	
+
     float getX(){
 		return this->x;
 	}
@@ -323,17 +331,21 @@ class Vector2f : public cppObject{
 		this->y = 0;
 		return *this;
 	}
-	
+
     Vector2f *clone(){
 		return new Vector2f(x,y);
 	}
-	
+		
+	#if defined(LinkedList_AVAILABLE)
+
     LinkedList<float> toArray(){
 		LinkedList<float> floats;
 		floats.add(this->x);
 		floats.add(this->y);
 		return floats;
 	}
+	
+	#endif
 
     bool equals(cppObject *o){
 		if (!(o->getClass() == Class<Vector2f>::classType)) {
@@ -354,10 +366,10 @@ class Vector2f : public cppObject{
 		return true;
 	}
 
-    String toString(){
-		return "Vector2f(" + String(this->x) + ", " + String(this->y) + ")";
+    Note toNote(){
+		return Note("Vector2f(") + Note(this->x) + ", " + Note(this->y) + Note(")");
 	}
-	
+
 	// void readExternal(ObjectInput in) throws IOException,
 			// ClassNotFoundException {
 		// x = in.readFloat();
@@ -380,40 +392,61 @@ class Vector2f : public cppObject{
 		// x = capsule.readFloat("x", 0);
 		// y = capsule.readFloat("y", 0);
 	// }
-	
+
     Vector2f rotateAroundOrigin(float angle, bool cw){
 		if (cw){
 			angle = -angle;
 		}
+
+#ifdef ame_Windows
+		float rad = (M_PI/180.0f)*angle;
+#endif
+#ifdef ame_ArduinoIDE
 		float rad = (PI/180.0f)*angle;
+#endif
 		float newX = cos(rad) * this->x - sin(rad) * this->y;
 		float newY = sin(rad) * this->x + cos(rad) * this->y;
 		float xx = newX;
 		float yy = newY;
 		return Vector2f(xx, yy);
 	}
-	
+
     Vector2f rotateAroundOriginLocal(float angle, bool cw){
 		if (cw){
 			angle = -angle;
 		}
+#ifdef ame_Windows
+		float rad = (M_PI/180.0f)*angle;
+#endif
+#ifdef ame_ArduinoIDE
 		float rad = (PI/180.0f)*angle;
+#endif
 		float newX = cos(rad) * this->x - sin(rad) * this->y;
 		float newY = sin(rad) * this->x + cos(rad) * this->y;
 		this->x = newX;
 		this->y = newY;
 		return Vector2f(this->x, this->y);
 	}
-	
+
 	Vector2f rotate(float angle){
-		float rad = (PI*angle)/180.0f;
+#ifdef ame_Windows
+		float rad = (M_PI/180.0f)*angle;
+#endif
+#ifdef ame_ArduinoIDE
+		float rad = (PI/180.0f)*angle;
+#endif
 		float coseno = (float)cos(rad);
 		float seno = (float)sin(rad);
 		return Vector2f((this->x * coseno - this->y * seno),(this->x * seno + this->y * coseno));
 	}
-	
+
 	Vector2f rotateLocal(float angle){
-		float rad = (PI*angle)/180.0f;
+#ifdef ame_Windows
+		float rad = (M_PI/180.0f)*angle;
+#endif
+#ifdef ame_ArduinoIDE
+		float rad = (PI/180.0f)*angle;
+#endif
 		float coseno = (float)cos(rad);
 		float seno = (float)sin(rad);
 		float xx = this->x * coseno - this->y * seno;
@@ -421,17 +454,17 @@ class Vector2f : public cppObject{
 		this->set(xx,yy);
 		return Vector2f(this->x, this->y);
 	}
-	
+
 	cppObjectClass* getClass(){
 		return Class<Vector2f>::classType;
 	}
-	
+
 	Vector2f& operator=(const Vector2f& a){
 		this->x = a.x;
 		this->y = a.y;
 		return *this;
 	}
-	
+
 	Vector2f& operator=(const float& a){
 		this->x = a;
 		this->y = a;
@@ -512,8 +545,8 @@ class Vector2f : public cppObject{
 	Vector2f operator/(const double& a) const{
 		return Vector2f(this->x/(float)a ,this->y/(float)a);
 	}
-	
-	
+
+
 	Vector2f operator+=(const Vector2f& a) {
 		this->x += a.x;
 		this->y += a.y;
@@ -594,14 +627,14 @@ class Vector2f : public cppObject{
 		this->y /= (float)a;
 		return Vector2f(this->x,this->y);
 	}
-	
+
 	bool operator>(const Vector2f& a) {
 		return length() > a.length();
 	}
 	bool operator<(const Vector2f& a) {
 		return length() < a.length();
 	}
-	
+
 	bool operator>(const float& a) const{
 		return length() > a;
 	}
@@ -626,6 +659,5 @@ const Vector2f *ZERO = new Vector2f(0.00f, 0.00f);
 const Vector2f *UNIT_XY = new Vector2f(1.00f, 1.00f);
 
 }
-
 
 #endif

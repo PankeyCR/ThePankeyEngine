@@ -1,10 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_TemplateMath)
+	#define TemplateMath_hpp
+#endif
 
 #ifndef TemplateMath_hpp
 #define TemplateMath_hpp
+#define TemplateMath_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -40,4 +46,4 @@ long TemplateMath::exp<0>(){
 
 }
 
-#endif 
+#endif

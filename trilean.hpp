@@ -1,7 +1,26 @@
 
+#include "ame_Enviroment.hpp"
 
-#ifndef trilean_h
-#define trilean_h
+#if defined(DISABLE_trilean)
+	#define trilean_hpp
+#endif
+
+#ifndef trilean_hpp
+#define trilean_hpp
+#define trilean_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
 #define unknown -1
 
 namespace ame{
@@ -300,5 +319,7 @@ class trilean{
 };
 
 }
+
+#endif 
 
 #endif 

@@ -1,9 +1,27 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Message)
+	#define Message_hpp
+#endif
 
 #ifndef Message_hpp
 #define Message_hpp
+#define Message_AVAILABLE
 
-// #include "Note.hpp"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
+#include "Note.hpp"
 #include "ByteArray.hpp"
 
 namespace ame{
@@ -18,23 +36,23 @@ Message(const Message& b){
 	m_type = b.m_type;
 	m_array = b.m_array;
 }
-Message(String txt){
+Message(Note txt){
 	m_text = txt;
 }
-Message(int i,String txt){
+Message(int i,Note txt){
 	m_id = i;
 	m_text = txt;
 }
-Message(String mname,String txt){
+Message(Note mname,Note txt){
 	m_name = mname;
 	m_text = txt;
 }
-Message(String mname, String mType,String txt){
+Message(Note mname, Note mType,Note txt){
 	m_name = mname;
 	m_type = mType;
 	m_text = txt;
 }
-Message(int i, String mname, String mType,String txt){
+Message(int i, Note mname, Note mType,Note txt){
 	m_name = mname;
 	m_type = mType;
 	m_id = i;
@@ -47,16 +65,16 @@ Message(int i,ByteArray b){
 	m_id = i;
 	m_array = b;
 }
-Message(String mname,ByteArray b){
+Message(Note mname,ByteArray b){
 	m_name = mname;
 	m_array = b;
 }
-Message(String mname, String mType,ByteArray b){
+Message(Note mname, Note mType,ByteArray b){
 	m_name = mname;
 	m_type = mType;
 	m_array = b;
 }
-Message(int i, String mname, String mType,ByteArray b){
+Message(int i, Note mname, Note mType,ByteArray b){
 	m_name = mname;
 	m_type = mType;
 	m_id = i;
@@ -83,35 +101,35 @@ virtual ~Message(){}
 virtual int id(){
 	return m_id;
 }
-virtual String name(){
+virtual Note name(){
 	return m_name;
 }
-virtual String text(){
+virtual Note text(){
 	return m_text;
 }
-virtual String type(){
+virtual Note type(){
 	return m_type;
 }
 virtual ByteArray array(){
 	return m_array;
 }
-// virtual String textString(){
-	// return m_text.toString();
+// virtual Note textNote(){
+	// return m_text.toNote();
 // }
-// virtual String typeString(){
-	// return m_type.toString();
+// virtual Note typeNote(){
+	// return m_type.toNote();
 // }
 
 virtual void id(int i){
 	m_id = i;
 }
-virtual void name(String n){
+virtual void name(Note n){
 	m_name = n;
 }
-virtual void text(String t){
+virtual void text(Note t){
 	m_text = t;
 }
-virtual void type(String t){
+virtual void type(Note t){
 	m_type = t;
 }
 virtual void array(ByteArray t){
@@ -126,7 +144,7 @@ virtual void array(ByteArray t){
 // virtual void operator=(const Note& b){
 	// m_text = b;
 // }
-virtual void operator=(const String& b){
+virtual void operator=(const Note& b){
 	m_text = b;
 }
 virtual void operator=(const Message& b){
@@ -143,13 +161,13 @@ virtual bool operator!=(const Message& b){
 }
 protected:
 int m_id = -1;
-String m_name;
-String m_type;
+Note m_name;
+Note m_type;
 
-String m_text;
+Note m_text;
 ByteArray m_array;
 };
 
 }
 
-#endif 
+#endif

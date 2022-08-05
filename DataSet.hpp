@@ -1,28 +1,45 @@
 /*
-	The iterator is passed as an rvalue reference 
-	Iteratin inside a Iteration with the same dataset is not allowed
-	//neuralnetworks dont let the dataset variable to get out until is done using it
-*/
+ *
+ *
+ *
+ *
+ */
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_DataSet)
+	#define DataSet_hpp
+#endif
 
 #ifndef DataSet_hpp
 #define DataSet_hpp
+#define DataSet_AVAILABLE
 
-#include "Cast.hpp"
-#include "cppObject.hpp"
-#include "Map.hpp"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
+#include "Class.hpp"
+#include "Array.hpp"
 
 namespace ame{
 	
 template <class T>
-class DataSet : public cppObject{
+class DataSet : public Array<T>{
 public:
 	DataSet(){}
-	DataSet(int i_size){
-		memory = malloc();
+	
+	template<class... Args>
+	DataSet(Args... x){
+		
 	}
 	DataSet(const DataSet<T>& t){
 		// m_space = t.m_space;
@@ -31,6 +48,28 @@ public:
 		// }
 	}
 	virtual ~DataSet(){}
+
+	virtual size_t printTo(Print& p) const{
+		if(this->m_t_value == nullptr || this->m_pos == 0){
+			return 0;
+		}
+		size_t i_size = 0;
+		for(int x = 0; x < this->m_pos; x++){
+			i_size += p.print(this->m_t_value[x]);
+		}
+		return i_size;
+	}
+
+	virtual size_t printTo(Print& p, int a_index) const{
+		if(this->m_t_value == nullptr){
+			return 0;
+		}
+		size_t i_size = 0;
+		for(int x = 0; x < this->m_pos; x++){
+			i_size += p.print(this->m_t_value[x]);
+		}
+		return i_size;
+	}
 	
 	virtual void space(int i_space){
 		m_space = i_space;
@@ -86,10 +125,10 @@ public:
 
 	//cppObject part
 	virtual bool instanceof(cppObjectClass* cls){
-	return cppObject::instanceof(cls) || cls == Class<DataSet<T>>::classType;
+		return Array<T>::instanceof(cls) || cls == Class<DataSet<T>>::classType;
 	}
 	virtual cppObjectClass* getClass(){return Class<DataSet<T>>::classType;}
-	virtual String toString(){return "DataSet";}
+	virtual Note toNote(){return "DataSet";}
 	
 	virtual bool equal(cppObject *b){
 		if(b == this){
@@ -98,11 +137,11 @@ public:
 		if(!b->instanceof(Class<DataSet<T>>::classType)){
 			return false;
 		}
-		if(m_space != ((DataSet<T>*)b)->m_space || 
-		   m_dimention != ((DataSet<T>*)b)->m_dimention || 
-		   m_position != ((DataSet<T>*)b)->m_position){
-			return false;
-		}
+		// if(m_space != ((DataSet<T>*)b)->m_space || 
+		   // m_dimention != ((DataSet<T>*)b)->m_dimention || 
+		   // m_position != ((DataSet<T>*)b)->m_position){
+			// return false;
+		// }
 		// for(Iterator i : *this){
 			// if(((DataSet<T>*)b)->getValue(i) != this->getValue(i)){
 				// return false;
@@ -110,12 +149,16 @@ public:
 		// }
 		return true;
 	}
+		
+	virtual DataSet<T>* clone(){
+		return new DataSet<T>(*this);
+	}
 	
 	virtual void operator=(const DataSet<T>& b){}
 	virtual bool operator==(DataSet<T> b){
 		return true;
 	}
-	
+	/*
 	virtual DataSet<T>&& begin(){return DataSet<T>();}
 	virtual DataSet<T>&& end(){return DataSet<T>();}
 	virtual DataSet<T> operator *(){return DataSet<T>();}
@@ -130,7 +173,7 @@ public:
 
 	virtual bool last(){return false;}
 	virtual bool next(){return false;}
-	
+	*/
 protected:
 	T* memory = nullptr;
 	
@@ -140,10 +183,10 @@ protected:
 	int m_dimention = 0;
 	int m_position = 0;
 	
+	DataSet<T>* m_net = nullptr;
+	
 };
 
 }
 
-#endif 
-
-#endif 
+#endif

@@ -1,10 +1,11 @@
 
 #include "SerialConnection.hpp"
+#include "Note.hpp"
 
 using namespace ame;
 
 SerialConnection *serial;
-String buff;  
+Note buff;  
 
 void setup() {
   Serial.begin(9600);
@@ -14,7 +15,7 @@ void setup() {
 
 void loop() {
   buff = serial->safeReceive('{','}');        
-  String buff_0 = "";
+  Note buff_0 = "";
 
   if(buff != ""){
     buff_0 = serial->Split(buff,0,' ');

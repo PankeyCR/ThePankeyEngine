@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_RenderState)
+	#define RenderState_hpp
+#endif
+
 #ifndef RenderState_hpp
 #define RenderState_hpp
+#define RenderState_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "AppState.hpp"
 #include "RenderManager.hpp"
@@ -21,4 +40,4 @@ class RenderState : public AppState{
 
 }
 
-#endif 
+#endif

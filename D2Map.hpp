@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_D2Map)
+	#define D2Map_hpp
+#endif
 
 #ifndef D2Map_hpp
 #define D2Map_hpp
+#define D2Map_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "DMap.hpp"
 
@@ -61,6 +76,4 @@ class D2Map : DMap<T>{
 
 }
 
-#endif 
-
-#endif 
+#endif

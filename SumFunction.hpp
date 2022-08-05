@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_SumFunction)
+	#define SumFunction_hpp
+#endif
+
 #ifndef SumFunction_hpp
 #define SumFunction_hpp
+#define SumFunction_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Function.hpp"
 
@@ -25,7 +44,7 @@ class SumFunction : public Function<T,any...>{
 		
 		//cppObject part
 		cppObjectClass* getClass(){return Class<SumFunction>::classType;}
-		String toString(){return "SumFunction";}
+		Note toNote(){return "SumFunction";}
 		
 	protected:
 };
@@ -36,4 +55,4 @@ float SumFunction<float,float>::f(float x){
 
 }
 
-#endif 
+#endif

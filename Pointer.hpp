@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Pointer)
+	#define Pointer_hpp
+#endif
+
 #ifndef Pointer_hpp
 #define Pointer_hpp
+#define Pointer_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 namespace ame{
 

@@ -1,10 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_TimeControl)
+	#define TimeControl_hpp
+#endif
 
 #ifndef TimeControl_hpp
 #define TimeControl_hpp
+#define TimeControl_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -17,6 +23,7 @@
 
 #include "cppObject.hpp"
 #include "PrimitiveList.hpp"
+#include "Note.hpp"
 #include "List.hpp"
 #include "TimeElapsed.hpp"
 
@@ -105,7 +112,7 @@ class TimeControl : public cppObject{
 			return this->timeList->getByPointer(t);
 		}
 				
-		virtual String toString(){
+		virtual Note toNote(){
 			return "TimeControl";
 		}
 		virtual cppObjectClass* getClass(){
@@ -118,5 +125,4 @@ class TimeControl : public cppObject{
 
 }
 
-
-#endif 
+#endif

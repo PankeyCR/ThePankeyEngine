@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_Control)
+	#define Control_hpp
+#endif
 
 #ifndef Control_hpp
 #define Control_hpp
+#define Control_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
 #include "RenderManager.hpp"
@@ -25,7 +40,7 @@ class Control : public cppObject{
 			return cls == Class<Control>::classType || cppObject::instanceof(cls);
 		}
 		virtual cppObjectClass* getClass(){return Class<Control>::classType;}
-		virtual String toString(){return "Control";}
+		virtual Note toNote(){return "Control";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
 				return true;
@@ -47,5 +62,3 @@ class Control : public cppObject{
 }
 
 #endif
-
-#endif 

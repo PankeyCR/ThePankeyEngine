@@ -1,7 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Pair)
+	#define Pair_hpp
+#endif
 
 #ifndef Pair_hpp
 #define Pair_hpp
+#define Pair_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 namespace ame{
 
@@ -50,4 +68,4 @@ class Pair{
 
 }
 
-#endif 
+#endif

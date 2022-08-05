@@ -1,22 +1,56 @@
 
-#ifndef SimpleTimer_h
-#define SimpleTimer_h
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_TimeControl) || defined(DISABLE_SimpleTimer)
+	#define SimpleTimer_hpp
+#endif
+
+#ifndef SimpleTimer_hpp
+#define SimpleTimer_hpp
+#define SimpleTimer_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "TimeControl.hpp"
 #include "TimeElapsed.hpp"
 #include "List.hpp"
+#include "Note.hpp"
 #include "PrimitiveList.hpp"
 #include "cppObjectClass.hpp"
 
 
 #if defined(ARDUINO_ARCH_AVR)
-	#include <avr/interrupt.hpp>
-	#include <avr/io.hpp>
+	#include <avr/interrupt.h>
+	#include <avr/io.h>
 
 #elif defined(ARDUINO_ARCH_SAM)
   // SAM-specific code
 #else
   // generic, non-platform specific code
+#endif
+
+#ifdef SimpleTimerLoopLogApp
+	#include "Logger.hpp"
+	#define SimpleTimerLoopLog(name,method,type,mns) Log(name,method,type,mns)
+#else
+	#define SimpleTimerLoopLog(name,method,type,mns)
+#endif
+
+#ifdef SimpleTimerLogApp
+	#include "Logger.hpp"
+	#define SimpleTimerLog(name,method,type,mns) Log(name,method,type,mns)
+#else
+	#define SimpleTimerLog(name,method,type,mns)
 #endif
 
 namespace ame{
@@ -28,82 +62,87 @@ class SimpleTimer : public TimeControl{
     public:
 		unsigned char clockSelectBits;
 		char oldSREG;
-		
+
 		virtual ~SimpleTimer();
-		
-		static TimeControl *getInstance();
-		
+
+		static TimeControl* getInstance();
+
 		virtual TimeControl* initialize(long timeperiod);
 		virtual TimeControl* setPeriod(long timeperiod);
-		
+
 		TimeControl* attachInterrupt();
 		TimeControl* detachInterrupt();
 		TimeControl* startInterrupt();
 		TimeControl* stopInterrupt();
 		TimeControl* resumeInterrupt();
-		
-		virtual String toString();
+
+		virtual Note toNote();
 		virtual cppObjectClass* getClass();
-    
+
 	private:
 		static TimeControl *instance;
-		
+
 		SimpleTimer();
-		
-		#if defined(ARDUINO_ESP32_DEV)
+
+		#if defined(ame_GENERIC_ESP32)
 		hw_timer_t * timer = nullptr;
 		#endif
 };
 
-}
+	TimeControl* SimpleTimer::instance = nullptr;
 
-	ame::TimeControl* ame::SimpleTimer::instance = nullptr;
-
-
-
-		ame::TimeControl *ame::SimpleTimer::getInstance(){
+		TimeControl *SimpleTimer::getInstance(){
+			SimpleTimerLog("SimpleTimer", "getInstance",  "println", "");
 			if (instance == nullptr){
-				instance = new ame::SimpleTimer();
+				SimpleTimerLog("SimpleTimer", "getInstance",  "println", "instance == nullptr");
+				instance = new SimpleTimer();
 			}
 			return instance;
 		}
-		
-		// ame::SimpleTimer::SimpleTimer(){
+
+		// SimpleTimer::SimpleTimer(){
 			// this->timeList = new PrimitiveList<TimeElapsed>();
 		// }
-		
-		// ame::SimpleTimer::~SimpleTimer(){
+
+		// SimpleTimer::~SimpleTimer(){
 			// delete this->timeList;
 			// this->timeList = nullptr;
 		// }
-		
+
 	#if defined(__AVR_ATmega2560__)
 	#define TIMER1_RESOLUTION 32768
 		ISR(TIMER1_OVF_vect){
-			for(int x = 0; x < ((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getPosition(); x++){
-				((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(ame::SimpleTimer::getInstance());
+			SimpleTimerLoopLog("SimpleTimer", "ISR",  "println", "__AVR_ATmega2560__");
+			for(int x = 0; x < ((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPosition(); x++){
+				((SimpleTimer*)SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(SimpleTimer::getInstance());
 			}
-			((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->time+=1;
+			((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
 		}
-		
-		ame::SimpleTimer::SimpleTimer(){
+
+		SimpleTimer::SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Constructor",  "println", "__AVR_ATmega2560__");
 			this->timeList = new PrimitiveList<TimeElapsed>();
 			Serial.println("AVR_ATmega2560");
 		}
-		
-		ame::SimpleTimer::~SimpleTimer(){
+
+		SimpleTimer::~SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Destructor",  "println", "__AVR_ATmega2560__");
 			delete this->timeList;
 			this->timeList = nullptr;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::initialize(long microseconds){
+		TimeControl* SimpleTimer::initialize(long microseconds){
+			SimpleTimerLog("SimpleTimer", "initialize",  "println", "__AVR_ATmega2560__");
+			SimpleTimerLog("SimpleTimer", "initialize",  "println", Note("microseconds ") + Note(microseconds));
 			TCCR1B = _BV(WGM13);        // set mode as phase and frequency correct pwm, stop the timer
-			TCCR1A = 0;                 // clear control register A 
+			TCCR1A = 0;                 // clear control register A
 			setPeriod(microseconds);
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::setPeriod(long microseconds){
+		TimeControl* SimpleTimer::setPeriod(long microseconds){
+			SimpleTimerLog("SimpleTimer", "setPeriod",  "println", "__AVR_ATmega2560__");
+			SimpleTimerLog("SimpleTimer", "setPeriod",  "println", Note("microseconds ") + Note(microseconds));
 			const unsigned long cycles = ((F_CPU/100000 * microseconds) / 20);
 			if (cycles < TIMER1_RESOLUTION) {
 				clockSelectBits = _BV(CS10);
@@ -133,64 +172,75 @@ class SimpleTimer : public TimeControl{
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::attachInterrupt(){
+		TimeControl* SimpleTimer::attachInterrupt(){
+			SimpleTimerLog("SimpleTimer", "attachInterrupt",  "println", "__AVR_ATmega2560__");
 			TIMSK1 = _BV(TOIE1);                                     // sets the timer overflow interrupt enable bit
 			// might be running with interrupts disabled (eg inside an ISR), so don't touch the global state
 			//  sei();
-			resumeInterrupt();	
-			return this;											
+			resumeInterrupt();
+			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::detachInterrupt(){
+		TimeControl* SimpleTimer::detachInterrupt(){
+			SimpleTimerLog("SimpleTimer", "detachInterrupt",  "println", "__AVR_ATmega2560__");
 			TIMSK1 = 0;
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::startInterrupt(){
+		TimeControl* SimpleTimer::startInterrupt(){
+			SimpleTimerLog("SimpleTimer", "startInterrupt",  "println", "__AVR_ATmega2560__");
 			TCCR1B = 0;
 			TCNT1 = 0;		// TODO: does this cause an undesired interrupt?
 			resumeInterrupt();
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::stopInterrupt(){
+		TimeControl* SimpleTimer::stopInterrupt(){
+			SimpleTimerLog("SimpleTimer", "stopInterrupt",  "println", "__AVR_ATmega2560__");
 			TCCR1B = _BV(WGM13);
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::resumeInterrupt(){ 
+		TimeControl* SimpleTimer::resumeInterrupt(){
+			SimpleTimerLog("SimpleTimer", "resumeInterrupt",  "println", "__AVR_ATmega2560__");
 			TCCR1B = _BV(WGM13) | clockSelectBits;
 			return this;
 		}
-		
+
 
 	#elif defined(ARDUINO_ARCH_AVR)
 		ISR(TIMER1_OVF_vect){
-			for(int x = 0; x < ((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getPosition(); x++){
-				((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(ame::SimpleTimer::getInstance());
+			SimpleTimerLoopLog("SimpleTimer", "ISR",  "println", "ARDUINO_ARCH_AVR");
+			for(int x = 0; x < ((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPosition(); x++){
+				((SimpleTimer*)SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(SimpleTimer::getInstance());
 			}
-			((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->time+=1;
+			((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
 		}
-		
-		ame::SimpleTimer::SimpleTimer(){
+
+		SimpleTimer::SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Constructor",  "println", "ARDUINO_ARCH_AVR");
 			this->timeList = new PrimitiveList<TimeElapsed>();
 			Serial.println("ARDUINO_ARCH_AVR");
 		}
-		
-		ame::SimpleTimer::~SimpleTimer(){
+
+		SimpleTimer::~SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Destructor",  "println", "ARDUINO_ARCH_AVR");
 			delete this->timeList;
 			this->timeList = nullptr;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::initialize(long timeperiod){
+		TimeControl* SimpleTimer::initialize(long timeperiod){
+			SimpleTimerLog("SimpleTimer", "initialize",  "println", "ARDUINO_ARCH_AVR");
+			SimpleTimerLog("SimpleTimer", "initialize",  "println", Note("microseconds ") + Note(microseconds));
 			// TCCR1A = 0;
 			// TCCR1B = _BV(WGM13);
 			// setPeriod(timeperiod);
-			Serial.println("taotaottttttttttttttttttttttttttttttttttttttttttttttttt");
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::setPeriod(long timeperiod){
+		TimeControl* SimpleTimer::setPeriod(long microseconds){
+			SimpleTimerLog("SimpleTimer", "setPeriod",  "println", "ARDUINO_ARCH_AVR");
+			SimpleTimerLog("SimpleTimer", "setPeriod",  "println", Note("microseconds ") + Note(microseconds));
 			this->period = timeperiod;
 			long cycles = (F_CPU / 2000000) * timeperiod;        // the counter runs backwards after TOP, interrupt is at BOTTOM so divide microseconds by 2
 			if(cycles < RESOLUTION)              clockSelectBits = _BV(CS10);              // no prescale, full xtal
@@ -200,7 +250,7 @@ class SimpleTimer : public TimeControl{
 			else if((cycles >>= 2) < RESOLUTION) clockSelectBits = _BV(CS12) | _BV(CS10);  // prescale by /1024
 			else        cycles = RESOLUTION - 1, clockSelectBits = _BV(CS12) | _BV(CS10);  // request was out of bounds, set as maximum
 
-			oldSREG = SREG;				
+			oldSREG = SREG;
 			cli();							// Disable interrupts for 16 bit register access
 			ICR1 = cycles;                                          // ICR1 is TOP in p & f correct pwm mode
 			SREG = oldSREG;
@@ -210,29 +260,32 @@ class SimpleTimer : public TimeControl{
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::attachInterrupt(){
+		TimeControl* SimpleTimer::attachInterrupt(){
+			SimpleTimerLog("SimpleTimer", "attachInterrupt",  "println", "ARDUINO_ARCH_AVR");
 			TIMSK1 = _BV(TOIE1);                                     // sets the timer overflow interrupt enable bit
 			// might be running with interrupts disabled (eg inside an ISR), so don't touch the global state
 			//  sei();
-			resumeInterrupt();	
-			return this;											
+			resumeInterrupt();
+			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::detachInterrupt(){
-			TIMSK1 &= ~_BV(TOIE1);                                   // clears the timer overflow interrupt enable bit 
+		TimeControl* SimpleTimer::detachInterrupt(){
+			SimpleTimerLog("SimpleTimer", "detachInterrupt",  "println", "ARDUINO_ARCH_AVR");
+			TIMSK1 &= ~_BV(TOIE1);                                   // clears the timer overflow interrupt enable bit
 																	// timer continues to count without calling the isr
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::startInterrupt(){
+		TimeControl* SimpleTimer::startInterrupt(){
+			SimpleTimerLog("SimpleTimer", "startInterrupt",  "println", "ARDUINO_ARCH_AVR");
 			unsigned int tcnt1;
 
-			TIMSK1 &= ~_BV(TOIE1);        // AR added 
+			TIMSK1 &= ~_BV(TOIE1);        // AR added
 			GTCCR |= _BV(PSRSYNC);   		// AR added - reset prescaler (NB: shared with all 16 bit timers);
 
 			oldSREG = SREG;				// AR - save status register
 			cli();						// AR - Disable interrupts
-			TCNT1 = 0;                	
+			TCNT1 = 0;
 			SREG = oldSREG;          		// AR - Restore status register
 			resumeInterrupt();
 			do {	// Nothing -- wait until timer moved on from zero - otherwise get a phantom interrupt
@@ -240,76 +293,87 @@ class SimpleTimer : public TimeControl{
 				cli();
 				tcnt1 = TCNT1;
 				SREG = oldSREG;
-			} while (tcnt1==0); 
+			} while (tcnt1==0);
 
 			//  TIFR1 = 0xff;              		// AR - Clear interrupt flags
 			//  TIMSK1 = _BV(TOIE1);              // sets the timer overflow interrupt enable bit
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::stopInterrupt(){
+		TimeControl* SimpleTimer::stopInterrupt(){
+			SimpleTimerLog("SimpleTimer", "stopInterrupt",  "println", "ARDUINO_ARCH_AVR");
 			TCCR1B &= ~(_BV(CS10) | _BV(CS11) | _BV(CS12));          // clears all clock selects bits
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::resumeInterrupt(){ 
+		TimeControl* SimpleTimer::resumeInterrupt(){
+			SimpleTimerLog("SimpleTimer", "resumeInterrupt",  "println", "ARDUINO_ARCH_AVR");
 			TCCR1B |= clockSelectBits;
 			return this;
 		}
-		
+
 
 	#elif defined(ARDUINO_ARCH_SAM)
-		
-		ame::SimpleTimer::SimpleTimer(){
+
+		SimpleTimer::SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Constructor",  "println", "ARDUINO_ARCH_AVR");
 			this->timeList = new PrimitiveList<TimeElapsed>();
 			Serial.println("ARDUINO_ARCH_SAM");
 		}
-		
-		ame::SimpleTimer::~SimpleTimer(){
-			delete this->timeList;
-			this->timeList = nullptr;
-		}
-		
-	  // SAM-specific code
-	#elif defined(ARDUINO_ARCH_ESP8266)
-		
-		void ICACHE_RAM_ATTR onTime() {
-			for(int x = 0; x < ((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getPosition(); x++){
-				((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(ame::SimpleTimer::getInstance());
-			}
-			((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->time+=1;
-		}
-		
-		ame::SimpleTimer::SimpleTimer(){
-			this->timeList = new PrimitiveList<TimeElapsed>();
-			Serial.println("ARDUINO_ARCH_ESP8266");
-		}
-		
-		ame::SimpleTimer::~SimpleTimer(){
+
+		SimpleTimer::~SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Destructor",  "println", "ARDUINO_ARCH_AVR");
 			delete this->timeList;
 			this->timeList = nullptr;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::initialize(long timeperiod){
+	  // SAM-specific code
+	#elif defined(ARDUINO_ARCH_ESP8266)
+
+		void ICACHE_RAM_ATTR onTime() {
+			SimpleTimerLoopLog("SimpleTimer", "ICACHE_RAM_ATTR",  "println", "ARDUINO_ARCH_ESP8266");
+			for(int x = 0; x < ((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPosition(); x++){
+				((SimpleTimer*)SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(SimpleTimer::getInstance());
+			}
+			((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
+		}
+
+		SimpleTimer::SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Constructor",  "println", "ARDUINO_ARCH_ESP8266");
+			this->timeList = new PrimitiveList<TimeElapsed>();
+		}
+
+		SimpleTimer::~SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Destructor",  "println", "ARDUINO_ARCH_ESP8266");
+			delete this->timeList;
+			this->timeList = nullptr;
+		}
+
+		TimeControl* SimpleTimer::initialize(long microseconds){
+			SimpleTimerLog("SimpleTimer", "initialize",  "println", "ARDUINO_ARCH_ESP8266");
+			SimpleTimerLog("SimpleTimer", "initialize",  "println", Note("microseconds ") + Note(microseconds));
 			timer1_isr_init();
-			setPeriod(timeperiod);
+			setPeriod(microseconds);
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::setPeriod(long timeperiod){
+		TimeControl* SimpleTimer::setPeriod(long microseconds){
+			SimpleTimerLog("SimpleTimer", "setPeriod",  "println", "ARDUINO_ARCH_ESP8266");
+			SimpleTimerLog("SimpleTimer", "setPeriod",  "println", Note("microseconds ") + Note(microseconds));
 			//timer1_write(100000000);//5 ticks per us from TIM_DIV16
-			//timer1_write((long)((timeperiod) * 80));//5 ticks per us from TIM_DIV1
-			//timer1_write((long)((timeperiod) * 5));//5 ticks per us from TIM_DIV16
-			timer1_write((long)((timeperiod) * 0.312500f));//1 ticks per 3.2us from TIM_DIV256
+			//timer1_write((long)((microseconds) * 80));//5 ticks per us from TIM_DIV1
+			//timer1_write((long)((microseconds) * 5));//5 ticks per us from TIM_DIV16
+			timer1_write((long)((microseconds) * 0.312500f));//1 ticks per 3.2us from TIM_DIV256
 			// Arm the Timer for our 0.5s Interval
-			//timer1_write(2500000); // 2500000 / 5 ticks per us from TIM_DIV16 == 500,000 us interval 	
+			//timer1_write(2500000); // 2500000 / 5 ticks per us from TIM_DIV16 == 500,000 us interval
 			//Set up ESP watchdog
 			// ESP.wdtDisable();
 			// ESP.wdtEnable(WDTO_8S);
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::attachInterrupt(){
+		TimeControl* SimpleTimer::attachInterrupt(){
+			SimpleTimerLog("SimpleTimer", "attachInterrupt",  "println", "ARDUINO_ARCH_ESP8266");
 			timer1_attachInterrupt(onTime);
 			//timer1_enable(TIM_DIV1, TIM_EDGE, TIM_LOOP);
 			//timer1_enable(TIM_DIV16, TIM_EDGE, TIM_LOOP);
@@ -321,198 +385,239 @@ class SimpleTimer : public TimeControl{
 			Reloads:
 				TIM_SINGLE	0 //on interrupt routine you need to write a new value to start the timer again
 				TIM_LOOP	1 //on interrupt the counter will start with the same value again
-			*/		
+			*/
 			// Arm the Timer for our 0.5s Interval
-			//timer1_write(2500000); // 2500000 / 5 ticks per us from TIM_DIV16 == 500,000 us interval 
+			//timer1_write(2500000); // 2500000 / 5 ticks per us from TIM_DIV16 == 500,000 us interval
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::detachInterrupt(){
-			
+		TimeControl* SimpleTimer::detachInterrupt(){
+			SimpleTimerLog("SimpleTimer", "detachInterrupt",  "println", "ARDUINO_ARCH_ESP8266");
+
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::startInterrupt(){
-			
+		TimeControl* SimpleTimer::startInterrupt(){
+			SimpleTimerLog("SimpleTimer", "startInterrupt",  "println", "ARDUINO_ARCH_ESP8266");
+
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::stopInterrupt(){
-			
+		TimeControl* SimpleTimer::stopInterrupt(){
+			SimpleTimerLog("SimpleTimer", "stopInterrupt",  "println", "ARDUINO_ARCH_ESP8266");
+
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::resumeInterrupt(){ 
-		
+		TimeControl* SimpleTimer::resumeInterrupt(){
+			SimpleTimerLog("SimpleTimer", "resumeInterrupt",  "println", "ARDUINO_ARCH_ESP8266");
+
 			return this;
 		}
 	//esp32
-	#elif defined(ARDUINO_ESP32_DEV)
+	#elif defined(ame_GENERIC_ESP32)
+		
+		#include "esp_task_wdt.h"
 
-		void IRAM_ATTR onTime(){
-			for(int x = 0; x < ((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getPosition(); x++){
-				((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(ame::SimpleTimer::getInstance());
+		void ARDUINO_ISR_ATTR onTime(){
+			SimpleTimerLoopLog("SimpleTimer", "IRAM_ATTR",  "println", "ARDUINO_ESP32_DEV");
+			for(int x = 0; x < ((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPosition(); x++){
+				((SimpleTimer*)SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(SimpleTimer::getInstance());
+				// esp_task_wdt_reset();
+				// yield();
 			}
-			((ame::SimpleTimer*)ame::SimpleTimer::getInstance())->time+=1;
+			((SimpleTimer*)SimpleTimer::getInstance())->time+=1;
 		}
-		
-		ame::SimpleTimer::SimpleTimer(){
+
+		SimpleTimer::SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Constructor",  "println", "ARDUINO_ESP32_DEV");
 			this->timeList = new PrimitiveList<TimeElapsed>();
-			timer = timerBegin(0, 80, true);  
-			Serial.println("ARDUINO_ESP32_DEV");
+			timer = timerBegin(0, 80, true);
 		}
-		
-		ame::SimpleTimer::~SimpleTimer(){
+
+		SimpleTimer::~SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Destructor",  "println", "ARDUINO_ESP32_DEV");
 			delete this->timeList;
 			this->timeList = nullptr;
 		}
-		
-		ame::TimeControl* ame::SimpleTimer::initialize(long timeperiod){
-			
-			setPeriod(timeperiod);
+
+		TimeControl* SimpleTimer::initialize(long microseconds){
+			SimpleTimerLog("SimpleTimer", "attachInterrupt",  "println", "ARDUINO_ESP32_DEV");
+			SimpleTimerLog("SimpleTimer", "initialize",  "println", Note("microseconds ") + Note(microseconds));
+			setPeriod(microseconds);
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::setPeriod(long timeperiod){//microseconds
-			//12.5ns *80 = 1000ns = 1 us             
+		TimeControl* SimpleTimer::setPeriod(long microseconds){//microseconds
+			SimpleTimerLog("SimpleTimer", "attachInterrupt",  "println", "ARDUINO_ESP32_DEV");
+			SimpleTimerLog("SimpleTimer", "setPeriod",  "println", Note("microseconds ") + Note(microseconds));
+			//12.5ns *80 = 1000ns = 1 us
 			if(timer == nullptr){
 				return this;
 			}
-			timerAlarmWrite(timer, timeperiod, true);           
+			
+			timerAlarmWrite(timer, microseconds, true);
 			timerAlarmEnable(timer);
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::attachInterrupt(){
+		TimeControl* SimpleTimer::attachInterrupt(){
+			SimpleTimerLog("SimpleTimer", "attachInterrupt",  "println", "ARDUINO_ESP32_DEV");
 			if(timer == nullptr){
 				return this;
 			}
-			timerAttachInterrupt(timer, &onTime, true);   
+			timerAttachInterrupt(timer, &onTime, true);
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::detachInterrupt(){
-			
+		TimeControl* SimpleTimer::detachInterrupt(){
+			SimpleTimerLog("SimpleTimer", "detachInterrupt",  "println", "ARDUINO_ESP32_DEV");
+
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::startInterrupt(){
-			
+		TimeControl* SimpleTimer::startInterrupt(){
+			SimpleTimerLog("SimpleTimer", "startInterrupt",  "println", "ARDUINO_ESP32_DEV");
+			timerStart(timer);
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::stopInterrupt(){
-			
+		TimeControl* SimpleTimer::stopInterrupt(){
+			SimpleTimerLog("SimpleTimer", "stopInterrupt",  "println", "ARDUINO_ESP32_DEV");
+			timerStop(timer);
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::resumeInterrupt(){
-			
+		TimeControl* SimpleTimer::resumeInterrupt(){
+			SimpleTimerLog("SimpleTimer", "resumeInterrupt",  "println", "ARDUINO_ESP32_DEV");
+
 			return this;
 		}
 	//feather m0
-	#elif defined(ARDUINO_SAMD_ZERO)
+	#elif defined(ame_GENERIC_ADAFRUIT_FEATHER)
 
-		
-		ame::SimpleTimer::SimpleTimer(){
+
+		SimpleTimer::SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Constructor",  "println", "ARDUINO_SAMD_ZERO");
 			this->timeList = new PrimitiveList<TimeElapsed>();
 			Serial.println("ARDUINO_SAMD_ZERO");
 		}
-		
-		ame::SimpleTimer::~SimpleTimer(){
+
+		SimpleTimer::~SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Destructor",  "println", "ARDUINO_SAMD_ZERO");
 			delete this->timeList;
 			this->timeList = nullptr;
 		}
-		
-		ame::TimeControl* ame::SimpleTimer::initialize(long timeperiod){
+
+		TimeControl* SimpleTimer::initialize(long microseconds){
+			SimpleTimerLog("SimpleTimer", "initialize",  "println", "ARDUINO_SAMD_ZERO");
+			SimpleTimerLog("SimpleTimer", "initialize",  "println", Note("microseconds ") + Note(microseconds));
 			
-			setPeriod(timeperiod);
+			setPeriod(microseconds);
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::setPeriod(long timeperiod){
+		TimeControl* SimpleTimer::setPeriod(long microseconds){
+			SimpleTimerLog("SimpleTimer", "setPeriod",  "println", "ARDUINO_SAMD_ZERO");
+			SimpleTimerLog("SimpleTimer", "setPeriod",  "println", Note("microseconds ") + Note(microseconds));
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::attachInterrupt(){
-			
+		TimeControl* SimpleTimer::attachInterrupt(){
+			SimpleTimerLog("SimpleTimer", "attachInterrupt",  "println", "ARDUINO_SAMD_ZERO");
+
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::detachInterrupt(){
-			
+		TimeControl* SimpleTimer::detachInterrupt(){
+			SimpleTimerLog("SimpleTimer", "detachInterrupt",  "println", "ARDUINO_SAMD_ZERO");
+
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::startInterrupt(){
-			
+		TimeControl* SimpleTimer::startInterrupt(){
+			SimpleTimerLog("SimpleTimer", "startInterrupt",  "println", "ARDUINO_SAMD_ZERO");
+
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::stopInterrupt(){
-			
+		TimeControl* SimpleTimer::stopInterrupt(){
+			SimpleTimerLog("SimpleTimer", "stopInterrupt",  "println", "ARDUINO_SAMD_ZERO");
+
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::resumeInterrupt(){ 
-		
+		TimeControl* SimpleTimer::resumeInterrupt(){
+			SimpleTimerLog("SimpleTimer", "resumeInterrupt",  "println", "ARDUINO_SAMD_ZERO");
+
 			return this;
 		}
 	#else
 
-		
-		ame::SimpleTimer::SimpleTimer(){
+
+		SimpleTimer::SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Constructor",  "println", "");
 			this->timeList = new PrimitiveList<TimeElapsed>();
-			Serial.println("else");
+			//Serial.println("else");
 		}
-		
-		ame::SimpleTimer::~SimpleTimer(){
+
+		SimpleTimer::~SimpleTimer(){
+			SimpleTimerLog("SimpleTimer", "Destructor",  "println", "");
 			delete this->timeList;
 			this->timeList = nullptr;
 		}
-		
-		ame::TimeControl* ame::SimpleTimer::initialize(long timeperiod){
+
+		TimeControl* SimpleTimer::initialize(long microseconds){
+			SimpleTimerLog("SimpleTimer", "initialize",  "println", Note("microseconds ") + Note(microseconds));
 			
-			setPeriod(timeperiod);
+			setPeriod(microseconds);
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::setPeriod(long timeperiod){
+		TimeControl* SimpleTimer::setPeriod(long microseconds){
+			SimpleTimerLog("SimpleTimer", "initialize",  "println", Note("microseconds ") + Note(microseconds));
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::attachInterrupt(){
-			
+		TimeControl* SimpleTimer::attachInterrupt(){
+			SimpleTimerLog("SimpleTimer", "attachInterrupt",  "println", "");
+
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::detachInterrupt(){
-			
+		TimeControl* SimpleTimer::detachInterrupt(){
+			SimpleTimerLog("SimpleTimer", "detachInterrupt",  "println", "");
+
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::startInterrupt(){
-			
+		TimeControl* SimpleTimer::startInterrupt(){
+			SimpleTimerLog("SimpleTimer", "startInterrupt",  "println", "");
+
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::stopInterrupt(){
-			
+		TimeControl* SimpleTimer::stopInterrupt(){
+			SimpleTimerLog("SimpleTimer", "stopInterrupt",  "println", "");
+
 			return this;
 		}
 
-		ame::TimeControl* ame::SimpleTimer::resumeInterrupt(){ 
-		
+		TimeControl* SimpleTimer::resumeInterrupt(){
+			SimpleTimerLog("SimpleTimer", "resumeInterrupt",  "println", "");
+
 			return this;
 		}
 	#endif
-		
-		String ame::SimpleTimer::toString() {
-			return "SimpleTimer";
+
+		Note SimpleTimer::toNote() {
+			return Note("SimpleTimer");
 		}
-		
-		ame::cppObjectClass* ame::SimpleTimer::getClass() {
-			return ame::Class<ame::SimpleTimer>::classType;
+
+		cppObjectClass* SimpleTimer::getClass() {
+			return Class<SimpleTimer>::classType;
 		}
-		
-#endif 
+
+}
+
+#endif

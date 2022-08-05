@@ -1,7 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Now)
+	#define Now_hpp
+#endif
 
 #ifndef Now_hpp
 #define Now_hpp
+#define Now_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "TimeCheck.hpp"
 
@@ -55,4 +73,4 @@ class Now {
 
 }
 
-#endif 
+#endif

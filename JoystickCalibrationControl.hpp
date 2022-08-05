@@ -1,10 +1,25 @@
+	
+#include "ame_Enviroment.hpp"
 
-#include "ame_Level.hpp"
-
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_JoystickCalibrationControl)
+	#define JoystickCalibrationControl_hpp
+#endif
 
 #ifndef JoystickCalibrationControl_hpp
 #define JoystickCalibrationControl_hpp
+#define JoystickCalibrationControl_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "GameOn.hpp"
 #include "GameObject.hpp"
@@ -47,7 +62,7 @@ class JoystickCalibrationControl : public GameOn{
 		cppObjectClass* getClass(){
 			return ame::Class<ame::JoystickCalibrationControl>::classType;
 		}
-		String toString(){
+		Note toNote(){
 			return "JoystickCalibrationControl";
 		}
 		
@@ -60,6 +75,4 @@ class JoystickCalibrationControl : public GameOn{
 
 }
 
-#endif 
-
-#endif 
+#endif

@@ -1,6 +1,26 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_XtremeFunction1)
+	#define XtremeFunction1_hpp
+#endif
+
 #ifndef XtremeFunction1_hpp
 #define XtremeFunction1_hpp
+#define XtremeFunction1_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
 
 #include "ModifiableFunction.hpp"
 
@@ -99,4 +119,6 @@ class XtremeFunction1 : public ModifiableFunction<T,args...>{
 	
 };
 
-#endif 
+}
+
+#endif

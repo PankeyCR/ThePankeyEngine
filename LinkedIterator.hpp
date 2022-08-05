@@ -1,11 +1,16 @@
 
+#include "ame_Enviroment.hpp"
 
+#if defined(DISABLE_LinkedIterator)
+	#define LinkedIterator_hpp
+#endif
 
-#ifndef LinkedIterator_h
-#define LinkedIterator_h
+#ifndef LinkedIterator_hpp
+#define LinkedIterator_hpp
+#define LinkedIterator_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -36,7 +41,7 @@ class LinkedIterator{
 		virtual ~LinkedIterator(){}
 		
 		virtual T& operator *(){
-			return *m_node->actual;
+			return *m_node->get();
 		}
 	
 		void operator ++(){
@@ -73,4 +78,4 @@ class LinkedIterator{
 
 }
 
-#endif 
+#endif

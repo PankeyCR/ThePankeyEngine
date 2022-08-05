@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_GameProcess)
+	#define GameProcess_hpp
+#endif
 
 #ifndef GameProcess_hpp
 #define GameProcess_hpp
+#define GameProcess_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Processing.hpp"
 
@@ -35,6 +50,4 @@ class GameProcess{
 
 }
 
-#endif 
-
-#endif 
+#endif

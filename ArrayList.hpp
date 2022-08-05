@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_1)
+#if defined(DISABLE_ArrayList)
+	#define ArrayList_hpp
+#endif
 
 #ifndef ArrayList_hpp
 #define ArrayList_hpp
+#define ArrayList_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "ListIterator.hpp"
 #include "cppObject.hpp"
@@ -73,16 +88,6 @@ class ArrayList : public List<T>{
 		values[i] = jt;
 		values[j] = it;
 		return true;
-	}
-
-	void addList(RawList<T> *list){
-		if(list == nullptr){
-			return;
-		}
-		for(int x=0; x < list->getPosition() ; x++){
-			values[pos] = *list->getByPosition(x);
-			pos++;
-		}
 	}
 	
 	template<class... args>
@@ -310,65 +315,27 @@ class ArrayList : public List<T>{
 		return t;
 	}
 
-	void removeDeleteByPointer(T* key){
-		bool is=false;
-		for(int x=0; x < pos; x++){
-			if(values[x] == *key ){
-				is = true;
-			}
-		}
-		if(is){
-			int nv =0;
-			for(int x=0; x < pos; x++){
-				if(values[x] != *key ){
-					values[nv] = values[x];
-					nv++;
-				}
-			}
-			pos = nv;
-		}
-	}
-
-	void removeDeleteByLValue(T key){
-		bool is=false;
-		for(int x=0; x < pos; x++){
-			if(values[x] == key ){
-				is = true;
-			}
-		}
-		if(is){
-			int nv =0;
-			for(int x=0; x < pos; x++){
-				if(values[x] != key ){
-					values[nv] = values[x];
-					nv++;
-				}
-			}
-			pos = nv;
-		}
-	}
-
-	void removeDeleteByPosition(int p){
-		if(p >= pos){
-			return;
-		}
-		for(int x=0; x < pos; x++){
-			if(x > p ){
-				values[x-1] = values[x];
-			}
-		}
-		pos--;
-	}
-
 	T& operator[](int x){
-		if(x >= size){
-			return values[size-1];
+		if(x > pos){
+			return values[pos-1];
 		}
 		if(pos == x){
 			pos++;
 		}
 		return values[x];
 	}
+
+	T operator[](int x) const{
+		if(x >= this->pos){
+			return values[this->pos - 1];
+		}
+		if(x < this->pos){
+			return values[x];
+		}
+		return T();
+	}
+	
+	////////////////////////////////////////////cppObject part///////////////////////////////////////////////
 
 	cppObjectClass* getClass(){
 		return Class<ArrayList<T,size>>::classType;
@@ -389,6 +356,80 @@ class ArrayList : public List<T>{
 		}
 		return list;
 	}
+	
+	////////////////////////////////////////////special removes part///////////////////////////////////////////////
+	virtual bool removeAll(T value){
+		bool r_val = false;
+		int p_x = 0;
+		// Serial.println(pos);
+		for(int x = 0; x < pos; x++){
+			if(value == values[x]){
+				// Serial.println("value == values[x]");
+				// Serial.println(x);
+				r_val = true;
+			}else{
+				// Serial.println("value != values[x]");
+				// Serial.println(x);
+				values[p_x] = values[x];
+				p_x++;
+			}
+		}
+		pos = p_x;
+		return r_val;
+	}
+	
+	virtual bool removeFirst(T value){
+		bool r_val = false;
+		bool r_once = true;
+		int p_x = 0;
+		for(int x = 0; x < pos; x++){
+			if(value == values[x] && r_once){
+				r_once = false;
+				r_val = true;
+			}else{
+				values[p_x] = values[x];
+				p_x++;
+			}
+		}
+		pos = p_x;
+		return r_val;
+	}
+	
+	virtual bool removeLast(T value){
+		int r_pos = pos;
+		for(int x = pos - 1; x >= 0; x--){
+			if(value == values[x]){
+				r_pos = x;
+				break;
+			}
+		}
+		
+		bool r_val = false;
+		bool r_once = true;
+		int p_x = r_pos;
+		for(int x = p_x; x < pos; x++){
+			if(value == values[x] && r_once){
+				r_once = false;
+				r_val = true;
+			}else{
+				values[p_x] = values[x];
+				p_x++;
+			}
+		}
+		pos = p_x;
+		return r_val;
+	}
+	
+	// {
+		// for(int x = 0; x < getPosition(); x++){
+			// if(value == *getByPosition(x)){
+				
+				// return true;
+			// }
+		// }
+	// }
+	
+	////////////////////////////////////////////operator part///////////////////////////////////////////////
 
 	ArrayList<T,size>& operator =(const ArrayList<T,size>& t){
 		this->reset();
@@ -449,6 +490,4 @@ class ArrayList : public List<T>{
 
 }//namespace ame ends
 
-#endif 
-
-#endif 
+#endif

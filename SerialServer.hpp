@@ -1,9 +1,29 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_SerialServer)
+	#define SerialServer_hpp
+#endif
+
 #ifndef SerialServer_hpp
 #define SerialServer_hpp
+#define SerialServer_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
 #include "SerialPort.hpp"
+#include "IPAddress.h"
 
 namespace ame{
 
@@ -23,11 +43,11 @@ class SerialServer : public cppObject{
 			return nullptr;
 		}
 		
-		virtual void setName(String name){
+		virtual void setName(Note name){
 			m_name = name;
 		}
 		
-		virtual String getName(){
+		virtual Note getName(){
 			return m_name;
 		}
 		
@@ -39,9 +59,15 @@ class SerialServer : public cppObject{
 			return m_timeout;
 		}
 		
-		virtual void on(String txt, Method method){}
+		virtual void on(Note txt, Method method){}
 		
-		virtual void send(int t, String txt, String webpage){}
+		virtual void send(int t, Note txt, Note webpage){}
+		
+		virtual void send(Note a_message){}
+		
+		virtual void send(Note a_port, Note a_message){}
+		
+		virtual void send(IPAddress a_port, Note a_message){}
 		
 		virtual void handleClient(){}
 		
@@ -50,7 +76,7 @@ class SerialServer : public cppObject{
 		virtual bool operator!=(SerialServer b){return this->getName()!=b.getName();}
 		
 		virtual cppObjectClass* getClass(){return Class<SerialServer>::classType;}
-		virtual String toString(){return "SerialServer";}
+		virtual Note toNote(){return "SerialServer";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
 				return true;
@@ -64,9 +90,9 @@ class SerialServer : public cppObject{
 		
 	protected:
 	float m_timeout = -1.0;
-	String m_name = "";
+	Note m_name = "";
 };
 
 }
 
-#endif 
+#endif

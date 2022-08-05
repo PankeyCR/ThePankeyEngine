@@ -22,8 +22,8 @@ void loop() {
   Serial.println(speed);
   
   Vector2f* direction = (Vector2f*)settings->getCppObject("direction");
-  Serial.println(direction->toString());
+  Serial.println(direction->toNote());
   
   Vector3f* position = (Vector3f*)settings->getCppObject("position");
-  Serial.println(position->toString());
+  Serial.println(position->toNote());
 }

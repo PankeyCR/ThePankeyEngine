@@ -1,22 +1,52 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_6)
+#if defined(DISABLE_DefaultServerProtocol)
+	#define DefaultServerProtocol_hpp
+#endif
 
 #ifndef DefaultServerProtocol_hpp
 #define DefaultServerProtocol_hpp
+#define DefaultServerProtocol_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Application.hpp"
 #include "ServerProtocol.hpp"
 #include "SerialPort.hpp"
 #include "Message.hpp"
-#include "SerialMessageState.hpp"
+#include "SerialState.hpp"
 
-#ifdef DefaultServerProtocolLogApp
-	#include "Logger.hpp"
-	#define DefaultServerProtocolLog(name,method,type,mns) Log(name,method,type,mns)
+#ifdef DefaultServerProtocol_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+	
+	#define DefaultServerProtocolLog(location,method,type,mns) ame_Log(this,location,"DefaultServerProtocol",method,type,mns)
+	#define const_DefaultServerProtocolLog(location,method,type,mns) 
+	#define StaticDefaultServerProtocolLog(pointer,location,method,type,mns) ame_Log(pointer,location,"DefaultServerProtocol",method,type,mns)
 #else
-	#define DefaultServerProtocolLog(name,method,type,mns) 
+	#ifdef DefaultServerProtocol_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+		
+		#define DefaultServerProtocolLog(location,method,type,mns) ame_LogDebug(this,location,"DefaultServerProtocol",method,type)
+		#define const_DefaultServerProtocolLog(location,method,type,mns) 
+		#define StaticDefaultServerProtocolLog(pointer,location,method,type,mns) ame_LogDebug(pointer,location,"DefaultServerProtocol",method,type)
+	#else
+		#define DefaultServerProtocolLog(location,method,type,mns) 
+		#define const_DefaultServerProtocolLog(location,method,type,mns) 
+		#define StaticDefaultServerProtocolLog(pointer,location,method,type,mns) 
+	#endif
 #endif
 
 namespace ame{
@@ -29,7 +59,7 @@ class DefaultServerProtocol : public ServerProtocol{
 		
 		virtual SerialPort* getUpdateSerialPort(SerialServer* server){
 			if(this->serialState == nullptr){
-				DefaultServerProtocolLog("DefaultServerProtocol", "getUpdateSerialPort",  "println", "this->serialState == nullptr");
+				DefaultServerProtocolLog(ame_Log_Statement, "getUpdateSerialPort",  "println", "this->serialState == nullptr");
 				return nullptr;
 			}
 			SerialPort* port = nullptr;
@@ -37,29 +67,28 @@ class DefaultServerProtocol : public ServerProtocol{
 			if(port == nullptr){
 				return nullptr;
 			}
-			DefaultServerProtocolLog("DefaultServerProtocol", "getUpdateSerialPort",  "println", port->getName());
-			initialMessage(port);
+			DefaultServerProtocolLog(ame_Log_Statement, "getUpdateSerialPort",  "println", port->getName());
 			return port;
 		}
 		
 		virtual void UpdateSerialPort(SerialPort* port){
 			if(this->serialState == nullptr){
-				DefaultServerProtocolLog("DefaultServerProtocol", "UpdateSerialPort",  "println", "this->serialState == nullptr");
+				DefaultServerProtocolLog(ame_Log_Statement, "UpdateSerialPort",  "println", "this->serialState == nullptr");
 				return;
 			}
 			if(!this->serialState->containSerialPort(port)){
-				DefaultServerProtocolLog("DefaultServerProtocol", "UpdateSerialPort",  "println", "!this->serialState->containSerialPort(port)");
-				this->serialState->addSerialPort(port, new T());
+				DefaultServerProtocolLog(ame_Log_Statement, "UpdateSerialPort",  "println", "!this->serialState->containSerialPort(port)");
+				T* t = new T();
+				initialMessage(port, t);
+				this->serialState->addSerialPort(port, t);
 			}
 		}
 		
-		virtual void initialMessage(SerialPort* port){}
+		virtual void initialMessage(SerialPort* port, T* t){}
 		
 	protected:
 };
 
 }
 
-#endif 
-
-#endif 
+#endif

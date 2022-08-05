@@ -1,10 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Memory) || defined(DISABLE_MemoryManagerState) || defined(DISABLE_MemoryManager) || defined(DISABLE_MemoryPool) || defined(DISABLE_MemoryChunk)
+	#define MemoryManager_hpp
+#endif
 
 #ifndef MemoryManager_hpp
 #define MemoryManager_hpp
+#define MemoryManager_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -16,58 +22,68 @@
 #endif
 
 #include "MemoryPool.hpp"
-#include "cppObject.hpp"
 
 namespace ame{
 	
 class MemoryManager{
-public:
-MemoryManager(){}
-virtual ~MemoryManager(){}
+	public:
+		MemoryManager(){}
+		virtual ~MemoryManager(){}
 
-virtual void initialize(long sizeofMemory){
-	if(rawMemory == nullptr){
-		free(rawMemory);
-		memory_size = 0;
-	}
-	rawMemory = malloc(sizeof(char*) * ((sizeofMemory/4)-1));
-	memory_size = sizeofMemory;
-}
-virtual void release(int sizeofMemory){
-	free(rawMemory);
-	rawMemory = nullptr;
-	memory_size = 0;
-}
+		virtual void initialize(long sizeofMemory){
+			if(rawMemory != nullptr){
+				free(rawMemory);
+				memory_size = 0;
+			}
+			rawMemory = malloc(sizeof(char*) * ((sizeofMemory/4)-1));
+			actualMemory = rawMemory;
+			memory_size = sizeofMemory;
+		}
+		virtual void release(int sizeofMemory){
+			free(rawMemory);
+			rawMemory = nullptr;
+			actualMemory = nullptr;
+			memory_size = 0;
+		}
 
-virtual bool instanceof(cppObjectClass* cls){
-	return cls == Class<MemoryManager>::classType;
-}
+		#ifdef ame_GENERIC_ESP32
+		template<class T>
+		MemoryPool* createMemoryPool(size_t poolsize, size_t chunksize){
+			MemoryPool* pool_in = this->getRecycledMemoryPool();
+			if(pool_in != nullptr){
+				return pool_in;
+			}
+			void* pool_memory = actualMemory;
+			void* in_memory = actualMemory + sizeof(T);
+			actualMemory = in_memory + poolsize + chunksize;
+			return new (pool_memory) T(poolsize, chunksize, in_memory);
+		}
+		#endif
 
-virtual cppObjectClass* getClass(){
-	return Class<MemoryManager>::classType;
-}
+		#ifdef ame_ADAFRUIT_FEATHER_M0
+		template<class T>
+		MemoryPool* createMemoryPool(size_t poolsize, size_t chunksize){
+			return nullptr;
+		}
+		#endif
 
-virtual MemoryPool* createMemoryPool(size_t poolsize, size_t chunksize){
-	return nullptr;
-}
+		virtual MemoryPool* getRecycledMemoryPool(){
+			return nullptr;
+		}
 
-virtual void deleteMemoryPool(MemoryPool* memorypool){}
 
-virtual void initialize(){}
+		virtual void recycle(MemoryPool* memorypool){}
 
-virtual void update(float tpc){}
+		virtual void initialize(){}
 
-protected:
-void* rawMemory = nullptr;
-long memory_size = 0;
+		virtual void update(float tpc){}
+
+	protected:
+		void* rawMemory = nullptr;
+		void* actualMemory = nullptr;
+		long memory_size = 0;
 };
 
-struct Memory{
-	static MemoryManager* manager;
-};
-
 }
 
-ame::MemoryManager* ame::Memory::manager = nullptr;
-
-#endif 
+#endif

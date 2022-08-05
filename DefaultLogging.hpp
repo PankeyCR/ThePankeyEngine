@@ -1,12 +1,26 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_1)
+#if defined(DISABLE_DefaultLogging)
+	#define DefaultLogging_hpp
+#endif
 
 #ifndef DefaultLogging_hpp
 #define DefaultLogging_hpp
+#define DefaultLogging_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
 #include "Logger.hpp"
 #include "Logging.hpp"
 #include "List.hpp"
@@ -18,13 +32,13 @@ class DefaultLogging : public Logging{
 	public:
 		DefaultLogging(Stream *p){
 			this->port = p;
-			this->ClassList = new PrimitiveList<String>();
-			this->MethodList = new PrimitiveList<String>();
+			this->ClassList = new PrimitiveList<Note>();
+			this->MethodList = new PrimitiveList<Note>();
 		}
 		DefaultLogging(Stream *p, bool classA, bool methodA){
 			this->port = p;
-			this->ClassList = new PrimitiveList<String>();
-			this->MethodList = new PrimitiveList<String>();
+			this->ClassList = new PrimitiveList<Note>();
+			this->MethodList = new PrimitiveList<Note>();
 			classActivation = classA;
 			methodActivation = methodA;
 			// Serial.println("contructor");
@@ -35,7 +49,7 @@ class DefaultLogging : public Logging{
 			delete this->MethodList;
 		}
 		
-		virtual void StaticLog(String className, String methodName, String type, String mns){
+		virtual void StaticLog(Note className, Note methodName, Note type, Note mns){
 			if(this->port == nullptr){
 				// Serial.println("this->port == nullptr");
 				return;
@@ -46,6 +60,7 @@ class DefaultLogging : public Logging{
 					return;
 				}
 			}
+			// Serial.println("StaticLog");
 			if(methodActivation){
 				if(!this->MethodList->containByLValue(methodName)){
 					return;
@@ -70,23 +85,23 @@ class DefaultLogging : public Logging{
 			// yield();
 		}
 		
-		virtual void addClass(String className){
+		virtual void addClass(Note className){
 			this->ClassList->addLValue(className);
 		}
-		virtual void addMethod(String methodName){
+		virtual void addMethod(Note methodName){
 			this->MethodList->addLValue(methodName);
 		}
 		
-		virtual void removeClass(String className){
+		virtual void removeClass(Note className){
 			this->ClassList->removeDeleteByLValue(className);
 		}
-		virtual void removeMethod(String methodName){
+		virtual void removeMethod(Note methodName){
 			this->MethodList->removeDeleteByLValue(methodName);
 		}
 		
 	protected:
-		List<String>* ClassList = nullptr;
-		List<String>* MethodList = nullptr;
+		List<Note>* ClassList = nullptr;
+		List<Note>* MethodList = nullptr;
 		bool classActivation = true;
 		bool methodActivation = false;
 };
@@ -94,5 +109,3 @@ class DefaultLogging : public Logging{
 }
 
 #endif
-
-#endif 

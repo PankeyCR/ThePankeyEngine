@@ -1,7 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_SimpleAppSettings)
+	#define SimpleAppSettings_hpp
+#endif
 
 #ifndef SimpleAppSettings_hpp
 #define SimpleAppSettings_hpp
+#define SimpleAppSettings_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "KVMap.hpp"
 #include "KPMap.hpp"
@@ -13,20 +31,20 @@ template <int size>
 class SimpleAppSettings : public AppSettings{
     public:
 		SimpleAppSettings(){
-			intMap = new KVMap<String,int,size>();
-			floatMap = new KVMap<String,float,size>();
-			StringMap = new KVMap<String,String,size>();
-			booleanMap = new KVMap<String,bool,size>();
-			cppObjectMap = new KPMap<String,cppObject,size>(true);
+			intMap = new KVMap<Note,int,size>();
+			floatMap = new KVMap<Note,float,size>();
+			NoteMap = new KVMap<Note,Note,size>();
+			booleanMap = new KVMap<Note,bool,size>();
+			cppObjectMap = new KPMap<Note,cppObject,size>(true);
 		}
 		~SimpleAppSettings(){
 			delete intMap;
 			delete floatMap;
-			delete StringMap;
+			delete NoteMap;
 			delete booleanMap;
 			delete cppObjectMap;
 		}
-		String toString(){
+		Note toNote(){
 			return "SimpleAppSettings";
 		}
 		cppObjectClass* getClass(){
@@ -38,75 +56,77 @@ class SimpleAppSettings : public AppSettings{
 		void onDelete(){
 			intMap->onDelete();
 			floatMap->onDelete();
-			StringMap->onDelete();
+			NoteMap->onDelete();
 			booleanMap->onDelete();
 		}
-		void addInt(String s, int i){
+		void addInt(Note s, int i){
 			intMap->addLValues(s,i);
 		}
-		void setInt(String s, int i){
+		void setInt(Note s, int i){
 			intMap->setLValues(s,i);
 		}
-		int getInt(String s){
+		int getInt(Note s){
 			return *intMap->getByLValue(s);
 		}
-		boolean containInt(String s){
+		boolean containInt(Note s){
 			return intMap->containKeyByLValue(s);
 		}
-		void addFloat(String s, float i){
+		void addFloat(Note s, float i){
 			floatMap->addLValues(s,i);
 		}
-		void setFloat(String s, float i){
+		void setFloat(Note s, float i){
 			floatMap->setLValues(s,i);
 		}
-		float getFloat(String s){
+		float getFloat(Note s){
 			return *floatMap->getByLValue(s);
 		}
-		boolean containFloat(String s){
+		boolean containFloat(Note s){
 			return floatMap->containKeyByLValue(s);
 		}
-		void addString(String s, String i){
-			StringMap->addLValues(s,i);
+		void addNote(Note s, Note i){
+			NoteMap->addLValues(s,i);
 		}
-		void setString(String s, String i){
-			StringMap->setLValues(s,i);
+		void setNote(Note s, Note i){
+			NoteMap->setLValues(s,i);
 		}
-		boolean containString(String s){
-			return StringMap->containKeyByLValue(s);
+		boolean containNote(Note s){
+			return NoteMap->containKeyByLValue(s);
 		}
-		String getString(String s){
-			return *StringMap->getByLValue(s);
+		Note getNote(Note s){
+			return *NoteMap->getByLValue(s);
 		}
-		void addBoolean(String s, bool i){
+		void addBoolean(Note s, bool i){
 			booleanMap->addLValues(s,i);
 		}
-		void setBoolean(String s, bool i){
+		void setBoolean(Note s, bool i){
 			booleanMap->setLValues(s,i);
 		}
-		bool getBoolean(String s){
+		bool getBoolean(Note s){
 			return *booleanMap->getByLValue(s);
 		}
-		bool containBoolean(String s){
+		bool containBoolean(Note s){
 			return booleanMap->containKeyByLValue(s);
 		}
-		void addCppObject(String s, cppObject *i){
+		void addCppObject(Note s, cppObject *i){
 			cppObjectMap->addPointer(s,i);
 		}
-		void setCppObject(String s, cppObject *i){
+		void setCppObject(Note s, cppObject *i){
 			cppObjectMap->setPointer(s,i);
 		}
-		cppObject *getCppObject(String s){
+		cppObject *getCppObject(Note s){
 			return cppObjectMap->getByLValue(s);
 		}
-		bool containCppObject(String s){
+		bool containCppObject(Note s){
 			return cppObjectMap->containKeyByLValue(s);
 		}
 	protected:
-		Map<String,int> *intMap;
-		Map<String,float> *floatMap;
-		Map<String,String> *StringMap;
-		Map<String,bool> *booleanMap;
-		Map<String,cppObject> *cppObjectMap;
+		Map<Note,int> *intMap;
+		Map<Note,float> *floatMap;
+		Map<Note,Note> *NoteMap;
+		Map<Note,bool> *booleanMap;
+		Map<Note,cppObject> *cppObjectMap;
 };
 
-#endif 
+}
+
+#endif

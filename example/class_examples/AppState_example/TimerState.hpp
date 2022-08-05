@@ -14,23 +14,35 @@ class TimerState : public AppState, public TimeElapsed{
 		}
    
 		void initialize(Application *app){
-		  app->getTimeControl()->add(this);
+			app->getTimeControl()->add(this);
+		}
+    
+		void update(float tpc){
+			if(!m_update){
+				return;
+			}
+			serial->println("TimerState");
+			serial->println(m_time);
+			m_update = false;
 		}
    
 		void Play(TimeControl *t){
-			serial->println(t->getTime());
+			m_time = t->getTime();
+			m_update = true;
 		}
    
-    bool instanceof(cppObjectClass* cls){
-      return cls == Class<TimerState>::classType || AppState::instanceof(cls);
-    }
-   
-    cppObjectClass* getClass(){
-      return Class<TimerState>::classType;
-    }
+		bool instanceof(cppObjectClass* cls){
+			return cls == Class<TimerState>::classType || AppState::instanceof(cls);
+		}
+	   
+		cppObjectClass* getClass(){
+			return Class<TimerState>::classType;
+		}
 		
 	private:
 		Stream *serial = nullptr;
+		float m_time = 0;
+		volatile bool m_update = true;
 };
 
 #endif 

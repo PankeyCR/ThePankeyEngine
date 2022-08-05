@@ -1,6 +1,26 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_HashMap)
+	#define HashMap_hpp
+#endif
+
 #ifndef HashMap_hpp
 #define HashMap_hpp
+#define HashMap_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
 
 #include "Map.hpp"
 #include "MapIterator.hpp"
@@ -759,7 +779,7 @@ class HashMap : public Map<K,V>{
 		virtual cppObjectClass* getClass(){
 			return Class<HashMap>::classType;
 		}
-		virtual String toString(){
+		virtual Note toNote(){
 			return "HashMap";
 		}
 		virtual Map<K,V>* clone(){
@@ -834,4 +854,5 @@ class HashMap : public Map<K,V>{
 };
 
 }
-#endif 
+
+#endif

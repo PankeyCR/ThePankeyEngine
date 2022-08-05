@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_AppSettings) || defined(DISABLE_DefaultSettings)
+	#define DefaultSettings_hpp
+#endif
 
 #ifndef DefaultSettings_hpp
 #define DefaultSettings_hpp
+#define DefaultSettings_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "PrimitiveMap.hpp"
 #include "AppSettings.hpp"
@@ -14,102 +29,102 @@ namespace ame{
 class DefaultSettings : public AppSettings{
     public:
 		DefaultSettings(){
-			intMap = new PrimitiveMap<String,int>(2);
-			floatMap = new PrimitiveMap<String,float>(2);
-			StringMap = new PrimitiveMap<String,String>(2);
-			boolMap = new PrimitiveMap<String,bool>(2);
-			cppObjectMap = new PrimitiveMap<String,cppObject>(2);
+			intMap = new PrimitiveMap<Note,int>(2);
+			floatMap = new PrimitiveMap<Note,float>(2);
+			NoteMap = new PrimitiveMap<Note,Note>(2);
+			boolMap = new PrimitiveMap<Note,bool>(2);
+			cppObjectMap = new PrimitiveMap<Note,cppObject>(2);
 		}
 		virtual ~DefaultSettings(){
 			delete intMap;
 			delete floatMap;
-			delete StringMap;
+			delete NoteMap;
 			delete boolMap;
 			delete cppObjectMap;
 		}
 		
-		virtual void addInt(String s, int i){
+		virtual void addInt(Note s, int i){
 			this->intMap->addLValues(s,i);
 		}
-		virtual void setInt(String s, int i){
+		virtual void setInt(Note s, int i){
 			this->intMap->setLValues(s,i);
 		}
-		virtual int getInt(String s){
+		virtual int getInt(Note s){
 			int* i = this->intMap->getByLValue(s);
 			if(i == nullptr){
 				return -1;
 			}
 			return *i;
 		}
-		virtual bool containInt(String s){
+		virtual bool containInt(Note s){
 			return this->intMap->containKeyByLValue(s);
 		}
 		
-		virtual void addFloat(String s, float i){
+		virtual void addFloat(Note s, float i){
 			this->floatMap->addLValues(s,i);
 		}
-		virtual void setFloat(String s, float i){
+		virtual void setFloat(Note s, float i){
 			this->floatMap->setLValues(s,i);
 		}
-		virtual float getFloat(String s){
+		virtual float getFloat(Note s){
 			float* f = this->floatMap->getByLValue(s);
 			if(f == nullptr){
 				return -1.0f;
 			}
 			return *f;
 		}
-		virtual bool containFloat(String s){
+		virtual bool containFloat(Note s){
 			return this->floatMap->containKeyByLValue(s);
 		}
 		
-		virtual void addString(String s, String i){
-			this->StringMap->addLValues(s,i);
+		virtual void addNote(Note s, Note i){
+			this->NoteMap->addLValues(s,i);
 		}
-		virtual void setString(String s, String i){
-			this->StringMap->setLValues(s,i);
+		virtual void setNote(Note s, Note i){
+			this->NoteMap->setLValues(s,i);
 		}
-		virtual String getString(String s){
-			String* st = this->StringMap->getByLValue(s);
+		virtual Note getNote(Note s){
+			Note* st = this->NoteMap->getByLValue(s);
 			if(st == nullptr){
 				return "";
 			}
 			return *st;
 		}
-		virtual bool containString(String s){
-			return this->StringMap->containKeyByLValue(s);
+		virtual bool containNote(Note s){
+			return this->NoteMap->containKeyByLValue(s);
 		}
 		
-		virtual void addBoolean(String s, bool i){
+		virtual void addBoolean(Note s, bool i){
 			this->boolMap->addLValues(s,i);
 		}
-		virtual void setBoolean(String s, bool i){
+		virtual void setBoolean(Note s, bool i){
 			this->boolMap->setLValues(s,i);
 		}
-		virtual bool getBoolean(String s){
+		virtual bool getBoolean(Note s){
 			bool* b = this->boolMap->getByLValue(s);
 			if(b == nullptr){
 				return false;
 			}
 			return *b;
 		}
-		virtual bool containBoolean(String s){
+		virtual bool containBoolean(Note s){
 			return this->boolMap->containKeyByLValue(s);
 		}
 		
-		virtual void addCppObject(String s, cppObject *i){
+		virtual void addCppObject(Note s, cppObject *i){
 			this->cppObjectMap->addPointer(s,i);
 		}
-		virtual void setCppObject(String s, cppObject *i){
+		virtual void setCppObject(Note s, cppObject *i){
 			this->cppObjectMap->setPointer(s,i);
 		}
-		virtual cppObject *getCppObject(String s){
+		virtual cppObject *getCppObject(Note s){
 			return this->cppObjectMap->getByLValue(s);
 		}
-		virtual bool containCppObject(String s){
+		virtual bool containCppObject(Note s){
 			return this->cppObjectMap->containKeyByLValue(s);
 		}
 		
-		virtual String toString(){
+		virtual Note toNote(){
 			return "DefaultSettings";
 		}
 		virtual cppObjectClass* getClass(){
@@ -117,15 +132,13 @@ class DefaultSettings : public AppSettings{
 		}
 		
 	protected:
-		Map<String,int> *intMap;
-		Map<String,float> *floatMap;
-		Map<String,String> *StringMap;
-		Map<String,bool> *boolMap;
-		Map<String,cppObject> *cppObjectMap;
+		Map<Note,int> *intMap;
+		Map<Note,float> *floatMap;
+		Map<Note,Note> *NoteMap;
+		Map<Note,bool> *boolMap;
+		Map<Note,cppObject> *cppObjectMap;
 };
 
 }
-
-#endif 
 
 #endif 

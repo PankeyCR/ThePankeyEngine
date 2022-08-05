@@ -1,11 +1,27 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_MapIterator)
+	#define MapIterator_hpp
+#endif
+
 #ifndef MapIterator_hpp
 #define MapIterator_hpp
+#define MapIterator_AVAILABLE
 
-#include "ame_Level.hpp"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
 #include "RawMap.hpp"
-
-#if defined(ame_untilLevel_1)
 
 namespace ame{
 
@@ -106,5 +122,3 @@ class MapIterator{
 }
 
 #endif
-
-#endif 

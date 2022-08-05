@@ -1,10 +1,16 @@
 
+#include "ame_Enviroment.hpp"
 
-#ifndef TimeRecorder_h
-#define TimeRecorder_h
+#if defined(DISABLE_TimeRecorder)
+	#define TimeRecorder_hpp
+#endif
+
+#ifndef TimeRecorder_hpp
+#define TimeRecorder_hpp
+#define TimeRecorder_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -101,4 +107,4 @@ class TimeRecorder {
 
 }
 
-#endif 
+#endif

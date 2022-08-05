@@ -1,10 +1,16 @@
 
+#include "ame_Enviroment.hpp"
 
-#ifndef Statement_h
-#define Statement_h
+#if defined(DISABLE_Statement)
+	#define Statement_hpp
+#endif
+
+#ifndef Statement_hpp
+#define Statement_hpp
+#define Statement_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -30,9 +36,9 @@ class Statement{
 		virtual bool operator==(Statement b){return false;}
 		virtual bool operator!=(Statement b){return false;}
 	protected:
-		List<String>* syntaxList = nullptr;
+		List<Note>* syntaxList = nullptr;
 };
 
 }
 
-#endif 
+#endif

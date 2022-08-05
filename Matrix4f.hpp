@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Matrix4f)
+	#define Matrix4f_hpp
+#endif
+
 #ifndef Matrix4f_hpp
 #define Matrix4f_hpp
+#define Matrix4f_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 // #include "FastMonkeyMath.hpp"
 #include "Vector3f.hpp"
@@ -8,6 +27,7 @@
 #include "LinkedList.hpp"
 #include "Matrix3f.hpp"
 #include "Vector4f.hpp"
+#include "Class.hpp"
 
 
 namespace ame{
@@ -49,9 +69,13 @@ class Matrix4f : public cppObject , public Printable{
 			this->m32 = m32;
 			this->m33 = m33;
 		}
+		
+		#if defined(LinkedList_AVAILABLE)
 
 		Matrix4f(LinkedList<float> array){}
 
+		#endif
+		
 		size_t printTo(Print& p) const{
 			p.print(this->m00);p.print(',');p.print(this->m01);p.print(',');p.print(this->m02);p.print(',');p.print(this->m03);p.print(',');
 			p.print(this->m10);p.print(',');p.print(this->m11);p.print(',');p.print(this->m12);p.print(',');p.print(this->m13);p.print(',');
@@ -98,6 +122,8 @@ class Matrix4f : public cppObject , public Printable{
 			return *this;
 		}
 		
+		#if defined(LinkedList_AVAILABLE)
+		
 		LinkedList<float> get(){
 			return this->get(true);
 		}
@@ -141,6 +167,8 @@ class Matrix4f : public cppObject , public Printable{
 			}
 			return matrix;
 		}
+		
+		#endif
 		
 		float get(int i, int j){
 			switch (i) {
@@ -191,6 +219,8 @@ class Matrix4f : public cppObject , public Printable{
 			}
 			return 0.0f;
 		}
+		
+		#if defined(LinkedList_AVAILABLE)
 		
 		LinkedList<float> getColumn(int i){
 			ame::LinkedList<float> store;
@@ -265,6 +295,8 @@ class Matrix4f : public cppObject , public Printable{
 			}
 			return *this;
 		}
+		
+		#endif
 		
 		Matrix4f set(int i, int j, float value){
 			switch (i) {
@@ -396,6 +428,8 @@ class Matrix4f : public cppObject , public Printable{
 			return *this;
 		}
 		
+		#if defined(LinkedList_AVAILABLE)
+		
 		LinkedList<float> set(LinkedList<float> matrix){
 			return this->set(matrix, true);
 		}
@@ -448,6 +482,8 @@ class Matrix4f : public cppObject , public Printable{
 			return Matrix4f(list);
 		}
 		
+		#endif
+		
 		Matrix4f transposeLocal(){
 			float tmp = m01;
 			m01 = m10;
@@ -473,7 +509,7 @@ class Matrix4f : public cppObject , public Printable{
 			m23 = m32;
 			m32 = tmp;
 
-			return Matrix4f(this);
+			return *this;
 		}
 		
 		void loadIdentity(){
@@ -796,6 +832,8 @@ class Matrix4f : public cppObject , public Printable{
 			// return store;
 		// }
 		
+		#if defined(LinkedList_AVAILABLE)
+		
 		LinkedList<float> mult(LinkedList<float> vec4f){
 			if (vec4f.getPosition() != 4) {
 				return vec4f;
@@ -825,6 +863,8 @@ class Matrix4f : public cppObject , public Printable{
 
 			return vec4f;
 		}
+		
+		#endif
 		
 		Matrix4f invert(){
 			return invert(Matrix4f());
@@ -1127,6 +1167,8 @@ class Matrix4f : public cppObject , public Printable{
 			// this->setScale(scale.x, scale.y, scale.z);
 		}
 		
+		#if defined(LinkedList_AVAILABLE)
+		
 		void setTranslation(LinkedList<float> translation){
 			if (translation.getPosition() != 3) {
 				return;
@@ -1135,6 +1177,8 @@ class Matrix4f : public cppObject , public Printable{
 			m13 = translation[1];
 			m23 = translation[2];
 		}
+		
+		#endif
 		
 		void setTranslation(float x, float y, float z){
 			m03 = x;
@@ -1148,6 +1192,8 @@ class Matrix4f : public cppObject , public Printable{
 			m23 = translation.z;
 		}
 		
+		#if defined(LinkedList_AVAILABLE)
+		
 		void setInverseTranslation(LinkedList<float> translation){
 			if (translation.getPosition() != 3) {
 				return;
@@ -1156,6 +1202,8 @@ class Matrix4f : public cppObject , public Printable{
 			m13 = -translation[1];
 			m23 = -translation[2];
 		}
+		
+		#endif
 		
 		void angleRotation(Vector3f angles){
 			// float angle;
@@ -1189,6 +1237,8 @@ class Matrix4f : public cppObject , public Printable{
 		// void setRotationQuaternion(Quaternion quat){
 			// quat.toRotationMatrix(this);
 		// }
+		
+		#if defined(LinkedList_AVAILABLE)
 		
 		void setInverseRotationRadians(LinkedList<float> angles){
 			// if (angles.getPosition() != 3) {
@@ -1238,6 +1288,8 @@ class Matrix4f : public cppObject , public Printable{
 			vec[2] = vec[2] - m23;
 		}
 		
+		#endif
+		
 		void inverseTranslateVect(Vector3f data){
 			data.x -= m03;
 			data.y -= m13;
@@ -1266,8 +1318,8 @@ class Matrix4f : public cppObject , public Printable{
 			vec.z = vx * m20 + vy * m21 + vz * m22;
 		}
 		
-		String toString(){
-			// StringBuilder result = new StringBuilder("ame::Matrix4f\n[\n");
+		Note toNote(){
+			// NoteBuilder result = new NoteBuilder("ame::Matrix4f\n[\n");
 			// result.append(" ");
 			// result.append(m00);
 			// result.append("  ");
@@ -1304,7 +1356,7 @@ class Matrix4f : public cppObject , public Printable{
 			// result.append("  ");
 			// result.append(m33);
 			// result.append(" \n]");
-			// return result.toString();
+			// return result.toNote();
 			return "";
 		}
 		
@@ -1564,4 +1616,4 @@ class Matrix4f : public cppObject , public Printable{
 ame::Matrix4f *ame::Matrix4f::ZERO = new ame::Matrix4f(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 ame::Matrix4f *ame::Matrix4f::IDENTITY = new ame::Matrix4f();
 
-#endif 
+#endif

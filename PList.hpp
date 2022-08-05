@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_PList)
+	#define PList_hpp
+#endif
+
 #ifndef PList_hpp
 #define PList_hpp
+#define PList_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "ListIterator.hpp"
 #include "cppObject.hpp"
@@ -74,22 +93,6 @@ class PList : public List<T>{
 			values[i] = jt;
 			values[j] = it;
 			return true;
-		}
-		
-		void addList(RawList<T> *list){
-            if(list == nullptr){
-				return;
-            }
-			for(int x=0; x < list->getPosition() ; x++){
-				while(values[pos] != nullptr){
-					pos++;
-				}
-				if(pos >= size){
-					return;
-				}
-				values[pos] = list->getByPosition(x);
-				pos++;
-			}
 		}
 	
 		template<class... args>
@@ -366,71 +369,6 @@ class PList : public List<T>{
 			return t;
 		}
 	
-		void removeDeleteByPointer(T* key){
-			bool is=false;
-			for(int x=0; x < pos; x++){
-				if(values[x] == key ){
-					is = true;
-				}
-			}
-			if(is){
-				int nv =0;
-				for(int x=0; x < pos; x++){
-					if(values[x] != key ){
-						values[nv] = values[x];
-						nv++;
-					}else{
-						if(values[x] != nullptr && owner){
-							delete values[x];
-						}
-					}
-				}
-				pos = nv;
-			}
-		}
-	
-		void removeDeleteByLValue(T key){
-			bool is=false;
-			for(int x=0; x < pos; x++){
-				if(*values[x] == key ){
-					is = true;
-				}
-			}
-			if(is){
-				int nv =0;
-				for(int x=0; x < pos; x++){
-					if(*values[x] != key ){
-						values[nv] = values[x];
-						nv++;
-					}else{
-						if(values[x] != nullptr && owner){
-							delete values[x];
-						}
-					}
-				}
-				pos = nv;
-			}
-		}
-		
-		void removeDeleteByPosition(int p){
-			if(p >= pos){
-				return;
-			}
-			T* t = nullptr;
-			for(int x=0; x < pos; x++){
-				if(x == p ){
-					t = values[x];
-				}
-				if(x > p ){
-					values[x-1] = values[x];
-				}
-			}
-			pos--;
-			if(t != nullptr && owner){
-				delete t;
-			}
-		}
-	
 		void onDelete(){
 			for(int x=0; x < pos; x++){
 				if(values[x] != nullptr && owner){
@@ -440,6 +378,77 @@ class PList : public List<T>{
 			}
 			pos = 0;
 		}
+	
+		////////////////////////////////////////////special removes part///////////////////////////////////////////////
+		virtual bool removeAll(T value){
+			bool r_val = false;
+			int p_x = 0;
+			for(int x = 0; x < pos; x++){
+				if(value == *values[x]){
+					if(owner){
+						delete values[x];
+					}
+					r_val = true;
+				}else{
+					values[p_x] = values[x];
+					p_x++;
+				}
+			}
+			pos = p_x;
+			return r_val;
+		}
+		
+		virtual bool removeFirst(T value){
+			bool r_val = false;
+			bool r_once = true;
+			int p_x = 0;
+			for(int x = 0; x < pos; x++){
+				if(value == *values[x] && r_once){
+					if(owner){
+						delete values[x];
+					}
+					r_once = false;
+					r_val = true;
+				}else{
+					values[p_x] = values[x];
+					p_x++;
+				}
+			}
+			pos = p_x;
+			return r_val;
+			// return false;
+		}
+		
+		virtual bool removeLast(T value){
+			int r_pos = pos;
+			for(int x = pos - 1; x >= 0; x--){
+				if(value == *values[x]){
+					r_pos = x;
+					break;
+				}
+			}
+			
+			bool r_val = false;
+			bool r_once = true;
+			int p_x = r_pos;
+			for(int x = p_x; x < pos; x++){
+				if(value == *values[x] && r_once){
+					if(owner){
+						delete values[x];
+					}
+					r_once = false;
+					r_val = true;
+				}else{
+					values[p_x] = values[x];
+					p_x++;
+				}
+			}
+			pos = p_x;
+			return r_val;
+			// return false;
+		}
+	
+		////////////////////////////////////////////operator part///////////////////////////////////////////////
 		
 		T& operator[](int x){
 			if(x >= size){
@@ -541,4 +550,4 @@ class PList : public List<T>{
 
 }
 
-#endif 
+#endif

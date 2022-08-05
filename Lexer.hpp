@@ -1,11 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Lexer)
+	#define Lexer_hpp
+#endif
+
 #ifndef Lexer_h
 #define Lexer_h
-
+#define Lexer_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Stream.h"
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -17,20 +22,18 @@
 	#include "Arduino.h"
 #endif
 
-#include "List.hpp"
 #include "Token.hpp"
-#include "LinkedList.hpp"
 #include "PrimitiveList.hpp"
 #include "Environment.hpp"
 
-#define LexerCaptureString(lexer,scriptText)		\
-  for(int xLexerCaptureString = 0; xLexerCaptureString < scriptText.length(); xLexerCaptureString++){		\
-    lexer->capture(scriptText.charAt(xLexerCaptureString),(scriptText.length()-1)!=xLexerCaptureString);			\
+#define LexerCaptureNote(lexer,scriptText)		\
+  for(int xLexerCaptureNote = 0; xLexerCaptureNote < scriptText.length(); xLexerCaptureNote++){		\
+    lexer->capture(scriptText.charAt(xLexerCaptureNote),(scriptText.length()-1)!=xLexerCaptureNote);			\
   }													\
 
-#define LexerCaptureStringV(lexer,scriptText)		\
-  for(int xLexerCaptureString = 0; xLexerCaptureString < scriptText.length(); xLexerCaptureString++){		\
-    lexer.capture(scriptText.charAt(xLexerCaptureString),(scriptText.length()-1)!=xLexerCaptureString);			\
+#define LexerCaptureNoteV(lexer,scriptText)		\
+  for(int xLexerCaptureNote = 0; xLexerCaptureNote < scriptText.length(); xLexerCaptureNote++){		\
+    lexer.capture(scriptText.charAt(xLexerCaptureNote),(scriptText.length()-1)!=xLexerCaptureNote);			\
   }													\
   
  namespace ame{
@@ -43,21 +46,21 @@ class Lexer{
 		}
 		virtual ~Lexer(){}
 		
-		virtual String extractString(String mns){
+		virtual Note extractNote(Note mns){
 			char mnsArray[mns.length()+1];
 			mns.toCharArray(mnsArray, mns.length()+1);
 			
 			if(mnsArray[0] != '"' && mnsArray[mns.length()-1] != '"'){
 				return mns;
 			}
-			String extract = "";
+			Note extract = "";
 			for(int i=1; i < mns.length() - 1; i++){
 				extract.concat(mnsArray[i]);
 			}
 			return extract;
 		}
 		
-		virtual bool isString(String mns){
+		virtual bool isNote(Note mns){
 			char mnsArray[mns.length()+1];
 			mns.toCharArray(mnsArray, mns.length()+1);
 			
@@ -74,7 +77,7 @@ class Lexer{
 			return true;
 		}
 		
-		virtual bool isFloat(String mns){ 
+		virtual bool isFloat(Note mns){ 
 			char mnsArray[mns.length() + 1];
 			mns.toCharArray(mnsArray, mns.length() + 1);
 			
@@ -101,7 +104,7 @@ class Lexer{
 			return true;
 		}
 		
-		virtual bool isInt(String mns){
+		virtual bool isInt(Note mns){
 			char mnsArray[mns.length() + 1];
 			mns.toCharArray(mnsArray, mns.length() + 1);
 			
@@ -114,7 +117,7 @@ class Lexer{
 			return true;
 		}
 		
-		virtual bool isLong(String mns){
+		virtual bool isLong(Note mns){
 			char mnsArray[mns.length() + 1];
 			mns.toCharArray(mnsArray, mns.length() + 1);
 			
@@ -133,7 +136,7 @@ class Lexer{
 			return true;
 		}
 	
-		virtual bool isDouble(String mns){ 
+		virtual bool isDouble(Note mns){ 
 			char mnsArray[mns.length() + 1];
 			mns.toCharArray(mnsArray, mns.length() + 1);
 			
@@ -161,7 +164,7 @@ class Lexer{
 			return true;
 		}
 		
-		virtual bool isTypeToken(String mns){
+		virtual bool isTypeToken(Note mns){
 			for(int x = 0; x < typeTokens.getPosition(); x++){
 				Token* t = typeTokens.getByPosition(x);
 				if(t->name == mns){
@@ -171,22 +174,22 @@ class Lexer{
 			return false;
 		}
 		
-		virtual bool isVariable(String mns){
+		virtual bool isVariable(Note mns){
 			if(environment == nullptr){
 				return false;
 			}
 			return environment->containVariable(mns);
 		}
 	
-		virtual Token getToken(String tkn){
+		virtual Token getToken(Note tkn){
 			if(this->isDouble(tkn)){
 				return Token("Double",tkn,"");
 			}
 			if(this->isFloat(tkn)){
 				return Token("Float",tkn,"");
 			}
-			if(this->isString(tkn)){
-				return Token("String",tkn,"");
+			if(this->isNote(tkn)){
+				return Token("Note",tkn,"");
 			}
 			if(this->isInt(tkn)){
 				return Token("Int",tkn,"");
@@ -195,13 +198,13 @@ class Lexer{
 				return Token("Long",tkn,"");
 			}
 			for(int x = 0; x < this->typeTokens.getPosition(); x++){
-				ame::Token* t = this->typeTokens.getByPosition(x);
+				Token* t = this->typeTokens.getByPosition(x);
 				if(t->name == tkn){
 					return Token(tkn,tkn);
 				}
 			}
 			for(int x = 0; x < this->delimiterTokens.getPosition(); x++){
-				ame::Token* t = this->delimiterTokens.getByPosition(x);
+				Token* t = this->delimiterTokens.getByPosition(x);
 				if(t->value == tkn){
 					return Token(*t);
 				}
@@ -212,7 +215,7 @@ class Lexer{
 			return Token("Variable",tkn);
 		}
 	
-		// virtual LinkedList<Token> getTokens(String s);
+		// virtual LinkedList<Token> getTokens(Note s);
 		
 		virtual void addCapturedTokens(Token tkn){
 			this->capturedTokens.addLValue(tkn);
@@ -239,7 +242,7 @@ class Lexer{
 			this->typeTokens.addLValue(tkn);
 		}
 	
-		virtual bool containTypeToken(String brk){
+		virtual bool containTypeToken(Note brk){
 			for(int x = 0; x < this->typeTokens.getPosition(); x++){
 				Token* token = this->typeTokens.getByPosition(x);
 				if(brk == token->name){
@@ -253,10 +256,10 @@ class Lexer{
 			this->delimiterTokens.addLValue(tkn);
 		}
 	
-		virtual bool containDelimiterToken(String tkn){
+		virtual bool containDelimiterToken(Note tkn){
 			for(int x = 0; x < this->delimiterTokens.getPosition(); x++){
 				Token* token = this->delimiterTokens.getByPosition(x);
-				if(tkn == token->value){
+				if(tkn == token->name){
 					return true;
 				}
 			}
@@ -266,7 +269,7 @@ class Lexer{
 		virtual bool containDelimiterTokenChar(int x, char c){
 			for(int xc = 0; xc < this->delimiterTokens.getPosition(); xc++){
 				Token* token = this->delimiterTokens.getByPosition(xc);
-				String t = token->value;
+				Note t = token->value;
 				char mnsArray[t.length() + 1];
 				t.toCharArray(mnsArray, t.length() + 1);
 				
@@ -327,4 +330,4 @@ class Lexer{
 
 }
  
-#endif 
+#endif

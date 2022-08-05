@@ -1,8 +1,27 @@
 //Life owns it lelf, life deletes it lelf, but it can be deleted by others
 
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Life)
+	#define Life_hpp
+#endif
+
 #ifndef Life_hpp
 #define Life_hpp
+#define Life_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Logic.hpp"
 #include "LearningLogic.hpp"
@@ -243,7 +262,7 @@ class Life : public GameObject{
 			return false;
 		}
 		
-		virtual bool operator=(const String& i){
+		virtual bool operator=(const Note& i){
 			
 			return false;
 		}
@@ -285,7 +304,7 @@ class Life : public GameObject{
 			return false;
 		}
 		
-		virtual bool operator==(const String& i){
+		virtual bool operator==(const Note& i){
 			
 			return false;
 		}
@@ -327,7 +346,7 @@ class Life : public GameObject{
 			return false;
 		}
 		
-		virtual bool operator!=(const String& i){
+		virtual bool operator!=(const Note& i){
 			
 			return false;
 		}
@@ -369,7 +388,7 @@ class Life : public GameObject{
 			return false;
 		}
 		
-		virtual bool similar(const String& i){
+		virtual bool similar(const Note& i){
 			
 			return false;
 		}

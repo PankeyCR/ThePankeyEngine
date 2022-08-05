@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Label)
+	#define Label_hpp
+#endif
+
 #ifndef Label_h
 #define Label_h
+#define Label_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
 #include "Panel.hpp"
@@ -11,7 +30,7 @@ class Label : public Panel{
     public:
 		Label(){
 		}
-		Label(const String& s){
+		Label(const Note& s){
 		}
 		virtual ~Label(){
 		}
@@ -23,7 +42,7 @@ class Label : public Panel{
 			return cls == Class<Label>::classType || Panel::instanceof(cls);
 		}
 		virtual cppObjectClass* getClass(){return Class<Label>::classType;}
-		virtual String toString(){return "Label";}
+		virtual Note toNote(){return "Label";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
 				return true;
@@ -38,4 +57,4 @@ class Label : public Panel{
 
 }
 
-#endif 
+#endif

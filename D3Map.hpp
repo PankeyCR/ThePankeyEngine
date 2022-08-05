@@ -1,10 +1,25 @@
+	
+#include "ame_Enviroment.hpp"
 
-#include "ame_Level.hpp"
-
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_D3Map)
+	#define D3Map_hpp
+#endif
 
 #ifndef D3Map_hpp
 #define D3Map_hpp
+#define D3Map_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "DMap.hpp"
 
@@ -68,6 +83,4 @@ class D3Map : DMap<T>{
 
 }
 
-#endif 
-
-#endif 
+#endif

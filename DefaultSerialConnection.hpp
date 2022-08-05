@@ -1,13 +1,28 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_DefaultSerialConnection)
+	#define DefaultSerialConnection_hpp
+#endif
 
 #ifndef DefaultSerialConnection_hpp
 #define DefaultSerialConnection_hpp
+#define DefaultSerialConnection_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
 
 #include "SerialConnection.hpp"
-#include "Arduino.h"
 #include "ArrayList.hpp"
 #include "PList.hpp"
 #include "List.hpp"
@@ -17,7 +32,7 @@ namespace ame{
 class DefaultSerialConnection : public SerialConnection{		
     private:
 		Stream *port=NULL;
-		String message="";
+		Note message="";
 		bool receive=false;
 		static ArrayList<char,100> *validChars;
 		
@@ -43,11 +58,11 @@ class DefaultSerialConnection : public SerialConnection{
 			return port->available();
 		}
 		
-		String getString(){
+		Note getNote(){
 			if(this->port == NULL){
 				return "";			
 			}
-			String mns="";
+			Note mns="";
 			while(port->available()){
 				char inputChar = (char)port->read();
 				if(isValidChar(inputChar)){
@@ -58,11 +73,11 @@ class DefaultSerialConnection : public SerialConnection{
 			return mns;
 		}
 		
-		String getStringln(){
+		Note getNoteln(){
 			if(this->port == nullptr){
 				return "";			
 			}
-			String mns="";
+			Note mns="";
 			while(port->available()){
 				char inputChar = (char)port->read();
 				if(inputChar == '\n'){
@@ -76,11 +91,11 @@ class DefaultSerialConnection : public SerialConnection{
 			return mns;
 		}
 		
-		String getStringUntil(char end){
+		Note getNoteUntil(char end){
 			if(this->port == NULL){
 				return "";			
 			}
-			String mns="";
+			Note mns="";
 			while(port->available()){
 				char inputChar = (char)port->read();
 				if(inputChar == end){
@@ -94,12 +109,12 @@ class DefaultSerialConnection : public SerialConnection{
 			return mns;
 		}
 	
-		String getStringUntil(char start,char end){
+		Note getNoteUntil(char start,char end){
 			if(this->port == NULL){
 				return "";			
 			}
 			bool start=false;
-			String mns="";
+			Note mns="";
 			while(port->available()){
 				char inputChar = (char)port->read();
 				if(inputChar == startChar){
@@ -116,9 +131,9 @@ class DefaultSerialConnection : public SerialConnection{
 			return mns;
 		}
 		
-		String safeReceive(char start,char end){
+		Note safeReceive(char start,char end){
 			char read = (char)port->read();
-			String mns="";
+			Note mns="";
 			if(receive && isValidChar(read)){
 				message.concat(read);
 			}
@@ -135,9 +150,9 @@ class DefaultSerialConnection : public SerialConnection{
 			return mns;
 		}
 	
-		String safeReceive(List<String> *list,String responce,char start,char end){
+		Note safeReceive(List<Note> *list,Note responce,char start,char end){
 			char read = (char)port->read();
-			String mns="";
+			Note mns="";
 			if(start == read){
 				message = "";
 				receive=true;
@@ -161,20 +176,20 @@ class DefaultSerialConnection : public SerialConnection{
 			return (char)port->read();
 		}
 	
-		void print(String Send){
+		void print(Note Send){
 			port->print(sendd);	
 		}
 		
-		void println(String Send){
+		void println(Note Send){
 			port->println(sendd);
 		}
 		
 		void print(int Send){
-			port->println(String(
+			port->println(Note(
 		}
 		
 		void println(int Send){ 
-			port->print(String(sendd));
+			port->print(Note(sendd));
 		}
 	
 		void write(char Send){
@@ -185,7 +200,7 @@ class DefaultSerialConnection : public SerialConnection{
 			port->write(sendd);
 		}
 	
-		void writeln(String Send){
+		void writeln(Note Send){
 			int sendd_len = sendd.length() + 1; 
 			char sendd_array[sendd_len];
 			sendd.toCharArray(sendd_array, sendd_len);
@@ -293,6 +308,4 @@ ArrayList<char,100>* DefaultSerialConnection::validChars = nullptr;
 
 }
 
-#endif 
-
-#endif 
+#endif

@@ -1,10 +1,26 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_ArrayFunction)
+	#define ArrayFunction_hpp
+#endif
 
 #ifndef ArrayFunction_hpp
 #define ArrayFunction_hpp
+#define ArrayFunction_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
 
 #include "ArrayList.hpp"
 #include "ModifiableFunction.hpp"
@@ -37,7 +53,7 @@ class ArrayFunction : public ModifiableFunction<T,args...>{
 		cppObjectClass* getClass(){
 			return Class<ArrayFunction>::classType;
 		}
-		String toString(){
+		Note toNote(){
 			return "ArrayFunction";
 		}
 		virtual T f(args... x){
@@ -95,6 +111,4 @@ class ArrayFunction : public ModifiableFunction<T,args...>{
 	
 };
 
-#endif 
-
-#endif 
+#endif

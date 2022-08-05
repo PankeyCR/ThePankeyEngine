@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_RadioProtocol)
+	#define RadioProtocol_hpp
+#endif
+
 #ifndef RadioProtocol_hpp
 #define RadioProtocol_hpp
+#define RadioProtocol_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "PortProtocol.hpp"
 #include "SerialPort.hpp"
@@ -14,26 +33,10 @@
 
 namespace ame{
 
-enum class RadioType{
-	SPY
-};
-
-class RadioProtocol : public PortProtocol{	
+class RadioProtocol : public BufferProtocol{	
     public:
 		RadioProtocol(){}
 		virtual ~RadioProtocol(){}
-		
-		virtual void InstantBroadcastMessage(SerialPort* port, String mns){
-			RadioProtocolLog("RadioProtocol", "InstantBroadcastMessage",  "println", port->getName());
-			RadioProtocolLog("RadioProtocol", "InstantBroadcastMessage",  "println", mns);
-			port->println(mns);
-		}
-		
-		virtual void InstantPrivateMessage(SerialPort* port, String mns){
-			RadioProtocolLog("RadioProtocol", "InstantPrivateMessage",  "println", port->getName());
-			RadioProtocolLog("RadioProtocol", "InstantPrivateMessage",  "println", mns);
-			port->println(mns);
-		}
 		
 		virtual void GlobalDisconect(SerialPort* port){
 			RadioProtocolLog("RadioProtocol", "GlobalDisconect",  "println", "");
@@ -51,48 +54,26 @@ class RadioProtocol : public PortProtocol{
 			port->stop();
 		}
 		
-		virtual void BroadcastMessage(SerialPort* port, String mns){
-			RadioProtocolLog("RadioProtocol", "BroadcastMessage",  "println", port->getName());
-			RadioProtocolLog("RadioProtocol", "BroadcastMessage",  "println", mns);
-			port->println(mns);
-		}
-		virtual void PrivateMessage(SerialPort* port, String mns){
-			RadioProtocolLog("RadioProtocol", "PrivateMessage",  "println", port->getName());
-			RadioProtocolLog("RadioProtocol", "PrivateMessage",  "println", mns);
-			port->println(mns);
-		}
-		
 		virtual void Read(int index, SerialPort* port){
 			char m = port->read();
-			if(m == '\n' && messageText.length() != 0){
-				RadioProtocolLog("RadioProtocol", "Read",  "println", "adding Message to serialState");
-				RadioProtocolLog("RadioProtocol", "Read",  "println", String("messageText: ") + messageText);
-				RadioProtocolLog("RadioProtocol", "Read",  "println", String("index: ") + String(index));
-				RadioProtocolLog("RadioProtocol", "Read",  "println", "raw");
-				Message* message = new Message();
-				message->name(port->getName());
-				message->text(messageText);
-				message->id(index);
-				message->type("raw");
-				this->serialState->addReceivedMessage(message);
-				messageText = "";
-				return;
-			}
-			if(m != '\n'){
-				RadioProtocolLog("RadioProtocol", "Read",  "println", String("adding char to messageText: ") + String(m));
-				messageText.concat(m);
-			}
+			
 		}
 		
 		virtual void setType(RadioType t){
 			radioType = t;
 		}
 		
+		virtual void setReliability(RadioReliability t){
+			radioR = t;
+		}
+		
 	protected:
 		RadioType radioType = RadioType::SPY;
-		String messageText = "";
+		RadioReliability radioR = RadioReliability::Sdt;
+		
+		
 };
 
 }
 
-#endif 
+#endif

@@ -1,6 +1,7 @@
 
 #include "UUID.hpp"
 #include "SerialConnection.hpp"
+#include "Note.hpp"
 
 long count = 0;
 long precount = 0;
@@ -34,7 +35,7 @@ void loop() {
   }
   count++;
   precount++;
-  String text = serialConnection->safeReceive('\n');
+  Note text = serialConnection->safeReceive('\n');
 //  Serial.print("text ");Serial.println(text);
   if(text != ""){
     if(text == "uuid"){

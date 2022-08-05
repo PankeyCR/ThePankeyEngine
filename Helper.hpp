@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_1)
+#if defined(DISABLE_Helper)
+	#define Helper_hpp
+#endif
 
 #ifndef Helper_hpp
 #define Helper_hpp
+#define Helper_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "List.hpp"
 
@@ -55,6 +70,4 @@ bool similar(const T& in_1, const T& in_2, const T& offset){
 
 }
 
-#endif 
-
-#endif 
+#endif

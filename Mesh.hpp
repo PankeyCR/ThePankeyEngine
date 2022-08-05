@@ -1,10 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Mesh)
+	#define Mesh_hpp
+#endif
+
 #ifndef Mesh_hpp
 #define Mesh_hpp
+#define Mesh_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "SD.h"
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -66,7 +72,7 @@ class Mesh : public Printable{
 			return triangles[tri];
 		}
 		
-		bool loadOBJ(String file){
+		bool loadOBJ(Note file){
 			DefaultMonkeyFile<SDFileSystemClass> f = DefaultMonkeyFile<SDFileSystemClass>(SD);
 			if(!f.isOpen()){
 				return false;
@@ -75,24 +81,24 @@ class Mesh : public Printable{
 			
 			LinkedList<Vector3f> verts;
 			
-			String text = f.read(file);
+			Note text = f.read(file);
 			CommandReader reader;
 			
 			int size = reader.getEnterSize();
 			for(int x = 0; x < size; x++){
-				String line = reader.getLine(x);
+				Note line = reader.getLine(x);
 				if(line[0] == 'v'){
-					String argument = reader.getArgument(x);
+					Note argument = reader.getArgument(x);
 					float xx = reader.split(argument, 0, ' ').toFloat();
 					float yy = reader.split(argument, 1, ' ').toFloat();
 					float zz = reader.split(argument, 2, ' ').toFloat();
 					verts.add(Vector3f(xx,yy,zz));
 				}
 				if(line[0] == 'f'){
-					String argument = reader.getArgument(x);
-					String f_1 = reader.split(argument, 0, ' ');
-					String f_2 = reader.split(argument, 1, ' ');
-					String f_3 = reader.split(argument, 2, ' ');
+					Note argument = reader.getArgument(x);
+					Note f_1 = reader.split(argument, 0, ' ');
+					Note f_2 = reader.split(argument, 1, ' ');
+					Note f_3 = reader.split(argument, 2, ' ');
 					
 					int f_x = reader.split(f_1, 0, "//").toInt();
 					int f_y = reader.split(f_2, 0, "//").toInt();
@@ -107,4 +113,4 @@ class Mesh : public Printable{
 
 }
 
-#endif 
+#endif

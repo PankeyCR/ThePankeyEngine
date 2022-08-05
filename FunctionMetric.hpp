@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_6)
+#if defined(DISABLE_FunctionMetric)
+	#define FunctionMetric_hpp
+#endif
 
 #ifndef FunctionMetric_hpp
 #define FunctionMetric_hpp
+#define FunctionMetric_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Random.hpp"
 #include "AbsoluteRandom.hpp"
@@ -128,6 +143,4 @@ class FunctionMetric : public cppObject{
 
 }
 
-#endif 
-
-#endif 
+#endif

@@ -1,12 +1,25 @@
 
-// #include "ame_Level.h"
+#include "ame_Enviroment.hpp"
 
-// #if defined(ame_untilLevel_7)
+#if defined(DISABLE_Iterator)
+	#define Iterator_hpp
+#endif
 
 #ifndef Iterator_hpp
 #define Iterator_hpp
+#define Iterator_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 namespace ame{
 
@@ -119,6 +132,4 @@ class Iterator{
 
 }
 
-// #endif
-
-#endif 
+#endif

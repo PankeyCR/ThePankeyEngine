@@ -1,10 +1,30 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_List)
+	#define List_hpp
+#endif
+
 #ifndef List_hpp
 #define List_hpp
+#define List_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Iterator.hpp"
 #include "cppObject.hpp"
 #include "RawList.hpp"
+#include "Class.hpp"
 
 namespace ame{
 
@@ -26,4 +46,4 @@ class List : public cppObject , public RawList<T>{
 
 }
 
-#endif 
+#endif

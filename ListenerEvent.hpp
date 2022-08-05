@@ -1,7 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_ListenerEvent)
+	#define ListenerEvent_hpp
+#endif
 
 #ifndef ListenerEvent_hpp
 #define ListenerEvent_hpp
+#define ListenerEvent_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 namespace ame{
 
@@ -24,4 +42,4 @@ class ListenerEvent{
 
 }
 
-#endif 
+#endif

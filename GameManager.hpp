@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_GameManager)
+	#define GameManager_hpp
+#endif
 
 #ifndef GameManager_hpp
 #define GameManager_hpp
+#define GameManager_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
 #include "AppState.hpp"
@@ -36,7 +51,7 @@ class GameManager : public AppState{
 				GameManagerLog("GameManager", "createEntity",  "println", "obj == nullptr");
 				return -1;
 			}
-			GameManagerLog("GameManager", "createEntity",  "println", String("id ") + String(m_gobjects.getPosition()));
+			GameManagerLog("GameManager", "createEntity",  "println", Note("id ") + Note(m_gobjects.getPosition()));
 			obj->setId(m_gobjects.getPosition());
 			m_gobjects.addPointer(obj);
 			return obj->getId();
@@ -48,7 +63,7 @@ class GameManager : public AppState{
 				GameManagerLog("GameManager", "createGameObject",  "println", "obj == nullptr");
 				return nullptr;
 			}
-			GameManagerLog("GameManager", "createGameObject",  "println", String("id ") + String(m_gobjects.getPosition()));
+			GameManagerLog("GameManager", "createGameObject",  "println", Note("id ") + Note(m_gobjects.getPosition()));
 			obj->setId(m_gobjects.getPosition());
 			m_gobjects.addPointer(obj);
 			return obj;
@@ -57,7 +72,7 @@ class GameManager : public AppState{
 		
 		int createEntity(){
 			GameManagerLog("GameManager", "createEntity",  "println", "no parameters");
-			GameManagerLog("GameManager", "createEntity",  "println", String("id ") + String(m_gobjects.getPosition()));
+			GameManagerLog("GameManager", "createEntity",  "println", Note("id ") + Note(m_gobjects.getPosition()));
 			GameObject* obj = new GameObject();
 			obj->setId(m_gobjects.getPosition());
 			m_gobjects.addPointer(obj);
@@ -66,7 +81,7 @@ class GameManager : public AppState{
 		
 		GameObject* createGameObject(){
 			GameManagerLog("GameManager", "createGameObject",  "println", "no parameters");
-			GameManagerLog("GameManager", "createGameObject",  "println", String("id ") + String(m_gobjects.getPosition()));
+			GameManagerLog("GameManager", "createGameObject",  "println", Note("id ") + Note(m_gobjects.getPosition()));
 			GameObject* obj = new GameObject();
 			obj->setId(m_gobjects.getPosition());
 			m_gobjects.addPointer(obj);
@@ -75,7 +90,7 @@ class GameManager : public AppState{
 		
 		
 		void deleteEntity(int entity){
-			GameManagerLog("GameManager", "deleteEntity",  "println", String("id ") + String(entity));
+			GameManagerLog("GameManager", "deleteEntity",  "println", Note("id ") + Note(entity));
 			GameObject* obj = m_gobjects.getByPosition(entity);
 			if(obj == nullptr){
 				GameManagerLog("GameManager", "deleteEntity",  "println", "obj == nullptr");
@@ -123,7 +138,7 @@ class GameManager : public AppState{
 		
 		void deleteAllEntities(){
 			GameManagerLog("GameManager", "deleteAllEntities",  "println", "");
-			GameManagerLog("GameManager", "deleteAllEntities",  "println", String("total entities ") + String(components.getPosition()));
+			GameManagerLog("GameManager", "deleteAllEntities",  "println", Note("total entities ") + Note(components.getPosition()));
 			for(int x = 0; x < components.getPosition(); x++){
 				List<GameOn>* childs = components.getByPosition(x);
 				childs->reset();
@@ -134,7 +149,7 @@ class GameManager : public AppState{
 		
 		void deleteEntityRequest(int entity){
 			GameManagerLog("GameManager", "deleteEntityRequest",  "println", "adding entity to the delete request list");
-			GameManagerLog("GameManager", "deleteEntityRequest",  "println", String("id ") + String(entity));
+			GameManagerLog("GameManager", "deleteEntityRequest",  "println", Note("id ") + Note(entity));
 			GameObject* obj = m_gobjects.getByPosition(entity);
 			if(obj == nullptr){
 				return;
@@ -179,7 +194,7 @@ class GameManager : public AppState{
 		}
 		
 		int getEntity(GameObject* obj){
-			GameManagerLog("GameManager", "getEntity",  "println", String(obj->getId()));
+			GameManagerLog("GameManager", "getEntity",  "println", Note(obj->getId()));
 			if(m_gobjects.containByPointer(obj)){
 				return obj->getId();
 			}
@@ -187,7 +202,7 @@ class GameManager : public AppState{
 		}
 		
 		GameObject* getGameObject(int entity){
-			GameManagerLog("GameManager", "getGameObject",  "println", String(entity));
+			GameManagerLog("GameManager", "getGameObject",  "println", Note(entity));
 			return m_gobjects.getByPosition(entity);
 		}
 		
@@ -367,7 +382,7 @@ class GameManager : public AppState{
 		
 		template<class... s>
 		bool containEntityComponents(int entity, s... componentClass){
-			PrimitiveList<String> classNs;
+			PrimitiveList<Note> classNs;
 			classNs.addPack(componentClass...);
 			if(classNs.isEmpty()){
 				return false;
@@ -491,6 +506,26 @@ class GameManager : public AppState{
 						return -1;
 					}
 					if(gameon->getClass() == cls){
+						return x;
+					}
+				}
+			}
+			return -1;
+		}
+		int getEntityByComponent(GameOn* gmon){
+			GameManagerLog("GameManager", "getEntityByComponent",  "println", "");
+			for(int x = 0; x < m_gobjects.getPosition(); x++){
+				GameObject* obj = m_gobjects.getByPosition(x);
+				if(obj == nullptr){
+					return -1;
+				}
+				PrimitiveList<GameOn>& list = obj->getChilds();
+				for(int y = 0; y < list.getPosition(); y++){
+					GameOn* gameon = list.getByPosition(y);
+					if(gameon == nullptr){
+						return -1;
+					}
+					if(gameon == gmon){
 						return x;
 					}
 				}
@@ -823,36 +858,36 @@ class GameManager : public AppState{
 		}
 		
 		
-		GameOn* removeComponentIterating(Iterator& i, List<GameOn>* listComponents){
-			GameManagerLog("GameManager", "removeComponentIterating",  "println", "");
-			if(listComponents != nullptr){
-				GameOn* gameon = listComponents->getPointer(i);
-				listComponents->remove(i);
-				GameObject* obj = m_gobjects.getByPosition(gameon->getId());
-				if(obj != nullptr){
-					obj->detach(gameon);
-				}
-				i.last();
-				return gameon;
-			}
-			return nullptr;
-		}
+		// GameOn* removeComponentIterating(Iterator& i, List<GameOn>* listComponents){
+			// GameManagerLog("GameManager", "removeComponentIterating",  "println", "");
+			// if(listComponents != nullptr){
+				// GameOn* gameon = listComponents->getPointer(i);
+				// listComponents->remove(i);
+				// GameObject* obj = m_gobjects.getByPosition(gameon->getId());
+				// if(obj != nullptr){
+					// obj->detach(gameon);
+				// }
+				// i.last();
+				// return gameon;
+			// }
+			// return nullptr;
+		// }
 		
 		
-		void deleteComponentIterating(Iterator& i, List<GameOn>* listComponents){
-			GameManagerLog("GameManager", "deleteComponentIterating",  "println", "");
-			if(listComponents != nullptr){
-				GameOn* gameon = listComponents->getPointer(i);
-				listComponents->remove(i);
-				GameObject* obj = m_gobjects.getByPosition(gameon->getId());
-				if(obj == nullptr){
-					return;
-				}
-				obj->detach(gameon);
-				delete gameon;
-				i.last();
-			}
-		}
+		// void deleteComponentIterating(Iterator& i, List<GameOn>* listComponents){
+			// GameManagerLog("GameManager", "deleteComponentIterating",  "println", "");
+			// if(listComponents != nullptr){
+				// GameOn* gameon = listComponents->getPointer(i);
+				// listComponents->remove(i);
+				// GameObject* obj = m_gobjects.getByPosition(gameon->getId());
+				// if(obj == nullptr){
+					// return;
+				// }
+				// obj->detach(gameon);
+				// delete gameon;
+				// i.last();
+			// }
+		// }
 		
 		
 		//resets the list and it deletes the components from there entities
@@ -915,8 +950,8 @@ class GameManager : public AppState{
 			return Class<GameManager>::classType;
 		}
 		
-		String toString(){
-			return "GameManager"+String(m_gobjects.getSize());
+		Note toNote(){
+			return Note("GameManager") + Note(m_gobjects.getSize());
 		}
 		
 		bool equal(cppObject *b){
@@ -973,6 +1008,4 @@ class GameManager : public AppState{
 
 }
 
-#endif 
-
-#endif 
+#endif

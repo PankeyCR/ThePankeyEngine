@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_ByteArrayTransformer)
+	#define ByteArrayTransformer_hpp
+#endif
 
 #ifndef ByteArrayTransformer_hpp
 #define ByteArrayTransformer_hpp
+#define ByteArrayTransformer_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "PrimitiveList.hpp"
 #include "ByteArray.hpp"
@@ -78,7 +93,5 @@ T ByteArrayForm(const ByteArray& array){
 };
 
 }
-
-#endif
 
 #endif

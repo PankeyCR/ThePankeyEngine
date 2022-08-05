@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Map)
+	#define Map_hpp
+#endif
+
 #ifndef Map_hpp
 #define Map_hpp
+#define Map_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
 #include "RawMap.hpp"
@@ -27,4 +46,5 @@ class Map : public cppObject, public RawMap<K,V>{
 };
 
 }
-#endif 
+
+#endif

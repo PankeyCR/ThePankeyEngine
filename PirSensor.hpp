@@ -1,9 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_PirSensor)
+	#define PirSensor_hpp
+#endif
+
 #ifndef PirSensor_hpp
 #define PirSensor_hpp
+#define PirSensor_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -71,4 +78,4 @@ class PirSensor : public Button{
 
 }
 
-#endif 
+#endif

@@ -1,12 +1,28 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_GameOn)
+	#define GameOn_hpp
+#endif
 
 #ifndef GameOn_hpp
 #define GameOn_hpp
+#define GameOn_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
+#include "Class.hpp"
 
 namespace ame{
 
@@ -59,12 +75,12 @@ class GameOn : public cppObject{
 			return Class<GameOn>::classType;
 		}
 		
-		virtual String toString(){
+		virtual Note toNote(){
 			return "GameOn";
 		}
 		
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<GameOn>::classType || cppObject::instanceof(cls);
+			return cls == Class<GameOn>::classType || cls == Class<cppObject>::classType;
 		}
 		
 		
@@ -91,8 +107,24 @@ class GameOn : public cppObject{
 		bool enabler = false;
 };
 
+#define CreateComponentMacro(T)\
+class T : public GameOn{\
+    public:\
+	T(){}\
+	virtual ~T(){}\
+	virtual cppObjectClass* getClass(){return Class<T>::classType;}\
+	virtual Note toNote(){return "T";}\
+	virtual bool instanceof(cppObjectClass* cls){return cls == Class<T>::classType || GameOn::instanceof(cls);}\
+};\
+
+
+#define ComponentMacro(T){\
+	virtual cppObjectClass* getClass(){return Class<T>::classType;}\
+	virtual Note toNote(){return "T";}\
+	virtual bool instanceof(cppObjectClass* cls){return cls == Class<T>::classType || cppObject::instanceof(cls);}\
 }
 
-#endif 
+}//end ame namespace
 
-#endif 
+
+#endif

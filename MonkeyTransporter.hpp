@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_MonkeyTransporter)
+	#define MonkeyTransporter_hpp
+#endif
+
 #ifndef MonkeyTransporter_hpp
 #define MonkeyTransporter_hpp
+#define MonkeyTransporter_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "ElementId.hpp"
 #include "MonkeyExporter.hpp"
@@ -19,4 +38,4 @@ class MonkeyTransporter{
 
 }
 
-#endif 
+#endif

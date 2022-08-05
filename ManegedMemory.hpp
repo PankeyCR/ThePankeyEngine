@@ -1,6 +1,26 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_ManegedMemory)
+	#define ManegedMemory_hpp
+#endif
+
 #ifndef ManegedMemory_hpp
 #define ManegedMemory_hpp
+#define ManegedMemory_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
 
 #include "MemoryManager.hpp"
 
@@ -35,4 +55,4 @@ class ManegedMemory{
 
 }
 
-#endif 
+#endif

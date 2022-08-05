@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_ListEvent) || defined(ame_upToLevel_1)
+	#define ListEvent_hpp
+#endif
+
 #ifndef ListEvent_hpp
 #define ListEvent_hpp
+#define ListEvent_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Event.hpp"
 #include "ArrayList.hpp"
@@ -43,4 +62,4 @@ class ListEvent : public Event<T>{
 
 }
 
-#endif 
+#endif

@@ -1,10 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Memory) || defined(DISABLE_MemoryManagerState) || defined(DISABLE_MemoryManager) || defined(DISABLE_MemoryPool) || defined(DISABLE_MemoryChunk)
+	#define MemoryChunk_hpp
+#endif
 
 #ifndef MemoryChunk_hpp
 #define MemoryChunk_hpp
+#define MemoryChunk_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -38,13 +44,13 @@ MemoryChunk(int elements, size_t msz, bool createChunk){
 
 virtual ~MemoryChunk(){
 	if(m_chunkMem != nullptr){
-		delete m_chunkMem;
+		free(m_chunkMem);
 	}
 }
 
-#if defined(ARDUINO_ARCH_AVR)
+#if defined(ame_GENERIC_ARDUINO)
 template<class T, size_t A , size_t S>
-T* newInstance(){
+T* newInstance(int size_m){
 	// if(m_chunkMem == nullptr){
 		// return nullptr;
 	// }
@@ -64,9 +70,9 @@ T* newInstance(){
 	// return m;
 	return nullptr;
 }
-#elif defined(ARDUINO_ARCH_SAM)
+#elif defined(ame_ADAFRUIT_FEATHER_M0)
 template<class T, size_t A , size_t S>
-T* newInstance(){
+T* newInstance(int size_m){
 	// if(m_chunkMem == nullptr){
 		// return nullptr;
 	// }
@@ -86,9 +92,9 @@ T* newInstance(){
 	// return m;
 	return nullptr;
 }
-#elif defined(ARDUINO_ARCH_ESP8266)
+#elif defined(ame_GENERIC_ESP8266)
 template<class T, size_t A , size_t S>
-T* newInstance(){
+T* newInstance(int size_m){
 	if(m_chunkMem == nullptr){
 		return nullptr;
 	}
@@ -107,9 +113,9 @@ T* newInstance(){
 	m_position++;
 	return m;
 }
-#elif defined(ARDUINO_ESP32_DEV)
+#elif defined(ame_GENERIC_ESP32) || defined(ame_Windows)
 template<class T, size_t A , size_t S>
-T* newInstance(){
+T* newInstance(int size_m){
 	if(m_chunkMem == nullptr){
 		return nullptr;
 	}
@@ -124,7 +130,7 @@ T* newInstance(){
 	alignas(A) T* m = new(m_chunkActualMem) T();
 	chunk_1->memorychunk = this;
 	chunk_1->var = m;
-	m_chunkActualMem = m_chunkActualMem + S;
+	m_chunkActualMem = m_chunkActualMem + (S * size_m);
 	m_position++;
 	return m;
 }
@@ -143,6 +149,10 @@ virtual void setMemory(void* m_cM){
 
 virtual void* getMemory(){
 	return m_chunkMem;
+}
+
+virtual void* getActualMemory(){
+	return m_chunkActualMem;
 }
 
 virtual bool hasMemory(){
@@ -204,4 +214,4 @@ int m_position = 0;
 
 }
 
-#endif 
+#endif

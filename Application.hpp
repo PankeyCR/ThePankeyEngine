@@ -1,27 +1,33 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_5)
+#if defined(DISABLE_Application)
+	#define Application_hpp
+#endif
 
 #ifndef Application_hpp
 #define Application_hpp
+#define Application_AVAILABLE
 
-#if defined(ame_untilLevel_5)
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
 #include "AppStateManager.hpp"
-#endif 
-#if defined(ame_untilLevel_7)
 #include "AppSettings.hpp"
-#endif 
-#if defined(ame_untilLevel_6)
 #include "TimeControl.hpp"
-#endif 
-#if defined(ame_untilLevel_8)
 #include "MemoryPool.hpp"
-#endif 
-#include "cppObject.hpp"
-#if defined(ame_untilLevel_6)
 #include "Listener.hpp"
-#endif 
+
+#include "cppObject.hpp"
 
 namespace ame{
 
@@ -33,13 +39,13 @@ class Application : public cppObject{
 		
 		virtual AppStateManager *getStateManager()=0;
 		
-		#if defined(ame_untilLevel_7)
+		#if defined(AppSettings_AVAILABLE)
 		virtual void setSettings(AppSettings *setting)=0;
 		
 		virtual AppSettings *getSettings()=0;
 		#endif 
 		
-		#if defined(ame_untilLevel_6)
+		#if defined(TimeControl_AVAILABLE)
 		virtual void setTimeControl(TimeControl *timecontrol)=0;
 		
 		virtual TimeControl *getTimeControl()=0;
@@ -52,12 +58,12 @@ class Application : public cppObject{
 			
 		}*/
 		
-		#if defined(ame_untilLevel_6)
+		#if defined(Listener_AVAILABLE)
 		virtual Listener* setListener(Listener* listener)=0;
 		
 		virtual Listener* getListener()=0;
 		#endif 
-		#if defined(ame_untilLevel_8)
+		#if defined(MemoryPool_AVAILABLE)
 		virtual MemoryPool* setMemoryPool(MemoryPool* memory)=0;
 		
 		virtual MemoryPool* getMemoryPool()=0;
@@ -72,6 +78,4 @@ class Application : public cppObject{
 
 }
 
-#endif 
-
-#endif 
+#endif

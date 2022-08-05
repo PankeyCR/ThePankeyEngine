@@ -1,7 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_MindSystem)
+	#define MindSystem_hpp
+#endif
 
 #ifndef MindSystem_hpp
 #define MindSystem_hpp
+#define MindSystem_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "GameSystem.hpp"
 
@@ -38,4 +56,4 @@ class MindSystem : public GameSystem<T>{
 	}
 };
 
-#endif 
+#endif

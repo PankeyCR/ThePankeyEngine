@@ -1,9 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_SimpleApplication)
+	#define SimpleApplication_hpp
+#endif
+
 #ifndef SimpleApplication_hpp
 #define SimpleApplication_hpp
+#define SimpleApplication_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -77,6 +84,8 @@ class SimpleApplication : public Application{
 			return listener;
 		}
 		
+		#if !defined(ame_HAS_NO_MEMORYMANGEMENT)
+		
 		virtual MemoryPool* setMemoryPool(MemoryPool* mp){
 			memory = mp;
 			return mp;
@@ -85,14 +94,18 @@ class SimpleApplication : public Application{
 			return memory;
 		}
 		
+		#endif
+		
 		virtual void update(){
 			this->states->update();
 			if(listener != nullptr){
 				listener->InterruptEvent(this->states->tpc());
 			}
+			#if !defined(ame_HAS_NO_MEMORYMANGEMENT)
 			if(memory != nullptr){
 				memory->update(this->states->tpc());
 			}
+			#endif
 		}
 		
 		virtual Node* getRootNode(){
@@ -106,7 +119,7 @@ class SimpleApplication : public Application{
 		virtual cppObjectClass* getClass(){
 			return Class<SimpleApplication>::classType;
 		}
-		virtual String toString(){
+		virtual Note toNote(){
 			return "SimpleApplication";
 		}
 		virtual bool instanceof(cppObjectClass* cls){
@@ -117,11 +130,15 @@ class SimpleApplication : public Application{
 		AppStateManager* states = nullptr;
 		AppSettings* settings = nullptr;
 		Listener* listener = nullptr;
+		
+		#if !defined(ame_HAS_NO_MEMORYMANGEMENT)
 		MemoryPool* memory = nullptr;
+		#endif
+		
 		Node* rootNode = nullptr;
 		Node* guiNode = nullptr;
 };
 
 }
 
-#endif 
+#endif

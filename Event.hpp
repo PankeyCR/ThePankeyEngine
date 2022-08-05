@@ -1,33 +1,38 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_Event)
+	#define Event_hpp
+#endif
 
 #ifndef Event_hpp
 #define Event_hpp
+#define Event_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 namespace ame{
 
-template<class T>
 class Event{
-	protected:
-		T var;
-		using EventMethod = void (*)(T);
-		
     public:
-		Event(){}
 		virtual ~Event(){}
-		virtual void event(){}
-		virtual void event(T c){}
-		virtual void setName(T n){}
-		virtual void add(EventMethod c){}
-		virtual void add(T name, EventMethod c){}
+		virtual bool event(){return false;}
+		
+		virtual void operator=(Event b){}
+		virtual bool operator==(Event b){return false;}
+		virtual bool operator!=(Event b){return true;}
 };
 
 }
 
-#endif 
-
-#endif 
+#endif

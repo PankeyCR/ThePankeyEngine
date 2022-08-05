@@ -1,17 +1,19 @@
 
 #include "TypeErasedInvoke.hpp"
+#include "Note.hpp"
+
+using namespace ame;
 
 class Example_1{
   public:
   Example_1(){}
-  void invoke(String n, int b){Serial.println(b);}
+  void invoke(Note n, int b){Serial.println(b);}
 };
 class Example_2{
   public:
   Example_2(){}
-  void invoke(String n, int b){Serial.println(b);}
+  void invoke(Note n, int b){Serial.println(b);}
 };
-using namespace ame;
 
 void setup() {
   Serial.begin(9600);

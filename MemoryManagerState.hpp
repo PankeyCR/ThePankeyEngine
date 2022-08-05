@@ -1,9 +1,17 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Memory) || defined(DISABLE_MemoryManagerState) || defined(DISABLE_MemoryManager) || defined(DISABLE_MemoryPool) || defined(DISABLE_MemoryChunk)
+	#define MemoryManagerState_hpp
+	#define ame_HAS_NO_MEMORYMANGEMENT 
+#endif
+
 #ifndef MemoryManagerState_h
 #define MemoryManagerState_h
+#define MemoryManagerState_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -67,4 +75,4 @@ class MemoryManagerState : public AppState{
 
 }
 */
-#endif 
+#endif

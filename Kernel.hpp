@@ -1,10 +1,26 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_Kernel)
+	#define Kernel_hpp
+#endif
 
 #ifndef Kernel_hpp
 #define Kernel_hpp
+#define Kernel_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
 
 #include "Note.hpp"
 
@@ -33,6 +49,4 @@ class Kernel{
 
 }
 
-#endif 
-
-#endif 
+#endif

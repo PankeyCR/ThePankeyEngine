@@ -1,14 +1,16 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_LightSensor)
+	#define LightSensor_hpp
+#endif
 
-#ifndef LightSensor_h
-#define LightSensor_h
+#ifndef LightSensor_hpp
+#define LightSensor_hpp
+#define LightSensor_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Stream.h"
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -46,6 +48,4 @@ class LightSensor : public DelaySensor{
 
 }
 
-#endif 
-
-#endif 
+#endif

@@ -1,13 +1,28 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_GuiState)
+	#define GuiState_hpp
+#endif
 
 #ifndef GuiState_hpp
 #define GuiState_hpp
+#define GuiState_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
 
 #include "AppState.hpp"
-#include "Arduino.h"
 #include "List.hpp"
 #include "Map.hpp"
 #include "PrimitiveList.hpp"
@@ -32,10 +47,10 @@ class GuiState : public SerialMessageControlledState{
     public:
 		GuiState(){
 			init = new PrimitiveList<GuiPreScene>();
-			panels = new PrimitiveMap<String,Panel>();
-			scenes = new PrimitiveMap<String,GuiScene>();
-			activePanels = new PrimitiveMap<String,Panel>();
-			activeScenes = new PrimitiveMap<String,GuiScene>();
+			panels = new PrimitiveMap<Note,Panel>();
+			scenes = new PrimitiveMap<Note,GuiScene>();
+			activePanels = new PrimitiveMap<Note,Panel>();
+			activeScenes = new PrimitiveMap<Note,GuiScene>();
 		}
 		virtual ~GuiState(){
 			delete init;
@@ -50,15 +65,15 @@ class GuiState : public SerialMessageControlledState{
 		}
 		cppObjectClass* getClass(){return Class<GuiState>::classType;}
 		
-		virtual bool invoke(String method){
+		virtual bool invoke(Note method){
 			GuiStateLog("GuiState", "invoke",  "println", "invoke method without parameters");
 			return annotation1.invoke(this,method);
 		}
-		virtual bool invoke(String method, String parameter1){
+		virtual bool invoke(Note method, Note parameter1){
 			GuiStateLog("GuiState", "invoke",  "println", "invoke method with 1 parameter");
 			return annotation2.invoke(this,method,parameter1);
 		}
-		virtual bool invoke(String method, String parameter1, String parameter2){
+		virtual bool invoke(Note method, Note parameter1, Note parameter2){
 			GuiStateLog("GuiState", "invoke",  "println", "invoke method with 1 parameter");
 			return annotation3.invoke(this,method,parameter1,parameter2);
 		}
@@ -85,31 +100,31 @@ class GuiState : public SerialMessageControlledState{
 			this->init->addPointer(prescene);
 		}
 		
-		void addPanel(String name, Panel* panel){
+		void addPanel(Note name, Panel* panel){
 			this->panels->addPointer(name,panel);
 		}
 		
-		Panel* getPanel(String name){
+		Panel* getPanel(Note name){
 			return this->panels->getByLValue(name);
 		}
 		
-		void removePanel(String name){
+		void removePanel(Note name){
 			this->panels->removeDeleteByLValue(name);
 		}
 
-		void addScene(String name, GuiScene* scene) {
+		void addScene(Note name, GuiScene* scene) {
 			this->scenes->addPointer(name, scene);
 		}
 
-		GuiScene* getScene(String name) {
+		GuiScene* getScene(Note name) {
 			return this->scenes->getByLValue(name);
 		}
 		
-		void removeScene(String name){
+		void removeScene(Note name){
 			this->scenes->removeDeleteByLValue(name);
 		}
 
-		void attach(String name) {
+		void attach(Note name) {
 			if(this->guiNode == nullptr){
 				return;
 			}
@@ -126,7 +141,7 @@ class GuiState : public SerialMessageControlledState{
 			}
 		}
 
-		void attach(String name, Vector3f position) {
+		void attach(Note name, Vector3f position) {
 			if(this->guiNode == nullptr){
 				return;
 			}
@@ -144,7 +159,7 @@ class GuiState : public SerialMessageControlledState{
 			}
 		}
 
-		void detach(String name) {
+		void detach(Note name) {
 			if(this->guiNode == nullptr){
 				return;
 			}
@@ -191,19 +206,17 @@ class GuiState : public SerialMessageControlledState{
 		}
 		
 	protected:
-		Annotation<String,bool,GuiState> annotation1;
-		Annotation<String,bool,GuiState,String> annotation2;
-		Annotation<String,bool,GuiState,String,String> annotation3;
+		Annotation<Note,bool,GuiState> annotation1;
+		Annotation<Note,bool,GuiState,Note> annotation2;
+		Annotation<Note,bool,GuiState,Note,Note> annotation3;
 		
 		Node* guiNode = nullptr;
 		Node* rootNode = nullptr;
 		List<GuiPreScene>* init;
-		Map<String,Panel>* panels;
-		Map<String,GuiScene>* scenes;
-		Map<String,Panel>* activePanels;
-		Map<String,GuiScene>* activeScenes;
+		Map<Note,Panel>* panels;
+		Map<Note,GuiScene>* scenes;
+		Map<Note,Panel>* activePanels;
+		Map<Note,GuiScene>* activeScenes;
 };
 
-#endif 
-
-#endif 
+#endif

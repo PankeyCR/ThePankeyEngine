@@ -1,11 +1,32 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_SimpleStateManager)
+	#define SimpleStateManager_hpp
+#endif
+
 #ifndef SimpleStateManager_hpp
 #define SimpleStateManager_hpp
+#define SimpleStateManager_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "AppStateManager.hpp"
 #include "List.hpp"
 #include "PList.hpp"
 #include "AppState.hpp"
+
+namespace ame{
 
 template<int Size>
 class SimpleStateManager : public AppStateManager{
@@ -40,7 +61,7 @@ class SimpleStateManager : public AppStateManager{
 			return nullptr;
 		}
 		
-		AppState *get(String appstateId,cppObjectClass* cls){
+		AppState *get(Note appstateId,cppObjectClass* cls){
 			for(int x = 0; x > this->appStateList->getPosition(); x++){
 				if(this->appStateList->getByPosition(x)->getClass() == cls &&
 								this->appStateList->getByPosition(x)->getId() == appstateId){
@@ -65,7 +86,7 @@ class SimpleStateManager : public AppStateManager{
 			return appstate;
 		}
 		
-		AppState *remove(String appstateId,cppObjectClass* cls){
+		AppState *remove(Note appstateId,cppObjectClass* cls){
 			AppState *appstate = nullptr;
 			for(int x = 0; x > this->appStateList->getPosition(); x++){
 				if(this->appStateList->getByPosition(x)->getClass() == cls &&
@@ -90,7 +111,7 @@ class SimpleStateManager : public AppStateManager{
 			return false;
 		}
 		
-		bool contain(String appstateId,cppObjectClass* cls){
+		bool contain(Note appstateId,cppObjectClass* cls){
 			for(int x = 0; x > this->appStateList->getPosition(); x++){
 				if(this->appStateList->getByPosition(x)->getClass() == cls &&
 								this->appStateList->getByPosition(x)->getId() == appstateId){
@@ -131,7 +152,7 @@ class SimpleStateManager : public AppStateManager{
 			return Class<SimpleStateManager>::classType;
 		}
 		
-		String toString(){
+		Note toNote(){
 			return "SimpleStateManager";
 		}
     
@@ -142,5 +163,7 @@ class SimpleStateManager : public AppStateManager{
 		long prev = 0;
 		float t = 0;
 };
+
+}
 
 #endif

@@ -1,11 +1,31 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Vector4f)
+	#define Vector4f_hpp
+#endif
+
 #ifndef Vector4f_hpp
 #define Vector4f_hpp
+#define Vector4f_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 // #include "FastMonkeyMath.hpp"
 #include "ArrayList.hpp"
 #include "LinkedList.hpp"
 #include "cppObject.hpp"
+#include "Class.hpp"
 
 namespace ame{
 
@@ -353,6 +373,8 @@ class Vector4f : public cppObject , public Printable{
 		  return true;
 		}
 		
+		#if defined(LinkedList_AVAILABLE)
+		
 		LinkedList<float> toArray(){
 			LinkedList<float> list;
 			list.addLValue(this->x);
@@ -361,6 +383,8 @@ class Vector4f : public cppObject , public Printable{
 			list.addLValue(this->w);
 			return list;
 		}
+		
+		#endif
 		
 		bool isSimilar(Vector4f other, float epsilon){
 			if (abs(other.x - this->x) > epsilon){
@@ -472,8 +496,8 @@ class Vector4f : public cppObject , public Printable{
 			}
 			return true;
 		}
-		String toString(){
-			return "Vector4f(" + String(this->x) + ", " + String(this->y) + ", " + String(this->z) + ", " + String(this->w) + ")";
+		Note toNote(){
+			return Note("Vector4f(") + Note(this->x) + Note(", ") + Note(this->y) + Note(", ") + Note(this->z) + Note(", ") + Note(this->w) + Note(")");
 		}
 		
 		Vector4f operator=(const Vector4f& a){
@@ -732,4 +756,4 @@ const Vector4f *Vector4f::UNIT_XYZW = new Vector4f(1, 1, 1, 1);
 
 }
 
-#endif 
+#endif

@@ -1,11 +1,27 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_ListIterator) || defined(ame_upToLevel_1)
+	#define ListIterator_hpp
+#endif
+
 #ifndef ListIterator_hpp
 #define ListIterator_hpp
+#define ListIterator_AVAILABLE
 
-#include "ame_Level.hpp"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
 #include "RawList.hpp"
-
-#if defined(ame_untilLevel_1)
 
 namespace ame{
 
@@ -60,5 +76,3 @@ class ListIterator{
 }
 
 #endif
-
-#endif 

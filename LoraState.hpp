@@ -1,10 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_LoraState)
+	#define LoraState_hpp
+#endif
 
 #ifndef LoraState_hpp
 #define LoraState_hpp
+#define LoraState_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -46,7 +52,7 @@ namespace ame{
 class LoraState : public SerialMessageControlledState{
     public:
 		LoraState(){
-			requests = new PrimitiveList<String>();
+			requests = new PrimitiveList<Note>();
 			events = false;
 			annotation1 = false;
 			annotation2 = false;
@@ -67,15 +73,15 @@ class LoraState : public SerialMessageControlledState{
 		bool instanceof(cppObjectClass* cls){return cls == Class<LoraState>::classType || SerialMessageControlledState::instanceof(cls);}
 		cppObjectClass* getClass(){return Class<LoraState>::classType;}
 		
-		virtual bool invoke(String method){
+		virtual bool invoke(Note method){
 			LoraStateLog("LoraState", "invoke",  "println", "invoke method without parameters");
 			return annotation1.invoke(this,method);
 		}
-		virtual bool invoke(String method, String parameter1){
+		virtual bool invoke(Note method, Note parameter1){
 			LoraStateLog("LoraState", "invoke",  "println", "invoke method with 1 parameter");
 			return annotation2.invoke(this,method,parameter1);
 		}
-		virtual bool invoke(String method, String parameter1, String parameter2){
+		virtual bool invoke(Note method, Note parameter1, Note parameter2){
 			LoraStateLog("LoraState", "invoke",  "println", "invoke method with 1 parameter");
 			return annotation3.invoke(this,method,parameter1,parameter2);
 		}
@@ -91,7 +97,7 @@ class LoraState : public SerialMessageControlledState{
 				int x = 0;
 				LoraStateLog("LoraState", "update",  "println", "start for");
 				for(; x < requests->getPosition(); x++){
-					String method = *requests->getByPosition(x);
+					Note method = *requests->getByPosition(x);
 					LoraStateLog("LoraState", "update",  "println", method);
 					if(events.invoke(this, method)){
 						LoraStateLog("LoraState", "update",  "println", "break");
@@ -109,7 +115,7 @@ class LoraState : public SerialMessageControlledState{
 			return protocol;
 		}
 		
-		bool LoraSend(String mns){
+		bool LoraSend(Note mns){
 			if(port == nullptr){
 				return false;
 			}
@@ -179,11 +185,13 @@ class LoraState : public SerialMessageControlledState{
 		RadioProtocol* protocol = nullptr;
 		float time = 0.0f;
 		float timeLimit = 0.10f;
-		Annotation<String,bool,LoraState> events;
-		List<String>* requests = nullptr;
-		Annotation<String,bool,LoraState> annotation1;
-		Annotation<String,bool,LoraState,String> annotation2;
-		Annotation<String,bool,LoraState,String,String> annotation3;
+		Annotation<Note,bool,LoraState> events;
+		List<Note>* requests = nullptr;
+		Annotation<Note,bool,LoraState> annotation1;
+		Annotation<Note,bool,LoraState,Note> annotation2;
+		Annotation<Note,bool,LoraState,Note,Note> annotation3;
 };
 
-#endif 
+}
+
+#endif

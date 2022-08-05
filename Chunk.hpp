@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_Chunk)
+	#define Chunk_hpp
+#endif
 
 #ifndef Chunk_hpp
 #define Chunk_hpp
+#define Chunk_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 namespace ame{
 
@@ -21,6 +36,4 @@ void* var = nullptr;
 
 }
 
-#endif 
-
-#endif 
+#endif

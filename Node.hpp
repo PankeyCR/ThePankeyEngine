@@ -1,6 +1,26 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Node)
+	#define Node_hpp
+#endif
+
 #ifndef Node_hpp
 #define Node_hpp
+#define Node_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
 
 #include "cppObject.hpp"
 #include "Spatial.hpp"
@@ -27,7 +47,7 @@ class Node : public Spatial{
 		
 		virtual bool instanceof(cppObjectClass* cls){return cls == Class<Node>::classType || Spatial::instanceof(cls);}
 		virtual cppObjectClass* getClass(){return Class<Node>::classType;}
-		virtual String toString(){return "Node";}
+		virtual Note toNote(){return "Node";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
 				return true;
@@ -53,7 +73,7 @@ class Node : public Spatial{
 			return children.removeByPosition(x);
 		}
 		
-		virtual Spatial* detach(String n){
+		virtual Spatial* detach(Note n){
 			for(int x = 0; x < children.getPosition(); x++){
 				Spatial* spatial = children.getByPosition(x);
 				if(n == spatial->getName()){
@@ -68,7 +88,7 @@ class Node : public Spatial{
 			return children.getByPosition(x);
 		}
 		
-		virtual Spatial* getChild(String n){
+		virtual Spatial* getChild(Note n){
 			for(int x = 0; x < children.getPosition(); x++){
 				Spatial* spatial = children.getByPosition(x);
 				if(n == spatial->getName()){
@@ -88,13 +108,14 @@ class Node : public Spatial{
 			return index;
 		}
 		
-		virtual Spatial* detachChild(String n){
+		virtual Spatial* detachChild(Note n){
 			for(int x = 0; x < children.getPosition(); x++){
 				Spatial* spatial = children.getByPosition(x);
 				if(n == spatial->getName()){
 					return children.removeByPosition(x);
 				}
 			}
+			return nullptr;
 		}
 		
 		virtual void detachChildDeleteByPosition(int x){
@@ -107,7 +128,7 @@ class Node : public Spatial{
 			return index;
 		}
 		
-		virtual void detachChildDelete(String n){
+		virtual void detachChildDelete(Note n){
 			for(int x = 0; x < children.getPosition(); x++){
 				Spatial* spatial = children.getByPosition(x);
 				if(n == spatial->getName()){
@@ -123,4 +144,4 @@ class Node : public Spatial{
 
 }
 
-#endif 
+#endif

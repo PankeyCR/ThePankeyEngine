@@ -1,6 +1,38 @@
+/*	
+**	DataBase.project.name
+**	DataBase.project.dir
+**	DataBase.project.id
+**	
+**	
+**	Layers: 3
+**	
+**	Layer 1:
+**	ask for project name, if there is not, search on the greenFile
+**	
+**	
+*/	
+
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_ObjectDataBaseConfig)
+	#define ObjectDataBaseConfig_hpp
+#endif
 
 #ifndef ObjectDataBaseConfig_hpp
 #define ObjectDataBaseConfig_hpp
+#define ObjectDataBaseConfig_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "DataBaseConfig.hpp"
 #include "MonkeyFile.hpp"
@@ -9,12 +41,19 @@
 #include "MonkeyImporter.hpp"
 #include "TextExporter.hpp"
 #include "TextImporter.hpp"
+#include "MemoryRam.h"
 
-#ifdef ObjectDataBaseConfigLogApp
-	#include "Logger.hpp"
-	#define ObjectDataBaseConfigLog(name,method,type,mns) Log(name,method,type,mns)
+#include "ame_Logger_config.hpp"
+#include "ame_Logger.hpp"
+
+#ifdef ObjectDataBaseConfig_LogApp
+	#define ObjectDataBaseConfigLog(location,method,type,mns) ame_Log(this,location,"Note",method,type,mns)
+	#define const_ObjectDataBaseConfigLog(location,method,type,mns) 
+	#define StaticObjectDataBaseConfigLog(pointer,location,method,type,mns) ame_Log(pointer,location,"Note",method,type,mns)
 #else
-	#define ObjectDataBaseConfigLog(name,method,type,mns)
+	#define ObjectDataBaseConfigLog(location,method,type,mns) ame_LogDebug(this,location,"Note",method,type)
+	#define const_ObjectDataBaseConfigLog(location,method,type,mns) 
+	#define StaticObjectDataBaseConfigLog(pointer,location,method,type,mns) ame_LogDebug(pointer,location,"Note",method,type)
 #endif
 
 namespace ame{
@@ -28,250 +67,106 @@ class ObjectDataBaseConfig : public DataBaseConfig{
 			if(file == nullptr || serialState == nullptr || exporter == nullptr || importer == nullptr){
 				return;
 			}
-			String rootPath = file->fixPath(rootDir);
-			String path = file->fixPath(rootPath, filePath);
+			ObjectDataBaseConfigLog(ame_Log_Statement, "initialize", "println", "");
+			Note rootPath = file->fixPath(rootDir);
+			Note tag_path = file->fixPath(rootPath, tagPath);
 			if(!file->exist(rootPath)){
 				file->createDir(rootPath);
 			}
-			if(!file->exist(path)){
-				file->createFile(path);
+			if(!file->exist(tag_path)){
+				file->createFile(tag_path);
 			}
-			ObjectDataBaseConfigLog("ObjectDataBaseConfig", "initialize",  "println", "");
+			ObjectDataBaseConfigLog(ame_Log_Statement, "initialize", "println", "");
 		}
 		
 		virtual void put(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file, SerialMessageState* serialState){
 			if(file == nullptr || serialState == nullptr || exporter == nullptr || importer == nullptr){
 				return;
 			}
-			ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", "");
-			ElementId id = importer->read("DataBase.id", ElementId());
+			ObjectDataBaseConfigLog(ame_Log_Statement, "put", "println", "");
 			
-			String rootPath = file->fixPath(rootDir);
-			String path = file->fixPath(rootPath, filePath);
+			Note project_dir = importer->getTag("DataBase.project");
 			
-			if(path == ""){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", "path.isEmpty");
-				return;
-			}
 			
-			if(!file->exist(rootPath)){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", "!file->exist(rootPath)");
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "write",  "println", String("rootPath ") + rootPath);
-				file->createDir(rootPath);
-			}
-			if(!file->exist(path)){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", "!file->exist(path)");
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "write",  "println", String("path ") + path);
-				file->createFile(path);
-			}
-			
-			TextImporter textImporter = file->readText(path);
-			
-			if(id == ""){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", "id.isEmpty");
-				String idName = textImporter.read("DataBase.idName", "");
-				int idCount = textImporter.read("DataBase.idCount", -1);
-			
-				if(idName == "" || idCount == -1){
-					ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", "fileName.isEmpty || fileCount == -1");
-					TextExporter txtExporter = file->readText(path);
-					txtExporter.write("DataBase.idName", "object");
-					txtExporter.write("DataBase.idCount", 0);
-					txtExporter.write(file, path);
-					
-					idName = "object";
-					idCount = 0;
-				}
-				ElementId n_element = idName;
-				id = n_element.child(String(idCount));
-				
-				idCount++;
-				
-				TextExporter txtExporter = file->readText(path);
-				txtExporter.write("DataBase.idCount", idCount);
-				txtExporter.write(file, path);
-			}
-        
-			LinkedList<String> objList = textImporter.read("DataBase.objList", LinkedList<String>());
-			
-			if(!objList.containByLValue(id.getId())){
-				objList.add(id.getId());
-			}
-			
-			TextExporter txtExporterObj = file->readText(path);
-			txtExporterObj.write("DataBase.objList", objList);
-
-			txtExporterObj.write(file, path);
-			
-			// importer->remove("DataBase.id");
-			
-			String idPath = textImporter.read(id, "");
-			String fileName = textImporter.read("DataBase.fileName", "");
-			int fileCount = textImporter.read("DataBase.fileCount", -1);
-			
-			if(fileName == "" || fileCount == -1){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", "fileName.isEmpty || fileCount == -1");
-				TextExporter txtExporter = file->readText(path);
-				txtExporter.write("DataBase.fileName", "object");
-				txtExporter.write("DataBase.fileCount", 0);
-				txtExporter.write(file, path);
-				
-				fileName = "object";
-				fileCount = 0;
-			}
-			
-			if(idPath == ""){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", "idPath.isEmpty");
-				idPath = file->fixPath(rootPath, fileName + String(fileCount) + String(".txt"));
-				
-				if(!file->exist(rootPath)){
-					ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", "!file->exist(rootPath)");
-					file->createDir(rootPath);
-				}
-				if(!file->exist(idPath)){
-					ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", "!file->exist(idPath)");
-					file->createFile(idPath);
-				}
-
-				fileCount++;
-
-				TextExporter txtExporter = file->readText(path);
-				txtExporter.write(id, idPath);
-				txtExporter.write("DataBase.fileCount", fileCount);
-				txtExporter.write(file, path);
-			}
-			ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", String("idPath ") + String(idPath));
-			ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", String("path ") + String(path));
-			ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", String("fileName ") + fileName);
-			ObjectDataBaseConfigLog("ObjectDataBaseConfig", "put",  "println", String("fileCount ") + String(fileCount));
-			
-        
-			int idPathSize = importer->read("DataBase.id.path.size", -1);
-			
-			if(idPathSize != 0 || idPathSize != -1){
-	//            importer.remove(new ElementId("DataBase.id.path.size"));
-				for(int x = 0; x < idPathSize; x++){
-					String idExtraPath = importer->read(String("DataBase.id.path.") + String(x), "");
-					if(idExtraPath == ""){
-						continue;
-					}
-	//                importer.remove(new ElementId(idExtraPath));
-					idExtraPath = file->fixPath(rootPath, idExtraPath + ".txt");
-					
-					if(!file->exist(rootPath)){
-						file->createDir(rootPath);
-					}
-					if(!file->exist(idExtraPath)){
-						file->createFile(idExtraPath);
-					}
-				
-					importer->write(file, idExtraPath);
-				}
-			}
-			
-			importer->write(file, idPath);
+			ObjectDataBaseConfigLog(ame_Log_Statement, "put",  "println", "");
 		}
 			
 		virtual void get(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file, SerialMessageState* serialState){
 			if(file == nullptr || serialState == nullptr || exporter == nullptr || importer == nullptr){
 				return;
 			}
-			ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", "");
+			ObjectDataBaseConfigLog(ame_Log_Statement, "get",  "println", "");
 			
-			String rootPath = file->fixPath(rootDir);
-			String path = file->fixPath(rootPath, filePath);
-        
-			bool getObjList = importer->read("DataBase.getObjList", false);
+			Note project_dir = importer->getTag("DataBase.project");
+			if(project_dir == ""){
+				return;
+			}
+			importer->removeTag("DataBase.project");
 			
-			if(getObjList){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", "getObjList");
-				TextImporter textImporter = file->readText(path);
-				
-				LinkedList<String> objList = textImporter.read("DataBase.objList", LinkedList<String>());
-				
-				if(!objList.isEmpty()){
-					ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", "objList isEmpty");
-					String objListS = importer->read("DataBase.objList", "");
-					int port = importer->read("DataBase.port", -1);
-
-					if(port == -1){
-						serialState->send(objListS);
-					}else{
-						serialState->send(port, objListS);
-					}
-					exporter->clear();
-					exporter->write("DataBase.objList", objList);
-				}
+			Note project_folder_path = file->fixPath(rootDir, project_dir);
+			Note project_folder_tag_path = file->fixPath(project_folder_path, tagPath);
+			Note project_folder_helper_path = file->fixPath(project_folder_path, helperPath);
+			
+			if(!file->exist(project_folder_path)){
+				ObjectDataBaseConfigLog(ame_Log_Statement, "put", "println", "!file->exist(project_folder_path)");
+				// ObjectDataBaseConfigLog(ame_Log_Statement, "put", "println", Note("project_folder_path ") + project_folder_path);
 				return;
 			}
 			
-			ElementId id = importer->read("DataBase.id", ElementId());
-			bool objectsPath = importer->read("DataBase.objects", false);
+			Note folder_dir = importer->getTag("DataBase.dir");
 			
-			ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", String("id ") + id.getId());
-			ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", String("objectsPath ") + String(objectsPath));
-			ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", String("path ") + String(path));
-			
-			if(objectsPath && path != ""){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", "objectsPath not Empty");
-				String textPath = file->readText(path);
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", String("textPath ") + textPath);
-				
-				if(textPath != ""){
-					int port = importer->read("DataBase.port", -1);
-					ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", "sending all");
-					
-					if(port == -1){
-						serialState->send(textPath);
-					}else{
-						serialState->send(port, textPath);
-					}
-				}
+			if(folder_dir == ""){
+				ObjectDataBaseConfigLog(ame_Log_Statement, "put",  "println", "folder_dir.isEmpty");
+				return;
 			}
+			
+			ElementId id = importer->getTag("DataBase.id");
 			
 			if(id == ""){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", "id.isEmpty");
+				ObjectDataBaseConfigLog(ame_Log_Statement, "get",  "println", "id.isEmpty");
 				return;
 			}
 			
-			// importer->remove("DataBase.id");
+			importer->removeTag("DataBase.id");
 			
-			TextImporter textImporter = file->readText(path);
-			String idPath = textImporter.read(id, "");
+			Note objMap_path = file->fixPath(folder_dir, idRegisterPath);
+			
+			TextImporter textImporter = file->fastReadText(objMap_path);
+			Note idPath = textImporter.read(id, "");
 			
 			if(idPath == ""){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", "path.isEmpty");
+				ObjectDataBaseConfigLog(ame_Log_Statement, "get",  "println", "path.isEmpty");
 				return;
 			}
-			ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", String("idPath ") + String(idPath));
+			// ObjectDataBaseConfigLog(ame_Log_Statement, "get",  "println", Note("idPath ") + Note(idPath));
 			
-			TextImporter objTextImporter = file->readText(idPath);
-			int port = importer->read("DataBase.port", -1);
+			Note port = importer->getTag("DataBase.port");
+			Note idText = file->fastReadText(idPath);
 			
-			if(port == -1){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", "broadcast");
-				serialState->send(objTextImporter.getText());
+			if(port == ""){
+				ObjectDataBaseConfigLog(ame_Log_Statement, "get",  "println", "broadcast");
+				serialState->send(idText);
 			}else{
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", "not broadcast");
-				// importer->remove("DataBase.port");
-				serialState->send(port, objTextImporter.getText());
+				ObjectDataBaseConfigLog(ame_Log_Statement, "get",  "println", "not broadcast");
+				importer->removeTag("DataBase.port");
+				serialState->send(port.toInt(), idText);
 			}
-			ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", String("sending ") + objTextImporter.getText());
-			exporter->clear();
-			exporter->read(file, idPath);
+			// ObjectDataBaseConfigLog(ame_Log_Statement, "get",  "println", Note("sending ") + objTextImporter.getText());
+			// exporter->clear();
+			// exporter->read(file, idPath);
 		}
 			 
 		virtual void erase(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file, SerialMessageState* serialState){
 			if(file == nullptr || serialState == nullptr || exporter == nullptr || importer == nullptr){
 				return;
 			}
-			String all = importer->read("DataBase.All", "");
+			Note all = importer->read("DataBase.All", "");
 			
-			String rootPath = file->fixPath(rootDir);
-			String path = file->fixPath(rootPath, filePath);
+			Note rootPath = file->fixPath(rootDir);
+			Note path = file->fixPath(rootPath, tagPath);
 			
 			if(all != ""){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", "delete all");
+				ObjectDataBaseConfigLog(ame_Log_Statement, "get",  "println", "delete all");
 				file->deleteFile(path);
 				return;
 			}
@@ -279,14 +174,14 @@ class ObjectDataBaseConfig : public DataBaseConfig{
 			ElementId id = importer->read("DataBase.id", ElementId());
 			
 			if(id == ""){
-				ObjectDataBaseConfigLog("ObjectDataBaseConfig", "get",  "println", "id.isEmpty");
+				ObjectDataBaseConfigLog(ame_Log_Statement, "get",  "println", "id.isEmpty");
 				return;
 			}
 			
 			importer->remove("DataBase.id");
 			
-			TextImporter textImporter = file->readText(path);
-			String idPath = textImporter.read(id, "");
+			TextImporter textImporter = file->fastReadText(path);
+			Note idPath = textImporter.read(id, "");
 			
 			if(idPath == ""){
 				return;
@@ -294,7 +189,7 @@ class ObjectDataBaseConfig : public DataBaseConfig{
 			
 			textImporter.remove(id);
 			
-			file->clearFile(path);
+			file->fastClearFile(path);
 			file->writeText(textImporter.getText(), path);
 			
 			file->deleteFile(idPath);
@@ -312,18 +207,18 @@ class ObjectDataBaseConfig : public DataBaseConfig{
 			
 			importer->remove("DataBase.id");
 			
-			String rootPath = file->fixPath(rootDir);
-			String path = file->fixPath(rootPath, filePath);
+			Note rootPath = file->fixPath(rootDir);
+			Note path = file->fixPath(rootPath, tagPath);
 			
-			TextImporter textImporter = file->readText(path);
-			String idPath = textImporter.read(id, "");
-			String copyPath = importer->read("DataBase.copy.path", "");
+			TextImporter textImporter = file->fastReadText(path);
+			Note idPath = textImporter.read(id, "");
+			Note copyPath = importer->read("DataBase.copy.path", "");
 			
 			if(idPath == "" || copyPath == ""){
 				return;
 			}
 			
-			String f_1 = file->readText(idPath);
+			Note f_1 = file->fastReadText(idPath);
 			file->writeText(f_1, copyPath);
 		}
 			
@@ -339,28 +234,40 @@ class ObjectDataBaseConfig : public DataBaseConfig{
 			
 			importer->remove("DataBase.id");
 			
-			String rootPath = file->fixPath(rootDir);
-			String path = file->fixPath(rootPath, filePath);
+			Note rootPath = file->fixPath(rootDir);
+			Note path = file->fixPath(rootPath, tagPath);
 			
-			TextImporter textImporter = file->readText(path);
-			String idPath = textImporter.read(id, "");
-			String copyPath = importer->read("DataBase.cut.path", "");
+			TextImporter textImporter = file->fastReadText(path);
+			Note idPath = textImporter.read(id, "");
+			Note copyPath = importer->read("DataBase.cut.path", "");
 			
 			if(idPath == "" || copyPath == ""){
 				return;
 			}
 			
-			String f_1 = file->readText(idPath);
+			Note f_1 = file->fastReadText(idPath);
 			file->writeText(f_1, copyPath);
 			file->deleteFile(idPath);
 		}
 		
+		virtual void setFileSize(int s){
+			fileSize = s;
+		}
+		
 	protected:
-		String rootDir = "DataBase";
-		String filePath = "DataBaseObjectPath.txt";
+		Note rootDir = "DataBase";
+		Note tagPath = "Tags.txt";
+		Note helperPath = "Helper.txt";
+		
+		Note idRegisterPath = "idRegister.txt";
+		
+		int fileSize = 50;
+		
+		Note m_idName = "object";
+		Note m_fileName = "object";
+		Note m_folderName = "object";
 };
 
 }
 
 #endif
-

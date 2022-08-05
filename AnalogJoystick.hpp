@@ -1,12 +1,27 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_AnalogJoystick)
+	#define AnalogJoystick_hpp
+#endif
 
 #ifndef AnalogJoystick_hpp
 #define AnalogJoystick_hpp
+#define AnalogJoystick_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
+#include "Note.hpp"
 #include "Joystick.hpp"
 #include "GameObject.hpp"
 
@@ -126,8 +141,8 @@ class AnalogJoystick : public Joystick , public GameObject {
 			return ame::Class<AnalogJoystick>::classType;
 		}
 		
-		String toString(){
-			return "AnalogJoystick "+String(x)+" "+String(y);
+		Note toNote(){
+			return Note("AnalogJoystick ") + Note(x) + Note(" ") + Note(y);
 		}
 		
 		AnalogJoystick *clone(){
@@ -148,6 +163,4 @@ class AnalogJoystick : public Joystick , public GameObject {
 
 }
 
-#endif 
-
-#endif 
+#endif

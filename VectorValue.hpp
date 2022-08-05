@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_VectorValue)
+	#define VectorValue_hpp
+#endif
+
 #ifndef VectorValue_hpp
 #define VectorValue_hpp
+#define VectorValue_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
 
@@ -16,7 +35,7 @@ VectorValue(const char* vec, float v){
 	value = v;
 	vector = vec;
 }
-VectorValue(const String& vec, float v){
+VectorValue(const Note& vec, float v){
 	value = v;
 	vector = vec;
 }
@@ -42,8 +61,8 @@ cppObjectClass* getClass(){
 	return Class<VectorValue>::classType;
 }
     
-String toString(){
-	return String("VectorValue: ") + vector.getName() + String(" ") + value;
+Note toNote(){
+	return Note("VectorValue: ") + vector.getName() + Note(" ") + value;
 }
 
 bool equal(cppObject* obj){
@@ -93,7 +112,7 @@ bool operator==(const char* n){
 	return false;
 }
 
-bool operator==(const String n){
+bool operator==(const Note n){
 	if(vector.getName() == n){
 		return true;
 	}
@@ -114,7 +133,7 @@ bool operator!=(const char* n){
 	return false;
 }
 
-bool operator!=(const String n){
+bool operator!=(const Note n){
 	if(vector.getName() != n){
 		return true;
 	}

@@ -1,25 +1,50 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_AlwaysConnected)
+	#define AlwaysConnected_hpp
+#endif
 
 #ifndef AlwaysConnected_hpp
 #define AlwaysConnected_hpp
+#define AlwaysConnected_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "AppState.hpp"
-#include "Arduino.hpp"
-#include "SerialMessageState.hpp"
-#include "List.hpp"
+#include "SerialState.hpp"
 #include "PrimitiveList.hpp"
-#include "TextExporter.hpp"
-#include "Annotation.hpp"
-#include "SerialMessageControlledState.hpp"
 
-#ifdef AlwaysConnectedLogApp
-	#include "Logger.hpp"
-	#define AlwaysConnectedLog(name,method,type,mns) Log(name,method,type,mns)
+#ifdef AlwaysConnected_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+	
+	#define AlwaysConnectedLog(location,method,type,mns) ame_Log(this,location,"AlwaysConnected",method,type,mns)
+	#define const_AlwaysConnectedLog(location,method,type,mns) 
+	#define StaticAlwaysConnectedLog(pointer,location,method,type,mns) ame_Log(pointer,location,"AlwaysConnected",method,type,mns)
 #else
-	#define AlwaysConnectedLog(name,method,type,mns)
+	#ifdef AlwaysConnected_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+		
+		#define AlwaysConnectedLog(location,method,type,mns) ame_LogDebug(this,location,"AlwaysConnected",method,type)
+		#define const_AlwaysConnectedLog(location,method,type,mns) 
+		#define StaticAlwaysConnectedLog(pointer,location,method,type,mns) ame_LogDebug(pointer,location,"AlwaysConnected",method,type)
+	#else
+		#define AlwaysConnectedLog(location,method,type,mns) 
+		#define const_AlwaysConnectedLog(location,method,type,mns) 
+		#define StaticAlwaysConnectedLog(pointer,location,method,type,mns) 
+	#endif
 #endif
 
 namespace ame{
@@ -28,7 +53,7 @@ class AlwaysConnected : public AppState{
     public:
 		AlwaysConnected(){
 		}
-		AlwaysConnected(String s){
+		AlwaysConnected(Note s){
 			myName = s;
 		}
 		virtual ~AlwaysConnected(){
@@ -39,14 +64,14 @@ class AlwaysConnected : public AppState{
 		virtual cppObjectClass* getClass(){return Class<AlwaysConnected>::classType;}
 		
 		void initialize(Application *a){
-			AlwaysConnectedLog("AlwaysConnected", "initialize",  "println", "");
+			AlwaysConnectedLog(ame_Log_Statement, "initialize",  "println", "");
 			app = a;
-			serialState = (SerialMessageState*)app->getStateManager()->get(Class<SerialMessageState>::classType);
+			serialState = (SerialState*)app->getStateManager()->get(Class<SerialState>::classType);
 		}
 		
 		virtual void update(float tpc){
 			if(serialState == nullptr){
-				serialState = (SerialMessageState*)app->getStateManager()->get(Class<SerialMessageState>::classType);
+				serialState = (SerialState*)app->getStateManager()->get(Class<SerialState>::classType);
 				return;
 			}
 			time += tpc;
@@ -59,24 +84,25 @@ class AlwaysConnected : public AppState{
 				if(serialport == nullptr){
 					continue;
 				}
-				String name = serialport->getName();
+				Note name = serialport->getName();
 				IPAddress ip = *ips.getByPosition(x);
 				int port = *ports.getByPosition(x);
 				PortProtocol* portprotocol = portprotocols.getByPosition(x);
 				if(serialport->connected()){
 					continue;
 				}
-				AlwaysConnectedLog("AlwaysConnected", "update",  "println", "");
-				AlwaysConnectedLog("AlwaysConnected", "update",  "println", String("iteration ")+String(x));
-				if(serialport->conect(ip,port)){
+				// if(!serialState->ping(ip)){
+					// continue;
+				// }
+				AlwaysConnectedLog(ame_Log_Statement, "update",  "println", "");
+				AlwaysConnectedLog(ame_Log_Statement, "update",  "println", Note("iteration ")+Note(x));
+				if(serialport->connect(ip,port)){
 					serialState->addSerialPort(serialport,portprotocol);
-					TextExporter exporter;
-					exporter.write("MyNameIs", myName);
-					serialState->send(serialport, exporter.getText());
+					serialState->send(serialport, Note("MyNameIs ") + myName);
 				}
 			}
 		}
-		virtual void add(String n, IPAddress i, int pt, SerialPort* s, ame::PortProtocol* p){
+		virtual void add(Note n, IPAddress i, int pt, SerialPort* s, PortProtocol* p){
 			s->setName(n);
 			ips.addLValue(i);
 			ports.addLValue(pt);
@@ -84,7 +110,7 @@ class AlwaysConnected : public AppState{
 			portprotocols.addPointer(p);
 			p->setSafeDelete(false);
 		}
-		virtual void remove(String n){
+		virtual void remove(Note n){
 			int x=-1;
 			for(int t = 0; t < serialports.getPosition(); t++){
 				if(serialports.getByPosition(t)->getName() == n){
@@ -102,18 +128,16 @@ class AlwaysConnected : public AppState{
 		}
 	protected:
 		Application* app = nullptr;
-		SerialMessageState* serialState = nullptr;
+		SerialState* serialState = nullptr;
 		PrimitiveList<IPAddress> ips;
 		PrimitiveList<int> ports;
 		PrimitiveList<SerialPort> serialports;
 		PrimitiveList<PortProtocol> portprotocols;
 		float time = 0;
 		float time_limite = 5.5f;
-		String myName = "micro";
+		Note myName = "micro";
 };
 
 }
 
 #endif
-
-#endif 

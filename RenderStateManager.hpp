@@ -1,23 +1,44 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_RenderStateManager)
+	#define RenderStateManager_hpp
+#endif
+
 #ifndef RenderStateManager_hpp
 #define RenderStateManager_hpp
+#define RenderStateManager_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "PrimitiveList.hpp"
 #include "DefaultStateManager.hpp"
 #include "List.hpp"
 #include "RenderState.hpp"
 #include "RenderManager.hpp"
-#include "DefaultRenderManager.hpp"
+//#include "DefaultRenderManager.hpp"
 
 namespace ame{
 
 class RenderStateManager : public DefaultStateManager{
     public:
 		RenderStateManager(){
-			this->renderManager = new DefaultRenderManager();
+			// this->renderManager = new DefaultRenderManager();
 		}
 		virtual ~RenderStateManager(){
-			delete this->renderManager;
+			if(renderManager == nullptr){
+				delete this->renderManager;
+			}
 		}
 			
 		// virtual void setApplication(Application* app){
@@ -57,7 +78,7 @@ class RenderStateManager : public DefaultStateManager{
 			// return appstate;
 		// }
 	
-		// virtual AppState* remove(String appstateId, cppObjectClass* cls){
+		// virtual AppState* remove(Note appstateId, cppObjectClass* cls){
 			// AppState *appstate = nullptr;
 			// for(int x = 0; x < this->appStateList->getPosition(); x++){
 				// if(this->appStateList->getByPosition(x)->getClass() == cls &&
@@ -106,7 +127,7 @@ class RenderStateManager : public DefaultStateManager{
 			// return Class<RenderStateManager>::classType;
 		// }
 	
-		// virtual String toString(){
+		// virtual Note toNote(){
 			// return "RenderStateManager";
 		// }
 		// virtual bool instanceof(cppObjectClass* cls){

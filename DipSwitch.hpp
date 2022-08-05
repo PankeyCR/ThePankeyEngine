@@ -1,12 +1,26 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_DipSwitch)
+	#define DipSwitch_hpp
+#endif
 
 #ifndef DipSwitch_hpp
 #define DipSwitch_hpp
+#define DipSwitch_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
 #include "List.hpp"
 #include "ArrayList.hpp"
 #include "cppObject.hpp"
@@ -63,6 +77,4 @@ class DipSwitch : public cppObject{
 
 }
 
-#endif 
-
-#endif 
+#endif

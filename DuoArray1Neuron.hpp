@@ -1,3 +1,6 @@
+
+#include "ame_Enviroment.hpp"
+
 #ifndef DuoArray1Neuron_hpp
 #define DuoArray1Neuron_hpp
 

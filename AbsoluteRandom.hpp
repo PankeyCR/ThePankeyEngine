@@ -1,12 +1,27 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_1)
+#if defined(DISABLE_AbsoluteRandom)
+	#define AbsoluteRandom_hpp
+#endif
 
 #ifndef AbsoluteRandom_hpp
 #define AbsoluteRandom_hpp
+#define AbsoluteRandom_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
+#include "Note.hpp"
 #include "Random.hpp"
 #include "RealRandom.hpp"
 
@@ -74,12 +89,12 @@ class AbsoluteRandom : public Random{
 			float x = d*tx;
 			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println","");
 			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println","absoluterandom");
-			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","time ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",String(time));
-			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","d ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",String(d));
-			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","dx ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",String(dx));
-			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","tdx ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",String(tdx));
-			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","tx ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",String(tx));
-			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","x ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",String(x));
+			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","time ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",Note(time));
+			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","d ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",Note(d));
+			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","dx ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",Note(dx));
+			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","tdx ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",Note(tdx));
+			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","tx ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",Note(tx));
+			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "print","x ");AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println",Note(x));
 			AbsoluteRandomLog("AbsoluteRandom", "getRandom", "println","");
 			return x+getMin();
 		}
@@ -88,6 +103,4 @@ class AbsoluteRandom : public Random{
 
 }
 
-#endif 
-
-#endif 
+#endif

@@ -1,12 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_Display4Digit)
+	#define Display4Digit_hpp
+#endif
 
 #ifndef Display4Digit_hpp
 #define Display4Digit_hpp
+#define Display4Digit_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 namespace ame{
 
@@ -209,6 +222,4 @@ class Display4Digit{
 
 }
 
-#endif 
-
-#endif 
+#endif

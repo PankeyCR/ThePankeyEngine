@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Spatial)
+	#define Spatial_hpp
+#endif
+
 #ifndef Spatial_hpp
 #define Spatial_hpp
+#define Spatial_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
 #include "Transform.hpp"
@@ -38,7 +57,7 @@ class Spatial : public cppObject{
 			return cls == Class<Spatial>::classType || cppObject::instanceof(cls);
 		}
 		virtual cppObjectClass* getClass(){return Class<Spatial>::classType;}
-		virtual String toString(){return "Spatial";}
+		virtual Note toNote(){return "Spatial";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
 				return true;
@@ -50,8 +69,8 @@ class Spatial : public cppObject{
 			return new Spatial(*this);
 		}
 		
-		virtual void setName(String n){name_m = n;}
-		virtual String getName(){return name_m;}
+		virtual void setName(Note n){name_m = n;}
+		virtual Note getName(){return name_m;}
 		
 		virtual void LogicalUpdate(float tpc){
 			for(int x = 0; x < controls.getPosition(); x++){
@@ -83,9 +102,9 @@ class Spatial : public cppObject{
 		Transform worldTransform;
 		PrimitiveList<Control> controls;
 		Node* parent;
-		String name_m;
+		Note name_m;
 };
 
 }
 
-#endif 
+#endif

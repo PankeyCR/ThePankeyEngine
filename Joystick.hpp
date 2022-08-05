@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_Joystick)
+	#define Joystick_hpp
+#endif
 
 #ifndef Joystick_hpp
 #define Joystick_hpp
+#define Joystick_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Button.hpp"
 
@@ -28,6 +43,4 @@ class Joystick : public Button{
 
 }
 
-#endif 
-
-#endif 
+#endif

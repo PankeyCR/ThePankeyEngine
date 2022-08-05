@@ -1,9 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Transform)
+	#define Transform_hpp
+#endif
+
 #ifndef Transform_hpp
 #define Transform_hpp
+#define Transform_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -206,8 +213,8 @@ class Transform : public cppObject{
 					&& this->rot.equal(&other->rot);
 		}
 		
-		String toString(){
-			return String("ame::Transform[ ") + translation.x + ", " + translation.y + ", " + translation.z + "]\n"
+		Note toNote(){
+			return Note("ame::Transform[ ") + translation.x + ", " + translation.y + ", " + translation.z + "]\n"
 											  + "[ " + rot.x + ", " + rot.y + ", " + rot.z + ", " + rot.w + "]\n"
 											  + "[ " + scale.x + " , " + scale.y + ", " + scale.z + "]";
 		}
@@ -264,4 +271,4 @@ class Transform : public cppObject{
 
 const ame::Transform* ame::Transform::IDENTITY = new ame::Transform();
 
-#endif 
+#endif

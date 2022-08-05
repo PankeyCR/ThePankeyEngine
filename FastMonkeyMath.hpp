@@ -1,10 +1,25 @@
 
-// #include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-// #if defined(ame_untilLevel_7)
+#if defined(DISABLE_FastMonkeyMath)
+	#define FastMonkeyMath_hpp
+#endif
 
 #ifndef FastMonkeyMath_hpp
 #define FastMonkeyMath_hpp
+#define FastMonkeyMath_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Vector3f.hpp"
 #include "Vector2f.hpp"
@@ -24,11 +39,11 @@ class FastMonkeyMath{
 	private:
 		static RealRandom *realRandom;
 		static int randomSize;
-		
+
 		// FastMonkeyMath();
     public:
-	
-	
+
+
     static float Random(){
 		if(realRandom == nullptr){
 			realRandom = new ame::RealRandom();
@@ -37,7 +52,7 @@ class FastMonkeyMath{
 		realRandom->setMax(randomSize);
 		return realRandom->getRandom();
 	}
-	
+
     static void setRandomSize(int size){
 		randomSize = size;
 	}
@@ -46,7 +61,7 @@ class FastMonkeyMath{
     static bool isPowerOfTwo(int number){
         return (number > 0) && (number & (number - 1)) == 0;
     }
-	
+
     static int nearestPowerOfTwo(int number){
         number--;
         number |= number >> 1;
@@ -71,9 +86,9 @@ class FastMonkeyMath{
         }
         return ((1.0f - scale) * startValue) + (scale * endValue);
     }
-	
-    static Vector3f interpolateLinear(float scale, 
-									  Vector3f startValue, 
+
+    static Vector3f interpolateLinear(float scale,
+									  Vector3f startValue,
 								      Vector3f endValue){
 		ame::Vector3f store;
         store.x = interpolateLinear(scale, startValue.x, endValue.x);
@@ -81,16 +96,16 @@ class FastMonkeyMath{
         store.z = interpolateLinear(scale, startValue.z, endValue.z);
         return store;
     }
-	
+
     static float extrapolateLinear(float scale, float startValue, float endValue){
     //    if (scale <= 0.0f) {
     //        return startValue;
     //    }
         return ((1.0f - scale) * startValue) + (scale * endValue);
     }
-	
-    static Vector3f extrapolateLinear(float scale, 
-								      Vector3f startValue, 
+
+    static Vector3f extrapolateLinear(float scale,
+								      Vector3f startValue,
 									  Vector3f endValue){
         if (scale <= 1.0f) {
             return interpolateLinear(scale, startValue, endValue);
@@ -101,9 +116,9 @@ class FastMonkeyMath{
         store.z = extrapolateLinear(scale, startValue.z, endValue.z);
         return store;
     }
-	
-    static float interpolateCatmullRom(float u, float T, 
-									   float p0, float p1, 
+
+    static float interpolateCatmullRom(float u, float T,
+									   float p0, float p1,
 									   float p2, float p3){
         float c1, c2, c3, c4;
         c1 = p1;
@@ -113,9 +128,9 @@ class FastMonkeyMath{
 
         return (float) (((c4 * u + c3) * u + c2) * u + c1);
     }
-	
-    static Vector3f interpolateCatmullRom(float u, float T, 
-										  Vector3f p0, Vector3f p1, 
+
+    static Vector3f interpolateCatmullRom(float u, float T,
+										  Vector3f p0, Vector3f p1,
 										  Vector3f p2, Vector3f p3){
         ame::Vector3f store;
         store.x = interpolateCatmullRom(u, T, p0.x, p1.x, p2.x, p3.x);
@@ -123,7 +138,7 @@ class FastMonkeyMath{
         store.z = interpolateCatmullRom(u, T, p0.z, p1.z, p2.z, p3.z);
         return store;
     }
-	   
+
     static float interpolateBezier(float u, float p0, float p1, float p2, float p3){
         float oneMinusU = 1.0f - u;
         float oneMinusU2 = oneMinusU * oneMinusU;
@@ -133,9 +148,9 @@ class FastMonkeyMath{
                 + 3.0f * p2 * u2 * oneMinusU
                 + p3 * u2 * u;
     }
-	    
-    static Vector3f interpolateBezier(float u, 
-									  Vector3f p0, Vector3f p1, 
+
+    static Vector3f interpolateBezier(float u,
+									  Vector3f p0, Vector3f p1,
 									  Vector3f p2, Vector3f p3){
         ame::Vector3f store;
         store.x = interpolateBezier(u, p0.x, p1.x, p2.x, p3.x);
@@ -143,9 +158,9 @@ class FastMonkeyMath{
         store.z = interpolateBezier(u, p0.z, p1.z, p2.z, p3.z);
         return store;
     }
-	
 
-    static float getCatmullRomP1toP2Length(Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3, 
+
+    static float getCatmullRomP1toP2Length(Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3,
 										   float startRange, float endRange, float curveTension){
 
         float epsilon = 0.001f;
@@ -170,7 +185,7 @@ class FastMonkeyMath{
         l = l1 + l2;
         return l;
     }
-	
+
     static float getBezierP1toP2Length(Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3){
         float delta = 0.02f, t = 0.0f, result = 0.0f;
         ame::Vector3f v1 = p0;
@@ -183,7 +198,7 @@ class FastMonkeyMath{
         }
         return result;
     }
-	
+
     static float acos(float fValue){
         if (-1.0f < fValue) {
             if (fValue < 1.0f) {
@@ -193,9 +208,15 @@ class FastMonkeyMath{
             return 0.0f;
         }
 
-        return PI;
+#ifdef ame_Windows
+		return M_PI;
+#endif
+#ifdef ame_ArduinoIDE
+		return PI;
+#endif
+
     }
-	
+
     static float asin(float fValue){
         if (-1.0f < fValue) {
             if (fValue < 1.0f) {
@@ -207,7 +228,7 @@ class FastMonkeyMath{
 
         return -HALF_PI;
     }
-	
+
     // static float atan(float fValue);
     // static float atan2(float fY, float fX);
     // static float ceil(float fValue);
@@ -228,30 +249,30 @@ class FastMonkeyMath{
         x = x * (1.5f - xhalf * x * x); // Newton step, repeating increases accuracy
         return x;
     }
-	
+
     static float intBitsToFloat(int x){
 		union {
 		   float f;  // assuming 32-bit IEEE 754 single-precision
 		   int i;    // assuming 32-bit 2's complement int
 		} u;
-        
+
 		u.i = x;
 		return u.f;
 	}
-	
+
     static float floatToIntBits(float x){
 		float y;
 		memcpy(&y, &x, 4);
 		return y;
 	}
-	
+
     //static float log(float fValue);
     //static float log(float value, float base);
     //static float pow(float fBase, float fExponent);
     static float sqr(float fValue){
         return fValue * fValue;
     }
-	
+
     // static float sqrt(float fValue);
     // static float tan(float fValue);
     static int sign(int iValue){
@@ -263,7 +284,7 @@ class FastMonkeyMath{
         }
         return 0;
     }
-	
+
     //static float sign(float fValue);
     static int counterClockwise(Vector2f p0, Vector2f p1, Vector2f p2){
         float dx1, dx2, dy1, dy2;
@@ -285,7 +306,7 @@ class FastMonkeyMath{
         }
         return 0;
     }
-	
+
     static int pointInsideTriangle(Vector2f t0, Vector2f t1, Vector2f t2, Vector2f p){
         int val1 = counterClockwise(t0, t1, p);
         if (val1 == 0) {
@@ -307,13 +328,13 @@ class FastMonkeyMath{
         }
         return val3;
     }
-	
+
     static Vector3f computeNormal(Vector3f v1, Vector3f v2, Vector3f v3){
         ame::Vector3f a1 = v1.subtract(v2);
         ame::Vector3f a2 = v3.subtract(v2);
         return a2.crossLocal(a1).normalizeLocal();
     }
-	
+
     static float determinant(double m00, double m01, double m02,
             double m03, double m10, double m11, double m12, double m13,
             double m20, double m21, double m22, double m23, double m30,
@@ -330,7 +351,7 @@ class FastMonkeyMath{
                 * (m10 * det13 - m11 * det03 + m13 * det01) - m03
                 * (m10 * det12 - m11 * det02 + m12 * det01));
     }
-	
+
     // static float nextRandomFloat();
     // static int nextRandomInt(int min, int max);
     // static int nextRandomInt();
@@ -343,7 +364,7 @@ class FastMonkeyMath{
 
         return ame::Vector3f(store.x, store.y, store.z );
     }
-	
+
     static Vector3f cartesianToSpherical(Vector3f cartCoords){
 		ame::Vector3f store;
         float x = cartCoords.x;
@@ -360,7 +381,7 @@ class FastMonkeyMath{
         store.z = asin(cartCoords.y / store.x);
         return ame::Vector3f(store.x, store.y, store.z );
     }
-	
+
     static Vector3f sphericalToCartesianZ(Vector3f sphereCoords){
 		ame::Vector3f store;
         store.z = sphereCoords.x * sin(sphereCoords.z);
@@ -370,7 +391,7 @@ class FastMonkeyMath{
 
         return ame::Vector3f(store.x, store.y, store.z );
     }
-	
+
     static Vector3f cartesianZToSpherical(Vector3f cartCoords){
 		ame::Vector3f store;
         float x = cartCoords.x;
@@ -387,7 +408,7 @@ class FastMonkeyMath{
         store.y = asin(cartCoords.y / store.x);
         return ame::Vector3f(store.x, store.y, store.z );
     }
-	
+
     static float normalize(float val, float min, float max){
         float range = max - min;
         while (val > max) {
@@ -398,7 +419,7 @@ class FastMonkeyMath{
         }
         return val;
     }
-	
+
     static float copysign(float x, float y){
         if (y >= 0 && x <= -0) {
             return -x;
@@ -408,15 +429,15 @@ class FastMonkeyMath{
             return x;
         }
     }
-	
+
     static float clamp(float input, float min, float max){
         return (input < min) ? min : (input > max) ? max : input;
     }
-	
+
     static float saturate(float input){
         return clamp(input, 0.0f, 1.0f);
     }
-	
+
     static bool approximateEquals(float a, float b){
         if (a == b) {
             return true;
@@ -424,7 +445,7 @@ class FastMonkeyMath{
             return (abs(a - b) / max(abs(a), abs(b))) <= 0.00001f;
         }
     }
-	
+
     static float convertHalfToFloat(short half){
         switch ((int) half) {
             case 0x0000:
@@ -464,6 +485,4 @@ class FastMonkeyMath{
 int ame::FastMonkeyMath::randomSize = 100;
 ame::RealRandom *ame::FastMonkeyMath::realRandom = nullptr;
 
-#endif 
-
-// #endif 
+#endif

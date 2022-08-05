@@ -1,6 +1,25 @@
 
-#ifndef WebSerialServer_h
-#define WebSerialServer_h
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_WebSerialServer)
+	#define WebSerialServer_hpp
+#endif
+
+#ifndef WebSerialServer_hpp
+#define WebSerialServer_hpp
+#define WebSerialServer_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "SerialPort.h"
 #include "SerialServer.h"
@@ -21,7 +40,7 @@
 	#define WebSerialServerLog(name,method,type,mns)
 #endif
 
-using namespace ame;
+ namespace ame{
 
 class WebSerialServer : public SerialServer{	
     public:
@@ -55,6 +74,28 @@ class WebSerialServer : public SerialServer{
 		#endif 
 		server.begin();
     }
+    WebSerialServer(Note ip, Note gateway, Note subnet, int port):server(port){
+		WebSerialServerLog("WebSerialServer", "Contructor",  "println", "server(80)");
+		#if defined(ARDUINO_ESP32_DEV) || defined(LILYGO_WATCH_2020_V1) || defined(LILYGO_WATCH_2020_V2) || defined(LILYGO_WATCH_2020_V3)
+		if (!WiFi.config(ip.toIPAddress(), gateway.toIPAddress(), subnet.toIPAddress())) {
+			WebSerialServerLog("WebSerialServer", "Contructor",  "println", "STA Failed to configure");
+		}
+		#elif defined(ARDUINO_ARCH_ESP8266)
+		
+		#endif 
+		server.begin();
+    }
+    WebSerialServer(Note ip, Note gateway, Note subnet, int port, byte* mac):server(port){
+		WebSerialServerLog("WebSerialServer", "Contructor",  "println", "server(80)");
+		#if defined(ARDUINO_ESP32_DEV) || defined(LILYGO_WATCH_2020_V1) || defined(LILYGO_WATCH_2020_V2) || defined(LILYGO_WATCH_2020_V3)
+		if (!WiFi.config(ip.toIPAddress(), gateway.toIPAddress(), subnet.toIPAddress())) {
+			WebSerialServerLog("WebSerialServer", "Contructor",  "println", "STA Failed to configure");
+		}
+		#elif defined(ARDUINO_ARCH_ESP8266)
+		
+		#endif 
+		server.begin();
+    }
 	
 	virtual ~WebSerialServer(){
 		WebSerialServerLog("WebSerialServer", "Destructor",  "println", "");
@@ -68,11 +109,11 @@ class WebSerialServer : public SerialServer{
 		return nullptr;
 	}
 		
-	virtual void on(String txt, Method method){
+	virtual void on(Note txt, Method method){
 		server.on(txt, method);
 	}
 	
-	virtual void send(int t, String txt, String webpage){
+	virtual void send(int t, Note txt, Note webpage){
 		server.on(t, txt, webpage);
 	}
 		
@@ -81,7 +122,7 @@ class WebSerialServer : public SerialServer{
 	}
 	
 	virtual cppObjectClass* getClass(){return Class<WebSerialServer>::classType;}
-	virtual String toString(){return "WebSerialServer";}
+	virtual Note toNote(){return "WebSerialServer";}
 	virtual bool equal(cppObject *b){
 		WebSerialServerLog("WebSerialServer", "available",  "println", "equal");
 		if(b == this){
@@ -97,4 +138,9 @@ class WebSerialServer : public SerialServer{
 protected:
 	WebServer server;
 };
+
+}
+
+#endif 
+
 #endif 

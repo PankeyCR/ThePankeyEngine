@@ -26,14 +26,14 @@ void loop() {
   average.addRValue(Vector3f(1,1,1));
   average.addRValue(Vector3f(1,1,1));
   
-  Serial.println(average.getAverage().toString());
+  Serial.println(average.getAverage().toNote());
   average.reset();
   
   average.addRValue(Vector3f(10,10,0));
   average.addRValue(Vector3f(80,80,0));
   average.addRValue(Vector3f(10,10,0));
   
-  Serial.println(average.getAverage().toString());
+  Serial.println(average.getAverage().toNote());
   }
   Serial.println(getRamSize());
   

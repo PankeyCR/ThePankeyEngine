@@ -1,134 +1,117 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_StateMachineSystem)
+	#define StateMachineSystem_hpp
+#endif
+
 #ifndef StateMachineSystem_hpp
 #define StateMachineSystem_hpp
+#define StateMachineSystem_AVAILABLE
 
-#include "Application.hpp"
-#include "AppState.hpp"
-#include "List.hpp"
-#include "Map.hpp"
-#include "PrimitiveMap.hpp"
-#include "PrimitiveList.hpp"
-#include "MachineState.hpp"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
+#include "StaticMethodMap.hpp"
+
+#ifdef SMS_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+	
+	#define SMSLog(location,method,type,mns) ame_Log(nullptr,location,"StateMachineSystem",method,type,mns)
+#else
+	#ifdef SMS_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+		
+		#define SMSLog(location,method,type,mns) ame_LogDebug(nullptr,location,"StateMachineSystem",method,type)
+	#else
+		#define SMSLog(location,method,type,mns) 
+	#endif
+#endif
 
 namespace ame{
 
 template<class T>
-class StateMachineSystem : public AppState{	
+class StateMachineSystem{	
     public:
-		Map<String,MachineState<T>>* states = nullptr;
-		StateMachineSystem(){
-			this->states = new PrimitiveMap<String,MachineState<T>>();
-		}
-		StateMachineSystem(String s){
-			this->states = new PrimitiveMap<String,MachineState<T>>();
-			this->id = new String(s);
-		}
-		StateMachineSystem(String s, T* t){
-			this->states = new PrimitiveMap<String,MachineState<T>>();
-			this->id = new String(s);
-			this->system = t;
-		}
-		StateMachineSystem(String s, T* t, bool own){
-			this->states = new PrimitiveMap<String,MachineState<T>>();
-			this->id = new String(s);
-			this->system = t;
-			this->owner = own;
-		}
-		virtual ~StateMachineSystem(){
-			delete this->states;
-			if(this->id != nullptr){
-				delete this->id;
-			}
-			if(this->owner){
-				delete this->system;
-			}
-		}
-		void setId(String s){
-			if(this->id == nullptr){
-				this->id = new String(s);
-				return;
-			}
-			delete this->id;
-			this->id = new String(s);
-		}
+		using StateMethod = void (*)(StateMachineSystem*,T*,float);
+		StateMachineSystem(){}
+		virtual ~StateMachineSystem(){}
 		
 		void setSystem(T* t){
 			if(t == nullptr){
 				return;
 			}
-			if(this->system != nullptr && this->system != t){
-				if(this->owner){
-					delete this->system;
+			if(system != nullptr && system != t){
+				if(owner){
+					delete system;
 				}
 			}
-			this->system = t;
+			system = t;
 		}
 		
-		void setState(String state){
-			this->actualState = this->states->get(state);
-			if(this->actualState == nullptr){
-				return;
-			}
-			iterate(this->states){
-				if(this->states->getPointer() == this->actualState){
-					this->statePosition = this->states->getIteration();
-					return;
-				}
-			}
+		void setState(Note state){
+			statePosition = states.getKeyIndexByLValue(state);
+			actualState = states.getByPosition(statePosition);
 		}
 		
 		void setState(int state){
-			this->actualState = this->states->getByPos(state);
-			if(this->actualState == nullptr){
-				return;
-			}
-			this->statePosition = state;
+			statePosition = state;
+			actualState = states.getByPosition(statePosition);
 		}
 		
 		void lastState(){
-			this->statePosition--;
-			this->actualState = this->states->getByPos(this->statePosition);
+			statePosition--;
+			actualState = states.getByPosition(statePosition);
 		}
 		
 		void nextState(){
-			this->statePosition++;
-			this->actualState = this->states->getByPos(this->statePosition);
+			statePosition++;
+			actualState = states.getByPosition(statePosition);
+			SMSLog(ame_Log_Statement, "nextState",  "println", Note(statePosition));
+			SMSLog(ame_Log_Statement, "nextState",  "println", Note(actualState == nullptr));
 		}
 		
-		MachineState<T>* getState(){
-			return this->actualState;
+		StateMethod* getState(){
+			return actualState;
 		}
 		
 		int getStatePosition(){
-			return this->statePosition;
+			return statePosition;
 		}
 		
 		int getStateSize(){
-			return this->states->getPos();
-		}
-			
-		virtual void initialize(Application *app){
-			this->App = app;
-		}
-		
-		Application* getApplication(){
-			return this->App;
+			return states.getPosition();
 		}
 		
 		virtual void update(float tpc){
-			if(this->actualState == nullptr){
+			if(actualState == nullptr || system == nullptr){
 				return;
 			}
-			this->actualState->update(this,this->system,tpc);
+			states.invoke(actualState, this, system, tpc);
+		}
+		
+		void addState(Note a_name, StateMethod a_state){
+			states.addLValues(a_name, a_state);
 		}
 	protected:
 		int statePosition = 0;
 		T* system = nullptr;
 		bool owner = false;
-		Application* App = nullptr;
-		MachineState<T>* actualState = nullptr;
+		StateMethod* actualState = nullptr;
+		StaticMethodMap<Note,StateMachineSystem*,T*,float> states;
 };
 
 }
 
-#endif 
+#endif

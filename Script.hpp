@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Script)
+	#define Script_hpp
+#endif
+
 #ifndef Script_hpp
 #define Script_hpp
+#define Script_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Statement.hpp"
 
@@ -25,4 +44,4 @@ class Script{
 
 }
 
-#endif 
+#endif

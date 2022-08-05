@@ -1,10 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_MessageInvoker)
+	#define MessageInvoker_hpp
+#endif
 
 #ifndef MessageInvoker_hpp
 #define MessageInvoker_hpp
+#define MessageInvoker_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -15,6 +21,7 @@
 	#include "Arduino.h"
 #endif
 
+#include "Note.hpp"
 #include "Command.hpp"
 #include "Message.hpp"
 #include "PrimitiveList.hpp"
@@ -37,7 +44,7 @@ class MessageInvoker : public Command<Message>{
 		}
 		
 		MessageInvoker(bool own){
-			MessageInvokerLog("MessageInvoker", "Constructor",  "println", String("Map ownership: ") + String(own));
+			MessageInvokerLog("MessageInvoker", "Constructor",  "println", Note("Map ownership: ") + Note(own));
 			list = new PrimitiveList<InvokerMethod>(own);
 		}
 		
@@ -65,4 +72,4 @@ class MessageInvoker : public Command<Message>{
 
 }
 
-#endif 
+#endif

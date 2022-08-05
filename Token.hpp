@@ -1,16 +1,41 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Token)
+	#define Token_hpp
+#endif
+
 #ifndef Token_hpp
 #define Token_hpp
+#define Token_AVAILABLE
 
-#include "Printable.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
 
 namespace ame{
 
+#ifdef ame_Windows
+class Token{
+#endif
+
+#ifdef ame_ArduinoIDE
 class Token : public Printable{
+#endif
+
 public:
-String name;
-String value;
-String info;
+Note name;
+Note value;
+Note info;
 int text_Position;
 int line_Position;
 int list_Position;
@@ -31,7 +56,7 @@ Token(const Token& t){
 	line_Position = t.line_Position;
 	list_Position = t.list_Position;
 }
-Token(String n, String t, String i, int tP, int lP, int lstP){
+Token(Note n, Note t, Note i, int tP, int lP, int lstP){
 	name = n;
 	value = t;
 	info = i;
@@ -39,7 +64,7 @@ Token(String n, String t, String i, int tP, int lP, int lstP){
 	line_Position = lP;
 	list_Position = lstP;
 }
-Token(String n, String t, String i){
+Token(Note n, Note t, Note i){
 	name = n;
 	value = t;
 	info = i;
@@ -47,7 +72,7 @@ Token(String n, String t, String i){
 	line_Position = -1;
 	list_Position = -1;
 }
-Token(String n, String t){
+Token(Note n, Note t){
 	name = n;
 	value = t;
 	info = "";
@@ -55,7 +80,7 @@ Token(String n, String t){
 	line_Position = -1;
 	list_Position = -1;
 }
-Token(const String& n){
+Token(const Note& n){
 	name = n;
 	value = "";
 	info = "";
@@ -75,39 +100,43 @@ virtual void operator=(const Token& t){
 virtual bool operator==(Token b){return value == b.value;}
 virtual bool operator!=(Token b){return value != b.value;}
 
+#ifdef ame_ArduinoIDE
 size_t printTo(Print& p) const{
-	p.print("Token( ");
-	p.print(name);
-	p.print(" , ");
-	p.print(value);
-	p.print(" , ");
-	p.print(info);
-	p.print(" , ");
-	p.print(text_Position);
-	p.print(" , ");
-	p.print(line_Position);
-	p.print(" , ");
-	p.print(list_Position);
-	p.print(" )");
+	size_t i_size = 0;
+	i_size += p.print("Token( ");
+	i_size += p.print(name);
+	i_size += p.print(" , ");
+	i_size += p.print(value);
+	i_size += p.print(" , ");
+	i_size += p.print(info);
+	i_size += p.print(" , ");
+	i_size += p.print(text_Position);
+	i_size += p.print(" , ");
+	i_size += p.print(line_Position);
+	i_size += p.print(" , ");
+	i_size += p.print(list_Position);
+	i_size += p.print(" )");
+	return i_size;
 }
+#endif
 
-String toString(){
-	return 	String("Token( ") +
-			String(name) +
-			String(" , ") +
-			String(value) +
-			String(" , ") +
-			String(info) +
-			String(" , ") +
-			String(text_Position) +
-			String(" , ") +
-			String(line_Position) +
-			String(" , ") +
-			String(list_Position) +
-			String(" )");
+Note toNote(){
+	return 	Note("Token( ") +
+			Note(name) +
+			Note(" , ") +
+			Note(value) +
+			Note(" , ") +
+			Note(info) +
+			Note(" , ") +
+			Note(text_Position) +
+			Note(" , ") +
+			Note(line_Position) +
+			Note(" , ") +
+			Note(list_Position) +
+			Note(" )");
 }
 };
 
 }
 
-#endif 
+#endif

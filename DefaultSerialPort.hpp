@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_6)
+#if defined(DISABLE_DefaultSerialPort)
+	#define DefaultSerialPort_hpp
+#endif
 
 #ifndef DefaultSerialPort_hpp
 #define DefaultSerialPort_hpp
+#define DefaultSerialPort_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "SerialPort.hpp"
 #include "Stream.h"
@@ -18,7 +33,7 @@ class DefaultSerialPort : public SerialPort{
 		DefaultSerialPort(Stream* serial){
 			port = serial;
 		}
-		DefaultSerialPort(Stream* serial, String n){
+		DefaultSerialPort(Stream* serial, Note n){
 			port = serial;
 			this->m_name = n;
 		}
@@ -45,12 +60,12 @@ class DefaultSerialPort : public SerialPort{
 		virtual bool operator!=(DefaultSerialPort b){return b.port != this->port;}
 		
 		virtual cppObjectClass* getClass(){return Class<DefaultSerialPort>::classType;}
-		virtual String toString(){return "DefaultSerialPort";}
+		virtual Note toNote(){return Note("DefaultSerialPort");}
 		virtual bool equal(cppObject *b){
 			if(b == this){
 				return true;
 			}
-			if(b->instanceof<DefaultSerialPort>()){
+			if(b->instanceof(Class<DefaultSerialPort>::classType)){
 				if(this->port == ((DefaultSerialPort*)b)->port){
 					return true;
 				}
@@ -67,6 +82,4 @@ class DefaultSerialPort : public SerialPort{
 
 }
 
-#endif 
-
-#endif 
+#endif

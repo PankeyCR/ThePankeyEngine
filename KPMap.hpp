@@ -1,12 +1,28 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_KPMap)
+	#define KPMap_hpp
+#endif
+
 #ifndef KPMap_hpp
 #define KPMap_hpp
+#define KPMap_AVAILABLE
 
-#include "ame_Level.hpp"
+#ifndef ame_Enviroment_Defined
 
-#if defined(ame_untilLevel_1)
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
+#include "Class.hpp"
 #include "Map.hpp"
 
 namespace ame{
@@ -748,6 +764,4 @@ class KPMap : public Map<K,P>{
 
 }
 
-#endif 
-
-#endif 
+#endif

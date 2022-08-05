@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_D5Map)
+	#define D5Map_hpp
+#endif
 
 #ifndef D5Map_hpp
 #define D5Map_hpp
+#define D5Map_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "DMap.hpp"
 
@@ -82,6 +97,4 @@ class D5Map : DMap<T>{
 
 }
 
-#endif 
-
-#endif 
+#endif

@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_EthernetSerialServer)
+	#define EthernetSerialServer_hpp
+#endif
+
 #ifndef EthernetSerialServer_hpp
 #define EthernetSerialServer_hpp
+#define EthernetSerialServer_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Ethernet.h"
 #include "SerialPort.hpp"
@@ -12,11 +31,26 @@
 #include "cppObject.hpp"
 #include "cppObjectClass.hpp"
 
-#ifdef EthernetSerialServerLogApp
-	#include "Logger.hpp"
-	#define EthernetSerialServerLog(name,method,type,mns) Log(name,method,type,mns)
+#ifdef EthernetSerialServer_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+	
+	#define EthernetSerialServerLog(location,method,type,mns) ame_Log(this,location,"EthernetSerialServer",method,type,mns)
+	#define const_EthernetSerialServerLog(location,method,type,mns) 
+	#define StaticEthernetSerialServerLog(pointer,location,method,type,mns) ame_Log(pointer,location,"EthernetSerialServer",method,type,mns)
 #else
-	#define EthernetSerialServerLog(name,method,type,mns)
+	#ifdef EthernetSerialServer_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+		
+		#define EthernetSerialServerLog(location,method,type,mns) ame_LogDebug(this,location,"EthernetSerialServer",method,type)
+		#define const_EthernetSerialServerLog(location,method,type,mns) 
+		#define StaticEthernetSerialServerLog(pointer,location,method,type,mns) ame_LogDebug(pointer,location,"EthernetSerialServer",method,type)
+	#else
+		#define EthernetSerialServerLog(location,method,type,mns) 
+		#define const_EthernetSerialServerLog(location,method,type,mns) 
+		#define StaticEthernetSerialServerLog(pointer,location,method,type,mns) 
+	#endif
 #endif
 
 namespace ame{
@@ -24,44 +58,32 @@ namespace ame{
 class EthernetSerialServer : public SerialServer{	
     public:
     EthernetSerialServer():server(80){
-		EthernetSerialServerLog("EthernetSerialServer", "Contructor",  "println", "server(80)");
+		EthernetSerialServerLog(ame_Log_Statement, "Contructor",  "println", "server(80)");
     }
-    EthernetSerialServer(IPAddress ip, IPAddress gateway, IPAddress subnet, int port):server(port){
-		EthernetSerialServerLog("EthernetSerialServer", "Contructor",  "println", "server(80)");
-		Ethernet.init(10);
-		byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
-		Ethernet.begin(mac, ip, gateway, subnet);
-		server.begin();
-    }
-    EthernetSerialServer(IPAddress ip, IPAddress gateway, IPAddress subnet, int port, byte* mac):server(port){
-		EthernetSerialServerLog("EthernetSerialServer", "Contructor",  "println", "server(80)");
-		Ethernet.init(10);
-		Ethernet.begin(mac, ip, gateway, subnet);
-		server.begin();
-    }
+	
     EthernetSerialServer(int port):server(port){
-		EthernetSerialServerLog("EthernetSerialServer", "Contructor",  "println", String("server: ") + String(port));
+		EthernetSerialServerLog(ame_Log_Statement, "Contructor",  "println", Note("server: ") + Note(port));
 	}
 	
 	virtual ~EthernetSerialServer(){
-		EthernetSerialServerLog("EthernetSerialServer", "Destructor",  "println", "");
+		EthernetSerialServerLog(ame_Log_Statement, "Destructor",  "println", "");
 	}
 	
 	SerialPort* accept(){
-		EthernetSerialServerLog("EthernetSerialServer", "accept",  "println", "");
+		EthernetSerialServerLog(ame_Log_Statement, "accept",  "println", "");
 		EthernetClient client = server.accept();   // Listen for incoming clients
 		if(client){
-			EthernetSerialServerLog("EthernetSerialServer", "accept",  "println", "if(client)");
+			EthernetSerialServerLog(ame_Log_Statement, "accept",  "println", "if(client)");
 			return new EthernetSerialPort(client,"ethernet");
 		}
 		return nullptr;
 	} 
 	
 	SerialPort* available(){
-		EthernetSerialServerLog("EthernetSerialServer", "available",  "println", "");
+		EthernetSerialServerLog(ame_Log_Statement, "available",  "println", "");
 		EthernetClient client = server.available();   // Listen for incoming clients
 		if(client){
-			EthernetSerialServerLog("EthernetSerialServer", "available",  "println", "if(client)");
+			EthernetSerialServerLog(ame_Log_Statement, "available",  "println", "if(client)");
 			return new EthernetSerialPort(client,"ethernet");
 		}
 		return nullptr;
@@ -70,9 +92,9 @@ class EthernetSerialServer : public SerialServer{
 	virtual cppObjectClass* getClass(){
 		return Class<EthernetSerialServer>::classType;
 	}
-	virtual String toString(){return "EthernetSerialServer";}
+	virtual Note toNote(){return "EthernetSerialServer";}
 	virtual bool equal(cppObject *b){
-		EthernetSerialServerLog("EthernetSerialServer", "available",  "println", "equal");
+		EthernetSerialServerLog(ame_Log_Statement, "available",  "println", "equal");
 		if(b == this){
 			return true;
 		}
@@ -86,7 +108,7 @@ class EthernetSerialServer : public SerialServer{
 	}
 
 	virtual bool instanceof(cppObjectClass* cls){
-		EthernetSerialServerLog("EthernetSerialServer", "instanceof",  "println", "");
+		EthernetSerialServerLog(ame_Log_Statement, "instanceof",  "println", "");
 		return cls == Class<EthernetSerialServer>::classType || SerialServer::instanceof(cls);
 	}
 
@@ -96,4 +118,4 @@ protected:
 
 }
 
-#endif 
+#endif

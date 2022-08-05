@@ -1,10 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_RawMap)
+	#define RawMap_hpp
+#endif
+
 #ifndef RawMap_hpp
 #define RawMap_hpp
+#define RawMap_AVAILABLE
 
-#include "ame_Level.hpp"
+#ifndef ame_Enviroment_Defined
 
-#if defined(ame_untilLevel_1)
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 namespace ame{
 
@@ -42,6 +57,8 @@ class RawMap{
 		virtual bool containValueByPointer(V* value)=0;
 		virtual bool containValueByLValue(V value)=0;
 		
+		virtual bool contain(K key){return this->containKeyByLValue(key);}
+		
 		virtual V* getByPointer(K* key)=0;
 		virtual V* getByLValue(K key)=0;
 		virtual V* getByPosition(int p)const=0;
@@ -78,10 +95,40 @@ class RawMap{
 		
 		virtual int getIndexByPointer(V* key)=0;
 		virtual int getIndexByLValue(V key)=0;
+		
+		template<class... Args>
+		void addKeyPack(Args... values){
+			K array[] = {values...};
+			for(const K& k : array){
+				this->addPointers(new K(k), new V());
+			}
+		}
+		
+		template<class... Args>
+		void addValuePack(Args... values){
+			V array[] = {values...};
+			for(const V& v : array){
+				this->addPointers(new K(), new V(v));
+			}
+		}
+		
+		template<class... Args>
+		void addKeyPack(V v, Args... values){
+			K array[] = {values...};
+			for(const K& k : array){
+				this->addPointers(new K(k), new V(v));
+			}
+		}
+		
+		template<class... Args>
+		void addValuePack(K k, Args... values){
+			V array[] = {values...};
+			for(const V& v : array){
+				this->addPointers(new K(k), new V(v));
+			}
+		}
 };
 
 }
 
 #endif
-
-#endif 

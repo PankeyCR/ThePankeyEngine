@@ -1,12 +1,30 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_EthernetSerialPort)
+	#define EthernetSerialPort_hpp
+#endif
+
 #ifndef EthernetSerialPort_hpp
 #define EthernetSerialPort_hpp
+#define EthernetSerialPort_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Ethernet.h"
 #include "SerialPort.hpp"
-#include "EthernetServer.hpp"
+#include "EthernetServer.h"
 #include "IPAddress.h"
-#include "SerialMessageState.hpp"
 #include "EthernetClient.h"
 #include "cppObject.hpp"
 #include "cppObjectClass.hpp"
@@ -30,11 +48,11 @@ class EthernetSerialPort : public SerialPort{
 		this->m_name = "eclient";
 		EthernetSerialPortLog("EthernetSerialPort", "Contructor",  "println", "eclient");
 	}
-	EthernetSerialPort(String name){
+	EthernetSerialPort(Note name){
 		this->m_name = name;
 		EthernetSerialPortLog("EthernetSerialPort", "Contructor",  "println", name);
 	}
-	EthernetSerialPort(EthernetClient c,String name){
+	EthernetSerialPort(EthernetClient c,Note name){
 		client = c;
 		this->m_name = name;
 		EthernetSerialPortLog("EthernetSerialPort", "Contructor",  "println", name);
@@ -60,14 +78,40 @@ class EthernetSerialPort : public SerialPort{
 		return client.peek();
 	}
 	virtual size_t write(uint8_t chr){
-		EthernetSerialPortLog("EthernetSerialPort", "write",  "println", String(chr));
+		EthernetSerialPortLog("EthernetSerialPort", "write",  "println", Note(chr));
 		return client.write(chr);
 	}
 	virtual bool connected(){
 		EthernetSerialPortLog("EthernetSerialPort", "connected",  "println", "");
 		return client.connected();
 	}
-	virtual bool conect(IPAddress ip, int port){
+	
+	virtual bool connect(const Note& a_address, int port){
+		EthernetSerialPortLog("EthernetSerialPort", "connect",  "println", "");
+		
+		IPAddress ip = toIPAddress(a_address);
+		
+		return client.connect(ip, port);
+	}
+	
+	virtual bool connect(const Note& a_address){
+		return connect(a_address,-1);
+	}
+	
+	virtual bool connect(const char* a_address, int port){
+		EthernetSerialPortLog("EthernetSerialPort", "connect",  "println", "");
+		
+		Note note = a_address;
+		IPAddress ip = toIPAddress(note);
+		
+		return client.connect(ip, port);
+	}
+	
+	virtual bool connect(const char* a_address){
+		return connect(a_address,-1);
+	}
+	
+	virtual bool connect(IPAddress ip, int port){
 		EthernetSerialPortLog("EthernetSerialPort", "connected",  "println", "");
 		return client.connect(ip, port);
 	}
@@ -80,7 +124,7 @@ class EthernetSerialPort : public SerialPort{
 		EthernetSerialPortLog("EthernetSerialPort", "flush",  "println", "");
 		client.flush();
 	}
-	virtual size_t println(String s){
+	virtual size_t println(Note s){
 		EthernetSerialPortLog("EthernetSerialPort", "println",  "println", "");
 		return client.print(s);
 	}
@@ -94,7 +138,7 @@ class EthernetSerialPort : public SerialPort{
 		EthernetSerialPortLog("EthernetSerialPort", "getClass",  "println", "");
 		return Class<EthernetSerialPort>::classType;
 	}
-	virtual String toString(){return "EthernetSerialPort";}
+	virtual Note toNote(){return "EthernetSerialPort";}
 	virtual bool equal(cppObject *b){
 		EthernetSerialPortLog("EthernetSerialPort", "equal",  "println", "");
 		if(b == this){
@@ -120,4 +164,4 @@ class EthernetSerialPort : public SerialPort{
 
 }
 
-#endif 
+#endif

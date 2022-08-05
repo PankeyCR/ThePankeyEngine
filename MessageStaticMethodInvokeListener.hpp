@@ -1,10 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_MessageStaticMethodInvokeListener)
+	#define MessageStaticMethodInvokeListener_hpp
+#endif
 
 #ifndef MessageStaticMethodInvokeListener_hpp
 #define MessageStaticMethodInvokeListener_hpp
+#define MessageStaticMethodInvokeListener_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -37,7 +43,7 @@ class MessageStaticMethodInvokeListener : public Command<Message>{
     public:
 		MessageStaticMethodInvokeListener(){
 			MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "Constructor",  "println", "");
-			map = new PrimitiveMap<String,T>();
+			map = new PrimitiveMap<Note,T>();
 			lexer. 	addBreakPoint(' ')->
 					addBreakPoint('\r')->
 					addBreakPoint('\0')->
@@ -45,8 +51,8 @@ class MessageStaticMethodInvokeListener : public Command<Message>{
 		}
 		
 		MessageStaticMethodInvokeListener(bool own){
-			MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "Constructor",  "println", String("Map ownership: ") + String(own));
-			map = new PrimitiveMap<String,T>(own);
+			MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "Constructor",  "println", Note("Map ownership: ") + Note(own));
+			map = new PrimitiveMap<Note,T>(own);
 			lexer. 	addBreakPoint(' ')->
 					addBreakPoint('\r')->
 					addBreakPoint('\0')->
@@ -60,21 +66,21 @@ class MessageStaticMethodInvokeListener : public Command<Message>{
 
 		void execute(Message* mns){
 			MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", "");
-			String note = mns->text();
+			Note note = mns->text();
 			lexer.reset();
-			LexerCaptureStringV(lexer,note);
-			List<String>* sentences = lexer.getSentences();
-			MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", String("note: ") + mns->text());
-			MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", String("size: ") + String(sentences->getPosition()));
+			LexerCaptureNoteV(lexer,note);
+			List<Note>* sentences = lexer.getSentences();
+			MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", Note("note: ") + mns->text());
+			MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", Note("size: ") + Note(sentences->getPosition()));
 			for(int x = 0; x < sentences->getPosition(); x++){
-				String sentence = *sentences->getByPosition(x);
+				Note sentence = *sentences->getByPosition(x);
 				if(sentence == ""){
 					MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", "no sentence");
 					return;
 				}
-				MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", String("sentence: ") + String(sentence));
-				String instanceName = lexer.getWord(0, x);
-				MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", String("instanceName: ") + String(instanceName));
+				MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", Note("sentence: ") + Note(sentence));
+				Note instanceName = lexer.getWord(0, x);
+				MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", Note("instanceName: ") + Note(instanceName));
 				if(instanceName == ""){
 					MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", "no instanceName");
 					return;
@@ -82,9 +88,9 @@ class MessageStaticMethodInvokeListener : public Command<Message>{
 				T* instance = map->getByLValue(instanceName);
 				if(instance == nullptr){
 					MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", "instance == nullptr");
-					String method = instanceName;
-					String parameter1 = lexer.getWord(1, x);
-					String parameter2 = lexer.getWord(2, x);
+					Note method = instanceName;
+					Note parameter1 = lexer.getWord(1, x);
+					Note parameter2 = lexer.getWord(2, x);
 					if(method == ""){
 						return;
 					}
@@ -93,37 +99,37 @@ class MessageStaticMethodInvokeListener : public Command<Message>{
 						return;
 					}
 					if(parameter2 == ""){
-						this->invokeGlobal<String>(mns->id(),method, parameter1);
+						this->invokeGlobal<Note>(mns->id(),method, parameter1);
 						return;
 					}
-					this->invokeGlobal<String,String>(mns->id(),method, parameter1, parameter2);
+					this->invokeGlobal<Note,Note>(mns->id(),method, parameter1, parameter2);
 					return;
 				}
 				instance->messageId(mns->id());
-				String method = lexer.getWord(1, x);
+				Note method = lexer.getWord(1, x);
 				if(method == ""){
 					MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", "no method");
 					return;
 				}
-				String parameter1 = lexer.getWord(2, x);
+				Note parameter1 = lexer.getWord(2, x);
 				if(parameter1 == ""){
 					this->invoke<>(method, instance);
 					return;
 				}
-				String parameter2 = lexer.getWord(3, x);
+				Note parameter2 = lexer.getWord(3, x);
 				if(parameter2 == ""){
-					this->invoke<String>(method, instance, parameter1);
+					this->invoke<Note>(method, instance, parameter1);
 					return;
 				}
-				this->invoke<String,String>(method, instance, parameter1, parameter2);
-				MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", String("method: ") + method);
-				MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", String("parameter1: ") + parameter1);
-				MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", String("parameter2: ") + parameter2);
+				this->invoke<Note,Note>(method, instance, parameter1, parameter2);
+				MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", Note("method: ") + method);
+				MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", Note("parameter1: ") + parameter1);
+				MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "execute",  "println", Note("parameter2: ") + parameter2);
 			}
 		}
 		
 		template<class... Args>
-		void invokeGlobal(int id, String n, Args... a){
+		void invokeGlobal(int id, Note n, Args... a){
 			for(int x = 0; x < map->getPosition(); x++){
 				T* instance = map->getByPosition(x);
 				instance->messageId(id);
@@ -132,7 +138,7 @@ class MessageStaticMethodInvokeListener : public Command<Message>{
 		}
 		
 		template<class... Args>
-		void invoke(String n, T* t, Args... a){
+		void invoke(Note n, T* t, Args... a){
 			MessageStaticMethodInvokeListenerLog("MessageStaticMethodInvokeListener", "invoke",  "println", "");
 			cppObjectClass* cls = t->getClass();
 			if(cls == nullptr){
@@ -147,15 +153,15 @@ class MessageStaticMethodInvokeListener : public Command<Message>{
 			method->staticInvoke<T,T*,Args...>(t,a...);
 		}
 		
-		void add(String n, T* t){
+		void add(Note n, T* t){
 			map->addPointer(n,t);
 		}
 
 	protected:
-		Map<String,T>* map = nullptr;
+		Map<Note,T>* map = nullptr;
 		TextLexer lexer;
 };
 
 }
 
-#endif 
+#endif

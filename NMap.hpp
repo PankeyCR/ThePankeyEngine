@@ -1,6 +1,26 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_NMap)
+	#define NMap_hpp
+#endif
+
 #ifndef NMap_hpp
 #define NMap_hpp
+#define NMap_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
 
 #include "List.hpp"
 #include "Map.hpp"
@@ -60,4 +80,4 @@ class NMap : public cppObject{
 
 }
 
-#endif 
+#endif

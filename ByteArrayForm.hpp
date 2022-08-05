@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_ByteArrayForm)
+	#define ByteArrayForm_hpp
+#endif
 
 #ifndef ByteArrayForm_hpp
 #define ByteArrayForm_hpp
+#define ByteArrayForm_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "ByteArray.hpp"
 
@@ -21,7 +36,5 @@ virtual ByteArray getByteArray(){return 0;}
 };
 
 }
-
-#endif
 
 #endif

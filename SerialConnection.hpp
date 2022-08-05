@@ -1,9 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_SerialConnection)
+	#define SerialConnection_hpp
+#endif
+
 #ifndef SerialConnection_hpp
 #define SerialConnection_hpp
+#define SerialConnection_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -58,12 +65,12 @@ class SerialConnection {
 			return port;
 		}
 	
- 		virtual String getString(){
-			SerialConnectionLog("SerialConnection", "getString",  "println", "");
+ 		virtual Note getNote(){
+			SerialConnectionLog("SerialConnection", "getNote",  "println", "");
 			if(port == nullptr){
 				return "";			
 			}
-			String mns="";
+			Note mns="";
 			while(port->available()){
 				char inputChar = (char)port->read();
 				if(isValidChar(inputChar)){
@@ -74,12 +81,12 @@ class SerialConnection {
 			return mns;
 		}
 	
-		virtual String getStringln(){
-			SerialConnectionLog("SerialConnection", "getStringln",  "println", "");
+		virtual Note getNoteln(){
+			SerialConnectionLog("SerialConnection", "getNoteln",  "println", "");
 			if(port == nullptr){
 				return "";			
 			}
-			String mns="";
+			Note mns="";
 			while(port->available()){
 				char inputChar = (char)port->read();
 				if(inputChar == '\n'){
@@ -93,12 +100,12 @@ class SerialConnection {
 			return mns;
 		}
 	
-		virtual String getStringUntil(char end){
-			SerialConnectionLog("SerialConnection", "getStringUntil",  "println", "");
+		virtual Note getNoteUntil(char end){
+			SerialConnectionLog("SerialConnection", "getNoteUntil",  "println", "");
 			if(port == nullptr){
 				return "";			
 			}
-			String mns="";
+			Note mns="";
 			while(port->available()){
 				char inputChar = (char)port->read();
 				if(inputChar == end){
@@ -112,13 +119,13 @@ class SerialConnection {
 			return mns;
 		}
 	
-		virtual String getStringUntil(char startChar,char endChar){
-			SerialConnectionLog("SerialConnection", "getStringUntil",  "println", "");
+		virtual Note getNoteUntil(char startChar,char endChar){
+			SerialConnectionLog("SerialConnection", "getNoteUntil",  "println", "");
 			if(port == nullptr){
 				return "";			
 			}
 			bool start=false;
-			String mns="";
+			Note mns="";
 			while(port->available()){
 				char inputChar = (char)port->read();
 				if(inputChar == startChar){
@@ -135,12 +142,12 @@ class SerialConnection {
 			return mns;
 		}
 	
-		virtual String safeFullReceive(char end){
+		virtual Note safeFullReceive(char end){
 			SerialConnectionLog("SerialConnection", "safeReceive",  "println", "");
 			if(port == nullptr){
 				return "";			
 			}
-			String mns="";
+			Note mns="";
 			char read = ' ';
 			if(port->available()){
 				read = (char)port->read();
@@ -148,7 +155,7 @@ class SerialConnection {
 				return mns;
 			}
 			if(end == read){
-				mns = message + String(end);
+				mns = message + Note(end);
 				message = "";
 				return mns;
 			}
@@ -158,12 +165,12 @@ class SerialConnection {
 			return mns;
 		}
 	
-		virtual String safeReceive(char end){
+		virtual Note safeReceive(char end){
 			SerialConnectionLog("SerialConnection", "safeReceive",  "println", "");
 			if(port == nullptr){
 				return "";			
 			}
-			String mns="";
+			Note mns="";
 			char read = ' ';
 			if(port->available()){
 				read = (char)port->read();
@@ -181,12 +188,12 @@ class SerialConnection {
 			return mns;
 		}
 	
-		virtual String safeReceive(char start,char end){
+		virtual Note safeReceive(char start,char end){
 			SerialConnectionLog("SerialConnection", "safeReceive",  "println", "");
 			if(port == nullptr){
 				return "";			
 			}
-			String mns="";
+			Note mns="";
 			char read = ' ';
 			if(port->available()){
 				read = (char)port->read();
@@ -209,20 +216,20 @@ class SerialConnection {
 			return mns;
 		}
 	
-		virtual String safeReceive(List<String> *list,String responce,
+		virtual Note safeReceive(List<Note> *list,Note responce,
 														char start,char end){
 			SerialConnectionLog("SerialConnection", "safeReceive",  "println", "");
 			if(port == nullptr){
 				return "";			
 			}
-			String mns="";
+			Note mns="";
 			char read = (char)port->read();
 			if(end == read){
 				mns = message;
 				message = "";
 				receive=false;
 				if(list->containByLValue(mns)){
-					String sendingSafeResponce = "";
+					Note sendingSafeResponce = "";
 					sendingSafeResponce.concat(start);
 					sendingSafeResponce.concat(responce);
 					sendingSafeResponce.concat(end);
@@ -243,11 +250,11 @@ class SerialConnection {
 			return (char)port->read();
 		}
 	
-		virtual void print(String s){
+		virtual void print(Note s){
 			port->print(s);
 		}
 		
-   		virtual void println(String s){
+   		virtual void println(Note s){
 			port->println(s);
 		}
 	
@@ -267,7 +274,7 @@ class SerialConnection {
 			port->write(s);
 		}
 	
-		virtual void writeln(String s){
+		virtual void writeln(Note s){
 			int sendd_len = s.length() + 1; 
 			char sendd_array[sendd_len];
 			s.toCharArray(sendd_array, sendd_len);
@@ -282,9 +289,9 @@ class SerialConnection {
 			port->write('\n');
 		}
 		
-		String Split(String divide,int parte, char limiter){  
+		Note Split(Note divide,int parte, char limiter){  
 			SerialConnectionLog("SerialConnection", "Split",  "println", "");   
-			String return_1="";     
+			Note return_1="";     
 			int delimiter=0;  
 			int respuesta_len = divide.length() + 1; 
 			char respuesta_array[respuesta_len];
@@ -300,9 +307,9 @@ class SerialConnection {
 			return return_1;
 		}
   
-		int SplitLenght(String divide,int parte, char limiter){
+		int SplitLenght(Note divide,int parte, char limiter){
 			SerialConnectionLog("SerialConnection", "SplitLenght",  "println", "");
-			String return_1="";     
+			Note return_1="";     
 			int delimiter=0;  
 			int respuesta_len = divide.length() + 1; 
 			char respuesta_array[respuesta_len];
@@ -315,9 +322,9 @@ class SerialConnection {
 			return delimiter;
 		}
   
-		String Split(String divide,int parte, char limiter, char fin){
+		Note Split(Note divide,int parte, char limiter, char fin){
 			SerialConnectionLog("SerialConnection", "Split",  "println", "");
-			String return_1="";     
+			Note return_1="";     
 			int delimiter=0;  
 			int respuesta_len = divide.length() + 1; 
 			char respuesta_array[respuesta_len];
@@ -342,7 +349,7 @@ class SerialConnection {
 		
     protected:
 		Stream* port = nullptr;
-		String message="";
+		Note message="";
 		bool receive=false;
 		
 		m_method isValidChar = SerialConnectionValidChars;
@@ -350,4 +357,4 @@ class SerialConnection {
 
 }
 
-#endif 
+#endif

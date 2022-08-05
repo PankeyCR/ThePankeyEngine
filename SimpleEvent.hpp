@@ -1,9 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_SimpleEvent)
+	#define SimpleEvent_hpp
+#endif
+
 #ifndef SimpleEvent_hpp
 #define SimpleEvent_hpp
+#define SimpleEvent_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -46,4 +53,4 @@ class SimpleEvent : public Event<T>{
 
 }
 
-#endif 
+#endif

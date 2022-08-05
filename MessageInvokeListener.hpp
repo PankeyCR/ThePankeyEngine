@@ -1,10 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_MessageInvokeListener)
+	#define MessageInvokeListener_hpp
+#endif
 
 #ifndef MessageInvokeListener_hpp
 #define MessageInvokeListener_hpp
+#define MessageInvokeListener_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -39,7 +45,7 @@ class MessageInvokeListener : public Command<Message>{
     public:
 		MessageInvokeListener(){
 			MessageInvokeListenerLog("MessageInvokeListener", "Constructor",  "println", "");
-			map = new PrimitiveMap<String,T>();
+			map = new PrimitiveMap<Note,T>();
 			lexer. 	addBreakPoint(' ')->
 					addBreakPoint('\r')->
 					addBreakPoint('\0')->
@@ -47,8 +53,8 @@ class MessageInvokeListener : public Command<Message>{
 		}
 		
 		MessageInvokeListener(bool own){
-			MessageInvokeListenerLog("MessageInvokeListener", "Constructor",  "println", String("Map ownership: ") + String(own));
-			map = new PrimitiveMap<String,T>(own);
+			MessageInvokeListenerLog("MessageInvokeListener", "Constructor",  "println", Note("Map ownership: ") + Note(own));
+			map = new PrimitiveMap<Note,T>(own);
 			lexer. 	addBreakPoint(' ')->
 					addBreakPoint('\r')->
 					addBreakPoint('\0')->
@@ -63,21 +69,21 @@ class MessageInvokeListener : public Command<Message>{
 
 		void execute(Message* mns){
 			MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "");
-			String note = mns->text();
+			Note note = mns->text();
 			lexer.reset();
-			LexerCaptureStringV(lexer,note);
-			List<String>* sentences = lexer.getSentences();
-			MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", String("note: ") + mns->text());
-			MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", String("size: ") + String(sentences->getPosition()));
+			LexerCaptureNoteV(lexer,note);
+			List<Note>* sentences = lexer.getSentences();
+			MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", Note("note: ") + mns->text());
+			MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", Note("size: ") + Note(sentences->getPosition()));
 			for(int x = 0; x < sentences->getPosition(); x++){
-				String sentence = *sentences->getByPosition(x);
+				Note sentence = *sentences->getByPosition(x);
 				if(sentence == ""){
 					MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "no sentence");
 					return;
 				}
-				MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", String("sentence: ") + String(sentence));
-				String instanceName = lexer.getWord(0, x);
-				MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", String("instanceName: ") + String(instanceName));
+				MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", Note("sentence: ") + Note(sentence));
+				Note instanceName = lexer.getWord(0, x);
+				MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", Note("instanceName: ") + Note(instanceName));
 				if(instanceName == ""){
 					MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "no instanceName");
 					return;
@@ -85,58 +91,58 @@ class MessageInvokeListener : public Command<Message>{
 				T* instance = map->getByLValue(instanceName);
 				if(instance == nullptr){
 					MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "instance == nullptr");
-					String method = instanceName;
-					String parameter1 = lexer.getWord(1, x);
-					String parameter2 = lexer.getWord(2, x);
+					Note method = instanceName;
+					Note parameter1 = lexer.getWord(1, x);
+					Note parameter2 = lexer.getWord(2, x);
 					if(method == ""){
 						return;
 					}
 					if(parameter1 == ""){
 						if(this->invokeGlobal<>(mns->id(),method)){
-							MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "this->invokeGlobal<String>(method)");
+							MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "this->invokeGlobal<Note>(method)");
 							return;
 						}
 					}
 					if(parameter2 == ""){
-						if(this->invokeGlobal<String>(mns->id(),method, parameter1)){
-							MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "this->invokeGlobal<String,String>(method, parameter1)");
+						if(this->invokeGlobal<Note>(mns->id(),method, parameter1)){
+							MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "this->invokeGlobal<Note,Note>(method, parameter1)");
 							return;
 						}
 					}
-					if(this->invokeGlobal<String,String>(mns->id(),method, parameter1, parameter2)){
-						MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "this->invokeGlobal<String,String,String>(method, parameter1, parameter2)");
+					if(this->invokeGlobal<Note,Note>(mns->id(),method, parameter1, parameter2)){
+						MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "this->invokeGlobal<Note,Note,Note>(method, parameter1, parameter2)");
 					}
 					return;
 				}
 				instance->messageId(mns->id());
-				String method = lexer.getWord(1, x);
+				Note method = lexer.getWord(1, x);
 				if(method == ""){
 					MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "no method");
 					return;
 				}
-				String parameter1 = lexer.getWord(2, x);
+				Note parameter1 = lexer.getWord(2, x);
 				if(parameter1 == ""){
 					if(this->invoke<>(instance, method)){
 						MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "Method::invoke<bool>(instance, method)");
 						return;
 					}
 				}
-				String parameter2 = lexer.getWord(3, x);
+				Note parameter2 = lexer.getWord(3, x);
 				if(parameter2 == ""){
-					if(this->invoke<String>(instance, method, parameter1)){
+					if(this->invoke<Note>(instance, method, parameter1)){
 						MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", "Method::invoke<bool>(instance, method, parameter1)");
 						return;
 					}
 				}
-				this->invoke<String,String>(instance, method, parameter1, parameter2);
-				MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", String("method: ") + method);
-				MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", String("parameter1: ") + parameter1);
-				MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", String("parameter2: ") + parameter2);
+				this->invoke<Note,Note>(instance, method, parameter1, parameter2);
+				MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", Note("method: ") + method);
+				MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", Note("parameter1: ") + parameter1);
+				MessageInvokeListenerLog("MessageInvokeListener", "execute",  "println", Note("parameter2: ") + parameter2);
 			}
 		}
 		
 		template<class... Args>
-		bool invokeGlobal(int id, String n, Args... a){
+		bool invokeGlobal(int id, Note n, Args... a){
 			for(int x = 0; x < map->getPosition(); x++){
 				T* instance = map->getByPosition(x);
 				instance->messageId(id);
@@ -148,7 +154,7 @@ class MessageInvokeListener : public Command<Message>{
 		}
 		
 		template<class... Args>
-		bool invoke(T* t, String n, Args... a){
+		bool invoke(T* t, Note n, Args... a){
 			cppObjectClass* cls = t->getClass();
 			if(cls == nullptr){
 				return false;
@@ -160,15 +166,15 @@ class MessageInvokeListener : public Command<Message>{
 			return method->invoke<T,bool,Args...>(t,false,a...);
 		}
 		
-		void add(String n, T* t){
+		void add(Note n, T* t){
 			map->addPointer(n, t);
 		}
 
 	protected:
-		Map<String,T>* map = nullptr;
+		Map<Note,T>* map = nullptr;
 		TextLexer lexer;
 };
 
 }
 
-#endif 
+#endif

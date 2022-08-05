@@ -1,11 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_SerialPort)
+	#define SerialPort_hpp
+#endif
+
 #ifndef SerialPort_hpp
 #define SerialPort_hpp
+#define SerialPort_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
-	#include "Stream.h"
-	#include "IPAddress.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -24,7 +29,8 @@
 
 namespace ame{
 
-class SerialPort : public Stream , public cppObject{	
+class SerialPort : public Stream , public cppObject{
+
     public:
 		SerialPort(){
 		}
@@ -43,7 +49,7 @@ class SerialPort : public Stream , public cppObject{
 		virtual byte readByte(){
 			return 255;
 		}
-		virtual String readString(){
+		virtual Note readNote(){
 			return "";
 		}
 		virtual int peek(){
@@ -55,21 +61,38 @@ class SerialPort : public Stream , public cppObject{
 		virtual bool connected(){
 			return false;
 		}
-		virtual bool conect(IPAddress ip, int port){
+		virtual bool connect(const Note& a_address){
+			return connect(a_address,-1);
+		}
+		virtual bool connect(const Note& a_address, int port){
 			return false;
 		}
+		virtual bool connect(const char* a_address){
+			return connect(a_address,-1);
+		}
+		virtual bool connect(const char* a_address, int port){
+			return false;
+		}
+		#ifdef ame_Windows
+		
+		#endif
+		#ifdef ame_ArduinoIDE
+		virtual bool connect(IPAddress ip, int port){
+			return false;
+		}
+		#endif
 		virtual void stop(){
 		}
-		virtual void send(String s){
+		virtual void send(Note s){
 		}
 		virtual void send(ByteArray array){
 		}
 		
-		virtual void setName(String name){
+		virtual void setName(Note name){
 			m_name = name;
 		}
 		
-		virtual String getName(){
+		virtual Note getName(){
 			return m_name;
 		}
 		virtual void flush(){}
@@ -79,7 +102,7 @@ class SerialPort : public Stream , public cppObject{
 		virtual bool operator!=(SerialPort b){return this->getClass()!=b.getClass();}
 		
 		virtual cppObjectClass* getClass(){return Class<SerialPort>::classType;}
-		virtual String toString(){return "SerialPort";}
+		virtual Note toNote(){return "SerialPort";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
 				return true;
@@ -87,16 +110,14 @@ class SerialPort : public Stream , public cppObject{
 			return false;
 		}
 		virtual bool instanceof(cppObjectClass* cls){
-			//Serial.println("SerialPort instanceof");
 			return cls == Class<SerialPort>::classType || cppObject::instanceof(cls);
 		}
 		
 		virtual cppObject *clone(){return nullptr;}
-		
 	protected:
-	String m_name = "";
+	Note m_name;
 };
 
 }
 
-#endif 
+#endif

@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Quaternion)
+	#define Quaternion_hpp
+#endif
+
 #ifndef Quaternion_hpp
 #define Quaternion_hpp
+#define Quaternion_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "FastMonkeyMath.hpp"
 #include "cppObject.hpp"
@@ -1210,8 +1229,8 @@ class Quaternion : public cppObject , public Printable{
 		}
 		
 		
-		String toString(){
-			return "ame::Quaternion(" + String(this->x) + ", " + String(this->y) + ", " + String(this->z) + ", " + String(this->w) + ")";
+		Note toNote(){
+			return Note("Quaternion(") + Note(this->x) + Note(", ") + Note(this->y) + Note(", ") + Note(this->z) + Note(", ") + Note(this->w) + Note(")");
 		}
 		
 		cppObjectClass* getClass(){
@@ -1444,4 +1463,4 @@ const ame::Quaternion* ame::Quaternion::IDENTITY = new ame::Quaternion();
 const ame::Quaternion* ame::Quaternion::DIRECTION_Z = new ame::Quaternion();
 const ame::Quaternion* ame::Quaternion::ZERO = new ame::Quaternion(0, 0, 0, 0);
 
-#endif 
+#endif

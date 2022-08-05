@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_CuadraticFunction)
+	#define CuadraticFunction_hpp
+#endif
 
 #ifndef CuadraticFunction_hpp
 #define CuadraticFunction_hpp
+#define CuadraticFunction_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "ArrayList.hpp"
 #include "ModifiableFunction.hpp"
@@ -92,7 +107,7 @@ class CuadraticFunction : public ModifiableFunction<float,args...>{
 			|| ModifiableFunction<float,args...>::instanceof(cls);
 		}
 		virtual cppObjectClass* getClass(){return Class<CuadraticFunction<args...>>::classType;}
-		virtual String toString(){return "CuadraticFunction";}
+		virtual Note toNote(){return "CuadraticFunction";}
 		
 	protected:
 	
@@ -100,6 +115,4 @@ class CuadraticFunction : public ModifiableFunction<float,args...>{
 
 }
 
-#endif 
-
-#endif 
+#endif

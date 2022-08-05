@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_6)
+#if defined(DISABLE_FunctionConfiguration)
+	#define FunctionConfiguration_hpp
+#endif
 
 #ifndef FunctionConfiguration_hpp
 #define FunctionConfiguration_hpp
+#define FunctionConfiguration_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "GameBuilder.hpp"
 #include "Function.hpp"
@@ -59,6 +74,4 @@ class FunctionConfiguration{
 
 }
 
-#endif 
-
-#endif 
+#endif

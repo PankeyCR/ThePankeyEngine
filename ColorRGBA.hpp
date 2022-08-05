@@ -1,16 +1,31 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_ColorRGBA)
+	#define ColorRGBA_hpp
+#endif
+
 #ifndef ColorRGBA_hpp
 #define ColorRGBA_hpp
+#define ColorRGBA_AVAILABLE
 
-#include "Triangle.hpp"
-#include "PrimitiveList.hpp"
-#include "MonkeyFile.hpp"
-#include "DefaultMonkeyFile.hpp"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+	#include "SD.h"
+#endif
+
 #include "LinkedList.hpp"
-#include "CommandReader.hpp"
 #include "Vector3f.hpp"
 #include "Vector4f.hpp"
-#include "SD.h"
 
 namespace ame{
 
@@ -21,37 +36,21 @@ class ColorRGBA : public Printable{
 		float b = 0;
 		float a = 1;
 		const static float GAMMA;
-		const static ColorRGBA* Black;
-		const static ColorRGBA* White;
-		const static ColorRGBA* DarkGray;
-		const static ColorRGBA* Gray;
-		const static ColorRGBA* LightGray;
-		const static ColorRGBA* Red;
-		const static ColorRGBA* Green;
-		const static ColorRGBA* Blue;
-		const static ColorRGBA* Yellow;
-		const static ColorRGBA* Magenta;
-		const static ColorRGBA* Cyan;
-		const static ColorRGBA* Orange;
-		const static ColorRGBA* Brown;
-		const static ColorRGBA* Pink;
-		const static ColorRGBA* BlackNoAlpha;
-		
-		// static ColorRGBA Black(){		return ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f);}
-		// static ColorRGBA White(){		return ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);}
-		// static ColorRGBA DarkGray(){	return ColorRGBA(0.2f, 0.2f, 0.2f, 1.0f);}
-		// static ColorRGBA Gray(){		return ColorRGBA(0.5f, 0.5f, 0.5f, 1.0f);}
-		// static ColorRGBA LightGray(){	return ColorRGBA(0.8f, 0.8f, 0.8f, 1.0f);}
-		// static ColorRGBA Red(){			return ColorRGBA(1.0f, 0.0f, 0.0f, 1.0f);}
-		// static ColorRGBA Green(){		return ColorRGBA(0.0f, 1.0f, 0.0f, 1.0f);}
-		// static ColorRGBA Blue(){		return ColorRGBA(0.0f, 0.0f, 1.0f, 1.0f);}
-		// static ColorRGBA Yellow(){		return ColorRGBA(1.0f, 1.0f, 0.0f, 1.0f);}
-		// static ColorRGBA Magenta(){		return ColorRGBA(1.0f, 0.0f, 1.0f, 1.0f);}
-		// static ColorRGBA Cyan(){		return ColorRGBA(0.0f, 1.0f, 1.0f, 1.0f);}
-		// static ColorRGBA Orange(){		return ColorRGBA(251.0f / 255.0f, 130.0f / 255.0f, 0.0f, 1.0f);}
-		// static ColorRGBA Brown(){		return ColorRGBA(65.0f / 255.0f, 40.0f / 255.0f, 25.0f / 255.0f, 1.0f);}
-		// static ColorRGBA Pink(){		return ColorRGBA(1.0f, 0.68f, 0.68f, 1.0f);}
-		// static ColorRGBA BlackNoAlpha(){return ColorRGBA(0.0f, 0.0f, 0.0f, 0.0f);}
+		const static ColorRGBA Black;
+		const static ColorRGBA White;
+		const static ColorRGBA DarkGray;
+		const static ColorRGBA Gray;
+		const static ColorRGBA LightGray;
+		const static ColorRGBA Red;
+		const static ColorRGBA Green;
+		const static ColorRGBA Blue;
+		const static ColorRGBA Yellow;
+		const static ColorRGBA Magenta;
+		const static ColorRGBA Cyan;
+		const static ColorRGBA Orange;
+		const static ColorRGBA Brown;
+		const static ColorRGBA Pink;
+		const static ColorRGBA BlackNoAlpha;
 		
 		ColorRGBA(){}
 		ColorRGBA(float cr, float cg, float cb, float ca){
@@ -81,6 +80,7 @@ class ColorRGBA : public Printable{
 			g = color.g;
 			b = color.b;
 			a = color.a;
+			return *this;
 		}
 		
 		bool operator==(const ColorRGBA& color){
@@ -110,6 +110,7 @@ class ColorRGBA : public Printable{
 			g = color.g;
 			b = color.b;
 			a = color.a;
+			return *this;
 		}
 		
 		ColorRGBA setRed(float value) {
@@ -137,15 +138,6 @@ class ColorRGBA : public Printable{
 			// g = FastMath.clamp(g, 0f, 1f);
 			// b = FastMath.clamp(b, 0f, 1f);
 			// a = FastMath.clamp(a, 0f, 1f);
-		}
-		
-		LinkedList<float> getColorArray() {
-			LinkedList<float> list;
-			list.add(r);
-			list.add(g);
-			list.add(b);
-			list.add(a);
-			return list;
 		}
 		
 		float getAlpha() {
@@ -213,12 +205,23 @@ class ColorRGBA : public Printable{
 			return *this;
 		}
 		
-		String toString() {
-			return "Color[" + String(r) + ", " + String(g) + ", " + String(b) + ", " + String(a) + "]";
+		Note toNote() {
+			return Note("Color[") + Note(r) + Note(", ") + Note(g) + Note(", ") + Note(b) + Note(", ") + Note(a) + Note("]");
 		}
 		
 		ColorRGBA* clone() {
 			return new ColorRGBA(*this);
+		}
+		
+		#if defined(LinkedList_AVAILABLE)
+		
+		LinkedList<float> getColorArray() {
+			LinkedList<float> list;
+			list.add(r);
+			list.add(g);
+			list.add(b);
+			list.add(a);
+			return list;
 		}
 		
 		LinkedList<float> toArray() {
@@ -229,6 +232,17 @@ class ColorRGBA : public Printable{
 			floats.add(a);
 			return floats;
 		}
+		
+		LinkedList<byte> asBytesRGBA() {
+			LinkedList<byte> store;
+			store[0] = (byte) ((int) (r * 255) & 0xFF);
+			store[1] = (byte) ((int) (g * 255) & 0xFF);
+			store[2] = (byte) ((int) (b * 255) & 0xFF);
+			store[3] = (byte) ((int) (a * 255) & 0xFF);
+			return store;
+		}
+		
+		#endif
 		
 		bool equals(cppObject* o) {
 			// if (!(o instanceof ColorRGBA)) {
@@ -279,15 +293,6 @@ class ColorRGBA : public Printable{
 			// b = capsule.readFloat("b", 0);
 			// a = capsule.readFloat("a", 0);
 		// }
-		
-		LinkedList<byte> asBytesRGBA() {
-			LinkedList<byte> store;
-			store[0] = (byte) ((int) (r * 255) & 0xFF);
-			store[1] = (byte) ((int) (g * 255) & 0xFF);
-			store[2] = (byte) ((int) (b * 255) & 0xFF);
-			store[3] = (byte) ((int) (a * 255) & 0xFF);
-			return store;
-		}
 		
 		int asIntARGB() {
 			int argb = (((int) (a * 255) & 0xFF) << 24)
@@ -371,22 +376,22 @@ class ColorRGBA : public Printable{
 
 const float ColorRGBA::GAMMA = 2.2f;
 
-const ColorRGBA* ColorRGBA::Black = 		new ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f);
-const ColorRGBA* ColorRGBA::White = 		new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
-const ColorRGBA* ColorRGBA::DarkGray = 		new ColorRGBA(0.2f, 0.2f, 0.2f, 1.0f);
-const ColorRGBA* ColorRGBA::Gray = 			new ColorRGBA(0.5f, 0.5f, 0.5f, 1.0f);
-const ColorRGBA* ColorRGBA::LightGray = 	new ColorRGBA(0.8f, 0.8f, 0.8f, 1.0f);
-const ColorRGBA* ColorRGBA::Red = 			new ColorRGBA(1.0f, 0.0f, 0.0f, 1.0f);
-const ColorRGBA* ColorRGBA::Green = 		new ColorRGBA(0.0f, 1.0f, 0.0f, 1.0f);
-const ColorRGBA* ColorRGBA::Blue = 			new ColorRGBA(0.0f, 0.0f, 1.0f, 1.0f);
-const ColorRGBA* ColorRGBA::Yellow = 		new ColorRGBA(1.0f, 1.0f, 0.0f, 1.0f);
-const ColorRGBA* ColorRGBA::Magenta = 		new ColorRGBA(1.0f, 0.0f, 1.0f, 1.0f);
-const ColorRGBA* ColorRGBA::Cyan = 			new ColorRGBA(0.0f, 1.0f, 1.0f, 1.0f);
-const ColorRGBA* ColorRGBA::Orange = 		new ColorRGBA(251.0f / 255.0f, 130.0f / 255.0f, 0.0f, 1.0f);
-const ColorRGBA* ColorRGBA::Brown = 		new ColorRGBA(65.0f / 255.0f, 40.0f / 255.0f, 25.0f / 255.0f, 1.0f);
-const ColorRGBA* ColorRGBA::Pink = 			new ColorRGBA(1.0f, 0.68f, 0.68f, 1.0f);
-const ColorRGBA* ColorRGBA::BlackNoAlpha = 	new ColorRGBA(0.0f, 0.0f, 0.0f, 0.0f);
+const ColorRGBA ColorRGBA::Black = 			ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f);
+const ColorRGBA ColorRGBA::White = 			ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
+const ColorRGBA ColorRGBA::DarkGray = 		ColorRGBA(0.2f, 0.2f, 0.2f, 1.0f);
+const ColorRGBA ColorRGBA::Gray = 			ColorRGBA(0.5f, 0.5f, 0.5f, 1.0f);
+const ColorRGBA ColorRGBA::LightGray = 		ColorRGBA(0.8f, 0.8f, 0.8f, 1.0f);
+const ColorRGBA ColorRGBA::Red = 			ColorRGBA(1.0f, 0.0f, 0.0f, 1.0f);
+const ColorRGBA ColorRGBA::Green = 			ColorRGBA(0.0f, 1.0f, 0.0f, 1.0f);
+const ColorRGBA ColorRGBA::Blue = 			ColorRGBA(0.0f, 0.0f, 1.0f, 1.0f);
+const ColorRGBA ColorRGBA::Yellow = 		ColorRGBA(1.0f, 1.0f, 0.0f, 1.0f);
+const ColorRGBA ColorRGBA::Magenta = 		ColorRGBA(1.0f, 0.0f, 1.0f, 1.0f);
+const ColorRGBA ColorRGBA::Cyan = 			ColorRGBA(0.0f, 1.0f, 1.0f, 1.0f);
+const ColorRGBA ColorRGBA::Orange = 		ColorRGBA(251.0f / 255.0f, 130.0f / 255.0f, 0.0f, 1.0f);
+const ColorRGBA ColorRGBA::Brown = 			ColorRGBA(65.0f / 255.0f, 40.0f / 255.0f, 25.0f / 255.0f, 1.0f);
+const ColorRGBA ColorRGBA::Pink = 			ColorRGBA(1.0f, 0.68f, 0.68f, 1.0f);
+const ColorRGBA ColorRGBA::BlackNoAlpha = 	ColorRGBA(0.0f, 0.0f, 0.0f, 0.0f);
 
 }
 
-#endif 
+#endif

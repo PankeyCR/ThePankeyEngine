@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_ModifiableFunction)
+	#define ModifiableFunction_hpp
+#endif
+
 #ifndef ModifiableFunction_hpp
 #define ModifiableFunction_hpp
+#define ModifiableFunction_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "List.hpp"
 #include "PrimitiveList.hpp"
@@ -53,7 +72,7 @@ class ModifiableFunction : public Function<T, args...>, public Iterator{
 			|| Function<T,args...>::instanceof(cls);
 		}
 		virtual cppObjectClass* getClass(){return Class<ModifiableFunction<T,args...>>::classType;}
-		virtual String toString(){return "ModifiableFunction";}
+		virtual Note toNote(){return "ModifiableFunction";}
 		
 	protected:
 		PrimitiveList<T> constants;
@@ -63,4 +82,4 @@ class ModifiableFunction : public Function<T, args...>, public Iterator{
 
 }
 
-#endif 
+#endif

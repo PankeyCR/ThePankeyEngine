@@ -1,12 +1,26 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_GPRS_V1_1b)
+	#define GPRS_V1_1b_hpp
+#endif
 
 #ifndef GPRS_V1_1b_hpp
 #define GPRS_V1_1b_hpp
+#define GPRS_V1_1b_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
 #include "Stream.h"
 
 namespace ame{
@@ -15,8 +29,8 @@ class GPRS_V1_1b {
     public:
 		GPRS_V1_1b(){}
 		~GPRS_V1_1b(){}
-		String AtMode_List(int atmode_list){
-			String at="";
+		Note AtMode_List(int atmode_list){
+			Note at="";
 			if(atmode_list == 0){ at="AT"; }
 			if(atmode_list == 1){ at="ATA"; }
 			if(atmode_list == 2){ at="ATD"; }
@@ -60,7 +74,7 @@ class GPRS_V1_1b {
 			return at;
 		}
 
-		void SendSim800cMns(Stream *port,String telefono,String mns){
+		void SendSim800cMns(Stream *port,Note telefono,Note mns){
 			port->println("AT+CMGF=1");
 			delay(500);
 			port->println("AT+CSMP=17,167,0,16");
@@ -73,7 +87,7 @@ class GPRS_V1_1b {
 			delay(1000);
 		}
 
-		void SendSim800cLongMns(Stream *port,String telefono,String mns[],int sizee){
+		void SendSim800cLongMns(Stream *port,Note telefono,Note mns[],int sizee){
 			port->println("AT+CMGF=1");
 			delay(500);
 			port->println("AT+CSMP=17,167,0,16");
@@ -96,13 +110,13 @@ class GPRS_V1_1b {
 			delay(1000);
 		}
 
-		String ReceiveSim800cMns(Stream *port){    
+		Note ReceiveSim800cMns(Stream *port){    
 			char reading =' ';
 			boolean wipe= false;
-			inputStringGprs="";
+			inputNoteGprs="";
 			if (port->available()) {
 				reading = (char)port->read();
-				inputStringGprs = reading;
+				inputNoteGprs = reading;
 				wipe=true;
 			}
 			while(wipe==true){   
@@ -111,16 +125,16 @@ class GPRS_V1_1b {
 					if(reading=='\n'){
 						wipe=false;
 					}else{
-						inputStringGprs = inputStringGprs+reading;
+						inputNoteGprs = inputNoteGprs+reading;
 					}
 				}
 			}
 			port->flush();
-			return inputStringGprs;
+			return inputNoteGprs;
 		}
 		
-		String Sim800cSplit(String cmd,int parte, char limiter){ 
-			String return_1="";     
+		Note Sim800cSplit(Note cmd,int parte, char limiter){ 
+			Note return_1="";     
 			if(cmd!=""){   
 				int delimiter=-1;  
 				int respuesta_len = cmd.length() + 1; 
@@ -145,11 +159,9 @@ class GPRS_V1_1b {
       
     private:  
 		Stream *port;
-		String inputStringGprs="";
+		Note inputNoteGprs="";
 };
 
 }
 
-#endif 
-
-#endif 
+#endif

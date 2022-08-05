@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_PrimitiveRawMap)
+	#define PrimitiveRawMap_hpp
+#endif
+
 #ifndef PrimitiveRawMap_hpp
 #define PrimitiveRawMap_hpp
+#define PrimitiveRawMap_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "RawMap.hpp"
 #include "MapIterator.hpp"
@@ -827,4 +846,5 @@ class PrimitiveRawMap : public RawMap<K,V>{
 };
 
 }
-#endif 
+
+#endif

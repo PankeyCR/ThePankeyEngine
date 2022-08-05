@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_FileDataBaseConfig)
+	#define FileDataBaseConfig_hpp
+#endif
+
 #ifndef FileDataBaseConfig_hpp
 #define FileDataBaseConfig_hpp
+#define FileDataBaseConfig_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "DataBaseConfig.hpp"
 #include "MonkeyFile.hpp"
@@ -38,8 +57,8 @@ class FileDataBaseConfig : public DataBaseConfig{
 				return;
 			}
 			FileDataBaseConfigLog("FileDataBaseConfig", "put",  "println", "");
-			String dir = importer->read("DataBase.dir", String());
-			String n_path = importer->read("DataBase.path", String());
+			Note dir = importer->read("DataBase.dir", Note());
+			Note n_path = importer->read("DataBase.path", Note());
 			
 			if(dir == "" || n_path == ""){
 				FileDataBaseConfigLog("FileDataBaseConfig", "put",  "println", "id.isEmpty");
@@ -49,8 +68,8 @@ class FileDataBaseConfig : public DataBaseConfig{
 			importer->remove("DataBase.dir");
 			importer->remove("DataBase.path");
 			
-			String rootPath = file->fixPath(dir);
-			String path = file->fixPath(dir, n_path);
+			Note rootPath = file->fixPath(dir);
+			Note path = file->fixPath(dir, n_path);
 			
 			if(path == ""){
 				FileDataBaseConfigLog("FileDataBaseConfig", "put",  "println", "path.isEmpty");
@@ -66,8 +85,8 @@ class FileDataBaseConfig : public DataBaseConfig{
 				file->createFile(path);
 			}
 			
-			FileDataBaseConfigLog("FileDataBaseConfig", "put",  "println", String("n_path ") + String(n_path));
-			FileDataBaseConfigLog("FileDataBaseConfig", "put",  "println", String("path ") + String(path));
+			FileDataBaseConfigLog("FileDataBaseConfig", "put",  "println", Note("n_path ") + Note(n_path));
+			FileDataBaseConfigLog("FileDataBaseConfig", "put",  "println", Note("path ") + Note(path));
 			
 			importer->write(file, path);
 		}
@@ -77,8 +96,8 @@ class FileDataBaseConfig : public DataBaseConfig{
 				return;
 			}
 			FileDataBaseConfigLog("FileDataBaseConfig", "get",  "println", "");
-			String dir = importer->read("DataBase.dir", String());
-			String n_path = importer->read("DataBase.path", String());
+			Note dir = importer->read("DataBase.dir", Note());
+			Note n_path = importer->read("DataBase.path", Note());
 			UUID uuid = importer->read("DataBase.uuid", UUID());
 			
 			if(dir == "" || n_path == ""){
@@ -90,8 +109,8 @@ class FileDataBaseConfig : public DataBaseConfig{
 			importer->remove("DataBase.path");
 			importer->remove("DataBase.uuid");
 			
-			String rootPath = file->fixPath(dir);
-			String path = file->fixPath(dir, n_path);
+			Note rootPath = file->fixPath(dir);
+			Note path = file->fixPath(dir, n_path);
 			
 			if(path == ""){
 				FileDataBaseConfigLog("FileDataBaseConfig", "get",  "println", "path.isEmpty");
@@ -101,12 +120,12 @@ class FileDataBaseConfig : public DataBaseConfig{
 				FileDataBaseConfigLog("FileDataBaseConfig", "put",  "println", "no available path");
 				return;
 			}
-			FileDataBaseConfigLog("FileDataBaseConfig", "get",  "println", String("n_path ") + String(n_path));
-			FileDataBaseConfigLog("FileDataBaseConfig", "get",  "println", String("path ") + String(path));
+			FileDataBaseConfigLog("FileDataBaseConfig", "get",  "println", Note("n_path ") + Note(n_path));
+			FileDataBaseConfigLog("FileDataBaseConfig", "get",  "println", Note("path ") + Note(path));
 			
 			TextExporter objTextExporter = file->readText(path);
 			objTextExporter.write("DataBase.uuid", uuid);
-			String port = importer->read("DataBase.reply", String());
+			Note port = importer->read("DataBase.reply", Note());
 			
 			if(port != ""){
 				importer->remove("DataBase.reply");
@@ -123,8 +142,8 @@ class FileDataBaseConfig : public DataBaseConfig{
 				return;
 			}
 			FileDataBaseConfigLog("FileDataBaseConfig", "erase",  "println", "");
-			String dir = importer->read("DataBase.dir", String());
-			String n_path = importer->read("DataBase.path", String());
+			Note dir = importer->read("DataBase.dir", Note());
+			Note n_path = importer->read("DataBase.path", Note());
 			
 			if(dir == "" || n_path == ""){
 				FileDataBaseConfigLog("FileDataBaseConfig", "erase",  "println", "id.isEmpty");
@@ -134,15 +153,15 @@ class FileDataBaseConfig : public DataBaseConfig{
 			importer->remove("DataBase.dir");
 			importer->remove("DataBase.path");
 			
-			String rootPath = file->fixPath(dir);
-			String path = file->fixPath(dir, n_path);
+			Note rootPath = file->fixPath(dir);
+			Note path = file->fixPath(dir, n_path);
 			
 			if(path == ""){
 				FileDataBaseConfigLog("FileDataBaseConfig", "erase",  "println", "path.isEmpty");
 				return;
 			}
-			FileDataBaseConfigLog("FileDataBaseConfig", "erase",  "println", String("n_path ") + String(n_path));
-			FileDataBaseConfigLog("FileDataBaseConfig", "erase",  "println", String("path ") + String(path));
+			FileDataBaseConfigLog("FileDataBaseConfig", "erase",  "println", Note("n_path ") + Note(n_path));
+			FileDataBaseConfigLog("FileDataBaseConfig", "erase",  "println", Note("path ") + Note(path));
 			
 			if(file->exist(path)){
 				file->deleteFile(path);
@@ -154,9 +173,9 @@ class FileDataBaseConfig : public DataBaseConfig{
 				return;
 			}
 			FileDataBaseConfigLog("FileDataBaseConfig", "copy",  "println", "");
-			String dir = importer->read("DataBase.dir", String());
-			String n_path = importer->read("DataBase.path", String());
-			String n_copy_path = importer->read("DataBase.copy.path", String());
+			Note dir = importer->read("DataBase.dir", Note());
+			Note n_path = importer->read("DataBase.path", Note());
+			Note n_copy_path = importer->read("DataBase.copy.path", Note());
 			
 			if(dir == "" || n_path == "" || n_copy_path == ""){
 				FileDataBaseConfigLog("FileDataBaseConfig", "copy",  "println", "id.isEmpty");
@@ -166,9 +185,9 @@ class FileDataBaseConfig : public DataBaseConfig{
 			importer->remove("DataBase.dir");
 			importer->remove("DataBase.path");
 			
-			String rootPath = file->fixPath(dir);
-			String path = file->fixPath(dir, n_path);
-			String c_path = file->fixPath(dir, n_copy_path);
+			Note rootPath = file->fixPath(dir);
+			Note path = file->fixPath(dir, n_path);
+			Note c_path = file->fixPath(dir, n_copy_path);
 			
 			if(path == "" || c_path == ""){
 				FileDataBaseConfigLog("FileDataBaseConfig", "copy",  "println", "path.isEmpty");
@@ -185,11 +204,11 @@ class FileDataBaseConfig : public DataBaseConfig{
 				file->createFile(c_path);
 			}
 			
-			FileDataBaseConfigLog("FileDataBaseConfig", "copy",  "println", String("n_path ") + String(n_path));
-			FileDataBaseConfigLog("FileDataBaseConfig", "copy",  "println", String("path ") + String(path));
-			FileDataBaseConfigLog("FileDataBaseConfig", "copy",  "println", String("copy path ") + String(c_path));
+			FileDataBaseConfigLog("FileDataBaseConfig", "copy",  "println", Note("n_path ") + Note(n_path));
+			FileDataBaseConfigLog("FileDataBaseConfig", "copy",  "println", Note("path ") + Note(path));
+			FileDataBaseConfigLog("FileDataBaseConfig", "copy",  "println", Note("copy path ") + Note(c_path));
 			
-			String o_text = file->readText(path);
+			Note o_text = file->readText(path);
 			
 			file->writeText(o_text, c_path);
 		}
@@ -199,9 +218,9 @@ class FileDataBaseConfig : public DataBaseConfig{
 				return;
 			}
 			FileDataBaseConfigLog("FileDataBaseConfig", "cut",  "println", "");
-			String dir = importer->read("DataBase.dir", String());
-			String n_path = importer->read("DataBase.path", String());
-			String n_cut_path = importer->read("DataBase.cut.path", String());
+			Note dir = importer->read("DataBase.dir", Note());
+			Note n_path = importer->read("DataBase.path", Note());
+			Note n_cut_path = importer->read("DataBase.cut.path", Note());
 			
 			if(dir == "" || n_path == "" || n_cut_path == ""){
 				FileDataBaseConfigLog("FileDataBaseConfig", "cut",  "println", "id.isEmpty");
@@ -211,9 +230,9 @@ class FileDataBaseConfig : public DataBaseConfig{
 			importer->remove("DataBase.dir");
 			importer->remove("DataBase.path");
 			
-			String rootPath = file->fixPath(dir);
-			String path = file->fixPath(dir, n_path);
-			String c_path = file->fixPath(dir, n_cut_path);
+			Note rootPath = file->fixPath(dir);
+			Note path = file->fixPath(dir, n_path);
+			Note c_path = file->fixPath(dir, n_cut_path);
 			
 			if(path == "" || c_path == ""){
 				FileDataBaseConfigLog("FileDataBaseConfig", "cut",  "println", "path.isEmpty");
@@ -230,11 +249,11 @@ class FileDataBaseConfig : public DataBaseConfig{
 				file->createFile(c_path);
 			}
 			
-			FileDataBaseConfigLog("FileDataBaseConfig", "cut",  "println", String("n_path ") + String(n_path));
-			FileDataBaseConfigLog("FileDataBaseConfig", "cut",  "println", String("path ") + String(path));
-			FileDataBaseConfigLog("FileDataBaseConfig", "cut",  "println", String("copy path ") + String(c_path));
+			FileDataBaseConfigLog("FileDataBaseConfig", "cut",  "println", Note("n_path ") + Note(n_path));
+			FileDataBaseConfigLog("FileDataBaseConfig", "cut",  "println", Note("path ") + Note(path));
+			FileDataBaseConfigLog("FileDataBaseConfig", "cut",  "println", Note("copy path ") + Note(c_path));
 			
-			String o_text = file->readText(path);
+			Note o_text = file->readText(path);
 			
 			file->writeText(o_text, c_path);
 			
@@ -247,4 +266,3 @@ class FileDataBaseConfig : public DataBaseConfig{
 }
 
 #endif
-

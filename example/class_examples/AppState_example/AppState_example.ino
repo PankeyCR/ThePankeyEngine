@@ -25,8 +25,8 @@ void setup() {
   app->getStateManager()->add(new LoopState(&Serial));//appstate with update method (normal loop)
   app->getStateManager()->add(new TimerState(&Serial));//appstate with Play method (timer loop)
 
-  app->getStateManager()->removeDelete(Class<StartState>::classType);//remove the appstate and delete´s it to save up memory but it wouldnt compute the time
-  
+  //dont remove an appstate on setup because it havent been initialize jet, it initialize on the update method
+  //app->getStateManager()->removeDelete(Class<StartState>::classType);
 }
 
 void loop(){

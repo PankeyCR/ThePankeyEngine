@@ -1,9 +1,16 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Order)
+	#define Order_hpp
+#endif
+
 #ifndef Order_hpp
 #define Order_hpp
+#define Order_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -25,7 +32,7 @@ public:
 Order(){
     name = "";
 }
-Order(String n, args... x){
+Order(Note n, args... x){
     name = n;
 	order.addPack(x...);
 }
@@ -39,15 +46,15 @@ cppObjectClass* getClass(){
 	return Class<Order>::classType;
 }
     
-String toString(){
-	return String("Order: ") + name;
+Note toNote(){
+	return Note("Order: ") + name;
 }
 
 bool instanceof(cppObjectClass* instance){
 return instance == Class<Order>::classType || cppObject::instanceof(instance);
 }
 
-String getName(){
+Note getName(){
 	return name;
 }
     
@@ -112,7 +119,7 @@ bool operator==(const Order<T,args...>& obj){
         
 
 protected:
-    String name;
+    Note name;
     PrimitiveList<T> order;
 };
 

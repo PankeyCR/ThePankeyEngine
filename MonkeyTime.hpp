@@ -1,10 +1,16 @@
 
+#include "ame_Enviroment.hpp"
 
-#ifndef MonkeyTime_h
-#define MonkeyTime_h
+#if defined(DISABLE_MonkeyTime)
+	#define MonkeyTime_hpp
+#endif
+
+#ifndef MonkeyTime_hpp
+#define MonkeyTime_hpp
+#define MonkeyTime_AVAILABLE
 
 #ifndef ame_Enviroment_Defined
-	#include "Arduino.h"
+
 #endif
 
 #ifdef ame_Windows
@@ -34,31 +40,28 @@ class MonkeyTime {
 		virtual void computeManualTime(long time){
 			if(this->running){
 				this->microTimer = time - this->startTime;
-				this->tpcTimer = time -this->currentTimer;
+				this->tpcTimer = ((float)(time - this->currentTimer)) / ((float)(scale));
+				this->currentTimer = time;
+			}
+		}
+		
+		virtual void computeManualTime(long time, long cycle){
+			if(this->running){
+				if(cycle > time -this->currentTimer){
+					return;
+				}
+				this->microTimer = time - this->startTime;
+				this->tpcTimer = ((float)(time - this->currentTimer)) / ((float)(scale));
 				this->currentTimer = time;
 			}
 		}
 		
 		virtual void computeTime(){
-			if(this->running){
-				long mm = micros();
-				this->tpcTimer = mm -this->currentTimer;
-				this->currentTimer = mm;
-				this->microTimer = this->currentTimer-this->startTime;
-			}
+			computeManualTime(micros());
 		}
 
-		virtual void computeTime(long time){
-			if(this->running){
-				long mm = micros();
-				this->microTimer = this->currentTimer - this->startTime;
-				this->tpcTimer = 0;
-				if(time > mm -this->currentTimer){
-					return;
-				}
-				this->tpcTimer = mm -this->currentTimer;
-				this->currentTimer = mm;
-			}
+		virtual void computeTime(long cycle){
+			computeManualTime(micros(), cycle);
 		}
 			
 		virtual void setStartTime(long time){
@@ -131,12 +134,12 @@ class MonkeyTime {
 			return this->running;
 		}
 
-		virtual int getTPC(){
+		virtual float getTPC(){
 			return this->tpcTimer;
 		}
 
 		virtual int getTPCandRestart(){
-			int tpc = this->getTPC();
+			float tpc = this->getTPC();
 			this->restartTPC();
 			return tpc;
 		}
@@ -189,7 +192,7 @@ class MonkeyTime {
 	protected:	
 		long currentTimer = 0;
 		long microTimer = 0;
-		long tpcTimer = 0;
+		float tpcTimer = 0.0f;
 		long tickTimer = 0;
     
 		long startTime = 0;
@@ -203,4 +206,4 @@ class MonkeyTime {
 
 }
 
-#endif 
+#endif

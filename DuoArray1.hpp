@@ -1,4 +1,5 @@
 
+#include "ame_Enviroment.hpp"
 
 #ifndef DuoArray1_hpp
 #define DuoArray1_hpp
@@ -122,8 +123,8 @@ class DuoArray1 : public DataSet<T>{
 			return Class<DuoArray1<T,xS2,xS1>>::classType;
 		}
 		
-		virtual String toString(){
-			return "DuoArray1(" + String(this->m_space) + ", " + String(xP2) + ", "  + String(xP1) + " = "  + String(getValue()) + ")";
+		virtual Note toNote(){
+			return "DuoArray1(" + Note(this->m_space) + ", " + Note(xP2) + ", "  + Note(xP1) + " = "  + Note(getValue()) + ")";
 		}
 		
 		virtual DataSet<T>* clone(bool mem){
@@ -170,7 +171,7 @@ class DuoArray1 : public DataSet<T>{
 			}
 			return nullptr;
 		}
-		virtual String toString(Iterator i){
+		virtual Note toNote(Iterator i){
 			int x = i.getIteration();
 			T t;
 			int s;
@@ -181,14 +182,14 @@ class DuoArray1 : public DataSet<T>{
 				s = 1;
 				t = x2[x-xS1];
 			}
-			return  String("DuoArray1(") + 
-					String(x) + 
+			return  Note("DuoArray1(") + 
+					Note(x) + 
 					", " + 
-					String(s) + 
+					Note(s) + 
 					", " + 
-					String(0) + 
+					Note(0) + 
 					" = "  + 
-					String(t) + 
+					Note(t) + 
 					")";
 		}
 		

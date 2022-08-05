@@ -1,12 +1,32 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Matrix3f)
+	#define Matrix3f_hpp
+#endif
+
 #ifndef Matrix3f_hpp
 #define Matrix3f_hpp
+#define Matrix3f_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 //#include "Quaternion.hpp"
 #include "Vector3f.hpp"
 #include "LinkedList.hpp"
 #include "List.hpp"
 #include "FastMonkeyMath.hpp"
+#include "Class.hpp"
 
 //class Quaternion;
 //class Matrix4f;
@@ -139,6 +159,8 @@ class Matrix3f : public cppObject, public Printable{
 			}
 		}
 		
+		#if defined(LinkedList_AVAILABLE)
+		
 		LinkedList<float> get(bool rowMajor){
 			LinkedList<float> data;
 			if (rowMajor) {
@@ -164,6 +186,8 @@ class Matrix3f : public cppObject, public Printable{
 			}
 			return data;
 		}
+		
+		#endif
 		
 		
 		Matrix3f normalize(){
@@ -274,6 +298,8 @@ class Matrix3f : public cppObject, public Printable{
 		//FloatBuffer toFloatBuffer();
 		//FloatBuffer fillFloatBuffer(FloatBuffer fb, boolean columnMajor);
 		
+		#if defined(LinkedList_AVAILABLE)
+		
 		LinkedList<float> fillFloatArray(bool columnMajor){
 			LinkedList<float> f;
 			if (columnMajor) {
@@ -299,6 +325,8 @@ class Matrix3f : public cppObject, public Printable{
 			}
 			return f;
 		}
+		
+		#endif
 
 		Matrix3f setColumn(int i, Vector3f column){
 			switch (i) {
@@ -734,11 +762,11 @@ class Matrix3f : public cppObject, public Printable{
 			return Matrix3f(this->m00, this->m10, this->m20, this->m01, this->m11, this->m21, this->m02, this->m12, this->m22);
 		}
 		
-		String toString(){
-			return "Matrix3f "+String(m00), " "+String(m10), " "+
-					String(m20), " "+String(m01), " "+String(m11), " "+
-					String(m21), " "+String(m02), " "+String(m12), " "+
-					String(m22);
+		Note toNote(){
+			return  Note("Matrix3f ") + Note(m00), Note(" ") + Note(m10), Note(" ") +
+					Note(m20), Note(" ") + Note(m01), Note(" ") +Note(m11), Note(" ") +
+					Note(m21), Note(" ") + Note(m02), Note(" ") +Note(m12), Note(" ") +
+					Note(m22);
 		}
 		
 		cppObjectClass* getClass(){
@@ -901,6 +929,7 @@ class Matrix3f : public cppObject, public Printable{
 				set(2, 1, hvyz + v.x);
 				set(2, 2, e + hvz * v.z);
 			}
+			return *this;
 		}
 		
 		Matrix3f scale(Vector3f scale){
@@ -1268,4 +1297,4 @@ class Matrix3f : public cppObject, public Printable{
 ame::Matrix3f *ame::Matrix3f::ZERO = new ame::Matrix3f(0, 0, 0, 0, 0, 0, 0, 0, 0);
 ame::Matrix3f *ame::Matrix3f::IDENTITY = new ame::Matrix3f();
 
-#endif 
+#endif

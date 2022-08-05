@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_6)
+#if defined(DISABLE_Function)
+	#define Function_hpp
+#endif
 
 #ifndef Function_hpp
 #define Function_hpp
+#define Function_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
 
@@ -26,6 +41,4 @@ class Function : public cppObject{
 
 }
 
-#endif 
-
-#endif 
+#endif

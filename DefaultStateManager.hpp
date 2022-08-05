@@ -1,12 +1,28 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_5)
+#if defined(DISABLE_AppStateManager) || defined(DISABLE_DefaultStateManager)
+	#define DefaultStateManager_hpp
+#endif
 
 #ifndef DefaultStateManager_hpp
 #define DefaultStateManager_hpp
+#define DefaultStateManager_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+    #include <chrono>
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "List.hpp"
+#include "Class.hpp"
 #include "PrimitiveList.hpp"
 #include "AppStateManager.hpp"
 
@@ -23,17 +39,17 @@ class DefaultStateManager : public AppStateManager{
     public:
 		DefaultStateManager(){}
 		virtual ~DefaultStateManager(){}
-		
+
 		virtual void setApplication(Application* app){
 			managerApp = app;
 		}
-		
+
 		virtual AppState* add(AppState* state){
 			DefaultStateManagerLog("DefaultStateManager", "add",  "println", "");
 			initializeStates.addPointer(state);
 			return state;
 		}
-		
+
 		virtual AppState* get(cppObjectClass* cls){
 			DefaultStateManagerLog("DefaultStateManager", "get",  "println", "");
 			for(int x = 0; x < appStateList.getPosition(); x++){
@@ -50,8 +66,8 @@ class DefaultStateManager : public AppStateManager{
 			}
 			return nullptr;
 		}
-	
-		virtual AppState* get(String appstateId, cppObjectClass* cls){
+
+		virtual AppState* get(Note appstateId, cppObjectClass* cls){
 			DefaultStateManagerLog("DefaultStateManager", "get",  "println", "");
 			for(int x = 0; x < appStateList.getPosition(); x++){
 				AppState* m_state = appStateList.getByPosition(x);
@@ -67,7 +83,53 @@ class DefaultStateManager : public AppStateManager{
 			}
 			return nullptr;
 		}
-		
+
+		virtual AppState* getInitializedState(cppObjectClass* cls){
+			DefaultStateManagerLog("DefaultStateManager", "getInitializeState",  "println", "");
+			for(int x = 0; x < appStateList.getPosition(); x++){
+				AppState* m_state = appStateList.getByPosition(x);
+				if(m_state->getClass() == cls){
+					return m_state;
+				}
+			}
+			return nullptr;
+		}
+
+		virtual AppState* getInitializedState(Note appstateId, cppObjectClass* cls){
+			DefaultStateManagerLog("DefaultStateManager", "getInitializedState",  "println", "");
+			for(int x = 0; x < appStateList.getPosition(); x++){
+				AppState* m_state = appStateList.getByPosition(x);
+				if(m_state->getClass() == cls && m_state->getId() == appstateId){
+					return m_state;
+				}
+			}
+			return nullptr;
+		}
+
+
+		virtual AppState* getUnInitializedState(cppObjectClass* cls){
+			DefaultStateManagerLog("DefaultStateManager", "getUnInitializedState",  "println", "");
+			for(int x = 0; x < initializeStates.getPosition(); x++){
+				AppState* m_state = initializeStates.getByPosition(x);
+				if(m_state->getClass() == cls){
+					return m_state;
+				}
+			}
+			return nullptr;
+		}
+
+		virtual AppState* getUnInitializedState(Note appstateId, cppObjectClass* cls){
+			DefaultStateManagerLog("DefaultStateManager", "getUnInitializedState",  "println", "");
+			for(int x = 0; x < initializeStates.getPosition(); x++){
+				AppState* m_state = initializeStates.getByPosition(x);
+				if(m_state->getClass() == cls && m_state->getId() == appstateId){
+					return m_state;
+				}
+			}
+			return nullptr;
+		}
+
+
 		virtual AppState* remove(cppObjectClass* cls){
 			DefaultStateManagerLog("DefaultStateManager", "remove",  "println", "");
 			ame::AppState *appstate = nullptr;
@@ -97,8 +159,8 @@ class DefaultStateManager : public AppStateManager{
 			}
 			return appstate;
 		}
-	
-		virtual AppState* remove(String appstateId, cppObjectClass* cls){
+
+		virtual AppState* remove(Note appstateId, cppObjectClass* cls){
 			DefaultStateManagerLog("DefaultStateManager", "remove",  "println", "");
 			AppState *appstate = nullptr;
 			for(int x = 0; x < appStateList.getPosition(); x++){
@@ -127,7 +189,7 @@ class DefaultStateManager : public AppStateManager{
 			}
 			return appstate;
 		}
-		
+
 		virtual bool contain(cppObjectClass* cls){
 			DefaultStateManagerLog("DefaultStateManager", "contain",  "println", "");
 			for(int x = 0; x < appStateList.getPosition(); x++){
@@ -144,8 +206,8 @@ class DefaultStateManager : public AppStateManager{
 			}
 			return false;
 		}
-	
-		virtual bool contain(String appstateId, cppObjectClass* cls){
+
+		virtual bool contain(Note appstateId, cppObjectClass* cls){
 			DefaultStateManagerLog("DefaultStateManager", "contain",  "println", "");
 			for(int x = 0; x < appStateList.getPosition(); x++){
 				AppState* m_state = appStateList.getByPosition(x);
@@ -161,19 +223,19 @@ class DefaultStateManager : public AppStateManager{
 			}
 			return false;
 		}
-		
+
 		virtual void removeAll(){
 			DefaultStateManagerLog("DefaultStateManager", "removeAll",  "println", "");
 			for(int x = 0; x < appStateList.getPosition(); x++){
 				appStateList.getByPosition(x)->onDisable();
-			}		
+			}
 			for(int x = 0; x < initializeStates.getPosition(); x++){
 				initializeStates.getByPosition(x)->onDisable();
-			}		
+			}
 			appStateList.reset();
 			initializeStates.reset();
 		}
-	
+
 		virtual void removeDeleteAll(){
 			DefaultStateManagerLog("DefaultStateManager", "removeDeleteAll",  "println", "");
 			for(int x = 0; x < appStateList.getPosition(); x++){
@@ -185,13 +247,19 @@ class DefaultStateManager : public AppStateManager{
 			appStateList.resetDelete();
 			initializeStates.resetDelete();
 		}
-		
+
 		virtual void update(){
+#ifdef ame_Windows
+			this->now = 0;
+#endif
+
+#ifdef ame_ArduinoIDE
 			this->now = micros();
+#endif
 			this->t = (float)(this->now - this->prev)/1000000;
 			this->prev = this->now;
 			if(!initializeStates.isEmpty()){
-				for(int x=0; x < initializeStates.getPosition();x++){
+				for(int x = 0; x < initializeStates.getPosition();x++){
 					AppState* m_state = initializeStates.getByPosition(x);
 					if(managerApp != nullptr){
 						m_state->initialize(managerApp);
@@ -202,28 +270,32 @@ class DefaultStateManager : public AppStateManager{
 				DefaultStateManagerLog("DefaultStateManager", "update",  "println", "initializeStates");
 				initializeStates.reset();
 			}
-			for(int x=0; x < appStateList.getPosition();x++){
-				appStateList.getByPosition(x)->update(this->t);
-			}			
+			for(int x = 0; x < appStateList.getPosition(); x++){
+				AppState* m_state = appStateList.getByPosition(x);
+				if(m_state == nullptr){
+					continue;
+				}
+				m_state->update(this->t);
+			}
 		}
-		
+
 		virtual float tpc(){
 			return t;
 		}
-		
+
 		//cppObject part
 		virtual cppObjectClass* getClass(){
-			return ame::Class<DefaultStateManager>::classType;
+			return Class<DefaultStateManager>::classType;
 		}
-		
-		virtual String toString(){
+
+		virtual Note toNote(){
 			return "DefaultStateManager";
 		}
-	
+
 		virtual bool instanceof(cppObjectClass* cls){
 			return cls == Class<DefaultStateManager>::classType || AppStateManager::instanceof(cls);
 		}
-    
+
 	protected:
 		PrimitiveList<AppState> appStateList;
 		PrimitiveList<AppState> initializeStates;
@@ -236,6 +308,3 @@ class DefaultStateManager : public AppStateManager{
 }
 
 #endif
-
-#endif
-

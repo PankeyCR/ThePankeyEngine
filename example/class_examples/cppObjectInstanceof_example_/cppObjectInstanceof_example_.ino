@@ -1,5 +1,6 @@
 
 #include "cppObject.hpp"
+#include "Class.hpp"
 #include "MemoryRam.h"
 //for instanceof to work you need to implement the getClass method and
 // the instanceof(cppObjectClass* cls) method on your derived classes

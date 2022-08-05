@@ -1,10 +1,25 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_Block)
+	#define Block_hpp
+#endif
 
 #ifndef Block_hpp
 #define Block_hpp
+#define Block_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "Environment.hpp"
 
@@ -15,18 +30,16 @@ class Block{
 		Block(){}
 		virtual ~Block(){}
 		
-		virtual void setCode(String c){code = c;}
+		virtual void setCode(Note c){code = c;}
 		virtual Block* run(<T,args...>(Environment* e){return nullptr;}
 		
 		virtual void operator=(Block b){code = b.code;}
 		virtual bool operator==(Block b){code == b.code;}
 		virtual bool operator!=(Block b){code != b.code;}
 	protected:
-		String code;
+		Note code;
 };
 
 }
 
-#endif 
-
-#endif 
+#endif

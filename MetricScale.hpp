@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_MetricScale)
+	#define MetricScale_hpp
+#endif
+
 #ifndef MetricScale_hpp
 #define MetricScale_hpp
+#define MetricScale_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "MetricPrefix.hpp"
 
@@ -70,4 +89,4 @@ class MetricScale {
 
 }
 
-#endif 
+#endif

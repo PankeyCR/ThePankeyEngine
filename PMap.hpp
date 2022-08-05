@@ -1,12 +1,28 @@
+	
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_PMap)
+	#define PMap_hpp
+#endif
 
 #ifndef PMap_hpp
 #define PMap_hpp
+#define PMap_AVAILABLE
 
-#include "ame_Level.hpp"
+#ifndef ame_Enviroment_Defined
 
-#if defined(ame_untilLevel_1)
+#endif
 
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
 #include "cppObject.hpp"
+#include "Class.hpp"
 #include "RawMap.hpp"
 #include "Map.hpp"
 #include "MapIterator.hpp"
@@ -814,6 +830,4 @@ class PMap : public Map<K,P>{
 
 }
 
-#endif 
-
-#endif 
+#endif

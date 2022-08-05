@@ -1,6 +1,25 @@
 
+#include "ame_Enviroment.hpp"
+
+#if defined(DISABLE_Vector)
+	#define Vector_hpp
+#endif
+
 #ifndef Vector_hpp
 #define Vector_hpp
+#define Vector_AVAILABLE
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
 
 #include "cppObject.hpp"
 
@@ -12,9 +31,9 @@ Vector(){
     this->name = "x";
 }
 Vector(const char* n){
-    this->name = String(n);
+    this->name = Note(n);
 }
-Vector(const String& n){
+Vector(const Note& n){
     this->name = n;
 }
 virtual ~Vector(){}
@@ -23,7 +42,7 @@ size_t printTo(Print& p) const{
 	p.print(this->name);
 }
 
-String getName(){
+Note getName(){
 	return this->name;
 }
     
@@ -31,8 +50,8 @@ cppObjectClass* getClass(){
 	return Class<Vector>::classType;
 }
     
-String toString(){
-	return String("Vector: ") + this->name;
+Note toNote(){
+	return Note("Vector: ") + this->name;
 }
 
 bool equal(cppObject* obj){
@@ -61,10 +80,10 @@ void operator=(Vector v){
 }
 
 void operator=(const char* n){
-	this->name =  String(n);
+	this->name =  Note(n);
 }
 
-void operator=(const String& n){
+void operator=(const Note& n){
 	this->name =  n;
 }
 
@@ -82,7 +101,7 @@ bool operator==(const char* n){
 	return false;
 }
 
-bool operator==(const String& n){
+bool operator==(const Note& n){
 	if(this->getName() == n){
 		return true;
 	}
@@ -103,7 +122,7 @@ bool operator!=(const char* n){
 	return false;
 }
 
-bool operator!=(const String& n){
+bool operator!=(const Note& n){
 	if(this->getName() != n){
 		return true;
 	}
@@ -111,7 +130,7 @@ bool operator!=(const String& n){
 }
     
 protected:
-String name; 
+Note name; 
 };
 
 }

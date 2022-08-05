@@ -1,12 +1,26 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_ClassEvent)
+	#define ClassEvent_hpp
+#endif
 
 #ifndef ClassEvent_hpp
 #define ClassEvent_hpp
+#define ClassEvent_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
 #include "Annotation.hpp"
 
 namespace ame{
@@ -14,7 +28,7 @@ namespace ame{
 template<class A,class R,class T,class P>
 class ClassEvent : public Annotation<A,R,T,P>{
 	protected:
-		PrimitiveMap<String,P> vars;
+		PrimitiveMap<Note,P> vars;
 		P var;
 		T* inst = nullptr;
 		
@@ -43,7 +57,7 @@ class ClassEvent : public Annotation<A,R,T,P>{
 			return var;
 		}
 		
-		virtual void event(String name){
+		virtual void event(Note name){
 			if(inst == nullptr){
 				return ;
 			}
@@ -80,7 +94,7 @@ class ClassEvent : public Annotation<A,R,T,P>{
 			return var;
 		}
 		
-		virtual P event(String name, T* i){
+		virtual P event(Note name, T* i){
 			if(i == nullptr){
 				return *vars.get(name);
 			}
@@ -153,7 +167,7 @@ class ClassEvent : public Annotation<A,R,T,P>{
 		}
 		/////////////////////////////////////////////////////////
 		
-		virtual P event(String name, EventMethod* m){
+		virtual P event(Note name, EventMethod* m){
 			if(vars.get(name) == nullptr){
 				vars.add(name,var);
 			}
@@ -165,7 +179,7 @@ class ClassEvent : public Annotation<A,R,T,P>{
 			}
 			return *vars.get(name);
 		}
-		virtual P event(String name, EventMethod* m, P e){
+		virtual P event(Note name, EventMethod* m, P e){
 			if(vars.get(name) == nullptr){
 				vars.add(name,var);
 			}
@@ -177,7 +191,7 @@ class ClassEvent : public Annotation<A,R,T,P>{
 			return e;
 		}
 		
-		virtual P event(String name, T* i, EventMethod* m){
+		virtual P event(Note name, T* i, EventMethod* m){
 			if(vars.get(name) == nullptr){
 				vars.add(name,var);
 			}
@@ -187,7 +201,7 @@ class ClassEvent : public Annotation<A,R,T,P>{
 			this->invoke(i,m,*vars.get(name));
 			return *vars.get(name);
 		}
-		virtual P event(String name, T* i, EventMethod* m, P e){
+		virtual P event(Note name, T* i, EventMethod* m, P e){
 			if(vars.get(name) == nullptr){
 				vars.add(name,var);
 			}
@@ -198,7 +212,7 @@ class ClassEvent : public Annotation<A,R,T,P>{
 			this->invoke(i,m,*vars.get(name));
 			return e;
 		}
-		virtual P event(String name, T* i, EventMethod m, P e){
+		virtual P event(Note name, T* i, EventMethod m, P e){
 			if(vars.get(name) == nullptr){
 				vars.add(name,var);
 			}
@@ -214,6 +228,4 @@ class ClassEvent : public Annotation<A,R,T,P>{
 
 }
 
-#endif 
-
-#endif 
+#endif

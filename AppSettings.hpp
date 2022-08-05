@@ -1,12 +1,27 @@
 
-#include "ame_Level.hpp"
+#include "ame_Enviroment.hpp"
 
-#if defined(ame_untilLevel_7)
+#if defined(DISABLE_AppSettings)
+	#define AppSettings_hpp
+#endif
 
 #ifndef AppSettings_hpp
 #define AppSettings_hpp
+#define AppSettings_AVAILABLE
 
-#include "Arduino.h"
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+#endif
+
+#include "Note.hpp"
 #include "cppObject.hpp"
 
 namespace ame{
@@ -17,34 +32,32 @@ class AppSettings : public cppObject{
     public:
 		virtual ~AppSettings(){}
 		
-		virtual void addInt(String s, int i)=0;
-		virtual void setInt(String s, int i)=0;
-		virtual int getInt(String s)=0;
-		virtual bool containInt(String s)=0;
+		virtual void addInt(Note s, int i)=0;
+		virtual void setInt(Note s, int i)=0;
+		virtual int getInt(Note s)=0;
+		virtual bool containInt(Note s)=0;
 		
-		virtual void addFloat(String s, float i)=0;
-		virtual void setFloat(String s, float i)=0;
-		virtual float getFloat(String s)=0;
-		virtual bool containFloat(String s)=0;
+		virtual void addFloat(Note s, float i)=0;
+		virtual void setFloat(Note s, float i)=0;
+		virtual float getFloat(Note s)=0;
+		virtual bool containFloat(Note s)=0;
 		
-		virtual void addString(String s, String i)=0;
-		virtual void setString(String s, String i)=0;
-		virtual bool containString(String s)=0;
-		virtual String getString(String s)=0;
+		virtual void addNote(Note s, Note i)=0;
+		virtual void setNote(Note s, Note i)=0;
+		virtual bool containNote(Note s)=0;
+		virtual Note getNote(Note s)=0;
 		
-		virtual void addBoolean(String s, bool i)=0;
-		virtual void setBoolean(String s, bool i)=0;
-		virtual bool getBoolean(String s)=0;
-		virtual bool containBoolean(String s)=0;
+		virtual void addBoolean(Note s, bool i)=0;
+		virtual void setBoolean(Note s, bool i)=0;
+		virtual bool getBoolean(Note s)=0;
+		virtual bool containBoolean(Note s)=0;
 		
-		virtual void addCppObject(String s, cppObject *i)=0;
-		virtual void setCppObject(String s, cppObject *i)=0;
-		virtual cppObject *getCppObject(String s)=0;
-		virtual bool containCppObject(String s)=0;
+		virtual void addCppObject(Note s, cppObject *i)=0;
+		virtual void setCppObject(Note s, cppObject *i)=0;
+		virtual cppObject *getCppObject(Note s)=0;
+		virtual bool containCppObject(Note s)=0;
 };
 
 }
 
-#endif 
-
-#endif 
+#endif

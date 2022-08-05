@@ -1,16 +1,16 @@
 
-#include "Lexer.h"
-#include "MemoryFree.h"
+#include "Lexer.hpp"
+#include "MemoryRam.h"
 
 using namespace ame;
 
-String scriptText = String("//simple script class\n")+
+Note scriptText = Note("//simple script class\n")+
   "class ScriptClass{\n"+
   " int value=0;\n"+
   " void scriptMethod(int t){\n"+  
   "   value=(t*40)/(2.15d+1.6f);\n"+  
   " }\n"+  
-  "}\n";
+  "};\n";
  
 void setup() {
   Serial.begin(9600);
@@ -18,69 +18,68 @@ void setup() {
 
 void loop() {
   Serial.println("////////////start");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 //  Serial.println(scriptText);
-  Lexer* lexer = new Lexer();
-  lexer->   addTypeToken(Token("if"))->
-            addTypeToken(Token("while"))->
-            addTypeToken(Token("iterate"))->
-            addTypeToken(Token("for"))->
-            addTypeToken(Token("class"))->
-            addTypeToken(Token("interface"))->
-            addTypeToken(Token("extend"))->
-            addTypeToken(Token("implement"))->
-            addTypeToken(Token("void"))->
-            addTypeToken(Token("fun"))->
-            
-            addTypeToken(Token("String"))->
-            addTypeToken(Token("int"))->
-            addTypeToken(Token("long"))->
-            addTypeToken(Token("double"))->
-            addTypeToken(Token("float"))->
-            
-            addBreakPoint(' ')->
-            addBreakPoint('\r')->
-            addBreakPoint('\0')->
-            addBreakPoint('\n')->
-            
+  Lexer lexer;
+  lexer.addTypeToken(Token("if"));
+  lexer.addTypeToken(Token("while"));
+  lexer.addTypeToken(Token("iterate"));
+  lexer.addTypeToken(Token("for"));
+  lexer.addTypeToken(Token("class"));
+  lexer.addTypeToken(Token("interface"));
+  lexer.addTypeToken(Token("extend"));
+  lexer.addTypeToken(Token("implement"));
+  lexer.addTypeToken(Token("void"));
+  lexer.addTypeToken(Token("fun"));
+  
+  lexer.addTypeToken(Token("String"));
+  lexer.addTypeToken(Token("int"));
+  lexer.addTypeToken(Token("long"));
+  lexer.addTypeToken(Token("double"));
+  lexer.addTypeToken(Token("float"));
+  
+  lexer.addBreakPoint(' ');
+  lexer.addBreakPoint('\r');
+  lexer.addBreakPoint('\0');
+  lexer.addBreakPoint('\n');
+  
     //  \n can be a breaking point or a delimiter, that depends on the parser
     // and the lenguaje design
     
-         //   addDelimiterToken("enter","\n"))->
-            addDelimiterToken(Token("comments","/*"))->
-            addDelimiterToken(Token("linecomments","//"))->
-            addDelimiterToken(Token("classDelimiter","->"))->
-            addDelimiterToken(Token("Lparenthesis","("))->
-            addDelimiterToken(Token("Rparenthesis",")"))->
-            addDelimiterToken(Token("LCurlyB","{"))->
-            addDelimiterToken(Token("RCurlyB","}"))->
-            addDelimiterToken(Token("endCodeLine",";"))->
-            addDelimiterToken(Token("Dpoint",":"))->
-            addDelimiterToken(Token("coma",","))->
-            
-            addDelimiterToken(Token("equal","="))->
-            addDelimiterToken(Token("isEqual", "=="))->
-            addDelimiterToken(Token("notEqual", "!="))->
-            addDelimiterToken(Token("smallerEqual", "<="))->
-            addDelimiterToken(Token("greatterEqual", ">="))->
-            addDelimiterToken(Token("smaller", "<"))->
-            addDelimiterToken(Token("greatter", ">"))->
-            
-            addDelimiterToken(Token("sum","+"))->
-            addDelimiterToken(Token("sub","-"))->
-            addDelimiterToken(Token("mul","*"))->
-            addDelimiterToken(Token("div","/"))->
-            addDelimiterToken(Token("exclamation","!"))->
-            addDelimiterToken(Token("question","?"));
+         //   addDelimiterToken("enter","\n"));
+  lexer.addDelimiterToken(Token("comments","/*"));
+  lexer.addDelimiterToken(Token("linecomments","//"));
+  lexer.addDelimiterToken(Token("classDelimiter",";"));
+  lexer.addDelimiterToken(Token("Lparenthesis","("));
+  lexer.addDelimiterToken(Token("Rparenthesis",")"));
+  lexer.addDelimiterToken(Token("LCurlyB","{"));
+  lexer.addDelimiterToken(Token("RCurlyB","}"));
+  lexer.addDelimiterToken(Token("endCodeLine",";"));
+  lexer.addDelimiterToken(Token("Dpoint",":"));
+  lexer.addDelimiterToken(Token("coma",","));
+  
+  lexer.addDelimiterToken(Token("equal","="));
+  lexer.addDelimiterToken(Token("isEqual", "=="));
+  lexer.addDelimiterToken(Token("notEqual", "!="));
+  lexer.addDelimiterToken(Token("smallerEqual", "<="));
+  lexer.addDelimiterToken(Token("greatterEqual", ">="));
+  lexer.addDelimiterToken(Token("smaller", "<"));
+  lexer.addDelimiterToken(Token("greatter", ">"));
+  
+  lexer.addDelimiterToken(Token("sum","+"));
+  lexer.addDelimiterToken(Token("sub","-"));
+  lexer.addDelimiterToken(Token("mul","*"));
+  lexer.addDelimiterToken(Token("div","/"));
+  lexer.addDelimiterToken(Token("exclamation","!"));
+  lexer.addDelimiterToken(Token("question","?"));
 
 
   Serial.println("starting lexer capture");
-  LexerCaptureString(lexer,scriptText);
+  LexerCaptureNoteV(lexer,scriptText);
   
   Serial.println("printing tokens");
-  lexer->printTokens(&Serial);
+  lexer.printTokens(&Serial);
 
-  delete lexer;
   Serial.println("////////////end");
-  Serial.println(freeMemory());
+  Serial.println(getRamSize());
 }
