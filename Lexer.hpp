@@ -1,49 +1,19 @@
 
 #include "ame_Enviroment.hpp"
 
-#if defined(DISABLE_Lexer)
-	#define Lexer_hpp
-#endif
-
 #ifndef Lexer_h
 #define Lexer_h
 #define Lexer_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Stream.h"
-	#include "Arduino.h"
-#endif
-
 #include "Token.hpp"
 #include "PrimitiveList.hpp"
-#include "Environment.hpp"
-
-#define LexerCaptureNote(lexer,scriptText)		\
-  for(int xLexerCaptureNote = 0; xLexerCaptureNote < scriptText.length(); xLexerCaptureNote++){		\
-    lexer->capture(scriptText.charAt(xLexerCaptureNote),(scriptText.length()-1)!=xLexerCaptureNote);			\
-  }													\
-
-#define LexerCaptureNoteV(lexer,scriptText)		\
-  for(int xLexerCaptureNote = 0; xLexerCaptureNote < scriptText.length(); xLexerCaptureNote++){		\
-    lexer.capture(scriptText.charAt(xLexerCaptureNote),(scriptText.length()-1)!=xLexerCaptureNote);			\
-  }													\
+#include "Note.hpp"
   
  namespace ame{
 
 class Lexer{
     public:
 		Lexer(){}
-		Lexer(Environment* env){
-			environment = env;
-		}
 		virtual ~Lexer(){}
 		
 		virtual Note extractNote(Note mns){
@@ -173,13 +143,6 @@ class Lexer{
 			}
 			return false;
 		}
-		
-		virtual bool isVariable(Note mns){
-			if(environment == nullptr){
-				return false;
-			}
-			return environment->containVariable(mns);
-		}
 	
 		virtual Token getToken(Note tkn){
 			if(this->isDouble(tkn)){
@@ -208,9 +171,6 @@ class Lexer{
 				if(t->value == tkn){
 					return Token(*t);
 				}
-			}
-			if(environment != nullptr){
-				return environment->getToken(tkn);
 			}
 			return Token("Variable",tkn);
 		}
@@ -287,14 +247,6 @@ class Lexer{
 			return this->delimiterTokens.getPosition();
 		}
 		
-		virtual void setEnvironment(Environment* e){
-			this->environment = e;
-		}
-		
-		virtual Environment* getEnvironment(){
-			return this->environment;
-		}
-		
 		virtual void printTokens(Stream* port){
 			for(int x = 0; x < this->capturedTokens.getPosition(); x++){
 				Token* t = capturedTokens.getByPosition(x);
@@ -312,16 +264,12 @@ class Lexer{
 			}
 			return true;
 		}
-			
-		virtual void printError(Stream* port){}
 		
 		virtual void reset(){
 			capturedTokens.resetDelete();
 		}
 		
 	protected:
-		Environment* environment = nullptr;
-		
 		PrimitiveList<char> breakPoint;
 		PrimitiveList<Token> typeTokens;
 		PrimitiveList<Token> delimiterTokens;

@@ -22,15 +22,11 @@
 	#include "Printable.h"
 #endif
 
+#include "Note.hpp"
+
 namespace ame{
-
-#ifdef ame_Windows
-class Token{
-#endif
-
-#ifdef ame_ArduinoIDE
+	
 class Token : public Printable{
-#endif
 
 public:
 Note name;

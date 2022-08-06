@@ -80,7 +80,7 @@
 //#define SerialListenerState_LogDebugApp
 //#define AlwaysConnected_LogDebugApp
 
-#define DISABLE_Note
+// #define DISABLE_Note
 #define DISABLE_ByteArray
 // #define DISABLE_AppSettings
 // #define DISABLE_TimeControl

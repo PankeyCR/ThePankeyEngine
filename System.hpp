@@ -9,10 +9,14 @@
 
 #ifdef ame_Windows
 	#include <stdio.h>
+	#include "ame_Print.hpp"
+	#include "ame_Printable.hpp"
+	#include "ConsolePrint.hpp"
 #endif
 
 #ifdef ame_ArduinoIDE
 	#include "Arduino.h"
+	#include "Printable.h"
 #endif
 
 #include "ame_String.hpp"
@@ -21,174 +25,45 @@ namespace ame{
 
 class System{
     public:
+		static Print& console;
 		virtual ~System(){}
-		
+
 		static long milliSeconds(){
 		#ifdef ame_Windows
 			return 0;
-		#endif
-
-		#ifdef ame_ArduinoIDE
+		#elif defined(ame_ArduinoIDE)
 			return millis();
+		#else
+			return 0;
 		#endif
 		}
-		
+
 		static long microSeconds(){
 		#ifdef ame_Windows
 			return 0;
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			return micros();
-		#endif
-		}
-		
-		static void print(const char* chr){
-		#ifdef ame_Windows
-            printf ("%s", chr);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.print(chr);
+		#elif defined(ame_ArduinoIDE)
+			return millis();
+		#else
+			return 0;
 		#endif
 		}
-		
-		static void println(const char* chr){
-		#ifdef ame_Windows
-            printf ("%s \n", chr);
-		#endif
 
-		#ifdef ame_ArduinoIDE
-			Serial.println(chr);
-		#endif
-		}
-		
-		static void print(const char& chr){
-		#ifdef ame_Windows
-            printf ("%s", chr);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.print(chr);
-		#endif
-		}
-		
-		static void println(const char& chr){
-		#ifdef ame_Windows
-            printf ("%s \n", chr);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.println(chr);
-		#endif
-		}
-		
-		static void println(const float& val){
-		#ifdef ame_Windows
-            printf ("%f \n", val);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.println(val);
-		#endif
-		}
-		
-		static void print(const float& val){
-		#ifdef ame_Windows
-            printf ("%f", val);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.print(val);
-		#endif
-		}
-		
-		static void println(const long& val){
-		#ifdef ame_Windows
-            printf ("%ld \n", val);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.println(val);
-		#endif
-		}
-		
-		static void print(const long& val){
-		#ifdef ame_Windows
-            printf ("%ld", val);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.print(val);
-		#endif
-		}
-		
-		static void println(const int& val){
-		#ifdef ame_Windows
-            printf ("%id \n", val);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.println(val);
-		#endif
-		}
-		
-		static void print(const int& val){
-		#ifdef ame_Windows
-            printf ("%id", val);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.print(val);
-		#endif
-		}
-		
-		static void println(const bool& val){
-		#ifdef ame_Windows
-            printf ("%bd \n", val);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.println(val);
-		#endif
-		}
-		
-		static void print(const bool& val){
-		#ifdef ame_Windows
-            printf ("%bd", val);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.print(val);
-		#endif
-		}
-		
-		static void println(const ame_String& val){
-		#ifdef ame_Windows
-            printf ("%sd \n", val);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.println(val);
-		#endif
-		}
-		
-		static void print(const ame_String& val){
-		#ifdef ame_Windows
-            printf ("%sd", val);
-		#endif
-
-		#ifdef ame_ArduinoIDE
-			Serial.print(val);
-		#endif
-		}
-		
-		
 	protected:
-	
+
 		System(){}
-		
+
 };
+#ifdef ame_Windows
+
+ConsolePrint PConsole;
+Print& System::console = PConsole;
+
+#endif
+
+#ifdef ame_ArduinoIDE
+Print& System::console = Serial;
+#endif
+
 
 }
 

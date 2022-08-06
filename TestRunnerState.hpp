@@ -58,11 +58,11 @@ class TestRunnerState : public AppState{
 					continue;
 				}
 				t_res = false;
-				System::println(Note("Testing ") + f_note);
-				System::println(f_result.getNoteResult());
+				System::console.println(Note("Testing ") + f_note);
+				System::console.println(f_result.getNoteResult());
 			}
 			if(t_res){
-				System::println("Testing has been a complete success");
+				System::console.println("Testing has been a complete success");
 			}
 			m_running = false;
 		}

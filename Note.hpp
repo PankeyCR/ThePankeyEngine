@@ -257,10 +257,13 @@ class Note : public Printable{
 		}
 
 		// Note(String&& source){
+			// NoteLog(ame_Log_StartMethod, "Constructor", "println", "start");
+			// NoteLog(ame_Log_Statement, "Constructor", "println", "String&& source");
 			// if(!source.isEmpty()){
 				// m_string = source.c_str();
 				// source.c_str() = nullptr;
 			// }
+			// NoteLog(ame_Log_EndMethod, "Constructor", "println", "");
 		// }
 
 		#endif

@@ -27,6 +27,7 @@
 #include "SerialPort.hpp"
 #include "Application.hpp"
 #include "AppState.hpp"
+#include "SerialNetwork.hpp"
 #include "List.hpp"
 #include "PrimitiveList.hpp"
 #include "Map.hpp"
@@ -57,7 +58,7 @@
 
 namespace ame{
 
-class SerialState : public AppState{	
+class SerialState : public SerialNetwork{	
     public:
 		using MethodStateChanger = void (*)(SerialPort*,PortProtocol*);
 		using MethodStateGlobalChanger = void (*)();
