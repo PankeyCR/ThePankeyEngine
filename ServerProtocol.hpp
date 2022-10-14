@@ -1,34 +1,11 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_ServerProtocol)
-	#define ServerProtocol_hpp
-#endif
-
 #ifndef ServerProtocol_hpp
 #define ServerProtocol_hpp
 #define ServerProtocol_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
 #include "Application.hpp"
-#include "SerialServer.hpp"
-#include "SerialPort.hpp"
-#include "Message.hpp"
 
 namespace ame{
-	
-class SerialState;
 
 class ServerProtocol : public cppObject{	
     public:
@@ -36,7 +13,7 @@ class ServerProtocol : public cppObject{
 		
 		virtual ~ServerProtocol(){}
 		
-		virtual void attach(SerialState* state){
+		virtual void attach(SerialNetwork* state){
 			this->serialState = state;
 		}
 		
@@ -58,7 +35,7 @@ class ServerProtocol : public cppObject{
 		virtual void NetworkMessage(SerialServer* a_server, Note a_mns){}
 		
 	protected:
-		SerialState* serialState = nullptr;
+		SerialNetwork* serialState = nullptr;
 };
 
 }

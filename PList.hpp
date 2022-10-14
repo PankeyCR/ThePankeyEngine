@@ -1,428 +1,381 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_PList)
-	#define PList_hpp
-#endif
-
 #ifndef PList_hpp
 #define PList_hpp
 #define PList_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
 #include "ListIterator.hpp"
 #include "cppObject.hpp"
+#include "Class.hpp"
 #include "List.hpp"
+
+#ifdef PList_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+
+	#define PListLog(location,method,type,mns) ame_Log(this,location,"PList",method,type,mns)
+	#define const_PListLog(location,method,type,mns)
+#else
+	#ifdef PList_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+
+		#define PListLog(location,method,type,mns) ame_LogDebug(this,location,"PList",method,type)
+		#define const_PListLog(location,method,type,mns)
+	#else
+		#define PListLog(location,method,type,mns)
+		#define const_PListLog(location,method,type,mns)
+	#endif
+#endif
 
 namespace ame{
 
-template <class T,int size>
+template <class T,int t_size>
 class PList : public List<T>{
 	private:
-		int pos;	
-		bool owner = false;
+		int m_pos = 0;	
+		bool m_owner = false;
     public:
 		
-		T* values[size];
+		T* m_values[t_size];
 		
-		PList<T,size>(){
-			pos=0;
-			for(int x=0; x < size ; x++){
-				values[x] = nullptr;
-			}
+		PList(){}
+		
+		PList(bool c_own){
+			this->setOwner(c_own);
 		}
 		
-		PList<T,size>(bool own){
-			pos=0;
-			owner = own;
-			for(int x=0; x < size ; x++){
-				values[x] = nullptr;
-			}
-		}
-		
-		~PList<T,size>(){
-			if(owner){
-				for(int x=0; x < pos ; x++){
-					if(values[x] != nullptr){
-						delete values[x];
+		virtual ~PList(){
+			if(this->isOwner()){
+				for(int x = 0; x < this->getPosition() ; x++){
+					if(this->m_values[x] != nullptr){
+						delete this->m_values[x];
 					}
 				}
 			}
 		}
 
-		bool isEmpty()const{
-			return pos==0;
-		}
-		
-		void setPosition(int p){
-			pos=p;
-		}
-		
-		int getPosition()const{
-			return pos;
-		}
-		
-		int getSize()const{
-			return size;
-		}
-		
-		T* getByPosition(int x)const{
-			if(x >= pos){
-				return nullptr;
-			}
-			return values[x];
+		virtual bool isEmpty()const{
+			return this->getPosition() == 0;
 		}
 	
 		virtual bool replace(int i, int j){
-			if(i >= pos || j >= pos){
+			if(i >= this->getPosition() || j >= this->getPosition()){
 				return false;
 			}
-			T* it = values[i];
-			T* jt = values[j];
-			values[i] = jt;
-			values[j] = it;
+			T* it = this->m_values[i];
+			T* jt = this->m_values[j];
+			this->m_values[i] = jt;
+			this->m_values[j] = it;
 			return true;
 		}
+		
+		virtual T* addPointer(T* a_a_value){
+            if(this->getPosition() >= t_size){
+				return nullptr;
+            }
+			this->m_values[this->getPosition()] = a_a_value;
+			this->incrementPosition();
+			return a_a_value;
+		}
+		
+		virtual T* setPointer(int a_position, T* a_value){
+            if(a_position >= t_size){
+				return nullptr;
+            }
+			if(this->m_values[a_position] != nullptr && this->m_values[a_position] != a_value && this->isOwner()){
+				delete this->m_values[a_position];
+			}
+			this->m_values[a_position] = a_value;
+			return a_value;
+		}
+		
+		virtual T* insertPointer(int a_position, T* a_value){
+            if(a_value == nullptr || this->m_values[a_position] == a_value){
+				return nullptr;
+            }
+            if(a_position >= t_size){
+				return nullptr;
+            }
+            if(a_position >= this->getPosition() + 1){
+				return nullptr;
+            }
+			T* nVaule;
+			T* rVaule = a_value;
+			if(this->isOwner()){
+				for(int x = 0; x <= this->getPosition(); x++){
+					if(x == t_size && nVaule != nullptr){
+						delete nVaule;
+					}
+					if(x >= a_position && x != t_size){
+						nVaule = this->m_values[x];
+						this->m_values[x] = rVaule;
+						rVaule = nVaule;
+					}
+				}
+			}else{
+				for(int x = 0; x <= this->getPosition(); x++){
+					if(x >= a_position){
+						nVaule = this->m_values[x];
+						this->m_values[x] = rVaule;
+						rVaule = nVaule;
+					}
+				}
+			}
+			if(this->getPosition() < t_size){
+				this->incrementPosition();
+			}
+			return this->m_values[a_position];
+		}
+		
+		virtual T* getByPointer(T* key){
+			for(int x=0; x < this->getPosition(); x++){
+				if(this->m_values[x] == key ){
+					return this->m_values[x];
+				}
+			}
+			return nullptr;
+		}
+		
+		virtual T* getByPosition(int x)const{
+			if(x >= this->getPosition()){
+				return nullptr;
+			}
+			return this->m_values[x];
+		}
+		
+		virtual bool containByPointer(T *key){
+			for(int x=0; x < this->getPosition(); x++){
+				if(this->m_values[x] == key ){
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		virtual int getIndexByPointer(T *key){
+			for(int x=0; x < this->getPosition(); x++){
+				if(this->m_values[x] == key ){
+					return x;
+				}
+			}
+			return -1;
+		}
+		
+		virtual void reset(){
+			this->setPosition(0);
+			for(int x=0; x < this->getPosition(); x++){
+				this->m_values[x] = nullptr;
+			}
+		}
+		
+		virtual void resetDelete(){
+			for(int x=0; x < this->getPosition(); x++){
+				if(this->m_values[x] != nullptr && this->isOwner()){
+					delete this->m_values[x];
+				}
+				this->m_values[x] = nullptr;
+			}
+			this->setPosition(0);
+		}
+		
+		virtual T* removeByPointer(T* key){
+			T *t = nullptr;
+			bool is=false;
+			for(int x=0; x < this->getPosition(); x++){
+				if(this->m_values[x] == key ){
+					is = true;
+				}
+			}
+			if(is){
+				int nv =0;
+				for(int x=0; x < this->getPosition(); x++){
+					if(this->m_values[x] != key ){
+						this->m_values[nv] = this->m_values[x];
+						nv++;
+					}else{
+						t = this->m_values[x];
+					}
+				}
+				this->setPosition(nv);
+			}
+			return t;
+		}
+		
+		virtual T* removeByPosition(int p){
+			if(p >= this->getPosition()){
+				return nullptr;
+			}
+			T* t = nullptr;
+			for(int x=0; x < this->getPosition(); x++){
+				if(x == p ){
+					t = this->m_values[x];
+				}
+				if(x > p ){
+					this->m_values[x-1] = this->m_values[x];
+				}
+			}
+			this->decrementPosition();
+			return t;
+		}
+		
+		virtual bool removeFirstIndex(int a_amount){
+			return false;
+		}
 	
-		template<class... args>
-		void addPack(args... x){
-			T array[] = {x...};
-			//for(const T &a : array){
-			for(T a : array){
-				addLValue(a);
+		virtual bool removeLastIndex(int a_amount){
+			return false;
+		}
+		
+		virtual T* addLValue(T a_a_value){
+            if(this->getPosition() >= t_size){
+				return nullptr;
+            }
+			this->m_values[this->getPosition()] = new T();
+			*this->m_values[this->getPosition()] = a_a_value;
+			this->incrementPosition();
+			return this->m_values[this->getPosition() - 1];
+		}
+		
+		virtual T* setLValue(int a_position, T a_value){
+            if(a_position >= t_size){
+				return nullptr;
+            }
+			if(this->m_values[a_position] == nullptr){
+				this->m_values[a_position] = new T();
 			}
+			*this->m_values[a_position] = a_value;
+			return this->m_values[a_position];
 		}
 		
-		template<class... Args>
-		T* addParameters(Args... args){
-            if(pos >= size){
+		virtual T* insertLValue(int a_position, T a_value){
+            if(a_position >= t_size){
 				return nullptr;
             }
-			while(values[pos] != nullptr){
-				pos++;
-			}
-            if(pos >= size){
-				return nullptr;
-            }
-			values[pos] = new T(args...);
-			pos++;
-			return values[pos-1];
-		}
-		
-		T* addPointer(T* value){
-            if(pos >= size){
-				return nullptr;
-            }
-			values[pos] = value;
-			pos++;
-			return value;
-		}
-		
-		T* addLValue(T value){
-            if(pos >= size){
-				return nullptr;
-            }
-			values[pos] = new T();
-			*values[pos] = value;
-			pos++;
-			return values[pos-1];
-		}
-		
-		T* setLValue(int position, T value){
-            if(position >= size){
-				return nullptr;
-            }
-			if(values[position] == nullptr){
-				values[position] = new T();
-			}
-			*values[position] = value;
-			return values[position];
-		}
-		
-		T* setPointer(int position, T* value){
-            if(position >= size){
-				return nullptr;
-            }
-			if(values[position] != nullptr && values[position] != value && owner){
-				delete this->values[position];
-			}
-			values[position] = value;
-			return value;
-		}
-		
-		T* insertLValue(int position, T value){
-            if(position >= size){
-				return nullptr;
-            }
-            if(position >= pos+1){
+            if(a_position >= this->getPosition() + 1){
 				return nullptr;
             }
 			T* nVaule = nullptr;
 			T* rVaule = new T();
-			*rVaule = value;
-			if(owner){
-				for(int x = 0; x <= size; x++){
-					if(x == size && nVaule != nullptr){
+			*rVaule = a_value;
+			if(this->isOwner()){
+				for(int x = 0; x <= t_size; x++){
+					if(x == t_size && nVaule != nullptr){
 						delete nVaule;
 					}
-					if(x >= position && x != size){
-						nVaule = values[x];
-						values[x] = rVaule;
+					if(x >= a_position && x != t_size){
+						nVaule = this->m_values[x];
+						this->m_values[x] = rVaule;
 						rVaule = nVaule;
 					}
 				}
 			}else{
-				for(int x = 0; x <= pos; x++){
-					if(x >= position){
-						nVaule = values[x];
-						values[x] = rVaule;
+				for(int x = 0; x <= this->getPosition(); x++){
+					if(x >= a_position){
+						nVaule = this->m_values[x];
+						this->m_values[x] = rVaule;
 						rVaule = nVaule;
 					}
 				}
 			}
-			if(pos < size){
-				pos++;
+			if(this->getPosition() < t_size){
+				this->incrementPosition();
 			}
-			return values[position];
+			return this->m_values[a_position];
 		}
 		
-		T* insertPointer(int position, T* value){
-            if(value == nullptr || values[position] == value){
-				return nullptr;
-            }
-            if(position >= size){
-				return nullptr;
-            }
-            if(position >= pos+1){
-				return nullptr;
-            }
-			T* nVaule;
-			T* rVaule = value;
-			if(owner){
-				for(int x = 0; x <= pos; x++){
-					if(x == size && nVaule != nullptr){
-						delete nVaule;
-					}
-					if(x >= position && x != size){
-						nVaule = values[x];
-						values[x] = rVaule;
-						rVaule = nVaule;
-					}
-				}
-			}else{
-				for(int x = 0; x <= pos; x++){
-					if(x >= position){
-						nVaule = values[x];
-						values[x] = rVaule;
-						rVaule = nVaule;
-					}
-				}
-			}
-			if(pos < size){
-				pos++;
-			}
-			return values[position];
-		}
-		
-		T* getByPointer(T* key){
-			for(int x=0; x < pos; x++){
-				if(values[x] == key ){
-					return values[x];
+		virtual T* getByLValue(T key){
+			for(int x=0; x < this->getPosition(); x++){
+				if(*this->m_values[x] == key ){
+					return this->m_values[x];
 				}
 			}
 			return nullptr;
 		}
 		
-		T* getByLValue(T key){
-			for(int x=0; x < pos; x++){
-				if(*values[x] == key ){
-					return values[x];
-				}
-			}
-			return nullptr;
-		}
-		
-		bool containByPointer(T *key){
-			for(int x=0; x < pos; x++){
-				if(values[x] == key ){
+		virtual bool containByLValue(T key){
+			for(int x=0; x < this->getPosition(); x++){
+				if(*this->m_values[x] == key ){
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		bool containByLValue(T key){
-			for(int x=0; x < pos; x++){
-				if(*values[x] == key ){
-					return true;
-				}
-			}
-			return false;
-		}
-		
-		int getIndexByPointer(T *key){
-			for(int x=0; x < pos; x++){
-				if(values[x] == key ){
+		virtual int getIndexByLValue(T key){
+			for(int x=0; x < this->getPosition(); x++){
+				if(*this->m_values[x] == key ){
 					return x;
 				}
 			}
 			return -1;
 		}
 		
-		int getIndexByLValue(T key){
-			for(int x=0; x < pos; x++){
-				if(*values[x] == key ){
-					return x;
-				}
-			}
-			return -1;
-		}
-		
-		void reset(){
-			pos=0;
-			for(int x=0; x < pos; x++){
-				values[x] = nullptr;
-			}
-		}
-		
-		void resetDelete(){
-			for(int x=0; x < pos; x++){
-				if(values[x] != nullptr && owner){
-					delete values[x];
-				}
-				values[x] = nullptr;
-			}
-			pos=0;
-		}
-		
-		T* removeByPointer(T* key){
+		virtual T* removeByLValue(T key){
 			T *t = nullptr;
 			bool is=false;
-			for(int x=0; x < pos; x++){
-				if(values[x] == key ){
+			for(int x=0; x < this->getPosition(); x++){
+				if(*this->m_values[x] == key ){
 					is = true;
 				}
 			}
 			if(is){
 				int nv =0;
-				for(int x=0; x < pos; x++){
-					if(values[x] != key ){
-						values[nv] = values[x];
+				for(int x=0; x < this->getPosition(); x++){
+					if(*this->m_values[x] != key ){
+						this->m_values[nv] = this->m_values[x];
 						nv++;
 					}else{
-						t = values[x];
+						t = this->m_values[x];
 					}
 				}
-				pos = nv;
+				this->setPosition(nv);
 			}
 			return t;
 		}
-		
-		T* removeByLValue(T key){
-			T *t = nullptr;
-			bool is=false;
-			for(int x=0; x < pos; x++){
-				if(*values[x] == key ){
-					is = true;
-				}
-			}
-			if(is){
-				int nv =0;
-				for(int x=0; x < pos; x++){
-					if(*values[x] != key ){
-						values[nv] = values[x];
-						nv++;
-					}else{
-						t = values[x];
-					}
-				}
-				pos = nv;
-			}
-			return t;
-		}
-		
-		T* removeByPosition(int p){
-			if(p >= pos){
-				return nullptr;
-			}
-			T* t = nullptr;
-			for(int x=0; x < pos; x++){
-				if(x == p ){
-					t = values[x];
-				}
-				if(x > p ){
-					values[x-1] = values[x];
-				}
-			}
-			pos--;
-			return t;
-		}
-	
-		void onDelete(){
-			for(int x=0; x < pos; x++){
-				if(values[x] != nullptr && owner){
-					delete values[x];
-				}
-				values[x] = nullptr;
-			}
-			pos = 0;
-		}
-	
 		////////////////////////////////////////////special removes part///////////////////////////////////////////////
-		virtual bool removeAll(T value){
+		virtual bool removeAll(T a_value){
 			bool r_val = false;
 			int p_x = 0;
-			for(int x = 0; x < pos; x++){
-				if(value == *values[x]){
-					if(owner){
-						delete values[x];
+			for(int x = 0; x < this->getPosition(); x++){
+				if(a_value == *this->m_values[x]){
+					if(this->isOwner()){
+						delete this->m_values[x];
 					}
 					r_val = true;
 				}else{
-					values[p_x] = values[x];
+					this->m_values[p_x] = this->m_values[x];
 					p_x++;
 				}
 			}
-			pos = p_x;
+			this->setPosition(p_x);
 			return r_val;
 		}
 		
-		virtual bool removeFirst(T value){
+		virtual bool removeFirst(T a_value){
 			bool r_val = false;
 			bool r_once = true;
 			int p_x = 0;
-			for(int x = 0; x < pos; x++){
-				if(value == *values[x] && r_once){
-					if(owner){
-						delete values[x];
+			for(int x = 0; x < this->getPosition(); x++){
+				if(a_value == *this->m_values[x] && r_once){
+					if(this->isOwner()){
+						delete this->m_values[x];
 					}
 					r_once = false;
 					r_val = true;
 				}else{
-					values[p_x] = values[x];
+					this->m_values[p_x] = this->m_values[x];
 					p_x++;
 				}
 			}
-			pos = p_x;
+			this->setPosition(p_x);
 			return r_val;
 			// return false;
 		}
 		
-		virtual bool removeLast(T value){
-			int r_pos = pos;
-			for(int x = pos - 1; x >= 0; x--){
-				if(value == *values[x]){
+		virtual bool removeLast(T a_value){
+			int r_pos = this->getPosition();
+			for(int x = this->getPosition() - 1; x >= 0; x--){
+				if(a_value == *this->m_values[x]){
 					r_pos = x;
 					break;
 				}
@@ -431,110 +384,76 @@ class PList : public List<T>{
 			bool r_val = false;
 			bool r_once = true;
 			int p_x = r_pos;
-			for(int x = p_x; x < pos; x++){
-				if(value == *values[x] && r_once){
-					if(owner){
-						delete values[x];
+			for(int x = p_x; x < this->getPosition(); x++){
+				if(a_value == *this->m_values[x] && r_once){
+					if(this->isOwner()){
+						delete this->m_values[x];
 					}
 					r_once = false;
 					r_val = true;
 				}else{
-					values[p_x] = values[x];
+					this->m_values[p_x] = this->m_values[x];
 					p_x++;
 				}
 			}
-			pos = p_x;
+			this->setPosition(p_x);
 			return r_val;
 			// return false;
 		}
-	
+		
+		virtual T& operator[](int x){
+			if(x >= t_size){
+				return *this->m_values[t_size - 1];
+			}
+			if(this->getPosition() == x){
+				this->incrementPosition();
+			}
+			this->m_values[x] = new T();
+			return *this->m_values[x];
+		}
+		
 		////////////////////////////////////////////operator part///////////////////////////////////////////////
-		
-		T& operator[](int x){
-			if(x >= size){
-				return *values[size-1];
+	
+		virtual void onDelete(){
+			for(int x=0; x < this->getPosition(); x++){
+				if(this->m_values[x] != nullptr && this->isOwner()){
+					delete this->m_values[x];
+				}
+				this->m_values[x] = nullptr;
 			}
-			if(pos == x){
-				pos++;
-			}
-			values[x] = new T();
-			return *values[x];
+			this->setPosition(0);
 		}
 		
-		cppObjectClass* getClass(){
-			return Class<PList>::classType;
+		virtual cppObjectClass* getClass(){
+			return Class<PList<T,t_size>>::getClass();
 		}
 		
-		int getIterationSize(){
-			return pos;
-		}
-		
-		T getLValue(Iterator iterate){
-			return *values[iterate.getIteration()];
-		}
-		
-		T* getPointer(Iterator iterate){
-			return values[iterate.getIteration()];
-		}
-		
-		T* setLValue(Iterator iterate, T s){
-			return this->setLValue(iterate.getIteration() , s);
-		}
-		
-		T* setPointer(Iterator iterate, T* s){
-			return this->setPointer(iterate.getIteration() , s);
-		}
-		
-		T* insertLValue(Iterator& iterate, T s){
-			int p = iterate.getIteration();
-			iterate.next();
-			return this->insertLValue(p , s);
-		}
-		
-		T* insertPointer(Iterator& iterate, T* s){
-			int p = iterate.getIteration();
-			iterate.next();
-			return this->insertPointer(p , s);
-		}
-		
-		T* remove(Iterator& iterate){
-			int p = iterate.getIteration();
-			iterate.last();
-			return this->removeByPosition(p);
-		}
-		
-		void removeDelete(Iterator& iterate){
-			int p = iterate.getIteration();
-			iterate.last();
-			this->removeDeleteByPosition(p);
-		}
-		
-		List<T>* clone(){
-			List<T>* list = new PList<T,size>(true);
-			for(int xl=0; xl < pos; xl++){
-				list->addLValue(*values[xl]);
+		virtual List<T>* clone(){
+			List<T>* list = new PList<T,t_size>(true);
+			for(int xl = 0; xl < this->getPosition(); xl++){
+				list->addLValue(*this->m_values[xl]);
 			}
 			return list;
 		}
 		
-		List<T>* clone(bool owningMemory){
-			List<T>* list = new PList<T,size>(owningMemory);
-			for(int xl=0; xl < pos; xl++){
-				list->addLValue(*values[xl]);
+		virtual List<T>* clone(bool owningMemory){
+			List<T>* list = new PList<T,t_size>(owningMemory);
+			for(int xl=0; xl < this->getPosition(); xl++){
+				list->addLValue(*this->m_values[xl]);
 			}
 			return list;
 		}
 		
-        void operator =(PList<T,size> t){
+        virtual void operator =(const PList<T,t_size>& t){
 			
 		}
 		
-        bool operator ==(PList<T,size> t){
-			return this->getClassName() == t.getClassName();
+        virtual bool operator ==(PList<T,t_size> t){
+			return false;
 		}
 		
-        bool operator !=(PList<T,size> t){
-			return this->getClassName() != t.getClassName();
+        virtual bool operator !=(PList<T,t_size> t){
+			return false;
 		}
 	
 		////////////////////////////////////////////Iterator part///////////////////////////////////////////////

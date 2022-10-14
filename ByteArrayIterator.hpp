@@ -39,7 +39,7 @@ class ByteArrayIterator{
 		}
 		virtual ~ByteArrayIterator(){}
 		
-		virtual char& operator *(){
+		virtual ame_Byte& operator *(){
 			return m_byte[m_pos];
 		}
 	

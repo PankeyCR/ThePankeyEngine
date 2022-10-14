@@ -1360,16 +1360,16 @@ class Matrix4f : public cppObject , public Printable{
 			return "";
 		}
 		
-		bool equals(cppObject *o){
-			if (!(o->instanceof(Class<Matrix4f>::classType)) || o == nullptr) {
+		virtual bool equals(cppObject *a_obj){
+			if (!(a_obj->instanceof(Class<Matrix4f>::classType)) || a_obj == nullptr) {
 				return false;
 			}
 
-			if (this == (Matrix4f*)o) {
+			if (this == (Matrix4f*)a_obj) {
 				return true;
 			}
 
-			Matrix4f* comp = (Matrix4f*) o;
+			Matrix4f* comp = (Matrix4f*) a_obj;
 			// if (Float.compare(m00, comp.m00) != 0) {
 				// return false;
 			// }
@@ -1425,8 +1425,12 @@ class Matrix4f : public cppObject , public Printable{
 			return true;
 		}
 		
-		cppObjectClass* getClass(){
-			return Class<Matrix4f>::classType;
+		virtual cppObjectClass* getClass(){
+			return Class<Matrix4f>::getClass();
+		}
+
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<Matrix4f>::getClass();
 		}
 		
 		Matrix4f *clone(){

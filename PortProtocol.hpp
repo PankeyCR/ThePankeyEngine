@@ -1,33 +1,15 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_PortProtocol)
-	#define PortProtocol_hpp
-#endif
-
 #ifndef PortProtocol_hpp
 #define PortProtocol_hpp
 #define PortProtocol_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "SerialPort.hpp"
-#include "ProtocolMessageDelivery.hpp"
+#include "cppObject.hpp"
+#include "Note.hpp"
 #include "ByteArray.hpp"
 
+#include "MessageDelivery.hpp"
+
 namespace ame{
-	
-class SerialState;
 
 class PortProtocol : public cppObject{
 
@@ -35,7 +17,7 @@ class PortProtocol : public cppObject{
 		PortProtocol(){}
 		virtual ~PortProtocol(){}
 		
-		virtual void attach(SerialState* state){
+		virtual void attach(SerialNetwork* state){
 			this->serialState = state;
 		}
 		
@@ -65,17 +47,25 @@ class PortProtocol : public cppObject{
 		virtual void setSafeDelete(bool s){safeDelete = s;}
 		virtual bool SafeDelete(){return safeDelete;}
 		
-		virtual void SaveMessage(SerialPort* port, Note a_mns){
-			if(delivery == nullptr){
-				return;
-			}
-			delivery->SaveMessage(port,a_mns);
+		virtual void setDelivery(MessageDelivery* a_delivery){
+			m_delivery = a_delivery;
 		}
-		virtual void SaveMessage(SerialPort* port, ByteArray a_mns){
-			if(delivery == nullptr){
-				return;
+		
+		virtual MessageDelivery* getDelivery(){
+			return m_delivery;
+		}
+		
+		virtual bool DeliverMessage(Note* a_mns){
+			if(m_delivery == nullptr){
+				return false;
 			}
-			delivery->SaveMessage(port,a_mns);
+			return m_delivery->DeliverMessage(a_mns);
+		}
+		virtual bool DeliverMessage(ByteArray* a_mns){
+			if(m_delivery == nullptr){
+				return false;
+			}
+			return m_delivery->DeliverMessage(a_mns);
 		}
 		
 		virtual void update(SerialPort* port, float tpc){}
@@ -100,8 +90,8 @@ class PortProtocol : public cppObject{
 		
 	protected:
 		bool safeDelete = true;
-		SerialState* serialState = nullptr;
-		ProtocolMessageDelivery* delivery = nullptr;
+		SerialNetwork* serialState = nullptr;
+		MessageDelivery* m_delivery = nullptr;
 };
 
 }

@@ -21,7 +21,7 @@
 	#include "Arduino.h"
 #endif
 
-#include "AppState.hpp"
+#include "BaseAppState.hpp"
 #include "Application.hpp"
 #include "PrimitiveMap.hpp"
 #include "PrimitiveList.hpp"
@@ -30,7 +30,7 @@
 #ifdef SerialListenerState_LogApp
 	#include "ame_Logger_config.hpp"
 	#include "ame_Logger.hpp"
-	#include "MemoryRam.h"
+	#include "MemoryRam.hpp"
 	
 	#define SerialListenerStateLog(location,method,type,mns) ame_Log(this,location,"SerialListenerState",method,type,mns)
 	#define const_SerialListenerStateLog(location,method,type,mns) 
@@ -39,7 +39,7 @@
 	#ifdef SerialListenerState_LogDebugApp
 		#include "ame_Logger_config.hpp"
 		#include "ame_Logger.hpp"
-		#include "MemoryRam.h"
+		#include "MemoryRam.hpp"
 		
 		#define SerialListenerStateLog(location,method,type,mns) ame_LogDebug(this,location,"SerialListenerState",method,type)
 		#define const_SerialListenerStateLog(location,method,type,mns) 
@@ -54,145 +54,129 @@
 namespace ame{
 
 template<class T>
-class SerialListenerState : public AppState{	
+class SerialListenerState : public BaseAppState{	
     public:
 		using ListenerMethod = void (*)(T*);
 		
-		Application* app;
-		
 		SerialListenerState(){
 			SerialListenerStateLog(ame_Log_StartMethod, "Constructor", "println", "");
-			
-			receivedMessage = new PrimitiveList<T>();
-			listener = new PrimitiveList<SerialListener<T>>();
-			methodListener = new PrimitiveList<ListenerMethod>();
-			
 			SerialListenerStateLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 		
 		SerialListenerState(Note c_name){
 			SerialListenerStateLog(ame_Log_StartMethod, "Constructor", "println", "");
-			
-			receivedMessage = new PrimitiveList<T>();
-			listener = new PrimitiveList<SerialListener<T>>();
-			methodListener = new PrimitiveList<ListenerMethod>();
-			
 			this->setId(c_name);
-			
+			SerialListenerStateLog(ame_Log_EndMethod, "Constructor", "println", "");
+		}
+		
+		SerialListenerState(Note c_name, ListenerMethod c_method){
+			SerialListenerStateLog(ame_Log_StartMethod, "Constructor", "println", "");
+			m_methodListener.add(c_method);
+			this->setId(c_name);
 			SerialListenerStateLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 		virtual ~SerialListenerState(){
 			SerialListenerStateLog(ame_Log_StartMethod, "Destructor", "println", "");
-			
-			delete receivedMessage;
-			delete listener;
-			delete methodListener;
-			
 			SerialListenerStateLog(ame_Log_EndMethod, "Destructor", "println", "");
 		}
 		
-		virtual void initialize(Application *app){
-			SerialListenerStateLog(ame_Log_StartMethod, "initialize", "println", "");
-			
-			serialState = app->getStateManager()->getState<SerialState>();
-			for(int x = 0; x < listener->getPosition(); x++){
-				SerialListener<T>* mnsCmd = listener->getByPosition(x);
-				mnsCmd->setSerialState(serialState);
-			}
-			init = true;
-			
-			SerialListenerStateLog(ame_Log_EndMethod, "initialize", "println", "");
+		virtual void addListener(Command<T>* mnsCmd){
+			SerialListenerStateLog(ame_Log_StartMethod, "addListener",  "println", "Command<T>* mnsCmd");
+			m_listener.addPointer(mnsCmd);
+			SerialListenerStateLog(ame_Log_EndMethod, "addListener", "println", "");
 		}
 		
-		SerialListener<T>* addListener(SerialListener<T>* mnsCmd){
-			SerialListenerStateLog(ame_Log_Statement, "addListener",  "println", "");
-			listener->addPointer(mnsCmd);
-			if(init){
-				mnsCmd->setSerialState(serialState);
-			}
-			return mnsCmd;
+		virtual void addListener(ListenerMethod method){
+			SerialListenerStateLog(ame_Log_StartMethod, "addListener",  "println", "ListenerMethod method");
+			m_methodListener.add(method);
+			SerialListenerStateLog(ame_Log_EndMethod, "addListener", "println", "");
 		}
 		
-		void addListener(ListenerMethod method){
-			SerialListenerStateLog(ame_Log_Statement, "addListener",  "println", "");
-			methodListener->add(method);
-		}
-		
-		SerialListener<T>* getSerialListener(cppObjectClass* cls){
-			SerialListenerStateLog(ame_Log_Statement, "getSerialListener",  "println", "");
-			for(int x = 0; x < listener->getPosition(); x++){
-				SerialListener<T>* serialListener = listener->getByPosition(x);
+		virtual Command<T>* getListener(cppObjectClass* cls){
+			SerialListenerStateLog(ame_Log_StartMethod, "getListener",  "println", "");
+			for(int x = 0; x < m_listener.getPosition(); x++){
+				Command<T>* serialListener = m_listener.getByPosition(x);
 				if(serialListener->getClass() == cls){
+					SerialListenerStateLog(ame_Log_EndMethod, "getListener", "println", "");
 					return serialListener;
 				}
 			}
+			SerialListenerStateLog(ame_Log_EndMethod, "getListener", "println", "");
 			return nullptr;
 		}
 
-		void removeDeleteSerialListener(int index) {
-			SerialListenerStateLog(ame_Log_Statement, "removeDeleteSerialListener",  "println", "");
-			SerialListenerStateLog(ame_Log_Statement, "removeDeleteSerialListener",  "println", ame_String("index: ") + ame_String(index));
-			listener->removeDeleteByPosition(index);
+		virtual void removeListener(int index) {
+			SerialListenerStateLog(ame_Log_StartMethod, "removeListener",  "println", "int index");
+			SerialListenerStateLog(ame_Log_Statement, "removeListener",  "println", ame_String("index: ") + ame_String(index));
+			m_listener.removeDeleteByPosition(index);
+			SerialListenerStateLog(ame_Log_EndMethod, "removeListener", "println", "");
 		}
 
-		void removeAllListener() {
-			SerialListenerStateLog(ame_Log_Statement, "removeAllListener",  "println", "");
-			listener->resetDelete();
+		virtual void removeAllListener() {
+			SerialListenerStateLog(ame_Log_StartMethod, "removeAllListener",  "println", "");
+			m_listener.resetDelete();
+			m_methodListener.resetDelete();
+			SerialListenerStateLog(ame_Log_EndMethod, "removeAllListener", "println", "");
 		}
 
-		void removeAllSerialListener() {
-			SerialListenerStateLog(ame_Log_Statement, "removeAllSerialListener",  "println", "");
-			listener->resetDelete();
+		virtual void removeAllCommandListener() {
+			SerialListenerStateLog(ame_Log_StartMethod, "removeAllCommandListener",  "println", "");
+			m_listener.resetDelete();
+			SerialListenerStateLog(ame_Log_EndMethod, "removeAllCommandListener", "println", "");
+		}
+
+		virtual void removeAllMethodListener() {
+			SerialListenerStateLog(ame_Log_StartMethod, "removeAllMethodListener",  "println", "");
+			m_methodListener.resetDelete();
+			SerialListenerStateLog(ame_Log_EndMethod, "removeAllMethodListener", "println", "");
 		}
 		
-		void addMail(T* m){
-			receivedMessage->addPointer(m);
+		virtual void addMail(T* m){
+			m_receivedMessage.addPointer(m);
 		}
 		
-		List<T>* getMail(){
-			return receivedMessage;
+		virtual PrimitiveList<T> getMail(){
+			return m_receivedMessage;
+		}
+		
+		virtual List<T>* getMailLocker(){
+			return &m_receivedMessage;
 		}
 		
 		virtual cppObjectClass* getClass(){
-			return Class<SerialListenerState>::classType;
+			return Class<SerialListenerState<T>>::getClass();
 		}
 		
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<SerialListenerState>::classType || AppState::instanceof(cls);
+			return cls == Class<SerialListenerState<T>>::getClass() || AppState::instanceof(cls);
 		}
 		
 		virtual void update(float tpc){
-			if(receivedMessage->isEmpty()){
+			if(m_receivedMessage.isEmpty()){
 				return;
 			}
 			SerialListenerStateLog(ame_Log_StartMethod, "update",  "println", "");
-			for(int x = 0; x < receivedMessage->getPosition(); x++){
+			for(int x = 0; x < m_receivedMessage.getPosition(); x++){
 				SerialListenerStateLog(ame_Log_Statement, "update",  "println", ame_String("receivedMessage index: ") + ame_String(x));
-				for(int y = 0; y < methodListener->getPosition(); y++){
-					SerialListenerStateLog(ame_Log_Statement, "update",  "println", ame_String("methodListener index: ") + ame_String(y));
-					ListenerMethod  event = *methodListener->getByPosition(y);
-					event(receivedMessage->getByPosition(x));
+				T* f_message = m_receivedMessage.getByPosition(x);
+				for(int y = 0; y < m_methodListener.getPosition(); y++){
+					ListenerMethod  event = *m_methodListener.getByPosition(y);
+					event(f_message);
 				}
-				for(int y = 0; y < listener->getPosition(); y++){
-					SerialListenerStateLog(ame_Log_Statement, "update",  "println", ame_String("listener index: ") + ame_String(y));
-					listener->getByPosition(y)->execute(receivedMessage->getByPosition(x));
+				for(int y = 0; y < m_listener.getPosition(); y++){
+					Command<T>*  event = m_listener.getByPosition(y);
+					event->execute(f_message);
 				}
 			}
-			SerialListenerStateLog(ame_Log_Statement, "update",  "println", ame_String("ram before deleting: ") + ame_String(getRamSize()));
-			receivedMessage->resetDelete();
-			SerialListenerStateLog(ame_Log_Statement, "update",  "println", ame_String("ram after deleting: ") + ame_String(getRamSize()));
+			m_receivedMessage.resetDelete();
 			SerialListenerStateLog(ame_Log_EndMethod, "update",  "println", "");
 		}
 		
 	protected:
-		bool init = false;
-		SerialState* serialState = nullptr;
+		PrimitiveList<T> m_receivedMessage;
 		
-		List<T>* receivedMessage = nullptr;
-		
-		List<SerialListener<T>>* listener = nullptr;
-		
-		List<ListenerMethod>* methodListener = nullptr;
+		PrimitiveList<Command<T>> m_listener;
+		PrimitiveList<ListenerMethod> m_methodListener;
 };
 
 }

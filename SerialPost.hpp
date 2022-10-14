@@ -1,67 +1,82 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_SerialPost)
-	#define SerialPost_hpp
-#endif
-
 #ifndef SerialPost_hpp
 #define SerialPost_hpp
-#define SerialPost_AVAILABLE
+#define SerialPost_AVAILABLE 
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "PrimitiveList.hpp"
 #include "Application.hpp"
-#include "PortMail.hpp"
-#include "AppState.hpp"
+#include "PrimitiveList.hpp"
 #include "SerialListenerState.hpp"
+#include "SerialNetwork.hpp"
+#include "BaseAppState.hpp"
+#include "PortMail.hpp"
+#include "Cast.hpp"
+#include "Note.hpp"
 
-#ifdef SerialPostLogApp
-	#include "Logger.hpp"
-	#define SerialPostLog(name,method,type,mns) Log(name,method,type,mns)
+#ifdef SerialPost_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+	
+	#define SerialPostLog(location,method,type,mns) ame_Log(this,location,"SerialPost",method,type,mns)
+	#define const_SerialPostLog(location,method,type,mns) 
+	#define StaticSerialPostLog(pointer,location,method,type,mns) ame_Log(pointer,location,"SerialPost",method,type,mns)
 #else
-	#define SerialPostLog(name,method,type,mns)
+	#ifdef SerialPost_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+		
+		#define SerialPostLog(location,method,type,mns) ame_LogDebug(this,location,"SerialPost",method,type)
+		#define const_SerialPostLog(location,method,type,mns) 
+		#define StaticSerialPostLog(pointer,location,method,type,mns) ame_LogDebug(pointer,location,"SerialPost",method,type)
+	#else
+		#define SerialPostLog(location,method,type,mns) 
+		#define const_SerialPostLog(location,method,type,mns) 
+		#define StaticSerialPostLog(pointer,location,method,type,mns) 
+	#endif
 #endif
 
 namespace ame{
-	
-template<class T>
-using PostMethod = void (*)(T*);
 
-class SerialPost : public AppState{
+class SerialPost : public BaseAppState{
     public:
+	
+	template<class PT>
+	using PostMethod = void (*)(PT*);
+	
 		SerialPost(){
-			SerialPostLog("SerialPost", "Constructor",  "println", "");
 		}
 		virtual ~SerialPost(){
-			SerialPostLog("SerialPost", "Destructor",  "println", "");
 		}
 		virtual bool instanceof(cppObjectClass* cls){
 			return cls == Class<SerialPost>::classType || AppState::instanceof(cls);
 		}
 		virtual cppObjectClass* getClass(){return Class<SerialPost>::classType;}
 		
-		virtual Application* getApplication(){return this->application;}
-		
-		virtual void initialize(Application *app){
-			this->application = app;
+		virtual void initializeState(Application *app){
+			for(int x = 0; x < m_networks.getPosition(); x++){
+				Note* f_name = m_networks.getKeyByPosition(x);
+				SerialNetwork* f_network = m_networks.getValueByPosition(x);
+				app->getStateManager()->add(*f_name, f_network);
+			}
+			for(int x = 0; x < m_delivery.getPosition(); x++){
+				AppState* i_state = m_delivery.getByPosition(x);
+				app->getStateManager()->add(i_state);
+			}
+			m_delivery.reset();
 		}
 		
-		virtual void update(float tpc){}
+		virtual void updateState(float tpc){}
+		
+		template<class SN>
+		SN* addNetwork(Note a_name, SN* a_network){
+			m_networks.addPointer(a_name, a_network);
+			if(hasInitialize()){
+				this->getApplication()->getStateManager()->add(a_name, a_network);
+			}
+			return a_network;
+		}
 		
 		virtual bool gotPortMail(Note a_name){
-			bool* hasMail = m_portMail.getByLValue(a_name);
+			bool* hasMail = m_portMail.getValueByLValue(a_name);
 			if(hasMail == nullptr){
 				return false;
 			}
@@ -87,23 +102,45 @@ class SerialPost : public AppState{
 		}
 		
 		template<class T>
-		void addDelivery(Note a_server_name, PostMethod<T> a_method){
-			if(this->application == nullptr){
+		void addDelivery(Note a_name, PostMethod<T> a_method){
+			if(!hasInitialize()){
+				m_delivery.addPointer(new SerialListenerState<T>(a_name, a_method));
 				return;
 			}
-			AppState* i_appstate = this->application->getStateManager()->get(a_server_name, Class<SerialListenerState<T>>::classType);
+			if(this->getApplication() == nullptr){
+				return;
+			}
+			cppObjectClass* i_class = Class<SerialListenerState<T>>::getClass();
+			AppState* i_appstate = this->getApplication()->getStateManager()->get(a_name, i_class);
 			SerialListenerState<T>* listenerState = nullptr;
 			if(i_appstate == nullptr){
-				listenerState = new SerialListenerState<T>(a_server_name);
-				this->application->getStateManager()->add(listenerState);
+				listenerState = new SerialListenerState<T>(a_name);
+				this->getApplication()->getStateManager()->add(listenerState);
 			}else{
 				listenerState = (SerialListenerState<T>*)i_appstate;
 			}
 			listenerState->addListener(a_method);
 		}
+		
+		virtual void sendNetwork(Note a_network, Note a_message){
+			SerialNetwork* i_network = m_networks.getValueByLValue(a_network);
+			if(i_network == nullptr){
+				return;
+			}
+			i_network->send(a_message);
+		}
+		
+		virtual void send(Note a_message){
+			for(auto map : m_networks){
+				SerialNetwork* i_network = map.getValuePointer();
+				i_network->send(a_message);
+			}
+		}
 	protected:
-		Application* application = nullptr;
 		PrimitiveMap<Note,bool> m_portMail;
+		
+		PrimitiveMap<Note,SerialNetwork> m_networks = false;
+		PrimitiveList<AppState> m_delivery = false;
 };
 
 }

@@ -20,115 +20,88 @@
 #endif
 
 #ifdef ame_Windows
-
+	#include "Printable.hpp"
 #endif
 
 #ifdef ame_ArduinoIDE
 	#include "Arduino.h"
+	#include "Printable.h"
 #endif
 
+#include "cppObjectClass.hpp"
 #include "Class.hpp"
-#include "Array.hpp"
+#include "LinkedList.hpp"
 
 namespace ame{
 	
 template <class T>
-class DataSet : public Array<T>{
+class DataSet : public LinkedList<DataSet<T>>{
 public:
 	DataSet(){}
-	
-	template<class... Args>
-	DataSet(Args... x){
-		
+	DataSet(const DataSet<T>& c_dataset){}
+	DataSet(const T& c_data){
+		this->set(c_data);
 	}
-	DataSet(const DataSet<T>& t){
-		// m_space = t.m_space;
-		// for(int x = 0; x < t.getSize(); x++){
-			
-		// }
+	template<class... args>
+	DataSet<T>(args... x){
+		this->addPack(x...);
 	}
 	virtual ~DataSet(){}
 
-	virtual size_t printTo(Print& p) const{
-		if(this->m_t_value == nullptr || this->m_pos == 0){
-			return 0;
-		}
+	virtual size_t printTo(Print& a_print) const{
 		size_t i_size = 0;
-		for(int x = 0; x < this->m_pos; x++){
-			i_size += p.print(this->m_t_value[x]);
+		if(this->m_value != nullptr){
+			i_size += a_print.print(*this->m_value);
+		}
+		for(int x = 0; x < this->getPosition(); x++){
+			if(x == 0){
+				i_size += a_print.print(init_array);
+			}
+			DataSet<T>* i_dset = this->getByPosition(x);
+			if(i_dset == nullptr){
+				if(x == this->getPosition() - 1){
+					i_size += a_print.print(end_array);
+				}
+				continue;
+			}
+			i_size += i_dset->printTo(a_print);
+			if(x == this->getPosition() - 1){
+				i_size += a_print.print(end_array);
+				break;
+			}
+			i_size += a_print.print(separator_array);
 		}
 		return i_size;
 	}
-
-	virtual size_t printTo(Print& p, int a_index) const{
-		if(this->m_t_value == nullptr){
-			return 0;
+	
+	virtual void setData(T* a_value){
+		m_value = a_value;
+	}
+	
+	virtual T* getData(){
+		return m_value;
+	}
+	
+	virtual void set(const T& a_value){
+		if(m_value == nullptr){
+			m_value = new T();
 		}
-		size_t i_size = 0;
-		for(int x = 0; x < this->m_pos; x++){
-			i_size += p.print(this->m_t_value[x]);
+		*m_value = a_value;
+	}
+	
+	virtual T get(){
+		if(m_value == nullptr){
+			return T();
 		}
-		return i_size;
+		return *m_value;
 	}
-	
-	virtual void space(int i_space){
-		m_space = i_space;
-	}
-	
-	virtual void dimention(int i_dimention){
-		m_dimention = i_dimention;
-	}
-	
-	virtual void position(int i_position){
-		m_position = i_position;
-	}
-	
-	virtual void position(int i_space, int i_dimention, int i_position){
-		m_space = i_space;
-		m_dimention = i_dimention;
-		m_position = i_position;
-	}
-	
-	virtual void position(int i_dimention, int i_position){
-		m_dimention = i_dimention;
-		m_position = i_position;
-	}
-	
-	virtual DataSet<T>* set(T t){return this;}
-	virtual DataSet<T>* remove(){return this;}
-	virtual T getValue(){return T();}
-	virtual T* getPointer(){return nullptr;}
-	
-	virtual int spaceSize(){return 0;}//Amount of spaces in the dataset
-	virtual int dimentionSize(int i_space){return 0;}//Amount of dimentions inside the Space
-	
-	virtual int getSize(){return 0;}//total size of elements
-	virtual int getSize(int i_space){return 0;}//total size of elements on the spaec
-	virtual int getSize(int i_space, int i_dimention){return 0;}//total size of elements inside the space and dimention
-	
-	// virtual DataSet<T>&& iterateSpace(int i_space){
-		// return DataSet<T>(0, getSize(i_space));
-	// }
-	// virtual DataSet<T> iterateDimention(int i_space, int i_dimention){
-		// return DataSet<T>(0, getSize(i_space,i_dimention));
-	// }
-	
-	// virtual T getInSpace(int i_space, Iterator i){return T();}
-	// virtual T getInDimention(int i_space, int i_dimention, Iterator i){return T();}
-	
-	// virtual T* getPointerInSpace(int i_space, Iterator i){return nullptr;}
-	// virtual T* getPointerInDimention(int i_space, int i_dimention, Iterator i){return nullptr;}
-	
-	virtual int space(){return m_space;}
-	virtual int dimention(){return m_dimention;}
-	virtual int position(){return m_position;}
 
 	//cppObject part
 	virtual bool instanceof(cppObjectClass* cls){
-		return Array<T>::instanceof(cls) || cls == Class<DataSet<T>>::classType;
+		return LinkedList<DataSet<T>>::instanceof(cls) || 
+				cls == Class<DataSet<T>>::getClass();
 	}
 	virtual cppObjectClass* getClass(){return Class<DataSet<T>>::classType;}
-	virtual Note toNote(){return "DataSet";}
 	
 	virtual bool equal(cppObject *b){
 		if(b == this){
@@ -137,54 +110,17 @@ public:
 		if(!b->instanceof(Class<DataSet<T>>::classType)){
 			return false;
 		}
-		// if(m_space != ((DataSet<T>*)b)->m_space || 
-		   // m_dimention != ((DataSet<T>*)b)->m_dimention || 
-		   // m_position != ((DataSet<T>*)b)->m_position){
-			// return false;
-		// }
-		// for(Iterator i : *this){
-			// if(((DataSet<T>*)b)->getValue(i) != this->getValue(i)){
-				// return false;
-			// }
-		// }
 		return true;
 	}
 		
 	virtual DataSet<T>* clone(){
-		return new DataSet<T>(*this);
+		return new DataSet<T>();
 	}
-	
-	virtual void operator=(const DataSet<T>& b){}
-	virtual bool operator==(DataSet<T> b){
-		return true;
-	}
-	/*
-	virtual DataSet<T>&& begin(){return DataSet<T>();}
-	virtual DataSet<T>&& end(){return DataSet<T>();}
-	virtual DataSet<T> operator *(){return DataSet<T>();}
-	virtual void operator ++(){
-		if(iterationDirection){
-			next();
-		}else{
-			last();
-		}
-	}
-	virtual bool operator !=(DataSet<T>&& i){return true;}
-
-	virtual bool last(){return false;}
-	virtual bool next(){return false;}
-	*/
 protected:
-	T* memory = nullptr;
-	
-	bool iterationDirection = true;
-	
-	int m_space = 0;
-	int m_dimention = 0;
-	int m_position = 0;
-	
-	DataSet<T>* m_net = nullptr;
-	
+	T* m_value = nullptr;
+	char init_array = '{';
+	char end_array = '}';
+	char separator_array = ',';
 };
 
 }

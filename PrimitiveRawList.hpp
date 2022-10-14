@@ -1,374 +1,226 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_PrimitiveRawList)
-	#define PrimitiveRawList_hpp
-#endif
-
 #ifndef PrimitiveRawList_hpp
 #define PrimitiveRawList_hpp
 #define PrimitiveRawList_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
+#include "PrimitiveRawPointerList.hpp"
 #include "RawList.hpp"
 #include "ListIterator.hpp"
+
+#ifdef PrimitiveRawList_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+
+	#define PrimitiveRawListLog(location,method,type,mns) ame_Log(this,location,"PrimitiveRawList",method,type,mns)
+	#define const_PrimitiveRawListLog(location,method,type,mns)
+#else
+	#ifdef PrimitiveRawList_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+
+		#define PrimitiveRawListLog(location,method,type,mns) ame_LogDebug(this,location,"PrimitiveRawList",method,type)
+		#define const_PrimitiveRawListLog(location,method,type,mns)
+	#else
+		#define PrimitiveRawListLog(location,method,type,mns)
+		#define const_PrimitiveRawListLog(location,method,type,mns)
+	#endif
+#endif
 
 namespace ame{
 
 template<class T>
-class PrimitiveRawList : public RawList<T>{
+class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawList<T>{
 	public:
-		int expandSize=5;
-		
 		PrimitiveRawList(){
-			this->values = new T*[this->size];
+			PrimitiveRawListLog(ame_Log_StartMethod, "Constructor", "println", "");
+			PrimitiveRawListLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 		
-		PrimitiveRawList(int lsize){
-			this->values = new T*[lsize];
-			this->size = lsize;
+		PrimitiveRawList(const PrimitiveRawList<T>& a_list){
+			PrimitiveRawListLog(ame_Log_StartMethod, "Constructor", "println", "");
+			this->m_values = new T*[a_list.getSize()];
+			this->setSize(a_list.getSize());
+			for(int x = 0; x < a_list.getPosition(); x++){
+				this->addLValue(*a_list.getByPosition(x));
+			}
+			PrimitiveRawListLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 		
-		PrimitiveRawList(bool own){
-			owner = own;
-			this->values = new T*[this->size];
+		PrimitiveRawList(int c_size) : PrimitiveRawPointerList<T>(c_size){
+			PrimitiveRawListLog(ame_Log_StartMethod, "Constructor", "println", "");
+			PrimitiveRawListLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 		
-		PrimitiveRawList( bool own, int lsize){
-			owner = own;
-			this->values = new T*[lsize];
-			this->size = lsize;
+		PrimitiveRawList(int c_size, bool c_own, int c_reordering){
+			PrimitiveRawListLog(ame_Log_StartMethod, "Constructor", "println", "");
+			PrimitiveRawListLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 		
 		virtual ~PrimitiveRawList(){
-			if(owner){
-				for(int x=0; x < this->pos ; x++){
-					delete this->values[x];
-				}
-			}
-			delete[] this->values;
+			PrimitiveRawListLog(ame_Log_StartMethod, "Destructor", "println", "");
+			PrimitiveRawListLog(ame_Log_EndMethod, "Destructor", "println", "");
 		}
 		
-
-		virtual bool isEmpty()const{
-			return pos==0;
+		virtual T* addLValue(T a_value){
+			PrimitiveRawListLog(ame_Log_StartMethod, "addLValue", "println", "");
+			T* i_value = new T();
+			*i_value = a_value;
+			PrimitiveRawListLog(ame_Log_EndMethod, "addLValue", "println", "");
+			return this->addPointer(i_value);
 		}
 		
-		virtual void setPosition(int p){
-			this->pos = p;
-		}
-		
-		virtual int getPosition()const{
-			return this->pos;
-		}
-		
-		virtual int getSize()const{
-			return this->size;
-		}
-	
-		virtual bool replace(int i, int j){
-			if(i >= pos || j >= pos){
-				return false;
-			}
-			T* it = values[i];
-			T* jt = values[j];
-			values[i] = jt;
-			values[j] = it;
-			return true;
-		}
-	
-		template<class... args>
-		void addPack(args... x){
-			T array[] = {x...};
-			for(const T& a : array){
-			//for(T a : array){
-				addPointer(new T(a));
-			}
-		}
-		
-		template<class... Args>
-		T* addParameters(Args... args){
-			if(this->pos >= this->size){
-				this->expandLocal(this->expandSize);
-			}
-			if(this->pos >= this->size){
-				return nullptr;
-			}
-			this->values[this->pos] = new T(args...);
-			this->pos++;
-			return this->values[this->pos-1];
-		}
-		
-		virtual T* addPointer(T* value){
-			if(value == nullptr){
-				return nullptr;
-			}
-			if(this->pos >= this->size){
-				this->expandLocal(this->expandSize);
-			}
-			if(this->pos >= this->size){
-				return nullptr;
-			}
-			this->values[this->pos] = value;
-			this->pos++;
-			//Memory<T>::(value);
-			return this->values[this->pos-1];
-		}
-		
-		virtual T* addLValue(T value){
-			if(this->pos >= this->size){
-				this->expandLocal(this->expandSize);
-			}
-			if(this->pos >= this->size){
-				return nullptr;
-			}
-			this->values[this->pos] = new T();
-			*this->values[this->pos] = value;
-			this->pos++;
-			return this->values[this->pos-1];
-		}
-		
-		virtual T* setLValue(int position, T value){
-			if(position >= this->pos){
+		virtual T* setLValue(int a_position, T a_value){
+			PrimitiveRawListLog(ame_Log_StartMethod, "setLValue", "println", "");
+			if(a_position >= this->getPosition()){
 				return nullptr;			
 			}
-			*this->values[position] = value;
-			return this->values[position];
+			if(this->m_values[a_position] == nullptr){
+				this->m_values[a_position] = new T();
+			}
+			*this->m_values[a_position] = a_value;
+			PrimitiveRawListLog(ame_Log_EndMethod, "setLValue", "println", "");
+			return this->m_values[a_position];
 		}
 		
-		virtual T* setPointer(int position, T* value){
-			if(position >= this->pos){
-				return nullptr;			
-			}
-			if(value == nullptr){
-				return nullptr;
-			}
-			if(this->values[position] != nullptr && this->values[position] != value && owner){
-				delete this->values[position];
-			}
-			this->values[position] = value;
-			return value;
-		}
-		
-		virtual T* insertLValue(int position, T value){
-            if(position >= this->pos+1){
+		virtual T* insertLValue(int a_position, T a_value){
+			PrimitiveRawListLog(ame_Log_StartMethod, "insertLValue", "println", "");
+            if(a_position >= this->getPosition() + 1){
 				return nullptr;
             }
-			if(this->size == this->pos){
-				this->expandLocal(this->expandSize);
+			if(this->getSize() <= this->getPosition()){
+				this->expandLocal(this->m_expandSize);
 			}
 			T* nVaule;
 			T* rVaule = new T();
-			*rVaule = value;
-			for(int x = 0; x <= this->pos; x++){
-				if(x >= position){
-					nVaule = values[x];
-					values[x] = rVaule;
-					rVaule = nVaule;
-				}
+			*rVaule = a_value;
+			for(int x = a_position; x <= this->getPosition(); x++){
+				nVaule = this->m_values[x];
+				this->m_values[x] = rVaule;
+				rVaule = nVaule;
 			}
-			this->pos++;
-			return this->values[position];
+			this->incrementPosition();
+			PrimitiveRawListLog(ame_Log_EndMethod, "insertLValue", "println", "");
+			return this->m_values[a_position];
 		}
 		
-		virtual T* insertPointer(int position, T* value){
-            if(value == nullptr || values[position] == value){
+		virtual T* getByLValue(T a_key){
+			PrimitiveRawListLog(ame_Log_StartMethod, "getByLValue", "println", "");
+			if(this->m_values == nullptr){
 				return nullptr;
-            }
-            if(position >= this->pos+1){
-				return nullptr;
-            }
-			if(this->size == this->pos){
-				this->expandLocal(this->expandSize);
 			}
-			T* nVaule;
-			T* rVaule = value;
-			for(int x = 0; x <= pos; x++){
-				if(x >= position){
-					nVaule = values[x];
-					values[x] = rVaule;
-					rVaule = nVaule;
+			for(int x = 0; x < this->getPosition(); x++){
+				if(this->m_values[x] == nullptr){
+					continue;
+				}
+				if(a_key == *this->m_values[x]){
+					return this->m_values[x];
 				}
 			}
-			pos++;
-			return values[position];
-		}
-		
-		virtual T* getByPointer(T* t){
-			for(int x = 0; x < this->pos; x++){
-				if(t == this->values[x]){
-					return this->values[x];
-				}
-			}
+			PrimitiveRawListLog(ame_Log_EndMethod, "getByLValue", "println", "");
 			return nullptr;
 		}
 		
-		virtual T* getByLValue(T t){
-			for(int x = 0; x < this->pos; x++){
-				if(t == *this->values[x]){
-					return this->values[x];
+		virtual bool containByLValue(T a_key){
+			PrimitiveRawListLog(ame_Log_StartMethod, "containByLValue", "println", "");
+			if(this->m_values == nullptr){
+				return false;
+			}
+			for(int x = 0; x < this->getPosition(); x++){
+				if(this->m_values[x] == nullptr){
+					continue;
+				}
+				if(a_key == *this->m_values[x]){
+					return true;
 				}
 			}
-			return nullptr;
-		}
-		
-		virtual T* getByPosition(int x)const{
-			if(x < this->pos){
-				return this->values[x];
-			}
-			return nullptr;
-		}
-		
-		virtual bool containByPointer(T* t){
-		for(int x = 0; x < this->pos; x++){
-			if(t == this->values[x]){
-				return true;
-			}
-		}
-		return false;
-		}
-		
-		virtual bool containByLValue(T t){
-		for(int x = 0; x < this->pos; x++){
-			if(t == *this->values[x]){
-				return true;
-			}
-		}
+			PrimitiveRawListLog(ame_Log_EndMethod, "containByLValue", "println", "");
 			return false;
 		}
 		
-		virtual int getIndexByPointer(T* t){
-			for(int x = 0; x < this->pos; x++){
-				if(t == this->values[x]){
+		virtual int getIndexByLValue(T a_key){
+			PrimitiveRawListLog(ame_Log_StartMethod, "getIndexByLValue", "println", "");
+			if(this->m_values == nullptr){
+				return -1;
+			}
+			for(int x = 0; x < this->getPosition(); x++){
+				if(this->m_values[x] == nullptr){
+					continue;
+				}
+				if(a_key == *this->m_values[x]){
 					return x;
 				}
 			}
+			PrimitiveRawListLog(ame_Log_EndMethod, "getIndexByLValue", "println", "");
 			return -1;
 		}
 		
-		virtual int getIndexByLValue(T t){
-			for(int x = 0; x < this->pos; x++){
-				if(t == *this->values[x]){
-					return x;
-				}
-			}
-			return -1;
-		}
-		
-		virtual void reset(){
-			this->pos = 0;
-		}
-		
-		virtual void resetDelete(){
-			if(this->owner){
-				for(int x=0; x < this->pos; x++){
-					delete this->values[x];
-				}
-			}
-			this->pos = 0;
-		}
-		
-		virtual T* removeByPointer(T *key){
-			T* t = nullptr;
-			int nv =0;
-			for(int x = 0; x < this->pos; x++){
-				if(key != this->values[x]){
-					this->values[nv] = this->values[x];
-					nv++;
-				}else{
-					t = this->values[x];
-				}
-			}
-			this->pos = nv;
-			return t;
-		}
-		
-		virtual T* removeByLValue(T key){
-			T* t = nullptr;
-			int nv =0;
-			for(int x = 0; x < this->pos; x++){
-				if(key != *this->values[x]){
-					this->values[nv] = this->values[x];
-					nv++;
-				}else{
-					t = this->values[x];
-				}
-			}
-			this->pos = nv;
-			return t;
-		}
-		
-		virtual T* removeByPosition(int p){
-			if(p >= this->pos){
+		virtual T* removeByLValue(T a_key){
+			PrimitiveRawListLog(ame_Log_StartMethod, "removeByLValue", "println", "");
+			if(this->m_values == nullptr){
 				return nullptr;
 			}
-			T* t = nullptr;
-			for(int x=0; x < this->pos; x++){
-				if(x == p ){
-					t = this->values[x];
+			int i_position = 0;
+			for(int x = 0; x < this->getPosition(); x++){
+				if(this->m_values[x] == nullptr){
+					continue;
 				}
-				if(x > p ){
-					this->values[x-1] = this->values[x];
+				if(a_key == *this->m_values[x]){
+					i_position = x;
+					break;
 				}
 			}
-			this->pos--;
-			return t;
+			PrimitiveRawListLog(ame_Log_EndMethod, "removeByLValue", "println", "");
+			return this->removeByPosition(i_position);
 		}
 	
 		////////////////////////////////////////////special removes part///////////////////////////////////////////////
-		virtual bool removeAll(T value){
+		virtual bool removeAll(T a_value){
+			PrimitiveRawListLog(ame_Log_StartMethod, "removeAll", "println", "");
 			bool r_val = false;
 			int p_x = 0;
-			for(int x = 0; x < pos; x++){
-				if(value == *values[x]){
-					if(owner){
-						delete values[x];
+			for(int x = 0; x < this->getPosition(); x++){
+				if(a_value == *this->m_values[x]){
+					if(this->m_owner){
+						delete this->m_values[x];
 					}
 					r_val = true;
 				}else{
-					values[p_x] = values[x];
+					this->m_values[p_x] = this->m_values[x];
 					p_x++;
 				}
 			}
-			pos = p_x;
+			this->setPosition(p_x);
+			PrimitiveRawListLog(ame_Log_EndMethod, "removeAll", "println", "");
 			return r_val;
 		}
 		
-		virtual bool removeFirst(T value){
+		virtual bool removeFirst(T a_value){
+			PrimitiveRawListLog(ame_Log_StartMethod, "removeFirst", "println", "");
 			bool r_val = false;
 			bool r_once = true;
 			int p_x = 0;
-			for(int x = 0; x < pos; x++){
-				if(value == *values[x] && r_once){
-					if(owner){
-						delete values[x];
+			for(int x = 0; x < this->getPosition(); x++){
+				if(a_value == *this->m_values[x] && r_once){
+					if(this->m_owner){
+						delete this->m_values[x];
 					}
 					r_once = false;
 					r_val = true;
 				}else{
-					values[p_x] = values[x];
+					this->m_values[p_x] = this->m_values[x];
 					p_x++;
 				}
 			}
-			pos = p_x;
+			this->setPosition(p_x);
+			PrimitiveRawListLog(ame_Log_EndMethod, "removeFirst", "println", "");
 			return r_val;
 		}
 		
-		virtual bool removeLast(T value){
-			int r_pos = pos;
-			for(int x = pos - 1; x >= 0; x--){
-				if(value == *values[x]){
+		virtual bool removeLast(T a_value){
+			PrimitiveRawListLog(ame_Log_StartMethod, "removeLast", "println", "");
+			int r_pos = this->getPosition();
+			for(int x = this->getPosition() - 1; x >= 0; x--){
+				if(a_value == *this->m_values[x]){
 					r_pos = x;
 					break;
 				}
@@ -377,78 +229,129 @@ class PrimitiveRawList : public RawList<T>{
 			bool r_val = false;
 			bool r_once = true;
 			int p_x = r_pos;
-			for(int x = p_x; x < pos; x++){
-				if(value == *values[x] && r_once){
-					if(owner){
-						delete values[x];
+			for(int x = p_x; x < this->getPosition(); x++){
+				if(a_value == *this->m_values[x] && r_once){
+					if(this->m_owner){
+						delete this->m_values[x];
 					}
 					r_once = false;
 					r_val = true;
 				}else{
-					values[p_x] = values[x];
+					this->m_values[p_x] = this->m_values[x];
 					p_x++;
 				}
 			}
-			pos = p_x;
+			this->setPosition(p_x);
+			PrimitiveRawListLog(ame_Log_EndMethod, "removeLast", "println", "");
 			return r_val;
+		}
+		
+		virtual T& operator[](int x){
+			PrimitiveRawListLog(ame_Log_StartMethod, "operator[]", "println", "");
+			// if(this->m_values == nullptr){
+				// ame_ErrorHandler(App_Crash_ERROR, "PrimitiveRawList", "operator[]", "null m_values");
+			// }
+			if(x > this->getPosition() && this->getPosition() > 0){
+				return *this->m_values[this->getPosition() - 1];
+			}
+			if(x < this->getPosition()){
+				return *this->m_values[x];
+			}
+			if(x >= this->getSize()){
+				this->expandLocal(this->m_expandSize);
+			}
+			if(this->getPosition() == x){
+				this->incrementPosition();
+			}
+			this->m_values[x] = new T();
+			PrimitiveRawListLog(ame_Log_EndMethod, "operator[]", "println", "");
+			return *this->m_values[x];
+		}
+		
+		virtual T operator[](int x) const{
+			const_PrimitiveRawListLog(ame_Log_StartMethod, "operator[]", "println", "");
+			if(x >= this->getPosition() && this->getPosition() != 0){
+				return *this->m_values[this->getPosition() - 1];
+			}
+			if(x < this->getPosition() && x >= 0){
+				return *this->m_values[x];
+			}
+			const_PrimitiveRawListLog(ame_Log_EndMethod, "operator[]", "println", "");
+			return T();
 		}
 	
 		////////////////////////////////////////////operator part///////////////////////////////////////////////
 		
 		
-		virtual T& operator[](int x){
-			if(x > this->pos){
-				return *this->values[this->pos-1];
+		virtual PrimitiveRawList<T>& operator=(const PrimitiveRawList<T>& a_list){
+			PrimitiveRawListLog(ame_Log_StartMethod, "operator=", "println", "");
+			this->resetDelete();
+			for(int x = 0; x < a_list.getPosition(); x++){
+				this->addLValue(*a_list.getByPosition(x));
 			}
-			if(this->pos == x){
-				this->pos++;
-			}
-			this->values[x] = new T();
-			return *this->values[x];
+			PrimitiveRawListLog(ame_Log_EndMethod, "operator=", "println", "");
+			return *this;
 		}
 		
-		//resize length by adding more space
-		//bug unkown for template = char on feather m0
-		virtual void expandLocal(int add){
-			int nsize = this->size+add;
-			T **nT;
-			nT = new T*[nsize];
-			for(int x=0; x < this->pos; x++){
-				if(x < this->pos){
-					nT[x] = this->values[x];
-				}else{
-					nT[x] = nullptr;
+		virtual bool operator==(const PrimitiveRawList<T>& a_list){
+			PrimitiveRawListLog(ame_Log_StartMethod, "operator==", "println", "");
+			if(this->getPosition() != a_list.getPosition()){
+				return false;
+			}
+			for(int x = 0; x < a_list.getPosition(); x++){
+				T* t_value = this->getByPosition(x);
+				T* f_value = a_list.getByPosition(x);
+				if(t_value == f_value){
+					continue;
 				}
+				if(t_value != nullptr && t_value != nullptr){
+					if(*t_value != *f_value){
+						return false;
+					}
+				}
+				this->addLValue(*a_list.getByPosition(x));
 			}
-			delete[] this->values;
-			this->values = nT;
-			this->size = nsize;
+			PrimitiveRawListLog(ame_Log_EndMethod, "operator==", "println", "");
+			return true;
 		}
 		
-		virtual PrimitiveRawList<T>* expand(int add){
-			int nsize = this->size+add;
-			PrimitiveRawList<T> *nprimitive = new PrimitiveRawList<T>(nsize);	
-			for(int x=0; x < this->pos; x++){
-				nprimitive->addPointer(this->values[x]);
+		virtual bool operator!=(const PrimitiveRawList<T>& a_list){
+			PrimitiveRawListLog(ame_Log_StartMethod, "operator==", "println", "");
+			if(this->getPosition() != a_list.getPosition()){
+				return true;
 			}
-			return nprimitive;
+			for(int x = 0; x < a_list.getPosition(); x++){
+				T* t_value = this->getByPosition(x);
+				T* f_value = a_list.getByPosition(x);
+				if(t_value == f_value){
+					continue;
+				}
+				if(t_value != nullptr && t_value != nullptr){
+					if(*t_value == *f_value){
+						return false;
+					}
+				}
+				this->addLValue(*a_list.getByPosition(x));
+			}
+			PrimitiveRawListLog(ame_Log_EndMethod, "operator==", "println", "");
+			return true;
 		}
 	
 		////////////////////////////////////////////Iterator part///////////////////////////////////////////////
 		
 		ListIterator<T> begin(){
-		  return ListIterator<T>(this, 0, this->getPosition());
+			PrimitiveRawListLog(ame_Log_StartMethod, "begin", "println", "");
+			PrimitiveRawListLog(ame_Log_EndMethod, "begin", "println", "");
+			return ListIterator<T>(this, 0, this->getPosition());
 		}
 		
 		ListIterator<T> end(){
-		  return ListIterator<T>(this, this->getPosition(), this->getPosition());
+			PrimitiveRawListLog(ame_Log_StartMethod, "end", "println", "");
+			PrimitiveRawListLog(ame_Log_EndMethod, "end", "println", "");
+			return ListIterator<T>(this, this->getPosition(), this->getPosition());
 		}
 		
 	protected:
-		T **values = nullptr;
-		int pos=0;
-		int size=10;
-		bool owner = true;
 };
 
 }

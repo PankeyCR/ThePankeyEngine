@@ -1,33 +1,11 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_AppState)
-	#define AppState_hpp
-#endif
-
 #ifndef AppState_hpp
 #define AppState_hpp
 #define AppState_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "Note.hpp"
-#include "cppObject.hpp"
 #include "Class.hpp"
 
 namespace ame{
-
-class Application;
 
 class AppState : public cppObject{
     public:

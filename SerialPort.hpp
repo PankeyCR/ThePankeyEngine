@@ -1,13 +1,11 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_SerialPort)
-	#define SerialPort_hpp
-#endif
-
 #ifndef SerialPort_hpp
 #define SerialPort_hpp
 #define SerialPort_AVAILABLE
+
+#include "cppObject.hpp"
+#include "Note.hpp"
+#include "ByteArray.hpp"
 
 #ifndef ame_Enviroment_Defined
 
@@ -23,13 +21,9 @@
 	#include "IPAddress.h"
 #endif
 
-
-#include "cppObject.hpp"
-#include "ByteArray.hpp"
-
 namespace ame{
 
-class SerialPort : public Stream , public cppObject{
+class SerialPort : public cppObject{
 
     public:
 		SerialPort(){
@@ -115,7 +109,7 @@ class SerialPort : public Stream , public cppObject{
 		
 		virtual cppObject *clone(){return nullptr;}
 	protected:
-	Note m_name;
+		Note m_name;
 };
 
 }

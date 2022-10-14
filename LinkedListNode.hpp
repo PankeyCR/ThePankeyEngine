@@ -1,8 +1,4 @@
 
-#if defined(DISABLE_LinkedListNode)
-	#define LinkedListNode_hpp
-#endif
-
 #ifndef LinkedListNode_hpp
 #define LinkedListNode_hpp
 #define LinkedListNode_AVAILABLE
@@ -28,6 +24,20 @@ class LinkedListNode{
 		}
 		
 		virtual T* get(){return value;}
+		
+		virtual void cutLastNode(){
+			if(last != nullptr){
+				last->next = nullptr;
+			}
+			last = nullptr;
+		}
+		
+		virtual void cutNextNode(){
+			if(next != nullptr){
+				next->last = nullptr;
+			}
+			next = nullptr;
+		}
 		
 		virtual void removeNode(){
 			if(last != nullptr){

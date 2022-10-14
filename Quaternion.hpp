@@ -95,7 +95,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y = y;
 			this->z = z;
 			this->w = w;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		Quaternion set(Quaternion q){
@@ -103,7 +103,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y = q.y;
 			this->z = q.z;
 			this->w = q.w;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 
 		
@@ -125,7 +125,7 @@ class Quaternion : public cppObject , public Printable{
 			if (angles->getPosition() != 3) {
 				//throw new IllegalArgumentException(
 				//        "Angles array must have three elements");
-				return ame::Quaternion(this->x, this->y, this->z, this->w);
+				return Quaternion(this->x, this->y, this->z, this->w);
 			}
 
 			return this->fromAngles(*angles->getByPosition(0), *angles->getByPosition(1), *angles->getByPosition(2));
@@ -157,9 +157,9 @@ class Quaternion : public cppObject , public Printable{
 			float cy = (sinYXcosZ * cosX + cosYXsinZ * sinX);
 			float cz = (cosYXsinZ * cosX - sinYXcosZ * sinX);
 
-			ame::Quaternion rtq = ame::Quaternion(cx, cy, cz, cw);
+			Quaternion rtq = Quaternion(cx, cy, cz, cw);
 			rtq.normalizeLocal();
-			return ame::Quaternion(rtq.x, rtq.y, rtq.z, rtq.w);
+			return Quaternion(rtq.x, rtq.y, rtq.z, rtq.w);
 		}
 		
 		
@@ -167,7 +167,7 @@ class Quaternion : public cppObject , public Printable{
 			if (angles->getPosition() != 3) {
 				//throw new IllegalArgumentException(
 				//        "Angles array must have three elements");
-				return ame::Quaternion(this->x, this->y, this->z, this->w);
+				return Quaternion(this->x, this->y, this->z, this->w);
 			}
 
 			return this->fromAnglesLocal(*angles->getByPosition(0), *angles->getByPosition(1), *angles->getByPosition(2));
@@ -200,7 +200,7 @@ class Quaternion : public cppObject , public Printable{
 			this->z = (cosYXsinZ * cosX - sinYXcosZ * sinX);
 
 			this->normalizeLocal();
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		
@@ -271,7 +271,7 @@ class Quaternion : public cppObject , public Printable{
 
 			// Use the Graphics Gems code, from 
 			// ftp://ftp.cis.upenn.edu/pub/graphics/shoemake/quatut.ps.Z
-			// *NOT* the "Matrix and ame::Quaternions FAQ", which has errors!
+			// *NOT* the "Matrix and Quaternions FAQ", which has errors!
 
 			// the trace is the sum of the diagonal elements; see
 			// http://mathworld.wolfram.com/MatrixTrace.hpptml
@@ -308,7 +308,7 @@ class Quaternion : public cppObject , public Printable{
 				cw = (m10 - m01) * s;
 			}
 
-			return ame::Quaternion(cx, cy, cz, cw);
+			return Quaternion(cx, cy, cz, cw);
 		}
 		
 		
@@ -345,7 +345,7 @@ class Quaternion : public cppObject , public Printable{
 
 			// Use the Graphics Gems code, from 
 			// ftp://ftp.cis.upenn.edu/pub/graphics/shoemake/quatut.ps.Z
-			// *NOT* the "Matrix and ame::Quaternions FAQ", which has errors!
+			// *NOT* the "Matrix and Quaternions FAQ", which has errors!
 
 			// the trace is the sum of the diagonal elements; see
 			// http://mathworld.wolfram.com/MatrixTrace.hpptml
@@ -382,7 +382,7 @@ class Quaternion : public cppObject , public Printable{
 				this->w = (m10 - m01) * s;
 			}
 
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		
@@ -564,7 +564,7 @@ class Quaternion : public cppObject , public Printable{
 		Quaternion fromAngleNormalAxis(float angle, Vector3f axis){
 			if (axis.x == 0 && axis.y == 0 && axis.z == 0) {
 				//this->loadIdentity();
-				return ame::Quaternion(0, 0, 0, 1);
+				return Quaternion(0, 0, 0, 1);
 			} else {
 				float halfAngle = 0.5f * angle;
 				float sinn = sin(halfAngle);
@@ -572,7 +572,7 @@ class Quaternion : public cppObject , public Printable{
 				float sx = sinn * axis.x;
 				float sy = sinn * axis.y;
 				float sz = sinn * axis.z;
-				return ame::Quaternion(sx, sy, sz, sw);
+				return Quaternion(sx, sy, sz, sw);
 			}
 		}
 
@@ -593,7 +593,7 @@ class Quaternion : public cppObject , public Printable{
 				this->y = sinn * axis.y;
 				this->z = sinn * axis.z;
 			}
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		
@@ -628,17 +628,17 @@ class Quaternion : public cppObject , public Printable{
 		
 		
 		Quaternion slerp(Quaternion q1, Quaternion q2, float t){
-			// Create a local ame::Quaternion to store the interpolated ame::Quaternion
+			// Create a local Quaternion to store the interpolated Quaternion
 			if (q1.x == q2.x && q1.y == q2.y && q1.z == q2.z && q1.w == q2.w) {
 				this->set(q1);
-				return ame::Quaternion(this->x, this->y, this->z, this->w);
+				return Quaternion(this->x, this->y, this->z, this->w);
 			}
 
 			float result = (q1.x * q2.x) + (q1.y * q2.y) + (q1.z * q2.z)
 					+ (q1.w * q2.w);
 
 			if (result < 0.0f) {
-				// Negate the second ame::Quaternion and the result of the dot product
+				// Negate the second Quaternion and the result of the dot product
 				q2.x = -q2.x;
 				q2.y = -q2.y;
 				q2.z = -q2.z;
@@ -650,9 +650,9 @@ class Quaternion : public cppObject , public Printable{
 			float scale0 = 1 - t;
 			float scale1 = t;
 
-			// Check if the angle between the 2 ame::Quaternions was big enough to
+			// Check if the angle between the 2 Quaternions was big enough to
 			// warrant such calculations
-			if ((1 - result) > 0.1f) {// Get the angle between the 2 ame::Quaternions,
+			if ((1 - result) > 0.1f) {// Get the angle between the 2 Quaternions,
 				// and then store the sin() of that angle
 				float theta = acos(result);
 				float invSinTheta = 1.0f / sin(theta);
@@ -663,30 +663,30 @@ class Quaternion : public cppObject , public Printable{
 				scale1 = sin((t * theta)) * invSinTheta;
 			}
 
-			// Calculate the x, y, z and w values for the ame::Quaternion by using a
+			// Calculate the x, y, z and w values for the Quaternion by using a
 			// special
-			// form of linear interpolation for ame::Quaternions.
+			// form of linear interpolation for Quaternions.
 			float tx = (scale0 * q1.x) + (scale1 * q2.x);
 			float ty = (scale0 * q1.y) + (scale1 * q2.y);
 			float tz = (scale0 * q1.z) + (scale1 * q2.z);
 			float tw = (scale0 * q1.w) + (scale1 * q2.w);
 
-			// Return the interpolated ame::Quaternion
-			return ame::Quaternion(tx, ty, tz, tw);
+			// Return the interpolated Quaternion
+			return Quaternion(tx, ty, tz, tw);
 		}
 		
 		Quaternion slerpLocal(Quaternion q1, Quaternion q2, float t){
-			// Create a local ame::Quaternion to store the interpolated ame::Quaternion
+			// Create a local Quaternion to store the interpolated Quaternion
 			if (q1.x == q2.x && q1.y == q2.y && q1.z == q2.z && q1.w == q2.w) {
 				this->set(q1);
-				return ame::Quaternion(this->x, this->y, this->z, this->w);
+				return Quaternion(this->x, this->y, this->z, this->w);
 			}
 
 			float result = (q1.x * q2.x) + (q1.y * q2.y) + (q1.z * q2.z)
 					+ (q1.w * q2.w);
 
 			if (result < 0.0f) {
-				// Negate the second ame::Quaternion and the result of the dot product
+				// Negate the second Quaternion and the result of the dot product
 				q2.x = -q2.x;
 				q2.y = -q2.y;
 				q2.z = -q2.z;
@@ -698,9 +698,9 @@ class Quaternion : public cppObject , public Printable{
 			float scale0 = 1 - t;
 			float scale1 = t;
 
-			// Check if the angle between the 2 ame::Quaternions was big enough to
+			// Check if the angle between the 2 Quaternions was big enough to
 			// warrant such calculations
-			if ((1 - result) > 0.1f) {// Get the angle between the 2 ame::Quaternions,
+			if ((1 - result) > 0.1f) {// Get the angle between the 2 Quaternions,
 				// and then store the sin() of that angle
 				float theta = acos(result);
 				float invSinTheta = 1.0f / sin(theta);
@@ -711,30 +711,30 @@ class Quaternion : public cppObject , public Printable{
 				scale1 = sin((t * theta)) * invSinTheta;
 			}
 
-			// Calculate the x, y, z and w values for the ame::Quaternion by using a
+			// Calculate the x, y, z and w values for the Quaternion by using a
 			// special
-			// form of linear interpolation for ame::Quaternions.
+			// form of linear interpolation for Quaternions.
 			this->x = (scale0 * q1.x) + (scale1 * q2.x);
 			this->y = (scale0 * q1.y) + (scale1 * q2.y);
 			this->z = (scale0 * q1.z) + (scale1 * q2.z);
 			this->w = (scale0 * q1.w) + (scale1 * q2.w);
 
-			// Return the interpolated ame::Quaternion
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			// Return the interpolated Quaternion
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		
 		Quaternion slerp(Quaternion q2, float changeAmnt){
 			if (this->x == q2.x && this->y == q2.y && this->z == q2.z
 					&& this->w == q2.w) {
-				return ame::Quaternion(this->x, this->y, this->z, this->w);
+				return Quaternion(this->x, this->y, this->z, this->w);
 			}
 
 			float result = (this->x * q2.x) + (this->y * q2.y) + (this->z * q2.z)
 					+ (this->w * q2.w);
 
 			if (result < 0.0f) {
-				// Negate the second ame::Quaternion and the result of the dot product
+				// Negate the second Quaternion and the result of the dot product
 				q2.x = -q2.x;
 				q2.y = -q2.y;
 				q2.z = -q2.z;
@@ -746,10 +746,10 @@ class Quaternion : public cppObject , public Printable{
 			float scale0 = 1 - changeAmnt;
 			float scale1 = changeAmnt;
 
-			// Check if the angle between the 2 ame::Quaternions was big enough to
+			// Check if the angle between the 2 Quaternions was big enough to
 			// warrant such calculations
 			if ((1 - result) > 0.1f) {
-				// Get the angle between the 2 ame::Quaternions, and then store the sin()
+				// Get the angle between the 2 Quaternions, and then store the sin()
 				// of that angle
 				float theta = acos(result);
 				float invSinTheta = 1.0f / sin(theta);
@@ -760,27 +760,27 @@ class Quaternion : public cppObject , public Printable{
 				scale1 = sin((changeAmnt * theta)) * invSinTheta;
 			}
 
-			// Calculate the x, y, z and w values for the ame::Quaternion by using a
+			// Calculate the x, y, z and w values for the Quaternion by using a
 			// special
-			// form of linear interpolation for ame::Quaternions.
+			// form of linear interpolation for Quaternions.
 			float ex = (scale0 * this->x) + (scale1 * q2.x);
 			float ey = (scale0 * this->y) + (scale1 * q2.y);
 			float ez = (scale0 * this->z) + (scale1 * q2.z);
 			float ew = (scale0 * this->w) + (scale1 * q2.w);
-			return ame::Quaternion(ex, ey, ez, ew);
+			return Quaternion(ex, ey, ez, ew);
 		}
 		
 		Quaternion slerpLocal(Quaternion q2, float changeAmnt){
 			if (this->x == q2.x && this->y == q2.y && this->z == q2.z
 					&& this->w == q2.w) {
-				return ame::Quaternion(this->x, this->y, this->z, this->w);
+				return Quaternion(this->x, this->y, this->z, this->w);
 			}
 
 			float result = (this->x * q2.x) + (this->y * q2.y) + (this->z * q2.z)
 					+ (this->w * q2.w);
 
 			if (result < 0.0f) {
-				// Negate the second ame::Quaternion and the result of the dot product
+				// Negate the second Quaternion and the result of the dot product
 				q2.x = -q2.x;
 				q2.y = -q2.y;
 				q2.z = -q2.z;
@@ -792,10 +792,10 @@ class Quaternion : public cppObject , public Printable{
 			float scale0 = 1 - changeAmnt;
 			float scale1 = changeAmnt;
 
-			// Check if the angle between the 2 ame::Quaternions was big enough to
+			// Check if the angle between the 2 Quaternions was big enough to
 			// warrant such calculations
 			if ((1 - result) > 0.1f) {
-				// Get the angle between the 2 ame::Quaternions, and then store the sin()
+				// Get the angle between the 2 Quaternions, and then store the sin()
 				// of that angle
 				float theta = acos(result);
 				float invSinTheta = 1.0f / sin(theta);
@@ -806,21 +806,21 @@ class Quaternion : public cppObject , public Printable{
 				scale1 = sin((changeAmnt * theta)) * invSinTheta;
 			}
 
-			// Calculate the x, y, z and w values for the ame::Quaternion by using a
+			// Calculate the x, y, z and w values for the Quaternion by using a
 			// special
-			// form of linear interpolation for ame::Quaternions.
+			// form of linear interpolation for Quaternions.
 			this->x = (scale0 * this->x) + (scale1 * q2.x);
 			this->y = (scale0 * this->y) + (scale1 * q2.y);
 			this->z = (scale0 * this->z) + (scale1 * q2.z);
 			this->w = (scale0 * this->w) + (scale1 * q2.w);
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		
 		Quaternion nlerp(Quaternion q2, float blend){
 			float d = dot(q2);
 			float blendI = 1.0f - blend;
-			ame::Quaternion p;
+			Quaternion p;
 			if (d < 0.0f) {
 				p.x = blendI * this->x - blend * q2.x;
 				p.y = blendI * this->y - blend * q2.y;
@@ -854,11 +854,11 @@ class Quaternion : public cppObject , public Printable{
 		
 		
 		Quaternion add(Quaternion q){
-			return ame::Quaternion(this->x + q.x, this->y + q.y, this->z + q.z, this->w + q.w);
+			return Quaternion(this->x + q.x, this->y + q.y, this->z + q.z, this->w + q.w);
 		}
 		
 		Quaternion add(float qx, float qy, float qz, float qw){
-			return  ame::Quaternion(this->x + qx, this->y + qy, this->z + qz, this->w + qw);
+			return  Quaternion(this->x + qx, this->y + qy, this->z + qz, this->w + qw);
 		}
 		
 		
@@ -867,7 +867,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y += q.y;
 			this->z += q.z;
 			this->w += q.w;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		Quaternion addLocal(float qx, float qy, float qz, float qw){
@@ -875,16 +875,16 @@ class Quaternion : public cppObject , public Printable{
 			this->y += qy;
 			this->z += qz;
 			this->w += qw;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		
 		Quaternion subtract(Quaternion q){
-			return ame::Quaternion(this->x - q.x, this->y - q.y, this->z - q.z, this->w - q.w);
+			return Quaternion(this->x - q.x, this->y - q.y, this->z - q.z, this->w - q.w);
 		}
 		
 		Quaternion subtract(float qx, float qy, float qz, float qw){
-			return ame::Quaternion(this->x - qx, this->y - qy, this->z - qz, this->w - qw);
+			return Quaternion(this->x - qx, this->y - qy, this->z - qz, this->w - qw);
 		}
 		
 		
@@ -893,7 +893,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y -= q.y;
 			this->z -= q.z;
 			this->w -= q.w;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		Quaternion subtractLocal(float qx, float qy, float qz, float qw){
@@ -901,39 +901,39 @@ class Quaternion : public cppObject , public Printable{
 			this->y -= qy;
 			this->z -= qz;
 			this->w -= qw;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		
 		Quaternion mult(Quaternion q){
-			ame::Quaternion res;
+			Quaternion res;
 			float qw = q.w, qx = q.x, qy = q.y, qz = q.z;
 			res.x = this->x * qw + this->y * qz - this->z * qy + this->w * qx;
 			res.y = -this->x * qz + this->y * qw + this->z * qx + this->w * qy;
 			res.z = this->x * qy - this->y * qx + this->z * qw + this->w * qz;
 			res.w = -this->x * qx - this->y * qy - this->z * qz + this->w * qw;
-			return ame::Quaternion(res.x, res.y, res.z, res.w);
+			return Quaternion(res.x, res.y, res.z, res.w);
 		}
 		
 		Quaternion mult(float qx, float qy, float qz, float qw){
-			ame::Quaternion res;
+			Quaternion res;
 			res.x = this->x * qw + this->y * qz - this->z * qy + this->w * qx;
 			res.y = -this->x * qz + this->y * qw + this->z * qx + this->w * qy;
 			res.z = this->x * qy - this->y * qx + this->z * qw + this->w * qz;
 			res.w = -this->x * qx - this->y * qy - this->z * qz + this->w * qw;
-			return ame::Quaternion(res.x, res.y, res.z, res.w);
+			return Quaternion(res.x, res.y, res.z, res.w);
 		}
 		
 		
 		Quaternion apply(Matrix3f matrix){
 			float oldX = this->x, oldY = this->y, oldZ = this->z, oldW = this->w;
-			ame::Quaternion temp = this->fromRotationMatrix(matrix);
+			Quaternion temp = this->fromRotationMatrix(matrix);
 
 			float ox = oldX * temp.w + oldY * temp.z - oldZ * temp.y + oldW * temp.x;
 			float oy = -oldX * temp.z + oldY * temp.w + oldZ * temp.x + oldW * temp.y;
 			float oz = oldX * temp.y - oldY * temp.x + oldZ * temp.w + oldW * temp.z;
 			float ow = -oldX * temp.x - oldY * temp.y - oldZ * temp.z + oldW * temp.w;
-			return ame::Quaternion(ox, oy, oz, ow);
+			return Quaternion(ox, oy, oz, ow);
 		}
 		
 		Quaternion applyLocal(Matrix3f matrix){
@@ -945,7 +945,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y = -oldX * tempZ + oldY * tempW + oldZ * tempX + oldW * tempY;
 			this->z = oldX * tempY - oldY * tempX + oldZ * tempW + oldW * tempZ;
 			this->w = -oldX * tempX - oldY * tempY - oldZ * tempZ + oldW * tempW;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		
@@ -953,7 +953,7 @@ class Quaternion : public cppObject , public Printable{
 			if (axis->getPosition() < 3) {
 				//throw new IllegalArgumentException(
 				//        "Axis array must have three elements");
-				return ame::Quaternion(this->x, this->y, this->z, this->w);
+				return Quaternion(this->x, this->y, this->z, this->w);
 			}
 			return this->fromAxes(*axis->getByPosition(0), *axis->getByPosition(1), *axis->getByPosition(2));
 		}
@@ -968,7 +968,7 @@ class Quaternion : public cppObject , public Printable{
 			if (axis->getPosition() < 3) {
 				//throw new IllegalArgumentException(
 				//        "Axis array must have three elements");
-				return ame::Quaternion(this->x, this->y, this->z, this->w);
+				return Quaternion(this->x, this->y, this->z, this->w);
 			}
 			return this->fromAxesLocal(*axis->getByPosition(0), *axis->getByPosition(1), *axis->getByPosition(2));
 		}
@@ -1041,7 +1041,7 @@ class Quaternion : public cppObject , public Printable{
 			this->x = x1;
 			this->y = y1;
 			this->z = z1;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 
 		Quaternion multLocal(float qx, float qy, float qz, float qw){
@@ -1052,12 +1052,12 @@ class Quaternion : public cppObject , public Printable{
 			this->x = x1;
 			this->y = y1;
 			this->z = z1;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		
 		Quaternion mult(float scalar){
-			return ame::Quaternion(scalar * this->x, scalar * this->y, scalar * this->z, scalar * this->w);
+			return Quaternion(scalar * this->x, scalar * this->y, scalar * this->z, scalar * this->w);
 		}
 		
 		Quaternion multLocal(float scalar){
@@ -1065,7 +1065,7 @@ class Quaternion : public cppObject , public Printable{
 			this->x *= scalar;
 			this->y *= scalar;
 			this->z *= scalar;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		
@@ -1083,7 +1083,7 @@ class Quaternion : public cppObject , public Printable{
 			float ny = this->y * n;
 			float nz = this->z * n;
 			float nw = this->w * n;
-			return ame::Quaternion(nx, ny, nz, nw);
+			return Quaternion(nx, ny, nz, nw);
 		}
 
 		Quaternion normalizeLocal(){
@@ -1092,14 +1092,14 @@ class Quaternion : public cppObject , public Printable{
 			this->y *= n;
 			this->z *= n;
 			this->w *= n;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		Quaternion inverse(){
 			float nor = this->norm();
 			if (nor > 0.0) {
 				float invNorm = 1.0f / nor;
-				return ame::Quaternion(-this->x * invNorm, -this->y * invNorm, -this->z * invNorm, this->w
+				return Quaternion(-this->x * invNorm, -this->y * invNorm, -this->z * invNorm, this->w
 						* invNorm);
 			}
 			// return an invalid result to flag the error
@@ -1115,11 +1115,11 @@ class Quaternion : public cppObject , public Printable{
 				this->z *= -invNorm;
 				this->w *= invNorm;
 			}
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		Quaternion negate(){
-			return ame::Quaternion(-this->x, -this->y, -this->z, -this->w);
+			return Quaternion(-this->x, -this->y, -this->z, -this->w);
 		}
 		
 		Quaternion negateLocal(){
@@ -1127,7 +1127,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y *= -1;
 			this->z *= -1;
 			this->w *= -1;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		
@@ -1149,14 +1149,14 @@ class Quaternion : public cppObject , public Printable{
 		}	
 		
 		
-		// void ame::Quaternion::readExternal(ObjectInput in){
+		// void Quaternion::readExternal(ObjectInput in){
 			// x = in.readFloat();
 			// y = in.readFloat();
 			// z = in.readFloat();
 			// w = in.readFloat();
 		// }
 
-		// void ame::Quaternion::writeExternal(ObjectOutput out){
+		// void Quaternion::writeExternal(ObjectOutput out){
 			// out.writeFloat(x);
 			// out.writeFloat(y);
 			// out.writeFloat(z);
@@ -1166,7 +1166,7 @@ class Quaternion : public cppObject , public Printable{
 	//	void writeExternal(ObjectOutput out);
 		void lookAt(Vector3f direction, Vector3f up){
 
-		// void ame::Quaternion::write(JmeExporter e) throws IOException {
+		// void Quaternion::write(JmeExporter e) throws IOException {
 			// OutputCapsule cap = e.getCapsule(this);
 			// cap.write(x, "x", 0);
 			// cap.write(y, "y", 0);
@@ -1174,7 +1174,7 @@ class Quaternion : public cppObject , public Printable{
 			// cap.write(w, "w", 1);
 		// }
 
-		// void ame::Quaternion::read(JmeImporter e) throws IOException {
+		// void Quaternion::read(JmeImporter e) throws IOException {
 			// InputCapsule cap = e.getCapsule(this);
 			// x = cap.readFloat("x", 0);
 			// y = cap.readFloat("y", 0);
@@ -1193,13 +1193,13 @@ class Quaternion : public cppObject , public Printable{
 	//	void write(JmeExporter e);
 	//	void read(JmeImporter e);
 		Quaternion opposite(){
-			ame::Quaternion store;
+			Quaternion store;
 
 			ame::Vector3f axis = toVector3fAxis();
 			float angle = toAngleAxis();
 
 			store.fromAngleAxis(PI + angle, axis);
-			return ame::Quaternion(store.x, store.y, store.z, store.w);
+			return Quaternion(store.x, store.y, store.z, store.w);
 		}
 		
 		Quaternion opposite(Quaternion store){
@@ -1211,11 +1211,11 @@ class Quaternion : public cppObject , public Printable{
 			this->y = store.y;
 			this->z = store.z;
 			this->w = store.w;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		Quaternion oppositeLocal(){
-			ame::Quaternion store;
+			Quaternion store;
 
 			ame::Vector3f axis = toVector3fAxis();
 			float angle = toAngleAxis();
@@ -1225,7 +1225,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y = store.y;
 			this->z = store.z;
 			this->w = store.w;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		
@@ -1233,17 +1233,21 @@ class Quaternion : public cppObject , public Printable{
 			return Note("Quaternion(") + Note(this->x) + Note(", ") + Note(this->y) + Note(", ") + Note(this->z) + Note(", ") + Note(this->w) + Note(")");
 		}
 		
-		cppObjectClass* getClass(){
-			return ame::Class<ame::Quaternion>::classType;
+		virtual cppObjectClass* getClass(){
+			return Class<Quaternion>::getClass();
+		}
+
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<Quaternion>::getClass();
 		}
 		
-		bool equals(cppObject *o){
+		virtual bool equals(cppObject *a_obj){
 
-			if (this == o || (o->getClass() == ame::Class<ame::Quaternion>::classType)) {
+			if (this == a_obj || (a_obj->getClass() == Class<Quaternion>::classType)) {
 				return true;
 			}
 
-			ame::Quaternion *comp = (ame::Quaternion*) o;
+			Quaternion *comp = (Quaternion*) a_obj;
 			if (this->x != comp->x) {
 				return false;
 			}
@@ -1259,8 +1263,8 @@ class Quaternion : public cppObject , public Printable{
 			return true;
 		}
 		
-		Quaternion* clone(){
-			return new ame::Quaternion(this->x, this->y, this->z, this->w);
+		virtual cppObject* clone(){
+			return new Quaternion(this->x, this->y, this->z, this->w);
 		}
 
 		
@@ -1277,7 +1281,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y = a[1];
 			this->z = a[2];
 			this->w = a[3];
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		Quaternion operator=(const int& a){
@@ -1285,7 +1289,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y = (float)a;
 			this->z = (float)a;
 			this->w = (float)a;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		bool operator==(const Quaternion& a){
@@ -1303,19 +1307,19 @@ class Quaternion : public cppObject , public Printable{
 		}
 		
 		Quaternion operator+(const Quaternion& a){
-			return ame::Quaternion(this->x+ a.x ,this->y + a.y ,this->z + a.z ,this->w + a.w);
+			return Quaternion(this->x+ a.x ,this->y + a.y ,this->z + a.z ,this->w + a.w);
 		}
 		
 		Quaternion operator+(const float a[4]){
-			return ame::Quaternion(this->x+a[0] ,this->y+a[1] ,this->z + a[2] ,this->w + a[3]);
+			return Quaternion(this->x+a[0] ,this->y+a[1] ,this->z + a[2] ,this->w + a[3]);
 		}
 		
 		Quaternion operator-(const Quaternion& a){
-			return ame::Quaternion(this->x- a.x ,this->y - a.y ,this->z - a.z ,this->w - a.w);
+			return Quaternion(this->x- a.x ,this->y - a.y ,this->z - a.z ,this->w - a.w);
 		}
 		
 		Quaternion operator-(const float a[4]){
-			return ame::Quaternion(this->x-a[0] ,this->y-a[1] ,this->z - a[2] ,this->w - a[3]);
+			return Quaternion(this->x-a[0] ,this->y-a[1] ,this->z - a[2] ,this->w - a[3]);
 		}
 		
 		Quaternion operator*(const Quaternion& a){
@@ -1323,7 +1327,7 @@ class Quaternion : public cppObject , public Printable{
 			float xy = -this->x * a.z + this->y * a.w  + this->z * a.x + this->w * a.y;
 			float xz = this->x * a.y - this->y * a.x + this->z * a.w  + this->w * a.z;
 			float xw = -this->x * a.x - this->y * a.y - this->z * a.z + this->w * a.w ;
-			return ame::Quaternion(xx, xy, xz, xw);
+			return Quaternion(xx, xy, xz, xw);
 		}
 		
 		Quaternion operator*(const float a[4]){
@@ -1331,19 +1335,19 @@ class Quaternion : public cppObject , public Printable{
 			float xy = -this->x * a[2] + this->y * a[3] + this->z * a[0] + this->w * a[1];
 			float xz = this->x * a[1] - this->y * a[0] + this->z * a[3] + this->w * a[2];
 			float xw = -this->x * a[0] - this->y * a[1] - this->z * a[2] + this->w * a[3];
-			return ame::Quaternion(xx, xy, xz, xw);
+			return Quaternion(xx, xy, xz, xw);
 		}
 		
-		// ame::Quaternion ame::Quaternion::operator/(const ame::Quaternion& a) {
-			// return ame::Quaternion(this->x/ a.x ,this->y / a.y ,this->z / a.z ,this->w / a.w);
+		// Quaternion Quaternion::operator/(const Quaternion& a) {
+			// return Quaternion(this->x/ a.x ,this->y / a.y ,this->z / a.z ,this->w / a.w);
 		// }
-		// ame::Quaternion ame::Quaternion::operator/(const float a[4]) {
-			// return ame::Quaternion(this->x/ a[0] ,this->y/ a[1] ,this->z / a[2] ,this->w / a[3]);
+		// Quaternion Quaternion::operator/(const float a[4]) {
+			// return Quaternion(this->x/ a[0] ,this->y/ a[1] ,this->z / a[2] ,this->w / a[3]);
 		// }
 		// Quaternion operator/(const Quaternion& a);
 		// Quaternion operator/(const float [4]);
 		Quaternion operator/(const int a){
-			return ame::Quaternion(this->x/ a ,this->y/ a ,this->z / a ,this->w / a);
+			return Quaternion(this->x/ a ,this->y/ a ,this->z / a ,this->w / a);
 		}
 		
 		
@@ -1352,7 +1356,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y += a.y;
 			this->z += a.z;
 			this->w += a.w;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		Quaternion operator+=(const float a[4]){
@@ -1360,7 +1364,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y += a[1];
 			this->z += a[2];
 			this->w += a[3];
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		Quaternion operator-=(const Quaternion& a){
@@ -1368,7 +1372,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y -= a.y;
 			this->z -= a.z;
 			this->w -= a.w;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		Quaternion operator-=(const float a[4]){
@@ -1376,7 +1380,7 @@ class Quaternion : public cppObject , public Printable{
 			this->y -= a[1];
 			this->z -= a[2];
 			this->w -= a[3];
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		Quaternion operator*=(const Quaternion& q){
@@ -1387,7 +1391,7 @@ class Quaternion : public cppObject , public Printable{
 			this->x = x1;
 			this->y = y1;
 			this->z = z1;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
 		
 		Quaternion operator*=(const float a[4]){
@@ -1398,21 +1402,21 @@ class Quaternion : public cppObject , public Printable{
 			this->x = x1;
 			this->y = y1;
 			this->z = z1;
-			return ame::Quaternion(this->x, this->y, this->z, this->w);
+			return Quaternion(this->x, this->y, this->z, this->w);
 		}
-		// ame::Quaternion ame::Quaternion::operator/=(const ame::Quaternion& a) {
+		// Quaternion Quaternion::operator/=(const Quaternion& a) {
 			// this->x /= a.x;
 			// this->y /= a.y;
 			// this->z /= a.z;
 			// this->w /= a.w;
-			// return ame::Quaternion(this->x, this->y, this->z, this->w);
+			// return Quaternion(this->x, this->y, this->z, this->w);
 		// }
-		// ame::Quaternion ame::Quaternion::operator/=(const float a[4]) {
+		// Quaternion Quaternion::operator/=(const float a[4]) {
 			// this->x /= a;
 			// this->y /= a;
 			// this->z /= a;
 			// this->w /= a;
-			// return ame::Quaternion(this->x, this->y, this->z, this->w);
+			// return Quaternion(this->x, this->y, this->z, this->w);
 		// }
 		// Quaternion operator/=(const Quaternion& a);
 		// Quaternion operator/=(const float [4]);
@@ -1459,8 +1463,8 @@ class Quaternion : public cppObject , public Printable{
 
 }
 
-const ame::Quaternion* ame::Quaternion::IDENTITY = new ame::Quaternion();
-const ame::Quaternion* ame::Quaternion::DIRECTION_Z = new ame::Quaternion();
-const ame::Quaternion* ame::Quaternion::ZERO = new ame::Quaternion(0, 0, 0, 0);
+// const Quaternion* Quaternion::IDENTITY = new Quaternion();
+// const Quaternion* Quaternion::DIRECTION_Z = new Quaternion();
+// const Quaternion* Quaternion::ZERO = new Quaternion(0, 0, 0, 0);
 
 #endif

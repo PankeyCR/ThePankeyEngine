@@ -23,9 +23,8 @@
 	#include "SD.h"
 #endif
 
+#include "Note.hpp"
 #include "LinkedList.hpp"
-#include "Vector3f.hpp"
-#include "Vector4f.hpp"
 
 namespace ame{
 
@@ -51,7 +50,7 @@ class ColorRGBA : public Printable{
 		const static ColorRGBA Brown;
 		const static ColorRGBA Pink;
 		const static ColorRGBA BlackNoAlpha;
-		
+
 		ColorRGBA(){}
 		ColorRGBA(float cr, float cg, float cb, float ca){
 			r = cr;
@@ -66,7 +65,7 @@ class ColorRGBA : public Printable{
 			a = color.a;
 		}
 		virtual ~ColorRGBA(){}
-		
+
 		size_t printTo(Print& p) const{
 			p.print(r);p.print(',');
 			p.print(g);p.print(',');
@@ -74,7 +73,7 @@ class ColorRGBA : public Printable{
 			p.print(a);
 			return sizeof(r) + sizeof(g) + sizeof(b) + sizeof(a);
 		}
-		
+
 		ColorRGBA& operator=(const ColorRGBA& color){
 			r = color.r;
 			g = color.g;
@@ -82,21 +81,21 @@ class ColorRGBA : public Printable{
 			a = color.a;
 			return *this;
 		}
-		
+
 		bool operator==(const ColorRGBA& color){
 			return 	r == color.r &&
 					g == color.g &&
 					b == color.b &&
 					a == color.a;
 		}
-		
+
 		bool operator!=(const ColorRGBA& color){
 			return 	r != color.r &&
 					g != color.g &&
 					b != color.b &&
 					a != color.a;
 		}
-		
+
 		ColorRGBA set(float cr, float cg, float cb, float ca) {
 			r = cr;
 			g = cg;
@@ -104,7 +103,7 @@ class ColorRGBA : public Printable{
 			a = ca;
 			return *this;
 		}
-		
+
 		ColorRGBA set(const ColorRGBA& color){
 			r = color.r;
 			g = color.g;
@@ -112,50 +111,50 @@ class ColorRGBA : public Printable{
 			a = color.a;
 			return *this;
 		}
-		
+
 		ColorRGBA setRed(float value) {
 			r = value;
 			return *this;
 		}
-		
+
 		ColorRGBA setGreen(float value) {
 			g = value;
 			return *this;
 		}
-		
+
 		ColorRGBA setBlue(float value) {
 			b = value;
 			return *this;
 		}
-		
+
 		ColorRGBA setAlpha(float value) {
 			a = value;
 			return *this;
 		}
-		
+
 		void clamp() {
 			// r = FastMath.clamp(r, 0f, 1f);
 			// g = FastMath.clamp(g, 0f, 1f);
 			// b = FastMath.clamp(b, 0f, 1f);
 			// a = FastMath.clamp(a, 0f, 1f);
 		}
-		
+
 		float getAlpha() {
 			return a;
 		}
-		
+
 		float getRed() {
 			return r;
 		}
-		
+
 		float getBlue() {
 			return b;
 		}
-		
+
 		float getGreen() {
 			return g;
 		}
-		
+
 		ColorRGBA interpolateLocal(ColorRGBA finalColor, float changeAmount) {
 			r = (1 - changeAmount) * r + changeAmount * finalColor.r;
 			g = (1 - changeAmount) * g + changeAmount * finalColor.g;
@@ -163,7 +162,7 @@ class ColorRGBA : public Printable{
 			a = (1 - changeAmount) * a + changeAmount * finalColor.a;
 			return *this;
 		}
-		
+
 		ColorRGBA interpolateLocal(ColorRGBA beginColor, ColorRGBA finalColor, float changeAmount) {
 			r = (1 - changeAmount) * beginColor.r + changeAmount * finalColor.r;
 			g = (1 - changeAmount) * beginColor.g + changeAmount * finalColor.g;
@@ -171,7 +170,7 @@ class ColorRGBA : public Printable{
 			a = (1 - changeAmount) * beginColor.a + changeAmount * finalColor.a;
 			return *this;
 		}
-		
+
 		static ColorRGBA randomColor() {
 			ColorRGBA rVal = ColorRGBA(0, 0, 0, 1);
 			// rVal.r = FastMath.nextRandomFloat();
@@ -179,15 +178,15 @@ class ColorRGBA : public Printable{
 			// rVal.b = FastMath.nextRandomFloat();
 			return rVal;
 		}
-		
+
 		ColorRGBA mult(ColorRGBA c) {
 			return ColorRGBA(c.r * r, c.g * g, c.b * b, c.a * a);
 		}
-		
+
 		ColorRGBA mult(float scalar) {
 			return ColorRGBA(scalar * r, scalar * g, scalar * b, scalar * a);
 		}
-		
+
 		ColorRGBA multLocal(float scalar) {
 			r *= scalar;
 			g *= scalar;
@@ -195,26 +194,26 @@ class ColorRGBA : public Printable{
 			a *= scalar;
 			return *this;
 		}
-		
+
 		ColorRGBA add(ColorRGBA c) {
 			return ColorRGBA(c.r + r, c.g + g, c.b + b, c.a + a);
 		}
-		
+
 		ColorRGBA addLocal(ColorRGBA c) {
 			set(c.r + r, c.g + g, c.b + b, c.a + a);
 			return *this;
 		}
-		
+
 		Note toNote() {
 			return Note("Color[") + Note(r) + Note(", ") + Note(g) + Note(", ") + Note(b) + Note(", ") + Note(a) + Note("]");
 		}
-		
+
 		ColorRGBA* clone() {
 			return new ColorRGBA(*this);
 		}
-		
+
 		#if defined(LinkedList_AVAILABLE)
-		
+
 		LinkedList<float> getColorArray() {
 			LinkedList<float> list;
 			list.add(r);
@@ -223,7 +222,7 @@ class ColorRGBA : public Printable{
 			list.add(a);
 			return list;
 		}
-		
+
 		LinkedList<float> toArray() {
 			LinkedList<float> floats;
 			floats.add(r);
@@ -232,7 +231,7 @@ class ColorRGBA : public Printable{
 			floats.add(a);
 			return floats;
 		}
-		
+
 		LinkedList<byte> asBytesRGBA() {
 			LinkedList<byte> store;
 			store[0] = (byte) ((int) (r * 255) & 0xFF);
@@ -241,9 +240,9 @@ class ColorRGBA : public Printable{
 			store[3] = (byte) ((int) (a * 255) & 0xFF);
 			return store;
 		}
-		
+
 		#endif
-		
+
 		bool equals(cppObject* o) {
 			// if (!(o instanceof ColorRGBA)) {
 				// return false;
@@ -268,7 +267,7 @@ class ColorRGBA : public Printable{
 			// }
 			return true;
 		}
-		
+
 		// int hashCode() {
 			// int hash = 37;
 			// hash += 37 * hash + Float.floatToIntBits(r);
@@ -277,7 +276,7 @@ class ColorRGBA : public Printable{
 			// hash += 37 * hash + Float.floatToIntBits(a);
 			// return hash;
 		// }
-		
+
 		// public void write(JmeExporter e) throws IOException {
 			// OutputCapsule capsule = e.getCapsule(this);
 			// capsule.write(r, "r", 0);
@@ -285,7 +284,7 @@ class ColorRGBA : public Printable{
 			// capsule.write(b, "b", 0);
 			// capsule.write(a, "a", 0);
 		// }
-		
+
 		// public void read(JmeImporter e) throws IOException {
 			// InputCapsule capsule = e.getCapsule(this);
 			// r = capsule.readFloat("r", 0);
@@ -293,7 +292,7 @@ class ColorRGBA : public Printable{
 			// b = capsule.readFloat("b", 0);
 			// a = capsule.readFloat("a", 0);
 		// }
-		
+
 		int asIntARGB() {
 			int argb = (((int) (a * 255) & 0xFF) << 24)
 					| (((int) (r * 255) & 0xFF) << 16)
@@ -301,7 +300,7 @@ class ColorRGBA : public Printable{
 					| (((int) (b * 255) & 0xFF));
 			return argb;
 		}
-		
+
 		int asIntRGBA() {
 			int rgba = (((int) (r * 255) & 0xFF) << 24)
 					| (((int) (g * 255) & 0xFF) << 16)
@@ -309,7 +308,7 @@ class ColorRGBA : public Printable{
 					| (((int) (a * 255) & 0xFF));
 			return rgba;
 		}
-		
+
 		int asIntABGR() {
 			int abgr = (((int) (a * 255) & 0xFF) << 24)
 					| (((int) (b * 255) & 0xFF) << 16)
@@ -317,7 +316,7 @@ class ColorRGBA : public Printable{
 					| (((int) (r * 255) & 0xFF));
 			return abgr;
 		}
-		
+
 		ColorRGBA fromIntARGB(int color) {
 			a = ((byte) (color >> 24) & 0xFF) / 255.0f;
 			r = ((byte) (color >> 16) & 0xFF) / 255.0f;
@@ -325,7 +324,7 @@ class ColorRGBA : public Printable{
 			b = ((byte) (color) & 0xFF) / 255.0f;
 			return *this;
 		}
-		
+
 		ColorRGBA fromIntRGBA(int color) {
 			r = ((byte) (color >> 24) & 0xFF) / 255.0f;
 			g = ((byte) (color >> 16) & 0xFF) / 255.0f;
@@ -333,7 +332,7 @@ class ColorRGBA : public Printable{
 			a = ((byte) (color) & 0xFF) / 255.0f;
 			return *this;
 		}
-		
+
 		ColorRGBA fromIntABGR(int color) {
 			a = ((byte) (color >> 24) & 0xFF) / 255.0f;
 			b = ((byte) (color >> 16) & 0xFF) / 255.0f;
@@ -341,35 +340,27 @@ class ColorRGBA : public Printable{
 			r = ((byte) (color) & 0xFF) / 255.0f;
 			return *this;
 		}
-		
+
 		static ColorRGBA fromRGBA255(int r, int g, int b, int a) {
 			return ColorRGBA(r / 255.0F, g / 255.0F, b / 255.0F, a / 255.0F);
 		}
-		
-		Vector3f toVector3f() {
-			return Vector3f(r, g, b);
-		}
-		
-		Vector4f toVector4f() {
-			return Vector4f(r, g, b, a);
-		}
-		
-		ColorRGBA setAsSrgb(float cr, float cg, float cb, float ca) {
+
+		ColorRGBA setAsSrgb(float cr, float cg, float cb, float ca) {/*
 			r = (float) pow(cr, GAMMA);
 			b = (float) pow(cb, GAMMA);
 			g = (float) pow(cg, GAMMA);
 			a = ca;
-
+*/
 			return *this;
 		}
-		
+
 		ColorRGBA getAsSrgb() {
 			ColorRGBA srgb;
-			float invGamma = 1.0f / GAMMA;
+			float invGamma = 1.0f / GAMMA;/*
 			srgb.r = (float) pow(r, invGamma);
 			srgb.g = (float) pow(g, invGamma);
 			srgb.b = (float) pow(b, invGamma);
-			srgb.a = a;
+			srgb.a = a;*/
 			return srgb;
 		}
 };

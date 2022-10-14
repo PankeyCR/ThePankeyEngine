@@ -12,6 +12,9 @@
 #include "ame_Logger_config.hpp"
 #include "MemoryRam.hpp"
 #include "ame_String.hpp"
+#include "System.hpp"
+
+using namespace ame;
 
 long ram_size = -1;
 
@@ -23,29 +26,31 @@ void debug(void* pointer, int location, ame_String name, ame_String method, ame_
 	// Serial.println("Type");
 	// Serial.println(type);
 	if(location == ame_Log_StartLoop){
+        System::console.println("start loop -------------------------------------------");
 		long n_ram_size = getRamSize();
 		// long n_ram_size = 0;
 		if(ram_size == -1){
 			ram_size = n_ram_size;
 		}
 		if(n_ram_size < ram_size){
-			// Serial.println("WARNING");
-			
-			Serial.print("WARNING, memory is dropping: ");
-			Serial.println(ram_size - n_ram_size);
+            System::console.println("WARNING, memory is dropping: ");
+            System::console.println(ram_size - n_ram_size);
 			ram_size = n_ram_size;
-			Serial.print("ram size: ");
-			Serial.println(ram_size);
-			
+            System::console.println("ram size: ");
+            System::console.println(ram_size);
+
 		}
 		// ram_size = n_ram_size;
-		// Serial.print("ram size: ");
-		// Serial.println(ram_size);
+		// System::console.println("ram size: ");
+		// System::console.println(ram_size);
+	}
+	if(location == ame_Log_EndLoop){
+        System::console.println("end loop --------------------------------------------");
 	}
 	// if(method == "Constructor" && location == ame_Log_StartMethod){
-		// Serial.println("new instance");
+		// System::console.println("new instance");
 	// }
-	// Serial.println("debugging");
+	// System::console.println("debugging");
 }
 
 //////////////////////////////////////////////////////////////

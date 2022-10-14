@@ -1,71 +1,71 @@
 
-#include "ame_Enviroment.hpp"
-
 #ifndef Set_hpp
 #define Set_hpp
 
-#include "ame_Level.hpp"
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "PrimitiveList.hpp"
+#include "cppObject.hpp"
+#include "cppObjectClass.hpp"
+#include "LinkedList.hpp"
+#include "TemplateClass.hpp"
 
 namespace ame{
 
-class Set{
+class Set : public cppObject{
     public:
-		Set():m_collection(false){}
-		Set(const Set& c_set):m_collection(false){}
-		virtual ~Set(){}
-		
-		virtual Set* add(const Set& a_set){
-			// m_collection.addPointer(a_set);
-			return nullptr;
+		Set(){}
+		Set(const Set& c_set){
+			
 		}
-		virtual Set* get(int a_index){
-			return nullptr;}
-		virtual Set* getIndex(Set a_set){
-			return nullptr;}
-		virtual Set* remove(Set a_set){
-			return nullptr;}
-		virtual Set* removeIndex(int a_index){
-			return nullptr;}
+		// template<class... args>
+		// Set(args... x){
+			// m_sets.addPack(x...);
+		// }
+		virtual ~Set(){}
+		/*
+		virtual bool belongs(const Set& a_var){
+			return m_sets.containByLValue(a_var);
+		}
+		virtual bool equals(const Set& a_var){
+			if(a_var.m_sets.getPosition() != m_sets.getPosition()){
+				return false;
+			}
+			for(int x = 0; x < m_sets.getPosition(); x++){
+				Set* i_set_1 = m_sets.getByPosition(x);
+				Set* i_set_2 = a_var.m_sets.getByPosition(x);
+				if(i_set_1 != i_set_2){
+					return false;
+				}
+			}
+			return true;
+		}
+		virtual bool similar(const Set& a_var){
+			if(a_var.m_sets.getPosition() != m_sets.getPosition()){
+				return false;
+			}
+			for(int x = 0; x < m_sets.getPosition(); x++){
+				Set& i_set_1 = m_sets.getByIndex(x);
+				Set& i_set_2 = a_var.m_sets.getByIndex(x);
+				if(!i_set_1.similar(i_set_2)){
+					return false;
+				}
+			}
+			return true;
+		}
 		
-		virtual bool belongs(Set a_var){return false;}
-		virtual bool equals(Set a_var){return false;}
-		virtual bool similar(Set a_var){return false;}
-		
-		virtual bool belongs(Set* a_var){return false;}
-		virtual bool equals(Set* a_var){return false;}
-		virtual bool similar(Set* a_var){return false;}
-		
-		virtual Set Intersection(){return Set();}
+		virtual Set Intersection(){
+			
+			return Set();
+		}
 		virtual Set Union(){return Set();}
 		virtual Set Difference(){return Set();}
 		virtual Set Complement(){return Set();}
 		
-		virtual Set Intersection(Set a_set){return Set();}
-		virtual Set Union(Set a_set){return Set();}
-		virtual Set Difference(Set a_set){return Set();}
-		virtual Set Complement(Set a_set){return Set();}
-		
-		virtual Set Intersection(Set* a_set){return Set();}
-		virtual Set Union(Set* a_set){return Set();}
-		virtual Set Difference(Set* a_set){return Set();}
-		virtual Set Complement(Set* a_set){return Set();}
+		virtual Set Intersection(const Set& a_set){return Set();}
+		virtual Set Union(const Set& a_set){return Set();}
+		virtual Set Difference(const Set& a_set){return Set();}
+		virtual Set Complement(const Set& a_set){return Set();}
 		
 		
-		virtual Set operator=(const Set& a_set){
+		virtual Set& operator=(const Set& a_set){
 			return *this;
 		}
 		virtual bool operator==(const Set& a_set){
@@ -75,9 +75,31 @@ class Set{
 			return false;
 		}
 		
+		virtual bool copy(cppObject* obj){return false;}
+		virtual bool move(cppObject* obj){return false;}
+		virtual bool duplicate(cppObject* obj){return false;}
+		
+		virtual bool equal(cppObject* obj){return this == obj;}
+		
+		virtual cppObjectClass* getClass(){return m_class;}
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == m_class;
+		}
+
+		virtual cppObject* clone(void){return nullptr;}
+		virtual cppObject* clone(bool owningMemory){return nullptr;}
+		
+		virtual cppObject* move(){return nullptr;}
+		virtual cppObject* duplicate(){return nullptr;}
 	protected:
-		PrimitiveList<Set> m_collection;
+		LinkedList<Set> m_sets;
+		
+	public:
+		static cppObjectClass* m_class;
+		*/
 };
+
+// cppObjectClass* Set::m_class = new TemplateClass<Set>();
 
 }
 

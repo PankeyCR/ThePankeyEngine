@@ -5,6 +5,10 @@
 #include "ame_Printable.hpp"
 #include "ame_String.hpp"
 
+#ifdef ame_Windows
+	#include <string.h>
+#endif
+
 #define DEC 10
 #define HEX 16
 #define OCT 8
@@ -86,12 +90,12 @@ class Print{
     int getWriteError() { return write_error; }
     void clearWriteError() { setWriteError(0); }
 
-    virtual size_t write(int){}
+    virtual size_t write(int){return 0;}
     size_t write(const char *str) {
       if (str == NULL) return 0;
       return write((const int *)str, strlen(str));
     }
-    virtual size_t write(const int *buffer, size_t size){}
+    virtual size_t write(const int *buffer, size_t size){return 0;}
     size_t write(const char *buffer, size_t size) {
       return write((const int *)buffer, size);
     }

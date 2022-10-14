@@ -23,44 +23,45 @@
 
 namespace ame{
 
-template<class K,class V>
+template<class X1,class X2>
 class Pair{
     public:
-		K* key=nullptr;
-		V* value=nullptr;
+		X1* x1 = nullptr;
+		X2* x2 = nullptr;
+		
 		Pair(){}
 		Pair(bool own){
 			owner = own;
 		}
-		Pair(K k,V v){
-			key = new K(k);
-			value = new V(v);
+		Pair(X1 c_x1, X2 c_x2){
+			x1 = new X1(c_x1);
+			x2 = new X2(c_x2);
 			owner = true;
 		}
-		Pair(K* k,V* v){
-			key = k;
-			value = v;
+		Pair(X1* c_x1, X2* c_x2){
+			x1 = c_x1;
+			x2 = c_x2;
 		}
-		Pair(K* k,V* v, bool own){
-			key = k;
-			value = v;
+		Pair(X1* c_x1, X2* c_x2, bool own){
+			x1 = c_x1;
+			x2 = c_x2;
 			owner = own;
 		}
 		~Pair(){
 			if(owner){
-				delete key;
-				delete value;
+				delete x1;
+				delete x2;
 			}
 		}
 		virtual void operator=(Pair b){
-			key = b.key;
-			value = b.value;
+			x1 = b.x1;
+			x2 = b.x2;
 		}
 		virtual bool operator==(Pair b){
-			return key == b.key && value == b.value;
+			return x1 == b.x1 && x2 == b.x2;
 		}
 		virtual bool operator!=(Pair b){
-			return key != b.key && value != b.value;
+			return x1 != b.x1 && x2 != b.x2;
 		}
 	protected:
 		bool owner = false;

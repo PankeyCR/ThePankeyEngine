@@ -1,17 +1,11 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_EthernetSerialPort)
-	#define EthernetSerialPort_hpp
-#endif
-
 #ifndef EthernetSerialPort_hpp
 #define EthernetSerialPort_hpp
 #define EthernetSerialPort_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
+#include "ame_Enviroment.hpp"
+#include "cppObject.hpp"
+#include "SerialState.hpp"
 
 #ifdef ame_Windows
 
@@ -19,21 +13,30 @@
 
 #ifdef ame_ArduinoIDE
 	#include "Arduino.h"
+	#include "IPAddress.h"
+	#include "Ethernet.h"
+	#include "EthernetServer.h"
+	#include "EthernetClient.h"
 #endif
 
-#include "Ethernet.h"
-#include "SerialPort.hpp"
-#include "EthernetServer.h"
-#include "IPAddress.h"
-#include "EthernetClient.h"
-#include "cppObject.hpp"
-#include "cppObjectClass.hpp"
 
-#ifdef EthernetSerialPortLogApp
-	#include "Logger.hpp"
-	#define EthernetSerialPortLog(name,method,type,mns) Log(name,method,type,mns)
+#ifdef EthernetSerialPort_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+
+	#define EthernetSerialPortLog(location,method,type,mns) ame_Log(this,location,"EthernetSerialPort",method,type,mns)
+	#define const_EthernetSerialPortLog(location,method,type,mns)
 #else
-	#define EthernetSerialPortLog(name,method,type,mns)
+	#ifdef SerialState_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+
+		#define EthernetSerialPortLog(location,method,type,mns) ame_LogDebug(this,location,"EthernetSerialPort",method,type)
+		#define const_EthernetSerialPortLog(location,method,type,mns)
+	#else
+		#define EthernetSerialPortLog(location,method,type,mns)
+		#define const_EthernetSerialPortLog(location,method,type,mns)
+	#endif
 #endif
 
 namespace ame{
@@ -41,53 +44,53 @@ namespace ame{
 class EthernetSerialPort : public SerialPort{	
     public:
 	EthernetSerialPort(){
-		EthernetSerialPortLog("EthernetSerialPort", "Contructor",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "Contructor",  "println", "");
 	}
 	EthernetSerialPort(EthernetClient c){
 		client = c;
 		this->m_name = "eclient";
-		EthernetSerialPortLog("EthernetSerialPort", "Contructor",  "println", "eclient");
+		EthernetSerialPortLog(ame_Log_StartMethod, "Contructor",  "println", "eclient");
 	}
 	EthernetSerialPort(Note name){
 		this->m_name = name;
-		EthernetSerialPortLog("EthernetSerialPort", "Contructor",  "println", name);
+		EthernetSerialPortLog(ame_Log_StartMethod, "Contructor",  "println", name);
 	}
 	EthernetSerialPort(EthernetClient c,Note name){
 		client = c;
 		this->m_name = name;
-		EthernetSerialPortLog("EthernetSerialPort", "Contructor",  "println", name);
+		EthernetSerialPortLog(ame_Log_StartMethod, "Contructor",  "println", name);
 	}
 
 	virtual ~EthernetSerialPort(){
-		EthernetSerialPortLog("EthernetSerialPort", "Destructor",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "Destructor",  "println", "");
 	}
 	uint8_t status(){
-		EthernetSerialPortLog("EthernetSerialPort", "status",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "status",  "println", "");
 		return client.status();
 	}
 	int available(){
-		EthernetSerialPortLog("EthernetSerialPort", "available",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "available",  "println", "");
 		return client.available();
 	}
 	int read(){
-		EthernetSerialPortLog("EthernetSerialPort", "read",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "read",  "println", "");
 		return client.read();
 	}
 	virtual int peek(){
-		EthernetSerialPortLog("EthernetSerialPort", "peek",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "peek",  "println", "");
 		return client.peek();
 	}
 	virtual size_t write(uint8_t chr){
-		EthernetSerialPortLog("EthernetSerialPort", "write",  "println", Note(chr));
+		EthernetSerialPortLog(ame_Log_StartMethod, "write",  "println", Note(chr));
 		return client.write(chr);
 	}
 	virtual bool connected(){
-		EthernetSerialPortLog("EthernetSerialPort", "connected",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "connected",  "println", "");
 		return client.connected();
 	}
 	
 	virtual bool connect(const Note& a_address, int port){
-		EthernetSerialPortLog("EthernetSerialPort", "connect",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "connect",  "println", "");
 		
 		IPAddress ip = toIPAddress(a_address);
 		
@@ -99,7 +102,7 @@ class EthernetSerialPort : public SerialPort{
 	}
 	
 	virtual bool connect(const char* a_address, int port){
-		EthernetSerialPortLog("EthernetSerialPort", "connect",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "connect",  "println", "");
 		
 		Note note = a_address;
 		IPAddress ip = toIPAddress(note);
@@ -112,20 +115,20 @@ class EthernetSerialPort : public SerialPort{
 	}
 	
 	virtual bool connect(IPAddress ip, int port){
-		EthernetSerialPortLog("EthernetSerialPort", "connected",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "connected",  "println", "");
 		return client.connect(ip, port);
 	}
 	virtual void stop(){
-		EthernetSerialPortLog("EthernetSerialPort", "stop",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "stop",  "println", "");
 		client.stop();
 	}
 
 	virtual void flush(){
-		EthernetSerialPortLog("EthernetSerialPort", "flush",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "flush",  "println", "");
 		client.flush();
 	}
 	virtual size_t println(Note s){
-		EthernetSerialPortLog("EthernetSerialPort", "println",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "println",  "println", "");
 		return client.print(s);
 	}
 
@@ -134,13 +137,8 @@ class EthernetSerialPort : public SerialPort{
 	virtual bool operator!=(EthernetSerialPort c){return client != c.client;}
 	virtual operator bool(){return client;}
 
-	virtual cppObjectClass* getClass(){
-		EthernetSerialPortLog("EthernetSerialPort", "getClass",  "println", "");
-		return Class<EthernetSerialPort>::classType;
-	}
-	virtual Note toNote(){return "EthernetSerialPort";}
 	virtual bool equal(cppObject *b){
-		EthernetSerialPortLog("EthernetSerialPort", "equal",  "println", "");
+		EthernetSerialPortLog(ame_Log_StartMethod, "equal",  "println", "");
 		if(b == this){
 			return true;
 		}
@@ -153,13 +151,20 @@ class EthernetSerialPort : public SerialPort{
 		return false;
 	}
 
+	virtual cppObjectClass* getClass(){return Class<EthernetSerialPort>::getClass();}
 	virtual bool instanceof(cppObjectClass* cls){
-		EthernetSerialPortLog("EthernetSerialPort", "instanceof",  "println", name);
+		EthernetSerialPortLog(ame_Log_StartMethod, "instanceof",  "println", name);
 		return cls == Class<EthernetSerialPort>::classType || SerialPort::instanceof(cls);
 	}
 
 	protected:
-		EthernetClient client;
+		#ifdef ame_Windows
+
+		#endif
+
+		#ifdef ame_ArduinoIDE
+			EthernetClient client;
+		#endif
 };
 
 }

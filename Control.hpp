@@ -22,7 +22,8 @@
 #endif
 
 #include "cppObject.hpp"
-#include "RenderManager.hpp"
+
+//class RenderManager;
 
 namespace ame{
 
@@ -53,9 +54,11 @@ class Control : public cppObject{
 		virtual void update(float tpc){
 			
 		}
-		virtual void RenderUpdate(RenderManager* manager){
+		// #if defined(RenderManager_AVAILABLE)
+		// virtual void RenderUpdate(RenderManager* manager){
 			
-		}
+		// }
+		// #endif
 	protected:
 };
 

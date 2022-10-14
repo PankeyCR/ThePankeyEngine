@@ -25,6 +25,7 @@
 #include "Class.hpp"
 #include "PrimitiveList.hpp"
 #include "AppStateManager.hpp"
+#include "System.hpp"
 
 #ifdef DefaultStateManagerLogApp
 	#include "Logger.hpp"
@@ -39,10 +40,6 @@ class DefaultStateManager : public AppStateManager{
     public:
 		DefaultStateManager(){}
 		virtual ~DefaultStateManager(){}
-
-		virtual void setApplication(Application* app){
-			managerApp = app;
-		}
 
 		virtual AppState* add(AppState* state){
 			DefaultStateManagerLog("DefaultStateManager", "add",  "println", "");
@@ -249,20 +246,15 @@ class DefaultStateManager : public AppStateManager{
 		}
 
 		virtual void update(){
-#ifdef ame_Windows
-			this->now = 0;
-#endif
-
-#ifdef ame_ArduinoIDE
-			this->now = micros();
-#endif
+			this->now = System::microSeconds();
+			
 			this->t = (float)(this->now - this->prev)/1000000;
 			this->prev = this->now;
 			if(!initializeStates.isEmpty()){
 				for(int x = 0; x < initializeStates.getPosition();x++){
 					AppState* m_state = initializeStates.getByPosition(x);
-					if(managerApp != nullptr){
-						m_state->initialize(managerApp);
+					if(this->getApplication() != nullptr){
+						m_state->initialize(this->getApplication());
 						m_state->onEnable();
 						appStateList.addPointer(m_state);
 					}
@@ -299,7 +291,6 @@ class DefaultStateManager : public AppStateManager{
 	protected:
 		PrimitiveList<AppState> appStateList;
 		PrimitiveList<AppState> initializeStates;
-		Application *managerApp;
 		long now = 0;
 		long prev = 0;
 		float t = 0;

@@ -1,35 +1,26 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Object)
-	#define Object_hpp
-#endif
-
 #ifndef Object_hpp
 #define Object_hpp
 #define Object_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
 #include "Note.hpp"
 #include "cppObject.hpp"
-#include "cppObjectClass.hpp"
 
 namespace ame{
 
 class Object : public cppObject{
     public:
-		Object(void* c_pointer, cppObjectClass* c_class){
+		Object(cppObject* c_pointer){
+			m_pointer = c_pointer;
+			if(m_pointer != nullptr){
+				m_pointer->addObject();
+				m_class = c_pointer->getClass();
+			}
+		}
+		Object(cppObjectClass* c_class){
+			m_class = c_class;
+		}
+		Object(cppObject* c_pointer, cppObjectClass* c_class){
 			m_pointer = c_pointer;
 			m_class = c_class;
 		}
@@ -37,26 +28,91 @@ class Object : public cppObject{
 			m_pointer = m_object.m_pointer;
 			m_class = m_object.m_class;
 		}
+		
 		Object(){}
-		virtual ~Object(){}
 		
-		virtual void onDelete(){}
-		virtual bool equal(Object *b){return this == b;}
+		virtual ~Object(){
+			if(m_pointer != nullptr){
+				m_pointer->removeObject();
+				if(!m_pointer->isManaged() && m_pointer->readyToDelete()){
+					delete m_pointer;
+				}
+			}
+		}
 		
-		virtual bool instanceof(cppObjectClass* cls){return false;}
-		virtual cppObjectClass* getClass(){return nullptr;}
+		virtual void onDelete(){
+			if(m_pointer == nullptr){
+				return;
+			}
+			m_pointer->onDelete();
+		}
+		
+		virtual bool copy(cppObject* a_obj){
+			if(m_pointer == nullptr){
+				return false;
+			}
+			return m_pointer->copy(a_obj);
+		}
+		virtual bool move(cppObject* a_obj){
+			if(m_pointer == nullptr){
+				return false;
+			}
+			return m_pointer->move(a_obj);
+		}
+		virtual bool duplicate(cppObject* a_obj){
+			if(m_pointer == nullptr){
+				return false;
+			}
+			return m_pointer->duplicate(a_obj);
+		}
+		
+		virtual bool equal(cppObject *a_obj){
+			if(m_pointer == nullptr){
+				return false;
+			}
+			return m_pointer->equal(a_obj);
+		}
+		
+		virtual bool instanceof(cppObjectClass* cls){
+			if(m_pointer == nullptr){
+				return false;
+			}
+			return m_pointer->instanceof(cls);
+		}
+		virtual cppObjectClass* getClass(){
+			if(m_pointer == nullptr){
+				return nullptr;
+			}
+			return m_pointer->getClass();
+		}
 
-		virtual Object *clone(void){return nullptr;}
-		virtual Object *clone(bool owningMemory){return nullptr;}
-
-		virtual Note toNote(){return Note("Object");}
-		virtual void invoke(Note methodName){}
-
-		virtual void operator=(Object b){}
-		virtual bool operator==(Object b){return false;}
-		virtual bool operator!=(Object b){return false;}
+		virtual cppObject* clone(void){
+			if(m_pointer == nullptr){
+				return nullptr;
+			}
+			return m_pointer->clone();
+		}
+		virtual cppObject* clone(bool owningMemory){
+			if(m_pointer == nullptr){
+				return nullptr;
+			}
+			return m_pointer->clone(owningMemory);
+		}
+		
+		virtual cppObject* move(){
+			if(m_pointer == nullptr){
+				return nullptr;
+			}
+			return m_pointer->move();
+		}
+		virtual cppObject* duplicate(){
+			if(m_pointer == nullptr){
+				return nullptr;
+			}
+			return m_pointer->duplicate();
+		}
 	private:
-		void* m_pointer = nullptr;
+		cppObject* m_pointer = nullptr;
 		cppObjectClass* m_class = nullptr;
 };
 

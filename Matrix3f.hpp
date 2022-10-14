@@ -769,20 +769,27 @@ class Matrix3f : public cppObject, public Printable{
 					Note(m22);
 		}
 		
-		cppObjectClass* getClass(){
-			return Class<Matrix3f>::classType;
+		virtual cppObjectClass* getClass(){
+			return Class<Matrix3f>::getClass();
+		}
+
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<Matrix3f>::getClass();
 		}
 		
-		bool equals(cppObject *o){
-			if (!(o->getClass() == Class<Matrix3f>::classType) || o == nullptr) {
+		virtual bool equals(cppObject *a_obj){
+			if (a_obj == nullptr) {
+				return false;
+			}
+			if (a_obj->getClass() != Class<Matrix3f>::getClass()) {
 				return false;
 			}
 
-			if (this == (Matrix3f*) o) {
+			if (this == a_obj) {
 				return true;
 			}
 
-			Matrix3f *comp = (Matrix3f*) o;
+			Matrix3f *comp = (Matrix3f*) a_obj;
 			if (this->m00 != comp->m00) {
 				return false;
 			}

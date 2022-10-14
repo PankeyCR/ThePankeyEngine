@@ -24,6 +24,7 @@
 #include "Command.hpp"
 #include "Message.hpp"
 #include "cppObject.hpp"
+#include "AbstractClass.hpp"
 
 namespace ame{
 
@@ -35,9 +36,9 @@ class SerialListener : public Command<T>{
 		SerialListener(){}
 		virtual ~SerialListener(){}
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<SerialListener<T>>::classType;
+			return cls == AbstractClass<SerialListener<T>>::getClass();
 		}
-		virtual cppObjectClass* getClass(){return Class<SerialListener<T>>::classType;}
+		virtual cppObjectClass* getClass(){return AbstractClass<SerialListener<T>>::getClass();}
 		
 		virtual void setSerialState(SerialState* sT){
 			serialState = sT;

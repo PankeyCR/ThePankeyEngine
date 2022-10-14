@@ -29,7 +29,7 @@
 
 #include "ElementId.hpp"
 #include "ByteArray.hpp"
-// #include "LinkedList.hpp"
+#include "LinkedList.hpp"
 #include "PrimitiveList.hpp"
 #include "PrimitiveMap.hpp"
 #include "MonkeyFile.hpp"
@@ -53,22 +53,22 @@ class MonkeyExporter{
 		
 		// int primitive
     	virtual bool write(ElementId id, const int& value)=0;
-    	// virtual bool write(ElementId id, const LinkedList<int>& value)=0;
+    	virtual bool write(ElementId id, const LinkedList<int>& value)=0;
     	virtual bool write(ElementId id, const PrimitiveList<int>& value)=0;
 
 		// ByteArray primitive
     	virtual bool write(ElementId id, const ByteArray& value)=0;
-    	// virtual bool write(ElementId id, const LinkedList<ByteArray>& value)=0;
+    	virtual bool write(ElementId id, const LinkedList<ByteArray>& value)=0;
     	virtual bool write(ElementId id, const PrimitiveList<ByteArray>& value)=0;
 
 		// bool primitive
     	virtual bool write(ElementId id, const bool& value)=0;
-    	// virtual bool write(ElementId id, const LinkedList<bool>& value)=0;
+    	virtual bool write(ElementId id, const LinkedList<bool>& value)=0;
     	virtual bool write(ElementId id, const PrimitiveList<bool>& value)=0;
 		
 		// char primitive
     	virtual bool write(ElementId id, const char& value)=0;
-    	// virtual bool write(ElementId id, const LinkedList<char>& value)=0;
+    	virtual bool write(ElementId id, const LinkedList<char>& value)=0;
     	virtual bool write(ElementId id, const PrimitiveList<char>& value)=0;
 
 		// ElementId primitive
@@ -78,17 +78,17 @@ class MonkeyExporter{
 		// Note primitive
     	virtual bool write(ElementId id, const Note& value)=0;
     	virtual bool write(ElementId id, const char* value)=0;
-    	// virtual bool write(ElementId id, const LinkedList<Note>& value)=0;
+    	virtual bool write(ElementId id, const LinkedList<Note>& value)=0;
     	virtual bool write(ElementId id, const PrimitiveList<Note>& value)=0;
 		
 		// long primitive
     	virtual bool write(ElementId id, const long& value)=0;
-    	// virtual bool write(ElementId id, const LinkedList<long>& value)=0;
+    	virtual bool write(ElementId id, const LinkedList<long>& value)=0;
     	virtual bool write(ElementId id, const PrimitiveList<long>& value)=0;
 		
 		// float primitive
     	virtual bool write(ElementId id, const float& value)=0;
-    	// virtual bool write(ElementId id, const LinkedList<float>& value)=0;
+    	virtual bool write(ElementId id, const LinkedList<float>& value)=0;
     	virtual bool write(ElementId id, const PrimitiveList<float>& value)=0;
 		
 		// Savable primitive

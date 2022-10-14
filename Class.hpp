@@ -1,35 +1,17 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Class)
-	#define Class_hpp
-#endif
-
 #ifndef Class_hpp
 #define Class_hpp
 #define Class_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "ClassCount.hpp"
-#include "ClassName.hpp"
-#include "cppObjectClass.hpp"
+#include "cppObject.hpp"
 #include "TemplateClass.hpp"
-#include "Note.hpp"
+#include "ClassCount.hpp"
+#include "Number.hpp"
+// #include "Set.hpp"
 
 namespace ame{
 
-template<class cls>
+template<class cls = cppObject>
 struct Class{
 	static cppObjectClass* classType;
 	
@@ -39,20 +21,47 @@ struct Class{
 		return ClassCount<cls>::get();
 	}
 	
-	static Note getName(){
-		return ClassName<cls>::get();
+	Class(){}
+	Class(const Class& c_cls){
+		m_class = c_cls.m_class;
 	}
-};
+	Class(cppObjectClass* c_cls){
+		m_class = c_cls;
+	}
+	virtual ~Class(){}
 	
-#if defined(ClassType_AVAILABLE)
+	cppObjectClass* get(){ return m_class; }
+	
+	void operator=(const Class& o_cls){
+		m_class = o_cls.m_class;
+	}
+	void operator=(cppObjectClass* o_cls){
+		m_class = o_cls;
+	}
+	bool operator==(const Class& o_cls){
+		return m_class == o_cls.m_class;
+	}
+	bool operator!=(const Class& o_cls){
+		return m_class != o_cls.m_class;
+	}
+	bool operator==(cppObjectClass* o_cls){
+		return m_class == o_cls;
+	}
+	bool operator!=(cppObjectClass* o_cls){
+		return m_class != o_cls;
+	}
+	
+	cppObjectClass* m_class = nullptr;
+};
 
-template<class cls> cppObjectClass* Class<cls>::classType = new ClassType<cls>();
+template<class cls> cppObjectClass* Class<cls>::classType = new TemplateClass<cls>();
 
-#else
+template<> cppObjectClass* Class<int>::classType = Number::m_class;
+template<> cppObjectClass* Class<double>::classType = Number::m_class;
+template<> cppObjectClass* Class<float>::classType = Number::m_class;
+template<> cppObjectClass* Class<Number>::classType = Number::m_class;
 
-template<class cls> cppObjectClass* Class<cls>::classType = new cppObjectClass();
-
-#endif
+// template<> cppObjectClass* Class<Set>::classType = Set::m_class;
 
 }
 

@@ -1,179 +1,106 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Method)
-	#define Method_hpp
-#endif
+/*
+*
+*	Method Functionality:
+*	1. utility = method that helps the class do something but doesnt contain any variable of the class
+*	2. polimorfic = is intended to be inheret to another class
+*	3. unit = method that has a single and basic function, cant be reduce to smaller functions
+*	4. contruct = method that helps create the basic functionality of the class
+*	5. reduce = method that is compose of methods of the same class the reduces the complexity of the code
+*	6. reductive = method that encapsulates a part of the logic of the class to reduce complexity and size of the code
+*
+*/
 
 #ifndef Method_hpp
 #define Method_hpp
 #define Method_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#include "RawPointerList.hpp"
 
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "Note.hpp"
-#include "RawList.hpp"
-#include "MethodMap.hpp"
 #include "Parameter.hpp"
-#include "Annotation.hpp"
-#include "cppObject.hpp"
 #include "MethodType.hpp"
-#include "MethodInvoker.hpp"
-#include "MethodReturnInvoker.hpp"
-#include "ClassMethodInvoker.hpp"
-#include "ClassMethodReturnInvoker.hpp"
-#include "TypeErasedInvoke.hpp"
-#include "DefaultMethodReturn.hpp"
+#include "MethodReturn.hpp"
 
-#ifdef Method_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
-	
-	#define MethodLog(location,method,type,mns) ame_Log(this,location,"Method",method,type,mns)
-	#define MethodMethodLog(location,method,type,mns) ame_Log(nullptr,location,"RawMethod",method,type,mns)
-	#define const_MethodLog(location,method,type,mns) 
-	#define StaticMethodLog(pointer,location,method,type,mns) ame_Log(pointer,location,"Method",method,type,mns)
-#else
-	#ifdef Method_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
-		
-		#define MethodLog(location,method,type,mns) ame_LogDebug(this,location,"Method",method,type)
-		#define MethodMethodLog(location,method,type,mns) ame_LogDebug(nullptr,location,"RawMethod",method,type)
-		#define const_MethodLog(location,method,type,mns) 
-		#define StaticMethodLog(pointer,location,method,type,mns) ame_LogDebug(pointer,location,"Method",method,type)
-	#else
-		#define MethodLog(location,method,type,mns) 
-		#define MethodMethodLog(location,method,type,mns) 
-		#define const_MethodLog(location,method,type,mns) 
-		#define StaticMethodLog(pointer,location,method,type,mns) 
-	#endif
-#endif
+#include "MethodMap.hpp"
+#include "MethodReturnMap.hpp"
+#include "ClassMethodMap.hpp"
+#include "ClassMethodReturnMap.hpp"
+#include "ObjectMethodMap.hpp"
+#include "ObjectMethodReturnMap.hpp"
 
 namespace ame{
 
-class cppObjectClass;
-
 class Method{
-public:
-	Method(){
-		MethodLog(ame_Log_Statement, "Contructor",  "println", "");
-	}
-	Method(const Method& a_method){
-		MethodLog(ame_Log_Statement, "Contructor",  "println", "");
-		methodClass = a_method.methodClass;
-		m_type = a_method.m_type;
-		m_name = a_method.m_name;
-	}
-	Method(cppObjectClass* cls, Note n, MethodType i_type){
-		MethodLog(ame_Log_Statement, "Contructor",  "println", "");
-		methodClass = cls;
-		m_type = i_type;
-		m_name = n;
-		MethodLog(ame_Log_Statement, "Contructor",  "println", "");
-	}
-	virtual ~Method(){
-		MethodLog(ame_Log_Statement, "Destructor",  "println", "");
-	}
-	
-	void setName(Note n){
-		m_name = n;
-	}
-	Note getName(){
-		return m_name;
-	}
-	
-	template<class T = cppObject, class R = bool, class... Args>
-	R invoke(T* t, Args... a){
-		MethodLog(ame_Log_Statement, "invoke",  "println", "");
-		MethodLog(ame_Log_Statement, "invoke",  "println", Note("Method Type: ") + getType(m_type));
-		R r_r = DefaultMethodReturn<T,R>::getReturn();
-		if(m_type == MethodType::MethodInvokerType){
-			MethodLog(ame_Log_Statement, "invoke",  "println", "MethodInvokerType");
-			return MethodReturnInvoker<R,Args...>::invoke(methodClass,m_name, r_r, a...);
+	public:
+		Method(){}
+		Method(const Method& a_method){
+			methodClass = a_method.methodClass;
+			m_type = a_method.m_type;
 		}
-		if(m_type == MethodType::MethodPointerInvokerType){
-			MethodLog(ame_Log_Statement, "invoke",  "println", "MethodPointerInvokerType");
-			return MethodReturnInvoker<R,T*,Args...>::invoke(methodClass,m_name, r_r, t, a...);
+		Method(cppObjectClass* cls, MethodType i_type){
+			methodClass = cls;
+			m_type = i_type;
 		}
-		if(m_type == MethodType::ClassMethodInvokerType){
-			MethodLog(ame_Log_Statement, "invoke",  "println", "ClassMethodInvokerType");
-			return ClassMethodReturnInvoker<T,R,Args...>::invoke(methodClass,m_name, t, r_r, a...);
-		}
-		if(m_type == MethodType::PolicyBaseMethodInvokerType){
-			MethodLog(ame_Log_Statement, "invoke",  "println", "PolicyBaseMethodInvokerType");
-			// PolicyBaseMethodInvoker<Args...>::invoke(methodClass,m_name, a...);
-			// PrimitiveRawList<void(*)(cppObjectClass*,Note,cppObject*,Args...)>* policyBase = PolicyBaseMethodInvoker<Args..>::getPolicyBaseMethods();
-			// policyBase(m_name, a...);
-		}
-		return r_r;
-	}
-	
-	virtual MethodType getMethodType(){
-		return m_type;
-	}
-	
-	virtual Note getType(){
-		return getType(m_type);
-	}
-	
-	virtual Note getType(MethodType a_type){
-		MethodLog(ame_Log_Statement, "getType",  "println", "");
-		if(a_type == MethodType::MethodInvokerType){
-			MethodLog(ame_Log_Statement, "getType",  "println", "MethodInvokerType");
-			return "MethodInvokerType";
-		}
-		if(a_type == MethodType::MethodPointerInvokerType){
-			MethodLog(ame_Log_Statement, "getType",  "println", "MethodPointerInvokerType");
-			return "MethodPointerInvokerType";
-		}
-		if(a_type == MethodType::ClassMethodInvokerType){
-			MethodLog(ame_Log_Statement, "getType",  "println", "ClassMethodInvokerType");
-			return "ClassMethodInvokerType";
-		}
-		if(a_type == MethodType::PolicyBaseMethodInvokerType){
-			return "PolicyBaseMethodInvokerType";
-		}
-		return "";
-	}
-	
-	virtual cppObjectClass* getOwnerClass(){return methodClass;}
-	
-	virtual Method operator=(const Method& a_method){
-		methodClass = a_method.methodClass;
-		m_type = a_method.m_type;
-		m_name = a_method.m_name;
-		return *this;
-	}
-	virtual bool operator==(const Method& a_method){
-		return 	methodClass == a_method.methodClass &&
-				m_type == a_method.m_type &&
-				m_name == a_method.m_name;
-	}
-	virtual bool operator!=(const Method& a_method){
-		return 	methodClass != a_method.methodClass &&
-				m_type != a_method.m_type &&
-				m_name != a_method.m_name;
-	}
-
-	virtual RawList<Parameter>* getParameters(){return nullptr;}
-
-	virtual cppObjectClass* getClass(){return nullptr;}
+		virtual ~Method(){}
 		
-protected:
-	Note m_name;
-	cppObjectClass* methodClass = nullptr;
-	MethodType m_type = MethodType::MethodInvokerType;
+		virtual void setName(char* a_name){
+			m_name = a_name;
+		}
+		
+		virtual char* getName(){
+			return m_name;
+		}
+		
+		template<class T = cppObject, class R = bool, class... Args>
+		R invoke(T* a_instance, Args... args){
+			R i_return = MethodReturn<R>::getReturn();
+			if(m_type == MethodType::Method){
+				return MethodMap<Args...>::invoke(methodClass, args...);
+			}
+			if(m_type == MethodType::MethodReturn){
+				return MethodReturnMap<R,Args...>::invoke(methodClass, i_return, args...);
+			}
+			if(m_type == MethodType::ClassMethod){
+				return ClassMethodMap<T,Args...>::invoke(a_instance, methodClass, args...);
+			}
+			if(m_type == MethodType::ClassMethodReturn){
+				return ClassMethodReturnMap<T,R,Args...>::invoke(a_instance, methodClass, i_return, args...);
+			}
+			if(m_type == MethodType::ObjectMethod){
+				return ObjectMethodMap<T,Args...>::invoke(a_instance, methodClass, args...);
+			}
+			if(m_type == MethodType::ObjectMethodReturn){
+				return ObjectMethodReturnMap<T,R,Args...>::invoke(a_instance, methodClass, i_return, args...);
+			}
+			return i_return;
+		}
+		
+		virtual MethodType getMethodType(){
+			return m_type;
+		}
+		
+		virtual Method operator=(const Method& a_method){
+			methodClass = a_method.methodClass;
+			m_type = a_method.m_type;
+			return *this;
+		}
+		virtual bool operator==(const Method& a_method){
+			return 	methodClass == a_method.methodClass &&
+					m_type == a_method.m_type;
+		}
+		virtual bool operator!=(const Method& a_method){
+			return 	methodClass != a_method.methodClass &&
+					m_type != a_method.m_type;
+		}
+
+		virtual RawPointerList<Parameter>* getParameters(){return nullptr;}
+
+		virtual cppObjectClass* getClass(){return methodClass;}
+			
+	protected:
+		cppObjectClass* methodClass = nullptr;
+		MethodType m_type = MethodType::Method;
+		char* m_name = nullptr;
 };
 
 }

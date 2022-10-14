@@ -29,17 +29,26 @@
 
 #include "ElementId.hpp"
 #include "ByteArray.hpp"
-// #include "LinkedList.hpp"
+#include "LinkedList.hpp"
 #include "PrimitiveList.hpp"
 #include "PrimitiveMap.hpp"
 #include "MonkeyExporter.hpp"
 #include "Message.hpp"
 
-#ifdef TextExporterLogApp
-	#include "Logger.hpp"
-	#define TextExporterLog(name,method,type,mns) Log(name,method,type,mns)
+#ifdef TextExporter_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+	
+	#define TextExporterLog(location,method,type,mns) ame_Log(this,location,"TextExporter",method,type,mns)
 #else
-	#define TextExporterLog(name,method,type,mns)
+	#ifdef TextExporter_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+		
+		#define TextExporterLog(location,method,type,mns) ame_LogDebug(this,location,"TextExporter",method,type)
+	#else
+		#define TextExporterLog(location,method,type,mns) 
+	#endif
 #endif
 
 namespace ame{
@@ -53,7 +62,7 @@ class TextExporter : public MonkeyExporter{
 		virtual ~TextExporter(){}
 		
     	virtual PrimitiveList<ElementId> read(ElementId id, PrimitiveList<ElementId> value){
-			TextExporterLog("TextExporter", "read PrimitiveList ElementId",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "read PrimitiveList ElementId",  "println", "");
 			int x_1 = text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
@@ -69,7 +78,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
     	virtual PrimitiveMap<ElementId,Note> read(ElementId id, PrimitiveMap<ElementId,Note> value){
-			TextExporterLog("TextExporter", "read PrimitiveMap<ElementId,Note>",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "read PrimitiveMap<ElementId,Note>",  "println", "");
 			
 			int x_key = text.getOrder(id.child("key").getId(), m_split, m_end);
 			int x_value = text.getOrder(id.child("value").getId(), m_split, m_end);
@@ -98,30 +107,30 @@ class TextExporter : public MonkeyExporter{
 		
 		// int primitive
     	virtual bool write(ElementId id, const int& value){
-			TextExporterLog("TextExporter", "write int",  "println", Note(value));
-			TextExporterLog("TextExporter", "write int",  "println", Note("making the id: ") + id.getId() + Note(" ") + Note(value) + Note("\n"));
+			TextExporterLog(ame_Log_StartMethod, "write int",  "println", Note(value));
+			TextExporterLog(ame_Log_StartMethod, "write int",  "println", Note("making the id: ") + id.getId() + Note(" ") + Note(value) + Note("\n"));
 			text += id.getId() + Note(" ") + Note(value) + Note("\n");
 			return true;
 		}
-    	// virtual bool write(ElementId id, const LinkedList<int>& value){
-			// TextExporterLog("TextExporter", "write LinkedList int",  "println", "");
-			// if(value.getPosition() == 0){
-				// return false;
-			// }
-			// text += id.getId() + Note(" ");
-			// for(int x = 0; x < value.getPosition(); x++){
-				// int v = *value.getByPosition(x);
-				// if(x == value.getPosition() - 1){
-					// text += Note(v) + Note("\n");
-				// }else{
-					// text += Note(v) + Note(",");
-				// }
-			// }
-			// return true;
-		// }
+    	virtual bool write(ElementId id, const LinkedList<int>& value){
+			TextExporterLog(ame_Log_StartMethod, "write LinkedList int",  "println", "");
+			if(value.getPosition() == 0){
+				return false;
+			}
+			text += id.getId() + Note(" ");
+			for(int x = 0; x < value.getPosition(); x++){
+				int v = *value.getByPosition(x);
+				if(x == value.getPosition() - 1){
+					text += Note(v) + Note("\n");
+				}else{
+					text += Note(v) + Note(",");
+				}
+			}
+			return true;
+		}
 		
     	virtual bool write(ElementId id, const PrimitiveList<int>& value){
-			TextExporterLog("TextExporter", "write PrimitiveList int",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList int",  "println", "");
 			if(value.getPosition() == 0){
 				return false;
 			}
@@ -140,30 +149,30 @@ class TextExporter : public MonkeyExporter{
 
 		// ByteArray primitive
     	virtual bool write(ElementId id, const ByteArray& value){
-			TextExporterLog("TextExporter", "write Note",  "println", value.toNote());
+			TextExporterLog(ame_Log_StartMethod, "write Note",  "println", value.toNote());
 			text += id.getId() + Note(" ") + value.toNote() + "\n";
 			return true;
 		}
 		
-    	// virtual bool write(ElementId id, const LinkedList<ByteArray>& value){
-			// TextExporterLog("TextExporter", "write LinkedList ByteArray",  "println", "");
-			// if(value.getPosition() == 0){
-				// return false;
-			// }
-			// text += id.getId() + Note(" ");
-			// for(int x = 0; x < value.getPosition(); x++){
-				// ByteArray v = *value.getByPosition(x);
-				// if(x == value.getPosition() - 1){
-					// text += v.toNote() + Note("\n");
-				// }else{
-					// text += v.toNote() + Note(",");
-				// }
-			// }
-			// return true;
-		// }
+    	virtual bool write(ElementId id, const LinkedList<ByteArray>& value){
+			TextExporterLog(ame_Log_StartMethod, "write LinkedList ByteArray",  "println", "");
+			if(value.getPosition() == 0){
+				return false;
+			}
+			text += id.getId() + Note(" ");
+			for(int x = 0; x < value.getPosition(); x++){
+				ByteArray v = *value.getByPosition(x);
+				if(x == value.getPosition() - 1){
+					text += v.toNote() + Note("\n");
+				}else{
+					text += v.toNote() + Note(",");
+				}
+			}
+			return true;
+		}
 		
     	virtual bool write(ElementId id, const PrimitiveList<ByteArray>& value){
-			TextExporterLog("TextExporter", "write PrimitiveList ByteArray",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList ByteArray",  "println", "");
 			if(value.getPosition() == 0){
 				return false;
 			}
@@ -182,30 +191,30 @@ class TextExporter : public MonkeyExporter{
 
 		// bool primitive
     	virtual bool write(ElementId id, const bool& value){
-			TextExporterLog("TextExporter", "write bool",  "println", Note(value));
+			TextExporterLog(ame_Log_StartMethod, "write bool",  "println", Note(value));
 			text += id.getId() + Note(" ") + Note(value) + "\n";
 			return true;
 		}
 		
-    	// virtual bool write(ElementId id, const LinkedList<bool>& value){
-			// TextExporterLog("TextExporter", "write LinkedList bool",  "println", "");
-			// if(value.getPosition() == 0){
-				// return false;
-			// }
-			// text += id.getId() + Note(" ");
-			// for(int x = 0; x < value.getPosition(); x++){
-				// bool v = *value.getByPosition(x);
-				// if(x == value.getPosition() - 1){
-					// text += Note(v) + Note("\n");
-				// }else{
-					// text += Note(v) + Note(",");
-				// }
-			// }
-			// return true;
-		// }
+    	virtual bool write(ElementId id, const LinkedList<bool>& value){
+			TextExporterLog(ame_Log_StartMethod, "write LinkedList bool",  "println", "");
+			if(value.getPosition() == 0){
+				return false;
+			}
+			text += id.getId() + Note(" ");
+			for(int x = 0; x < value.getPosition(); x++){
+				bool v = *value.getByPosition(x);
+				if(x == value.getPosition() - 1){
+					text += Note(v) + Note("\n");
+				}else{
+					text += Note(v) + Note(",");
+				}
+			}
+			return true;
+		}
 		
     	virtual bool write(ElementId id, const PrimitiveList<bool>& value){
-			TextExporterLog("TextExporter", "write PrimitiveList bool",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList bool",  "println", "");
 			if(value.getPosition() == 0){
 				return false;
 			}
@@ -224,30 +233,30 @@ class TextExporter : public MonkeyExporter{
 		
 		// char primitive
     	virtual bool write(ElementId id, const char& value){
-			TextExporterLog("TextExporter", "write Note",  "println", Note(value));
+			TextExporterLog(ame_Log_StartMethod, "write Note",  "println", Note(value));
 			text += id.getId() + Note(" ") + Note(value) + "\n";
 			return true;
 		}
 		
-    	// virtual bool write(ElementId id, const LinkedList<char>& value){
-			// TextExporterLog("TextExporter", "write LinkedList char",  "println", "");
-			// if(value.getPosition() == 0){
-				// return false;
-			// }
-			// text += id.getId() + Note(" ");
-			// for(int x = 0; x < value.getPosition(); x++){
-				// char v = *value.getByPosition(x);
-				// if(x == value.getPosition() - 1){
-					// text += Note(v) + Note("\n");
-				// }else{
-					// text += Note(v) + Note(",");
-				// }
-			// }
-			// return true;
-		// }
+    	virtual bool write(ElementId id, const LinkedList<char>& value){
+			TextExporterLog(ame_Log_StartMethod, "write LinkedList char",  "println", "");
+			if(value.getPosition() == 0){
+				return false;
+			}
+			text += id.getId() + Note(" ");
+			for(int x = 0; x < value.getPosition(); x++){
+				char v = *value.getByPosition(x);
+				if(x == value.getPosition() - 1){
+					text += Note(v) + Note("\n");
+				}else{
+					text += Note(v) + Note(",");
+				}
+			}
+			return true;
+		}
 		
     	virtual bool write(ElementId id, const PrimitiveList<char>& value){
-			TextExporterLog("TextExporter", "write PrimitiveList char",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList char",  "println", "");
 			if(value.getPosition() == 0){
 				return false;
 			}
@@ -265,13 +274,13 @@ class TextExporter : public MonkeyExporter{
 
 		// ElementId primitive
     	virtual bool write(ElementId id, const ElementId& value){
-			TextExporterLog("TextExporter", "write Note",  "println", value.getId());
+			TextExporterLog(ame_Log_StartMethod, "write Note",  "println", value.getId());
 			text += id.getId() + Note(" ") + value.getId() + "\n";
 			return true;
 		}
 		
     	virtual bool write(ElementId id, const PrimitiveList<ElementId>& value){
-			TextExporterLog("TextExporter", "write PrimitiveList ElementId",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList ElementId",  "println", "");
 			if(value.getPosition() == 0){
 				return false;
 			}
@@ -289,36 +298,36 @@ class TextExporter : public MonkeyExporter{
 		
 		// Note primitive
     	virtual bool write(ElementId id, const Note& value){
-			TextExporterLog("TextExporter", "write Note",  "println", value);
+			TextExporterLog(ame_Log_StartMethod, "write Note",  "println", value);
 			text += id.getId() + Note(" ") + value + "\n";
 			return true;
 		}
 		
     	virtual bool write(ElementId id, const char* value){
-			TextExporterLog("TextExporter", "write Note",  "println", Note(value));
+			TextExporterLog(ame_Log_StartMethod, "write Note",  "println", Note(value));
 			text += id.getId() + Note(" ") + Note(value) + "\n";
 			return true;
 		}
 		
-    	// virtual bool write(ElementId id, const LinkedList<Note>& value){
-			// TextExporterLog("TextExporter", "write LinkedList Note",  "println", "");
-			// if(value.getPosition() == 0){
-				// return false;
-			// }
-			// text += id.getId() + Note(" ");
-			// for(int x = 0; x < value.getPosition(); x++){
-				// Note v = *value.getByPosition(x);
-				// if(x == value.getPosition() - 1){
-					// text += v + Note("\n");
-				// }else{
-					// text += v + Note(",");
-				// }
-			// }
-			// return true;
-		// }
+    	virtual bool write(ElementId id, const LinkedList<Note>& value){
+			TextExporterLog(ame_Log_StartMethod, "write LinkedList Note",  "println", "");
+			if(value.getPosition() == 0){
+				return false;
+			}
+			text += id.getId() + Note(" ");
+			for(int x = 0; x < value.getPosition(); x++){
+				Note v = *value.getByPosition(x);
+				if(x == value.getPosition() - 1){
+					text += v + Note("\n");
+				}else{
+					text += v + Note(",");
+				}
+			}
+			return true;
+		}
 		
     	virtual bool write(ElementId id, const PrimitiveList<Note>& value){
-			TextExporterLog("TextExporter", "write PrimitiveList Note",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList Note",  "println", "");
 			if(value.getPosition() == 0){
 				return false;
 			}
@@ -337,30 +346,30 @@ class TextExporter : public MonkeyExporter{
 		
 		// long primitive
     	virtual bool write(ElementId id, const long& value){
-			TextExporterLog("TextExporter", "write Note",  "println", Note(value));
+			TextExporterLog(ame_Log_StartMethod, "write Note",  "println", Note(value));
 			text += id.getId() + Note(" ") + Note(value) + "\n";
 			return true;
 		}
 		
-    	// virtual bool write(ElementId id, const LinkedList<long>& value){
-			// TextExporterLog("TextExporter", "write LinkedList long",  "println", "");
-			// if(value.getPosition() == 0){
-				// return false;
-			// }
-			// text += id.getId() + Note(" ");
-			// for(int x = 0; x < value.getPosition(); x++){
-				// long v = *value.getByPosition(x);
-				// if(x == value.getPosition() - 1){
-					// text += Note(v) + Note("\n");
-				// }else{
-					// text += Note(v) + Note(",");
-				// }
-			// }
-			// return true;
-		// }
+    	virtual bool write(ElementId id, const LinkedList<long>& value){
+			TextExporterLog(ame_Log_StartMethod, "write LinkedList long",  "println", "");
+			if(value.getPosition() == 0){
+				return false;
+			}
+			text += id.getId() + Note(" ");
+			for(int x = 0; x < value.getPosition(); x++){
+				long v = *value.getByPosition(x);
+				if(x == value.getPosition() - 1){
+					text += Note(v) + Note("\n");
+				}else{
+					text += Note(v) + Note(",");
+				}
+			}
+			return true;
+		}
 		
     	virtual bool write(ElementId id, const PrimitiveList<long>& value){
-			TextExporterLog("TextExporter", "write PrimitiveList long",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList long",  "println", "");
 			if(value.getPosition() == 0){
 				return false;
 			}
@@ -378,30 +387,30 @@ class TextExporter : public MonkeyExporter{
 		
 		// float primitive
     	virtual bool write(ElementId id, const float& value){
-			TextExporterLog("TextExporter", "write float",  "println", Note(value));
+			TextExporterLog(ame_Log_StartMethod, "write float",  "println", Note(value));
 			text += id.getId() + Note(" ") + Note(value) + "\n";
 			return true;
 		}
 		
-    	// virtual bool write(ElementId id, const LinkedList<float>& value){
-			// TextExporterLog("TextExporter", "write LinkedList float",  "println", "");
-			// if(value.getPosition() == 0){
-				// return false;
-			// }
-			// text += id.getId() + Note(" ");
-			// for(int x = 0; x < value.getPosition(); x++){
-				// float v = *value.getByPosition(x);
-				// if(x == value.getPosition() - 1){
-					// text += Note(v) + Note("\n");
-				// }else{
-					// text += Note(v) + Note(",");
-				// }
-			// }
-			// return true;
-		// }
+    	virtual bool write(ElementId id, const LinkedList<float>& value){
+			TextExporterLog(ame_Log_StartMethod, "write LinkedList float",  "println", "");
+			if(value.getPosition() == 0){
+				return false;
+			}
+			text += id.getId() + Note(" ");
+			for(int x = 0; x < value.getPosition(); x++){
+				float v = *value.getByPosition(x);
+				if(x == value.getPosition() - 1){
+					text += Note(v) + Note("\n");
+				}else{
+					text += Note(v) + Note(",");
+				}
+			}
+			return true;
+		}
 		
     	virtual bool write(ElementId id, const PrimitiveList<float>& value){
-			TextExporterLog("TextExporter", "write PrimitiveList float",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList float",  "println", "");
 			if(value.getPosition() == 0){
 				return false;
 			}
@@ -434,7 +443,7 @@ class TextExporter : public MonkeyExporter{
     	// virtual bool write(ElementId id, const PrimitiveMap<long,long>& value)=0;
     	// virtual bool write(ElementId id, const PrimitiveMap<float,float>& value)=0;
     	virtual bool write(ElementId id, const PrimitiveMap<Note,Note>& value){
-			TextExporterLog("TextExporter", "write PrimitiveMap<Note,Note>",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write PrimitiveMap<Note,Note>",  "println", "");
 			if(value.getPosition() == 0){
 				return false;
 			}
@@ -500,7 +509,7 @@ class TextExporter : public MonkeyExporter{
 		
     	// virtual bool write(ElementId id, const PrimitiveMap<Note,int>& value)=0;
     	virtual bool write(ElementId id, const PrimitiveMap<Note,bool>& value){
-			TextExporterLog("TextExporter", "write PrimitiveMap<Note,bool>",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write PrimitiveMap<Note,bool>",  "println", "");
 			if(value.getPosition() == 0){
 				return false;
 			}
@@ -539,7 +548,7 @@ class TextExporter : public MonkeyExporter{
     	// virtual bool write(ElementId id, const PrimitiveMap<Savable,Note>& value)=0;
 		
     	virtual bool write(ElementId id, const PrimitiveMap<ElementId,Note>& value){
-			TextExporterLog("TextExporter", "write PrimitiveMap<ElementId,Note>",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write PrimitiveMap<ElementId,Note>",  "println", "");
 			if(value.getPosition() == 0){
 				return false;
 			}
@@ -566,23 +575,23 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void remove(ElementId id){
-			TextExporterLog("TextExporter", "remove",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "remove",  "println", "");
 			text.removeLine(id.getId(), m_split, m_end);
 		}
 		
 		virtual void clear(){
-			TextExporterLog("TextExporter", "clear",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "clear",  "println", "");
 			text = "";
 		}
 		
 		/////////////////////////////////////////////////////////////////// ids
 		virtual void addId(ElementId m_id){
-			TextExporterLog("TextExporter", "addId",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "addId",  "println", "");
 			ids.add(m_id);
 		}
 		
 		virtual void addIds(PrimitiveList<ElementId>& m_ids){
-			TextExporterLog("TextExporter", "addIds",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "addIds",  "println", "");
 			for(int x = 0; x < m_ids.getPosition(); x++){
 				ElementId* l_eid = m_ids.getByPosition(x);
 				ids.addLValue(*l_eid);
@@ -590,17 +599,17 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual bool containId(ElementId m_id){
-			TextExporterLog("TextExporter", "containId",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "containId",  "println", "");
 			return ids.containByLValue(m_id);
 		}
 		
 		virtual PrimitiveList<ElementId>& getIds(){
-			TextExporterLog("TextExporter", "getIds",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "getIds",  "println", "");
 			return ids;
 		}
 		
 		virtual ElementId getId(int x){
-			TextExporterLog("TextExporter", "getId",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "getId",  "println", "");
 			if(x >= ids.getPosition()){
 				return ElementId();
 			}
@@ -608,17 +617,17 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual int getIdSize(){
-			TextExporterLog("TextExporter", "getIdSize",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "getIdSize",  "println", "");
 			return ids.getPosition();
 		}
 		
 		virtual void removeId(ElementId i_id){
-			TextExporterLog("TextExporter", "removeId",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "removeId",  "println", "");
 			ids.removeDeleteByLValue(i_id);
 		}
 		
 		virtual void removeIds(PrimitiveList<ElementId>& i_ids){
-			TextExporterLog("TextExporter", "removeIds",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "removeIds",  "println", "");
 			for(int x = 0; x < i_ids.getPosition(); x++){
 				ElementId* l_eid = i_ids.getByPosition(x);
 				ids.removeDeleteByLValue(*l_eid);
@@ -626,15 +635,15 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void removeIds(){
-			TextExporterLog("TextExporter", "removeIds",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "removeIds",  "println", "");
 			ids.resetDelete();
 		}
 		
 		virtual void writeIds(){
-			TextExporterLog("TextExporter", "writeIds",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "writeIds",  "println", "");
 			
 			if(ids.getPosition() == 0){
-				TextExporterLog("TextExporter", "writeIds",  "println", "ids.isEmpty");
+				TextExporterLog(ame_Log_StartMethod, "writeIds",  "println", "ids.isEmpty");
 				idText = "";
 				return;
 			}
@@ -652,7 +661,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void writeId(ElementId value){
-			TextExporterLog("TextExporter", "writeId",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "writeId",  "println", "");
 			ids.put(value);
 			ElementId id = ElementId("transporter.ids");
 			
@@ -668,7 +677,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void eraseId(ElementId value){
-			TextExporterLog("TextExporter", "eraseId",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "eraseId",  "println", "");
 			if(ids.getPosition() == 0){
 				return;
 			}
@@ -695,70 +704,70 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void eraseIds(){
-			TextExporterLog("TextExporter", "eraseIds",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "eraseIds",  "println", "");
 			idText = "";
 		}
 		
 		virtual void clearIds(){
-			TextExporterLog("TextExporter", "clearIds",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
 			idText = "";
 			ids.resetDelete();
 		}
 		
 		/////////////////////////////////////////////////////////////////// idType
 		virtual void addIdType(ElementId m_id, Note m_type){
-			TextExporterLog("TextExporter", "addIdType",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "addIdType",  "println", "");
 			idsType.addLValues(m_id, m_type);
 		}
 		
 		virtual void addIdType(PrimitiveMap<ElementId,Note>& m_idsType){
-			TextExporterLog("TextExporter", "addIdType",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "addIdType",  "println", "");
 			for(int x = 0; x < m_idsType.getPosition(); x++){
 				idsType.addLValues(m_idsType.getKey(x), m_idsType.getValue(x));
 			}
 		}
 		
 		virtual bool containIdType(ElementId id){
-			TextExporterLog("TextExporter", "containIdType",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "containIdType",  "println", "");
 			return idsType.containKeyByLValue(id);
 		}
 		
 		virtual PrimitiveMap<ElementId,Note>& getIdTypes(){
-			TextExporterLog("TextExporter", "getIdTypes",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "getIdTypes",  "println", "");
 			return idsType;
 		}
 		
 		virtual Note getIdType(ElementId id){
-			TextExporterLog("TextExporter", "getIdType",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "getIdType",  "println", "");
 			return idsType.get(id);
 		}
 		
 		virtual int getIdTypeSize(){
-			TextExporterLog("TextExporter", "getIdTypeSize",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "getIdTypeSize",  "println", "");
 			return idsType.getPosition();
 		}
 		
 		virtual void removeIdType(ElementId m_id){
-			TextExporterLog("TextExporter", "removeIdType",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "removeIdType",  "println", "");
 			idsType.removeDeleteByLValue(m_id);
 		}
 		
 		virtual void removeIdTypes(PrimitiveMap<ElementId,Note>& m_idsType){
-			TextExporterLog("TextExporter", "removeIdTypes",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "removeIdTypes",  "println", "");
 			for(int x = 0; x < m_idsType.getPosition(); x++){
 				idsType.removeDeleteByLValue(m_idsType.getKey(x));
 			}
 		}
 		
 		virtual void removeIdTypes(){
-			TextExporterLog("TextExporter", "removeIdTypes",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "removeIdTypes",  "println", "");
 			idsType.resetDelete();
 		}
 		
 		virtual void writeIdTypes(){
-			TextExporterLog("TextExporter", "writeIdTypes",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "writeIdTypes",  "println", "");
 			if(idsType.getPosition() == 0){
-				TextExporterLog("TextExporter", "writeIdTypes",  "println", "ids.isEmpty");
+				TextExporterLog(ame_Log_StartMethod, "writeIdTypes",  "println", "ids.isEmpty");
 				idTypeText = "";
 				return;
 			}
@@ -789,7 +798,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void writeIdType(ElementId i_id, Note type){
-			TextExporterLog("TextExporter", "writeIdType",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "writeIdType",  "println", "");
 			
 			idsType.addLValues(i_id, type);
 			
@@ -819,7 +828,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void eraseIdType(ElementId i_id){
-			TextExporterLog("TextExporter", "eraseIdType",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "eraseIdType",  "println", "");
 			idsType.removeDeleteByLValue(i_id);
 			
 			if(idsType.getPosition() == 0){
@@ -853,70 +862,70 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void eraseIdTypes(){
-			TextExporterLog("TextExporter", "eraseIdTypes",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "eraseIdTypes",  "println", "");
 			idTypeText = "";
 		}
 		
 		virtual void clearIdTypes(){
-			TextExporterLog("TextExporter", "clearIds",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
 			idTypeText = "";
 			idsType.resetDelete();
 		}
 		
 		/////////////////////////////////////////////////////////////////// tags
 		virtual void addTag(ElementId m_id, Note m_type){
-			TextExporterLog("TextExporter", "addTag",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "addTag",  "println", "");
 			tags.addLValues(m_id, m_type);
 		}
 		
 		virtual void addTag(PrimitiveMap<ElementId,Note>& m_idsType){
-			TextExporterLog("TextExporter", "addTag",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "addTag",  "println", "");
 			for(int x = 0; x < m_idsType.getPosition(); x++){
 				tags.addLValues(m_idsType.getKey(x), m_idsType.getValue(x));
 			}
 		}
 		
 		virtual bool containTag(ElementId id){
-			TextExporterLog("TextExporter", "containTag",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "containTag",  "println", "");
 			return tags.containKeyByLValue(id);
 		}
 		
 		virtual PrimitiveMap<ElementId,Note>& getTags(){
-			TextExporterLog("TextExporter", "getTags",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "getTags",  "println", "");
 			return tags;
 		}
 		
 		virtual Note getTag(ElementId id){
-			TextExporterLog("TextExporter", "getTag",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "getTag",  "println", "");
 			return tags.get(id);
 		}
 		
 		virtual int getTagSize(){
-			TextExporterLog("TextExporter", "getTagSize",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "getTagSize",  "println", "");
 			return tags.getPosition();
 		}
 		
 		virtual void removeTag(ElementId m_id){
-			TextExporterLog("TextExporter", "removeTag",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "removeTag",  "println", "");
 			tags.removeDeleteByLValue(m_id);
 		}
 		
 		virtual void removeTags(PrimitiveMap<ElementId,Note>& m_idsType){
-			TextExporterLog("TextExporter", "removeTags",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "removeTags",  "println", "");
 			for(int x = 0; x < m_idsType.getPosition(); x++){
 				tags.removeDeleteByLValue(m_idsType.getKey(x));
 			}
 		}
 		
 		virtual void removeTags(){
-			TextExporterLog("TextExporter", "removeTags",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "removeTags",  "println", "");
 			tags.resetDelete();
 		}
 		
 		virtual void writeTags(){
-			TextExporterLog("TextExporter", "writeTags",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "writeTags",  "println", "");
 			if(tags.getPosition() == 0){
-				TextExporterLog("TextExporter", "writeTags",  "println", "ids.isEmpty");
+				TextExporterLog(ame_Log_StartMethod, "writeTags",  "println", "ids.isEmpty");
 				tagText = "";
 				return;
 			}
@@ -947,7 +956,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void writeTag(ElementId i_id, Note type){
-			TextExporterLog("TextExporter", "writeTag",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "writeTag",  "println", "");
 			
 			tags.addLValues(i_id, type);
 			
@@ -977,7 +986,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void eraseTag(ElementId i_id){
-			TextExporterLog("TextExporter", "eraseTag",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "eraseTag",  "println", "");
 			tags.removeDeleteByLValue(i_id);
 			
 			if(tags.getPosition() == 0){
@@ -1011,18 +1020,18 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void eraseTags(){
-			TextExporterLog("TextExporter", "eraseIdType",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "eraseIdType",  "println", "");
 			tagText = "";
 		}
 		
 		virtual void clearTags(){
-			TextExporterLog("TextExporter", "clearIds",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
 			tagText = "";
 			tags.resetDelete();
 		}
 		
 		virtual void setMessage(Message* message){
-			TextExporterLog("TextExporter", "setMessage",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "setMessage",  "println", "");
 			if(message == nullptr){
 				return;
 			}
@@ -1031,7 +1040,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void read(MonkeyFile* file, Note path){
-			TextExporterLog("TextExporter", "read",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "read",  "println", "");
 			if(file == nullptr){
 				return;
 			}
@@ -1040,9 +1049,9 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void write(MonkeyFile* file, Note path){
-			TextExporterLog("TextExporter", "write(file,path)",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write(file,path)",  "println", "");
 			if(file == nullptr){
-				TextExporterLog("TextExporter", "write(file,path)",  "println", path);
+				TextExporterLog(ame_Log_StartMethod, "write(file,path)",  "println", path);
 				return;
 			}
 			// file->fastWriteText(tagText, path);
@@ -1054,7 +1063,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void setText(Note strng){
-			TextExporterLog("TextExporter", "setText",  "println", Note("text ") + strng);
+			TextExporterLog(ame_Log_StartMethod, "setText",  "println", Note("text ") + strng);
 			text = strng;
 		}
 		
@@ -1063,7 +1072,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void setIdText(Note strng){
-			TextExporterLog("TextExporter", "setIdText",  "println", Note("text ") + strng);
+			TextExporterLog(ame_Log_StartMethod, "setIdText",  "println", Note("text ") + strng);
 			idText = strng;
 		}
 		
@@ -1072,7 +1081,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void setIdTypeText(Note strng){
-			TextExporterLog("TextExporter", "setIdTypeText",  "println", Note("text ") + strng);
+			TextExporterLog(ame_Log_StartMethod, "setIdTypeText",  "println", Note("text ") + strng);
 			idTypeText = strng;
 		}
 		
@@ -1081,7 +1090,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void setTagText(Note strng){
-			TextExporterLog("TextExporter", "setTagText",  "println", Note("text ") + strng);
+			TextExporterLog(ame_Log_StartMethod, "setTagText",  "println", Note("text ") + strng);
 			tagText = strng;
 		}
 		
@@ -1094,7 +1103,7 @@ class TextExporter : public MonkeyExporter{
 		}
 		
 		virtual void fix(){
-			TextExporterLog("TextExporter", "fix",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "fix",  "println", "");
 			ids = read(ElementId("transporter.ids"), PrimitiveList<ElementId>());
 			idsType = read(ElementId("transporter.idsType"), PrimitiveMap<ElementId,Note>());
 			tags = read(ElementId("transporter.tags"), PrimitiveMap<ElementId,Note>());
@@ -1116,10 +1125,10 @@ class TextExporter : public MonkeyExporter{
 			remove("transporter.idsType.key");
 			remove("transporter.idsType.value");
 			
-			TextExporterLog("TextExporter", "fix",  "println", Note("tagText ") + tagText);
-			TextExporterLog("TextExporter", "fix",  "println", Note("idText ") + idText);
-			TextExporterLog("TextExporter", "fix",  "println", Note("idTypeText ") + idTypeText);
-			TextExporterLog("TextExporter", "fix",  "println", Note("text ") + text);
+			TextExporterLog(ame_Log_StartMethod, "fix",  "println", Note("tagText ") + tagText);
+			TextExporterLog(ame_Log_StartMethod, "fix",  "println", Note("idText ") + idText);
+			TextExporterLog(ame_Log_StartMethod, "fix",  "println", Note("idTypeText ") + idTypeText);
+			TextExporterLog(ame_Log_StartMethod, "fix",  "println", Note("text ") + text);
 		}
 		
 		virtual Note toNote(){

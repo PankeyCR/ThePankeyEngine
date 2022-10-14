@@ -1,50 +1,38 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Vector3f)
-	#define Vector3f_hpp
-#endif
-
 #ifndef Vector3f_hpp
 #define Vector3f_hpp
 #define Vector3f_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
+#include "ame_Enviroment.hpp"
 
 #ifdef ame_Windows
+	#include "ame_Printable.hpp"
+	#include "ame_Print.hpp"
     #define _USE_MATH_DEFINES
     #include <cmath>
 #endif
 
 #ifdef ame_ArduinoIDE
 	#include "Arduino.h"
+	#include "Printable.h"
+	#include "IPAddress.h"
 #endif
 
 #include "cppObject.hpp"
+#include "Note.hpp"
 #include "Class.hpp"
 
 namespace ame{
 
-#ifdef ame_Windows
-class Vector3f : public cppObject{
-#endif
-
-#ifdef ame_ArduinoIDE
 class Vector3f : public cppObject , public Printable{
-#endif
-    private:
-
     public:
-		const static Vector3f* ZERO;
-		// const static Vector3f* NAN;
-		const static Vector3f* UNIT_X;
-		const static Vector3f* UNIT_Y;
-		const static Vector3f* UNIT_Z;
-		const static Vector3f* UNIT_XYZ;
-		const static Vector3f* POSITIVE_INFINITY;
-		const static Vector3f* NEGATIVE_INFINITY;
+		const static Vector3f ZERO;
+		const static Vector3f UNIT_X;
+		const static Vector3f UNIT_Y;
+		const static Vector3f UNIT_Z;
+		const static Vector3f UNIT_XYZ;
+		const static Vector3f POSITIVE_INFINITY;
+		const static Vector3f NEGATIVE_INFINITY;
 
         float x;
         float y;
@@ -66,12 +54,14 @@ class Vector3f : public cppObject , public Printable{
 			z = nz;
 		}
 
-#ifdef ame_ArduinoIDE
 		size_t printTo(Print& p) const{
-			p.print(this->x);p.print(',');p.print(this->y);p.print(',');p.print(this->z);
+			p.print(this->x);
+			p.print(',');
+			p.print(this->y);
+			p.print(',');
+			p.print(this->z);
 			return 	sizeof(this->x) + sizeof(this->y) + sizeof(this->z);
 		}
-#endif
 
 		Vector3f set(float xx, float yy, float zz){
 			this->x = xx;
@@ -452,18 +442,18 @@ class Vector3f : public cppObject , public Printable{
 			return new Vector3f(this->x,this->y,this->z);
 		}
 
-		bool equals(cppObject *o) {
-			if (this == o) {
+		bool equals(cppObject *a_obj) {
+			if (this == a_obj) {
 				return true;
 			}
 
 
-			if(o->getClass() != Class<Vector3f>::classType) {
+			if(a_obj->getClass() != Class<Vector3f>::getClass()) {
 				return false;
 			}
 
 
-			Vector3f *comp = (Vector3f*)o;
+			Vector3f *comp = (Vector3f*)a_obj;
 			if (comp->x != 0) {
 				return false;
 			}
@@ -576,10 +566,13 @@ class Vector3f : public cppObject , public Printable{
 			return Note("Vector3f(") + Note(x) + Note(" ") + Note(y) + Note(" ") + Note(z) + Note(")");
 		}
 
-		ame::cppObjectClass* getClass(){
-			return ame::Class<Vector3f>::classType;
+		virtual cppObjectClass* getClass(){
+			return Class<Vector3f>::getClass();
 		}
 
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<Vector3f>::getClass();
+		}
 
 		void operator=(const Vector3f& a) {
 			this->x = a.x;
@@ -795,14 +788,13 @@ class Vector3f : public cppObject , public Printable{
 		}
 };
 
-const Vector3f* Vector3f::ZERO = new Vector3f(0,0,0);
-// const Vector3f* NAN = Vector3f(-1,-1,-1);
-const Vector3f* Vector3f::UNIT_X = new Vector3f(1,0,0);
-const Vector3f* Vector3f::UNIT_Y = new Vector3f(0,1,0);
-const Vector3f* Vector3f::UNIT_Z = new Vector3f(0,0,1);
-const Vector3f* Vector3f::UNIT_XYZ = new Vector3f(1,1,1);
-const Vector3f* Vector3f::POSITIVE_INFINITY = new Vector3f(1000,1000,1000);
-const Vector3f* Vector3f::NEGATIVE_INFINITY = new Vector3f(1000,1000,1000);
+const Vector3f Vector3f::ZERO = Vector3f(0,0,0);
+const Vector3f Vector3f::UNIT_X = Vector3f(1,0,0);
+const Vector3f Vector3f::UNIT_Y = Vector3f(0,1,0);
+const Vector3f Vector3f::UNIT_Z = Vector3f(0,0,1);
+const Vector3f Vector3f::UNIT_XYZ = Vector3f(1,1,1);
+const Vector3f Vector3f::POSITIVE_INFINITY = Vector3f(1000,1000,1000);
+const Vector3f Vector3f::NEGATIVE_INFINITY = Vector3f(1000,1000,1000);
 
 }
 

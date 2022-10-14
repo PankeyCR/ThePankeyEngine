@@ -50,24 +50,49 @@
 
 //logger
 
-// #define ame_LogApp
-// #define ame_LogPrint
+#define ame_LogApp
+#define ame_LogPrint
 // #define ame_Arduino_Log
-// #define ame_SystemFullLog
+#define ame_SystemFullLog
 
-// #define LinkedList_LogApp
-// #define CSMS_LogApp
+// #define RawList_LogApp
+// #define LinkedRawPointerList_LogApp
+// #define LinkedRawList_LogApp
+// #define LinkedIterator_LogApp
+// #define PrimitiveRawPointerList_LogApp
+// #define PrimitiveRawList_LogApp
+// #define PrimitiveList_LogApp
+
+// #define MapEntry_LogApp
+// #define RawPointerMap_LogApp
+// #define PrimitiveRawPointerMap_LogApp
+// #define RawMap_LogApp
+// #define PrimitiveRawMap_LogApp
+// #define PrimitiveMap_LogApp
+
+// #define ArrayIterator_LogApp
 // #define Array_LogApp
 // #define Note_LogApp
+
+#define BaseAppState_LogApp
+
+#define SerialPost_LogApp
+#define SerialNetwork_LogApp
+#define SerialState_LogApp
+#define DefaultSerialPort_LogApp
+#define DefaultPortProtocol_LogApp
+#define ListenerDelivery_LogApp
+#define LoRaNetwork_LogApp
+#define SerialListenerState_LogApp
+//#define AlwaysConnected_LogApp
+// #define LinkedList_LogApp
+// #define CSMS_LogApp
 //#define Listener_LogApp
-// #define SerialState_LogApp
 //#define DefaultPortProtocol_LogApp
 //#define StartEndPortProtocol_LogApp
 //#define DefaultServerProtocol_LogApp
 //#define IOPortProtocol_LogApp
 //#define IOServerProtocol_LogApp
-//#define SerialListenerState_LogApp
-//#define AlwaysConnected_LogApp
 
 // #define Note_LogDebugApp
 //#define Listener_LogDebugApp
@@ -80,24 +105,26 @@
 //#define SerialListenerState_LogDebugApp
 //#define AlwaysConnected_LogDebugApp
 
-// #define DISABLE_Note
+#define DISABLE_Note
 #define DISABLE_ByteArray
+// #define DISABLE_RenderManager
 // #define DISABLE_AppSettings
 // #define DISABLE_TimeControl
-#define DISABLE_Memory
+// #define DISABLE_Memory
 // #define DISABLE_MemoryManager
 // #define DISABLE_MemoryPool
 // #define DISABLE_RenderManager
 // #define DISABLE_LinkedList
 
 
+#define ame_ErrorWarning
 
 
 
-// #ifndef ame_LogDebug
-	// #include "ame_debug.hpp"
-	// #define ame_LogDebug(pointer,location,name,method,type) debug(pointer,location,name,method,type)
-// #endif
+#ifndef ame_LogDebug
+	#include "ame_debug.hpp"
+	#define ame_LogDebug(pointer,location,name,method,type) debug(pointer,location,name,method,type)
+#endif
 
 
 

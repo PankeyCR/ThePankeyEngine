@@ -24,6 +24,7 @@
 #include "PortProtocol.hpp"
 #include "SerialPort.hpp"
 #include "Note.hpp"
+#include "MessageDelivery.hpp"
 
 #ifdef DefaultPortProtocol_LogApp
 	#include "ame_Logger_config.hpp"
@@ -55,8 +56,8 @@ class DefaultPortProtocol : public PortProtocol{
 		DefaultPortProtocol(bool s){
 			this->safeDelete = s;
 		}
-		DefaultPortProtocol(ProtocolMessageDelivery* c_delivery){
-			this->delivery = c_delivery;
+		DefaultPortProtocol(MessageDelivery* c_delivery){
+			this->m_delivery = c_delivery;
 		}
 		virtual ~DefaultPortProtocol(){}
 		
@@ -117,13 +118,42 @@ class DefaultPortProtocol : public PortProtocol{
 				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", Note("messageText: ") + messageText);
 				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", Note("index: ") + Note(index));
 				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", "raw");
-				this->SaveMessage(port, messageText);
+				Note* i_delivery = new Note(messageText);
+				this->DeliverMessage(i_delivery);
 				messageText = "";
 			}
-			if(m != '\r' || m != '\n'){
+			if(m != '\r' && m != '\n'){
 				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", Note("adding char to messageText: ") + Note(m));
 				messageText.concat(m);
 			}
+		}
+		
+		virtual bool DeliverMessage(Note* a_mns){
+			DefaultPortProtocolLog(ame_Log_Statement, "DeliverMessage",  "println", "");
+			if(serialState != nullptr){
+				MessageDelivery* i_delivery = serialState->getDelivery();
+				if(i_delivery != nullptr){
+					return i_delivery->DeliverMessage(a_mns);
+				}
+			}
+			if(m_delivery == nullptr){
+				return false;
+			}
+			return m_delivery->DeliverMessage(a_mns);
+		}
+		
+		virtual bool DeliverMessage(ByteArray* a_mns){
+			DefaultPortProtocolLog(ame_Log_Statement, "DeliverMessage",  "println", "");
+			if(serialState != nullptr){
+				MessageDelivery* i_delivery = serialState->getDelivery();
+				if(i_delivery != nullptr){
+					return i_delivery->DeliverMessage(a_mns);
+				}
+			}
+			if(m_delivery == nullptr){
+				return false;
+			}
+			return m_delivery->DeliverMessage(a_mns);
 		}
 		
 	protected:

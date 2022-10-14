@@ -27,6 +27,7 @@
 #include "Note.hpp"
 #include "PrimitiveList.hpp"
 #include "cppObjectClass.hpp"
+#include "PrivateClass.hpp"
 
 
 #if defined(ARDUINO_ARCH_AVR)
@@ -76,8 +77,14 @@ class SimpleTimer : public TimeControl{
 		TimeControl* stopInterrupt();
 		TimeControl* resumeInterrupt();
 
-		virtual Note toNote();
-		virtual cppObjectClass* getClass();
+		
+		virtual cppObjectClass* getClass(){
+			return PrivateClass<TimeControl>::classType;
+		}
+		
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<TimeControl>::classType;
+		}
 
 	private:
 		static TimeControl *instance;
@@ -419,7 +426,7 @@ class SimpleTimer : public TimeControl{
 		
 		#include "esp_task_wdt.h"
 
-		void ARDUINO_ISR_ATTR onTime(){
+		void IRAM_ATTR onTime(){// IRAM_ATTR  ARDUINO_ISR_ATTR
 			SimpleTimerLoopLog("SimpleTimer", "IRAM_ATTR",  "println", "ARDUINO_ESP32_DEV");
 			for(int x = 0; x < ((SimpleTimer*)SimpleTimer::getInstance())->timeList->getPosition(); x++){
 				((SimpleTimer*)SimpleTimer::getInstance())->timeList->getByPosition(x)->Play(SimpleTimer::getInstance());
@@ -609,15 +616,6 @@ class SimpleTimer : public TimeControl{
 			return this;
 		}
 	#endif
-
-		Note SimpleTimer::toNote() {
-			return Note("SimpleTimer");
-		}
-
-		cppObjectClass* SimpleTimer::getClass() {
-			return Class<SimpleTimer>::classType;
-		}
-
 }
 
 #endif

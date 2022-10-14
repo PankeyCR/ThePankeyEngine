@@ -1,27 +1,28 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_MapIterator)
-	#define MapIterator_hpp
-#endif
-
 #ifndef MapIterator_hpp
 #define MapIterator_hpp
 #define MapIterator_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#include "RawPointerMap.hpp"
 
+#ifdef MapIterator_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+
+	#define MapIteratorLog(location,method,type,mns) ame_Log((void*)this,location,"MapIterator",method,type,mns)
+	#define const_MapIteratorLog(location,method,type,mns)
+#else
+	#ifdef MapIterator_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+
+		#define MapIteratorLog(location,method,type,mns) ame_LogDebug((void*)this,location,"MapIterator",method,type)
+		#define const_MapIteratorLog(location,method,type,mns)
+	#else
+		#define MapIteratorLog(location,method,type,mns)
+		#define const_MapIteratorLog(location,method,type,mns)
+	#endif
 #endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "RawMap.hpp"
 
 namespace ame{
 
@@ -30,9 +31,9 @@ class MapIterator{
     public:
 	int position = 0;
 	int size = 0;
-	RawMap<K,V>* m_map = nullptr;
+	RawPointerMap<K,V>* m_map = nullptr;
 	
-	MapIterator(RawMap<K,V>* i_map, int p, int s){
+	MapIterator(RawPointerMap<K,V>* i_map, int p, int s){
 		m_map = i_map;
 		position = p;
 		size = s;
@@ -79,6 +80,10 @@ class MapIterator{
 		return m_map != nullptr;
 	}
 	
+	virtual MapEntry<K,V> get(){
+		return m_map->getMapEntryByPosition(position);
+	}
+	
 	virtual K getKey(){
 		K* key = m_map->getKeyByPosition(position);
 		if(key == nullptr){
@@ -87,12 +92,20 @@ class MapIterator{
 		return *key;
 	}
 	
+	virtual K* getKeyPointer(){
+		return m_map->getKeyByPosition(position);
+	}
+	
 	virtual V getValue(){
-		V* value = m_map->getByPosition(position);
+		V* value = m_map->getValueByPosition(position);
 		if(value == nullptr){
 			return V();
 		}
 		return *value;
+	}
+	
+	virtual V* getValuePointer(){
+		return m_map->getValueByPosition(position);
 	}
 	
 	virtual void setKey(K k){
@@ -104,7 +117,7 @@ class MapIterator{
 	}
 	
 	virtual void setValue(V v){
-		V* value = m_map->getByPosition(position);
+		V* value = m_map->getValueByPosition(position);
 		if(value == nullptr){
 			return;
 		}

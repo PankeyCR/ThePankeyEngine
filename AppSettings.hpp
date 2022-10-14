@@ -1,28 +1,10 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_AppSettings)
-	#define AppSettings_hpp
-#endif
-
 #ifndef AppSettings_hpp
 #define AppSettings_hpp
 #define AppSettings_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "Note.hpp"
 #include "cppObject.hpp"
+#include "Note.hpp"
 
 namespace ame{
 

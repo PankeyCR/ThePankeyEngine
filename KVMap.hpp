@@ -1,29 +1,29 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_KVMap)
-	#define KVMap_hpp
-#endif
-
 #ifndef KVMap_h
 #define KVMap_h
-#define KVMap_AVAILABLE
+#define KVMap_AVAILABLE 
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "cppObject.hpp"
-#include "Class.hpp"
 #include "Map.hpp"
+#include "Class.hpp"
+
+#ifdef KVMap_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+
+	#define KVMapLog(location,method,type,mns) ame_Log((void*)this,location,"KVMap",method,type,mns)
+	#define const_KVMapLog(location,method,type,mns)
+#else
+	#ifdef KVMap_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+
+		#define KVMapLog(location,method,type,mns) ame_LogDebug((void*)this,location,"KVMap",method,type)
+		#define const_KVMapLog(location,method,type,mns)
+	#else
+		#define KVMapLog(location,method,type,mns)
+		#define const_KVMapLog(location,method,type,mns)
+	#endif
+#endif
 
 namespace ame{
 
@@ -36,41 +36,29 @@ class KVMap : public Map<K,P>{
 		K keys[size];
 		
 		KVMap(){
-			
+			KVMapLog(ame_Log_StartMethod, "Constructor", "println", "");
+			KVMapLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 		
-		KVMap(const KVMap& m_map){
-			for(int x = 0; x < m_map.getPosition(); x++){
-				K k = *m_map.getKeyByPosition(x);
-				P v = *m_map.getByPosition(x);
+		KVMap(const KVMap& c_map){
+			KVMapLog(ame_Log_StartMethod, "Constructor", "println", "");
+			for(int x = 0; x < c_map.getPosition(); x++){
+				K k = *c_map.getKeyByPosition(x);
+				P v = *c_map.getByPosition(x);
 				this->addLValues(k,v);
 			}
+			KVMapLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 		
 		virtual ~KVMap(){
-			
-		}
-		virtual void setOwner(bool b){}
-		virtual bool isOwner()const{return false;}
-
-		virtual bool isEmpty()const{
-			return this->pos==0;
+			KVMapLog(ame_Log_StartMethod, "Destructor", "println", "");
+			KVMapLog(ame_Log_EndMethod, "Destructor", "println", "");
 		}
 		
-		void setPosition(int p){
-			this->pos = p;
-		}
-		
-		int getPosition()const{
-			return this->pos;
-		}
-		
-		int getSize()const{
-			return size;
-		}
-		
-		void addPointers(K *key, P *value){
+		virtual void addPointers(K *key, P *value){
+			KVMapLog(ame_Log_StartMethod, "addPointers", "println", "");
 			if(size < this->pos){
+				KVMapLog(ame_Log_EndMethod, "addPointers", "println", "");
 				return;
 			}
 			this->keys[pos] = *key;
@@ -78,45 +66,58 @@ class KVMap : public Map<K,P>{
 			this->pos++;
 			delete key;
 			delete value;
+			KVMapLog(ame_Log_EndMethod, "addPointers", "println", "");
 		}
 		
-		void addLValues(K key, P value){
+		virtual void addLValues(K key, P value){
+			KVMapLog(ame_Log_StartMethod, "addLValues", "println", "");
 			if(size < this->pos){
+				KVMapLog(ame_Log_EndMethod, "addLValues", "println", "");
 				return;
 			}
 			this->keys[pos] = key;
 			this->values[pos] = value;
 			this->pos++;
+			KVMapLog(ame_Log_EndMethod, "addLValues", "println", "");
 		}
 		
-		void addPointer(K key, P *value){
+		virtual void addPointer(K key, P *value){
+			KVMapLog(ame_Log_StartMethod, "addPointer", "println", "");
 			if(size < this->pos){
+				KVMapLog(ame_Log_EndMethod, "addPointer", "println", "");
 				return;
 			}
 			this->keys[pos] = key;
 			this->values[pos] = *value;
 			this->pos++;
 			delete value;
+			KVMapLog(ame_Log_EndMethod, "addPointer", "println", "");
 		}
 		
 		virtual void add(K key, P value){
+			KVMapLog(ame_Log_StartMethod, "add", "println", "");
 			if(size < pos){
+				KVMapLog(ame_Log_EndMethod, "add", "println", "");
 				return;
 			}
 			keys[pos] = key;
 			values[pos] = value;
 			pos++;
+			KVMapLog(ame_Log_EndMethod, "add", "println", "");
 		}
 		
 		virtual void addCopy(RawMap<K,P>* r_map){
+			KVMapLog(ame_Log_StartMethod, "addCopy", "println", "");
 			for(int x = 0; x < r_map->getPosition(); x++){
 				K* k = this->getKeyByPosition(x);
 				P* v = this->getByPosition(x);
 				this->addLValues(*k, *v);
 			}
+			KVMapLog(ame_Log_EndMethod, "addCopy", "println", "");
 		}
 		
 		virtual void addMove(RawMap<K,P>* r_map){
+			KVMapLog(ame_Log_StartMethod, "addMove", "println", "");
 			for(int x = 0; x < r_map->getPosition(); x++){
 				K* k = this->getKeyByPosition(x);
 				P* v = this->getByPosition(x);
@@ -126,10 +127,13 @@ class KVMap : public Map<K,P>{
 					this->addLValues(*k, *v);
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "addMove", "println", "");
 		}
 		
-		void setPointers(K *key, P *value){
+		virtual void setPointers(K *key, P *value){
+			KVMapLog(ame_Log_StartMethod, "setPointers", "println", "");
 			if(size < this->pos){
+				KVMapLog(ame_Log_EndMethod, "setPointers", "println", "");
 				return;
 			}
 			for(int x=0; x < pos; x++){
@@ -137,10 +141,13 @@ class KVMap : public Map<K,P>{
 					this->values[x] = *value;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "setPointers", "println", "");
 		}
 		
-		void setLValues(K key, P value){
+		virtual void setLValues(K key, P value){
+			KVMapLog(ame_Log_StartMethod, "setLValues", "println", "");
 			if(size < this->pos){
+				KVMapLog(ame_Log_EndMethod, "setLValues", "println", "");
 				return;
 			}
 			for(int x=0; x < this->pos; x++){
@@ -148,10 +155,13 @@ class KVMap : public Map<K,P>{
 					this->values[x] = value;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "setLValues", "println", "");
 		}
 		
-		void setPointer(K key, P *value){
+		virtual void setPointer(K key, P *value){
+			KVMapLog(ame_Log_StartMethod, "setPointer", "println", "");
 			if(size < pos){
+				KVMapLog(ame_Log_EndMethod, "setPointer", "println", "");
 				return;
 			}
 			for(int x=0; x < pos; x++){
@@ -159,38 +169,53 @@ class KVMap : public Map<K,P>{
 					this->values[x] = *value;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "setPointer", "println", "");
 		}
 		
-		void setKeyLValueByPosition(int p, K key){
+		virtual void setKeyLValueByPosition(int p, K key){
+			KVMapLog(ame_Log_StartMethod, "setKeyLValueByPosition", "println", "");
 			if(size < p){
+				KVMapLog(ame_Log_EndMethod, "setKeyLValueByPosition", "println", "");
 				return;
 			}
 			keys[p] = key;
+			KVMapLog(ame_Log_EndMethod, "setKeyLValueByPosition", "println", "");
 		}
 		
-		void setKeyPointerByPosition(int p, K *key){
+		virtual void setKeyPointerByPosition(int p, K *key){
+			KVMapLog(ame_Log_StartMethod, "setKeyPointerByPosition", "println", "");
 			if(size < p){
+				KVMapLog(ame_Log_EndMethod, "setKeyPointerByPosition", "println", "");
 				return;
 			}
 			keys[p] = *key;
+			KVMapLog(ame_Log_EndMethod, "setKeyPointerByPosition", "println", "");
 		}
 		
-		void setValueByPosition(int p, P value){
+		virtual void setValueByPosition(int p, P value){
+			KVMapLog(ame_Log_StartMethod, "setValueByPosition", "println", "");
 			if(size < p){
+				KVMapLog(ame_Log_EndMethod, "setValueByPosition", "println", "");
 				return;
 			}
 			values[p] = value;
+			KVMapLog(ame_Log_EndMethod, "setValueByPosition", "println", "");
 		}
 		
-		void setValuePointerByPosition(int p, P *value){
+		virtual void setValuePointerByPosition(int p, P *value){
+			KVMapLog(ame_Log_StartMethod, "setValuePointerByPosition", "println", "");
 			if(size < p){
+				KVMapLog(ame_Log_EndMethod, "setValuePointerByPosition", "println", "");
 				return;
 			}
 			values[p] = *value;
+			KVMapLog(ame_Log_EndMethod, "setValuePointerByPosition", "println", "");
 		}
 		
 		virtual void set(K key, P value){
+			KVMapLog(ame_Log_StartMethod, "set", "println", "");
 			if(size < pos){
+				KVMapLog(ame_Log_EndMethod, "set", "println", "");
 				return;
 			}
 			for(int x=0; x < pos; x++){
@@ -198,142 +223,191 @@ class KVMap : public Map<K,P>{
 					values[x] = value;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "set", "println", "");
 		}
 		
-		bool containKeyByPointer(K *key){
+		virtual bool containKeyByPointer(K *key){
+			KVMapLog(ame_Log_StartMethod, "containKeyByPointer", "println", "");
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == *key ){
+					KVMapLog(ame_Log_EndMethod, "containKeyByPointer", "println", "");
 					return true;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "containKeyByPointer", "println", "");
 			return false;
 		}
 		
-		bool containKeyByLValue(K key){
+		virtual bool containKeyByLValue(K key){
+			KVMapLog(ame_Log_StartMethod, "containKeyByLValue", "println", "");
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == key ){
+					KVMapLog(ame_Log_EndMethod, "containKeyByLValue", "println", "");
 					return true;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "containKeyByLValue", "println", "");
 			return false;
 		}
 		
-		bool containValueByPointer(P *value){
+		virtual bool containValueByPointer(P *value){
+			KVMapLog(ame_Log_StartMethod, "containValueByPointer", "println", "");
 			for(int x=0; x < this->pos; x++){
 				if(this->values[x] == *value ){
+					KVMapLog(ame_Log_EndMethod, "containValueByPointer", "println", "");
 					return true;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "containValueByPointer", "println", "");
 			return false;
 		}
 		
-		bool containValueByLValue(P value){
+		virtual bool containValueByLValue(P value){
+			KVMapLog(ame_Log_StartMethod, "containValueByLValue", "println", "");
 			for(int x=0; x < this->pos; x++){
 				if(this->values[x] == value ){
+					KVMapLog(ame_Log_EndMethod, "containValueByLValue", "println", "");
 					return true;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "containValueByLValue", "println", "");
 			return false;
 		}
 		
-		P *getByPointer(K *key){
+		virtual P *getByPointer(K *key){
+			KVMapLog(ame_Log_StartMethod, "getByPointer", "println", "");
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == *key ){
+					KVMapLog(ame_Log_EndMethod, "getByPointer", "println", "");
 					return &this->values[x];
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "getByPointer", "println", "");
 			return nullptr;
 		}
 		
-		P *getByLValue(K key){
+		virtual P *getByLValue(K key){
+			KVMapLog(ame_Log_StartMethod, "getByLValue", "println", "");
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == key ){
+					KVMapLog(ame_Log_EndMethod, "getByLValue", "println", "");
 					return &this->values[x];
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "getByLValue", "println", "");
 			return nullptr;
 		}
 		
-		P *getByPosition(int p) const{
+		virtual P *getByPosition(int p) const{
+			KVMapLog(ame_Log_StartMethod, "getByPosition", "println", "");
 			for(int x=0; x < this->pos; x++){
 				if(x == p){
+					KVMapLog(ame_Log_EndMethod, "getByPosition", "println", "");
 					return (P*)&this->values[x];
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "getByPosition", "println", "");
 			return nullptr;
 		}
 		
-		K *getKeyByPosition(int p) const{
+		virtual K *getKeyByPosition(int p) const{
+			KVMapLog(ame_Log_StartMethod, "getKeyByPosition", "println", "");
 			for(int x=0; x < this->pos; x++){
 				if(x == p ){
+					KVMapLog(ame_Log_EndMethod, "getKeyByPosition", "println", "");
 					return (K*)&this->keys[x];
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "getKeyByPosition", "println", "");
 			return nullptr;
 		}
 		
-		K *getKeyByPointer(P *value){
+		virtual K *getKeyByPointer(P *value){
+			KVMapLog(ame_Log_StartMethod, "getKeyByPointer", "println", "");
 			for(int x=0; x < this->pos; x++){
 				if(this->values[x] == *value ){
+					KVMapLog(ame_Log_EndMethod, "getKeyByPointer", "println", "");
 					return &this->keys[x];
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "getKeyByPointer", "println", "");
 			return nullptr;
 		}
 	
-		K *getKeyByLValue(P value){
+		virtual K *getKeyByLValue(P value){
+			KVMapLog(ame_Log_StartMethod, "getKeyByLValue", "println", "");
 			for(int x=0; x < this->pos; x++){
 				if(this->values[x] == value ){
+					KVMapLog(ame_Log_EndMethod, "getKeyByLValue", "println", "");
 					return &this->keys[x];
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "getKeyByLValue", "println", "");
 			return nullptr;
 		}
 		
 		virtual P get(K key){
+			KVMapLog(ame_Log_StartMethod, "get", "println", "");
 			for(int x=0; x < pos; x++){
 				if(keys[x] == key ){
+					KVMapLog(ame_Log_EndMethod, "get", "println", "");
 					return values[x];
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "get", "println", "");
 			return P();
 		}
 		
-		K getKey(int p){
+		virtual K getKey(int p){
+			KVMapLog(ame_Log_StartMethod, "getKey", "println", "");
 			for(int x=0; x < pos; x++){
 				if(x == p ){
+					KVMapLog(ame_Log_EndMethod, "getKey", "println", "");
 					return keys[x];
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "getKey", "println", "");
 			return K();
 		}
 		
 		virtual P getValue(int p){
+			KVMapLog(ame_Log_StartMethod, "getValue", "println", "");
 			for(int x=0; x < pos; x++){
 				if(x == p ){
+					KVMapLog(ame_Log_EndMethod, "getValue", "println", "");
 					return values[x];
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "getValue", "println", "");
 			return P();
 		}
 		
-		void reset(){
+		virtual void reset(){
+			KVMapLog(ame_Log_StartMethod, "reset", "println", "");
 			this->pos=0;
+			KVMapLog(ame_Log_EndMethod, "reset", "println", "");
 		}
 		
-		void resetDelete(){
+		virtual void resetDelete(){
+			KVMapLog(ame_Log_StartMethod, "resetDelete", "println", "");
 			this->pos=0;
+			KVMapLog(ame_Log_EndMethod, "resetDelete", "println", "");
 		}
 		
-		void resetDeleteKey(){
+		virtual void resetDeleteKey(){
+			KVMapLog(ame_Log_StartMethod, "resetDeleteKey", "println", "");
 			this->pos=0;
+			KVMapLog(ame_Log_EndMethod, "resetDeleteKey", "println", "");
 		}
 		
-		void resetDeleteValue(){
+		virtual void resetDeleteValue(){
+			KVMapLog(ame_Log_StartMethod, "resetDeleteValue", "println", "");
 			this->pos=0;
+			KVMapLog(ame_Log_EndMethod, "resetDeleteValue", "println", "");
 		}
 		
-		P *removeByPointer(K *key){
+		virtual P *removeByPointer(K *key){
+			KVMapLog(ame_Log_StartMethod, "removeByPointer", "println", "");
 			P *p =nullptr;
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
@@ -354,10 +428,12 @@ class KVMap : public Map<K,P>{
 				}
 				this->pos = nv;
 			}
+			KVMapLog(ame_Log_EndMethod, "removeByPointer", "println", "");
 			return p;
 		}
 		
-		P *removeByLValue(K key){
+		virtual P *removeByLValue(K key){
+			KVMapLog(ame_Log_StartMethod, "removeByLValue", "println", "");
 			P *p =nullptr;
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
@@ -378,10 +454,12 @@ class KVMap : public Map<K,P>{
 				}
 				this->pos = nv;
 			}
+			KVMapLog(ame_Log_EndMethod, "removeByLValue", "println", "");
 			return p;
 		}
 		
-		P *removeByPosition(int ps){
+		virtual P *removeByPosition(int ps){
+			KVMapLog(ame_Log_StartMethod, "removeByPosition", "println", "");
 			P *p = nullptr;
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
@@ -402,10 +480,12 @@ class KVMap : public Map<K,P>{
 				}
 				this->pos = nv;
 			}
+			KVMapLog(ame_Log_EndMethod, "removeByPosition", "println", "");
 			return p;
 		}
 		
-		void removeDeleteByPointer(K *key){
+		virtual void removeDeleteByPointer(K *key){
+			KVMapLog(ame_Log_StartMethod, "removeDeleteByPointer", "println", "");
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == *key ){
@@ -423,9 +503,11 @@ class KVMap : public Map<K,P>{
 				}
 				this->pos = nv;
 			}
+			KVMapLog(ame_Log_EndMethod, "removeDeleteByPointer", "println", "");
 		}
 		
-		void removeDeleteByLValue(K key){
+		virtual void removeDeleteByLValue(K key){
+			KVMapLog(ame_Log_StartMethod, "removeDeleteByLValue", "println", "");
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
 				if(this->keys[x] == key ){
@@ -443,9 +525,11 @@ class KVMap : public Map<K,P>{
 				}
 				this->pos = nv;
 			}
+			KVMapLog(ame_Log_EndMethod, "removeDeleteByLValue", "println", "");
 		}
 		
-		void removeDeleteByPosition(int ps){
+		virtual void removeDeleteByPosition(int ps){
+			KVMapLog(ame_Log_StartMethod, "removeDeleteByPosition", "println", "");
 			bool is=false;
 			for(int x=0; x < this->pos; x++){
 				if(x == ps ){
@@ -463,9 +547,11 @@ class KVMap : public Map<K,P>{
 				}
 				this->pos = nv;
 			}
+			KVMapLog(ame_Log_EndMethod, "removeDeleteByPosition", "println", "");
 		}
 		
-		P remove(K key){
+		virtual P remove(K key){
+			KVMapLog(ame_Log_StartMethod, "remove", "println", "");
 			int nv =0;
 			P v;
 			for(int x=0; x < pos; x++){
@@ -478,10 +564,12 @@ class KVMap : public Map<K,P>{
 				}
 			}
 			pos = nv;
+			KVMapLog(ame_Log_EndMethod, "remove", "println", "");
 			return v;
 		}
 		
-		P removeIndex(int ps){
+		virtual P removeIndex(int ps){
+			KVMapLog(ame_Log_StartMethod, "removeIndex", "println", "");
 			int nv =0;
 			P v;
 			for(int x=0; x < pos; x++){
@@ -494,10 +582,12 @@ class KVMap : public Map<K,P>{
 				}
 			}
 			pos = nv;
+			KVMapLog(ame_Log_EndMethod, "removeIndex", "println", "");
 			return v;
 		}
 		
-		void putPointers(K* key, P* value){
+		virtual void putPointers(K* key, P* value){
+			KVMapLog(ame_Log_StartMethod, "putPointers", "println", "");
 			if(key == nullptr || value == nullptr){
 				return;
 			}
@@ -513,9 +603,11 @@ class KVMap : public Map<K,P>{
 			keys[pos] = *key;
 			values[pos] = *value;
 			pos++;
+			KVMapLog(ame_Log_EndMethod, "putPointers", "println", "");
 		}
 		
-		void putLValues(K key, P value){
+		virtual void putLValues(K key, P value){
+			KVMapLog(ame_Log_StartMethod, "putLValues", "println", "");
 			for(int x=0; x < pos; x++){
 				if(key == keys[x]){
 					values[x] = value;
@@ -523,152 +615,181 @@ class KVMap : public Map<K,P>{
 				}
 			}
 			if(size < pos){
+				KVMapLog(ame_Log_EndMethod, "putLValues", "println", "");
 				return;
 			}
 			keys[pos] = key;
 			values[pos] = value;
 			pos++;
+			KVMapLog(ame_Log_EndMethod, "putLValues", "println", "");
 		}
 		
-		void putPointer(K key, P* value){
+		virtual void putPointer(K key, P* value){
+			KVMapLog(ame_Log_StartMethod, "putPointer", "println", "");
 			if(value == nullptr){
+				KVMapLog(ame_Log_EndMethod, "putPointer", "println", "");
 				return;
 			}
 			for(int x=0; x < pos; x++){
 				if(key == keys[x]){
 					values[x] = *value;
+					KVMapLog(ame_Log_EndMethod, "putPointer", "println", "");
 					return;
 				}
 			}
 			if(size < pos){
+				KVMapLog(ame_Log_EndMethod, "putPointer", "println", "");
 				return;
 			}
 			keys[pos] = key;
 			values[pos] = *value;
 			pos++;
+			KVMapLog(ame_Log_EndMethod, "putPointer", "println", "");
 		}
 		
-		void put(K key, P value){
+		virtual void put(K key, P value){
+			KVMapLog(ame_Log_StartMethod, "put", "println", "");
 			for(int x=0; x < pos; x++){
 				if(key == keys[x]){
 					values[x] = value;
+					KVMapLog(ame_Log_EndMethod, "put", "println", "");
 					return;
 				}
 			}
 			if(size < pos){
+				KVMapLog(ame_Log_EndMethod, "put", "println", "");
 				return;
 			}
 			keys[pos] = key;
 			values[pos] = value;
 			pos++;
+			KVMapLog(ame_Log_EndMethod, "put", "println", "");
 		}
 		
-		int getKeyIndexByPointer(K* key){
+		virtual int getKeyIndexByPointer(K* key){
+			KVMapLog(ame_Log_StartMethod, "getKeyIndexByPointer", "println", "");
 			for(int x=0; x < pos; x++){
 				if(*key == keys[x]){
+					KVMapLog(ame_Log_EndMethod, "getKeyIndexByPointer", "println", "");
 					return x;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "getKeyIndexByPointer", "println", "");
 			return -1;
 		}
 		
-		int getKeyIndexByLValue(K key){
+		virtual int getKeyIndexByLValue(K key){
+			KVMapLog(ame_Log_StartMethod, "getKeyIndexByLValue", "println", "");
 			for(int x=0; x < pos; x++){
 				if(key == keys[x]){
+					KVMapLog(ame_Log_EndMethod, "getKeyIndexByLValue", "println", "");
 					return x;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "getKeyIndexByLValue", "println", "");
 			return -1;
 		}
 		
-		int getIndexByPointer(P* v){
+		virtual int getIndexByPointer(P* v){
+			KVMapLog(ame_Log_StartMethod, "getIndexByPointer", "println", "");
 			if(v == nullptr){
+				KVMapLog(ame_Log_EndMethod, "getIndexByPointer", "println", "");
 				return -1;
 			}
 			for(int x=0; x < pos; x++){
 				if(*v == values[x]){
+					KVMapLog(ame_Log_EndMethod, "getIndexByPointer", "println", "");
 					return x;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "getIndexByPointer", "println", "");
 			return -1;
 		}
 		
-		int getIndexByLValue(P v){
+		virtual int getIndexByLValue(P v){
+			KVMapLog(ame_Log_StartMethod, "getIndexByLValue", "println", "");
 			for(int x=0; x < pos; x++){
 				if(v == values[x]){
+					KVMapLog(ame_Log_EndMethod, "getIndexByLValue", "println", "");
 					return x;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "getIndexByLValue", "println", "");
 			return -1;
 		}
 		
-		void onDelete(){
-			
+		virtual void onDelete(){
+			KVMapLog(ame_Log_StartMethod, "onDelete", "println", "");
+			KVMapLog(ame_Log_EndMethod, "onDelete", "println", "");
 		}
 		
-		cppObjectClass* getClass(){
+		virtual cppObjectClass* getClass(){
+			KVMapLog(ame_Log_StartMethod, "getClass", "println", "");
+			KVMapLog(ame_Log_EndMethod, "getClass", "println", "");
 			return Class<KVMap>::classType;
 		}
 		
-		Map<K,P>* clone(void){
+		virtual Map<K,P>* clone(void){
+			KVMapLog(ame_Log_StartMethod, "clone", "println", "");
 			Map<K,P>* cloneMap = new KVMap<K,P,size>();
 			for(int cm = 0; cm < this->pos; cm++){
 				cloneMap->addLValues(keys[cm], values[cm]);
 			}
+			KVMapLog(ame_Log_EndMethod, "clone", "println", "");
 			return cloneMap;
 		}
 		
-		Map<K,P>* clone(bool owningMemory){
+		virtual Map<K,P>* clone(bool owningMemory){
+			KVMapLog(ame_Log_StartMethod, "clone", "println", "");
 			Map<K,P>* cloneMap = new KVMap<K,P,size>();
 			for(int cm = 0; cm < this->pos; cm++){
 				cloneMap->addLValues(keys[cm], values[cm]);
 			}
+			KVMapLog(ame_Log_EndMethod, "clone", "println", "");
 			return cloneMap;
 		}
 		
-        KVMap<K,P,size>& operator =(const KVMap<K,P,size>& m_map){
+        virtual KVMap<K,P,size>& operator =(const KVMap<K,P,size>& m_map){
+			KVMapLog(ame_Log_StartMethod, "operator =", "println", "");
 			resetDelete();
 			for(int x = 0; x < m_map.getPosition(); x++){
 				K k = *m_map.getKeyByPosition(x);
 				P v = *m_map.getByPosition(x);
 				this->addLValues(k,v);
 			}
+			KVMapLog(ame_Log_EndMethod, "operator =", "println", "");
 			return *this;
 		}
 		
-        bool operator ==(const KVMap<K,P,size>& m_map){
+        virtual bool operator ==(const KVMap<K,P,size>& m_map){
+			KVMapLog(ame_Log_StartMethod, "operator ==", "println", "");
 			for(int x = 0; x < pos; x++){
 				K k = m_map.keys[x];
 				P v = m_map.values[x];
 				if(keys[x] != k || values[x] != v){
+					KVMapLog(ame_Log_EndMethod, "operator ==", "println", "");
 					return false;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "operator ==", "println", "");
 			return true;
 		}
 		
-        bool operator !=(const KVMap<K,P,size>& m_map){
+        virtual bool operator !=(const KVMap<K,P,size>& m_map){
+			KVMapLog(ame_Log_StartMethod, "operator !=", "println", "");
 			for(int x = 0; x < pos; x++){
 				K k = m_map.keys[x];
 				P v = m_map.values[x];
 				if(keys[x] == k || values[x] == v){
+					KVMapLog(ame_Log_EndMethod, "operator !=", "println", "");
 					return false;
 				}
 			}
+			KVMapLog(ame_Log_EndMethod, "operator !=", "println", "");
 			return true;
 		}
 		
-		virtual MapIterator<K,P> getIterator(int p){
-			for(int x=0; x < pos; x++){
-				if(x == p ){
-					return MapIterator<K,P>(this,p,pos);
-				}
-			}
-			return MapIterator<K,P>(nullptr,0,0);
-		}
-	
-		
-	private:
+	protected:
 };
 
 }

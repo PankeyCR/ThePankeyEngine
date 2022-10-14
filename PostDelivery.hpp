@@ -21,27 +21,30 @@
 	#include "Arduino.h"
 #endif
 
-#include "ProtocolMessageDelivery.hpp"
+#include "MessageDelivery.hpp"
 #include "SerialPort.hpp"
 #include "SerialPost.hpp"
 
 namespace ame{
 
-template<class T>
-class PostDelivery : public ProtocolMessageDelivery{	
+class PostDelivery : public MessageDelivery{	
     public:
-		PostDelivery(SerialPost* a_post){
-			serialPost = a_post;
+		PostDelivery(){
 		}
 		virtual ~PostDelivery(){}
 		
-		virtual void SaveMessage(SerialPort* port, Note a_mns){
-			serialPost->addPortMail<Note>(port->getName(), a_mns);
+		virtual void initialize(SerialNetwork* a_network){}
+		
+		virtual bool DeliverMessage(Note* a_mns){
+			//serialPost->addMail<Note>(a_mns);
+			return true;
 		}
 		
-		virtual void SaveMessage(SerialPort* port, ByteArray a_mns){}
+		virtual bool DeliverMessage(ByteArray* a_mns){
+			return false;
+		}
 	protected:
-		SerialPost* serialPost = nullptr;
+		//SerialPost* serialPost = nullptr;
 };
 
 }

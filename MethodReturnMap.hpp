@@ -1,75 +1,57 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_MethodReturnMap)
-	#define MethodReturnMap_hpp
-#endif
-
 #ifndef MethodReturnMap_hpp
 #define MethodReturnMap_hpp
 #define MethodReturnMap_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "PrimitiveRawMap.hpp"
+#include "PrimitivePointerMethodReturnMap.hpp"
 
 namespace ame{
 
-template<class T,class R,class... P>
-class MethodReturnMap : public PrimitiveRawMap<Note,R (T::*)(P...)>{
-public:
-R r;
-using EventMethod = R (T::*)(P...);
-MethodReturnMap(){}
-MethodReturnMap(R rtn){r=rtn;}
-virtual ~MethodReturnMap(){}
-
-void add(Note n, EventMethod m){
-	this->addLValues(n,m);
-}
-
-R invoke(Note a, T* intance, R rr, P... p){
-	if(this->getByLValue(a) == nullptr){
-		return rr;
-	}
-	return ( intance->**this->getByLValue(a))(p...);
-}
-
-// R invoke(T* intance, EventMethod* a, P... p){
-	// return ( intance->**a)(p...);
-// }
-
-// R invoke(T* intance, EventMethod a, P... p){
-	// return ( intance->*a)(p...);
-// }
-virtual void operator=(R rtn){r=rtn;}
-virtual bool operator==(MethodReturnMap<T,R,P...> a){
+template<class R, class... Args>
+struct MethodReturnMap {
 	
-	return false;
-}
-virtual bool operator!=(MethodReturnMap<T,R,P...> a){
+	using Raw_Method = R (*)(Args...);
 	
-	return false;
-}
-virtual void operator=(MethodReturnMap<T,R,P...> a){
-	this->resetDelete();
-	for(int x=0; x < a.getPosition(); x++){
-		this->addPointers(a.getKeyByPosition(x),a.getByPosition(x));
+	static PrimitivePointerMethodReturnMap<cppObjectClass,R,Args...>* m_method_map;
+	
+	static void add(cppObjectClass* a_cls, Raw_Method* a_method){
+		if(m_method_map == nullptr){
+			return;
+		}
+		m_method_map->addPointers(a_cls, a_method);
 	}
-}
-
-protected:
+	
+	static void remove(cppObjectClass* a_cls){
+		if(m_method_map == nullptr){
+			return;
+		}
+		m_method_map->removeDeleteByPointer(a_cls);
+	}
+	
+	static Raw_Method* getPointer(cppObjectClass* a_cls){
+		if(m_method_map == nullptr){
+			return nullptr;
+		}
+		return m_method_map->getByLValue(a_cls);
+	}
+	
+	static R invoke(cppObjectClass* a_cls, R a_return, Args... a_invoke){
+		if(m_method_map == nullptr){
+			return a_return;
+		}
+		return m_method_map->invoke(a_cls, a_return, a_invoke...);
+	}
+	
+	static void invokeAll(Args... a_invoke){
+		if(m_method_map == nullptr){
+			return;
+		}
+		m_method_map->invokeAll(a_invoke...);
+	}
 };
+
+template<class R, class... Args>
+PrimitivePointerMethodReturnMap<cppObjectClass,R,Args...>* MethodReturnMap<R,Args...>::m_method_map = new PrimitivePointerMethodReturnMap<cppObjectClass,R,Args...>();
 
 }
 

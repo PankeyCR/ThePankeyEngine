@@ -1,25 +1,7 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_ClassCount)
-	#define ClassCount_hpp
-#endif
-
 #ifndef ClassCount_hpp
 #define ClassCount_hpp
 #define ClassCount_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 namespace ame{
 	

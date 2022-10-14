@@ -1,37 +1,23 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_AppStateManager)
-	#define AppStateManager_hpp
-#endif
-
 #ifndef AppStateManager_hpp
 #define AppStateManager_hpp
 #define AppStateManager_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
+#include "Note.hpp"
 #include "AppState.hpp"
-#include "cppObjectClass.hpp"
-#include "Class.hpp"
+#include "AbstractClass.hpp"
 
 namespace ame{
 
-class Application;
-
 class AppStateManager : public cppObject{
     public:
-		virtual void setApplication(Application *app)=0;
+		virtual ~AppStateManager(){}
+		
+		virtual void setApplication(Application *app){
+			this->m_application = app;
+		}
+		
+		virtual Application* getApplication(){return this->m_application;}
 		
 		template<class T>
 		T* addState(T* state){
@@ -42,19 +28,19 @@ class AppStateManager : public cppObject{
 		template<class T>
 		T* getState(){
 			AppState* state = this->get(Class<T>::classType);
-			if(state->instanceof(Class<T>::classType)){
-				return (T*)state;
+			if(state == nullptr){
+				return nullptr;
 			}
-			return nullptr;
+			return (T*)state;
 		}
 		
 		template<class T>
 		T* getState(Note appstateId){
 			AppState* state = this->get(appstateId, Class<T>::classType);
-			if(state->instanceof(Class<T>::classType)){
-				return (T*)state;
+			if(state == nullptr){
+				return nullptr;
 			}
-			return nullptr;
+			return (T*)state;
 		}
 		/*
 		template<class T>
@@ -69,6 +55,13 @@ class AppStateManager : public cppObject{
 			}
 		}*/
 		virtual AppState* add(AppState* state)=0;
+		virtual AppState* add(Note a_id, AppState* state){
+			if(state == nullptr){
+				return nullptr;
+			}
+			state->setId(a_id);
+			return add(state);
+		}
 		
 		virtual AppState* get(cppObjectClass* cls)=0;
 		virtual AppState* get(Note appstateId, cppObjectClass* cls)=0;
@@ -106,13 +99,14 @@ class AppStateManager : public cppObject{
 		virtual float tpc()=0;
 		
 		virtual cppObjectClass* getClass(){
-			return Class<AppStateManager>::classType;
+			return AbstractClass<AppStateManager>::classType;
 		}
 		
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<AppStateManager>::classType;
+			return cls == AbstractClass<AppStateManager>::classType;
 		}
-	private:
+	protected:
+		Application* m_application = nullptr;
 };
 
 }

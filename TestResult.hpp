@@ -1,25 +1,10 @@
 
-#include "ame_Enviroment.hpp"
-
 #ifndef TestResult_hpp
 #define TestResult_hpp
-#define TestResult_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
+#define TestResult_AVAILABLE 
 
 #include "Note.hpp"
-#include "Class.hpp"
-#include "StaticMethodReturnMap.hpp"
+#include "PrimitiveList.hpp"
 
 namespace ame{
 	
@@ -27,7 +12,10 @@ class TestResult{
 	public:
 		TestResult(){}
 		TestResult(const TestResult& c_result){
-			m_test_Error = c_result.m_test_Error;
+			//m_test_Error = c_result.m_test_Error;
+		}
+		TestResult(TestResult&& c_result){
+			//m_test_Error = c_result.m_test_Error;
 		}
 		virtual ~TestResult(){}
 		
@@ -65,6 +53,14 @@ class TestResult{
 				}
 			}
 			return i_errors;
+		}
+		
+		virtual void operator=(const TestResult& c_result){
+			m_test_Error = c_result.m_test_Error;
+		}
+		
+		virtual void operator=(TestResult&& c_result){
+			m_test_Error = c_result.m_test_Error;
 		}
 		
 	protected:

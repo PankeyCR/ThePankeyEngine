@@ -26,7 +26,8 @@
 #include "Vector3f.hpp"
 #include "PrimitiveList.hpp"
 #include "Control.hpp"
-#include "RenderManager.hpp"
+
+// class RenderManager;
 
 namespace ame{
 
@@ -78,12 +79,12 @@ class Spatial : public cppObject{
 				control->update(tpc);
 			}
 		}
-		virtual void RenderUpdate(RenderManager* manager){
-			for(int x = 0; x < controls.getPosition(); x++){
-				Control* control = controls.getByPosition(x);
-				control->RenderUpdate(manager);
-			}
-		}
+		// virtual void RenderUpdate(RenderManager* manager){
+			// for(int x = 0; x < controls.getPosition(); x++){
+				// Control* control = controls.getByPosition(x);
+				// control->RenderUpdate(manager);
+			// }
+		// }
 		virtual void setLocalTranslation(Vector3f v){
 			localTransform.setTranslation(v);
 		}

@@ -1,17 +1,9 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_ClassStateMachineSystem)
-	#define ClassStateMachineSystem_hpp
-#endif
-
 #ifndef ClassStateMachineSystem_hpp
 #define ClassStateMachineSystem_hpp
 #define ClassStateMachineSystem_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
+#include "Note.hpp"
 
 #ifdef ame_Windows
 
@@ -62,7 +54,7 @@ class ClassStateMachineSystem{
 		
 		void setState(Note state){
 			statePosition = states.getKeyIndexByLValue(state);
-			actualState = states.getByPosition(statePosition);
+			actualState = states.getValueByPosition(statePosition);
 		}
 		
 		void setState(int state){
@@ -77,7 +69,7 @@ class ClassStateMachineSystem{
 		
 		void nextState(){
 			statePosition++;
-			actualState = states.getByPosition(statePosition);
+			actualState = states.getValueByPosition(statePosition);
 			CSMSLog(ame_Log_Statement, "nextState",  "println", Note(statePosition));
 			CSMSLog(ame_Log_Statement, "nextState",  "println", Note(actualState == nullptr));
 		}

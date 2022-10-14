@@ -1,13 +1,10 @@
 
-#include "ame_Enviroment.hpp"
-
 #ifndef TestRunnerState_hpp
 #define TestRunnerState_hpp
 #define TestRunnerState_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
+#include "Note.hpp"
+#include "Application.hpp"
 
 #ifdef ame_Windows
 
@@ -17,11 +14,9 @@
 	#include "Arduino.h"
 #endif
 
-#include "Note.hpp"
-#include "AppState.hpp"
 #include "Class.hpp"
 #include "TestResult.hpp"
-#include "StaticMethodReturnMap.hpp"
+#include "PrimitiveMethodReturnMap.hpp"
 #include "System.hpp"
 
 namespace ame{
@@ -52,8 +47,10 @@ class TestRunnerState : public AppState{
 			}
 			bool t_res = true;
 			for(int x = 0; x < testMap.getPosition(); x++){
-				Note f_note = *testMap.getKeyByPosition(x);
+				Note f_note = testMap.getKey(x);
 				TestResult f_result = testMap.invokeByPosition(x, TestResult());
+				// testMap.invokeByPosition(x, TestResult());
+				// TestResult f_result = TestResult();
 				if(!f_result.hasError()){
 					continue;
 				}
@@ -67,7 +64,7 @@ class TestRunnerState : public AppState{
 			m_running = false;
 		}
 	protected:
-		StaticMethodReturnMap<Note,TestResult> testMap;
+		PrimitiveMethodReturnMap<Note,TestResult> testMap;
 		bool m_running = false;
 };
 

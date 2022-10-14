@@ -472,16 +472,16 @@ class Vector4f : public cppObject , public Printable{
 		Vector4f *clone(){
 			return new Vector4f(this->x, this->y, this->z, this->w);
 		}
-		bool equals(cppObject *o){
-			if ( o->getClass() != Class<Vector4f>::classType ) {
+		bool equals(cppObject *a_obj){
+			if ( a_obj->getClass() != Class<Vector4f>::classType ) {
 				return false;
 			}
 
-			if (this == o){
+			if (this == a_obj){
 				return true;
 			}
 
-			Vector4f *comp = (Vector4f*) o;
+			Vector4f *comp = (Vector4f*) a_obj;
 			if (comp->x != this->x){
 				return false;
 			}
@@ -743,6 +743,14 @@ class Vector4f : public cppObject , public Printable{
 			this->z /= (float)a;
 			this->w /= (float)a;
 			return *this;
+		}
+
+		virtual cppObjectClass* getClass(){
+			return Class<Vector4f>::getClass();
+		}
+
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<Vector4f>::getClass();
 		}
 };
 

@@ -30,42 +30,41 @@ class ConsolePrint : public Print{
 
 
     size_t print(const bool& a_value){
-        printf ("%bd", a_value);
+        printf ("%s", a_value ? "true" : "false");
         return sizeof(a_value);
     }
 
     size_t print(const ame_String& a_value){
-        printf ("%sd", a_value);
+        printf ("%s", a_value.c_str());
         return sizeof(a_value);
     }
-/*
-    size_t print(const char[] a_value){
-        printf ("%s", a_value);
-        return sizeof(a_value);
-    }
-*/
     size_t print(char a_value){
+        printf ("%c", a_value);
+        return sizeof(a_value);
+    }
+
+    size_t print(const char* a_value){
         printf ("%s", a_value);
         return sizeof(a_value);
     }
 
     size_t print(unsigned char a_value, int = DEC){
-        printf ("%sd", a_value);
+        printf ("%c", a_value);
         return sizeof(a_value);
     }
 
     size_t print(int a_value, int = DEC){
-        printf ("%id", a_value);
+        printf ("%i", a_value);
         return sizeof(a_value);
     }
 
     size_t print(unsigned int a_value, int a_dec = DEC){
-        printf ("%sd", a_value);
+        printf ("%i", a_value);
         return sizeof(a_value);
     }
 
     size_t print(long a_value, int a_dec = DEC){
-        printf ("%sd", a_value);
+        printf ("%ld", a_value);
         return sizeof(a_value);
     }
 
@@ -75,7 +74,7 @@ class ConsolePrint : public Print{
     }
 
     size_t print(double a_value, int a_dec = 2){
-        printf ("%sd", a_value);
+        printf ("%f", a_value);
         return sizeof(a_value);
     }
 
@@ -86,37 +85,37 @@ class ConsolePrint : public Print{
 
 
     size_t println(const bool& a_value){
-        printf ("%bd \n", a_value);
+        printf ("%s \n", a_value ? "true" : "false");
         return sizeof(a_value);
     }
 
     size_t println(const ame_String& a_value){
-        printf ("%sd \n", a_value);
+        printf ("%s \n", a_value.c_str());
         return sizeof(a_value);
     }
-/*
-    size_t println(const char[] a_value){
+
+    size_t println(const char* a_value){
         printf ("%s \n", a_value);
         return sizeof(a_value);
     }
-*/
+
     size_t println(char a_value){
-        printf ("%s \n", a_value);
+        printf ("%c \n", a_value);
         return sizeof(a_value);
     }
 
     size_t println(unsigned char a_value, int a_dec = DEC){
-        printf ("%sd", a_value);
+        printf ("%c\n", a_value);
         return sizeof(a_value);
     }
 
     size_t println(int a_value, int a_dec = DEC){
-        printf ("%id \n", a_value);
+        printf ("%i \n", a_value);
         return sizeof(a_value);
     }
 
     size_t println(unsigned int a_value, int a_dec = DEC){
-        printf ("%sd", a_value);
+        printf ("%i", a_value);
         return sizeof(a_value);
     }
 
@@ -131,13 +130,14 @@ class ConsolePrint : public Print{
     }
 
     size_t println(double a_value, int a_dec = 2){
-        printf ("%ld \n", a_value);
+        printf ("%f \n", a_value);
         return sizeof(a_value);
     }
 
     size_t println(const Printable& a_value){
-        a_value.printTo(*this);
-        return sizeof(a_value);
+        size_t i_size = a_value.printTo(*this);
+        printf ("%s \n", "");
+        return i_size + sizeof('\n');
     }
 
     size_t println(void){

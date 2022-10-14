@@ -1,30 +1,10 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_cppObjectClass)
-	#define cppObjectClass_hpp
-#endif
-
 #ifndef cppObjectClass_hpp
 #define cppObjectClass_hpp
 #define cppObjectClass_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
 #include "Annotation.hpp"
 #include "Method.hpp"
-#include "RawList.hpp"
-#include "Note.hpp"
 
 namespace ame{
 
@@ -33,44 +13,60 @@ class cppObjectClass{
 		cppObjectClass(){}
 		virtual ~cppObjectClass(){}
 		
-		virtual void setName(Note a_name){
+		virtual cppObjectClass* getClass(){return nullptr;}
+		virtual bool instanceof(cppObjectClass* cls){return false;}
+		
+		virtual void setName(char* a_name){
+			m_name = a_name;
+		}
+		
+		virtual char* getName(){
+			return m_name;
 		}
 		
 		virtual long getType(){
 			return -1;
 		}
 		
-		virtual Note getName(){
-			return "cppObjectClass";
+		virtual cppObject* newInstance(){
+			return nullptr;
 		}
 		
 		virtual void* newPointer(){
 			return nullptr;
 		}
-		
-		#ifdef Annotation_AVAILABLE
-		virtual RawList<Annotation>* getAnnotations(){
+
+		virtual Annotation* addAnnotation(Annotation* a_annotation){
+			RawPointerList<Annotation>* i_annotations = this->getAnnotations();
+			if(i_annotations == nullptr || a_annotation == nullptr){
+				return nullptr;
+			}
+			return i_annotations->addPointer(a_annotation);
+		}
+
+		virtual RawPointerList<Annotation>* getAnnotations(){
 			return nullptr;
 		}
 		
 		virtual Annotation* getAnnotation(cppObjectClass* cls){
 			return nullptr;
 		}
-		#endif
-		
-		#ifdef Method_AVAILABLE
-		virtual RawList<Method>* getMethods(){
-			return nullptr;
+
+		virtual Method* addMethod(Method* a_method){
+			RawPointerList<Method>* i_methods = this->getMethods();
+			if(i_methods == nullptr || a_method == nullptr){
+				return nullptr;
+			}
+			return i_methods->addPointer(a_method);
 		}
-		
-		virtual Method* getMethod(Note namae){
+
+		virtual RawPointerList<Method>* getMethods(){
 			return nullptr;
 		}
 		
 		virtual Method* getMethod(cppObjectClass* cls){
 			return nullptr;
 		}
-		#endif 
 		
 		virtual void operator=(cppObjectClass b){
 			
@@ -81,6 +77,8 @@ class cppObjectClass{
 		virtual bool operator!=(cppObjectClass b){
 			return false;
 		}
+	protected:
+		char* m_name = nullptr;
 };
 
 }

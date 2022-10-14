@@ -50,7 +50,7 @@ class DefaultSettings : public AppSettings{
 			this->intMap->setLValues(s,i);
 		}
 		virtual int getInt(Note s){
-			int* i = this->intMap->getByLValue(s);
+			int* i = this->intMap->getValueByLValue(s);
 			if(i == nullptr){
 				return -1;
 			}
@@ -67,7 +67,7 @@ class DefaultSettings : public AppSettings{
 			this->floatMap->setLValues(s,i);
 		}
 		virtual float getFloat(Note s){
-			float* f = this->floatMap->getByLValue(s);
+			float* f = this->floatMap->getValueByLValue(s);
 			if(f == nullptr){
 				return -1.0f;
 			}
@@ -84,7 +84,7 @@ class DefaultSettings : public AppSettings{
 			this->NoteMap->setLValues(s,i);
 		}
 		virtual Note getNote(Note s){
-			Note* st = this->NoteMap->getByLValue(s);
+			Note* st = this->NoteMap->getValueByLValue(s);
 			if(st == nullptr){
 				return "";
 			}
@@ -101,7 +101,7 @@ class DefaultSettings : public AppSettings{
 			this->boolMap->setLValues(s,i);
 		}
 		virtual bool getBoolean(Note s){
-			bool* b = this->boolMap->getByLValue(s);
+			bool* b = this->boolMap->getValueByLValue(s);
 			if(b == nullptr){
 				return false;
 			}
@@ -118,7 +118,7 @@ class DefaultSettings : public AppSettings{
 			this->cppObjectMap->setPointer(s,i);
 		}
 		virtual cppObject *getCppObject(Note s){
-			return this->cppObjectMap->getByLValue(s);
+			return this->cppObjectMap->getValueByLValue(s);
 		}
 		virtual bool containCppObject(Note s){
 			return this->cppObjectMap->containKeyByLValue(s);

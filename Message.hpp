@@ -1,25 +1,7 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Message)
-	#define Message_hpp
-#endif
-
 #ifndef Message_hpp
 #define Message_hpp
 #define Message_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Note.hpp"
 #include "ByteArray.hpp"

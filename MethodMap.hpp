@@ -1,72 +1,64 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_MethodMap)
-	#define MethodMap_hpp
-#endif
-
 #ifndef MethodMap_hpp
 #define MethodMap_hpp
 #define MethodMap_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "PrimitiveRawMap.hpp"
+#include "PrimitiveMethodMap.hpp"
 
 namespace ame{
 
-template<class T,class... P>
-class MethodMap : public PrimitiveRawMap<Note,void (T::*)(P...)>{
-public:
-using EventMethod = void (T::*)(P...);
-MethodMap(){}
-virtual ~MethodMap(){}
-
-void add(Note n, EventMethod m){
-	this->addLValues(n,m);
-}
-
-void invoke(Note a, T* intance, P... p){
-	if(this->getByLValue(a) == nullptr){
-		return;
-	}
-	( intance->**this->getByLValue(a))(p...);
-}
-
-void invoke(T* intance, EventMethod* a, P... p){
-	( intance->**a)(p...);
-}
-
-void invoke(T* intance, EventMethod a, P... p){
-	( intance->*a)(p...);
-}
-virtual bool operator==(MethodMap<T,P...> a){
+template<class... Args>
+struct MethodMap {
 	
-	return false;
-}
-virtual bool operator!=(MethodMap<T,P...> a){
+	using Raw_NTMethod = void(*)(Args...);
 	
-	return false;
-}
-virtual void operator=(MethodMap<T,P...> a){
-	this->resetDelete();
-	for(int x=0; x < a.getPosition(); x++){
-		this->addPointers(a.getKeyByPosition(x),a.getByPosition(x));
+	static PrimitiveMethodMap<cppObjectClass,Args...>* m_method_map;
+	
+	static void add(cppObjectClass* a_cls, Raw_NTMethod* a_method){
+		if(m_method_map == nullptr){
+			return;
+		}
+		m_method_map->addPointers(a_cls, a_method);
 	}
-}
-
-protected:
+	
+	static void add(cppObjectClass* a_cls, Raw_NTMethod a_method){
+		if(m_method_map == nullptr){
+			return;
+		}
+		m_method_map->addLValue(a_cls, a_method);
+	}
+	
+	static void remove(cppObjectClass* a_cls){
+		if(m_method_map == nullptr){
+			return;
+		}
+		m_method_map->removeDeleteByPointer(a_cls);
+	}
+	
+	static Raw_NTMethod* getPointer(cppObjectClass* a_cls){
+		if(m_method_map == nullptr){
+			return nullptr;
+		}
+		return m_method_map->getByLValue(a_cls);
+	}
+	
+	static bool invoke(cppObjectClass* a_cls, Args... a_invoke){
+		if(m_method_map == nullptr){
+			return false;
+		}
+		return m_method_map->invoke(a_cls, a_invoke...);
+	}
+	
+	static bool invokeAll(Args... a_invoke){
+		if(m_method_map == nullptr){
+			return false;
+		}
+		return m_method_map->invokeAll(a_invoke...);
+	}
 };
+
+template<class... Args>
+PrimitiveMethodMap<cppObjectClass,Args...>* MethodMap<Args...>::m_method_map = new PrimitiveMethodMap<cppObjectClass,Args...>();
 
 }
 

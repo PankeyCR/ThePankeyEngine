@@ -42,9 +42,19 @@ class System{
 		#ifdef ame_Windows
 			return 0;
 		#elif defined(ame_ArduinoIDE)
-			return millis();
+			return micros();
 		#else
 			return 0;
+		#endif
+		}
+
+		static void sleep(long a_time){
+		#ifdef ame_Windows
+			
+		#elif defined(ame_ArduinoIDE)
+			delay(a_time);
+		#else
+			
 		#endif
 		}
 

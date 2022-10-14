@@ -1,46 +1,35 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Command)
-	#define Command_hpp
-#endif
-
 #ifndef Command_hpp
 #define Command_hpp
-#define Command_AVAILABLE
+#define Command_AVAILABLE 
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
+#include "cppObject.hpp"
+#include "AbstractClass.hpp"
 
 namespace ame{
 
 template<class C>
-class Command {
-    private:
-	
+class Command : public cppObject{
     public:
 		Command(){}
 		virtual ~Command(){}
-		virtual void execute(C* c){
-			
+		virtual void execute(C* c){}
+		
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == AbstractClass<Command<C>>::getClass();
 		}
+		
+		virtual cppObjectClass* getClass(){return AbstractClass<Command<C>>::getClass();}
+		
+		
 		virtual void operator=(Command<C> b){
 			
 		}
 		virtual bool operator==(Command<C> b){
-			return true;
+			return false;
 		}
 		virtual bool operator!=(Command<C> b){
-			return false;
+			return true;
 		}
 };
 

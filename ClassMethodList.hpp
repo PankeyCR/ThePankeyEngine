@@ -38,11 +38,11 @@ struct ClassMethodList{
 		methods->addPointer(a_method);
 	}
 	
-	static void add(cppObjectClass* cls, Note n, MethodType i_type){
+	static void add(cppObjectClass* cls, MethodType i_type){
 		if(methods == nullptr){
 			return;
 		}
-		methods->addPointer(new Method(cls, n, i_type));
+		methods->addPointer(new Method(cls, i_type));
 	}
 	
 	// static void addOnce(Note n){
@@ -55,18 +55,18 @@ struct ClassMethodList{
 		// methods->addPointer(new Method(n));
 	// }
 	
-	static Method* getMethod(Note n){
-		if(methods == nullptr){
-			return nullptr;
-		}
-		for(int x = 0; x < methods->getPosition(); x++){
-			Method* mm = methods->getByPosition(x);
-			if(mm->getName() == n){
-				return mm;
-			}
-		}
-		return nullptr;
-	}
+	// static Method* getMethod(Note n){
+		// if(methods == nullptr){
+			// return nullptr;
+		// }
+		// for(int x = 0; x < methods->getPosition(); x++){
+			// Method* mm = methods->getByPosition(x);
+			// if(mm->getName() == n){
+				// return mm;
+			// }
+		// }
+		// return nullptr;
+	// }
 };
 
 template<class cls> RawList<Method>* ClassMethodList<cls>::methods = new PrimitiveRawList<Method>();

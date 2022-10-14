@@ -1,79 +1,131 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Application)
-	#define Application_hpp
-#endif
-
 #ifndef Application_hpp
 #define Application_hpp
 #define Application_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#include "cppObject.hpp"
 
-#endif
+namespace ame{
+	class Application;
+}
 
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
+#include "RenderManager.hpp"
 #include "AppStateManager.hpp"
 #include "AppSettings.hpp"
 #include "TimeControl.hpp"
-#include "MemoryPool.hpp"
-#include "Listener.hpp"
-
-#include "cppObject.hpp"
+#include "AbstractClass.hpp"
 
 namespace ame{
 
 class Application : public cppObject{
     public:
 		virtual ~Application(){}
-		
-		virtual void setStateManager(AppStateManager *appstate)=0;
-		
-		virtual AppStateManager *getStateManager()=0;
-		
-		#if defined(AppSettings_AVAILABLE)
-		virtual void setSettings(AppSettings *setting)=0;
-		
-		virtual AppSettings *getSettings()=0;
-		#endif 
-		
-		#if defined(TimeControl_AVAILABLE)
-		virtual void setTimeControl(TimeControl *timecontrol)=0;
-		
-		virtual TimeControl *getTimeControl()=0;
-		#endif 
-		
-	/*	virtual void setAssetManager(AssetManager *assets){
-			
+
+		virtual RenderManager* setRenderManager(RenderManager* r_manager){
+			if(r_manager == nullptr){
+				return this->m_render;
+			}
+			if(this->m_render != r_manager){
+				if(this->m_render != nullptr){
+					delete this->m_render;
+				}
+			}
+			this->m_render = r_manager;
+			return this->m_render;
 		}
-		virtual AssetManager *getAssetManager(){
-			
-		}*/
-		
-		#if defined(Listener_AVAILABLE)
-		virtual Listener* setListener(Listener* listener)=0;
-		
-		virtual Listener* getListener()=0;
-		#endif 
-		#if defined(MemoryPool_AVAILABLE)
-		virtual MemoryPool* setMemoryPool(MemoryPool* memory)=0;
-		
-		virtual MemoryPool* getMemoryPool()=0;
-		#endif 
-		
+
+		virtual RenderManager* getRenderManager(){
+			return this->m_render;
+		}
+
+		virtual AppStateManager* setStateManager(AppStateManager* a_appstate){
+			if(a_appstate == nullptr){
+				return this->m_states;
+			}
+			if(this->m_states != a_appstate){
+				if(this->m_states != nullptr){
+					delete this->m_states;
+				}
+			}
+			this->m_states = a_appstate;
+			return this->m_states;
+		}
+
+		virtual AppStateManager* getStateManager(){
+			return this->m_states;
+		}
+
+		virtual AppSettings* setSettings(AppSettings* a_setting){
+			if(a_setting == nullptr){
+				return this->m_settings;
+			}
+			if(this->m_settings != a_setting){
+				if(this->m_settings != nullptr){
+					delete this->m_settings;
+				}
+			}
+			this->m_settings = a_setting;
+			return this->m_settings;
+		}
+
+		virtual AppSettings* getSettings(){
+			return this->m_settings;
+		}
+
+		virtual TimeControl* setTimeControl(TimeControl* a_timecontrol){
+			if(a_timecontrol == nullptr){
+				return this->m_timer;
+			}
+			if(this->m_timer != a_timecontrol){
+				if(this->m_timer != nullptr){
+					delete this->m_timer;
+				}
+			}
+			this->m_timer = a_timecontrol;
+			return this->m_timer;
+		}
+
+		virtual TimeControl *getTimeControl(){
+			return this->m_timer;
+		}
+
+		virtual MemoryPool* setMemoryPool(MemoryPool* a_memory){
+			if(a_memory == nullptr){
+				return this->m_memory;
+			}
+			if(this->m_memory != a_memory){
+				if(this->m_memory != nullptr){
+					delete this->m_memory;
+				}
+			}
+			this->m_memory = a_memory;
+			return this->m_memory;
+		}
+
+		virtual MemoryPool* getMemoryPool(){
+			return this->m_memory;
+		}
+
+
 		virtual void initialize(){}
-		
+
 		virtual void update()=0;
-    
-	private:
+
+		//cppObject part
+		virtual cppObjectClass* getClass(){
+			return AbstractClass<Application>::classType;
+		}
+
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == AbstractClass<Application>::classType;
+		}
+
+	protected:
+		RenderManager* m_render = nullptr;
+		AppStateManager* m_states = nullptr;
+		AppSettings* m_settings = nullptr;
+		TimeControl* m_timer = nullptr;
+		MemoryPool* m_memory = nullptr;
 };
 
 }

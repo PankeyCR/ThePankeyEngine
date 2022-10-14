@@ -13,53 +13,43 @@
 	#endif
 #endif
 
+
 #ifndef ByteArray_hpp
 #define ByteArray_hpp
 #define ByteArray_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
 #ifdef ame_Windows
-    #include <bitset>
 	#include "ame_Printable.hpp"
+	#include "ame_Print.hpp"
 #endif
 
 #ifdef ame_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
+	#include "IPAddress.h"
 #endif
 
-#include "Memory.hpp"
-
-#include "cppObjectClass.hpp"
+#include "Array.hpp"
 #include "Class.hpp"
 
-#include "PrimitiveList.hpp"
-
 #include "ame_Byte.hpp"
-#include "ByteArrayIterator.hpp"
 
 #ifdef ByteArray_LogApp
 	#include "ame_Logger_config.hpp"
 	#include "ame_Logger.hpp"
-	
+
 	#define ByteArrayLog(location,method,type,mns) ame_Log(this,location,"ByteArray",method,type,mns)
-	#define const_ByteArrayLog(location,method,type,mns) 
-	#define StaticByteArrayLog(pointer,location,method,type,mns) ame_Log(pointer,location,"ByteArray",method,type,mns)
+	#define const_ByteArrayLog(location,method,type,mns)
 #else
 	#ifdef ByteArray_LogDebugApp
 		#include "ame_Logger_config.hpp"
 		#include "ame_Logger.hpp"
-		
+
 		#define ByteArrayLog(location,method,type,mns) ame_LogDebug(this,location,"ByteArray",method,type)
-		#define const_ByteArrayLog(location,method,type,mns) 
-		#define StaticByteArrayLog(pointer,location,method,type,mns) ame_LogDebug(pointer,location,"ByteArray",method,type)
+		#define const_ByteArrayLog(location,method,type,mns)
 	#else
-		#define ByteArrayLog(location,method,type,mns) 
-		#define const_ByteArrayLog(location,method,type,mns) 
-		#define StaticByteArrayLog(pointer,location,method,type,mns) 
+		#define ByteArrayLog(location,method,type,mns)
+		#define const_ByteArrayLog(location,method,type,mns)
 	#endif
 #endif
 
@@ -88,7 +78,7 @@ class ByteArray : public Printable{
 			}
 			ByteArrayLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
-		
+
 		ByteArray(ame_Byte* a_value, int a_size){
 			ByteArrayLog(ame_Log_StartMethod, "Constructor", "println", "");
 			if(a_value != nullptr){
@@ -225,7 +215,7 @@ class ByteArray : public Printable{
 		virtual cppObjectClass* getClass(){
 			return Class<ByteArray>::classType;
 		}
-		
+
 		virtual ame_Byte* pointer() const{
 			return m_byte_array;
 		}
@@ -276,12 +266,12 @@ class ByteArray : public Printable{
 				ByteArrayLog(ame_Log_Statement, "add", "println", "v_size <= 0");
 				return ByteArray(m_byte_array);
 			}
-			
+
 			if(m_byte_array == nullptr){
 				ByteArrayLog(ame_Log_Statement, "add", "println", "m_string == nullptr");
 				return ByteArray(a_value);
 			}
-			
+
 			ByteArray temp;
 			temp.m_pos = m_pos + v_size;
 			temp.m_size = getAvailableSize(temp.m_pos);
@@ -289,16 +279,16 @@ class ByteArray : public Printable{
 
 			copy(temp.m_byte_array, m_byte_array);
 			concat(temp.m_byte_array, a_value);
-			
+
 			NoteLog(ame_Log_Statement, "add", "println", m_pos);
 			NoteLog(ame_Log_Statement, "add", "println", m_size);
 			NoteLog(ame_Log_Statement, "add", "println", m_string);
-			
+
 			NoteLog(ame_Log_EndMethod, "add", "println", "");
 
 			return temp;
 		}
-		
+
 		virtual ByteArray& operator=(const ByteArray& source){
 			ByteArrayLog(ame_Log_StartMethod, "operator=", "println", "");
 			int n_size = source.getPosition();
@@ -605,7 +595,7 @@ class ByteArray : public Printable{
 			ByteArrayLog(ame_Log_EndMethod, "getByteArray", "println", "");
 			return array;
 		}
-		
+
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 

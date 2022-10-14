@@ -1,131 +1,176 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_RawMap)
-	#define RawMap_hpp
-#endif
-
 #ifndef RawMap_hpp
 #define RawMap_hpp
 #define RawMap_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#include "RawPointerMap.hpp"
 
-#endif
+#ifdef RawMap_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
 
-#ifdef ame_Windows
+	#define RawMapLog(location,method,type,mns) ame_Log((void*)this,location,"RawMap",method,type,mns)
+	#define const_RawMapLog(location,method,type,mns)
+#else
+	#ifdef RawMap_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
 
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
+		#define RawMapLog(location,method,type,mns) ame_LogDebug((void*)this,location,"RawMap",method,type)
+		#define const_RawMapLog(location,method,type,mns)
+	#else
+		#define RawMapLog(location,method,type,mns)
+		#define const_RawMapLog(location,method,type,mns)
+	#endif
 #endif
 
 namespace ame{
 
 template <class K,class V>
-class RawMap{
+class RawMap : virtual public RawPointerMap<K,V>{
     public:
-		virtual ~RawMap(){}
+		virtual ~RawMap(){
+			RawMapLog(ame_Log_StartMethod, "Destructor", "println", "");
+			RawMapLog(ame_Log_EndMethod, "Destructor", "println", "");
+		}
+
+		virtual void addCopy(RawPointerMap<K,V>* a_map){
+			RawMapLog(ame_Log_StartMethod, "addCopy", "println", "");
+			for(int x = 0; x < a_map->getPosition(); x++){
+				K* k = a_map->getKeyByPosition(x);
+				V* v = a_map->getValueByPosition(x);
+				if(k == nullptr || v == nullptr){
+					continue;
+				}
+				this->addLValues(*k,*v);
+			}
+			RawMapLog(ame_Log_EndMethod, "addCopy", "println", "");
+		}
 		
-		virtual void setOwner(bool b)=0;
-		virtual bool isOwner()const=0;
-		virtual bool isEmpty()const=0;
-		virtual void setPosition(int p)=0;
-		virtual int getPosition()const=0;
-		virtual int getSize()const=0;
+		virtual MapEntry<K,V> addLValues(K a_key, V a_value)=0;
+		virtual MapEntry<K,V> addPointer(K a_key, V* a_value)=0;
 		
-		virtual void addPointers(K* key, V* value)=0;
-		virtual void addLValues(K key, V value)=0;
-		virtual void addPointer(K key, V* value)=0;
-		virtual void add(K key, V value)=0;
+		virtual MapEntry<K,V> add(K a_key, V a_value){
+			RawMapLog(ame_Log_StartMethod, "add", "println", "");
+			RawMapLog(ame_Log_EndMethod, "add", "println", "");
+			return this->addLValues(a_key, a_value);
+		}
+
+		virtual MapEntry<K,V> setLValues(K a_key, V a_value)=0;
+		virtual MapEntry<K,V> setPointer(K a_key, V* a_value)=0;
 		
-		virtual void addCopy(RawMap<K,V>* r_map)=0;
-		virtual void addMove(RawMap<K,V>* r_map)=0;
+		virtual MapEntry<K,V> setKeyLValueByPosition(int a_position, K a_key)=0;
+		virtual MapEntry<K,V> setValueLValueByPosition(int a_position, V a_value)=0;
 		
-		virtual void setPointers(K* key, V* value)=0;
-		virtual void setLValues(K key, V value)=0;
-		virtual void setPointer(K key, V* value)=0;
-		virtual void setKeyLValueByPosition(int p, K key)=0;
-		virtual void setKeyPointerByPosition(int p, K* key)=0;
-		virtual void setValueByPosition(int p, V value)=0;
-		virtual void setValuePointerByPosition(int p, V *value)=0;
-		virtual void set(K key, V value)=0;
+		virtual MapEntry<K,V> set(K a_key, V a_value){
+			RawMapLog(ame_Log_StartMethod, "set", "println", "");
+			RawMapLog(ame_Log_EndMethod, "set", "println", "");
+			return this->setLValues(a_key,a_value);
+		}
 		
-		virtual bool containKeyByPointer(K* key)=0;
-		virtual bool containKeyByLValue(K key)=0;
-		virtual bool containValueByPointer(V* value)=0;
-		virtual bool containValueByLValue(V value)=0;
+		virtual bool containKeyByLValue(K a_key)=0;
+		virtual bool containValueByLValue(V a_value)=0;
 		
-		virtual bool contain(K key){return this->containKeyByLValue(key);}
+		virtual bool contain(K a_key){
+			RawMapLog(ame_Log_StartMethod, "contain", "println", "");
+			RawMapLog(ame_Log_EndMethod, "contain", "println", "");
+			return this->containKeyByLValue(a_key);
+		}
 		
-		virtual V* getByPointer(K* key)=0;
-		virtual V* getByLValue(K key)=0;
-		virtual V* getByPosition(int p)const=0;
-		virtual K* getKeyByPosition(int p)const=0;
-		virtual K* getKeyByPointer(V* value)=0;
-		virtual K* getKeyByLValue(V value)=0;
-		virtual V get(K key)=0;
-		virtual K getKey(int p)=0;
-		virtual V getValue(int p)=0;
+		virtual K* getKeyByLValue(V a_value)=0;
 		
-		virtual void reset()=0;
-		virtual void resetDelete()=0;
-		virtual void resetDeleteKey()=0;
-		virtual void resetDeleteValue()=0;
+		virtual V* getValueByLValue(K a_key)=0;
 		
-		virtual V* removeByPointer(K* key)=0;
-		virtual V* removeByLValue(K key)=0;
-		virtual V* removeByPosition(int p)=0;
+		virtual V get(K a_key){
+			RawMapLog(ame_Log_StartMethod, "get", "println", "");
+			V* i_value = this->getValueByLValue(a_key);
+			if(i_value == nullptr){
+				RawMapLog(ame_Log_EndMethod, "get", "println", "");
+				return V();
+			}
+			RawMapLog(ame_Log_EndMethod, "get", "println", "");
+			return *i_value;
+		}
+		virtual K getKey(int a_position){
+			RawMapLog(ame_Log_StartMethod, "getKey", "println", "");
+			K* i_key = this->getKeyByPosition(a_position);
+			if(i_key == nullptr){
+				RawMapLog(ame_Log_EndMethod, "getKey", "println", "");
+				return K();
+			}
+			RawMapLog(ame_Log_EndMethod, "getKey", "println", "");
+			return *i_key;
+		}
+		virtual V getValue(int a_position){
+			RawMapLog(ame_Log_StartMethod, "getValue", "println", "");
+			V* i_value = this->getValueByPosition(a_position);
+			if(i_value == nullptr){
+				RawMapLog(ame_Log_EndMethod, "getValue", "println", "");
+				return V();
+			}
+			RawMapLog(ame_Log_EndMethod, "getValue", "println", "");
+			return *i_value;
+		}
 		
-		virtual void removeDeleteByPointer(K* key)=0;
-		virtual void removeDeleteByLValue(K key)=0;
-		virtual void removeDeleteByPosition(int p)=0;
+		virtual MapEntry<K,V> removeByKeyLValue(K a_key)=0;
+		virtual MapEntry<K,V> removeByValueLValue(V a_value)=0;
 		
-		virtual V remove(K key)=0;
-		virtual V removeIndex(int p)=0;
+		virtual bool removeDeleteByKeyLValue(K a_key)=0;
+		virtual bool removeDeleteByValueLValue(V a_value)=0;
 		
-		virtual void putPointers(K* key, V* value)=0;
-		virtual void putLValues(K key, V value)=0;
-		virtual void putPointer(K key, V* value)=0;
-		virtual void put(K key, V value)=0;
+		virtual bool remove(K a_key)=0;
 		
-		virtual int getKeyIndexByPointer(K* key)=0;
-		virtual int getKeyIndexByLValue(K key)=0;
+		virtual MapEntry<K,V> putLValues(K a_key, V a_value)=0;
+		virtual MapEntry<K,V> putPointer(K a_key, V* a_value)=0;
 		
-		virtual int getIndexByPointer(V* key)=0;
-		virtual int getIndexByLValue(V key)=0;
+		virtual MapEntry<K,V> put(K a_key, V a_value){
+			RawMapLog(ame_Log_StartMethod, "put", "println", "");
+			RawMapLog(ame_Log_EndMethod, "put", "println", "");
+			return this->putLValues(a_key, a_value);
+		}
+		
+		virtual int getKeyIndexByLValue(K a_key)=0;
+		
+		virtual int getValueIndexByLValue(V a_key)=0;
 		
 		template<class... Args>
-		void addKeyPack(Args... values){
-			K array[] = {values...};
-			for(const K& k : array){
+		void addKeyPack(Args... a_values){
+			RawMapLog(ame_Log_StartMethod, "addKeyPack", "println", "");
+			K i_array[] = {a_values...};
+			for(const K& k : i_array){
 				this->addPointers(new K(k), new V());
 			}
+			RawMapLog(ame_Log_EndMethod, "addKeyPack", "println", "");
 		}
 		
 		template<class... Args>
-		void addValuePack(Args... values){
-			V array[] = {values...};
-			for(const V& v : array){
+		void addValuePack(Args... a_values){
+			RawMapLog(ame_Log_StartMethod, "addValuePack", "println", "");
+			V i_array[] = {a_values...};
+			for(const V& v : i_array){
 				this->addPointers(new K(), new V(v));
 			}
+			RawMapLog(ame_Log_EndMethod, "addValuePack", "println", "");
 		}
 		
 		template<class... Args>
-		void addKeyPack(V v, Args... values){
-			K array[] = {values...};
-			for(const K& k : array){
+		void addKeyPack(V v, Args... a_values){
+			RawMapLog(ame_Log_StartMethod, "addKeyPack", "println", "");
+			K i_array[] = {a_values...};
+			for(const K& k : i_array){
 				this->addPointers(new K(k), new V(v));
 			}
+			RawMapLog(ame_Log_EndMethod, "addKeyPack", "println", "");
 		}
 		
 		template<class... Args>
-		void addValuePack(K k, Args... values){
-			V array[] = {values...};
-			for(const V& v : array){
+		void addValuePack(K k, Args... a_values){
+			RawMapLog(ame_Log_StartMethod, "addValuePack", "println", "");
+			V i_array[] = {a_values...};
+			for(const V& v : i_array){
 				this->addPointers(new K(k), new V(v));
 			}
+			RawMapLog(ame_Log_EndMethod, "addValuePack", "println", "");
 		}
 };
 

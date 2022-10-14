@@ -1,25 +1,13 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Memory) || defined(DISABLE_MemoryManagerState) || defined(DISABLE_MemoryManager) || defined(DISABLE_MemoryPool) || defined(DISABLE_MemoryChunk)
-	#define MemoryChunk_hpp
-#endif
-
 #ifndef MemoryChunk_hpp
 #define MemoryChunk_hpp
 #define MemoryChunk_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#include "ame_Enviroment.hpp"
 
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
+namespace ame{
+	class MemoryChunk;
+}
 
 #include "Chunk.hpp"
 
@@ -47,7 +35,7 @@ virtual ~MemoryChunk(){
 		free(m_chunkMem);
 	}
 }
-
+/*
 #if defined(ame_GENERIC_ARDUINO)
 template<class T, size_t A , size_t S>
 T* newInstance(int size_m){
@@ -187,7 +175,7 @@ virtual void* getPointer(size_t m_cM){
 	void* m = ((m_chunkMem) + (m_cM));
 	return m;
 }
-
+*/
 virtual int getPosition(){
 	return m_position;
 }

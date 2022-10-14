@@ -1,35 +1,18 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_TimeControl)
-	#define TimeControl_hpp
-#endif
-
 #ifndef TimeControl_hpp
 #define TimeControl_hpp
 #define TimeControl_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
+namespace ame{
+	class TimeControl;
+}
 
 #include "cppObject.hpp"
 #include "PrimitiveList.hpp"
 #include "Note.hpp"
-#include "List.hpp"
 #include "TimeElapsed.hpp"
 
 namespace ame{
-
-class Application;
 
 class TimeControl : public cppObject{
     public:
@@ -111,12 +94,13 @@ class TimeControl : public cppObject{
 			}
 			return this->timeList->getByPointer(t);
 		}
-				
-		virtual Note toNote(){
-			return "TimeControl";
-		}
+		
 		virtual cppObjectClass* getClass(){
 			return Class<TimeControl>::classType;
+		}
+		
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<TimeControl>::classType;
 		}
 		
 	protected:

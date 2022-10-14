@@ -1,54 +1,76 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_cppObject)
-	#define cppObject_hpp
-#endif
-
 #ifndef cppObject_hpp
 #define cppObject_hpp
 #define cppObject_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "Note.hpp"
+#include "ame_Enviroment.hpp"
 
 namespace ame{
+	class cppObject;
+}
 
-class cppObjectClass;
+#include "Memory.hpp"
+#include "cppObjectClass.hpp"
+
+namespace ame{
 
 class cppObject{
     public:
 		cppObject(){}
 		virtual ~cppObject(){}
 		
-		virtual void onDelete(){}
-		virtual bool copy(cppObject* obj){return false;}
-		virtual bool move(cppObject* obj){return false;}
-		virtual bool equal(cppObject* obj){return this == obj;}
+		// void* operator new(size_t a_size){
+			// return Memory::newObject(a_size);
+		// }
+		// void operator delete(void* a_obj){
+			// Memory::deleteObject((cppObject*)a_obj);
+		// }
 		
-		virtual bool instanceof(cppObjectClass* cls){return false;}
+		virtual void onDelete(){}
+		
 		virtual cppObjectClass* getClass(){return nullptr;}
+		virtual bool instanceof(cppObjectClass* cls){return false;}
 
 		virtual cppObject* clone(void){return nullptr;}
 		virtual cppObject* clone(bool owningMemory){return nullptr;}
-
-		virtual Note toNote(){return Note("cppObject");}
-		virtual void invoke(Note methodName){}
+		
+		virtual bool equal(cppObject* obj){return this == obj;}
+		
+		virtual bool copy(cppObject* obj){return false;}
+		virtual bool move(cppObject* obj){return false;}
+		virtual bool duplicate(cppObject* obj){return false;}
+		
+		virtual cppObject* move(){return nullptr;}
+		virtual cppObject* duplicate(){return nullptr;}
 
 		virtual void operator=(cppObject obj){}
 		virtual bool operator==(cppObject obj){return false;}
 		virtual bool operator!=(cppObject obj){return false;}
+		
+		virtual void MemoryManagerOn(){memory_managed = true;}
+		virtual void MemoryManagerOff(){memory_managed = false;}
+		
+		virtual void addObject(){contained_on_list++;}
+		virtual void removeObject(){
+			contained_on_list--;
+			if(contained_on_list < 0){
+				contained_on_list = 0;
+			}
+		}
+		
+		virtual bool isManaged(){
+			return memory_managed;
+		}
+		
+		virtual bool readyToDelete(){
+			return contained_on_list == 0;
+		}
+		
+	protected:
+		int contained_on_list = 0;
+		bool memory_managed = false;
+		
+		
 	private:
 };
 

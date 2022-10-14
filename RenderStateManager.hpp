@@ -1,32 +1,13 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_RenderStateManager)
-	#define RenderStateManager_hpp
-#endif
-
 #ifndef RenderStateManager_hpp
 #define RenderStateManager_hpp
 #define RenderStateManager_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "PrimitiveList.hpp"
 #include "DefaultStateManager.hpp"
 #include "List.hpp"
 #include "RenderState.hpp"
 #include "RenderManager.hpp"
-//#include "DefaultRenderManager.hpp"
 
 namespace ame{
 
@@ -123,13 +104,8 @@ class RenderStateManager : public DefaultStateManager{
 	
 		
 		///////// cppObject part
-		// virtual cppObjectClass* getClass(){
-			// return Class<RenderStateManager>::classType;
-		// }
+		// virtual cppObjectClass* getClass(){return Class<RenderStateManager>::classType;}
 	
-		// virtual Note toNote(){
-			// return "RenderStateManager";
-		// }
 		// virtual bool instanceof(cppObjectClass* cls){
 			// return cls == Class<RenderStateManager>::classType || DefaultStateManager::instanceof(cls);
 		// }

@@ -25,24 +25,31 @@
 			template<class T>
 			void LogPrint_(void* a_log_pointer, int location, const ame_String& name, const ame_String& method, const ame_String& type, T mns){
 			
+				// if(	method != "add" && 
+					// method != "addLocal" && 
+					// method != "insertLocal" && 
+					// method != "Constructor"/* && 
+					// method != "getKeyIndexByLValue" /*&& method != "setMapEntry"*/){
+					// return;
+				// }
 				#ifdef ame_SystemFullLog
-				   System::print("Loggin class: ");
-				   System::print(name);
-				   System::print(" - Method: ");
-				   System::print(method);
-				   System::print(" - Location: ");
-				   System::print(location);
-				   System::print(" - Log: ");
-				   System::println(mns);
+				   System::console.print("Loggin class: ");
+				   System::console.print(name);
+				   System::console.print(" - Method: ");
+				   System::console.print(method);
+				   System::console.print(" - Location: ");
+				   System::console.print(location);
+				   System::console.print(" - Log: ");
+				   System::console.println(mns);
 				#elif defined(ame_Arduino_Log)
-				   Serial.print("Loggin class: ");
-				   Serial.print(name);
-				   Serial.print(" - Method: ");
-				   Serial.print(method);
-				   Serial.print(" - Location: ");
-				   Serial.print(location);
-				   Serial.print(" - Log: ");
-				   Serial.println(mns);
+				   Serial.console.print("Loggin class: ");
+				   Serial.console.print(name);
+				   Serial.console.print(" - Method: ");
+				   Serial.console.print(method);
+				   Serial.console.print(" - Location: ");
+				   Serial.console.print(location);
+				   Serial.console.print(" - Log: ");
+				   Serial.console.println(mns);
 				#endif
 
 				ame_LogDebug(a_log_pointer, location, name, method, type);

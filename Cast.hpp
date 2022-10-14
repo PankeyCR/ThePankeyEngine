@@ -1,25 +1,7 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Cast)
-	#define Cast_hpp
-#endif
-
 #ifndef Cast_hpp
 #define Cast_hpp
 #define Cast_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 namespace ame{
 
@@ -49,3 +31,7 @@ typename remove_reference<T>::type&& move(T&& arg){
 }
 
 #endif
+
+
+
+//

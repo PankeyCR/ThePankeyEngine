@@ -15,21 +15,26 @@
 	#include "Arduino.h"
 #endif
 
-#ifndef ame_ErrorWarning
-	#define ame_ErrorWarning(e_ErrorType, e_Info) ErrorHandler_(e_ErrorType, e_Info)
+#ifdef ame_ErrorWarning
+	#define ame_ErrorHandler(e_ErrorType, e_Name, e_Method, e_Info) ErrorHandler_(e_ErrorType, e_Name, e_Method, e_Info)
+	#define ame_ErrorRelease() ErrorRelease_()
 #else
-	#define ame_ErrorWarning(e_ErrorType, e_Info) 
+	#define ame_ErrorHandler(e_ErrorType, e_Name, e_Method, e_Info) 
+	#define ame_ErrorRelease() 
 #endif
 
 namespace ame{
 	
 //Error defines
 #define NO_WIFI_CONEXION_ERROR 0
+#define App_Crash_ERROR 0
 
 #include "ame_String.hpp"
 
-void ErrorHandler_(int e_ErrorType, const ame_String& e_Info){
-	
+void ErrorRelease_(){
+}
+
+void ErrorHandler_(int e_ErrorType, const ame_String& name, const ame_String& method, const ame_String& e_Info){
 }
 
 template<class T>
@@ -40,7 +45,7 @@ struct ErrorClassReturn{
 	static T get(){return *returnValue;}
 	
 	static T catchError(){
-		ame_ErrorWarning(RETURN_ERROR, "");
+		ame_ErrorHandler(App_Crash_ERROR, "", "", "");
 	}
 };
 

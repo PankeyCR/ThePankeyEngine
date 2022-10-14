@@ -347,16 +347,16 @@ class Vector2f : public cppObject{
 	
 	#endif
 
-    bool equals(cppObject *o){
-		if (!(o->getClass() == Class<Vector2f>::classType)) {
+    bool equals(cppObject *a_obj){
+		if (!(a_obj->getClass() == Class<Vector2f>::classType)) {
 			return false;
 		}
 
-		if (this == o) {
+		if (this == a_obj) {
 			return true;
 		}
 
-		Vector2f *comp = (Vector2f*) o;
+		Vector2f *comp = (Vector2f*) a_obj;
 		if (this->x !=comp->x){
 			return false;
 		}
@@ -455,8 +455,12 @@ class Vector2f : public cppObject{
 		return Vector2f(this->x, this->y);
 	}
 
-	cppObjectClass* getClass(){
-		return Class<Vector2f>::classType;
+	virtual cppObjectClass* getClass(){
+		return Class<Vector2f>::getClass();
+	}
+
+	virtual bool instanceof(cppObjectClass* cls){
+		return cls == Class<Vector2f>::getClass();
 	}
 
 	Vector2f& operator=(const Vector2f& a){
