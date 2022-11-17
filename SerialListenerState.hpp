@@ -1,13 +1,36 @@
 
-#include "ame_Enviroment.hpp"
+#ifndef CONFIGURATION_SerialListenerState_hpp
+#define CONFIGURATION_SerialListenerState_hpp
 
-#if defined(DISABLE_SerialListenerState)
-	#define SerialListenerState_hpp
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_SerialListenerState)
+		#define SerialListenerState_hpp
+
+		#define IMPLEMENTATION_SerialListenerState
+		#define IMPLEMENTING_SerialListenerState
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_SerialListenerState)
+			#define IMPLEMENTATION_SerialListenerState
+			#define IMPLEMENTING_SerialListenerState
+		#endif
+	#endif
 #endif
 
 #ifndef SerialListenerState_hpp
 #define SerialListenerState_hpp
 #define SerialListenerState_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_SerialListenerState
+	#define IMPLEMENTATION_SerialListenerState IMPLEMENTATION(public SerialListenerState)
+	#define IMPLEMENTING_SerialListenerState IMPLEMENTING(public SerialListenerState)
+#endif
+
+#include "BaseAppState.hpp"
+#include "Application.hpp"
+#include "PrimitiveMap.hpp"
+#include "PrimitiveList.hpp"
+#include "Command.hpp"
 
 #ifndef ame_Enviroment_Defined
 
@@ -20,12 +43,6 @@
 #ifdef ame_ArduinoIDE
 	#include "Arduino.h"
 #endif
-
-#include "BaseAppState.hpp"
-#include "Application.hpp"
-#include "PrimitiveMap.hpp"
-#include "PrimitiveList.hpp"
-#include "SerialListener.hpp"
 
 #ifdef SerialListenerState_LogApp
 	#include "ame_Logger_config.hpp"
@@ -53,8 +70,12 @@
 
 namespace ame{
 
+/*
+*	Class Configuration:
+*	DISABLE_IMPLEMENTATION_BaseAppState
+*/
 template<class T>
-class SerialListenerState : public BaseAppState{	
+class SerialListenerState IMPLEMENTATION_BaseAppState {	
     public:
 		using ListenerMethod = void (*)(T*);
 		
@@ -91,19 +112,6 @@ class SerialListenerState : public BaseAppState{
 			m_methodListener.add(method);
 			SerialListenerStateLog(ame_Log_EndMethod, "addListener", "println", "");
 		}
-		
-		virtual Command<T>* getListener(cppObjectClass* cls){
-			SerialListenerStateLog(ame_Log_StartMethod, "getListener",  "println", "");
-			for(int x = 0; x < m_listener.getPosition(); x++){
-				Command<T>* serialListener = m_listener.getByPosition(x);
-				if(serialListener->getClass() == cls){
-					SerialListenerStateLog(ame_Log_EndMethod, "getListener", "println", "");
-					return serialListener;
-				}
-			}
-			SerialListenerStateLog(ame_Log_EndMethod, "getListener", "println", "");
-			return nullptr;
-		}
 
 		virtual void removeListener(int index) {
 			SerialListenerStateLog(ame_Log_StartMethod, "removeListener",  "println", "int index");
@@ -131,8 +139,8 @@ class SerialListenerState : public BaseAppState{
 			SerialListenerStateLog(ame_Log_EndMethod, "removeAllMethodListener", "println", "");
 		}
 		
-		virtual void addMail(T* m){
-			m_receivedMessage.addPointer(m);
+		virtual void addMail(T* a_mail){
+			m_receivedMessage.addPointer(a_mail);
 		}
 		
 		virtual PrimitiveList<T> getMail(){
@@ -143,15 +151,30 @@ class SerialListenerState : public BaseAppState{
 			return &m_receivedMessage;
 		}
 		
-		virtual cppObjectClass* getClass(){
-			return Class<SerialListenerState<T>>::getClass();
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+		virtual Command<T>* getListener(cppObjectClass* cls){
+			SerialListenerStateLog(ame_Log_StartMethod, "getListener",  "println", "");
+			for(int x = 0; x < m_listener.getPosition(); x++){
+				Command<T>* serialListener = m_listener.getByPosition(x);
+				if(serialListener->getClass() == cls){
+					SerialListenerStateLog(ame_Log_EndMethod, "getListener", "println", "");
+					return serialListener;
+				}
+			}
+			SerialListenerStateLog(ame_Log_EndMethod, "getListener", "println", "");
+			return nullptr;
 		}
+		
+		#if defined(Class_AVAILABLE)
+		virtual cppObjectClass* getClass(){return Class<SerialListenerState<T>>::getClass();}
 		
 		virtual bool instanceof(cppObjectClass* cls){
 			return cls == Class<SerialListenerState<T>>::getClass() || AppState::instanceof(cls);
 		}
+		#endif
+		#endif
 		
-		virtual void update(float tpc){
+		virtual void updateState(float tpc){
 			if(m_receivedMessage.isEmpty()){
 				return;
 			}
@@ -168,8 +191,9 @@ class SerialListenerState : public BaseAppState{
 					event->execute(f_message);
 				}
 			}
+			SerialListenerStateLog(ame_Log_EndMethod, "update",  "println", "deleting list");
 			m_receivedMessage.resetDelete();
-			SerialListenerStateLog(ame_Log_EndMethod, "update",  "println", "");
+			SerialListenerStateLog(ame_Log_EndMethod, "update",  "println", "end");
 		}
 		
 	protected:

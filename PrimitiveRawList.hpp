@@ -51,7 +51,7 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 			PrimitiveRawListLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 		
-		PrimitiveRawList(int c_size, bool c_own, int c_reordering){
+		PrimitiveRawList(int c_size, bool c_own, int c_reordering) : PrimitiveRawPointerList<T>(c_size, c_own, c_reordering){
 			PrimitiveRawListLog(ame_Log_StartMethod, "Constructor", "println", "");
 			PrimitiveRawListLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
@@ -316,7 +316,7 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 		}
 		
 		virtual bool operator!=(const PrimitiveRawList<T>& a_list){
-			PrimitiveRawListLog(ame_Log_StartMethod, "operator==", "println", "");
+			PrimitiveRawListLog(ame_Log_StartMethod, "operator!=", "println", "");
 			if(this->getPosition() != a_list.getPosition()){
 				return true;
 			}
@@ -333,7 +333,7 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 				}
 				this->addLValue(*a_list.getByPosition(x));
 			}
-			PrimitiveRawListLog(ame_Log_EndMethod, "operator==", "println", "");
+			PrimitiveRawListLog(ame_Log_EndMethod, "operator!=", "println", "");
 			return true;
 		}
 	

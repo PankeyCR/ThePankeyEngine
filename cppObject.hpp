@@ -1,9 +1,31 @@
 
+#ifndef CONFIGURATION_cppObject_hpp
+#define CONFIGURATION_cppObject_hpp
+
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_cppObject)
+		#define cppObject_hpp
+		
+		#define IMPLEMENTATION_cppObject
+		#define IMPLEMENTING_cppObject
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_cppObject)
+			#define IMPLEMENTATION_cppObject
+			#define IMPLEMENTING_cppObject
+		#endif
+	#endif
+	
+#endif
+
 #ifndef cppObject_hpp
 #define cppObject_hpp
 #define cppObject_AVAILABLE
 
-#include "ame_Enviroment.hpp"
+#ifndef DISABLE_IMPLEMENTATION_cppObject
+	#define IMPLEMENTATION_cppObject IMPLEMENTATION(public cppObject)
+	#define IMPLEMENTING_cppObject IMPLEMENTING(public cppObject)
+#endif
 
 namespace ame{
 	class cppObject;
@@ -14,6 +36,10 @@ namespace ame{
 
 namespace ame{
 
+/*
+*	Class Configuration:
+*	DISABLE_cppObjectClass
+*/
 class cppObject{
     public:
 		cppObject(){}
@@ -28,8 +54,10 @@ class cppObject{
 		
 		virtual void onDelete(){}
 		
+		#if defined(cppObjectClass_AVAILABLE)
 		virtual cppObjectClass* getClass(){return nullptr;}
 		virtual bool instanceof(cppObjectClass* cls){return false;}
+		#endif
 
 		virtual cppObject* clone(void){return nullptr;}
 		virtual cppObject* clone(bool owningMemory){return nullptr;}

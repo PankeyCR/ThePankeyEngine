@@ -1,9 +1,23 @@
 
+#ifndef CONFIGURATION_MemoryChunk_hpp
+#define CONFIGURATION_MemoryChunk_hpp
+
+	#if defined(DISABLE_cppObject) || defined(DISABLE_Memory) || defined(DISABLE_MemoryManager) || defined(DISABLE_MemoryPool) || defined(DISABLE_MemoryChunk) || defined(DISABLE_Chunk)
+		#define MemoryChunk_hpp
+
+		#define IMPLEMENTATION_MemoryChunk
+		#define IMPLEMENTING_MemoryChunk
+	#endif
+#endif
+
 #ifndef MemoryChunk_hpp
 #define MemoryChunk_hpp
 #define MemoryChunk_AVAILABLE
 
 #include "ame_Enviroment.hpp"
+
+#define IMPLEMENTATION_MemoryChunk IMPLEMENTATION(public MemoryChunk)
+#define IMPLEMENTING_MemoryChunk IMPLEMENTING(public MemoryChunk)
 
 namespace ame{
 	class MemoryChunk;

@@ -1,20 +1,53 @@
 
+#ifndef CONFIGURATION_TimeControl_hpp
+#define CONFIGURATION_TimeControl_hpp
+
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_TimeControl) || defined(DISABLE_TimeElapsed)
+		#define TimeControl_hpp
+
+		#define IMPLEMENTATION_TimeControl
+		#define IMPLEMENTING_TimeControl
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_TimeControl)
+			#define IMPLEMENTATION_TimeControl
+			#define IMPLEMENTING_TimeControl
+		#endif
+	#endif
+
+#endif
+
 #ifndef TimeControl_hpp
 #define TimeControl_hpp
 #define TimeControl_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_TimeControl
+	#define IMPLEMENTATION_TimeControl IMPLEMENTATION(public TimeControl)
+	#define IMPLEMENTING_TimeControl IMPLEMENTING(public TimeControl)
+#endif
+
+#include "cppObject.hpp"
+#include "PrimitiveList.hpp"
+#include "Note.hpp"
 
 namespace ame{
 	class TimeControl;
 }
 
-#include "cppObject.hpp"
-#include "PrimitiveList.hpp"
-#include "Note.hpp"
 #include "TimeElapsed.hpp"
 
 namespace ame{
 
-class TimeControl : public cppObject{
+/*
+*	Class Configuration:
+*	DISABLE_Application
+*	DISABLE_cppObject
+*	DISABLE_cppObjectClass
+*	DISABLE_AbstractClass
+*	DISABLE_IMPLEMENTATION_cppObject
+*/
+class TimeControl IMPLEMENTATION_cppObject {
     public:
 		List<TimeElapsed> *timeList;
 		long time=0;
@@ -95,13 +128,15 @@ class TimeControl : public cppObject{
 			return this->timeList->getByPointer(t);
 		}
 		
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
 		virtual cppObjectClass* getClass(){
-			return Class<TimeControl>::classType;
+			return Class<TimeControl>::getClass();
 		}
 		
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<TimeControl>::classType;
+			return cls == Class<TimeControl>::getClass();
 		}
+		#endif
 		
 	protected:
 	

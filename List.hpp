@@ -27,7 +27,8 @@
 #endif
 
 namespace ame{
-	
+
+#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(AbstractClass_AVAILABLE)
 template<class T>
 T* CastList(cppObject* obj){
 	if(obj == nullptr){
@@ -38,18 +39,23 @@ T* CastList(cppObject* obj){
 	}
 	return nullptr;
 }
+#endif
 
+/*
+*	Class Configuration:
+*	DISABLE_IMPLEMENTING_cppObject
+*/
 template <class T>
-class List : public cppObject , virtual public RawList<T>{	
+class List : virtual public RawList<T> IMPLEMENTING_cppObject {	
 	public:
 	virtual ~List(){}
 	//cppObject part
 	
-	virtual bool instanceof(cppObjectClass* cls){
-		return cls == AbstractClass<List<T>>::getClass() || cppObject::instanceof(cls);
-	}
-	
+	#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(AbstractClass_AVAILABLE)
 	virtual cppObjectClass* getClass(){return AbstractClass<List<T>>::getClass();}
+	virtual bool instanceof(cppObjectClass* cls){
+		return cls == AbstractClass<List<T>>::getClass();
+	}
 		
 	virtual bool copy(cppObject* obj){
 		List<T>* i_list = CastList<List<T>>(obj);
@@ -170,6 +176,7 @@ class List : public cppObject , virtual public RawList<T>{
 		i_list->duplicate(this);
 		return i_list;
 	}
+	#endif
 	
 	private:
 };

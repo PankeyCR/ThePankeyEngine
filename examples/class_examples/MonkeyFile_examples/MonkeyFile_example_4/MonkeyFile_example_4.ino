@@ -1,12 +1,4 @@
 
-#define ame_Level_7
-
-#define LogApp
-//#define MonkeyFileLogApp
-
-#include "DefaultLogging.hpp"
-#include "Logger.hpp"
-
 #include "ByteArray.hpp"
 #include "MonkeyFile.hpp"
 #include "DefaultMonkeyFile.hpp"
@@ -17,8 +9,6 @@ DefaultMonkeyFile<SDFileSystemClass> file = SD;
 
 void setup() {
   Serial.begin(9600);
-  initializeLogger(new DefaultLogging(&Serial, true, false));
-  LogClass("MonkeyFile");
 
   file.setRootPathFile("monkey");
   
@@ -33,9 +23,12 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("start");
+  ame_Debuging(ame_Log_StartLoop, "loop");
+  
   ByteArray array = file.readByteArray("memory.txt");
   Serial.println(array.toNote());
   ByteArray arrayRoot = file.readRootByteArray("memory.txt");
   Serial.println(arrayRoot.toNote());
+  
+  ame_Debuging(ame_Log_EndLoop, "loop");
 }

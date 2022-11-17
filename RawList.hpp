@@ -174,30 +174,6 @@ class RawList : virtual public RawPointerList<T>{
 		
 		//operators
 		virtual T& operator[](int x)=0;
-		
-		virtual bool operator<(int x) const{
-			const_RawListLog(ame_Log_StartMethod, "operator<", "println", "");
-			const_RawListLog(ame_Log_EndMethod, "operator<", "println", "");
-			return this->getPosition() < x;
-		}
-		
-		virtual bool operator>(int x) const{
-			const_RawListLog(ame_Log_StartMethod, "operator>", "println", "");
-			const_RawListLog(ame_Log_EndMethod, "operator>", "println", "");
-			return this->getPosition() > x;
-		}
-		
-		virtual bool operator<=(int x) const{
-			const_RawListLog(ame_Log_StartMethod, "operator<=", "println", "");
-			const_RawListLog(ame_Log_EndMethod, "operator<=", "println", "");
-			return this->getPosition() <= x;
-		}
-		
-		virtual bool operator>=(int x) const{
-			const_RawListLog(ame_Log_StartMethod, "operator>=", "println", "");
-			const_RawListLog(ame_Log_EndMethod, "operator>=", "println", "");
-			return this->getPosition() >= x;
-		}
 	private:
 };
 

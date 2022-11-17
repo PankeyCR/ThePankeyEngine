@@ -38,7 +38,7 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 
 		PrimitiveRawPointerMap(const PrimitiveRawPointerMap<K,V>& c_map){
 			PrimitiveRawPointerMapLog(ame_Log_StartMethod, "Constructor", "println", "");
-			this->setOwner(c_map.isOwner());
+			this->setOwner(false);
 			this->expandLocal(c_map.getPosition());
 
 			for(int x = 0; x < c_map.getPosition(); x++){
@@ -56,10 +56,12 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 			PrimitiveRawPointerMapLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
-		PrimitiveRawPointerMap(int c_size, bool c_own){
+		PrimitiveRawPointerMap(int c_size, bool c_key_own, bool c_value_own, bool c_reorder){
 			PrimitiveRawPointerMapLog(ame_Log_StartMethod, "Constructor", "println", "");
-			this->setOwner(c_own);
+			this->setKeyOwner(c_key_own);
+			this->setValueOwner(c_value_own);
 			this->expandLocal(c_size);
+			m_reorder = c_reorder;
 			PrimitiveRawPointerMapLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
@@ -67,13 +69,13 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 			PrimitiveRawPointerMapLog(ame_Log_StartMethod, "Destructor", "println", "");
 			if(this->m_keys != nullptr && this->m_values != nullptr){
 				PrimitiveRawPointerMapLog(ame_Log_Statement, "Destructor", "println", "this->m_keys != nullptr && this->m_values != nullptr");
-				if(this->m_owner){
+				if(this->hasOwner()){
 					PrimitiveRawPointerMapLog(ame_Log_StartMethod, "Destructor", "println", "this->m_owner");
 					for(int x = 0; x < this->getPosition(); x++){
-						if(this->m_keys[x] != nullptr){
+						if(this->m_keys[x] != nullptr && this->isKeyOwner()){
 							delete this->m_keys[x];
 						}
-						if(this->m_values[x] != nullptr){
+						if(this->m_values[x] != nullptr && this->isValueOwner()){
 							delete this->m_values[x];
 						}
 					}
@@ -104,10 +106,10 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 				this->expandLocal(this->m_expandSize);
 			}
 			if(this->getPosition() >= this->getSize()){
-				if(a_key != nullptr){
+				if(a_key != nullptr && this->isKeyOwner()){
 					delete a_key;
 				}
-				if(a_value != nullptr){
+				if(a_value != nullptr && this->isValueOwner()){
 					delete a_value;
 				}
 				return MapEntry<K,V>();
@@ -128,7 +130,12 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 				this->expandLocal(this->m_expandSize);
 			}
 			if(this->getPosition() >= this->getSize()){
-				a_map_entry.deleteEntry();
+				if(a_map_entry.getKey() != nullptr && this->isKeyOwner()){
+					a_map_entry.deleteKeyEntry();
+				}
+				if(a_map_entry.getValue() != nullptr && this->isValueOwner()){
+					a_map_entry.deleteValueEntry();
+				}
 				PrimitiveRawPointerMapLog(ame_Log_EndMethod, "addMapEntry", "println", "");
 				return MapEntry<K,V>();
 			}
@@ -164,7 +171,7 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 		virtual MapEntry<K,V> setKeyPointerByPosition(int a_position, K* a_key){
 			PrimitiveRawPointerMapLog(ame_Log_StartMethod, "setKeyPointerByPosition", "println", "");
 			if(a_position >= this->getPosition()){
-				if(a_key != nullptr){
+				if(a_key != nullptr && this->isKeyOwner()){
 					delete a_key;
 				}
 				PrimitiveRawPointerMapLog(ame_Log_EndMethod, "setKeyPointerByPosition", "println", "");
@@ -176,7 +183,7 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 				PrimitiveRawPointerMapLog(ame_Log_EndMethod, "setKeyPointerByPosition", "println", "");
 				return i_entry;
 			}
-			if(this->isOwner() && i_key != nullptr){
+			if(this->isKeyOwner() && i_key != nullptr){
 				delete i_key;
 			}
 			this->m_keys[a_position] = a_key;
@@ -187,6 +194,9 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 		virtual MapEntry<K,V> setValuePointerByPosition(int a_position, V* a_value){
 			PrimitiveRawPointerMapLog(ame_Log_StartMethod, "setValuePointerByPosition", "println", "");
 			if(a_position >= this->getPosition()){
+				if(a_value != nullptr && this->isValueOwner()){
+					delete a_value;
+				}
 				PrimitiveRawPointerMapLog(ame_Log_EndMethod, "setValuePointerByPosition", "println", "");
 				return MapEntry<K,V>();
 			}
@@ -196,7 +206,7 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 				PrimitiveRawPointerMapLog(ame_Log_EndMethod, "setValuePointerByPosition", "println", "");
 				return i_entry;
 			}
-			if(this->isOwner() && i_value != nullptr){
+			if(this->isValueOwner() && i_value != nullptr){
 				delete i_value;
 			}
 			this->m_values[a_position] = a_value;
@@ -207,19 +217,25 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 		virtual MapEntry<K,V> setMapEntryByPosition(int a_position, MapEntry<K,V> a_map_entry){
 			PrimitiveRawPointerMapLog(ame_Log_StartMethod, "setMapEntryByPosition", "println", "");
 			if(a_position >= this->getPosition()){
+				if(a_map_entry.getKey() != nullptr && this->isKeyOwner()){
+					a_map_entry.deleteKeyEntry();
+				}
+				if(a_map_entry.getValue() != nullptr && this->isValueOwner()){
+					a_map_entry.deleteValueEntry();
+				}
 				PrimitiveRawPointerMapLog(ame_Log_EndMethod, "setMapEntryByPosition", "println", "a_position >= this->getPosition()");
 				return MapEntry<K,V>();
 			}
 			MapEntry<K,V> i_entry = this->getMapEntryByPosition(a_position);
 			K* i_key = i_entry.getKey();
 			V* i_value = i_entry.getValue();
-			if(this->isOwner()){
+			if(this->hasOwner()){
 				PrimitiveRawPointerMapLog(ame_Log_Statement, "setMapEntryByPosition", "println", "this->isOwner()");
-				if(i_key != nullptr && i_key != a_map_entry.getKey()){
+				if(i_key != nullptr && i_key != a_map_entry.getKey() && this->isKeyOwner()){
 					PrimitiveRawPointerMapLog(ame_Log_Statement, "setMapEntryByPosition", "println", "i_key != nullptr && i_key != a_map_entry.getKey()");
 					delete i_key;
 				}
-				if(i_value != nullptr && i_value != a_map_entry.getValue()){
+				if(i_value != nullptr && i_value != a_map_entry.getValue() && this->isValueOwner()){
 					PrimitiveRawPointerMapLog(ame_Log_Statement, "setMapEntryByPosition", "println", "i_value != nullptr && i_value != a_map_entry.getValue()");
 					delete i_value;
 				}
@@ -340,10 +356,20 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 
 		virtual void resetDelete(){
 			PrimitiveRawPointerMapLog(ame_Log_StartMethod, "resetDelete", "println", "");
+			PrimitiveRawPointerMapLog(ame_Log_StartMethod, "resetDelete", "println", "this->getPosition()");
+			PrimitiveRawPointerMapLog(ame_Log_StartMethod, "resetDelete", "println", this->getPosition());
 			for(int x = 0; x < this->getPosition(); x++){
-				if(this->isOwner()){
-					delete this->m_keys[x];
-					delete this->m_values[x];
+				PrimitiveRawPointerMapLog(ame_Log_StartMethod, "resetDelete", "println", "this->isOwner()");
+				PrimitiveRawPointerMapLog(ame_Log_StartMethod, "resetDelete", "println", this->isOwner());
+				if(this->hasOwner()){
+					PrimitiveRawPointerMapLog(ame_Log_StartMethod, "resetDelete", "println", "deleting index: ");
+					PrimitiveRawPointerMapLog(ame_Log_StartMethod, "resetDelete", "println", x);
+					if(!this->isKeyOwner()){
+						delete this->m_keys[x];
+					}
+					if(!this->isValueOwner()){
+						delete this->m_values[x];
+					}
 				}
 				this->m_keys[x] = nullptr;
 				this->m_values[x] = nullptr;
@@ -355,7 +381,7 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 		virtual void resetDeleteKey(){
 			PrimitiveRawPointerMapLog(ame_Log_StartMethod, "resetDeleteKey", "println", "");
 			for(int x = 0; x < this->getPosition(); x++){
-				if(this->isOwner()){
+				if(this->isKeyOwner()){
 					delete this->m_keys[x];
 				}
 				this->m_keys[x] = nullptr;
@@ -366,7 +392,7 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 		virtual void resetDeleteValue(){
 			PrimitiveRawPointerMapLog(ame_Log_StartMethod, "resetDeleteValue", "println", "");
 			for(int x = 0; x < this->getPosition(); x++){
-				if(this->isOwner()){
+				if(this->isValueOwner()){
 					delete this->m_values[x];
 				}
 				this->m_values[x] = nullptr;

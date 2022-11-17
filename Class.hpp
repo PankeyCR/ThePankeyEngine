@@ -1,4 +1,12 @@
 
+#ifndef DISABLE_Class_hpp
+#define DISABLE_Class_hpp
+
+	#if defined(DISABLE_cppObject) || defined(DISABLE_cppObjectClass) || defined(DISABLE_Class)
+		#define Class_hpp
+	#endif
+#endif
+
 #ifndef Class_hpp
 #define Class_hpp
 #define Class_AVAILABLE

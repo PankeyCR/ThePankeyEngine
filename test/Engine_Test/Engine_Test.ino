@@ -7,12 +7,12 @@
 #include "TR_Full_List_Testing.hpp"
 #include "TR_LinkedList_Testing.hpp"
 #include "TR_Random_Testing.hpp"
+#include "TR_Array_Testing.hpp"
+#include "TR_Array2D_Testing.hpp"
 #include "TR_Note_Testing.hpp"
 #include "TR_ByteArray_Testing.hpp"
-#include "TR_Lexer_Testing.hpp"
-#include "TR_Array2D_Testing.hpp"
-#include "TR_Array_Testing.hpp"
-#include "TR_DataSet_Testing.hpp"
+//#include "TR_Lexer_Testing.hpp"
+#include "TR_DataNetwork_Testing.hpp"
 //#include "TR_Set_Testing.hpp"
 //#include "TR_Text_Exporter_Importer_Testing.hpp"
 //#include "TR_Json_Exporter_Importer_Testing.hpp"
@@ -39,12 +39,12 @@ void setup() {
   testRunner->addUnitTest("Full_List_Testing", TR_Full_List_Testing);
   testRunner->addUnitTest("LinkedList_Testing", TR_LinkedList_Testing);
   testRunner->addUnitTest("Random_Testing", TR_Random_Testing);
+  testRunner->addUnitTest("Array_Testing", TR_Array_Testing);
+  testRunner->addUnitTest("Array2D_Testing", TR_Array2D_Testing);
   testRunner->addUnitTest("Note_Testing", TR_Note_Testing);
   testRunner->addUnitTest("ByteArray_Testing", TR_ByteArray_Testing);
-  testRunner->addUnitTest("Lexer_Testing", TR_Lexer_Testing);
-  testRunner->addUnitTest("Array2D_Testing", TR_Array2D_Testing);
-  testRunner->addUnitTest("Array_Testing", TR_Array_Testing);
-  testRunner->addUnitTest("DataSet_Testing", TR_DataSet_Testing);
+//  testRunner->addUnitTest("Lexer_Testing", TR_Lexer_Testing);
+  testRunner->addUnitTest("DataNetwork_Testing", TR_DataNetwork_Testing);
 //  testRunner->addUnitTest("Set_Testing", TR_Set_Testing);
 //  testRunner->addUnitTest("Text_Exporter_Importer_Testing", TR_Text_Exporter_Importer_Testing);
 //  testRunner->addUnitTest("Json_Exporter_Importer_Testing", TR_Json_Exporter_Importer_Testing);

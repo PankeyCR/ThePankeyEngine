@@ -25,12 +25,10 @@
 			template<class T>
 			void LogPrint_(void* a_log_pointer, int location, const ame_String& name, const ame_String& method, const ame_String& type, T mns){
 			
-				// if(	method != "add" && 
-					// method != "addLocal" && 
-					// method != "insertLocal" && 
-					// method != "Constructor"/* && 
+				// if(	method != "copyPointer"/* && 
+					// method != "operator+="/* && 
 					// method != "getKeyIndexByLValue" /*&& method != "setMapEntry"*/){
-					// return;
+				// 	return;
 				// }
 				#ifdef ame_SystemFullLog
 				   System::console.print("Loggin class: ");

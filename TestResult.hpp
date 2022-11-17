@@ -45,7 +45,7 @@ class TestResult{
 			Note i_errors = "Test Failed at:\n";
 			for(int x = 0; x < m_errors.getPosition(); x++){
 				i_errors += "Index: ";
-				i_errors += *m_indexs.getByPosition(x);
+				i_errors += (int)*m_indexs.getByPosition(x);
 				i_errors += '\n';
 				i_errors += *m_errors.getByPosition(x);
 				if(x != m_errors.getPosition() - 1){

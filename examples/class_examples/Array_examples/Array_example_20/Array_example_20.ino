@@ -13,7 +13,7 @@ void loop() {
   
   Array<int> array = {1,2,3,4,5};
   
-  array.insertLocal(2, 150);
+  array.insertLocalValue(2, 150);
   
   for(int i : array){
     System::console.println(i);

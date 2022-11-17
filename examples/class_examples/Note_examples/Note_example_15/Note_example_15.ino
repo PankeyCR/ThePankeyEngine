@@ -10,12 +10,21 @@ void setup() {
 void loop() {
   ame_Debuging(ame_Log_StartLoop, "loop");
 
-  Note note = "check out at charAt method";
-  
-  for(int x = 0; x < note.length(); x++){
-    Serial.print(note.charAt(x));
+  Note note = "spacetime";
+
+  if(note == "spacetime"){
+    Serial.println("is equal to spacetime");
   }
-  Serial.println();
+  if(note == "time"){
+    Serial.println("is equal to time");
+  }
+
+  if(note != "spacetime"){
+    Serial.println("is not equal to spacetime");
+  }
+  if(note != "time"){
+    Serial.println("is not equal to time");
+  }
   
   ame_Debuging(ame_Log_EndLoop, "loop");
 }

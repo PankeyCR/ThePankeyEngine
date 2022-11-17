@@ -1,7 +1,30 @@
 
+#ifndef CONFIGURATION_PortProtocol_hpp
+#define CONFIGURATION_PortProtocol_hpp
+
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_PortProtocol)
+		#define PortProtocol_hpp
+
+		#define IMPLEMENTATION_PortProtocol
+		#define IMPLEMENTING_PortProtocol
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_PortProtocol)
+			#define IMPLEMENTATION_PortProtocol
+			#define IMPLEMENTING_PortProtocol
+		#endif
+	#endif
+#endif
+
 #ifndef PortProtocol_hpp
 #define PortProtocol_hpp
 #define PortProtocol_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_PortProtocol
+	#define IMPLEMENTATION_PortProtocol IMPLEMENTATION(public PortProtocol)
+	#define IMPLEMENTING_PortProtocol IMPLEMENTING(public PortProtocol)
+#endif
 
 #include "cppObject.hpp"
 #include "Note.hpp"
@@ -11,21 +34,29 @@
 
 namespace ame{
 
-class PortProtocol : public cppObject{
+/*
+*	Class Configuration:
+*	DISABLE_IMPLEMENTATION_cppObject
+*/
+class PortProtocol IMPLEMENTATION_cppObject {
 
     public:
 		PortProtocol(){}
 		virtual ~PortProtocol(){}
 		
-		virtual void attach(SerialNetwork* state){
+		virtual void initialize(SerialNetwork* state){
 			this->serialState = state;
+		}
+
+		virtual SerialNetwork* getSerialNetwork(){
+			return this->serialState;
 		}
 		
 		//this method has control of the sending of the message, so remember sending it
-		virtual void InstantBroadcastMessage(SerialPort* port, const Note& mns){}
+		virtual void InstantBroadcastMessage(SerialPort* port, Note mns){}
 		
 		//this method has control of the sending of the message, so remember sending it
-		virtual void InstantPrivateMessage(SerialPort* port, const Note& mns){}
+		virtual void InstantPrivateMessage(SerialPort* port, Note mns){}
 		
 		virtual void InstantPrivateByteArrayMessage(SerialPort* port, ByteArray array){}
 		
@@ -40,9 +71,9 @@ class PortProtocol : public cppObject{
 		virtual void Read(int index, SerialPort* port){}
 		
 		//you need to send to message manually
-		virtual void BroadcastMessage(SerialPort* port, const Note& mns){}
+		virtual void BroadcastMessage(SerialPort* port, Note mns){}
 		//you need to send to message manually
-		virtual void PrivateMessage(SerialPort* port, const Note& mns){}
+		virtual void PrivateMessage(SerialPort* port, Note mns){}
 		
 		virtual void setSafeDelete(bool s){safeDelete = s;}
 		virtual bool SafeDelete(){return safeDelete;}
@@ -74,8 +105,8 @@ class PortProtocol : public cppObject{
 		virtual bool operator==(PortProtocol b){return true;}
 		virtual bool operator!=(PortProtocol b){return true;}
 		
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
 		virtual cppObjectClass* getClass(){return Class<PortProtocol>::classType;}
-		virtual Note toNote(){return "PortProtocol";}
 		virtual bool equal(cppObject *b){
 			if(b == this){
 				return true;
@@ -87,6 +118,7 @@ class PortProtocol : public cppObject{
 		}
 		
 		virtual cppObject *clone(){return nullptr;}
+		#endif
 		
 	protected:
 		bool safeDelete = true;

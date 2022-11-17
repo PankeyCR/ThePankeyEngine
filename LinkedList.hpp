@@ -34,7 +34,9 @@ namespace ame{
 template<class T>
 class LinkedList : public LinkedRawList<T>, public List<T>{
 	protected:
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE)
 		static cppObjectClass* m_linked_list_class;
+		#endif
 		
 	public:
 		LinkedList<T>(){
@@ -70,6 +72,7 @@ class LinkedList : public LinkedRawList<T>, public List<T>{
 	
 		//cpObject part
 		
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE)
 		virtual bool copy(cppObject* obj){
 			LinkedListLog(ame_Log_StartMethod, "copy", "println", "");
 			if(obj == nullptr){
@@ -186,6 +189,7 @@ class LinkedList : public LinkedRawList<T>, public List<T>{
 			LinkedListLog(ame_Log_EndMethod, "clone", "println", "");
 			return list;
 		}
+		#endif
 		
         virtual void operator=(const LinkedList<T>& a_list){
 			LinkedListLog(ame_Log_StartMethod, "operator=", "println", "");
@@ -266,8 +270,10 @@ class LinkedList : public LinkedRawList<T>, public List<T>{
 		}
 };
 
+#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(TemplateClass_AVAILABLE)
 template<class T>
 cppObjectClass* LinkedList<T>::m_linked_list_class = new TemplateClass<LinkedList<T>>();
+#endif
 
 }
 

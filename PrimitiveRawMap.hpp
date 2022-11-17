@@ -60,7 +60,7 @@ class PrimitiveRawMap : public PrimitiveRawPointerMap<K,V>, virtual public RawMa
 			PrimitiveRawMapLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 		
-		PrimitiveRawMap(int c_size, bool c_own) : PrimitiveRawPointerMap<K,V>(c_size, c_own){
+		PrimitiveRawMap(int c_size, bool c_key_own, bool c_value_own, bool c_reorder) : PrimitiveRawPointerMap<K,V>(c_size, c_key_own, c_value_own, c_reorder){
 			PrimitiveRawMapLog(ame_Log_StartMethod, "Constructor", "println", "");
 			PrimitiveRawMapLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
@@ -68,6 +68,24 @@ class PrimitiveRawMap : public PrimitiveRawPointerMap<K,V>, virtual public RawMa
 		virtual ~PrimitiveRawMap(){
 			PrimitiveRawMapLog(ame_Log_StartMethod, "Destructor", "println", "");
 			PrimitiveRawMapLog(ame_Log_EndMethod, "Destructor", "println", "");
+		}
+		
+		virtual void addMap(const PrimitiveRawMap<K,V>& a_map){
+			PrimitiveRawMapLog(ame_Log_StartMethod, "addLValues", "println", "");
+			if(a_map.getSize() < this->getPosition() + a_map.getPosition()){
+				this->expandLocal(a_map.getPosition());
+			}
+			for(int x = 0; x < a_map.getPosition(); x++){
+				K* k = a_map.getKeyByPosition(x);
+				V* v = a_map.getValueByPosition(x);
+				if(k != nullptr && v != nullptr){
+					this->addLValues(*k,*v);
+				}
+				if(k != nullptr && v == nullptr){
+					this->addPointer(*k,nullptr);
+				}
+			}
+			PrimitiveRawMapLog(ame_Log_EndMethod, "addLValues", "println", "");
 		}
 		
 		virtual MapEntry<K,V> addLValues(K a_key, V a_value){

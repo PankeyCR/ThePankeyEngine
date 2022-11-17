@@ -1,7 +1,30 @@
 
+#ifndef CONFIGURATION_SerialPost_hpp
+#define CONFIGURATION_SerialPost_hpp
+
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_SerialPost)
+		#define SerialPost_hpp
+
+		#define IMPLEMENTATION_SerialPost
+		#define IMPLEMENTING_SerialPost
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_SerialPost)
+			#define IMPLEMENTATION_SerialPost
+			#define IMPLEMENTING_SerialPost
+		#endif
+	#endif
+#endif
+
 #ifndef SerialPost_hpp
 #define SerialPost_hpp
-#define SerialPost_AVAILABLE 
+#define SerialPost_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_SerialPost
+	#define IMPLEMENTATION_SerialPost IMPLEMENTATION(public SerialPost)
+	#define IMPLEMENTING_SerialPost IMPLEMENTING(public SerialPost)
+#endif
 
 #include "Application.hpp"
 #include "PrimitiveList.hpp"
@@ -36,22 +59,35 @@
 
 namespace ame{
 
-class SerialPost : public BaseAppState{
+/*
+*	Class Configuration:
+*	DISABLE_IMPLEMENTATION_BaseAppState
+*/
+class SerialPost IMPLEMENTATION_BaseAppState {
     public:
 	
 	template<class PT>
 	using PostMethod = void (*)(PT*);
 	
 		SerialPost(){
+			SerialPostLog(ame_Log_StartMethod, "Constructor", "println", "Default Constructor");
+			SerialPostLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
+		
 		virtual ~SerialPost(){
+			SerialPostLog(ame_Log_StartMethod, "Destructor", "println", "");
+			SerialPostLog(ame_Log_EndMethod, "Destructor", "println", "");
 		}
+		
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+		virtual cppObjectClass* getClass(){return Class<SerialPost>::getClass();}
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<SerialPost>::classType || AppState::instanceof(cls);
+			return cls == Class<SerialPost>::getClass() || AppState::instanceof(cls);
 		}
-		virtual cppObjectClass* getClass(){return Class<SerialPost>::classType;}
+		#endif
 		
 		virtual void initializeState(Application *app){
+			SerialPostLog(ame_Log_StartMethod, "initializeState", "println", "");
 			for(int x = 0; x < m_networks.getPosition(); x++){
 				Note* f_name = m_networks.getKeyByPosition(x);
 				SerialNetwork* f_network = m_networks.getValueByPosition(x);
@@ -62,16 +98,20 @@ class SerialPost : public BaseAppState{
 				app->getStateManager()->add(i_state);
 			}
 			m_delivery.reset();
+			SerialPostLog(ame_Log_EndMethod, "initializeState", "println", "");
 		}
 		
 		virtual void updateState(float tpc){}
 		
 		template<class SN>
 		SN* addNetwork(Note a_name, SN* a_network){
+			SerialPostLog(ame_Log_StartMethod, "addNetwork", "println", "");
 			m_networks.addPointer(a_name, a_network);
 			if(hasInitialize()){
+				SerialPostLog(ame_Log_Statement, "addNetwork", "println", "");
 				this->getApplication()->getStateManager()->add(a_name, a_network);
 			}
+			SerialPostLog(ame_Log_EndMethod, "addNetwork", "println", "");
 			return a_network;
 		}
 		

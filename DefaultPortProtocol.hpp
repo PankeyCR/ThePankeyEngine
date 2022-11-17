@@ -62,6 +62,7 @@ class DefaultPortProtocol : public PortProtocol{
 		virtual ~DefaultPortProtocol(){}
 		
 		virtual void InstantBroadcastMessage(SerialPort* port, Note mns){
+			DefaultPortProtocolLog(ame_Log_Statement, "InstantBroadcastMessage",  "println", "");
 			DefaultPortProtocolLog(ame_Log_Statement, "InstantBroadcastMessage",  "println", port->getName());
 			DefaultPortProtocolLog(ame_Log_Statement, "InstantBroadcastMessage",  "println", mns);
 			port->print(mns+'\n');
@@ -129,16 +130,24 @@ class DefaultPortProtocol : public PortProtocol{
 		}
 		
 		virtual bool DeliverMessage(Note* a_mns){
-			DefaultPortProtocolLog(ame_Log_Statement, "DeliverMessage",  "println", "");
+			DefaultPortProtocolLog(ame_Log_StartMethod, "DeliverMessage",  "println", "");
 			if(serialState != nullptr){
+				DefaultPortProtocolLog(ame_Log_Statement, "DeliverMessage", "println", "serialState != nullptr");
 				MessageDelivery* i_delivery = serialState->getDelivery();
 				if(i_delivery != nullptr){
+					DefaultPortProtocolLog(ame_Log_EndMethod, "DeliverMessage", "println", "i_delivery != nullptr");
 					return i_delivery->DeliverMessage(a_mns);
 				}
+				DefaultPortProtocolLog(ame_Log_Statement, "DeliverMessage", "println", "serialState != nullptr end of scope");
 			}
 			if(m_delivery == nullptr){
+				if(a_mns != nullptr){
+					delete a_mns;
+				}
+				DefaultPortProtocolLog(ame_Log_EndMethod, "DeliverMessage", "println", "m_delivery == nullptr");
 				return false;
 			}
+			DefaultPortProtocolLog(ame_Log_EndMethod, "DeliverMessage", "println", "");
 			return m_delivery->DeliverMessage(a_mns);
 		}
 		

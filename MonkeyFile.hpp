@@ -5,16 +5,34 @@
  *
  */
 
-#include "ame_Enviroment.hpp"
+#ifndef CONFIGURATION_MonkeyFile_hpp
+#define CONFIGURATION_MonkeyFile_hpp
 
-#if defined(DISABLE_MonkeyFile)
-	#define MonkeyFile_hpp
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_MonkeyFile)
+		#define MonkeyFile_hpp
+
+		#define IMPLEMENTATION_MonkeyFile
+		#define IMPLEMENTING_MonkeyFile
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_MonkeyFile)
+			#define IMPLEMENTATION_MonkeyFile
+			#define IMPLEMENTING_MonkeyFile
+		#endif
+	#endif
 #endif
 
 #ifndef MonkeyFile_hpp
 #define MonkeyFile_hpp
 #define MonkeyFile_AVAILABLE
 
+#ifndef DISABLE_IMPLEMENTATION_MonkeyFile
+	#define IMPLEMENTATION_MonkeyFile IMPLEMENTATION(public MonkeyFile)
+	#define IMPLEMENTING_MonkeyFile IMPLEMENTING(public MonkeyFile)
+#endif
+
+#include "Note.hpp"
 #include "ByteArray.hpp"
 #include "PrimitiveMap.hpp"
 
@@ -44,7 +62,7 @@
 
 namespace ame{
 
-class MonkeyFile{
+class MonkeyFile IMPLEMENTATION_cppObject {
     public:
 		MonkeyFile(){}
 		MonkeyFile(const Note& a_root_folder){
@@ -112,6 +130,16 @@ class MonkeyFile{
 		virtual int getDirectoriesSize(Note path);
 
 		virtual PrimitiveMap<Note,Note> getDirectories(Note dirname, int levels);
+			
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+		virtual cppObjectClass* getClass(){
+			return Class<MonkeyFile>::getClass();
+		}
+		
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<MonkeyFile>::getClass();
+		}
+		#endif
 
 	protected:
 		Note rootPath;
@@ -257,7 +285,7 @@ Note MonkeyFile::fixRootPath(Note p){
 	int sizeRP = this->rootPath.length();
 	if(this->rootPath.charAt(sizeRP - 1) == '/' && p.charAt(0) == '/'){
 		MonkeyFileLog(ame_Log_Statement, "fixRootPath",  "println", Note("this->rootPath.charAt(sizeRP - 1) == '/' && p.charAt(0) == '/'"));
-		return this->rootPath + p.substring(1);
+		return this->rootPath + p.subNote(1);
 	}
 	if(this->rootPath.charAt(sizeRP - 1) != '/' && p.charAt(0) == '/'){
 		MonkeyFileLog(ame_Log_Statement, "fixRootPath",  "println", Note("this->rootPath.charAt(sizeRP - 1) != '/' && p.charAt(0) == '/'"));
@@ -309,7 +337,7 @@ Note MonkeyFile::fixPath(Note p, Note f){
 	int sizeRP = p.length();
 	if(p.charAt(sizeRP - 1) == '/' && f.charAt(0) == '/'){
 		MonkeyFileLog(ame_Log_Statement, "fixPath",  "println", "p.charAt(sizeRP - 1) == '/' && f.charAt(0) == '/'");
-		return p + f.substring(1);
+		return p + f.subNote(1);
 	}
 	if(p.charAt(sizeRP - 1) != '/' && f.charAt(0) == '/'){
 		MonkeyFileLog(ame_Log_Statement, "fixPath",  "println", "p.charAt(sizeRP - 1) != '/' && f.charAt(0) == '/'");
@@ -473,7 +501,7 @@ Note MonkeyFile::fixRootPath(Note p){
 	int sizeRP = this->rootPath.length();
 	if(this->rootPath.charAt(sizeRP - 1) == '/' && p.charAt(0) == '/'){
 		MonkeyFileLog(ame_Log_Statement, "fixRootPath",  "println", Note("this->rootPath.charAt(sizeRP - 1) == '/' && p.charAt(0) == '/'"));
-		return this->rootPath + p.substring(1);
+		return this->rootPath + p.subNote(1);
 	}
 	if(this->rootPath.charAt(sizeRP - 1) != '/' && p.charAt(0) == '/'){
 		MonkeyFileLog(ame_Log_Statement, "fixRootPath",  "println", Note("this->rootPath.charAt(sizeRP - 1) != '/' && p.charAt(0) == '/'"));
@@ -525,7 +553,7 @@ Note MonkeyFile::fixPath(Note p, Note f){
 	int sizeRP = p.length();
 	if(p.charAt(sizeRP - 1) == '/' && f.charAt(0) == '/'){
 		MonkeyFileLog(ame_Log_Statement, "fixPath",  "println", "p.charAt(sizeRP - 1) == '/' && f.charAt(0) == '/'");
-		return p + f.substring(1);
+		return p + f.subNote(1);
 	}
 	if(p.charAt(sizeRP - 1) != '/' && f.charAt(0) == '/'){
 		MonkeyFileLog(ame_Log_Statement, "fixPath",  "println", "p.charAt(sizeRP - 1) != '/' && f.charAt(0) == '/'");

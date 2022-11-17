@@ -1,10 +1,33 @@
 
+#ifndef CONFIGURATION_Array_hpp
+#define CONFIGURATION_Array_hpp
+
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_Array)
+		#define Array_hpp
+
+		#define IMPLEMENTATION_Array
+		#define IMPLEMENTING_Array
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_Array)
+			#define IMPLEMENTATION_Array
+			#define IMPLEMENTING_Array
+		#endif
+	#endif
+#endif
+
 #ifndef Array_hpp
 #define Array_hpp
 #define Array_AVAILABLE
 
-#include "ArrayIterator.hpp"
+#ifndef DISABLE_IMPLEMENTATION_Array
+	#define IMPLEMENTATION_Array IMPLEMENTATION(public Array)
+	#define IMPLEMENTING_Array IMPLEMENTING(public Array)
+#endif
+
 #include "cppObject.hpp"
+#include "ArrayIterator.hpp"
 #include "Class.hpp"
 
 #ifdef Array_LogApp
@@ -27,7 +50,7 @@
 namespace ame{
 
 template<class T>
-class Array : public cppObject{
+class Array IMPLEMENTATION_cppObject {
 
 	protected:
 		T* m_t_value = nullptr;
@@ -66,97 +89,122 @@ class Array : public cppObject{
 			ArrayLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
 			ArrayLog(ame_Log_Statement, "Constructor", "println", "Array Size:");
 			ArrayLog(ame_Log_Statement, "Constructor", "println", this->getSize());
-			
+
 			ArrayLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		Array(const Array<T>& c_array){
 			ArrayLog(ame_Log_StartMethod, "Constructor", "println", "");
 			ArrayLog(ame_Log_Statement, "Constructor", "println", "const Array& val");
+			if(c_array.isEmpty()){
+				ArrayLog(ame_Log_EndMethod, "Constructor", "println", "c_array.isEmpty()");
+				return;
+			}
 			int i_array_length = c_array.getPosition();
 			ArrayLog(ame_Log_Statement, "Constructor", "println", "Array Length:");
 			ArrayLog(ame_Log_Statement, "Constructor", "println", i_array_length);
-			if(i_array_length > 0){
-				this->createArray(i_array_length);
-				this->copyPointer(c_array.pointer(), i_array_length);
-				this->copyEndValue();
-			}
+			this->createArray(i_array_length);
+			this->copyPointer(c_array.pointer(), i_array_length);
+			this->copyEndValue();
 			ArrayLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
 			ArrayLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
 			ArrayLog(ame_Log_Statement, "Constructor", "println", "Array Size:");
 			ArrayLog(ame_Log_Statement, "Constructor", "println", this->getSize());
-			
+
 			ArrayLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
-		Array(Array<T>&& source){
+		Array(Array<T>&& c_array){
 			ArrayLog(ame_Log_StartMethod, "Constructor", "println", "start");
-			ArrayLog(ame_Log_Statement, "Constructor", "println", "Array&& source");
-			int i_array_length = source.getPosition();
+			ArrayLog(ame_Log_Statement, "Constructor", "println", "Array&& c_array");
+			if(c_array.isEmpty()){
+				ArrayLog(ame_Log_EndMethod, "Constructor", "println", "c_array.isEmpty()");
+				return;
+			}
+			int i_array_length = c_array.getPosition();
 			ArrayLog(ame_Log_Statement, "Constructor", "println", "Array Length:");
 			ArrayLog(ame_Log_Statement, "Constructor", "println", i_array_length);
-			if(i_array_length > 0){
-				this->m_pos = source.m_pos;
-				this->m_size = source.m_size;
-				this->m_t_value = source.m_t_value;
-				source.m_t_value = nullptr;
-				source.m_pos = 0;
-				source.m_size = 0;
-			}
+			this->m_pos = c_array.m_pos;
+			this->m_size = c_array.m_size;
+			this->m_t_value = c_array.m_t_value;
+			c_array.m_t_value = nullptr;
+			c_array.m_pos = 0;
+			c_array.m_size = 0;
 			ArrayLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
 			ArrayLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
 			ArrayLog(ame_Log_Statement, "Constructor", "println", "Array Size:");
 			ArrayLog(ame_Log_Statement, "Constructor", "println", this->getSize());
-			
+
 			ArrayLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		virtual ~Array(){
 			ArrayLog(ame_Log_StartMethod, "Destructor", "println", "");
 			ArrayLog(ame_Log_Statement, "Destructor", "println", "~Array");
-			ArrayLog(ame_Log_Statement, "Destructor", "println", this->m_pos);
-			ArrayLog(ame_Log_Statement, "Destructor", "println", this->m_size);
+			ArrayLog(ame_Log_Statement, "Destructor", "println", this->getPosition());
+			ArrayLog(ame_Log_Statement, "Destructor", "println", this->getSize());
 			this->fix();
 			this->erase();
 			ArrayLog(ame_Log_EndMethod, "Destructor", "println", "");
 		}
 
+		virtual int getFreeSpace(int a_position)const{
+			ArrayLog(ame_Log_StartMethod, "getFreeSpace", "println", "int a_position");
+			int i_addingEndValue = 0;
+			if(this->hasEndValue()){
+				ArrayLog(ame_Log_Statement, "getFreeSpace", "println", "this->hasEndValue()");
+				i_addingEndValue = 1;
+			}
+			int i_availableSize = this->getSize() - a_position - i_addingEndValue;
+			ArrayLog(ame_Log_EndMethod, "getFreeSpace", "println", i_availableSize);
+			return i_availableSize;
+		}
+
+		virtual int getFreeSpace()const{
+			ArrayLog(ame_Log_StartMethod, "getFreeSpace", "println", "");
+			int i_addingEndValue = 0;
+			if(this->hasEndValue()){
+				ArrayLog(ame_Log_Statement, "getFreeSpace", "println", "this->hasEndValue()");
+				i_addingEndValue = 1;
+			}
+			int i_availableSize = this->getSize() - this->getPosition() - i_addingEndValue;
+			ArrayLog(ame_Log_EndMethod, "getFreeSpace", "println", i_availableSize);
+			return i_availableSize;
+		}
+
 		virtual void expandIfNeeded(int a_array_length){
-			if(m_size - m_pos <= a_array_length){
+			ArrayLog(ame_Log_StartMethod, "expandIfNeeded", "println", "");
+			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", "Array Position:");
+			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", this->getPosition());
+			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", "Array Size:");
+			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", this->getSize());
+			int i_availableSize = this->getFreeSpace();
+			if(i_availableSize < a_array_length){
 				this->expandLocal(a_array_length + m_expandSize);
 			}
-		}		
-		
+			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", "Array Position:");
+			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", this->getPosition());
+			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", "Array Size:");
+			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", this->getSize());
+			ArrayLog(ame_Log_EndMethod, "expandIfNeeded", "println", "");
+		}
+
 		virtual bool hasAvailableSize()const{
 			ArrayLog(ame_Log_StartMethod, "hasAvailableSize", "println", "");
 			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", "Array Position:");
 			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", this->getPosition());
 			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", "Array Size:");
 			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", this->getSize());
-			if(this->hasEndValue()){
-				ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", "this->hasEndValue()");
-				ArrayLog(ame_Log_EndMethod, "hasAvailableSize", "println", this->getPosition() < (this->getSize() - 1));
-				return this->getPosition() < (this->getSize() - 1);
-			}
-			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", "!this->hasEndValue()");
-			ArrayLog(ame_Log_EndMethod, "hasAvailableSize", "println", this->getPosition() < this->getSize());
-			return this->getPosition() < this->getSize();
+			return this->getFreeSpace() > 0;
 		}
-		
+
 		virtual bool hasAvailableSize(int a_size)const{
 			ArrayLog(ame_Log_StartMethod, "hasAvailableSize", "println", "int a_size");
 			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", "New Size:");
 			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", a_size);
 			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", "Array Size:");
 			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", this->getSize());
-			if(this->hasEndValue()){
-				ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", "this->hasEndValue()");
-				ArrayLog(ame_Log_EndMethod, "hasAvailableSize", "println", a_size < (this->getSize() - 1));
-				return a_size < (this->getSize() - 1);
-			}
-			ArrayLog(ame_Log_Statement, "hasAvailableSize", "println", "!this->hasEndValue()");
-			ArrayLog(ame_Log_EndMethod, "hasAvailableSize", "println", a_size < this->getSize());
-			return a_size < this->getSize();
+			return this->getFreeSpace(a_size) > 0;
 		}
 
 		virtual bool set(int a_position, T a_value){
@@ -247,6 +295,7 @@ class Array : public cppObject{
 			if(this->m_t_value == nullptr){
 				this->m_pos = 0;
 				this->m_size = 0;
+				ArrayLog(ame_Log_EndMethod, "erase", "println", "this->m_t_value == nullptr");
 				return;
 			}
 			delete[] this->m_t_value;
@@ -256,7 +305,7 @@ class Array : public cppObject{
 			ArrayLog(ame_Log_EndMethod, "erase", "println", "");
 		}
 
-		virtual void erase(T* a_t_value){
+		virtual void eraseExtern(T* a_t_value){
 			ArrayLog(ame_Log_StartMethod, "erase", "println", "");
 			if(a_t_value == nullptr){
 				return;
@@ -371,7 +420,7 @@ class Array : public cppObject{
 			}
 			ArrayLog(ame_Log_EndMethod, "copyPointer", "println", "");
 		}
-		
+
 		//Method Functionality: utility - polimorfic - reductive - unit - contruct
 		virtual void copyExternPointer(T* a_array, const T* a_copy, int a_start, int a_size){
 			ArrayLog(ame_Log_StartMethod, "copyPointer", "println", "");
@@ -383,7 +432,7 @@ class Array : public cppObject{
 			}
 			ArrayLog(ame_Log_EndMethod, "copyPointer", "println", "");
 		}
-		
+
 		//Method Functionality: utility - polimorfic - reductive - unit - contruct
 		virtual void copyExternPointer(T* a_array, const T* a_copy, int a_start_1, int a_start_2, int a_size){
 			ArrayLog(ame_Log_StartMethod, "copyPointer", "println", "");
@@ -440,7 +489,7 @@ class Array : public cppObject{
 			}
 			ArrayLog(ame_Log_EndMethod, "copyPointer", "println", "");
 		}
-		
+
 		//Method Functionality: utility - polimorfic - reductive - unit - contruct
 		virtual void copyExternValue(T* a_array, T a_copy, int a_position){
 			ArrayLog(ame_Log_StartMethod, "copyValue", "println", "");
@@ -451,20 +500,30 @@ class Array : public cppObject{
 			ArrayLog(ame_Log_EndMethod, "copyValue", "println", "");
 		}
 
-		virtual void copyValue(const T& a_value){
+		virtual void copyValue(T a_value){
 			ArrayLog(ame_Log_StartMethod, "copyValue", "println", "");
 			if(this->m_t_value == nullptr){
+				ArrayLog(ame_Log_EndMethod, "copyValue", "println", "this->m_t_value == nullptr");
 				return;
 			}
 			if(!this->hasAvailableSize()){
+				ArrayLog(ame_Log_EndMethod, "copyValue", "println", "!this->hasAvailableSize()");
 				return;
 			}
 			this->m_t_value[this->m_pos] = a_value;
 			this->m_pos++;
+			ArrayLog(ame_Log_Statement, "copyValue", "println", "Position: ");
+			ArrayLog(ame_Log_Statement, "copyValue", "println", this->getPosition());
+			ArrayLog(ame_Log_Statement, "copyValue", "println", "Size: ");
+			ArrayLog(ame_Log_Statement, "copyValue", "println", this->getSize());
+			ArrayLog(ame_Log_Statement, "copyValue", "println", "value copied");
+			ArrayLog(ame_Log_Statement, "copyValue", "println", this->m_t_value[this->m_pos]);
+
 			ArrayLog(ame_Log_EndMethod, "copyValue", "println", "");
 		}
 
 		virtual int getAvailableSize(int a_pos){
+			ArrayLog(ame_Log_StartMethod, "getAvailableSize", "println", "");
 			ArrayLog(ame_Log_EndMethod, "getAvailableSize", "println", "");
 			return a_pos;
 		}
@@ -473,22 +532,23 @@ class Array : public cppObject{
 			ArrayLog(ame_Log_EndMethod, "pointer", "println", "");
 			return this->m_t_value;
 		}
-		
+
 		virtual T* clonePointer(){
 			ArrayLog(ame_Log_StartMethod, "clonePointer", "println", "");
-			int n_size = this->getPosition();
-			if(n_size > 0){
-				ArrayLog(ame_Log_Statement, "clonePointer", "println", n_size);
-				int availableSize = this->getAvailableSize(n_size);
-				ArrayLog(ame_Log_Statement, "clonePointer", "println", this->m_size);
-				T* cloneArray = this->create(availableSize);
-				this->copyExternPointer(cloneArray, this->m_t_value, n_size);
-				return cloneArray;
+			if(this->isEmpty()){
+				ArrayLog(ame_Log_EndMethod, "clonePointer", "println", "this->isEmpty()");
+				return nullptr;
 			}
+			int n_size = this->getPosition();
+			ArrayLog(ame_Log_Statement, "clonePointer", "println", n_size);
+			int availableSize = this->getAvailableSize(n_size);
+			ArrayLog(ame_Log_Statement, "clonePointer", "println", this->m_size);
+			T* cloneArray = this->create(availableSize);
+			this->copyExternPointer(cloneArray, this->m_t_value, n_size);
 			ArrayLog(ame_Log_EndMethod, "clonePointer", "println", "");
-			return nullptr;
+			return cloneArray;
 		}
-		
+
 		virtual T* clonePointer(int a_start, int a_size){
 			ArrayLog(ame_Log_StartMethod, "clonePointer", "println", "start and end");
 			if(a_start < 0 || a_start >= this->getPosition() || a_size < 1){
@@ -496,13 +556,9 @@ class Array : public cppObject{
 			}
 			ArrayLog(ame_Log_Statement, "clonePointer", "println", "new size: ");
 			ArrayLog(ame_Log_Statement, "clonePointer", "println", a_size);
-			if(a_size > 0){
-				T* cloneArray = this->createArrayClone(a_size);
-				this->copyExternPointer(cloneArray, this->m_t_value, a_start, a_size);
-				return cloneArray;
-			}
-			ArrayLog(ame_Log_EndMethod, "clonePointer", "println", "");
-			return nullptr;
+			T* cloneArray = this->createArrayClone(a_size);
+			this->copyExternPointer(cloneArray, this->m_t_value, a_start, a_size);
+			return cloneArray;
 		}
 
 		virtual int length(void) const{
@@ -546,6 +602,12 @@ class Array : public cppObject{
 		}
 
 		virtual bool isEmpty() const{
+			ArrayLog(ame_Log_StartMethod, "isEmpty", "println", "");
+			ArrayLog(ame_Log_Statement, "isEmpty", "println", "this->m_pos == 0");
+			ArrayLog(ame_Log_Statement, "isEmpty", "println", this->m_pos == 0);
+			ArrayLog(ame_Log_Statement, "isEmpty", "println", "this->m_t_value == nullptr");
+			ArrayLog(ame_Log_Statement, "isEmpty", "println", this->m_t_value == nullptr);
+			ArrayLog(ame_Log_EndMethod, "isEmpty", "println", "");
 			return this->m_pos == 0 || this->m_t_value == nullptr;
 		}
 
@@ -570,6 +632,78 @@ class Array : public cppObject{
 				return &this->m_t_value[x];
 			}
 			return nullptr;
+		}
+
+		Array<T> getArrayPart(int start){
+			ArrayLog(ame_Log_StartMethod, "getArrayPart", "println", "");
+			
+			if(this->isEmpty()){
+				ArrayLog(ame_Log_StartMethod, "getArrayPart", "println", "this->isEmpty()");
+				return Array<T>();
+			}
+			
+			int t_size = this->length();
+			int s_size = t_size - start;
+			ArrayLog(ame_Log_StartMethod, "getArrayPart", "println", "getArrayPart size");
+			ArrayLog(ame_Log_StartMethod, "getArrayPart", "println", s_size);
+			T* buff = this->createArrayClone(s_size);
+			
+			T* i_arrayPointer = this->pointer();
+
+			if(i_arrayPointer == nullptr || buff == nullptr){
+				return Array<T>();
+			}
+
+			for(int x = start; x < t_size; x++){
+				buff[x - start] = i_arrayPointer[x];
+			}
+			this->copyExternEndValue(buff, s_size);
+
+			Array<T> i_array;
+			i_array.addLocalArrayPointer(buff);
+			delete[] buff;
+
+			ArrayLog(ame_Log_EndMethod, "getArrayPart", "println", "");
+			return i_array;
+		}
+
+		Array<T> getArrayPart(int start, int end){
+			ArrayLog(ame_Log_StartMethod, "getArrayPart", "println", "");
+			
+			if(this->isEmpty()){
+				ArrayLog(ame_Log_StartMethod, "getArrayPart", "println", "this->isEmpty()");
+				return Array<T>();
+			}
+			
+			int t_size = this->length();
+			int s_size = t_size - start;
+			
+			if(end < t_size){
+				s_size -= t_size - end;
+				t_size = end;
+			}
+			
+			ArrayLog(ame_Log_StartMethod, "getArrayPart", "println", "subNote size");
+			ArrayLog(ame_Log_StartMethod, "getArrayPart", "println", s_size);
+			T* buff = this->createArrayClone(s_size);
+			
+			T* i_arrayPointer = this->pointer();
+
+			if(i_arrayPointer == nullptr || buff == nullptr){
+				return Array<T>();
+			}
+
+			for(int x = start; x < t_size; x++){
+				buff[x - start] = i_arrayPointer[x];
+			}
+			this->copyExternEndValue(buff, s_size);
+
+			Array<T> i_array;
+			i_array.addLocalArrayPointer(buff);
+			delete[] buff;
+			
+			ArrayLog(ame_Log_EndMethod, "getArrayPart", "println", "");
+			return i_array;
 		}
 
 		virtual T& operator[](int x){
@@ -603,20 +737,20 @@ class Array : public cppObject{
 			return T();
 		}
 
-		virtual Array<T> addValue(const T& a_value){
+		virtual Array<T> addValue(T a_value){
 			ArrayLog(ame_Log_StartMethod, "addValue", "println", "const T& a_value");
 			Array<T> i_array = *this;
 			ArrayLog(ame_Log_EndMethod, "addValue", "println", "");
-			return i_array.addLocal(a_value);
+			return i_array.addLocalValue(a_value);
 		}
 
-		virtual Array<T> addLocalValue(const T& a_value){
+		virtual Array<T> addLocalValue(T a_value){
 			ArrayLog(ame_Log_StartMethod, "addLocalValue", "println", "const T& a_value");
 			ArrayLog(ame_Log_EndMethod, "addLocalValue", "println", "");
 			return this->insertLocalValue(this->getPosition(), a_value);
 		}
 
-		virtual Array<T> insertLocalValue(int a_position, const T& a_value){
+		virtual Array<T> insertLocalValue(int a_position, T a_value){
 			ArrayLog(ame_Log_StartMethod, "insertLocalValue", "println", "const T& a_value");
 			int i_array_length = 1;
 			ArrayLog(ame_Log_Statement, "insertLocalValue", "println", "Array Length:");
@@ -626,36 +760,37 @@ class Array : public cppObject{
 			ArrayLog(ame_Log_Statement, "insertLocalValue", "println", "Array Size:");
 			ArrayLog(ame_Log_Statement, "insertLocalValue", "println", this->getSize());
 			if(this->isEmpty()){
+				ArrayLog(ame_Log_Statement, "insertLocalValue", "println", "this->isEmpty()");
 				this->createArray(i_array_length);
 				this->copyValue(a_value);
 				this->copyEndValue();
 				ArrayLog(ame_Log_EndMethod, "insertLocalValue", "println", "");
 				return *this;
 			}
-			
+
 			this->expandIfNeeded(i_array_length);
-			
+
 			if(a_position >= this->getPosition()){
 				this->copyValue(a_value);
 				this->copyEndValue();
 				ArrayLog(ame_Log_EndMethod, "insertLocalValue", "println", "");
 				return *this;
 			}
-			
+
 			T* i_pointer = this->createArrayClone(i_array_length + this->getPosition());
-			
+
 			this->copyExternPointer(i_pointer, this->pointer(), a_position);
 			this->copyExternValue(i_pointer, a_value, a_position);
 			this->copyExternPointer(i_pointer, this->pointer(), a_position + i_array_length, a_position, this->getPosition() - a_position);
 			this->copyExternEndValue(i_pointer, this->getPosition() + i_array_length);
-			
+
 			this->createFilledArray(i_pointer, this->getPosition() + i_array_length);
-			
+
 			ArrayLog(ame_Log_Statement, "insertLocalValue", "println", "Array Position:");
 			ArrayLog(ame_Log_Statement, "insertLocalValue", "println", this->getPosition());
 			ArrayLog(ame_Log_Statement, "insertLocalValue", "println", "Array Size:");
 			ArrayLog(ame_Log_Statement, "insertLocalValue", "println", this->getSize());
-			
+
 			ArrayLog(ame_Log_EndMethod, "insertLocalValue", "println", "");
 			return *this;
 		}
@@ -689,29 +824,105 @@ class Array : public cppObject{
 				return *this;
 			}
 			this->expandIfNeeded(i_array_length);
-			
+
 			if(a_position >= this->getPosition()){
 				this->copyPointer(a_array.pointer(), i_array_length);
 				this->copyEndValue();
 				ArrayLog(ame_Log_EndMethod, "insertLocalArray", "println", "");
 				return *this;
 			}
-			
+
 			T* i_pointer = this->createArrayClone(i_array_length + this->getPosition());
-			
+
 			this->copyExternPointer(i_pointer, this->pointer(), a_position);
 			this->copyExternPointer(i_pointer, a_array.pointer(), a_position, 0, i_array_length);
 			this->copyExternPointer(i_pointer, this->pointer(), a_position + i_array_length, a_position, this->getPosition() - a_position);
 			this->copyExternEndValue(i_pointer, this->getPosition() + i_array_length);
-			
+
 			this->createFilledArray(i_pointer, this->getPosition() + i_array_length);
-			
+
 			ArrayLog(ame_Log_Statement, "insertLocalArray", "println", "Array Position:");
 			ArrayLog(ame_Log_Statement, "insertLocalArray", "println", this->getPosition());
 			ArrayLog(ame_Log_Statement, "insertLocalArray", "println", "Array Size:");
 			ArrayLog(ame_Log_Statement, "insertLocalArray", "println", this->getSize());
-			
+
 			ArrayLog(ame_Log_EndMethod, "insertLocalArray", "println", "");
+			return *this;
+		}
+		
+		virtual Array<T> addArrayPointer(const T* a_pointer){
+			ArrayLog(ame_Log_StartMethod, "addArrayPointer", "println", "const char* a_pointer");
+			ArrayLog(ame_Log_Statement, "addArrayPointer", "println", "Pointer Array:");
+			//ArrayLog(ame_Log_Statement, "addArrayPointer", "println", a_pointer);
+			Array i_array = *this;
+			ArrayLog(ame_Log_EndMethod, "addArrayPointer", "println", "");
+			return i_array.addLocalArrayPointer(a_pointer);
+		}
+
+		virtual Array<T> addLocalArrayPointer(const T* a_pointer){
+			ArrayLog(ame_Log_StartMethod, "addLocalArrayPointer", "println", "const char* a_pointer");
+			ArrayLog(ame_Log_Statement, "addLocalArrayPointer", "println", "Pointer Array:");
+			//ArrayLog(ame_Log_Statement, "addLocalArrayPointer", "println", a_pointer);
+			ArrayLog(ame_Log_EndMethod, "addLocalArrayPointer", "println", "");
+			return this->insertLocalArrayPointer(this->getPosition(), a_pointer);
+		}
+
+		virtual Array<T> insertLocalArrayPointer(int a_position, const T* a_pointer){
+			ArrayLog(ame_Log_StartMethod, "insertLocalArrayPointer", "println", "const char* a_pointer");
+			ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "Pointer Array:");
+			//ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", a_pointer);
+			if(a_pointer == nullptr){
+				return *this;
+			}
+			int i_array_length = this->arrayLength(a_pointer);
+			ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "Array Length:");
+			ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", i_array_length);
+			ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "Array Position:");
+			ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", this->getPosition());
+			ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "Array Size:");
+			ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", this->getSize());
+			if(this->isEmpty()){
+				ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "this->isEmpty()");
+				this->createArray(i_array_length);
+				this->copyPointer(a_pointer, i_array_length);
+				this->copyEndValue();
+				ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "Array Position:");
+				ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", this->getPosition());
+				ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "Array Size:");
+				ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", this->getSize());
+				ArrayLog(ame_Log_EndMethod, "insertLocalArrayPointer", "println", "");
+				return *this;
+			}
+			this->expandIfNeeded(i_array_length);
+			
+			if(a_position >= this->getPosition()){
+				ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "a_position >= this->getPosition()");
+				this->copyPointer(a_pointer, i_array_length);
+				this->copyEndValue();
+				ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "Array Position:");
+				ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", this->getPosition());
+				ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "Array Size:");
+				ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", this->getSize());
+				ArrayLog(ame_Log_EndMethod, "insertLocalArrayPointer", "println", "");
+				return *this;
+			}
+
+			T* i_pointer = this->createArrayClone(i_array_length + this->getPosition());
+
+			this->copyExternPointer(i_pointer, this->pointer(), a_position);
+			this->copyExternPointer(i_pointer, a_pointer, a_position, 0, i_array_length);
+			this->copyExternPointer(i_pointer, this->pointer(), a_position + i_array_length, a_position, this->getPosition() - a_position);
+			this->copyExternEndValue(i_pointer, this->getPosition() + i_array_length);
+
+			this->createFilledArray(i_pointer, this->getPosition() + i_array_length);
+			
+			ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "a_position < this->getPosition()");
+			ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "Array Position:");
+			ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", this->getPosition());
+			ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", "Array Size:");
+			ArrayLog(ame_Log_Statement, "insertLocalArrayPointer", "println", this->getSize());
+			
+			ArrayLog(ame_Log_EndMethod, "insertLocalArrayPointer", "println", "");
 			return *this;
 		}
 
@@ -726,7 +937,7 @@ class Array : public cppObject{
 				expandLocal(i_size + this->m_expandSize);
 			}
 			this->copyPointer(i_t_value, i_size);
-			this->erase(i_t_value);
+			this->eraseExtern(i_t_value);
 			ArrayLog(ame_Log_EndMethod, "addLocal", "println", "");
 			return *this;
 		}
@@ -743,12 +954,19 @@ class Array : public cppObject{
 			if(this->m_t_value == nullptr || this->m_pos == 0){
 				return false;
 			}
+
+			ArrayLog(ame_Log_Statement, "contain", "println", "Array Position:");
+			ArrayLog(ame_Log_Statement, "contain", "println", this->getPosition());
+			ArrayLog(ame_Log_Statement, "contain", "println", "Array Size:");
+			ArrayLog(ame_Log_Statement, "contain", "println", this->getSize());
+
 			for(int x = 0; x < this->m_pos; x++){
 				if(this->m_t_value[x] == a_value){
+					ArrayLog(ame_Log_EndMethod, "contain", "println", "return true");
 					return true;
 				}
 			}
-			ArrayLog(ame_Log_EndMethod, "contain", "println", "");
+			ArrayLog(ame_Log_EndMethod, "contain", "println", "return false");
 			return false;
 		}
 
@@ -800,7 +1018,7 @@ class Array : public cppObject{
 				this->createFilledArray(i_copy, i_pos);
 				this->copyEndValue();
 			}else{
-				
+
 			}
 			return true;
 			ArrayLog(ame_Log_EndMethod, "remove", "println", "");
@@ -826,12 +1044,12 @@ class Array : public cppObject{
 				this->createFilledArray(i_copy, x_count);
 				this->copyEndValue();
 			}else{
-				
+
 			}
 			return true;
 			ArrayLog(ame_Log_EndMethod, "remove", "println", "");
 		}
-		
+
 		virtual void removeFirst(const T& a_value){
 			ArrayLog(ame_Log_StartMethod, "removeFirst", "println", "");
 			int index = getFirstIndex(a_value);
@@ -881,7 +1099,7 @@ class Array : public cppObject{
 			return *this;
 		}
 
-		virtual Array<T> operator=(const T& a_value){
+		virtual Array<T> operator=(T a_value){
 			ArrayLog(ame_Log_StartMethod, "operator=", "println", "operator= const T&");
 			this->fix();
 			this->erase();
@@ -892,68 +1110,87 @@ class Array : public cppObject{
 			ArrayLog(ame_Log_EndMethod, "operator=", "println", "");
 			return *this;
 		}
+
+		virtual Array<T> operator+=(const Array<T>& a_value){
+			ArrayLog(ame_Log_StartMethod, "operator+=", "println", "const Array<T>& a_value");
+			ArrayLog(ame_Log_EndMethod, "operator+=", "println", "");
+			return this->addLocalArray(a_value);
+		}
+
+		virtual Array<T> operator+(const Array<T>& a_value){
+			ArrayLog(ame_Log_StartMethod, "operator+", "println", "const Array<T>& a_value");
+			Array<T> i_array = *this;
+			ArrayLog(ame_Log_EndMethod, "operator+", "println", "");
+			return i_array.addArray(a_value);
+		}
+
+		virtual Array<T> operator+=(T a_value){
+			ArrayLog(ame_Log_StartMethod, "operator+=", "println", "T a_value");
+			ArrayLog(ame_Log_EndMethod, "operator+=", "println", "");
+			return this->addLocalValue(a_value);
+		}
+
+		virtual Array<T> operator+(T a_value){
+			ArrayLog(ame_Log_StartMethod, "operator+", "println", "T a_value");
+			Array<T> i_array = *this;
+			ArrayLog(ame_Log_EndMethod, "operator+", "println", "");
+			return i_array.addValue(a_value);
+		}
+
+		virtual bool operator==(const Array<T>& o_array){
+			ArrayLog(ame_Log_StartMethod, "operator==", "println", "const Array<T>& o_array");
+			
+			if(o_array.getPosition() != this->getPosition()){
+				return false;
+			}
+			for(int x = 0; x < this->getPosition(); x++){
+				if(o_array.get(x) != this->get(x)){
+					return false;
+				}
+			}
+
+			ArrayLog(ame_Log_EndMethod, "operator==", "println", "");
+			return true;
+		}
+
+		virtual bool operator!=(const Array<T>& o_array){
+			ArrayLog(ame_Log_StartMethod, "operator!=", "println", "const Array<T>& o_array");
+			
+			if(o_array.getPosition() != this->getPosition()){
+				return true;
+			}
+			for(int x = 0; x < this->getPosition(); x++){
+				if(o_array.get(x) != this->get(x)){
+					return true;
+				}
+			}
+
+			ArrayLog(ame_Log_EndMethod, "operator!=", "println", "");
+			return false;
+		}
+
+		virtual bool operator==(const T& a_value){
+			ArrayLog(ame_Log_StartMethod, "operator==", "println", "const T& a_value");
+			
+			if(this->getPosition() != 1){
+				return false;
+			}
+
+			ArrayLog(ame_Log_EndMethod, "operator==", "println", "");
+			return this->get(0) == a_value;
+		}
+		
+		virtual bool operator!=(const T& a_value){
+			ArrayLog(ame_Log_StartMethod, "operator!=", "println", "const T& a_value");
+			
+			if(this->getPosition() != 1){
+				return true;
+			}
+
+			ArrayLog(ame_Log_EndMethod, "operator!=", "println", "");
+			return this->get(0) != a_value;
+		}
 /*
-		Array<T> operator+(const Array<T>& a_value){
-			ArrayLog(ame_Log_StartMethod, "operator+", "println", "");
-			ArrayLog(ame_Log_Statement, "operator+", "println", "~Array");
-
-			ArrayLog(ame_Log_EndMethod, "operator+", "println", "");
-			return m_Array;
-		}
-
-		Array<T> operator+=(const Array<T>& a_value){
-			ArrayLog(ame_Log_StartMethod, "operator+=", "println", "");
-			ArrayLog(ame_Log_Statement, "operator+=", "println", "~Array");
-
-			ArrayLog(ame_Log_EndMethod, "operator+=", "println", "");
-			return *this;
-		}
-		Array<T> operator+(const T& a_value){
-			ArrayLog(ame_Log_StartMethod, "operator+", "println", "");
-			ArrayLog(ame_Log_Statement, "operator+", "println", "~Array");
-
-			ArrayLog(ame_Log_EndMethod, "operator+", "println", "");
-			return m_Array;
-		}
-
-		Array<T> operator+=(const T& a_value){
-			ArrayLog(ame_Log_StartMethod, "operator+=", "println", "");
-			ArrayLog(ame_Log_Statement, "operator+=", "println", "~Array");
-
-			ArrayLog(ame_Log_EndMethod, "operator+=", "println", "");
-			return *this;
-		}
-
-		bool operator==(const Array<T>& a_value){
-			ArrayLog(ame_Log_StartMethod, "operator==", "println", "");
-			ArrayLog(ame_Log_Statement, "operator==", "println", "~Array");
-
-			ArrayLog(ame_Log_EndMethod, "operator==", "println", "");
-			return true;
-		}
-		bool operator!=(const Array<T>& a_value){
-			ArrayLog(ame_Log_StartMethod, "operator!=", "println", "");
-			ArrayLog(ame_Log_Statement, "operator!=", "println", "~Array");
-
-			ArrayLog(ame_Log_EndMethod, "operator!=", "println", "");
-			return false;
-		}
-
-		bool operator==(const T& a_value){
-			ArrayLog(ame_Log_StartMethod, "operator==", "println", "");
-			ArrayLog(ame_Log_Statement, "operator==", "println", "~Array");
-
-			ArrayLog(ame_Log_EndMethod, "operator==", "println", "");
-			return true;
-		}
-		bool operator!=(const T& a_value){
-			ArrayLog(ame_Log_StartMethod, "operator!=", "println", "");
-			ArrayLog(ame_Log_Statement, "operator!=", "println", "~Array");
-
-			ArrayLog(ame_Log_EndMethod, "operator!=", "println", "");
-			return false;
-		}
-
 		void replace(Array a_search, Array a_change){
 			ArrayLog(ame_Log_StartMethod, "replace", "println", "");
 			ArrayLog(ame_Log_Statement, "replace", "println", "");
@@ -1006,18 +1243,19 @@ class Array : public cppObject{
 			return;
 		}
 */
-		virtual cppObjectClass* getClass(){return Class<Array<T>>::classType;}
+
+		virtual Array<T> getArray(){
+			return *this;
+		}
+
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+		virtual cppObjectClass* getClass(){return Class<Array<T>>::getClass();}
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<Array<T>>::classType;
+			return cls == Class<Array<T>>::getClass();
 		}
+		#endif
 
-		virtual Array<T> cloneArray(){
-			ArrayLog(ame_Log_StartMethod, "clone", "println", "");
-			Array<T> array = *this;
-			ArrayLog(ame_Log_EndMethod, "clone", "println", "");
-			return array;
-		}
-
+		#if defined(cppObject_AVAILABLE)
 		virtual Array<T>* clone(){
 			ArrayLog(ame_Log_StartMethod, "clone", "println", "");
 			Array<T>* array = new Array<T>(*this);
@@ -1165,10 +1403,8 @@ class Array : public cppObject{
 			ArrayLog(ame_Log_EndMethod, "duplicate", "println", "");
 			return source;
 		}
-		
-		virtual Array<T> getArray(){
-			return *this;
-		}
+		#endif
+
 	protected:
 
 		virtual void incrementPosition(){this->m_pos++;}
@@ -1202,7 +1438,7 @@ class Array : public cppObject{
 				this->m_size = 0;
 			}
 		}
-	
+
 	protected:
 		bool removeShrink = true;
 };

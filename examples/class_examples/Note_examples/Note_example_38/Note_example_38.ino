@@ -1,8 +1,6 @@
 
-#define DISABLE_Note
-
 #include "Note.hpp"
-#include "MemoryRam.h"
+#include "NoteHelper.hpp"
 
 using namespace ame;
 
@@ -11,12 +9,10 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("////////////start");
-  Serial.println(getRamSize());
+  ame_Debuging(ame_Log_StartLoop, "loop");
 
   Note note = "192.168.5.90";
   Serial.println(toIPAddress(note));
 
-  Serial.println("////////////end");
-  Serial.println(getRamSize());
+  ame_Debuging(ame_Log_EndLoop, "loop");
 }

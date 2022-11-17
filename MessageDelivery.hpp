@@ -1,13 +1,12 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_MessageDelivery)
-	#define MessageDelivery_hpp
-#endif
-
 #ifndef MessageDelivery_hpp
 #define MessageDelivery_hpp
 #define MessageDelivery_AVAILABLE
+
+#include "cppObject.hpp"
+#include "Note.hpp"
+#include "ame_Byte.hpp"
+#include "ByteArray.hpp"
 
 #ifndef ame_Enviroment_Defined
 
@@ -21,22 +20,25 @@
 	#include "Arduino.h"
 #endif
 
-#include "cppObject.hpp"
-#include "Note.hpp"
-#include "ame_Byte.hpp"
-#include "ByteArray.hpp"
-
 namespace ame{
-	
-class SerialNetwork;
 
-class MessageDelivery : public cppObject{
+/*
+*	Class Configuration:
+*	DISABLE_IMPLEMENTATION_cppObject
+*/
+class MessageDelivery IMPLEMENTATION_cppObject {
 
     public:
 		MessageDelivery(){}
 		virtual ~MessageDelivery(){}
 		
-		virtual void initialize(SerialNetwork* a_network){}
+		virtual void initialize(SerialNetwork* state){
+			this->serialState = state;
+		}
+
+		virtual SerialNetwork* getSerialNetwork(){
+			return this->serialState;
+		}
 		
 		virtual bool DeliverMessage(Note* a_mns){return false;}
 		virtual bool DeliverMessage(ByteArray* a_mns){return false;}
@@ -48,12 +50,15 @@ class MessageDelivery : public cppObject{
 		virtual bool operator==(MessageDelivery b){return false;}
 		virtual bool operator!=(MessageDelivery b){return false;}
 		
-		virtual cppObjectClass* getClass(){return Class<MessageDelivery>::classType;}
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+		virtual cppObjectClass* getClass(){return Class<MessageDelivery>::getClass();}
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<MessageDelivery>::classType || cppObject::instanceof(cls);
+			return cls == Class<MessageDelivery>::getClass();
 		}
+		#endif
 		
 	protected:
+		SerialNetwork* serialState = nullptr;
 };
 
 }

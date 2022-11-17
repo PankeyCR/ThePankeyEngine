@@ -1,8 +1,5 @@
 
 #include "Note.hpp"
-#include "MemoryRam.h"
-#include "RawList.hpp"
-#include "PrimitiveList.hpp"
 
 using namespace ame;
  
@@ -14,9 +11,13 @@ void loop() {
   ame_Debuging(ame_Log_StartLoop, "loop");
 
   Note note = "DataBase.command put";
-  note.addLine("DataBase.type object");
-  note.addLine("DataBase.id bomb");
-  note.addLine("DataBase.path monkey.txt");
+  note.addLine();
+  note.addLocalCharPointer("DataBase.type object");
+  note.addLine();
+  note.addLocalCharPointer("DataBase.id bomb");
+  note.addLine();
+  note.addLocalCharPointer("DataBase.path monkey.txt");
+  note.addLine();
 
   Serial.println("full text");
   Serial.println(note);
@@ -35,6 +36,11 @@ void loop() {
 
   Serial.println("DataBase.type position: ");
   Serial.println(type);
+  
+  int command = note.getOrder("DataBase.command", ' ', '\n');
+
+  Serial.println("DataBase.command position: ");
+  Serial.println(command);
   
   ame_Debuging(ame_Log_EndLoop, "loop");
 }

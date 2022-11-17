@@ -1,7 +1,49 @@
 
+#ifndef CONFIGURATION_Application_hpp
+#define CONFIGURATION_Application_hpp
+
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_Application)
+		#define Application_hpp
+
+		#ifndef AppState_IMPLEMENTATION_AVAILABLE
+			#define IMPLEMENTATION_Application
+			#define IMPLEMENTING_Application
+			#define Application_IMPLEMENTATION_AVAILABLE
+		#endif
+		
+		#ifndef AppState_IMPLEMENTATION_AVAILABLE
+			#define IMPLEMENTATION_AppState
+			#define IMPLEMENTING_AppState
+			#define AppState_IMPLEMENTATION_AVAILABLE
+		#endif
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_Application)
+			#ifndef AppState_IMPLEMENTATION_AVAILABLE
+				#define IMPLEMENTATION_Application
+				#define IMPLEMENTING_Application
+				#define Application_IMPLEMENTATION_AVAILABLE
+			#endif
+			
+			#ifndef AppState_IMPLEMENTATION_AVAILABLE
+				#define IMPLEMENTATION_AppState
+				#define IMPLEMENTING_AppState
+				#define AppState_IMPLEMENTATION_AVAILABLE
+			#endif
+		#endif
+	#endif
+	
+#endif //End Configuration
+
 #ifndef Application_hpp
 #define Application_hpp
 #define Application_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_Application
+	#define IMPLEMENTATION_Application IMPLEMENTATION(public Application)
+	#define IMPLEMENTING_Application IMPLEMENTING(public Application)
+#endif
 
 #include "cppObject.hpp"
 
@@ -17,10 +59,22 @@ namespace ame{
 
 namespace ame{
 
-class Application : public cppObject{
+/*
+*	Class Configuration:
+*	DISABLE_RenderManager
+*	DISABLE_AppStateManager
+*	DISABLE_AppSettings
+*	DISABLE_TimeControl
+*	DISABLE_cppObject
+*	DISABLE_cppObjectClass
+*	DISABLE_AbstractClass
+*	DISABLE_IMPLEMENTATION_cppObject
+*/
+class Application IMPLEMENTATION_cppObject {
     public:
 		virtual ~Application(){}
 
+		#if defined(RenderManager_AVAILABLE)
 		virtual RenderManager* setRenderManager(RenderManager* r_manager){
 			if(r_manager == nullptr){
 				return this->m_render;
@@ -37,7 +91,9 @@ class Application : public cppObject{
 		virtual RenderManager* getRenderManager(){
 			return this->m_render;
 		}
+		#endif
 
+		#if defined(AppStateManager_AVAILABLE)
 		virtual AppStateManager* setStateManager(AppStateManager* a_appstate){
 			if(a_appstate == nullptr){
 				return this->m_states;
@@ -54,7 +110,9 @@ class Application : public cppObject{
 		virtual AppStateManager* getStateManager(){
 			return this->m_states;
 		}
+		#endif
 
+		#if defined(AppSettings_AVAILABLE)
 		virtual AppSettings* setSettings(AppSettings* a_setting){
 			if(a_setting == nullptr){
 				return this->m_settings;
@@ -71,7 +129,9 @@ class Application : public cppObject{
 		virtual AppSettings* getSettings(){
 			return this->m_settings;
 		}
+		#endif
 
+		#if defined(TimeControl_AVAILABLE)
 		virtual TimeControl* setTimeControl(TimeControl* a_timecontrol){
 			if(a_timecontrol == nullptr){
 				return this->m_timer;
@@ -88,7 +148,9 @@ class Application : public cppObject{
 		virtual TimeControl *getTimeControl(){
 			return this->m_timer;
 		}
+		#endif
 
+		#if defined(MemoryPool_AVAILABLE)
 		virtual MemoryPool* setMemoryPool(MemoryPool* a_memory){
 			if(a_memory == nullptr){
 				return this->m_memory;
@@ -105,27 +167,43 @@ class Application : public cppObject{
 		virtual MemoryPool* getMemoryPool(){
 			return this->m_memory;
 		}
+		#endif
 
 
 		virtual void initialize(){}
 
 		virtual void update()=0;
 
-		//cppObject part
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(AbstractClass_AVAILABLE)
 		virtual cppObjectClass* getClass(){
-			return AbstractClass<Application>::classType;
+			return AbstractClass<Application>::getClass();
 		}
 
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == AbstractClass<Application>::classType;
+			return cls == AbstractClass<Application>::getClass();
 		}
+		#endif
 
 	protected:
+		#if defined(RenderManager_AVAILABLE)
 		RenderManager* m_render = nullptr;
+		#endif
+		
+		#if defined(AppStateManager_AVAILABLE)
 		AppStateManager* m_states = nullptr;
+		#endif
+		
+		#if defined(AppSettings_AVAILABLE)
 		AppSettings* m_settings = nullptr;
+		#endif
+		
+		#if defined(TimeControl_AVAILABLE)
 		TimeControl* m_timer = nullptr;
+		#endif
+		
+		#if defined(MemoryPool_AVAILABLE)
 		MemoryPool* m_memory = nullptr;
+		#endif
 };
 
 }

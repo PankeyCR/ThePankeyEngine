@@ -13,7 +13,7 @@ void loop() {
   
   Array<int> array = {1,2,3,4,5};
 
-  Array<int> array_2 = array.add(20);
+  Array<int> array_2 = array.addValue(20);
   
   for(int i : array_2){
     System::console.println(i);

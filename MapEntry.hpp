@@ -116,10 +116,36 @@ class MapEntry{
 			if(m_key != nullptr){
 				delete this->m_key;
 			}
-			if(m_value == nullptr){
+			if(m_value != nullptr){
 				delete this->m_value;
 			}
 			MapEntryLog(ame_Log_EndMethod, "deleteEntry", "println", "");
+			return true;
+		}
+		
+		virtual bool deleteKeyEntry(){
+			MapEntryLog(ame_Log_StartMethod, "deleteKeyEntry", "println", "");
+			if(m_key == nullptr){
+				MapEntryLog(ame_Log_EndMethod, "deleteKeyEntry", "println", "");
+				return false;
+			}
+			if(m_key != nullptr){
+				delete this->m_key;
+			}
+			MapEntryLog(ame_Log_EndMethod, "deleteKeyEntry", "println", "");
+			return true;
+		}
+		
+		virtual bool deleteValueEntry(){
+			MapEntryLog(ame_Log_StartMethod, "deleteKeyEntry", "println", "");
+			if(m_value == nullptr){
+				MapEntryLog(ame_Log_EndMethod, "deleteEntry", "println", "");
+				return false;
+			}
+			if(m_value != nullptr){
+				delete this->m_value;
+			}
+			MapEntryLog(ame_Log_EndMethod, "deleteKeyEntry", "println", "");
 			return true;
 		}
 	

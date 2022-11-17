@@ -1,20 +1,29 @@
 
-#include "ame_Enviroment.hpp"
+#ifndef CONFIGURATION_ElementId_hpp
+#define CONFIGURATION_ElementId_hpp
 
-#if defined(DISABLE_ElementId)
-	#define ElementId_hpp
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_ElementId)
+		#define ElementId_hpp
+
+		#define IMPLEMENTATION_ElementId
+		#define IMPLEMENTING_ElementId
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_ElementId)
+			#define IMPLEMENTATION_ElementId
+			#define IMPLEMENTING_ElementId
+		#endif
+	#endif
 #endif
 
 #ifndef ElementId_hpp
 #define ElementId_hpp
 #define ElementId_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
+#ifndef DISABLE_IMPLEMENTATION_ElementId
+	#define IMPLEMENTATION_ElementId IMPLEMENTATION(public ElementId)
+	#define IMPLEMENTING_ElementId IMPLEMENTING(public ElementId)
 #endif
 
 #ifdef ame_ArduinoIDE
@@ -26,69 +35,74 @@
 #include "Note.hpp"
 #include "Class.hpp"
 
-#ifdef ElementIdLogApp
-	#include "Logger.hpp"
-	#define ElementIdLog(name,method,type,mns) Log(name,method,type,mns)
+#ifdef ElementId_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+
+	#define ElementIdLog(location,method,type,mns) ame_Log(this,location,"ElementId",method,type,mns)
+	#define const_ElementIdLog(location,method,type,mns)
 #else
-	#define ElementIdLog(name,method,type,mns)
+	#ifdef ElementId_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+
+		#define ElementIdLog(location,method,type,mns) ame_LogDebug(this,location,"ElementId",method,type)
+		#define const_ElementIdLog(location,method,type,mns)
+	#else
+		#define ElementIdLog(location,method,type,mns)
+		#define const_ElementIdLog(location,method,type,mns)
+	#endif
 #endif
 
 namespace ame{
 
-
-#ifdef ame_Windows
-class ElementId : public cppObject{
-#endif
-
-#ifdef ame_ArduinoIDE
-class ElementId : public cppObject , public Printable{
-#endif
+class ElementId : public Printable IMPLEMENTING_cppObject {
 	public:
 		ElementId(){
-			ElementIdLog("ElementId", "Contructor 1",  "println", Note("id ") + id);
-			ElementIdLog("ElementId", "Contructor 1",  "println", Note("delimiter ") + m_delimiter);
+			ElementIdLog(ame_Log_StartMethod, "Contructor 1",  "println", Note("id ") + id);
+			ElementIdLog(ame_Log_StartMethod, "Contructor 1",  "println", Note("delimiter ") + m_delimiter);
 		}
 		
 		ElementId(const char* i){
 			id = i;
-			ElementIdLog("ElementId", "Contructor 2",  "println", Note("id ") + id);
-			ElementIdLog("ElementId", "Contructor 2",  "println", Note("delimiter ") + m_delimiter);
+			ElementIdLog(ame_Log_StartMethod, "Contructor 2",  "println", Note("id ") + id);
+			ElementIdLog(ame_Log_StartMethod, "Contructor 2",  "println", Note("delimiter ") + m_delimiter);
 		}
 		
 		ElementId(const Note& i){
 			id = i;
-			ElementIdLog("ElementId", "Contructor 3",  "println", Note("id ") + id);
-			ElementIdLog("ElementId", "Contructor 3",  "println", Note("delimiter ") + m_delimiter);
+			ElementIdLog(ame_Log_StartMethod, "Contructor 3",  "println", Note("id ") + id);
+			ElementIdLog(ame_Log_StartMethod, "Contructor 3",  "println", Note("delimiter ") + m_delimiter);
 		}
 		
 		ElementId(const char* i, const char* i2){
 			id = i;
 			m_delimiter = i2;
-			ElementIdLog("ElementId", "Contructor 4",  "println", Note("id ") + id);
-			ElementIdLog("ElementId", "Contructor 4",  "println", Note("delimiter ") + m_delimiter);
+			ElementIdLog(ame_Log_StartMethod, "Contructor 4",  "println", Note("id ") + id);
+			ElementIdLog(ame_Log_StartMethod, "Contructor 4",  "println", Note("delimiter ") + m_delimiter);
 		}
 		
 		ElementId(const Note& i, const Note& i2){
 			id = i;
 			m_delimiter = i2;
-			ElementIdLog("ElementId", "Contructor 5",  "println", Note("id ") + id);
-			ElementIdLog("ElementId", "Contructor 5",  "println", Note("delimiter ") + m_delimiter);
+			ElementIdLog(ame_Log_StartMethod, "Contructor 5",  "println", Note("id ") + id);
+			ElementIdLog(ame_Log_StartMethod, "Contructor 5",  "println", Note("delimiter ") + m_delimiter);
 		}
 		
 		virtual ~ElementId(){
-			ElementIdLog("ElementId", "Destructor",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "Destructor",  "println", "");
 		}
 		
 		ElementId child(const char* childId){
-			ElementIdLog("ElementId", "child",  "println", Note(childId));
+			ElementIdLog(ame_Log_StartMethod, "child",  "println", Note(childId));
 			if(id == ""){
 				return ElementId(childId);
 			}
-			return ElementId(id + m_delimiter + childId);
+			return ElementId(id + m_delimiter + Note(childId));
 		}
 		
 		ElementId child(const Note& childId){
-			ElementIdLog("ElementId", "child",  "println", Note(childId));
+			ElementIdLog(ame_Log_StartMethod, "child",  "println", Note(childId));
 			if(id == ""){
 				return ElementId(childId);
 			}
@@ -96,7 +110,7 @@ class ElementId : public cppObject , public Printable{
 		}
 
 		ElementId child(const ElementId& childId) {
-			ElementIdLog("ElementId", "child",  "println", childId.getId());
+			ElementIdLog(ame_Log_StartMethod, "child",  "println", childId.getId());
 			if(id == ""){
 				return ElementId(childId.getId());
 			}
@@ -104,57 +118,55 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual void setId(Note i){
-			ElementIdLog("ElementId", "setId",  "println", i);
+			ElementIdLog(ame_Log_StartMethod, "setId",  "println", i);
 			id = i;
 		}
 		
 		virtual Note getId()const{
-			ElementIdLog("ElementId", "getId",  "println", id);
 			return id;
 		}
 		
 		virtual Note getPart(int x)const{
-			ElementIdLog("ElementId", "getPart",  "println", "");
+			const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", "");
 			Note part = "";
 			int delimiter = 0;
 			int delimiterSize = m_delimiter.length();
 			int delimiterEqual = 0;
 			bool startConcat = false;
-			ElementIdLog("ElementId", "getPart",  "println", Note("id.length() ") + Note(id.length()));
+			const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", Note("id.length() ") + Note(id.length()));
 			for(int i=0; i < id.length(); i++){
 				char c = id.charAt(i);
 				char c2 = m_delimiter.charAt(delimiterEqual);
-				ElementIdLog("ElementId", "getPart",  "println", Note("iteration ") + Note(i));
-				ElementIdLog("ElementId", "getPart",  "println", Note("char ") + Note(c));
-				ElementIdLog("ElementId", "getPart",  "println", Note("char delimiter ") + Note(c2));
+				const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", Note("iteration ") + Note(i));
+				const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", Note("char ") + Note(c));
+				const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", Note("char delimiter ") + Note(c2));
 				if(c == c2){
-					ElementIdLog("ElementId", "getPart",  "println", "c == c2");
+					const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", "c == c2");
 					delimiterEqual++;
 					if(delimiterEqual == delimiterSize){
-						ElementIdLog("ElementId", "getPart",  "println", "delimiterEqual == delimiterSize");
+						const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", "delimiterEqual == delimiterSize");
 						delimiter++;
 						delimiterEqual = 0;
 					}
 					continue;
 				}else{
-					ElementIdLog("ElementId", "getPart",  "println", "else delimiterEqual = 0");
+					const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", "else delimiterEqual = 0");
 					delimiterEqual = 0;
 				}
 				if((x == delimiter)){
-					ElementIdLog("ElementId", "getPart",  "println", "x == delimiter");
-					part.concat(c);
+					const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", "x == delimiter");
+					part.addLocalValue(c);
 					startConcat = true;
 				}
 				if((x != delimiter) && startConcat){
 					return part;
 				}
 			}
-			ElementIdLog("ElementId", "getPart",  "println", Note("Part ") + part);
+			const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", "");
 			return part;
 		}
 		
 		virtual int getSize()const{
-			ElementIdLog("ElementId", "getSize",  "println", "");
 			int delimiter = 1;
 			int delimiterSize = m_delimiter.length();
 			int delimiterEqual = 0;
@@ -175,7 +187,7 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual bool containParent(ElementId m_parent){
-			ElementIdLog("ElementId", "containParent",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "containParent",  "println", "");
 			int sizeParent = m_parent.getSize();
 			int sizeChild = getSize();
 			if(sizeParent >= sizeChild){
@@ -190,7 +202,7 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual bool containChild(ElementId m_child){
-			ElementIdLog("ElementId", "containChild",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "containChild",  "println", "");
 			int sizeParent = getSize();
 			int sizeChild = m_child.getSize();
 			if(sizeParent >= sizeChild){
@@ -205,7 +217,7 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual bool hasPart(Note s){
-			ElementIdLog("ElementId", "hasPart",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "hasPart",  "println", "");
 			int sizeOriginal = getSize();
 			for(int x = 0; x < sizeOriginal; x++){
 				if(s == getPart(x)){
@@ -216,7 +228,7 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual ElementId removePart(Note s){
-			ElementIdLog("ElementId", "removePart",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "removePart",  "println", "");
 			Note newId = "";
 			int sizeOriginal = getSize();
 			for(int x = 0; x < sizeOriginal; x++){
@@ -233,7 +245,7 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual ElementId remove(ElementId nid){
-			ElementIdLog("ElementId", "remove",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "remove",  "println", "");
 			int sizeNID = nid.getSize();
 			int sizeOriginal = getSize();
 			if(sizeNID > sizeOriginal){
@@ -262,7 +274,7 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual ElementId removeParent(){
-			ElementIdLog("ElementId", "removeParent",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "removeParent",  "println", "");
 			Note newId = "";
 			int sizeOriginal = getSize();
 			for(int x = 1; x < sizeOriginal; x++){
@@ -277,7 +289,7 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual ElementId changeDelimiter(Note n_delimiter){
-			ElementIdLog("ElementId", "changeDelimiter",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "changeDelimiter",  "println", "");
 			Note newId = "";
 			int sizeOriginal = getSize();
 			for(int x = 0; x < sizeOriginal; x++){
@@ -288,7 +300,7 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual ElementId changeDelimiterLocal(Note n_delimiter){
-			ElementIdLog("ElementId", "changeDelimiterLocal",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "changeDelimiterLocal",  "println", "");
 			Note newId = "";
 			int sizeOriginal = getSize();
 			for(int x = 0; x < sizeOriginal; x++){
@@ -305,12 +317,12 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual void operator=(const ElementId& b){
-			ElementIdLog("ElementId", "operator=",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "operator=",  "println", "");
 			id=b.id;
 		}
 		
 		virtual void operator+=(const ElementId& b){
-			ElementIdLog("ElementId", "operator+=",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "operator+=",  "println", "");
 			int sizeNew = b.getSize();
 			for(int x = 1; x < sizeNew; x++){
 				Note partE = b.getPart(x);
@@ -323,7 +335,7 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual void operator+=(Note b){
-			ElementIdLog("ElementId", "operator+=",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "operator+=",  "println", "");
 			if(id == ""){
 				id = b;
 				return;
@@ -332,52 +344,48 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual bool operator==(const ElementId& b){
-			ElementIdLog("ElementId", "operator==",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "operator==",  "println", "");
 			return id == b.id;
 		}
 		
 		virtual bool operator!=(const ElementId& b){
-			ElementIdLog("ElementId", "operator!=",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "operator!=",  "println", "");
 			return id != b.id;
 		}
 		
 		virtual bool operator==(const Note& b){
-			ElementIdLog("ElementId", "operator==",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "operator==",  "println", "");
 			return id == b;
 		}
 		
 		virtual bool operator!=(const Note& b){
-			ElementIdLog("ElementId", "operator!=",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "operator!=",  "println", "");
 			return id != b;
 		}
 		
 		virtual bool operator==(const char* b){
-			ElementIdLog("ElementId", "operator==",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "operator==",  "println", "");
 			return id == b;
 		}
 		
 		virtual bool operator!=(const char* b){
-			ElementIdLog("ElementId", "operator!=",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "operator!=",  "println", "");
 			return id != b;
 		}
 		
 		virtual ElementId operator+(const ElementId& b){
-			ElementIdLog("ElementId", "operator+",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "operator+",  "println", "");
 			return ElementId(id + b.id);
 		}
 		
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
 		virtual cppObjectClass* getClass(){
-			ElementIdLog("ElementId", "getClass",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "getClass",  "println", "");
 			return Class<ElementId>::classType;
 		}
 		
-		virtual Note toNote(){
-			ElementIdLog("ElementId", "toNote",  "println", "");
-			return Note("ElementId: ") + id;
-		}
-		
 		virtual bool equal(cppObject *b){
-			ElementIdLog("ElementId", "equal",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "equal",  "println", "");
 			if(b == this){
 				return true;
 			}
@@ -388,17 +396,14 @@ class ElementId : public cppObject , public Printable{
 		}
 		
 		virtual bool instanceof(cppObjectClass* cls){
-			ElementIdLog("ElementId", "instanceof",  "println", "");
+			ElementIdLog(ame_Log_StartMethod, "instanceof",  "println", "");
 			return cls == Class<ElementId>::classType || cppObject::instanceof(cls);
 		}
+		#endif
 	
-
-#ifdef ame_ArduinoIDE
 		size_t printTo(Print& p) const{
-			ElementIdLog("ElementId", "printTo",  "println", "");
 			return p.print(id);
 		}
-#endif 
 	protected:
 		Note id = "";
 		Note m_delimiter = ".";

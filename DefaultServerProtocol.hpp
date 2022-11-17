@@ -1,13 +1,13 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_DefaultServerProtocol)
-	#define DefaultServerProtocol_hpp
-#endif
-
 #ifndef DefaultServerProtocol_hpp
 #define DefaultServerProtocol_hpp
-#define DefaultServerProtocol_AVAILABLE
+#define DefaultServerProtocol_AVAILABLE 
+
+#include "Application.hpp"
+#include "ServerProtocol.hpp"
+#include "SerialPort.hpp"
+#include "Message.hpp"
+#include "SerialState.hpp"
 
 #ifndef ame_Enviroment_Defined
 
@@ -20,12 +20,6 @@
 #ifdef ame_ArduinoIDE
 	#include "Arduino.h"
 #endif
-
-#include "Application.hpp"
-#include "ServerProtocol.hpp"
-#include "SerialPort.hpp"
-#include "Message.hpp"
-#include "SerialState.hpp"
 
 #ifdef DefaultServerProtocol_LogApp
 	#include "ame_Logger_config.hpp"
@@ -78,9 +72,10 @@ class DefaultServerProtocol : public ServerProtocol{
 			}
 			if(!this->serialState->containSerialPort(port)){
 				DefaultServerProtocolLog(ame_Log_Statement, "UpdateSerialPort",  "println", "!this->serialState->containSerialPort(port)");
-				T* t = new T();
-				initialMessage(port, t);
-				this->serialState->addSerialPort(port, t);
+				T* t_protocol = new T();
+				initialMessage(port, t_protocol);
+				this->serialState->addSerialPort(port, t_protocol);
+				t_protocol->initialize(this->serialState);
 			}
 		}
 		

@@ -1,27 +1,17 @@
 
-#include "ame_Enviroment.hpp"
+#ifndef DISABLE_ClassAnnotationList_hpp
+#define DISABLE_ClassAnnotationList_hpp
 
-#if defined(DISABLE_ClassAnnotationList)
-	#define ClassAnnotationList_hpp
+	#if defined(DISABLE_Annotation) || defined(DISABLE_ClassAnnotationList)
+		#define ClassAnnotationList_hpp
+	#endif
 #endif
 
 #ifndef ClassAnnotationList_hpp
 #define ClassAnnotationList_hpp
-#define ClassAnnotationList_AVAILABLE
+#define ClassAnnotationList_AVAILABLE 
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "Annotation.hpp"
+#include "cppObject.hpp"
 #include "RawList.hpp"
 #include "PrimitiveRawList.hpp"
 

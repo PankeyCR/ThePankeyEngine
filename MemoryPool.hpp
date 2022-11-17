@@ -1,13 +1,25 @@
 
+#ifndef CONFIGURATION_MemoryPool_hpp
+#define CONFIGURATION_MemoryPool_hpp
+
+	#if defined(DISABLE_cppObject) || defined(DISABLE_Memory) || defined(DISABLE_MemoryManager) || defined(DISABLE_MemoryPool) || defined(DISABLE_MemoryChunk) || defined(DISABLE_Chunk)
+		#define MemoryPool_hpp
+
+		#define IMPLEMENTATION_MemoryPool
+		#define IMPLEMENTING_MemoryPool
+	#endif
+#endif
+
 #ifndef MemoryPool_hpp
 #define MemoryPool_hpp
 #define MemoryPool_AVAILABLE
 
+#define IMPLEMENTATION_MemoryPool IMPLEMENTATION(public MemoryPool)
+#define IMPLEMENTING_MemoryPool IMPLEMENTING(public MemoryPool)
+
 #include "MemoryChunk.hpp"
 
 namespace ame{
-	
-class cppObject;
 
 class MemoryPool{
 	public:

@@ -10,15 +10,11 @@ void setup() {
 void loop() {
   ame_Debuging(ame_Log_StartLoop, "loop");
 
-  Note note = "hi user";
-  Note subNote = note.subNote(3);
+  Note note = "check out at charAt method";
   
-  Serial.print("subNote size: ");Serial.println(subNote.length());
-
-  for(char value : subNote){
-    Serial.print(value);
+  for(int x = 0; x < note.length(); x++){
+    Serial.print(note.charAt(x));
   }
-  
   Serial.println();
   
   ame_Debuging(ame_Log_EndLoop, "loop");

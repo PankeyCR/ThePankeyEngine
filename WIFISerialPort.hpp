@@ -1,13 +1,9 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_WIFISerialPort)
-	#define WIFISerialPort_hpp
-#endif
-
 #ifndef WIFISerialPort_hpp
 #define WIFISerialPort_hpp
-#define WIFISerialPort_AVAILABLE
+#define WIFISerialPort_AVAILABLE 
+
+#include "cppObject.hpp"
 
 #ifndef ame_Enviroment_Defined
 
@@ -32,11 +28,20 @@
 	#include "WiFi.h"
 #endif
 
-#ifdef WIFISerialPortLogApp
-	#include "Logger.hpp"
-	#define WIFISerialPortLog(name,method,type,mns) Log(name,method,type,mns)
+#ifdef WIFISerialPort_LogApp
+	#include "ame_Logger_config.hpp"
+	#include "ame_Logger.hpp"
+	
+	#define WIFISerialPortLog(location,method,type,mns) ame_Log(this,location,"WIFISerialPort",method,type,mns)
 #else
-	#define WIFISerialPortLog(name,method,type,mns)
+	#ifdef WIFISerialPort_LogDebugApp
+		#include "ame_Logger_config.hpp"
+		#include "ame_Logger.hpp"
+		
+		#define WIFISerialPortLog(location,method,type,mns) ame_LogDebug(this,location,"WIFISerialPort",method,type)
+	#else
+		#define WIFISerialPortLog(location,method,type,mns) 
+	#endif
 #endif
 
 namespace ame{
@@ -44,106 +49,114 @@ namespace ame{
 class WIFISerialPort : public SerialPort{	
     public:
 	WIFISerialPort(){
-		WIFISerialPortLog("WIFISerialPort", "Contructor",  "println", "");
+		WIFISerialPortLog(ame_Log_StartMethod, "Contructor",  "println", "");
+		WIFISerialPortLog(ame_Log_EndMethod, "Contructor",  "println", "");
 	}
 	WIFISerialPort(WiFiClient c){
+		WIFISerialPortLog(ame_Log_StartMethod, "Contructor",  "println", "");
 		client = c;
 		this->m_name = "eclient";
-		WIFISerialPortLog("WIFISerialPort", "Contructor",  "println", "eclient");
+		WIFISerialPortLog(ame_Log_EndMethod, "Contructor",  "println", "eclient");
 	}
 	WIFISerialPort(String name){
+		WIFISerialPortLog(ame_Log_StartMethod, "Contructor",  "println", "");
 		this->m_name = name;
-		WIFISerialPortLog("WIFISerialPort", "Contructor",  "println", name);
+		WIFISerialPortLog(ame_Log_Statement, "Contructor",  "println", "");
+		WIFISerialPortLog(ame_Log_Statement, "Contructor",  "println", "");
+		WIFISerialPortLog(ame_Log_EndMethod, "Contructor",  "println", name);
 	}
 	WIFISerialPort(WiFiClient c,String name){
+		WIFISerialPortLog(ame_Log_StartMethod, "Contructor",  "println", "");
 		client = c;
 		this->m_name = name;
-		WIFISerialPortLog("WIFISerialPort", "Contructor",  "println", name);
+		WIFISerialPortLog(ame_Log_EndMethod, "Contructor",  "println", name);
 	}
 
 	virtual ~WIFISerialPort(){
-		WIFISerialPortLog("WIFISerialPort", "Destructor",  "println", "");
+		WIFISerialPortLog(ame_Log_StartMethod, "Destructor",  "println", "");
 		if(connected()){
 			stop();
 		}
+		WIFISerialPortLog(ame_Log_EndMethod, "Destructor",  "println", "");
 	}
 	uint8_t status(){
-		WIFISerialPortLog("WIFISerialPort", "status",  "println", "");
+		WIFISerialPortLog(ame_Log_StartMethod, "status",  "println", "");
 		// return client.status();
+		WIFISerialPortLog(ame_Log_EndMethod, "status",  "println", "");
 		return 0;
 	}
 	int available(){
-		WIFISerialPortLog("WIFISerialPort", "available",  "println", "");
+		WIFISerialPortLog(ame_Log_StartMethod, "available",  "println", "");
+		WIFISerialPortLog(ame_Log_EndMethod, "available",  "println", "");
 		return client.available();
 	}
 	int read(){
-		WIFISerialPortLog("WIFISerialPort", "read",  "println", "");
+		WIFISerialPortLog(ame_Log_StartMethod, "read",  "println", "");
+		WIFISerialPortLog(ame_Log_EndMethod, "read",  "println", "");
 		return client.read();
 	}
 	virtual int peek(){
-		WIFISerialPortLog("WIFISerialPort", "peek",  "println", "");
+		WIFISerialPortLog(ame_Log_StartMethod, "peek",  "println", "");
+		WIFISerialPortLog(ame_Log_EndMethod, "peek",  "println", "");
 		return client.peek();
 	}
 	virtual size_t write(uint8_t chr){
-		WIFISerialPortLog("WIFISerialPort", "write",  "println", String(chr));
+		WIFISerialPortLog(ame_Log_StartMethod, "write",  "println", String(chr));
+		WIFISerialPortLog(ame_Log_EndMethod, "write",  "println", "");
 		return client.write(chr);
 	}
 	virtual bool connected(){
-		WIFISerialPortLog("WIFISerialPort", "connected",  "println", "");
+		WIFISerialPortLog(ame_Log_StartMethod, "connected",  "println", "");
+		WIFISerialPortLog(ame_Log_EndMethod, "connected",  "println", "");
 		return client.connected();
 	}
 	
 	virtual bool connect(const Note& a_address, int port){
-		WIFISerialPortLog("WIFISerialPort", "connect",  "println", "");
+		WIFISerialPortLog(ame_Log_StartMethod, "connect",  "println", "");
 		
-		int n_1 = split(a_address, 0, '.').toInt();
-		int n_2 = split(a_address, 1, '.').toInt();
-		int n_3 = split(a_address, 2, '.').toInt();
-		int n_4 = split(a_address, 3, '.').toInt();
+		IPAddress ip = toIPAddress(a_address);
 		
-		IPAddress ip = IPAddress(n_1, n_2, n_3, n_4);
-		
+		WIFISerialPortLog(ame_Log_EndMethod, "connect",  "println", "");
 		return client.connect(ip, port);
 	}
 	
 	virtual bool connect(const Note& a_address){
+		WIFISerialPortLog(ame_Log_StartMethod, "connect",  "println", "");
+		WIFISerialPortLog(ame_Log_EndMethod, "connect",  "println", "");
 		return connect(a_address,-1);
 	}
 	
 	virtual bool connect(const char* a_address, int port){
-		WIFISerialPortLog("WIFISerialPort", "connect",  "println", "");
+		WIFISerialPortLog(ame_Log_StartMethod, "connect",  "println", "");
 		
 		Note note = a_address;
 		
-		int n_1 = split(a_address, 0, '.').toInt();
-		int n_2 = split(a_address, 1, '.').toInt();
-		int n_3 = split(a_address, 2, '.').toInt();
-		int n_4 = split(a_address, 3, '.').toInt();
+		IPAddress ip = toIPAddress(note);
 		
-		IPAddress ip = IPAddress(n_1, n_2, n_3, n_4);
-		
+		WIFISerialPortLog(ame_Log_EndMethod, "connect",  "println", "");
 		return client.connect(ip, port);
 	}
 	
 	virtual bool connect(const char* a_address){
+		WIFISerialPortLog(ame_Log_StartMethod, "connect",  "println", "");
+		WIFISerialPortLog(ame_Log_EndMethod, "connect",  "println", "");
 		return connect(a_address,-1);
 	}
-	virtual bool conect(IPAddress ip, int port){
-		WIFISerialPortLog("WIFISerialPort", "connected",  "println", "");
+	virtual bool connect(IPAddress ip, int port){
+		WIFISerialPortLog(ame_Log_StartMethod, "connect",  "println", "");
+		WIFISerialPortLog(ame_Log_EndMethod, "connected",  "println", "");
 		return client.connect(ip, port);
 	}
 	virtual void stop(){
-		WIFISerialPortLog("WIFISerialPort", "stop",  "println", "");
+		WIFISerialPortLog(ame_Log_StartMethod, "stop",  "println", "");
 		client.stop();
+		WIFISerialPortLog(ame_Log_EndMethod, "stop",  "println", "");
 	}
 
 	virtual void flush(){
-		WIFISerialPortLog("WIFISerialPort", "flush",  "println", "");
+		WIFISerialPortLog(ame_Log_StartMethod, "flush",  "println", "");
 		client.flush();
-	}
-	virtual size_t println(String s){
-		WIFISerialPortLog("WIFISerialPort", "println",  "println", "");
-		return client.print(s);
+		WIFISerialPortLog(ame_Log_EndMethod, "flush",  "println", "");
 	}
 
 	virtual void operator=(WiFiClient c){client = c;}
@@ -151,17 +164,18 @@ class WIFISerialPort : public SerialPort{
 	virtual bool operator!=(WIFISerialPort c){return client != c.client;}
 	virtual operator bool(){return client;}
 
+	#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
 	virtual cppObjectClass* getClass(){
-		WIFISerialPortLog("WIFISerialPort", "getClassName",  "println", "");
-		return Class<WIFISerialPort>::classType;
+		WIFISerialPortLog(ame_Log_StartMethod, "getClassName",  "println", "");
+		return Class<WIFISerialPort>::getClass();
 	}
 	virtual String toString(){return "WIFISerialPort";}
 	virtual bool equal(cppObject *b){
-		WIFISerialPortLog("WIFISerialPort", "equal",  "println", "");
+		WIFISerialPortLog(ame_Log_StartMethod, "equal",  "println", "");
 		if(b == this){
 			return true;
 		}
-		if(b->instanceof(Class<WIFISerialPort>::classType)){
+		if(b->instanceof(Class<WIFISerialPort>::getClass())){
 			WIFISerialPort* c = (WIFISerialPort*)b;
 			if(c->client == this->client){
 				return true;
@@ -171,9 +185,10 @@ class WIFISerialPort : public SerialPort{
 	}
 
 	virtual bool instanceof(cppObjectClass* cls){
-		WIFISerialPortLog("WIFISerialPort", "instanceof",  "println", name);
-		return cls == Class<WIFISerialPort>::classType || SerialPort::instanceof(cls);
+		WIFISerialPortLog(ame_Log_StartMethod, "instanceof",  "println", name);
+		return cls == Class<WIFISerialPort>::getClass() || SerialPort::instanceof(cls);
 	}
+	#endif
 
 	protected:
 		WiFiClient client;

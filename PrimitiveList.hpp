@@ -33,7 +33,9 @@ namespace ame{
 template<class T>
 class PrimitiveList : public PrimitiveRawList<T>, public List<T>{
 	protected:
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(TemplateClass_AVAILABLE)
 		static cppObjectClass* m_primitive_list_class;
+		#endif
 		
 	public:
 		PrimitiveList(){}
@@ -42,13 +44,18 @@ class PrimitiveList : public PrimitiveRawList<T>, public List<T>{
 			this->m_values = new T*[a_list.getSize()];
 			this->m_size = a_list.getSize();
 			for(int x = 0; x < a_list.getPosition(); x++){
-				this->addLValue(*a_list.getByPosition(x));
+				T* f_value = a_list.getByPosition(x);
+				if(f_value == nullptr){
+					this->addPointer(nullptr);
+					continue;
+				}
+				this->addLValue(*f_value);
 			}
 		}
 		
 		PrimitiveList(int c_size) : PrimitiveRawList<T>(c_size){}
 		
-		PrimitiveList(int c_size, bool c_own, int c_reordering){}
+		PrimitiveList(int c_size, bool c_own, int c_reordering) : PrimitiveRawList<T>(c_size, c_own, c_reordering){}
 		
 		virtual ~PrimitiveList(){}
 		
@@ -63,6 +70,7 @@ class PrimitiveList : public PrimitiveRawList<T>, public List<T>{
 			this->incrementPosition();
 		}
 		
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
 		virtual cppObjectClass* getClass(){
 			return Class<PrimitiveList<T>>::getClass();
 		}
@@ -86,7 +94,7 @@ class PrimitiveList : public PrimitiveRawList<T>, public List<T>{
 			}
 			return list;
 		}
-		
+		#endif
 	
 		////////////////////////////////////////////operator part///////////////////////////////////////////////
 		
@@ -102,8 +110,10 @@ class PrimitiveList : public PrimitiveRawList<T>, public List<T>{
 	protected:
 };
 
+#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(TemplateClass_AVAILABLE)
 template<class T>
 cppObjectClass* PrimitiveList<T>::m_primitive_list_class = new TemplateClass<PrimitiveList<T>>();
+#endif
 
 }
 

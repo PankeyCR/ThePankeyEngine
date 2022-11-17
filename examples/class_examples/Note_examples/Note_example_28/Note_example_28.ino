@@ -10,8 +10,10 @@ void setup() {
 void loop() {
   ame_Debuging(ame_Log_StartLoop, "loop");
 
-  Note note = 1234.5678f;
-  Serial.println(note.toFloat());
+  Note note = "user: hola";
+  note.insertLocalCharPointer(6, " ");
+  note.insertLocalBool(6, true);
+  Serial.println(note);
   
   ame_Debuging(ame_Log_EndLoop, "loop");
 }

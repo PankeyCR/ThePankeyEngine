@@ -21,28 +21,28 @@
 namespace ame{
 	
 	int tipesOfLists(){
-		return 6;
+		return 5;
 	}
 	
 	template<class T>
 	RawList<T>* getList(int x){
 		if(x == 0){
-			return new ArrayList<T,5>();
+			return new ArrayList<T,5>();//1
 		}
 		if(x == 1){
-			return new PList<T,5>(true);
+			return new PList<T,5>(true);//2
 		}
 		if(x == 2){
-			return new PrimitiveRawList<T>();
+			return new PrimitiveRawList<T>();//3
 		}
 		if(x == 3){
-			return new PrimitiveList<T>();
+			return new PrimitiveList<T>();//4
 		}
 		if(x == 4){
-			return new LinkedList<T>();
+			return new LinkedList<T>();//5
 		}
 		if(x == 5){
-			// return new cppObjectList<T>();
+			// return new cppObjectList<T>();//6
 		}
 		return nullptr;
 	}

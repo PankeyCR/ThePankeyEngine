@@ -1,13 +1,10 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_WIFISerialServer)
-	#define WIFISerialServer_hpp
-#endif
 
 #ifndef WIFISerialServer_hpp
 #define WIFISerialServer_hpp
-#define WIFISerialServer_AVAILABLE
+#define WIFISerialServer_AVAILABLE 
+
+#include "SerialNetwork.hpp"
 
 #ifndef ame_Enviroment_Defined
 
@@ -22,8 +19,6 @@
 	#include "IPAddress.h"
 #endif
 
-#include "SerialPort.hpp"
-#include "SerialServer.hpp"
 #include "WIFISerialPort.hpp"
 
 #if defined(ARDUINO_ARCH_ESP8266)
@@ -98,14 +93,14 @@ class WIFISerialServer : public SerialServer{
 		return server;
 	}
 	
-	virtual cppObjectClass* getClass(){return Class<WIFISerialServer>::classType;}
-	virtual String toString(){return "WIFISerialServer";}
+	#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+	virtual cppObjectClass* getClass(){return Class<WIFISerialServer>::getClass();}
 	virtual bool equal(cppObject *b){
 		WIFISerialServerLog(ame_Log_Statement, "available",  "println", "equal");
 		if(b == this){
 			return true;
 		}
-		if(b->instanceof(Class<WIFISerialServer>::classType)){
+		if(b->instanceof(Class<WIFISerialServer>::getClass())){
 			WIFISerialServer* c = (WIFISerialServer*)b;
 			#if defined(ARDUINO_ESP32_DEV) || defined(LILYGO_WATCH_2020_V1) || defined(LILYGO_WATCH_2020_V2) || defined(LILYGO_WATCH_2020_V3)
 			if(c->server == this->server){
@@ -119,8 +114,9 @@ class WIFISerialServer : public SerialServer{
 	}
 
 	virtual bool instanceof(cppObjectClass* cls){
-		return cls == Class<WIFISerialServer>::classType || SerialServer::instanceof(cls);
+		return cls == Class<WIFISerialServer>::getClass() || SerialServer::instanceof(cls);
 	}
+	#endif
 
 protected:
 	WiFiServer server;

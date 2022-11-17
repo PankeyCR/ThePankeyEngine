@@ -1,4 +1,12 @@
 
+#ifndef CONFIGURATION_Memory_hpp
+#define CONFIGURATION_Memory_hpp
+
+	#if defined(DISABLE_cppObject) || defined(DISABLE_Memory) || defined(DISABLE_MemoryManager) || defined(DISABLE_MemoryPool) || defined(DISABLE_MemoryChunk) || defined(DISABLE_Chunk)
+		#define Memory_hpp
+	#endif
+#endif
+
 #ifndef Memory_hpp
 #define Memory_hpp
 #define Memory_AVAILABLE

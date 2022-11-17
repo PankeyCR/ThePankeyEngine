@@ -10,17 +10,15 @@
 namespace ame{
 
 template <class K,class V>
-class Map : public cppObject, virtual public RawMap<K,V>{	
+class Map : virtual public RawMap<K,V> IMPLEMENTING_cppObject {	
     public:
 		virtual ~Map(){}
 		
-		//cppObject part
-	
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(AbstractClass_AVAILABLE)
+		virtual cppObjectClass* getClass(){return AbstractClass<Map<K,V>>::getClass();}
 		virtual bool instanceof(cppObjectClass* cls){
 			return cls == AbstractClass<Map<K,V>>::getClass() || cppObject::instanceof(cls);
 		}
-		
-		virtual cppObjectClass* getClass(){return AbstractClass<Map<K,V>>::getClass();}
 	
 		virtual Map<K,V>* clone(void){return nullptr;}
 		virtual Map<K,V>* clone(bool owningMemory){return nullptr;}
@@ -49,6 +47,7 @@ class Map : public cppObject, virtual public RawMap<K,V>{
 		virtual cppObject* duplicate(){
 			return nullptr;
 		}
+		#endif
 	private:
 };
 

@@ -10,21 +10,8 @@ void setup() {
 void loop() {
   ame_Debuging(ame_Log_StartLoop, "loop");
 
-  Note note = "spacetime";
-
-  if(note == "spacetime"){
-    Serial.println("is equal to spacetime");
-  }
-  if(note == "time"){
-    Serial.println("is equal to time");
-  }
-
-  if(note != "spacetime"){
-    Serial.println("is not equal to spacetime");
-  }
-  if(note != "time"){
-    Serial.println("is not equal to time");
-  }
+  Note note = true;
+  Serial.println(note);
   
   ame_Debuging(ame_Log_EndLoop, "loop");
 }

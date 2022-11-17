@@ -1,7 +1,21 @@
 
+#ifndef DISABLE_cppObjectClass_hpp
+#define DISABLE_cppObjectClass_hpp
+
+	#if defined(DISABLE_cppObjectClass)
+		#define cppObjectClass_hpp
+	#endif
+#endif
+
 #ifndef cppObjectClass_hpp
 #define cppObjectClass_hpp
-#define cppObjectClass_AVAILABLE
+#define cppObjectClass_AVAILABLE 
+
+namespace ame{
+
+class cppObjectClass;
+
+}
 
 #include "Annotation.hpp"
 #include "Method.hpp"
@@ -36,6 +50,7 @@ class cppObjectClass{
 			return nullptr;
 		}
 
+		#if defined(Annotation_AVAILABLE)
 		virtual Annotation* addAnnotation(Annotation* a_annotation){
 			RawPointerList<Annotation>* i_annotations = this->getAnnotations();
 			if(i_annotations == nullptr || a_annotation == nullptr){
@@ -51,7 +66,9 @@ class cppObjectClass{
 		virtual Annotation* getAnnotation(cppObjectClass* cls){
 			return nullptr;
 		}
+		#endif
 
+		#if defined(Method_AVAILABLE)
 		virtual Method* addMethod(Method* a_method){
 			RawPointerList<Method>* i_methods = this->getMethods();
 			if(i_methods == nullptr || a_method == nullptr){
@@ -67,6 +84,7 @@ class cppObjectClass{
 		virtual Method* getMethod(cppObjectClass* cls){
 			return nullptr;
 		}
+		#endif
 		
 		virtual void operator=(cppObjectClass b){
 			

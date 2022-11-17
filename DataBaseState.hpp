@@ -48,7 +48,6 @@
 #include "MonkeyImporter.hpp"
 #include "TextExporter.hpp"
 #include "TextImporter.hpp"
-#include "SerialListener.hpp"
 #include "PrimitiveList.hpp"
 #include "AlwaysConnected.hpp"
 #include "MemoryRam.h"

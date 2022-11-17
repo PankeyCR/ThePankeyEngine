@@ -13,11 +13,11 @@ void loop() {
   
   Array<int> array;
 
-  array.addLocal(1);
-  array.addLocal(2);
-  array.addLocal(3);
-  array.addLocal(4);
-  array.addLocal(5);
+  array.addLocalValue(1);
+  array.addLocalValue(2);
+  array.addLocalValue(3);
+  array.addLocalValue(4);
+  array.addLocalValue(5);
 
   array.set(2, 91);
 

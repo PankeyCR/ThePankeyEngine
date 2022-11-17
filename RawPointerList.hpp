@@ -90,6 +90,15 @@ class RawPointerList{
 		}
 
 		virtual T* addPointer(T* a_value)=0;
+		
+		virtual T* putPointer(T* a_value){
+			RawPointerListLog(ame_Log_StartMethod, "putPointer", "println", "");
+			if(this->containByPointer(a_value)){
+				return nullptr;
+			}
+			RawPointerListLog(ame_Log_EndMethod, "putPointer", "println", "");
+			return this->addPointer(a_value);
+		}
 
 		virtual T* setPointer(int a_position, T* a_value)=0;
 
@@ -209,6 +218,44 @@ class RawPointerList{
 				this->m_size = 0;
 			}
 			RawPointerListLog(ame_Log_EndMethod, "decrementSize", "println", "");
+		}
+
+	public:
+	
+		virtual bool operator<(int x) const{
+			const_RawPointerListLog(ame_Log_StartMethod, "operator<", "println", "");
+			const_RawPointerListLog(ame_Log_EndMethod, "operator<", "println", "");
+			return this->getPosition() < x;
+		}
+		
+		virtual bool operator>(int x) const{
+			const_RawPointerListLog(ame_Log_StartMethod, "operator>", "println", "");
+			const_RawPointerListLog(ame_Log_EndMethod, "operator>", "println", "");
+			return this->getPosition() > x;
+		}
+		
+		virtual bool operator<=(int x) const{
+			const_RawPointerListLog(ame_Log_StartMethod, "operator<=", "println", "");
+			const_RawPointerListLog(ame_Log_EndMethod, "operator<=", "println", "");
+			return this->getPosition() <= x;
+		}
+		
+		virtual bool operator>=(int x) const{
+			const_RawPointerListLog(ame_Log_StartMethod, "operator>=", "println", "");
+			const_RawPointerListLog(ame_Log_EndMethod, "operator>=", "println", "");
+			return this->getPosition() >= x;
+		}
+		
+		virtual bool operator==(int x) const{
+			const_RawPointerListLog(ame_Log_StartMethod, "operator==", "println", "");
+			const_RawPointerListLog(ame_Log_EndMethod, "operator==", "println", "");
+			return this->getPosition() == x;
+		}
+		
+		virtual bool operator!=(int x) const{
+			const_RawPointerListLog(ame_Log_StartMethod, "operator!=", "println", "");
+			const_RawPointerListLog(ame_Log_EndMethod, "operator!=", "println", "");
+			return this->getPosition() != x;
 		}
 
 	protected:

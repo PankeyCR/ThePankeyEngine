@@ -8,10 +8,12 @@
 *	position = length
 *
 */
+
+#ifndef CONFIGURATION_Note_hpp
+#define CONFIGURATION_Note_hpp
+
 #include "ame_Enviroment.hpp"
 
-#ifndef DISABLE_Note_hpp
-#define DISABLE_Note_hpp
 	#if defined(DISABLE_Note)
 		#define Note_hpp
 
@@ -22,14 +24,28 @@
 		#ifdef ame_ArduinoIDE
 			typedef String Note;
 		#endif
+
+		#define IMPLEMENTATION_Note
+		#define IMPLEMENTING_Note
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_Note)
+			#define IMPLEMENTATION_Note
+			#define IMPLEMENTING_Note
+		#endif
 	#endif
 #endif
 
 #ifndef Note_hpp
 #define Note_hpp
-#define Note_AVAILABLE
+#define Note_AVAILABLE 
 
 #include "cppObject.hpp"
+
+#ifndef DISABLE_IMPLEMENTATION_Note
+	#define IMPLEMENTATION_Note IMPLEMENTATION(public Note)
+	#define IMPLEMENTING_Note IMPLEMENTING(public Note)
+#endif
+
 #include "Array.hpp"
 
 #ifdef ame_Windows
@@ -86,26 +102,18 @@ class Note : public Array<char>, public Printable{
 			NoteLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
-		Note(const char* c_char){
-			NoteLog(ame_Log_StartMethod, "Constructor", "println", "const char* c_char");
+		Note(const char* c_value){
+			NoteLog(ame_Log_StartMethod, "Constructor", "println", "const char* c_value");
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Char Array:");
-			NoteLog(ame_Log_Statement, "Constructor", "println", c_char);
-			int i_array_length = this->arrayLength(c_char);
-			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Length:");
-			NoteLog(ame_Log_Statement, "Constructor", "println", i_array_length);
+			NoteLog(ame_Log_Statement, "Constructor", "println", c_value);
+
+			this->insertLocalArrayPointer(0, c_value);
+
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
 			NoteLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Size:");
 			NoteLog(ame_Log_Statement, "Constructor", "println", this->getSize());
-			if(i_array_length > 0){
-				this->createArray(i_array_length);
-				this->copyPointer(c_char, i_array_length);
-				this->copyEndValue();
-				NoteLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
-				NoteLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
-				NoteLog(ame_Log_Statement, "Constructor", "println", "Array Size:");
-				NoteLog(ame_Log_Statement, "Constructor", "println", this->getSize());
-			}
+				
 			NoteLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
@@ -115,7 +123,7 @@ class Note : public Array<char>, public Printable{
 			if(i_array_length > 0){
 				this->createArray(i_array_length);
 				this->copyPointer(source.pointer(), i_array_length);
-				this->copyEndValue(this->getPosition());
+				this->copyEndValue();
 				NoteLog(ame_Log_Statement, "Constructor", "println", "Array Length:");
 				NoteLog(ame_Log_Statement, "Constructor", "println", i_array_length);
 				NoteLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
@@ -169,29 +177,13 @@ class Note : public Array<char>, public Printable{
 			NoteLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
-		Note(const bool& i){
-			NoteLog(ame_Log_StartMethod, "Constructor", "println", "const bool& i");
-			NoteLog(ame_Log_Statement, "Constructor", "println", "bool:");
-			NoteLog(ame_Log_Statement, "Constructor", "println", i);
-			this->createArray(1);
-			this->copyValue(i ? '1' : '0');
-			this->copyEndValue(this->getPosition());
-			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Length:");
-			NoteLog(ame_Log_Statement, "Constructor", "println", 1);
-			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
-			NoteLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
-			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Size:");
-			NoteLog(ame_Log_Statement, "Constructor", "println", this->getSize());
-			NoteLog(ame_Log_EndMethod, "Constructor", "println", "");
-		}
-
 		Note(const char& c_char){
 			NoteLog(ame_Log_StartMethod, "Constructor", "println", "const char& c_char");
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Char:");
 			NoteLog(ame_Log_Statement, "Constructor", "println", c_char);
 			this->createArray(1);
 			this->copyValue(c_char);
-			this->copyEndValue(this->getPosition());
+			this->copyEndValue();
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Length:");
 			NoteLog(ame_Log_Statement, "Constructor", "println", 1);
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
@@ -201,16 +193,27 @@ class Note : public Array<char>, public Printable{
 			NoteLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
-		Note(const int& c_int){
-			NoteLog(ame_Log_StartMethod, "Constructor", "println", "const int& c_int");
+		Note(const bool& c_value){
+			NoteLog(ame_Log_StartMethod, "Constructor", "println", "const bool& i");
+			NoteLog(ame_Log_Statement, "Constructor", "println", "bool:");
+			NoteLog(ame_Log_Statement, "Constructor", "println", c_value);
+			char* i_pointer = this->getBool(c_value);
+			this->addLocalArrayPointer(i_pointer);
+			delete i_pointer;
+			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
+			NoteLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
+			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Size:");
+			NoteLog(ame_Log_Statement, "Constructor", "println", this->getSize());
+			NoteLog(ame_Log_EndMethod, "Constructor", "println", "");
+		}
+
+		Note(const int& c_value){
+			NoteLog(ame_Log_StartMethod, "Constructor", "println", "const int& c_value");
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Int:");
-			NoteLog(ame_Log_Statement, "Constructor", "println", c_int);
-			int i_array_length = intCharSize(c_int);
-			this->createArray(i_array_length);
-			this->copyInt(c_int, i_array_length, 0, this->m_t_value, true);
-			this->copyEndValue();
-			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Length:");
-			NoteLog(ame_Log_Statement, "Constructor", "println", i_array_length);
+			NoteLog(ame_Log_Statement, "Constructor", "println", c_value);
+			char* i_pointer = this->getInt(c_value);
+			this->addLocalArrayPointer(i_pointer);
+			delete i_pointer;
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
 			NoteLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Size:");
@@ -218,16 +221,13 @@ class Note : public Array<char>, public Printable{
 			NoteLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
-		Note(const long& c_long){
-			NoteLog(ame_Log_StartMethod, "Constructor", "println", "const long& c_long");
+		Note(const long& c_value){
+			NoteLog(ame_Log_StartMethod, "Constructor", "println", "const long& c_value");
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Long:");
-			NoteLog(ame_Log_Statement, "Constructor", "println", c_long);
-			int i_array_length = longCharSize(c_long);
-			this->createArray(i_array_length);
-			this->copyLong(c_long, i_array_length, 0, this->m_t_value, true);
-			this->copyEndValue(this->getPosition());
-			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Length:");
-			NoteLog(ame_Log_Statement, "Constructor", "println", i_array_length);
+			NoteLog(ame_Log_Statement, "Constructor", "println", c_value);
+			char* i_pointer = this->getLong(c_value);
+			this->addLocalArrayPointer(i_pointer);
+			delete i_pointer;
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
 			NoteLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Size:");
@@ -235,16 +235,13 @@ class Note : public Array<char>, public Printable{
 			NoteLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
-		Note(const float& c_float){
-			NoteLog(ame_Log_StartMethod, "Constructor", "println", "const float& c_float");
+		Note(const float& c_value){
+			NoteLog(ame_Log_StartMethod, "Constructor", "println", "const float& c_value");
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Float:");
-			NoteLog(ame_Log_Statement, "Constructor", "println", c_float);
-			int i_array_length = floatCharSize(c_float, 4);
-			this->createArray(i_array_length);
-			this->copyFloat(c_float, i_array_length, 0, 4, this->m_t_value, true);
-			this->copyEndValue();
-			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Length:");
-			NoteLog(ame_Log_Statement, "Constructor", "println", i_array_length);
+			NoteLog(ame_Log_Statement, "Constructor", "println", c_value);
+			char* i_pointer = this->getFloat(c_value);
+			this->addLocalArrayPointer(i_pointer);
+			delete i_pointer;
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
 			NoteLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Size:");
@@ -305,6 +302,14 @@ class Note : public Array<char>, public Printable{
 			// }
 			// NoteLog(ame_Log_EndMethod, "Constructor", "println", "");
 		// }
+		
+		virtual String toString() const{
+			String i_string;
+			for(int x = 0; x < this->getPosition(); x++){
+				i_string += this->get(x);
+			}
+			return i_string;
+		}
 
 		#endif
 
@@ -379,6 +384,68 @@ class Note : public Array<char>, public Printable{
 			return new char[a_size];
 		}
 
+		virtual int boolCharSize(bool a_value){
+			return 1;
+		}
+
+		virtual void copyExternBool(char* a_array, bool a_position, bool a_value, int a_size){
+			NoteLog(ame_Log_StartMethod, "copyExternBool", "println", "");
+
+			NoteLog(ame_Log_Statement, "copyExternBool", "println", "a_value");
+			NoteLog(ame_Log_Statement, "copyExternBool", "println", a_value);
+			NoteLog(ame_Log_Statement, "copyExternBool", "println", "Array Length:");
+			NoteLog(ame_Log_Statement, "copyExternBool", "println", a_size);
+
+			if(a_array == nullptr){
+				NoteLog(ame_Log_EndMethod, "copyExternBool", "println", "a_array == nullptr");
+				return;
+			}
+
+			if(a_size == 1){
+				if(a_value){
+					a_array[a_position] = 1 + 48;
+				}else{
+					a_array[a_position] = 0 + 48;
+				}
+				NoteLog(ame_Log_EndMethod, "copyExternBool", "println", "a_size == 1");
+				return;
+			}
+
+			if(a_size == 4){//true
+				if(!a_value){
+					a_array[a_position] = 't';
+					a_array[a_position + 1] = 'r';
+					a_array[a_position + 2] = 'u';
+					a_array[a_position + 3] = 'e';
+				}
+			}
+
+			if(a_size == 5){//false
+				if(!a_value){
+					a_array[a_position] = 'f';
+					a_array[a_position + 1] = 'a';
+					a_array[a_position + 2] = 'l';
+					a_array[a_position + 3] = 's';
+					a_array[a_position + 4] = 'e';
+				}
+			}
+
+			NoteLog(ame_Log_Statement, "copyExternBool", "println", "Array Length:");
+			NoteLog(ame_Log_Statement, "copyExternBool", "println", a_size);
+
+			NoteLog(ame_Log_EndMethod, "copyExternBool", "println", "");
+		}
+		
+		virtual char* getBool(bool a_value){
+			NoteLog(ame_Log_StartMethod, "getBool", "println", "");
+			int i_array_length = boolCharSize(a_value);
+			char* i_pointer = this->createArrayClone(i_array_length);
+			this->copyExternBool(i_pointer, 0, a_value, i_array_length);
+			this->copyExternEndValue(i_pointer, i_array_length);
+			NoteLog(ame_Log_EndMethod, "getBool", "println", "");
+			return i_pointer;
+		}
+
 		virtual int intCharSize(int a_value)const{
 			const_NoteLog(ame_Log_StartMethod, "intCharSize", "println", "");
 			const_NoteLog(ame_Log_Statement, "intCharSize", "println", "");
@@ -402,35 +469,35 @@ class Note : public Array<char>, public Printable{
 			const_NoteLog(ame_Log_EndMethod, "intCharSize", "println", "");
 			return i_size_val + add_x;
 		}
-
-		virtual void copyInt(int value, int size, int start, char* chr, bool end){
+		
+		virtual void copyExternInt(char* a_array, bool a_position, int a_value, int a_size){
 			NoteLog(ame_Log_StartMethod, "intToCharPointer", "println", "");
 			NoteLog(ame_Log_Statement, "intToCharPointer", "println", "");
-			if(chr == nullptr){
+			if(a_array == nullptr){
 				NoteLog(ame_Log_EndMethod, "intToCharPointer", "println", "");
 				return;
 			}
-			int position = start;
+			int position = a_position;
 			bool isNegative = false;
-			if(value < 0){
+			if(a_value < 0){
 				NoteLog(ame_Log_Statement, "intToCharPointer", "println", "negative value");
 				NoteLog(ame_Log_Statement, "intToCharPointer", "println", "Position: ");
 				NoteLog(ame_Log_Statement, "intToCharPointer", "println", position);
 				isNegative = true;
-				value *= -1;
-				size--;
-				chr[position] = 45;
+				a_value *= -1;
+				a_size--;
+				a_array[position] = 45;
 				position++;
 			}
 			int i_value_reduction = 1;
 			int i_reduce_value = 1;
 			int i_output_value = 1;
-			for(int x = 0; x < size; x++){
+			for(int x = 0; x < a_size; x++){
 				int exponent = 1;
-				for(int y = 0; y < size - x - 1; y++){
+				for(int y = 0; y < a_size - x - 1; y++){
 					exponent *= 10;
 				}
-				i_value_reduction = value / exponent;
+				i_value_reduction = a_value / exponent;
 				if(x == 0){
 					i_output_value = i_value_reduction;
 				}else{
@@ -447,16 +514,10 @@ class Note : public Array<char>, public Printable{
 				NoteLog(ame_Log_Statement, "intToCharPointer", "println", i_output_value);
 				NoteLog(ame_Log_Statement, "intToCharPointer", "println", "Position: ");
 				NoteLog(ame_Log_Statement, "intToCharPointer", "println", position);
-				chr[position] = i_output_value + 48;
+				a_array[position] = i_output_value + 48;
 				position++;
 			}
-			if(end){
-				NoteLog(ame_Log_Statement, "intToCharPointer", "println", "Adding end value: ");
-				NoteLog(ame_Log_Statement, "intToCharPointer", "println", "Position: ");
-				NoteLog(ame_Log_Statement, "intToCharPointer", "println", position);
-				chr[position] = '\0';
-			}
-			this->incrementPosition(position);
+
 			NoteLog(ame_Log_EndMethod, "intToCharPointer", "println", "");
 		}
 		
@@ -464,15 +525,15 @@ class Note : public Array<char>, public Printable{
 			NoteLog(ame_Log_StartMethod, "getInt", "println", "");
 			int i_array_length = intCharSize(a_value);
 			char* i_pointer = this->createArrayClone(i_array_length);
-			this->copyInt(a_value, i_array_length, 0, i_pointer, true);
+			this->copyExternInt(i_pointer, 0, a_value, i_array_length);
 			this->copyExternEndValue(i_pointer, i_array_length);
 			NoteLog(ame_Log_EndMethod, "getInt", "println", "");
 			return i_pointer;
 		}
 
 		virtual int longCharSize(long value)const{
-			const_NoteLog(ame_Log_StartMethod, "longCharSize", "println", "");
-			const_NoteLog(ame_Log_Statement, "longCharSize", "println", "");
+			NoteLog(ame_Log_StartMethod, "longCharSize", "println", "");
+			NoteLog(ame_Log_Statement, "longCharSize", "println", "");
 			int i_size_val = 0;
 			int x = 1;
 			int add_x = 0;
@@ -490,69 +551,69 @@ class Note : public Array<char>, public Printable{
 					break;
 				}
 			}
-			const_NoteLog(ame_Log_EndMethod, "longCharSize", "println", "");
+			NoteLog(ame_Log_EndMethod, "longCharSize", "println", "");
 			return i_size_val + add_x;
 		}
 
-		virtual void copyLong(long value, int size, int start, char* chr, bool end){
-			const_NoteLog(ame_Log_StartMethod, "longToCharPointer", "println", "");
-			const_NoteLog(ame_Log_Statement, "longToCharPointer", "println", "~Note");
-			if(chr == nullptr){
-				const_NoteLog(ame_Log_EndMethod, "longToCharPointer", "println", "");
+		virtual void copyExternLong(char* a_array, bool a_position, long a_value, int a_size){
+			NoteLog(ame_Log_StartMethod, "copyExternLong", "println", "");
+			NoteLog(ame_Log_Statement, "copyExternLong", "println", "a_value");
+			NoteLog(ame_Log_Statement, "copyExternLong", "println", a_value);
+			NoteLog(ame_Log_Statement, "copyExternLong", "println", "a_size");
+			NoteLog(ame_Log_Statement, "copyExternLong", "println", a_size);
+			if(a_array == nullptr){
+				NoteLog(ame_Log_EndMethod, "copyExternLong", "println", "chr == nullptr");
 				return;
 			}
-			int position = start;
+			int position = a_position;
 			bool isNegative = false;
-			if(value < 0){
+			if(a_value < 0){
 				isNegative = true;
-				value *= -1;
-				size--;
-				chr[position] = 45;
+				a_value *= -1;
+				a_size--;
+				a_array[position] = 45;
 				position++;
 			}
 			long n_value = 1;
 			long r_value = 1;
 			long s_value = 1;
-			for(int x = 0; x < size; x++){
+			for(int x = 0; x < a_size; x++){
 				long expn = 1;
-				for(int y = 0; y < size - x - 1; y++){
+				for(int y = 0; y < a_size - x - 1; y++){
 					expn *= 10;
 				}
-				n_value = value / expn;
+				n_value = a_value / expn;
 				if(x == 0){
 					s_value = n_value;
 				}else{
 					s_value = n_value - r_value;
 				}
 				r_value = n_value * 10;
-				chr[position] = s_value + 48;
+				a_array[position] = s_value + 48;
 				position++;
 			}
-			if(end){
-				chr[position] = '\0';
-			}
-			this->incrementPosition(size);
-			const_NoteLog(ame_Log_EndMethod, "longToCharPointer", "println", "");
+			
+			NoteLog(ame_Log_EndMethod, "copyExternLong", "println", "");
 		}
 		
 		virtual char* getLong(long a_value){
-			NoteLog(ame_Log_StartMethod, "getInt", "println", "");
+			NoteLog(ame_Log_StartMethod, "getLong", "println", "");
 			int i_array_length = intCharSize(a_value);
 			char* i_pointer = this->createArrayClone(i_array_length);
-			this->copyInt(a_value, i_array_length, 0, i_pointer, true);
+			this->copyExternInt(i_pointer, 0, a_value, i_array_length);
 			this->copyExternEndValue(i_pointer, i_array_length);
-			NoteLog(ame_Log_EndMethod, "getInt", "println", "");
+			NoteLog(ame_Log_EndMethod, "getLong", "println", "");
 			return i_pointer;
 		}
 
-		virtual int floatCharSize(float value,int extra){
-			const_NoteLog(ame_Log_StartMethod, "floatCharSize", "println", "");
-			const_NoteLog(ame_Log_Statement, "floatCharSize", "println", "");
+		virtual int floatCharSize(float a_value, int extra){
+			NoteLog(ame_Log_StartMethod, "floatCharSize", "println", "");
+			NoteLog(ame_Log_Statement, "floatCharSize", "println", "");
 			int i_size_val = 0;
 			int x = 1;
 			int add_x = 0;
-			if(value < 0){
-				value *= -1;
+			if(a_value < 0){
+				a_value *= -1;
 				add_x++;
 			}
 			for( ; x < 100; x++){
@@ -560,58 +621,79 @@ class Note : public Array<char>, public Printable{
 				for(int y = 0; y < x; y++){
 					expn *= 10;
 				}
-				if(value/expn < 1){
+				if(a_value/expn < 1){
 					i_size_val = x;
 					break;
 				}
 			}
-			const_NoteLog(ame_Log_EndMethod, "floatCharSize", "println", "");
+			NoteLog(ame_Log_EndMethod, "floatCharSize", "println", "");
 			return i_size_val + add_x + extra + 1;
 		}
 
-		virtual void copyFloat(float value, int total_size, int start, int decimal_size, char* chr, bool end){
-			const_NoteLog(ame_Log_StartMethod, "floatToCharPointer", "println", "");
-			const_NoteLog(ame_Log_Statement, "floatToCharPointer", "println", "");
-			if(chr == nullptr){
-				const_NoteLog(ame_Log_EndMethod, "floatToCharPointer", "println", "");
+		virtual void copyExternFloat(char* a_array, bool a_position, float a_value, int a_size, int decimal_size){
+			NoteLog(ame_Log_StartMethod, "copyFloat", "println", "");
+
+			NoteLog(ame_Log_Statement, "copyFloat", "println", "a_value");
+			NoteLog(ame_Log_Statement, "copyFloat", "println", a_value);
+			NoteLog(ame_Log_Statement, "copyFloat", "println", "a_size");
+			NoteLog(ame_Log_Statement, "copyFloat", "println", a_size);
+			NoteLog(ame_Log_Statement, "copyFloat", "println", "decimal_size");
+			NoteLog(ame_Log_Statement, "copyFloat", "println", decimal_size);
+
+			if(a_array == nullptr){
+				NoteLog(ame_Log_EndMethod, "copyFloat", "println", "");
 				return;
 			}
-			int position = start;
+			int position = a_position;
 			bool isNegative = false;
-			if(value < 0){
+			NoteLog(ame_Log_Statement, "copyFloat", "println", "position");
+			NoteLog(ame_Log_Statement, "copyFloat", "println", position);
+			if(a_value < 0){
+				NoteLog(ame_Log_EndMethod, "copyFloat", "println", "a_value < 0");
 				isNegative = true;
-				value *= -1;
-				total_size--;
-				chr[position] = 45;
+				a_value *= -1;
+				a_size--;
+				a_array[position] = 45;
 				position++;
 			}
+			NoteLog(ame_Log_Statement, "copyFloat", "println", "position");
+			NoteLog(ame_Log_Statement, "copyFloat", "println", position);
 			int n_value = 1;
 			int r_value = 1;
 			int s_value = 1;
-			int i_size = total_size - decimal_size - 1;
+			int i_size = a_size - decimal_size - 1;
+			NoteLog(ame_Log_Statement, "copyFloat", "println", "i_size");
+			NoteLog(ame_Log_Statement, "copyFloat", "println", i_size);
 			for(int x = 0; x < i_size; x++){
 				int expn = 1;
 				for(int y = 0; y < i_size - x - 1; y++){
 					expn *= 10;
 				}
-				n_value = value / expn;
+				n_value = a_value / expn;
 				if(x == 0){
 					s_value = n_value;
 				}else{
 					s_value = n_value - r_value;
 				}
 				r_value = n_value * 10;
-				chr[position] = s_value + 48;
+				a_array[position] = s_value + 48;
 				position++;
 			}
+			NoteLog(ame_Log_Statement, "copyFloat", "println", "position");
+			NoteLog(ame_Log_Statement, "copyFloat", "println", position);
 
-			chr[position] = 46;
+			a_array[position] = 46;
 			position++;
+			
+			NoteLog(ame_Log_Statement, "copyFloat", "println", "position");
+			NoteLog(ame_Log_Statement, "copyFloat", "println", position);
 
 			n_value = 1;
 			r_value = 1;
 			s_value = 1;
-			float i_value = value - (int)value;
+			float i_value = a_value - (int)a_value;
+			NoteLog(ame_Log_Statement, "copyFloat", "println", "i_value");
+			NoteLog(ame_Log_Statement, "copyFloat", "println", i_value);
 			for(int x = 0; x < decimal_size; x++){
 				int expn = 10;
 				for(int y = 0; y < x; y++){
@@ -624,23 +706,25 @@ class Note : public Array<char>, public Printable{
 					s_value = n_value - r_value;
 				}
 				r_value = n_value * 10;
-				chr[position] = s_value + 48;
+				a_array[position] = s_value + 48;
 				position++;
 			}
-			if(end){
-				chr[position] = '\0';
-			}
-			this->incrementPosition(total_size);
-			const_NoteLog(ame_Log_EndMethod, "floatToCharPointer", "println", "");
+			NoteLog(ame_Log_Statement, "copyFloat", "println", "position");
+			NoteLog(ame_Log_Statement, "copyFloat", "println", position);
+
+			NoteLog(ame_Log_Statement, "copyFloat", "println", "Array Length:");
+			NoteLog(ame_Log_Statement, "copyFloat", "println", a_size);
+
+			NoteLog(ame_Log_EndMethod, "copyFloat", "println", "");
 		}
 		
 		virtual char* getFloat(float a_value){
-			NoteLog(ame_Log_StartMethod, "getInt", "println", "");
-			int i_array_length = intCharSize(a_value);
+			NoteLog(ame_Log_StartMethod, "getFloat", "println", "");
+			int i_array_length = floatCharSize(a_value, 4);
 			char* i_pointer = this->createArrayClone(i_array_length);
-			this->copyInt(a_value, i_array_length, 0, i_pointer, true);
+			this->copyExternFloat(i_pointer, 0, a_value, i_array_length, 4);
 			this->copyExternEndValue(i_pointer, i_array_length);
-			NoteLog(ame_Log_EndMethod, "getInt", "println", "");
+			NoteLog(ame_Log_EndMethod, "getFloat", "println", "");
 			return i_pointer;
 		}
 
@@ -661,186 +745,21 @@ class Note : public Array<char>, public Printable{
 			NoteLog(ame_Log_StartMethod, "addNote", "println", "const Note& a_note");
 			Note i_note = *this;
 			NoteLog(ame_Log_EndMethod, "addNote", "println", "");
-			return i_note.addLocal(a_note);
+			return i_note.addLocalNote(a_note);
 		}
 
 		virtual Note addLocalNote(const Note& a_note){
 			NoteLog(ame_Log_StartMethod, "addLocalNote", "println", "const Note& a_note");
 			NoteLog(ame_Log_EndMethod, "addLocalNote", "println", "");
-			return this->insertLocal(this->getPosition(), a_note);
+			return this->insertLocalNote(this->getPosition(), a_note);
 		}
 
 		virtual Note insertLocalNote(int a_position, const Note& a_note){
 			NoteLog(ame_Log_StartMethod, "insertLocalNote", "println", "const Note& a_note");
-			int i_array_length = a_note.length();
-			NoteLog(ame_Log_Statement, "insertLocalNote", "println", "Array Length:");
-			NoteLog(ame_Log_Statement, "insertLocalNote", "println", i_array_length);
-			NoteLog(ame_Log_Statement, "insertLocalNote", "println", "Array Position:");
-			NoteLog(ame_Log_Statement, "insertLocalNote", "println", this->getPosition());
-			NoteLog(ame_Log_Statement, "insertLocalNote", "println", "Array Size:");
-			NoteLog(ame_Log_Statement, "insertLocalNote", "println", this->getSize());
-			if(this->isEmpty()){
-				this->createArray(i_array_length);
-			}
 			
-			if(a_position < this->getPosition()){
-				int totalSize = a_position;
-				
-				int first_position_1 = a_position;
-				int first_position_2 = a_position;
-				
-				int middle_position_1 = i_array_length;
-				int middle_position_2 = i_array_length;
-				
-				int last_position_1 = a_position;
-				int last_position_2 = a_position;
-				
-				char* i_pointer = this->createArrayClone(totalSize);
-				char* t_pointer = this->pointer();
-				this->copyExternPointer(i_pointer, this->pointer(), first_position_1, first_position_2);
-				this->copyExternPointer(i_pointer, a_note.pointer(), middle_position_1, middle_position_2);
-				this->copyExternPointer(i_pointer, this->pointer(), last_position_1, last_position_2);
-				
-				NoteLog(ame_Log_EndMethod, "insertLocalNote", "println", "");
-				return *this;
-			}
+			this->insertLocalArrayPointer(a_position, a_note.pointer());
 			
-			this->expandIfNeeded(i_array_length);
-			
-			this->copyPointer(a_note.pointer(), i_array_length);
-			this->copyEndValue();
-			
-			NoteLog(ame_Log_Statement, "insertLocalNote", "println", "Array Position:");
-			NoteLog(ame_Log_Statement, "insertLocalNote", "println", this->getPosition());
-			NoteLog(ame_Log_Statement, "insertLocalNote", "println", "Array Size:");
-			NoteLog(ame_Log_Statement, "insertLocalNote", "println", this->getSize());
 			NoteLog(ame_Log_EndMethod, "insertLocalNote", "println", "");
-			return *this;
-		}
-/*
-		virtual Note addChar(const char& a_char){
-			NoteLog(ame_Log_StartMethod, "addChar", "println", "const char* a_char");
-			NoteLog(ame_Log_Statement, "addChar", "println", "Char Array:");
-			NoteLog(ame_Log_Statement, "addChar", "println", a_char);
-			Note i_note = *this;
-			NoteLog(ame_Log_EndMethod, "addChar", "println", "");
-			return i_note.addLocalChar(a_char);
-		}
-/*
-		virtual Note addLocalChar(const char& a_char){
-			NoteLog(ame_Log_StartMethod, "addLocalChar", "println", "const char* a_char");
-			NoteLog(ame_Log_Statement, "addLocalChar", "println", "Char Array:");
-			NoteLog(ame_Log_Statement, "addLocalChar", "println", a_char);
-			NoteLog(ame_Log_EndMethod, "addLocalChar", "println", "");
-			return this->insertLocalChar(this->getPosition(), a_char);
-		}
-
-		virtual Note insertLocalChar(int a_position, const char& a_char){/*
-			NoteLog(ame_Log_StartMethod, "insertLocalChar", "println", "const char* a_char");
-			NoteLog(ame_Log_Statement, "insertLocalChar", "println", "Char Array:");
-			NoteLog(ame_Log_Statement, "insertLocalChar", "println", a_char);
-			int i_array_length = this->arrayLength(a_char);
-			NoteLog(ame_Log_Statement, "insertLocalChar", "println", "Array Length:");
-			NoteLog(ame_Log_Statement, "insertLocalChar", "println", i_array_length);
-			NoteLog(ame_Log_Statement, "insertLocalChar", "println", "Array Position:");
-			NoteLog(ame_Log_Statement, "insertLocalChar", "println", this->getPosition());
-			NoteLog(ame_Log_Statement, "insertLocalChar", "println", "Array Size:");
-			NoteLog(ame_Log_Statement, "insertLocalChar", "println", this->getSize());
-			if(this->isEmpty()){
-				NoteLog(ame_Log_Statement, "insertLocalChar", "println", "this->isEmpty()");
-				this->createArray(i_array_length);
-				this->copyPointer(a_char, i_array_length);
-				this->copyEndValue();
-				NoteLog(ame_Log_Statement, "insertLocalChar", "println", "Array Position:");
-				NoteLog(ame_Log_Statement, "insertLocalChar", "println", this->getPosition());
-				NoteLog(ame_Log_Statement, "insertLocalChar", "println", "Array Size:");
-				NoteLog(ame_Log_Statement, "insertLocalChar", "println", this->getSize());
-				NoteLog(ame_Log_EndMethod, "insertLocalChar", "println", "");
-				return *this;
-			}
-			this->expandIfNeeded(i_array_length);
-			
-			if(a_position >= this->getPosition()){
-				NoteLog(ame_Log_Statement, "insertLocalChar", "println", "a_position >= this->getPosition()");
-				this->copyPointer(a_char, i_array_length);
-				this->copyEndValue();
-				NoteLog(ame_Log_Statement, "insertLocalChar", "println", "Array Position:");
-				NoteLog(ame_Log_Statement, "insertLocalChar", "println", this->getPosition());
-				NoteLog(ame_Log_Statement, "insertLocalChar", "println", "Array Size:");
-				NoteLog(ame_Log_Statement, "insertLocalChar", "println", this->getSize());
-				NoteLog(ame_Log_EndMethod, "insertLocalChar", "println", "");
-				return *this;
-			}
-			
-			NoteLog(ame_Log_Statement, "insertLocalChar", "println", "Array Position:");
-			NoteLog(ame_Log_Statement, "insertLocalChar", "println", this->getPosition());
-			NoteLog(ame_Log_Statement, "insertLocalChar", "println", "Array Size:");
-			NoteLog(ame_Log_Statement, "insertLocalChar", "println", this->getSize());
-			
-			NoteLog(ame_Log_EndMethod, "insertLocalChar", "println", "");
-			return *this;
-		}
-*/
-		virtual Note addCharPointer(const char* a_char){
-			NoteLog(ame_Log_StartMethod, "addCharPointer", "println", "const char* a_char");
-			NoteLog(ame_Log_Statement, "addCharPointer", "println", "Char Array:");
-			NoteLog(ame_Log_Statement, "addCharPointer", "println", a_char);
-			Note i_note = *this;
-			NoteLog(ame_Log_EndMethod, "addCharPointer", "println", "");
-			return i_note.addLocal(a_char);
-		}
-
-		virtual Note addLocalCharPointer(const char* a_char){
-			NoteLog(ame_Log_StartMethod, "addLocalCharPointer", "println", "const char* a_char");
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "Char Array:");
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", a_char);
-			NoteLog(ame_Log_EndMethod, "addLocalCharPointer", "println", "");
-			return this->insertLocalCharPointer(this->getPosition(), a_char);
-		}
-
-		virtual Note insertLocalCharPointer(int a_position, const char* a_char){
-			NoteLog(ame_Log_StartMethod, "addLocalCharPointer", "println", "const char* a_char");
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "Char Array:");
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", a_char);
-			int i_array_length = this->arrayLength(a_char);
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "Array Length:");
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", i_array_length);
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "Array Position:");
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", this->getPosition());
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "Array Size:");
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", this->getSize());
-			if(this->isEmpty()){
-				NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "this->isEmpty()");
-				this->createArray(i_array_length);
-				this->copyPointer(a_char, i_array_length);
-				this->copyEndValue();
-				NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "Array Position:");
-				NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", this->getPosition());
-				NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "Array Size:");
-				NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", this->getSize());
-				NoteLog(ame_Log_EndMethod, "addLocalCharPointer", "println", "");
-				return *this;
-			}
-			this->expandIfNeeded(i_array_length);
-			
-			if(a_position >= this->getPosition()){
-				NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "a_position >= this->getPosition()");
-				this->copyPointer(a_char, i_array_length);
-				this->copyEndValue();
-				NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "Array Position:");
-				NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", this->getPosition());
-				NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "Array Size:");
-				NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", this->getSize());
-				NoteLog(ame_Log_EndMethod, "addLocalCharPointer", "println", "");
-				return *this;
-			}
-			
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "Array Position:");
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", this->getPosition());
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", "Array Size:");
-			NoteLog(ame_Log_Statement, "addLocalCharPointer", "println", this->getSize());
-			
-			NoteLog(ame_Log_EndMethod, "addLocalCharPointer", "println", "");
 			return *this;
 		}
 		
@@ -859,27 +778,10 @@ class Note : public Array<char>, public Printable{
 
 		virtual Note insertLocalInt(int a_position, const int& a_number){
 			NoteLog(ame_Log_StartMethod, "insertLocalInt", "println", "const int& a_number");
-			int i_array_length = intCharSize(a_number);
-			if(this->isEmpty()){
-				this->createArray(i_array_length);
-				this->copyInt(a_number, i_array_length, 0, this->m_t_value, true);
-				this->copyEndValue();
-				NoteLog(ame_Log_Statement, "insertLocalInt", "println", "Array Length:");
-				NoteLog(ame_Log_Statement, "insertLocalInt", "println", i_array_length);
-				NoteLog(ame_Log_Statement, "insertLocalInt", "println", "Array Position:");
-				NoteLog(ame_Log_Statement, "insertLocalInt", "println", this->getPosition());
-				NoteLog(ame_Log_Statement, "insertLocalInt", "println", "Array Size:");
-				NoteLog(ame_Log_Statement, "insertLocalInt", "println", this->getSize());
-				NoteLog(ame_Log_EndMethod, "insertLocalInt", "println", "");
-				return *this;
-			}
-			this->expandIfNeeded(i_array_length);
-			if(a_position >= this->getPosition()){
-				this->copyInt(a_number, i_array_length, this->getPosition(), this->m_t_value, true);
-				this->copyEndValue();
-				NoteLog(ame_Log_EndMethod, "insertLocalInt", "println", "");
-				return *this;
-			}
+
+			char* i_pointer = this->getInt(a_number);
+			this->insertLocalArrayPointer(a_position, i_pointer);
+			delete i_pointer;
 			
 			NoteLog(ame_Log_EndMethod, "insertLocalInt", "println", "");
 			return *this;
@@ -900,30 +802,11 @@ class Note : public Array<char>, public Printable{
 
 		virtual Note insertLocalFloat(int a_position, const float& a_number){
 			NoteLog(ame_Log_StartMethod, "insertLocalFloat", "println", "const float& a_note");
-			int i_array_length = floatCharSize(a_number, 4);
-			if(this->isEmpty()){
-				this->createArray(i_array_length);
-				this->copyFloat(a_number, i_array_length, 0, 4, this->m_t_value, true);
-				this->copyEndValue();
-				NoteLog(ame_Log_Statement, "insertLocalFloat", "println", "Array Length:");
-				NoteLog(ame_Log_Statement, "insertLocalFloat", "println", i_array_length);
-				NoteLog(ame_Log_Statement, "insertLocalFloat", "println", "Array Position:");
-				NoteLog(ame_Log_Statement, "insertLocalFloat", "println", this->getPosition());
-				NoteLog(ame_Log_Statement, "insertLocalFloat", "println", "Array Size:");
-				NoteLog(ame_Log_Statement, "insertLocalFloat", "println", this->getSize());
-				NoteLog(ame_Log_EndMethod, "insertLocalFloat", "println", "");
-				return *this;
-			}
-			this->expandIfNeeded(i_array_length);
-			if(a_position >= this->getPosition()){
-				this->copyFloat(a_number, i_array_length, 0, 4, this->m_t_value, true);
-				this->copyEndValue();
-				NoteLog(ame_Log_EndMethod, "insertLocalFloat", "println", "");
-				return *this;
-			}
-			
-			this->copyFloat(a_number, i_array_length, 0, 4, this->m_t_value, true);
-			this->copyEndValue();
+
+			char* i_pointer = this->getFloat(a_number);
+			this->insertLocalArrayPointer(a_position, i_pointer);
+			delete i_pointer;
+
 			NoteLog(ame_Log_EndMethod, "insertLocalFloat", "println", "");
 			return *this;
 		}
@@ -943,28 +826,11 @@ class Note : public Array<char>, public Printable{
 
 		virtual Note insertLocalLong(int a_position, const long& a_number){
 			NoteLog(ame_Log_StartMethod, "insertLocalLong", "println", "const long& a_note");
-			int i_array_length = longCharSize(a_number);
-			if(this->isEmpty()){
-				this->createArray(i_array_length);
-				this->copyLong(a_number, i_array_length, 0, this->m_t_value, true);
-				this->copyEndValue(this->getPosition());
-				NoteLog(ame_Log_Statement, "insertLocalLong", "println", "Array Length:");
-				NoteLog(ame_Log_Statement, "insertLocalLong", "println", i_array_length);
-				NoteLog(ame_Log_Statement, "insertLocalLong", "println", "Array Position:");
-				NoteLog(ame_Log_Statement, "insertLocalLong", "println", this->getPosition());
-				NoteLog(ame_Log_Statement, "insertLocalLong", "println", "Array Size:");
-				NoteLog(ame_Log_Statement, "insertLocalLong", "println", this->getSize());
-				NoteLog(ame_Log_EndMethod, "insertLocalLong", "println", "");
-				return *this;
-			}
-			this->expandIfNeeded(i_array_length);
-			if(a_position >= this->getPosition()){
-				this->copyLong(a_number, i_array_length, 0, this->m_t_value, true);
-				this->copyEndValue(this->getPosition());
-				NoteLog(ame_Log_EndMethod, "insertLocalLong", "println", "");
-				return *this;
-			}
-			
+
+			char* i_pointer = this->getLong(a_number);
+			this->insertLocalArrayPointer(a_position, i_pointer);
+			delete i_pointer;
+
 			NoteLog(ame_Log_EndMethod, "insertLocalLong", "println", "");
 			return *this;
 		}
@@ -984,33 +850,15 @@ class Note : public Array<char>, public Printable{
 
 		virtual Note insertLocalBool(int a_position, const bool& a_number){
 			NoteLog(ame_Log_StartMethod, "insertLocalBool", "println", "const bool& a_note");
-			int i_array_length = 1;
-			if(this->isEmpty()){
-				this->createArray(i_array_length);
-				this->copyValue(a_number ? '1' : '0');
-				this->copyEndValue(this->getPosition());
-				NoteLog(ame_Log_Statement, "insertLocalBool", "println", "Array Length:");
-				NoteLog(ame_Log_Statement, "insertLocalBool", "println", i_array_length);
-				NoteLog(ame_Log_Statement, "insertLocalBool", "println", "Array Position:");
-				NoteLog(ame_Log_Statement, "insertLocalBool", "println", this->getPosition());
-				NoteLog(ame_Log_Statement, "insertLocalBool", "println", "Array Size:");
-				NoteLog(ame_Log_Statement, "insertLocalBool", "println", this->getSize());
-				NoteLog(ame_Log_EndMethod, "insertLocalBool", "println", "");
-				return *this;
-			}
-			this->expandIfNeeded(i_array_length);
-			
-			if(a_position >= this->getPosition()){
-				this->copyValue(a_number ? '1' : '0');
-				this->copyEndValue(this->getPosition());
-				NoteLog(ame_Log_EndMethod, "insertLocalBool", "println", "");
-				return *this;
-			}
+
+			char* i_pointer = this->getBool(a_number);
+			this->insertLocalArrayPointer(a_position, i_pointer);
+			delete i_pointer;
 			
 			NoteLog(ame_Log_EndMethod, "insertLocalBool", "println", "");
 			return *this;
 		}
-
+/*
 		Note subNote(int start){
 			NoteLog(ame_Log_StartMethod, "subNote", "println", "");
 			
@@ -1073,15 +921,15 @@ class Note : public Array<char>, public Printable{
 			return note;
 		}
 
-		virtual char charAt(int x) const{
-			NoteLog(ame_Log_StartMethod, "charAt", "println", "");
+		virtual char get(int x) const{
+			NoteLog(ame_Log_StartMethod, "get", "println", "");
 			if(this->isEmpty() || x >= this->getPosition()){
-				NoteLog(ame_Log_EndMethod, "operator=", "println", "");
+				NoteLog(ame_Log_EndMethod, "get", "println", "");
 				return -1;
 			}
-			NoteLog(ame_Log_EndMethod, "charAt", "println", "");
+			NoteLog(ame_Log_EndMethod, "get", "println", "");
 			return this->m_t_value[x];
-		}
+		}*/
 
 		virtual bool isNumber(char a_char) const{
 			NoteLog(ame_Log_StartMethod, "isNumber", "println", "");
@@ -1101,48 +949,66 @@ class Note : public Array<char>, public Printable{
 			return a_char == 46;
 		}
 
+		bool toBool(){
+			NoteLog(ame_Log_StartMethod, "toBool", "println", "");
+			if(this->getPosition() == 1){
+				if(this->get(0) == '1'){
+					NoteLog(ame_Log_EndMethod, "toInt", "println", "true");
+					return true;
+				}
+				if(this->get(0) == '0'){
+					NoteLog(ame_Log_EndMethod, "toInt", "println", "false");
+					return false;
+				}
+			}
+			NoteLog(ame_Log_EndMethod, "toInt", "println", "false");
+			return false;
+		}
+
 		int toInt(){
 			NoteLog(ame_Log_StartMethod, "toInt", "println", "");
+			if(this->isEmpty()){
+				NoteLog(ame_Log_EndMethod, "toInt", "println", "this->isEmpty()");
+				return 0;
+			}
+			int i_start = 0;
+			if(this->get(0) == '-'){
+				i_start = 1;
+			}
 			int output = 0;
 			int c_size = this->length();
 			bool lastDecimals = false;
-			for(int x = 0; x < c_size; x++){
-				if(this->m_t_value[x] == 46){
+			for(int x = i_start; x < c_size; x++){
+				char f_char = this->m_t_value[x];
+				NoteLog(ame_Log_StartMethod, "toInt", "println", "f_char");
+				NoteLog(ame_Log_StartMethod, "toInt", "println", f_char);
+				if(this->isDecimalPoint(f_char)){
 					if(lastDecimals){
-						// Serial.println("m_string[x] == 46 && lastDecimals");
-						// Serial.print("position ");Serial.println(x);
-						NoteLog(ame_Log_EndMethod, "toInt", "println", "");
+						NoteLog(ame_Log_EndMethod, "toInt", "println", "allready has a decimal point");
 						return 0;
 					}
-					// Serial.println("m_string[x] == 46");
-					// Serial.print("position ");Serial.println(x);
-					int expn = 10;
-					for(int y = 0; y < c_size - x - 1; y++){
-						expn *= 10;
-					}
-					output /= expn;
 					lastDecimals = true;
 					continue;
 				}
-				if(this->isNumber(this->m_t_value[x])){
+				if(this->isNumber(f_char)){
 					if(lastDecimals){
-						// Serial.println("m_string[x] > 47 && m_string[x] < 58 && lastDecimals");
-						// Serial.print("position ");Serial.println(x);
-						continue;
+						
+					}else{
+						NoteLog(ame_Log_Statement, "toInt", "println", "int part");
+						if(x != i_start){
+							output *= 10;
+						}
+						output += (f_char - 48);
+						NoteLog(ame_Log_Statement, "toInt", "println", "output");
+						NoteLog(ame_Log_Statement, "toInt", "println", output);
 					}
-					// Serial.println("m_string[x] > 47 && m_string[x] < 58");
-					// Serial.print("position ");Serial.println(x);
-					int expn = 1;
-					for(int y = 0; y < c_size - x - 1; y++){
-						expn *= 10;
-					}
-					output += (this->m_t_value[x] - 48) * expn;
 				}else{
-					// Serial.println("else");
-					// Serial.print("position ");Serial.println(x);
 					NoteLog(ame_Log_EndMethod, "toInt", "println", "");
 					return 0;
 				}
+			}
+			if(i_start == 1){
+				output *= -1;
 			}
 			NoteLog(ame_Log_EndMethod, "toInt", "println", "");
 			return output;
@@ -1150,36 +1016,48 @@ class Note : public Array<char>, public Printable{
 		
 		long toLong(){
 			NoteLog(ame_Log_StartMethod, "toLong", "println", "");
+			if(this->isEmpty()){
+				NoteLog(ame_Log_EndMethod, "toLong", "println", "this->isEmpty()");
+				return 0;
+			}
+			int i_start = 0;
+			if(this->get(0) == '-'){
+				i_start = 1;
+			}
 			long output = 0;
 			int c_size = this->length();
 			bool lastDecimals = false;
-			for(int x = 0; x < c_size; x++){
-				if(this->m_t_value[x] == 46){
+			for(int x = i_start; x < c_size; x++){
+				char f_char = this->m_t_value[x];
+				NoteLog(ame_Log_StartMethod, "toLong", "println", "f_char");
+				NoteLog(ame_Log_StartMethod, "toLong", "println", f_char);
+				if(this->isDecimalPoint(f_char)){
 					if(lastDecimals){
-						NoteLog(ame_Log_EndMethod, "toLong", "println", "");
+						NoteLog(ame_Log_EndMethod, "toLong", "println", "allready has a decimal point");
 						return 0;
 					}
-					long expn = 10;
-					for(int y = 0; y < c_size - x - 1; y++){
-						expn *= 10;
-					}
-					output /= expn;
 					lastDecimals = true;
 					continue;
 				}
-				if(this->isNumber(this->m_t_value[x])){
+				if(this->isNumber(f_char)){
 					if(lastDecimals){
-						continue;
+						
+					}else{
+						NoteLog(ame_Log_Statement, "toLong", "println", "int part");
+						if(x != i_start){
+							output *= 10;
+						}
+						output += (f_char - 48);
+						NoteLog(ame_Log_Statement, "toLong", "println", "output");
+						NoteLog(ame_Log_Statement, "toLong", "println", output);
 					}
-					long expn = 1;
-					for(int y = 0; y < c_size - x - 1; y++){
-						expn *= 10;
-					}
-					output += (this->m_t_value[x] - 48) * expn;
 				}else{
 					NoteLog(ame_Log_EndMethod, "toLong", "println", "");
 					return 0;
 				}
+			}
+			if(i_start == 1){
+				output *= -1;
 			}
 			NoteLog(ame_Log_EndMethod, "toLong", "println", "");
 			return output;
@@ -1187,60 +1065,59 @@ class Note : public Array<char>, public Printable{
 		
 		float toFloat(){
 			NoteLog(ame_Log_StartMethod, "toFloat", "println", "");
+			if(this->isEmpty()){
+				NoteLog(ame_Log_EndMethod, "toFloat", "println", "this->isEmpty()");
+				return 0;
+			}
+			int i_start = 0;
+			if(this->get(0) == '-'){
+				i_start = 1;
+			}
 			float output = 0;
 			int c_size = this->length();
 			bool lastDecimals = false;
-			int d_pos = 0;
-			int decimalCount = 0;
-			int endDecimal = 2;
-			for(int x = 0; x < c_size; x++){
+			int lastDecimalPosition= 0;
+			for(int x = i_start; x < c_size; x++){
 				char f_char = this->m_t_value[x];
+				NoteLog(ame_Log_Statement, "toFloat", "println", "f_char");
+				NoteLog(ame_Log_Statement, "toFloat", "println", f_char);
 				if(this->isDecimalPoint(f_char)){
 					if(lastDecimals){
-						NoteLog(ame_Log_EndMethod, "toFloat", "println", "");
+						NoteLog(ame_Log_EndMethod, "toFloat", "println", "allready has a decimal point");
 						return 0;
 					}
-					float exponent = 10;
-					for(int y = 0; y < c_size - x - 1; y++){
-						exponent *= 10;
-					}
-					output /= exponent;
 					lastDecimals = true;
-					d_pos = x;
+					lastDecimalPosition= x;
 					continue;
 				}
 				if(this->isNumber(f_char)){
-					int expsize = c_size - x - 1;
 					if(lastDecimals){
-						expsize = x - d_pos;
-						decimalCount++;
-					}
-					// Serial.print("expsize ");Serial.println(expsize);
-					float exponent = 1;
-					for(int y = 0; y < expsize; y++){
-						exponent *= 10;
-					}
-					if(lastDecimals){
-						// Serial.println("divide");
-						output += this->getNumber(f_char) / exponent;
+						NoteLog(ame_Log_Statement, "toFloat", "println", "has Decimal point");
+						float expn = 1;
+						for(int y = 0; y < x - lastDecimalPosition; y++){
+							expn *= 10;
+						}
+						NoteLog(ame_Log_Statement, "toFloat", "println", "expn");
+						NoteLog(ame_Log_Statement, "toFloat", "println", expn);
+						output += ((float)(f_char - 48) / expn);
+						NoteLog(ame_Log_Statement, "toFloat", "println", "output");
+						NoteLog(ame_Log_Statement, "toFloat", "println", output);
 					}else{
-						// Serial.println("mult");
-						output += this->getNumber(f_char) * exponent;
-					}
-					NoteLog(ame_Log_EndMethod, "toFloat", "println", "exponent: ");
-					NoteLog(ame_Log_EndMethod, "toFloat", "println", exponent);
-					NoteLog(ame_Log_EndMethod, "toFloat", "println", "output: ");
-					NoteLog(ame_Log_EndMethod, "toFloat", "println", output);
-					if(decimalCount >= endDecimal){
-						NoteLog(ame_Log_EndMethod, "toFloat", "println", "");
-						return output;
+						NoteLog(ame_Log_Statement, "toFloat", "println", "int part");
+						if(x != i_start){
+							output *= 10;
+						}
+						output += (f_char - 48);
+						NoteLog(ame_Log_Statement, "toFloat", "println", "output");
+						NoteLog(ame_Log_Statement, "toFloat", "println", output);
 					}
 				}else{
-					// Serial.println("else");
-					// Serial.print("position ");Serial.println(x);
 					NoteLog(ame_Log_EndMethod, "toFloat", "println", "");
 					return 0;
 				}
+			}
+			if(i_start == 1){
+				output *= -1;
 			}
 			NoteLog(ame_Log_EndMethod, "toFloat", "println", "");
 			return output;
@@ -1269,7 +1146,7 @@ class Note : public Array<char>, public Printable{
 					const_NoteLog(ame_Log_Statement, "split", "println", "end for loop");
 					continue;
 				}
-				i_note.addLocal(f_char);
+				i_note.addLocalValue(f_char);
 				const_NoteLog(ame_Log_Statement, "split", "println", "i_note: ");
 				const_NoteLog(ame_Log_Statement, "split", "println", i_note);
 				if(x == this->getPosition() - 1){
@@ -1291,21 +1168,12 @@ class Note : public Array<char>, public Printable{
 				return this->endValue();
 			}
 			NoteLog(ame_Log_EndMethod, "getLastChar", "println", "");
-			return this->charAt(this->getPosition() - 1);
+			return this->get(this->getPosition() - 1);
 		}
 
-		virtual void addLine(Note a_line){
+		virtual void addLine(){
 			NoteLog(ame_Log_StartMethod, "addLine", "println", "");
-			NoteLog(ame_Log_Statement, "addLine", "println", "");
-			if(this->isEmpty()){
-				this->addLocal(a_line);
-				this->addLocal('\n');
-				return;
-			}
-			if(this->getLastChar() != '\n'){
-				this->addLocal('\n');
-			}
-			this->addLocal(a_line);
+			this->addLocalValue('\n');
 			NoteLog(ame_Log_EndMethod, "addLine", "println", "");
 		}
 
@@ -1318,7 +1186,7 @@ class Note : public Array<char>, public Printable{
 			for(int x = 0; x < this->getPosition(); x++){
 				// const_NoteLog(ame_Log_Statement, "getOrder", "println", "iteration: ");
 				// const_NoteLog(ame_Log_Statement, "getOrder", "println", x);
-				const char f_char = this->charAt(x);
+				const char f_char = this->get(x);
 				// const_NoteLog(ame_Log_Statement, "getOrder", "println", "char: ");
 				// const_NoteLog(ame_Log_Statement, "getOrder", "println", f_char);
 				// const_NoteLog(ame_Log_Statement, "getOrder", "println", "i_note: ");
@@ -1349,7 +1217,7 @@ class Note : public Array<char>, public Printable{
 					continue;
 				}
 				if(addToNote){
-					i_note.addLocal(f_char);
+					i_note.addLocalValue(f_char);
 				}
 				// const_NoteLog(ame_Log_Statement, "getOrder", "println", "i_note: ");
 				// const_NoteLog(ame_Log_Statement, "getOrder", "println", i_note);
@@ -1360,59 +1228,71 @@ class Note : public Array<char>, public Printable{
 		}
 		
 		virtual int getIndex(Note a_search){
-			NoteLog(ame_Log_StartMethod, "replace", "println", "");
+			NoteLog(ame_Log_StartMethod, "getIndex", "println", "");
 			Note i_note;
 			int i_index = 0;
 			int i_note_count = 0;
-			for(int x = 0; x < a_search.getPosition(); x++){
-				char f_char = this->charAt(x);
-				i_note.addLocal(f_char);
-				char f_char_search = a_search.charAt(i_note_count);
-				char f_char_record = i_note.charAt(i_note_count);
+			for(int x = 0; x < this->getPosition(); x++){
+				char f_char = this->get(x);
+				NoteLog(ame_Log_StartMethod, "getIndex", "println", "f_char");
+				NoteLog(ame_Log_StartMethod, "getIndex", "println", f_char);
+				i_note.addLocalValue(f_char);
+				char f_char_search = a_search.get(i_note_count);
+				char f_char_record = i_note.get(i_note_count);
 				if(f_char_search == f_char_record){
+					NoteLog(ame_Log_StartMethod, "getIndex", "println", "f_char_search == f_char_record");
 					if(i_note_count == 0){
 						i_index = x;
 					}
 					i_note_count++;
 				}else{
+					i_note_count = 0;
 					i_note.clear();
 					continue;
 				}
 				if(a_search == i_note){
+					NoteLog(ame_Log_StartMethod, "getIndex", "println", "a_search == i_note");
 					return i_index;
 				}
 			}
-			NoteLog(ame_Log_EndMethod, "replace", "println", "");
+			NoteLog(ame_Log_EndMethod, "getIndex", "println", "-1");
 			return -1;
 		}
 		
 		virtual bool removeNote(Note a_note){
-			NoteLog(ame_Log_StartMethod, "replace", "println", "");
+			NoteLog(ame_Log_StartMethod, "removeNote", "println", "");
 			int i_index = this->getIndex(a_note);
 			if(i_index == -1){
 				return false;
 			}
 			this->remove(i_index, a_note.getPosition());
-			NoteLog(ame_Log_EndMethod, "replace", "println", "");
+			NoteLog(ame_Log_EndMethod, "removeNote", "println", "");
 			return false;
 		}
 
 		virtual bool replace(Note a_search, Note a_change){
 			NoteLog(ame_Log_StartMethod, "replace", "println", "");
-			NoteLog(ame_Log_Statement, "replace", "println", "");
+			NoteLog(ame_Log_Statement, "replace", "println", "a_search");
+			NoteLog(ame_Log_Statement, "replace", "println", a_search);
+			NoteLog(ame_Log_Statement, "replace", "println", "a_change");
+			NoteLog(ame_Log_Statement, "replace", "println", a_change);
 			Note i_note;
 			Note i_search;
 			int i_search_index = 0;
 
 			if(this->isEmpty()){
+				NoteLog(ame_Log_EndMethod, "replace", "println", "this->isEmpty()");
 				return false;
 			}
 			int i_index = this->getIndex(a_search);
+			NoteLog(ame_Log_Statement, "replace", "println", "i_index");
+			NoteLog(ame_Log_Statement, "replace", "println", i_index);
 			if(i_index == -1){
+				NoteLog(ame_Log_EndMethod, "replace", "println", "i_index == -1");
 				return false;
 			}
 			this->remove(i_index, a_change.getPosition());
-			this->insertLocal(i_index, a_change);
+			this->insertLocalNote(i_index, a_change);
 			NoteLog(ame_Log_EndMethod, "replace", "println", "");
 			return true;
 		}
@@ -1464,37 +1344,85 @@ class Note : public Array<char>, public Printable{
 		virtual Note operator+=(const Note& a_note){
 			NoteLog(ame_Log_StartMethod, "operator+=", "println", "");
 			NoteLog(ame_Log_EndMethod, "operator+=", "println", "");
-			return this->addLocal(a_note);
+			return this->addLocalNote(a_note);
 		}
 
 		virtual Note operator+=(const char* a_char){
 			NoteLog(ame_Log_StartMethod, "operator+=", "println", "");
 			NoteLog(ame_Log_EndMethod, "operator+=", "println", "");
-			return this->addLocal(a_char);
+			return this->addLocalArrayPointer(a_char);
 		}
-
+/*
 		virtual Note operator+=(const char& a_char){
 			NoteLog(ame_Log_StartMethod, "operator+=", "println", "");
 			NoteLog(ame_Log_EndMethod, "operator+=", "println", "");
-			return this->addLocal(a_char);
+			return this->addLocalValue(a_char);
+		}
+*/
+		virtual Note operator+=(const bool& a_value){
+			NoteLog(ame_Log_StartMethod, "operator+=", "println", "");
+			NoteLog(ame_Log_EndMethod, "operator+=", "println", "");
+			return this->addLocalBool(a_value);
+		}
+
+		virtual Note operator+=(const int& a_value){
+			NoteLog(ame_Log_StartMethod, "operator+=", "println", "");
+			NoteLog(ame_Log_EndMethod, "operator+=", "println", "");
+			return this->addLocalInt(a_value);
+		}
+
+		virtual Note operator+=(const long& a_value){
+			NoteLog(ame_Log_StartMethod, "operator+=", "println", "");
+			NoteLog(ame_Log_EndMethod, "operator+=", "println", "");
+			return this->addLocalLong(a_value);
+		}
+
+		virtual Note operator+=(const float& a_value){
+			NoteLog(ame_Log_StartMethod, "operator+=", "println", "");
+			NoteLog(ame_Log_EndMethod, "operator+=", "println", "");
+			return this->addLocalFloat(a_value);
 		}
 
 		virtual Note operator+(const Note& a_note){
 			NoteLog(ame_Log_StartMethod, "operator+", "println", "");
 			NoteLog(ame_Log_EndMethod, "operator+", "println", "");
-			return this->add(a_note);
+			return this->addNote(a_note);
 		}
 
 		virtual Note operator+(char* a_note){
 			NoteLog(ame_Log_StartMethod, "operator+", "println", "");
 			NoteLog(ame_Log_EndMethod, "operator+", "println", "");
-			return this->add(a_note);
+			return this->addArrayPointer(a_note);
 		}
-
+/*
 		virtual Note operator+(const char& a_note){
 			NoteLog(ame_Log_StartMethod, "operator+", "println", "");
 			NoteLog(ame_Log_EndMethod, "operator+", "println", "");
-			return this->add(a_note);
+			return this->addValue(a_note);
+		}
+*/
+		virtual Note operator+(const bool& a_value){
+			NoteLog(ame_Log_StartMethod, "operator+", "println", "");
+			NoteLog(ame_Log_EndMethod, "operator+", "println", "");
+			return this->addBool(a_value);
+		}
+
+		virtual Note operator+(const int& a_value){
+			NoteLog(ame_Log_StartMethod, "operator+", "println", "");
+			NoteLog(ame_Log_EndMethod, "operator+", "println", "");
+			return this->addInt(a_value);
+		}
+
+		virtual Note operator+(const long& a_value){
+			NoteLog(ame_Log_StartMethod, "operator+", "println", "");
+			NoteLog(ame_Log_EndMethod, "operator+", "println", "");
+			return this->addLong(a_value);
+		}
+
+		virtual Note operator+(const float& a_value){
+			NoteLog(ame_Log_StartMethod, "operator+", "println", "");
+			NoteLog(ame_Log_EndMethod, "operator+", "println", "");
+			return this->addFloat(a_value);
 		}
 
 		virtual Note operator-=(const int& a_remove){
@@ -1521,8 +1449,8 @@ class Note : public Array<char>, public Printable{
 				return false;
 			}
 			for(int x = 0; x < this->getPosition(); x++){
-				char f_char_1 = this->charAt(x);
-				char f_char_2 = a_note.charAt(x);
+				char f_char_1 = this->get(x);
+				char f_char_2 = a_note.get(x);
 				if(f_char_1 != f_char_2){
 					return false;
 				}
@@ -1535,14 +1463,22 @@ class Note : public Array<char>, public Printable{
 				return true;
 			}
 			for(int x = 0; x < this->getPosition(); x++){
-				char f_char_1 = this->charAt(x);
-				char f_char_2 = a_note.charAt(x);
+				char f_char_1 = this->get(x);
+				char f_char_2 = a_note.get(x);
 				if(f_char_1 == f_char_2){
 					return false;
 				}
 			}
 			return true;
 		}
+		
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+		virtual cppObjectClass* getClass(){return Class<Note>::getClass();}
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<Note>::getClass() || Array<char>::instanceof(cls);
+		}
+		#endif
+
 };
 
 }

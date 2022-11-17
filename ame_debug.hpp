@@ -17,6 +17,7 @@
 using namespace ame;
 
 long ram_size = -1;
+long initial_ram_size = -1;
 
 void debug(void* pointer, int location, ame_String name, ame_String method, ame_String type){
 	// Serial.println("Name");
@@ -25,6 +26,9 @@ void debug(void* pointer, int location, ame_String name, ame_String method, ame_
 	// Serial.println(method);
 	// Serial.println("Type");
 	// Serial.println(type);
+	if(location == ame_Log_StartSetup){
+		initial_ram_size = getRamSize();
+	}
 	if(location == ame_Log_StartLoop){
         System::console.println("start loop -------------------------------------------");
 		long n_ram_size = getRamSize();
@@ -38,6 +42,11 @@ void debug(void* pointer, int location, ame_String name, ame_String method, ame_
 			ram_size = n_ram_size;
             System::console.println("ram size: ");
             System::console.println(ram_size);
+			
+		   System::console.print("Loggin class: ");
+		   System::console.print(name);
+		   System::console.print(" - Method: ");
+		   System::console.println(method);
 
 		}
 		// ram_size = n_ram_size;
@@ -45,12 +54,23 @@ void debug(void* pointer, int location, ame_String name, ame_String method, ame_
 		// System::console.println(ram_size);
 	}
 	if(location == ame_Log_EndLoop){
+		long n_ram_size = getRamSize();
+		// System::console.print("initial ram size: ");
+		// System::console.println(initial_ram_size);
+		System::console.print("ram size: ");
+		System::console.println(n_ram_size);
         System::console.println("end loop --------------------------------------------");
 	}
 	// if(method == "Constructor" && location == ame_Log_StartMethod){
 		// System::console.println("new instance");
 	// }
 	// System::console.println("debugging");
+	if(location == ame_Log_Statement){
+		   System::console.print("Loggin class: ");
+		   System::console.print(name);
+		   System::console.print(" - Method: ");
+		   System::console.println(method);
+	}
 }
 
 //////////////////////////////////////////////////////////////

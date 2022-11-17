@@ -54,12 +54,12 @@ class PrimitiveMap : public PrimitiveRawMap<K,V> , public Map<K,V>{
 			PrimitiveMapLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
-		PrimitiveMap(int c_size):PrimitiveRawMap<K,V>(c_size){
+		PrimitiveMap(int c_size) : PrimitiveRawMap<K,V>(c_size){
 			PrimitiveMapLog(ame_Log_StartMethod, "Constructor", "println", "int c_size");
 			PrimitiveMapLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
-		PrimitiveMap(int c_size, bool c_own):PrimitiveRawMap<K,V>(c_size,c_own){
+		PrimitiveMap(int c_size, bool c_key_own, bool c_value_own, bool c_reorder) : PrimitiveRawMap<K,V>(c_size, c_key_own, c_value_own, c_reorder){
 			PrimitiveMapLog(ame_Log_StartMethod, "Constructor", "println", "int c_size, bool c_own");
 			PrimitiveMapLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}

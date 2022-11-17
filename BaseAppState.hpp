@@ -1,7 +1,30 @@
 
+#ifndef CONFIGURATION_BaseAppState_hpp
+#define CONFIGURATION_BaseAppState_hpp
+
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_BaseAppState)
+		#define BaseAppState_hpp
+
+		#define IMPLEMENTATION_BaseAppState
+		#define IMPLEMENTING_BaseAppState
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_BaseAppState)
+			#define IMPLEMENTATION_BaseAppState
+			#define IMPLEMENTING_BaseAppState
+		#endif
+	#endif
+#endif
+
 #ifndef BaseAppState_hpp
 #define BaseAppState_hpp
 #define BaseAppState_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_BaseAppState
+	#define IMPLEMENTATION_BaseAppState IMPLEMENTATION(public BaseAppState)
+	#define IMPLEMENTING_BaseAppState IMPLEMENTING(public BaseAppState)
+#endif
 
 #include "Application.hpp"
 #include "Class.hpp"
@@ -24,11 +47,16 @@
 
 namespace ame{
 
-class BaseAppState : public AppState{
+/*
+*	Class Configuration:
+*	DISABLE_IMPLEMENTATION_AppState
+*/
+class BaseAppState IMPLEMENTATION_AppState {
     public:
 		BaseAppState(){}
 		virtual ~BaseAppState(){}
 		
+		#if defined(Application_AVAILABLE)
 		virtual void initialize(Application* app){
 			BaseAppStateLog(ame_Log_StartMethod, "initialize", "println", "");
 			m_app = app;
@@ -36,6 +64,10 @@ class BaseAppState : public AppState{
 			initializeState(app);
 			BaseAppStateLog(ame_Log_EndMethod, "initialize", "println", "");
 		}
+		
+		virtual void initializeState(Application* app){}
+		virtual Application* getApplication(){return m_app;}
+		#endif
 		
 		virtual bool hasInitialize(){return m_init;}
 		
@@ -52,16 +84,14 @@ class BaseAppState : public AppState{
 			updateState(tpc);
 		}
 		
-		virtual void initializeState(Application* app){}
-		
 		virtual void updateState(float tpc){}
 		
-		virtual Application* getApplication(){return m_app;}
-		
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+		virtual cppObjectClass* getClass(){return Class<BaseAppState>::getClass();}
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<BaseAppState>::classType || cppObject::instanceof(cls);
+			return cls == Class<BaseAppState>::getClass() || AppState::instanceof(cls);
 		}
-		virtual cppObjectClass* getClass(){return Class<BaseAppState>::classType;}
+		#endif
 	protected:
 		Application* m_app = nullptr;
 		bool m_enable = false;

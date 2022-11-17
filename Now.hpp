@@ -48,6 +48,7 @@ class Now {
 			} 
 			return false;
 		}
+		
 		static bool is(TimeCheck check,long time,long isNow,long offset){
 			if(check == TimeCheck::Equal){
 				return time == isNow;

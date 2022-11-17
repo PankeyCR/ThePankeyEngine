@@ -10,8 +10,8 @@ void setup() {
 void loop() {
   ame_Debuging(ame_Log_StartLoop, "loop");
 
-  Note note = String("hola ");
-  note.addLocal(String("user"));
+  Note note = "hola ";
+  note.addLocalLong(1234567l);
   Serial.println(note);
   
   ame_Debuging(ame_Log_EndLoop, "loop");

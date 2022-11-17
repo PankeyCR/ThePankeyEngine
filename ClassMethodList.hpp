@@ -1,8 +1,10 @@
 
-#include "ame_Enviroment.hpp"
+#ifndef DISABLE_ClassMethodList_hpp
+#define DISABLE_ClassMethodList_hpp
 
-#if defined(DISABLE_ClassMethodList)
-	#define ClassMethodList_hpp
+	#if defined(DISABLE_Method) || defined(DISABLE_ClassMethodList)
+		#define ClassMethodList_hpp
+	#endif
 #endif
 
 #ifndef ClassMethodList_hpp

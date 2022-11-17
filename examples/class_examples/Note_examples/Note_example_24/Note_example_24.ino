@@ -11,7 +11,7 @@ void loop() {
   ame_Debuging(ame_Log_StartLoop, "loop");
 
   Note note = "hola ";
-  note.addLocal(1234567l);
+  note.addLocalInt(150);
   Serial.println(note);
   
   ame_Debuging(ame_Log_EndLoop, "loop");

@@ -137,6 +137,7 @@ class EthernetSerialPort : public SerialPort{
 	virtual bool operator!=(EthernetSerialPort c){return client != c.client;}
 	virtual operator bool(){return client;}
 
+	#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
 	virtual bool equal(cppObject *b){
 		EthernetSerialPortLog(ame_Log_StartMethod, "equal",  "println", "");
 		if(b == this){
@@ -156,6 +157,7 @@ class EthernetSerialPort : public SerialPort{
 		EthernetSerialPortLog(ame_Log_StartMethod, "instanceof",  "println", name);
 		return cls == Class<EthernetSerialPort>::classType || SerialPort::instanceof(cls);
 	}
+	#endif
 
 	protected:
 		#ifdef ame_Windows

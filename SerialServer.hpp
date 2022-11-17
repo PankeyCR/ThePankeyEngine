@@ -1,7 +1,30 @@
 
+#ifndef CONFIGURATION_SerialServer_hpp
+#define CONFIGURATION_SerialServer_hpp
+
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_SerialServer)
+		#define SerialServer_hpp
+
+		#define IMPLEMENTATION_SerialServer
+		#define IMPLEMENTING_SerialServer
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_SerialServer)
+			#define IMPLEMENTATION_SerialServer
+			#define IMPLEMENTING_SerialServer
+		#endif
+	#endif
+#endif
+
 #ifndef SerialServer_hpp
 #define SerialServer_hpp
 #define SerialServer_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_SerialServer
+	#define IMPLEMENTATION_SerialServer IMPLEMENTATION(public SerialServer)
+	#define IMPLEMENTING_SerialServer IMPLEMENTING(public SerialServer)
+#endif
 
 #include "cppObject.hpp"
 
@@ -18,7 +41,11 @@
 
 namespace ame{
 
-class SerialServer : public cppObject{
+/*
+*	Class Configuration:
+*	DISABLE_IMPLEMENTATION_cppObject
+*/
+class SerialServer IMPLEMENTATION_cppObject{
     public:
 		using Method = void(*)();
 		SerialServer(){
@@ -34,13 +61,11 @@ class SerialServer : public cppObject{
 			return nullptr;
 		}
 
-		virtual void setName(Note name){
-			m_name = name;
-		}
+		virtual void setName(Note name){m_name = name;}
+		virtual Note getName(){return m_name;}
 
-		virtual Note getName(){
-			return m_name;
-		}
+		virtual void setPort(Note a_port){m_port = a_port;}
+		virtual Note getPort(){return m_port;}
 
 		virtual void setTimeOut(float t){
 			m_timeout = t;
@@ -68,8 +93,8 @@ class SerialServer : public cppObject{
 		virtual bool operator==(SerialServer b){return this->getName()==b.getName();}
 		virtual bool operator!=(SerialServer b){return this->getName()!=b.getName();}
 
-		virtual cppObjectClass* getClass(){return Class<SerialServer>::classType;}
-		virtual Note toNote(){return "SerialServer";}
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+		virtual cppObjectClass* getClass(){return Class<SerialServer>::getClass();}
 		virtual bool equal(cppObject *b){
 			if(b == this){
 				return true;
@@ -77,13 +102,15 @@ class SerialServer : public cppObject{
 			return false;
 		}
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<SerialServer>::classType || cppObject::instanceof(cls);
+			return cls == Class<SerialServer>::getClass();
 		}
 		virtual cppObject *clone(){return nullptr;}
+		#endif
 
 	protected:
 		float m_timeout = -1.0;
 		Note m_name = "";
+		Note m_port = "";
 };
 
 }

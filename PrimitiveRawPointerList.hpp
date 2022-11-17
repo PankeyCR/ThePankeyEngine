@@ -119,10 +119,6 @@ class PrimitiveRawPointerList : virtual public RawPointerList<T>{
 			PrimitiveRawPointerListLog(ame_Log_Statement, "addPointer", "println", this->getPosition());
 			PrimitiveRawPointerListLog(ame_Log_Statement, "addPointer", "println", "List Size Before adding:");
 			PrimitiveRawPointerListLog(ame_Log_Statement, "addPointer", "println", this->getSize());
-			if(this->isEmpty()){
-				PrimitiveRawPointerListLog(ame_Log_Statement, "addPointer", "println", "this->isEmpty()");
-				this->expandLocal(this->m_expandSize);
-			}
 			if(this->getPosition() >= this->getSize()){
 				PrimitiveRawPointerListLog(ame_Log_Statement, "addPointer", "println", "this->getPosition() >= this->getSize()");
 				this->expandLocal(this->m_expandSize);
@@ -130,6 +126,7 @@ class PrimitiveRawPointerList : virtual public RawPointerList<T>{
 			if(this->getPosition() >= this->getSize()){
 				PrimitiveRawPointerListLog(ame_Log_Statement, "addPointer", "println", "this->getPosition() >= this->getSize()");
 				if(a_value != nullptr){
+					PrimitiveRawPointerListLog(ame_Log_Statement, "addPointer", "println", "deleting pointer");
 					delete a_value;
 				}
 				return nullptr;
@@ -167,11 +164,9 @@ class PrimitiveRawPointerList : virtual public RawPointerList<T>{
 		
 		virtual T* insertPointer(int a_position, T* a_value){
 			PrimitiveRawPointerListLog(ame_Log_StartMethod, "insertPointer", "println", "");
-			if(this->isEmpty() || a_position >= this->getPosition()){
-				if(a_value != nullptr){
-					delete a_value;
-				}
-				return nullptr;
+			if(a_position >= this->getPosition()){
+				PrimitiveRawPointerListLog(ame_Log_EndMethod, "insertPointer", "println", "a_position >= this->getPosition()");
+				return this->addPointer(a_value);
             }
 			if(this->getPosition() >= this->getSize()){
 				this->expandLocal(this->m_expandSize);
@@ -253,18 +248,17 @@ class PrimitiveRawPointerList : virtual public RawPointerList<T>{
 		
 		virtual void resetDelete(){
 			PrimitiveRawPointerListLog(ame_Log_StartMethod, "resetDelete", "println", "");
-			if(this->isEmpty()){
-				this->setPosition(0);
-				return;
-			}
-			if(this->isOwner()){
-				for(int x = 0; x < this->getPosition(); x++){
-					if(this->m_values[x] == nullptr){
-						continue;
-					}
-					delete this->m_values[x];
-					this->m_values[x] = nullptr;
+			for(int x = 0; x < this->getPosition(); x++){
+				T* f_value = this->m_values[x];
+				if(f_value == nullptr){
+					PrimitiveRawPointerListLog(ame_Log_Statement, "resetDelete", "println", "this->m_values[x] == nullptr");
+					continue;
 				}
+				if(this->isOwner()){
+					PrimitiveRawPointerListLog(ame_Log_Statement, "resetDelete", "println", "this->isOwner()");
+					delete f_value;
+				}
+				this->m_values[x] = nullptr;
 			}
 			this->setPosition(0);
 			PrimitiveRawPointerListLog(ame_Log_EndMethod, "resetDelete", "println", "");
@@ -387,7 +381,7 @@ class PrimitiveRawPointerList : virtual public RawPointerList<T>{
 		////////////////////////////////////////////operator part///////////////////////////////////////////////
 		
 		
-		virtual PrimitiveRawPointerList& operator=(const PrimitiveRawPointerList& a_list){
+		virtual PrimitiveRawPointerList& operator=(const PrimitiveRawPointerList<T>& a_list){
 			PrimitiveRawPointerListLog(ame_Log_StartMethod, "operator=", "println", "");
 			this->resetDelete();
 			for(int x = 0; x < a_list.getPosition(); x++){

@@ -38,13 +38,41 @@ class RawPointerMap{
 
 		virtual void setOwner(bool a_owning){
 			RawPointerMapLog(ame_Log_StartMethod, "setOwner", "println", "");
-			this->m_owner = a_owning;
+			this->m_key_owner = a_owning;
+			this->m_value_owner = a_owning;
 			RawPointerMapLog(ame_Log_EndMethod, "setOwner", "println", "");
 		}
 		virtual bool isOwner()const{
 			const_RawPointerMapLog(ame_Log_StartMethod, "isOwner", "println", "");
 			const_RawPointerMapLog(ame_Log_EndMethod, "isOwner", "println", "");
-			return this->m_owner;
+			return this->m_key_owner && this->m_value_owner;
+		}
+		virtual bool hasOwner()const{
+			const_RawPointerMapLog(ame_Log_StartMethod, "isOwner", "println", "");
+			const_RawPointerMapLog(ame_Log_EndMethod, "isOwner", "println", "");
+			return this->m_key_owner || this->m_value_owner;
+		}
+
+		virtual void setKeyOwner(bool a_owning){
+			RawPointerMapLog(ame_Log_StartMethod, "setKeyOwner", "println", "");
+			this->m_key_owner = a_owning;
+			RawPointerMapLog(ame_Log_EndMethod, "setKeyOwner", "println", "");
+		}
+		virtual bool isKeyOwner()const{
+			const_RawPointerMapLog(ame_Log_StartMethod, "isKeyOwner", "println", "");
+			const_RawPointerMapLog(ame_Log_EndMethod, "isKeyOwner", "println", "");
+			return this->m_key_owner;
+		}
+
+		virtual void setValueOwner(bool a_owning){
+			RawPointerMapLog(ame_Log_StartMethod, "setValueOwner", "println", "");
+			this->m_value_owner = a_owning;
+			RawPointerMapLog(ame_Log_EndMethod, "setValueOwner", "println", "");
+		}
+		virtual bool isValueOwner()const{
+			const_RawPointerMapLog(ame_Log_StartMethod, "isValueOwner", "println", "");
+			const_RawPointerMapLog(ame_Log_EndMethod, "isValueOwner", "println", "");
+			return this->m_value_owner;
 		}
 		virtual void setPosition(int a_position){
 			RawPointerMapLog(ame_Log_StartMethod, "setPosition", "println", a_position);
@@ -270,7 +298,8 @@ class RawPointerMap{
 		}
 		
 	protected:
-		bool m_owner = true;
+		bool m_key_owner = true;
+		bool m_value_owner = true;
 		int m_position = 0;
 		int m_size = 0;
 };

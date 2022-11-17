@@ -13,23 +13,53 @@ void loop() {
   Note text = " monkey ";
 
   Note note;
-  note.addLocal(text);//Note
-  note.addLocal(" hello ");//char*
-  note.addLocal(' ');//char
-  note.addLocal(150);//int
-  note.addLocal(97.6f);//float
-  note.addLocal(1234567l);//long
-  note.addLocal(true);//bool
+  note.addLocalNote(text);//Note
+  note.addLocalValue(' ');//char
+  note.addLocalValue('-');//char
+  note.addLocalValue(' ');//char
+  note.addLocalCharPointer(" hello ");//char*
+  note.addLocalValue(' ');//char
+  note.addLocalValue('-');//char
+  note.addLocalValue(' ');//char
+  note.addLocalInt(150);//int
+  note.addLocalValue(' ');//char
+  note.addLocalValue('-');//char
+  note.addLocalValue(' ');//char
+  note.addLocalFloat(97.6f);//float
+  note.addLocalValue(' ');//char
+  note.addLocalValue('-');//char
+  note.addLocalValue(' ');//char
+  note.addLocalLong(1234567l);//long
+  note.addLocalValue(' ');//char
+  note.addLocalValue('-');//char
+  note.addLocalValue(' ');//char
+  note.addLocalBool(true);//bool
   
-  note.addLocal(text);//Note
-  note.addLocal(" hello ");//char*
-  note.addLocal(' ');//char
-  note.addLocal(150);//int
-  note.addLocal(97.6f);//float
-  note.addLocal(1234567l);//long
-  note.addLocal(false);//bool
+  note.addLine();
   
-  note.addLine("");
+  note.addLocalNote(text);//Note
+  note.addLocalValue(' ');//char
+  note.addLocalValue('-');//char
+  note.addLocalValue(' ');//char
+  note.addLocalCharPointer(" hello ");//char*
+  note.addLocalValue(' ');//char
+  note.addLocalValue('-');//char
+  note.addLocalValue(' ');//char
+  note.addLocalInt(150);//int
+  note.addLocalValue(' ');//char
+  note.addLocalValue('-');//char
+  note.addLocalValue(' ');//char
+  note.addLocalFloat(97.6f);//float
+  note.addLocalValue(' ');//char
+  note.addLocalValue('-');//char
+  note.addLocalValue(' ');//char
+  note.addLocalLong(1234567l);//long
+  note.addLocalValue(' ');//char
+  note.addLocalValue('-');//char
+  note.addLocalValue(' ');//char
+  note.addLocalBool(false);//bool
+  
+  note.addLine();
 
   Serial.println(note);
   

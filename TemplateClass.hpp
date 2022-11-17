@@ -1,4 +1,12 @@
 
+#ifndef DISABLE_TemplateClass_hpp
+#define DISABLE_TemplateClass_hpp
+
+	#if defined(DISABLE_cppObjectClass) || defined(DISABLE_TemplateClass)
+		#define TemplateClass_hpp
+	#endif
+#endif
+
 #ifndef TemplateClass_hpp
 #define TemplateClass_hpp
 #define TemplateClass_AVAILABLE
@@ -29,6 +37,7 @@ class TemplateClass : public cppObjectClass{
 			return nullptr;
 		}
 		
+		#if defined(Annotation_AVAILABLE)
 		virtual RawList<Annotation>* getAnnotations(){
 			return ClassAnnotationList<T>::annotations;
 		}
@@ -43,7 +52,9 @@ class TemplateClass : public cppObjectClass{
 			}
 			return nullptr;
 		}
+		#endif
 		
+		#if defined(Method_AVAILABLE)
 		virtual RawList<Method>* getMethods(){
 			return ClassMethodList<T>::methods;
 		}
@@ -61,6 +72,7 @@ class TemplateClass : public cppObjectClass{
 			}
 			return nullptr;
 		}
+		#endif
 };
 
 }

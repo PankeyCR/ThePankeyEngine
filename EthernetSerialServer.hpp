@@ -76,6 +76,7 @@ class EthernetSerialServer : public SerialServer{
 			return nullptr;
 		}
 		
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
 		virtual bool equal(cppObject *b){
 			EthernetSerialServerLog(ame_Log_Statement, "available",  "println", "equal");
 			if(b == this){
@@ -95,6 +96,7 @@ class EthernetSerialServer : public SerialServer{
 			EthernetSerialServerLog(ame_Log_Statement, "instanceof",  "println", "");
 			return cls == Class<EthernetSerialServer>::classType || SerialServer::instanceof(cls);
 		}
+		#endif
 
 	protected:
 		#ifdef ame_Windows

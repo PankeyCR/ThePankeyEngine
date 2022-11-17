@@ -159,7 +159,6 @@ class LinkedRawPointerList : virtual public RawPointerList<T>{
 			n_Node->next = nextNode;
 			n_Node->last = a_node;
 			n_Node->set(a_value);
-			LinkedRawPointerListLog(ame_Log_EndMethod, "addPointerToNextNode", "println", *a_value);
 			LinkedRawPointerListLog(ame_Log_EndMethod, "addPointerToNextNode", "println", "");
 			return n_Node;
 		}
@@ -454,7 +453,7 @@ class LinkedRawPointerList : virtual public RawPointerList<T>{
 				return a_value;
 			}
 			LinkedRawPointerListLog(ame_Log_EndMethod, "insertPointer", "println", "");
-			return nullptr;
+			return this->addPointer(a_value);
 		}
 		
 		virtual T* getByPointer(T* key){

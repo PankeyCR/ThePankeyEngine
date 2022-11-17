@@ -1,11 +1,17 @@
-	
+
+#ifndef DISABLE_Annotation_hpp
+#define DISABLE_Annotation_hpp
+
+	#if defined(DISABLE_Annotation)
+		#define Annotation_hpp
+	#endif
+#endif
+
 #ifndef Annotation_hpp
 #define Annotation_hpp
-#define Annotation_AVAILABLE
+#define Annotation_AVAILABLE 
 
 namespace ame{
-
-class cppObjectClass;
 
 class Annotation{
 	public:

@@ -10,8 +10,10 @@ void setup() {
 void loop() {
   ame_Debuging(ame_Log_StartLoop, "loop");
 
-  Note note = 'h';
-  Serial.println(note);
+  Note note;
+  char* i_char = note.getLong(1234567l);
+  Serial.println(i_char);
+  delete i_char;
   
   ame_Debuging(ame_Log_EndLoop, "loop");
 }

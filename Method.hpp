@@ -11,6 +11,14 @@
 *
 */
 
+#ifndef DISABLE_Method_hpp
+#define DISABLE_Method_hpp
+
+	#if defined(DISABLE_Method)
+		#define Method_hpp
+	#endif
+#endif
+
 #ifndef Method_hpp
 #define Method_hpp
 #define Method_AVAILABLE
@@ -96,6 +104,7 @@ class Method{
 		virtual RawPointerList<Parameter>* getParameters(){return nullptr;}
 
 		virtual cppObjectClass* getClass(){return methodClass;}
+		virtual bool instanceof(cppObjectClass* cls){return false;}
 			
 	protected:
 		cppObjectClass* methodClass = nullptr;

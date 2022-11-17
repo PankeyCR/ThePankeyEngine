@@ -1,13 +1,9 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_DefaultSerialPort)
-	#define DefaultSerialPort_hpp
-#endif
-
 #ifndef DefaultSerialPort_hpp
 #define DefaultSerialPort_hpp
 #define DefaultSerialPort_AVAILABLE
+
+#include "cppObject.hpp"
 
 #ifndef ame_Enviroment_Defined
 
@@ -59,23 +55,12 @@ class DefaultSerialPort : public SerialPort{
 		virtual bool operator==(DefaultSerialPort b){return b.port == this->port;}
 		virtual bool operator!=(DefaultSerialPort b){return b.port != this->port;}
 		
-		virtual cppObjectClass* getClass(){return Class<DefaultSerialPort>::classType;}
-		virtual Note toNote(){return Note("DefaultSerialPort");}
-		virtual bool equal(cppObject *b){
-			if(b == this){
-				return true;
-			}
-			if(b->instanceof(Class<DefaultSerialPort>::classType)){
-				if(this->port == ((DefaultSerialPort*)b)->port){
-					return true;
-				}
-			}
-			return false;
-		}
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+		virtual cppObjectClass* getClass(){return Class<DefaultSerialPort>::getClass();}
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<DefaultSerialPort>::classType || SerialPort::instanceof(cls);
+			return cls == Class<DefaultSerialPort>::getClass() || SerialPort::instanceof(cls);
 		}
-		virtual cppObject *clone(){return nullptr;}
+		#endif
 	protected:
 		Stream* port = nullptr;
 };

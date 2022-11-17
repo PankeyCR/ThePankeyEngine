@@ -1,0 +1,79 @@
+
+#ifndef CONFIGURATION_MultiArray_hpp
+#define CONFIGURATION_MultiArray_hpp
+
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_MultiArray)
+		#define MultiArray_hpp
+
+		#define IMPLEMENTATION_MultiArray
+		#define IMPLEMENTING_MultiArray
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_MultiArray)
+			#define IMPLEMENTATION_MultiArray
+			#define IMPLEMENTING_MultiArray
+		#endif
+	#endif
+#endif
+
+#ifndef MultiArray_hpp
+#define MultiArray_hpp
+#define MultiArray_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_MultiArray
+	#define IMPLEMENTATION_MultiArray IMPLEMENTATION(public MultiArray)
+	#define IMPLEMENTING_MultiArray IMPLEMENTING(public MultiArray)
+#endif
+
+#ifndef ame_Enviroment_Defined
+
+#endif
+
+#ifdef ame_Windows
+	#include "Printable.hpp"
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
+
+#include "cppObject.hpp"
+#include "Class.hpp"
+#include "Array.hpp"
+
+namespace ame{
+	
+template <class T>
+class MultiArray IMPLEMENTATION_cppObject {
+public:
+	MultiArray(){}
+	virtual ~MultiArray(){}
+	
+	template<class... Args>
+	void create(Args... a_dimentions){
+		PrimitiveList<int> dimentionSize;
+		dimentionSize.addPack(a_dimentions...);
+		if(dimentionSize.getPosition() < 1){
+			return;
+		}
+		
+		for(int x = 0; x < a_dimentions - 1; x++){
+			i_array = new T*[i_size];
+		}
+		i_array = new T*[i_size];
+	}
+
+	virtual cppObjectClass* getClass(){return Class<MultiArray<T>>::getClass();}
+	virtual bool instanceof(cppObjectClass* cls){
+		return LinkedList<MultiArray<T>>::instanceof(cls) || 
+				cls == Class<MultiArray<T>>::getClass();
+	}
+protected:
+	T** m_array = nullptr;
+};
+
+}
+
+#endif

@@ -1,29 +1,41 @@
 
-#include "ame_Enviroment.hpp"
+#ifndef CONFIGURATION_AlwaysConnected_hpp
+#define CONFIGURATION_AlwaysConnected_hpp
 
-#if defined(DISABLE_AlwaysConnected)
-	#define AlwaysConnected_hpp
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_AlwaysConnected)
+		#define AlwaysConnected_hpp
+
+		#define IMPLEMENTATION_AlwaysConnected
+		#define IMPLEMENTING_AlwaysConnected
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_AlwaysConnected)
+			#define IMPLEMENTATION_AlwaysConnected
+			#define IMPLEMENTING_AlwaysConnected
+		#endif
+	#endif
 #endif
 
 #ifndef AlwaysConnected_hpp
 #define AlwaysConnected_hpp
 #define AlwaysConnected_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
+#ifndef DISABLE_IMPLEMENTATION_AlwaysConnected
+	#define IMPLEMENTATION_AlwaysConnected IMPLEMENTATION(public AlwaysConnected)
+	#define IMPLEMENTING_AlwaysConnected IMPLEMENTING(public AlwaysConnected)
 #endif
 
 #ifdef ame_ArduinoIDE
 	#include "Arduino.h"
 #endif
 
-#include "AppState.hpp"
+#include "Application.hpp"
 #include "SerialState.hpp"
 #include "PrimitiveList.hpp"
+#include "BaseAppState.hpp"
+#include "Note.hpp"
+#include "NoteHelper.hpp"
 
 #ifdef AlwaysConnected_LogApp
 	#include "ame_Logger_config.hpp"
@@ -49,31 +61,56 @@
 
 namespace ame{
 
-class AlwaysConnected : public AppState{
+/*
+*	Class Configuration:
+*	DISABLE_IMPLEMENTATION_BaseAppState
+*/
+class AlwaysConnected IMPLEMENTATION_BaseAppState {
     public:
 		AlwaysConnected(){
+			AlwaysConnectedLog(ame_Log_EndMethod, "Contructor",  "println", "");
+			AlwaysConnectedLog(ame_Log_EndMethod, "Contructor",  "println", "");
 		}
 		AlwaysConnected(Note s){
+			AlwaysConnectedLog(ame_Log_EndMethod, "Contructor",  "println", "");
 			myName = s;
+			AlwaysConnectedLog(ame_Log_EndMethod, "Contructor",  "println", "");
+		}
+		AlwaysConnected(SerialState* c_serial_state){
+			AlwaysConnectedLog(ame_Log_EndMethod, "Contructor",  "println", "");
+			serialState = c_serial_state;
+			AlwaysConnectedLog(ame_Log_EndMethod, "Contructor",  "println", "");
 		}
 		virtual ~AlwaysConnected(){
+			AlwaysConnectedLog(ame_Log_EndMethod, "Destructor",  "println", "");
+			AlwaysConnectedLog(ame_Log_EndMethod, "Destructor",  "println", "");
 		}
+
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+		virtual cppObjectClass* getClass(){return Class<AlwaysConnected>::getClass();}
 		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<AlwaysConnected>::classType || AppState::instanceof(cls);
+			return cls == Class<AlwaysConnected>::getClass() || AppState::instanceof(cls);
 		}
-		virtual cppObjectClass* getClass(){return Class<AlwaysConnected>::classType;}
+		#endif
 		
-		void initialize(Application *a){
-			AlwaysConnectedLog(ame_Log_Statement, "initialize",  "println", "");
-			app = a;
+		#if defined(Application_AVAILABLE)
+		virtual void initializeState(Application* a_app){
+			AlwaysConnectedLog(ame_Log_EndMethod, "initializeState",  "println", "");
+			AlwaysConnectedLog(ame_Log_Statement, "initializeState",  "println", "");
+			app = a_app;
 			serialState = (SerialState*)app->getStateManager()->get(Class<SerialState>::classType);
+			AlwaysConnectedLog(ame_Log_EndMethod, "initializeState",  "println", "");
 		}
+		#endif
 		
-		virtual void update(float tpc){
+		virtual void updateState(float tpc){
+			AlwaysConnectedLog(ame_Log_EndMethod, "updateState",  "println", "");
+			#if defined(Application_AVAILABLE)
 			if(serialState == nullptr){
 				serialState = (SerialState*)app->getStateManager()->get(Class<SerialState>::classType);
 				return;
 			}
+			#endif
 			time += tpc;
 			if(time < time_limite){
 				return;
@@ -91,26 +128,37 @@ class AlwaysConnected : public AppState{
 				if(serialport->connected()){
 					continue;
 				}
-				// if(!serialState->ping(ip)){
-					// continue;
-				// }
-				AlwaysConnectedLog(ame_Log_Statement, "update",  "println", "");
-				AlwaysConnectedLog(ame_Log_Statement, "update",  "println", Note("iteration ")+Note(x));
-				if(serialport->connect(ip,port)){
+				AlwaysConnectedLog(ame_Log_Statement, "updateState",  "println", "");
+				AlwaysConnectedLog(ame_Log_Statement, "updateState",  "println", Note("iteration ")+Note(x));
+				if(serialport->connect(ip,port) && serialState != nullptr){
 					serialState->addSerialPort(serialport,portprotocol);
-					serialState->send(serialport, Note("MyNameIs ") + myName);
+					if(myName != ""){
+						serialState->send(serialport, Note("MyNameIs ") + myName);
+					}
 				}
 			}
+			AlwaysConnectedLog(ame_Log_EndMethod, "updateState",  "println", "");
 		}
-		virtual void add(Note n, IPAddress i, int pt, SerialPort* s, PortProtocol* p){
-			s->setName(n);
-			ips.addLValue(i);
-			ports.addLValue(pt);
-			serialports.addPointer(s);
-			portprotocols.addPointer(p);
-			p->setSafeDelete(false);
+
+		virtual void add(Note a_name, IPAddress a_ip, int a_port, SerialPort* a_serial_port, PortProtocol* a_port_protocol){
+			AlwaysConnectedLog(ame_Log_EndMethod, "add",  "println", "");
+			a_serial_port->setName(a_name);
+			ips.addLValue(a_ip);
+			ports.addLValue(a_port);
+			serialports.addPointer(a_serial_port);
+			portprotocols.addPointer(a_port_protocol);
+			a_port_protocol->setSafeDelete(false);
+			AlwaysConnectedLog(ame_Log_EndMethod, "add",  "println", "");
 		}
+
+		virtual void add(Note a_name, Note a_ip, int a_port, SerialPort* a_serial_port, PortProtocol* a_port_protocol){
+			AlwaysConnectedLog(ame_Log_EndMethod, "add",  "println", "");
+			this->add(a_name, toIPAddress(a_ip), a_port, a_serial_port, a_port_protocol);
+			AlwaysConnectedLog(ame_Log_EndMethod, "add",  "println", "");
+		}
+
 		virtual void remove(Note n){
+			AlwaysConnectedLog(ame_Log_EndMethod, "remove",  "println", "");
 			int x=-1;
 			for(int t = 0; t < serialports.getPosition(); t++){
 				if(serialports.getByPosition(t)->getName() == n){
@@ -125,9 +173,12 @@ class AlwaysConnected : public AppState{
 			ports.removeDeleteByPosition(x);
 			serialports.removeDeleteByPosition(x);
 			portprotocols.removeDeleteByPosition(x);
+			AlwaysConnectedLog(ame_Log_EndMethod, "remove",  "println", "");
 		}
 	protected:
+		#if defined(Application_AVAILABLE)
 		Application* app = nullptr;
+		#endif
 		SerialState* serialState = nullptr;
 		PrimitiveList<IPAddress> ips;
 		PrimitiveList<int> ports;

@@ -39,7 +39,7 @@
 	#include "ame_Logger.hpp"
 
 	#define ByteArrayLog(location,method,type,mns) ame_Log(this,location,"ByteArray",method,type,mns)
-	#define const_ByteArrayLog(location,method,type,mns)
+	#define const_ByteArrayLog(location,method,type,mns)	System::console.println(method);System::console.println(mns)
 #else
 	#ifdef ByteArray_LogDebugApp
 		#include "ame_Logger_config.hpp"
@@ -55,458 +55,124 @@
 
 namespace ame{
 
-class ByteArray : public Printable{
-	protected:
-		ame_Byte* m_byte_array = nullptr;
-		int m_pos = 0;
-		int m_size = 0;
-
+class ByteArray : public Array<ame_Byte>, public Printable{
 	public:
 		ByteArray(){
 			ByteArrayLog(ame_Log_StartMethod, "Constructor", "println", "");
 			ByteArrayLog(ame_Log_Statement, "Constructor", "println", "Default Constructor");
 			ByteArrayLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
-		ByteArray(const ByteArray& source){
+		ByteArray(const ByteArray& c_array){
 			ByteArrayLog(ame_Log_StartMethod, "Constructor", "println", "");
-			int n_size = source.getPosition();
-			if(n_size > 0){
-				m_pos = n_size;
-				m_size = getAvailableSize(m_pos);
-				m_byte_array = create(m_size);
-				copy(m_byte_array, source.m_byte_array, m_pos);
+			int i_array_length = c_array.getPosition();
+			if(i_array_length > 0){
+				this->createArray(i_array_length);
+				this->copyPointer(c_array.pointer(), i_array_length);
+				this->copyEndValue();
 			}
 			ByteArrayLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
-		ByteArray(ame_Byte* a_value, int a_size){
+		ByteArray(ame_Byte* a_pointer, int a_array_length){
 			ByteArrayLog(ame_Log_StartMethod, "Constructor", "println", "");
-			if(a_value != nullptr){
-				if(a_size > 0){
-					m_pos = a_size;
-					m_size = getAvailableSize(m_pos);
-					m_byte_array = create(m_size);
-					copy(m_byte_array, a_value, m_pos);
+			if(a_pointer != nullptr){
+				if(a_array_length > 0){
+					this->createArray(a_array_length);
+					this->copyPointer(a_pointer, a_array_length);
+					this->copyEndValue();
 				}
 			}
 			ByteArrayLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
-/*
-		ByteArray(const Note& i){
-			//// Serial.println(i);
-			int linePosition = 0;
-			int bytePosition = 0;
-			if(i.length() > 0){
-				this->add();
-				if(i.length() < 8){
-					//// Serial.println("i.length() < 8");
-					for(int x =0; x < i.length(); x++){
-						char c = i.charAt(x);
-						//// Serial.println("char ");Serial.println(c);
-						////Serial.println("position ");Serial.println(i.length() - 1 - bytePosition);
-						//// Serial.println("value ");Serial.println(BoolCharValue(c));
-						this->setBit(0, i.length() - 1 - bytePosition, BoolCharValue(c));
-						bytePosition++;
-					}
-				}
-				if(i.length() == 8){
-					//// Serial.println("i.length() == 8");
-					for(int x =0; x < i.length(); x++){
-						char c = i.charAt(x);
-						//// Serial.println("char ");Serial.println(c);
-						if(bytePosition >= 8){
-							bytePosition = 0;
-							linePosition++;
-						}
-						this->setBit(linePosition, 7 - bytePosition, BoolCharValue(c));
-						bytePosition++;
-					}
-				}
-				if(i.length() > 8){
-					if((i.length() % 8) == 0){
-						//// Serial.println("(i.length() % 8) == 0");
-						for(int x =0; x < i.length(); x++){
-							char c = i.charAt(x);
-							// Serial.println("char ");Serial.println(c);
-							if(bytePosition >= 8){
-								bytePosition = 0;
-								linePosition++;
-								this->add();
-							}
-							this->setBit(linePosition, 7 - bytePosition, BoolCharValue(c));
-							bytePosition++;
-						}
-					}else{
-						//// Serial.println("else (i.length() % 8) == 0");
-						int coef = i.length() / 8;
-						int lst = i.length() - (coef * 8);
-						for(int x =0; x < i.length(); x++){
-							char c = i.charAt(x);
-							//// Serial.println("char ");Serial.println(c);
-							if(bytePosition >= 8){
-								bytePosition = 0;
-								linePosition++;
-								this->add();
-							}
-							if(linePosition < coef){
-								this->setBit(linePosition, 7 - bytePosition, BoolCharValue(c));
-							}else{
-								this->setBit(linePosition, lst - 1 - bytePosition, BoolCharValue(c));
-							}
-							bytePosition++;
-						}
-					}
-				}
-			}
-		}
-		*/
 
-		ByteArray(ByteArray&& source){
+		ByteArray(ByteArray&& c_array){
 			ByteArrayLog(ame_Log_StartMethod, "Constructor", "println", "");
-			int n_size = source.getPosition();
+			int n_size = c_array.getPosition();
 			if(n_size > 0){
-				m_pos = source.m_pos;
-				m_size = source.m_size;
-				m_byte_array = source.m_byte_array;
-				source.m_pos = 0;
-				source.m_size = 0;
-				source.m_byte_array = nullptr;
+				this->m_pos = c_array.m_pos;
+				this->m_size = c_array.m_size;
+				this->m_t_value = c_array.m_t_value;
+				c_array.m_t_value = nullptr;
+				c_array.m_pos = 0;
+				c_array.m_size = 0;
 			}
 			ByteArrayLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		ByteArray(const ame_Byte& a_value){
 			ByteArrayLog(ame_Log_StartMethod, "Constructor", "println", "");
-			m_pos = 1;
-			m_size = getAvailableSize(m_pos);
-
-			m_byte_array = create(m_size);
-			m_byte_array[0] = a_value;
+			this->createArray(1);
+			this->copyValue(a_value);
+			this->copyEndValue();
 			ByteArrayLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		virtual ~ByteArray(){
 			ByteArrayLog(ame_Log_StartMethod, "Destructor", "println", "");
-			ByteArrayLog(ame_Log_Statement, "Destructor", "println", m_pos);
-			ByteArrayLog(ame_Log_Statement, "Destructor", "println", m_size);
-			if(m_string == nullptr){
-				ByteArrayLog(ame_Log_Statement, "Destructor", "println", "m_string == nullptr");
-			}else{
-				ByteArrayLog(ame_Log_Statement, "Destructor", "println", m_string);
-				fix(m_byte_array, m_pos, m_size);
-				erase(m_byte_array);
-			}
 			ByteArrayLog(ame_Log_EndMethod, "Destructor", "println", "");
 		}
 
 		size_t printTo(Print& p) const{
-			ByteArrayLog(ame_Log_StartMethod, "printTo", "println", "");
-			if(m_byte_array == nullptr){
+			const_ByteArrayLog(ame_Log_StartMethod, "printTo", "println", "start");
+			if(this->isEmpty()){
+                const_ByteArrayLog(ame_Log_EndMethod, "printTo", "println", "isEmpty");
 				return 0;
 			}
-			size_t s_t = 0;
-			for(int x = 0; x < m_pos; x++){
-				s_t += p.print(m_byte_array[x], BIN);
+			size_t i_size = 0;
+			for(int x = 0; x < this->getPosition(); x++){
+				ame_Byte f_value = this->m_t_value[x];
+				p.print(f_value);
+				i_size += sizeof(f_value);
 			}
-			ByteArrayLog(ame_Log_EndMethod, "printTo", "println", "");
-			return s_t;
+			const_ByteArrayLog(ame_Log_EndMethod, "printTo", "println", "end");
+			return i_size;
 		}
 
-		virtual cppObjectClass* getClass(){
-			return Class<ByteArray>::classType;
-		}
-
-		virtual ame_Byte* pointer() const{
-			return m_byte_array;
-		}
-
-		int getPosition() const{
-			return m_pos;
-		}
-
-		int getSize() const{
-			return m_size;
-		}
-
-		virtual bool isEmpty() const{
-			return m_pos == 0 || m_byte_array == nullptr;
-		}
-
-		virtual char byteAt(int x) const{
-			if(m_byte_array == nullptr){
-				return 0;
-			}
-			if(x >= m_pos){
-				return 0;
-			}
-			return m_byte_array[x];
-		}
 		virtual int getBitSize() const {
-			return this->m_pos * 8;
-		}
-		virtual int getByteSize() const {
-			return this->m_pos;
+			return this->getPosition() * 8;
 		}
 
-		virtual ByteArrayIterator begin(){
-			ByteArrayLog(ame_Log_StartMethod, "begin", "println", "");
-			ByteArrayLog(ame_Log_EndMethod, "begin", "println", "");
-			return ByteArrayIterator(m_byte_array,0);
-		}
-		virtual ByteArrayIterator end(){
-			ByteArrayLog(ame_Log_StartMethod, "end", "println", "");
-			ByteArrayLog(ame_Log_EndMethod, "end", "println", "");
-			return ByteArrayIterator(m_byte_array, m_pos);
-		}
-
-		virtual ByteArray add(const ame_Byte* a_value){
-			NoteLog(ame_Log_StartMethod, "add", "println", "");
-			int v_size = length(a_value);
-			if(v_size <= 0){
-				ByteArrayLog(ame_Log_Statement, "add", "println", "v_size <= 0");
-				return ByteArray(m_byte_array);
-			}
-
-			if(m_byte_array == nullptr){
-				ByteArrayLog(ame_Log_Statement, "add", "println", "m_string == nullptr");
-				return ByteArray(a_value);
-			}
-
-			ByteArray temp;
-			temp.m_pos = m_pos + v_size;
-			temp.m_size = getAvailableSize(temp.m_pos);
-			temp.m_byte_array = create(temp.m_size);
-
-			copy(temp.m_byte_array, m_byte_array);
-			concat(temp.m_byte_array, a_value);
-
-			NoteLog(ame_Log_Statement, "add", "println", m_pos);
-			NoteLog(ame_Log_Statement, "add", "println", m_size);
-			NoteLog(ame_Log_Statement, "add", "println", m_string);
-
-			NoteLog(ame_Log_EndMethod, "add", "println", "");
-
-			return temp;
-		}
-
-		virtual ByteArray& operator=(const ByteArray& source){
+		virtual ByteArray operator=(const ByteArray& o_array){
 			ByteArrayLog(ame_Log_StartMethod, "operator=", "println", "");
-			int n_size = source.getPosition();
-			if(n_size > 0){
-				m_pos = n_size;
-				m_size = getAvailableSize(m_pos);
-				m_byte_array = create(m_size);
-				copy(m_byte_array, source.m_byte_array, m_pos);
+			this->fix();
+			this->clear();
+			int i_array_length = o_array.getPosition();
+			if(i_array_length > 0){
+				this->createArray(i_array_length);
+				this->copyPointer(o_array.pointer(), i_array_length);
+				this->copyEndValue();
 			}
 			ByteArrayLog(ame_Log_EndMethod, "operator=", "println", "");
 			return *this;
 		}
 
-		virtual ByteArray& operator=(const ame_Byte& a_value){
-			ByteArrayLog(ame_Log_StartMethod, "operator=", "println", "");
-			m_pos = 1;
-			m_size = getAvailableSize(m_pos);
-
-			m_byte_array = create(m_size);
-			m_byte_array[0] = a_value;
-			ByteArrayLog(ame_Log_EndMethod, "operator=", "println", "");
-			return *this;
-		}
-
-		virtual bool operator==(const ByteArray& source){
-			if(source.getPosition() != this->getPosition()){
+		virtual bool operator==(const ByteArray& o_array){
+			if(o_array.getPosition() != this->getPosition()){
 				return false;
 			}
 			for(int x = 0; x < this->getPosition(); x++){
-				if(source.m_byte_array[x] != m_byte_array[x]){
+				if(o_array.get(x) != this->get(x)){
 					return false;
 				}
 			}
 			return true;
 		}
 
-		virtual bool operator==(const ame_Byte& source){
-			if(this->getPosition() != 1){
-				return false;
-			}
-			ame_Byte c = m_byte_array[0];
-			return c == source;
-		}
-
-		virtual bool operator!=(const ByteArray& source){
-			if(source.getPosition() != this->getPosition()){
+		virtual bool operator!=(const ByteArray& o_array){
+			if(o_array.getPosition() != this->getPosition()){
 				return true;
 			}
 			for(int x = 0; x < this->getPosition(); x++){
-				if(source.m_byte_array[x] != m_byte_array[x]){
+				if(o_array.get(x) != this->get(x)){
 					return true;
 				}
 			}
 			return false;
 		}
 
-		virtual bool operator!=(const ame_Byte& source){
-			if(this->getPosition() != 1){
-				return true;
-			}
-			ame_Byte c = m_byte_array[0];
-			return c != source;
-		}
-
-		virtual ByteArray operator+(const ame_Byte& value){
-			ByteArrayLog(ame_Log_StartMethod, "operator=", "println", "");
-			ByteArray array = *this;
-			array.add(value);
-			ByteArrayLog(ame_Log_EndMethod, "operator=", "println", "");
-			return array;
-		}
-
-		virtual ByteArray operator+=(const ame_Byte& a_value){
-			ByteArrayLog(ame_Log_StartMethod, "operator+=", "println", "");
-			if(m_byte_array == nullptr){
-				m_pos = 1;
-				m_size = getAvailableSize(m_pos);
-
-				m_byte_array = create(m_size);
-				m_byte_array[0] = a_value;
-				return *this;
-			}
-			if(m_pos >= m_size){
-			}
-			if(m_pos >= m_size){
-				return *this;
-			}
-			m_byte_array[m_pos] = a_value;
-			m_pos++;
-			ByteArrayLog(ame_Log_EndMethod, "operator+=", "println", "");
-			return *this;
-		}
-
-		virtual ame_Byte& add(){
-			ByteArrayLog(ame_Log_StartMethod, "add", "println", "");
-			if(this->m_byte_array == nullptr){
-				m_pos = 1;
-				m_size = getAvailableSize(m_pos);
-
-				m_byte_array = create(m_size);
-				m_byte_array[0] = 0b00000000;
-				return *this;
-			}
-			if(this->pos >= this->size){
-				this->expandLocal(this->expandSize);
-			}
-			if(this->pos >= this->size){
-				return nullptr;
-			}
-			this->m_byte_array[this->pos] = 0b00000000;
-			this->pos++;
-			ByteArrayLog(ame_Log_EndMethod, "add", "println", "");
-			return this->m_byte_array[this->pos-1];
-		}
-
-		virtual ame_Byte& add(ame_Byte value){
-			ByteArrayLog(ame_Log_StartMethod, "add", "println", "");
-			if(this->m_byte_array == nullptr){
-				m_pos = 1;
-				m_size = getAvailableSize(m_pos);
-
-				m_byte_array = create(m_size);
-				m_byte_array[0] = value;
-				return *this;
-			}
-			if(this->pos >= this->size){
-				this->expandLocal(this->expandSize);
-			}
-			if(this->pos >= this->size){
-				return nullptr;
-			}
-			this->m_byte_array[this->pos] = value;
-			this->pos++;
-			ByteArrayLog(ame_Log_EndMethod, "add", "println", "");
-			return this->m_byte_array[this->pos-1];
-		}
-
-		virtual ByteArray add(int size, byte value){
-			ByteArrayLog(ame_Log_StartMethod, "add", "println", "");
-			if(this->m_byte_array == nullptr){
-				m_pos = size;
-				m_size = getAvailableSize(m_pos);
-
-				m_byte_array = create(m_size);
-				for(int x = 0; x < size; x++){
-					m_byte_array[x] = value;
-				}
-				return *this;
-			}
-			if(this->pos >= this->size){
-				this->expandLocal(this->expandSize);
-			}
-			if(this->pos >= this->size){
-				return *this;
-			}
-			for(int x = 0; x < size; x++){
-				m_byte_array[x] = value;
-				this->pos++;
-			}
-			ByteArrayLog(ame_Log_EndMethod, "add", "println", "");
-			return *this;
-		}
-
-		virtual void adding(int size){
-			ByteArrayLog(ame_Log_StartMethod, "adding", "println", "");
-			for(int x = 0; x < size; x++){
-				this->addParameters(0);
-			}
-			ByteArrayLog(ame_Log_EndMethod, "adding", "println", "");
-		}
-
-		virtual void adding(int size, bool value){
-			ByteArrayLog(ame_Log_StartMethod, "adding", "println", "");
-			for(int x = 0; x < size; x++){
-				byte* c = this->addParameters(0);
-				for(int y = 0; y < 8; y++){
-					bitWrite((*c), y, value);
-				}
-			}
-			ByteArrayLog(ame_Log_EndMethod, "adding", "println", "");
-		}
-
-		virtual void addBits(int size){
-			ByteArrayLog(ame_Log_StartMethod, "addBits", "println", "");
-			int arraySize = (int)(size / 8);
-			if(size % 8){
-				arraySize++;
-			}
-			for(int x = 0; x < arraySize; x++){
-				add();
-			}
-			ByteArrayLog(ame_Log_EndMethod, "addBits", "println", "");
-		}
-
-		virtual void addBits(int size, bool value){
-			ByteArrayLog(ame_Log_StartMethod, "addBits", "println", "");
-			int counter = 0;
-			int arraySize = (int)(size / 8);
-			if(size % 8){
-				arraySize++;
-			}
-			for(int x = 0; x < arraySize; x++){
-				byte* c = add();
-				for(int y = 0; y < 8; y++){
-					if(counter < size){
-						bitWrite((*c), y, value);
-					}else{
-						return;
-					}
-					counter++;
-				}
-			}
-			ByteArrayLog(ame_Log_EndMethod, "addBits", "println", "");
-		}
-
 		virtual void setBit(int cell, int bit, bool value){
 			ByteArrayLog(ame_Log_StartMethod, "setBit", "println", "");
-			byte* c = this->getByPosition(cell);
+			byte* c = this->getPointer(cell);
 			if(c == nullptr || bit >= 8){
 				return;
 			}
@@ -514,17 +180,9 @@ class ByteArray : public Printable{
 			ByteArrayLog(ame_Log_EndMethod, "setBit", "println", "");
 		}
 
-		virtual void clearAll(){
-			ByteArrayLog(ame_Log_StartMethod, "clearAll", "println", "");
-			for(int xi = 0; xi < this->pos; xi++){
-				(*this->values[xi]) = 0;
-			}
-			ByteArrayLog(ame_Log_EndMethod, "clearAll", "println", "");
-		}
-
 		virtual void clearBit(int cell, int bit){
 			ByteArrayLog(ame_Log_StartMethod, "clearBit", "println", "");
-			byte* c = this->getByPosition(cell);
+			byte* c = this->getPointer(cell);
 			if(c == nullptr){
 				return;
 			}
@@ -534,9 +192,10 @@ class ByteArray : public Printable{
 
 		virtual void toggleAll(){
 			ByteArrayLog(ame_Log_StartMethod, "toggleAll", "println", "");
-			for(int xi = 0; xi < this->pos; xi++){
+			for(int xi = 0; xi < this->getPosition(); xi++){
 				for(int xo = 0; xo < 8; xo++){
-					bitWrite((*this->values[xi]), xo, !bitRead((*this->values[xi]), xo));
+					ame_Byte f_byte = this->get(xi);
+					bitWrite(f_byte, xo, !bitRead(f_byte, xo));
 				}
 			}
 			ByteArrayLog(ame_Log_EndMethod, "toggleAll", "println", "");
@@ -544,19 +203,19 @@ class ByteArray : public Printable{
 
 		virtual void toggleByte(int cell){
 			ByteArrayLog(ame_Log_StartMethod, "toggleByte", "println", "");
-			byte* c = this->getByPosition(cell);
+			byte* c = this->getPointer(cell);
 			if(c == nullptr){
 				return;
 			}
-			for(int xx = 0; xx < 8; xx++){
-				bitWrite((*c), xx, !bitRead((*c), xx));
+			for(int x = 0; x < 8; x++){
+				bitWrite((*c), x, !bitRead((*c), x));
 			}
 			ByteArrayLog(ame_Log_EndMethod, "toggleByte", "println", "");
 		}
 
 		virtual void toggleBit(int cell, int bit){
 			ByteArrayLog(ame_Log_StartMethod, "toggleBit", "println", "");
-			byte* c = this->getByPosition(cell);
+			byte* c = this->getPointer(cell);
 			if(c == nullptr){
 				return;
 			}
@@ -565,105 +224,34 @@ class ByteArray : public Printable{
 		}
 
 		virtual bool getBit(int cell, int bit) const {
-			ByteArrayLog(ame_Log_StartMethod, "getBit", "println", "");
-			byte* c = this->values[cell];
+			const_ByteArrayLog(ame_Log_StartMethod, "getBit", "println", "");
+			byte* c = this->getPointer(cell);
 			if(c == nullptr){
 				return false;
 			}
-			ByteArrayLog(ame_Log_EndMethod, "getBit", "println", "");
+			const_ByteArrayLog(ame_Log_EndMethod, "getBit", "println", "");
 			return bitRead((*c), bit);
 		}
 
-		virtual ame_Byte getByte(int x) const {
-			ByteArrayLog(ame_Log_StartMethod, "getByte", "println", "");
-			if(x >= this->pos){
-				return ame_Byte_Null;
-			}
-			ByteArrayLog(ame_Log_EndMethod, "getByte", "println", "");
-			return this->m_byte_array[x];
-		}
-
 		virtual ByteArray getByteArray(int start, int end) const {
-			ByteArrayLog(ame_Log_StartMethod, "getByteArray", "println", "");
+			const_ByteArrayLog(ame_Log_StartMethod, "getByteArray", "println", "");
 			ByteArray array;
-			if(start >= this->pos || end >= this->pos){
+			if(start >= this->getPosition() || end >= this->getPosition()){
 				return 0;
 			}
 			for(int x = start; x <= end; x++){
-				array.addLValue(*this->values[x]);
+				array.addValue(this->get(x));
 			}
-			ByteArrayLog(ame_Log_EndMethod, "getByteArray", "println", "");
+			const_ByteArrayLog(ame_Log_EndMethod, "getByteArray", "println", "");
 			return array;
 		}
-
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-		static ame_Byte* create(int ci_size){
-			ByteArrayLog(ame_Log_StartMethod, "operator=", "println", "");
-			ByteArrayLog(ame_Log_EndMethod, "operator=", "println", "");
-			#if defined(Memory_AVAILABLE)
-			if(Memory::manager != nullptr){
-				// return Memory::manager->create(0, sizeof(char) * 20 *100);
-			}
-			#endif
-			return new ame_Byte[ci_size];
+		
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+		virtual cppObjectClass* getClass(){return Class<ByteArray>::getClass();}
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<ByteArray>::getClass() || Array<ame_Byte>::instanceof(cls);
 		}
-
-		static void erase(ame_Byte* chr){
-			#if defined(Memory_AVAILABLE)
-			// if(Memory::manager != nullptr){
-				// Memory::manager->erase(chr, sizeof(ame_Byte)*m_pos);
-				// return;
-			// }
-			#endif
-			delete[] chr;
-		}
-
-		static int getAvailableSize(int input_Size){
-			if(input_Size == 0){
-				return 5;
-			}
-			if(input_Size < 10){
-				return 10;
-			}
-			if(input_Size < 20){
-				return 20;
-			}
-			if(input_Size < 30){
-				return 30;
-			}
-			if(input_Size < 40){
-				return 40;
-			}
-			if(input_Size < 200){
-				return 200;
-			}
-			if(input_Size < 1000){
-				return 1000;
-			}
-			if(input_Size < 2000){
-				return 2000;
-			}
-			return 5;
-		}
-
-		static void replace(ame_Byte* a_byte, ame_Byte a_search, ame_Byte a_replace){
-
-		}
-
-		static void copy(ame_Byte* a_byte_1, ame_Byte* a_byte_2, int a_size){
-
-		}
-
-		static void replace(ame_Byte* a_Byte, int a_size, const ame_Byte& a_search, const ame_Byte& a_change){
-			for(int x = 0; x < a_size; x++){
-				if(a_Byte[x] == a_search){
-					a_Byte[x] = a_change;
-				}
-			}
-		}
-
+		#endif
 };
 
 }

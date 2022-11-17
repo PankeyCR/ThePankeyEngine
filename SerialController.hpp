@@ -1,7 +1,30 @@
 
+#ifndef CONFIGURATION_SerialController_hpp
+#define CONFIGURATION_SerialController_hpp
+
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_SerialController)
+		#define SerialController_hpp
+
+		#define IMPLEMENTATION_SerialController
+		#define IMPLEMENTING_SerialController
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_SerialController)
+			#define IMPLEMENTATION_SerialController
+			#define IMPLEMENTING_SerialController
+		#endif
+	#endif
+#endif
+
 #ifndef SerialController_hpp
 #define SerialController_hpp
-#define SerialController_AVAILABLE 
+#define SerialController_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_SerialController
+	#define IMPLEMENTATION_SerialController IMPLEMENTATION(public SerialController)
+	#define IMPLEMENTING_SerialController IMPLEMENTING(public SerialController)
+#endif
 
 #include "PrimitiveList.hpp"
 #include "PrimitiveMap.hpp"
@@ -29,7 +52,9 @@ namespace ame{
 
 class SerialController{
     public:
+		#if defined(SerialPort_AVAILABLE) && defined(PortProtocol_AVAILABLE)
 		using MethodStateChanger = void (*)(SerialPort*,PortProtocol*);
+		#endif
 		using MethodStateGlobalChanger = void (*)();
 		
 		virtual ~SerialController(){
@@ -65,6 +90,7 @@ class SerialController{
 			SerialControllerLog(ame_Log_EndMethod, "onGlobalDisconnection", "println", "");
 		}
 
+		#if defined(SerialPort_AVAILABLE) && defined(PortProtocol_AVAILABLE)
 		virtual void onConnection(){
 			SerialControllerLog(ame_Log_StartMethod, "onConnection", "println", "");
 			for(int x_ports = 0; x_ports < m_ports.getPosition(); x_ports++){
@@ -126,58 +152,33 @@ class SerialController{
 			}
 			SerialControllerLog(ame_Log_EndMethod, "onDisconnection", "println", "");
 		}
+		#endif
 
+		#if defined(SerialServer_AVAILABLE) && defined(ServerProtocol_AVAILABLE)
 		virtual MapEntry<SerialServer,ServerProtocol> addSerialServer(SerialServer* serial, ServerProtocol* protocol){
 			SerialControllerLog(ame_Log_StartMethod, "addSerialServer", "println", "");
 			SerialControllerLog(ame_Log_EndMethod, "addSerialServer", "println", "");
 			return m_servers.addPointers(serial, protocol);
 		}
 
-		virtual void attachSerialServers(SerialNetwork* a_serialNetwork){
-			SerialControllerLog(ame_Log_StartMethod, "attachSerialServers", "println", "");
+		#if defined(SerialNetwork_AVAILABLE)
+		virtual void initializeSerialServers(SerialNetwork* a_serialNetwork){
+			SerialControllerLog(ame_Log_StartMethod, "initializeSerialServers", "println", "");
 			for(int x = 0; x < m_servers.getPosition(); x++){
 				ServerProtocol* f_protocol = m_servers.getValueByPosition(x);
 				if(f_protocol == nullptr){
 					continue;
 				}
-				f_protocol->attach(a_serialNetwork);
+				f_protocol->initialize(a_serialNetwork);
 			}
-			SerialControllerLog(ame_Log_EndMethod, "attachSerialServers", "println", "");
+			SerialControllerLog(ame_Log_EndMethod, "initializeSerialServers", "println", "");
 		}
+		#endif
 
 		virtual SerialServer* getSerialServer(int index){
 			SerialControllerLog(ame_Log_StartMethod, "getSerialServer", "println", "int index");
 			SerialControllerLog(ame_Log_EndMethod, "getSerialServer", "println", "");
 			return m_servers.getKeyByPosition(index);
-		}
-
-		virtual SerialServer* getSerialServer(cppObjectClass* cls){
-			SerialControllerLog(ame_Log_StartMethod, "getSerialServer", "println", "cppObjectClass* cls");
-			for(int x = 0; x < m_servers.getPosition(); x++){
-				SerialServer* i_server = m_servers.getKeyByPosition(x);
-				if(i_server == nullptr){
-					continue;
-				}
-				if(i_server->getClass() == cls){
-					SerialControllerLog(ame_Log_EndMethod, "getSerialServer", "println", "");
-					return i_server;
-				}
-			}
-			SerialControllerLog(ame_Log_EndMethod, "getSerialServer", "println", "");
-			return nullptr;
-		}
-
-		virtual SerialServer* getSerialServer(Note name, cppObjectClass* cls){
-			for(int x = 0; x < m_servers.getPosition(); x++){
-				SerialServer* i_server = m_servers.getKeyByPosition(x);
-				if(i_server == nullptr){
-					continue;
-				}
-				if(i_server->getClass() == cls && i_server->getName() == name){
-					return i_server;
-				}
-			}
-			return nullptr;
 		}
 
 		virtual int getSerialServerSize(){
@@ -186,19 +187,6 @@ class SerialController{
 
 		virtual bool containSerialServer(SerialServer* a_server){
 			return m_servers.containKeyByPointer(a_server);
-		}
-		
-		virtual bool containSerialServer(cppObjectClass* cls){
-			for(int x = 0; x < m_servers.getPosition(); x++){
-				SerialServer* i_server = m_servers.getKeyByPosition(x);
-				if(i_server == nullptr){
-					continue;
-				}
-				if(i_server->getClass() == cls){
-					return true;
-				}
-			}
-			return false;
 		}
 
 		virtual bool containSerialServer(Note name){
@@ -250,23 +238,79 @@ class SerialController{
 			SerialControllerLog(ame_Log_EndMethod, "removeAllSerialServer", "println", "");
 		}
 
+		virtual ServerProtocol* getServerProtocol(int index){
+			return m_servers.getValueByPosition(index);
+		}
+
+		virtual ServerProtocol* getServerProtocol(SerialServer* a_server){
+			return m_servers.getValueByPointer(a_server);
+		}
+
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE)
+		virtual SerialServer* getSerialServer(cppObjectClass* cls){
+			SerialControllerLog(ame_Log_StartMethod, "getSerialServer", "println", "cppObjectClass* cls");
+			for(int x = 0; x < m_servers.getPosition(); x++){
+				SerialServer* i_server = m_servers.getKeyByPosition(x);
+				if(i_server == nullptr){
+					continue;
+				}
+				if(i_server->getClass() == cls){
+					SerialControllerLog(ame_Log_EndMethod, "getSerialServer", "println", "");
+					return i_server;
+				}
+			}
+			SerialControllerLog(ame_Log_EndMethod, "getSerialServer", "println", "");
+			return nullptr;
+		}
+
+		virtual SerialServer* getSerialServer(Note name, cppObjectClass* cls){
+			for(int x = 0; x < m_servers.getPosition(); x++){
+				SerialServer* i_server = m_servers.getKeyByPosition(x);
+				if(i_server == nullptr){
+					continue;
+				}
+				if(i_server->getClass() == cls && i_server->getName() == name){
+					return i_server;
+				}
+			}
+			return nullptr;
+		}
+		
+		virtual bool containSerialServer(cppObjectClass* cls){
+			for(int x = 0; x < m_servers.getPosition(); x++){
+				SerialServer* i_server = m_servers.getKeyByPosition(x);
+				if(i_server == nullptr){
+					continue;
+				}
+				if(i_server->getClass() == cls){
+					return true;
+				}
+			}
+			return false;
+		}
+		#endif
+		#endif
+
+		#if defined(SerialPort_AVAILABLE) && defined(PortProtocol_AVAILABLE)
 		virtual MapEntry<SerialPort,PortProtocol> addSerialPort(SerialPort* a_port, PortProtocol* a_protocol){
 			SerialControllerLog(ame_Log_StartMethod, "addSerialPort",  "println", "SerialPort* a_port, PortProtocol* a_protocol");
 			SerialControllerLog(ame_Log_EndMethod, "addSerialPort", "println", "");
 			return m_ports.addPointers(a_port, a_protocol);
 		}
 
-		virtual void attachSerialPorts(SerialNetwork* a_serialNetwork){
-			SerialControllerLog(ame_Log_StartMethod, "attachSerialPorts", "println", "");
-			for(int x = 0; x < m_servers.getPosition(); x++){
+		#if defined(SerialNetwork_AVAILABLE)
+		virtual void initializeSerialPorts(SerialNetwork* a_serialNetwork){
+			SerialControllerLog(ame_Log_StartMethod, "initializeSerialPorts", "println", "");
+			for(int x = 0; x < m_ports.getPosition(); x++){
 				PortProtocol* f_protocol = m_ports.getValueByPosition(x);
 				if(f_protocol == nullptr){
 					continue;
 				}
-				f_protocol->attach(a_serialNetwork);
+				f_protocol->initialize(a_serialNetwork);
 			}
-			SerialControllerLog(ame_Log_EndMethod, "attachSerialPorts", "println", "");
+			SerialControllerLog(ame_Log_EndMethod, "initializeSerialPorts", "println", "");
 		}
+		#endif
 
 		virtual PrimitiveMap<SerialPort,PortProtocol>& getSerialPorts(){
 			return m_ports;
@@ -285,64 +329,12 @@ class SerialController{
 			return nullptr;
 		}
 
-		virtual SerialPort* getSerialPort(Note name, cppObjectClass* cls){
-			for(int x = 0; x < m_ports.getPosition(); x++){
-				SerialPort* i_port = m_ports.getKeyByPosition(x);
-				if(i_port == nullptr){
-					continue;
-				}
-				if(i_port->getName() == name && i_port->getClass() == cls){
-					return i_port;
-				}
-			}
-			return nullptr;
-		}
-
 		virtual SerialPort* getSerialPort(int index){
 			return m_ports.getKeyByPosition(index);
 		}
 
-		virtual SerialPort* getSerialPort(cppObjectClass* cls){
-			for(int x = 0; x < m_ports.getPosition(); x++){
-				SerialPort* i_port = m_ports.getKeyByPosition(x);
-				if(i_port == nullptr){
-					continue;
-				}
-				if(i_port->getClass() == cls){
-					return i_port;
-				}
-			}
-			return nullptr;
-		}
-
 		virtual int getSerialPortSize(){
 			return m_ports.getPosition();
-		}
-
-		virtual bool containSerialPort(Note name, cppObjectClass* cls){
-			for(int x = 0; x < m_ports.getPosition(); x++){
-				SerialPort* i_port = m_ports.getKeyByPosition(x);
-				if(i_port == nullptr){
-					continue;
-				}
-				if(i_port->getClass() == cls && i_port->getName() == name){
-					return true;
-				}
-			}
-			return false;
-		}
-
-		virtual bool containSerialPort(cppObjectClass* cls){
-			for(int x = 0; x < m_ports.getPosition(); x++){
-				SerialPort* i_port = m_ports.getKeyByPosition(x);
-				if(i_port == nullptr){
-					continue;
-				}
-				if(i_port->getClass() == cls){
-					return true;
-				}
-			}
-			return false;
 		}
 
 		virtual bool containSerialPort(SerialPort* a_port){
@@ -408,18 +400,65 @@ class SerialController{
 			return m_ports.getValueByPointer(a_port);
 		}
 
-		virtual ServerProtocol* getServerProtocol(int index){
-			return m_servers.getValueByPosition(index);
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE)
+		virtual SerialPort* getSerialPort(Note name, cppObjectClass* cls){
+			for(int x = 0; x < m_ports.getPosition(); x++){
+				SerialPort* i_port = m_ports.getKeyByPosition(x);
+				if(i_port == nullptr){
+					continue;
+				}
+				if(i_port->getName() == name && i_port->getClass() == cls){
+					return i_port;
+				}
+			}
+			return nullptr;
 		}
 
-		virtual ServerProtocol* getServerProtocol(SerialServer* a_server){
-			return m_servers.getValueByPointer(a_server);
+		virtual SerialPort* getSerialPort(cppObjectClass* cls){
+			for(int x = 0; x < m_ports.getPosition(); x++){
+				SerialPort* i_port = m_ports.getKeyByPosition(x);
+				if(i_port == nullptr){
+					continue;
+				}
+				if(i_port->getClass() == cls){
+					return i_port;
+				}
+			}
+			return nullptr;
 		}
+
+		virtual bool containSerialPort(Note name, cppObjectClass* cls){
+			for(int x = 0; x < m_ports.getPosition(); x++){
+				SerialPort* i_port = m_ports.getKeyByPosition(x);
+				if(i_port == nullptr){
+					continue;
+				}
+				if(i_port->getClass() == cls && i_port->getName() == name){
+					return true;
+				}
+			}
+			return false;
+		}
+
+		virtual bool containSerialPort(cppObjectClass* cls){
+			for(int x = 0; x < m_ports.getPosition(); x++){
+				SerialPort* i_port = m_ports.getKeyByPosition(x);
+				if(i_port == nullptr){
+					continue;
+				}
+				if(i_port->getClass() == cls){
+					return true;
+				}
+			}
+			return false;
+		}
+		#endif
+		#endif
 
 		virtual void addConnectionStateChanger(SerialConnectionStateChanger* changer){
 			m_stateChanger.addPointer(changer);
 		}
-
+		
 		virtual SerialConnectionStateChanger* removeConnectionStateChanger(SerialConnectionStateChanger* changer){
 			return m_stateChanger.removeByPointer(changer);
 		}
@@ -440,18 +479,6 @@ class SerialController{
 			m_methodStateGlobalChanger_onConnection.removeDeleteByLValue(changer);
 		}
 
-		virtual void addConnectionStateChanger(MethodStateChanger changer){
-			m_methodStateChanger_onConnection.addLValue(changer);
-		}
-
-		virtual void removeConnectionStateChanger(MethodStateChanger changer){
-			m_methodStateChanger_onConnection.removeByLValue(changer);
-		}
-
-		virtual void removeDeleteConnectionStateChanger(MethodStateChanger changer){
-			m_methodStateChanger_onConnection.removeDeleteByLValue(changer);
-		}
-
 		virtual void addGlobalDisconnectionStateChanger(MethodStateGlobalChanger changer){
 			m_methodStateGlobalChanger_onDisconnection.addLValue(changer);
 		}
@@ -462,6 +489,19 @@ class SerialController{
 
 		virtual void removeDeleteGlobalDisconnectionStateChanger(MethodStateGlobalChanger changer){
 			m_methodStateGlobalChanger_onDisconnection.removeDeleteByLValue(changer);
+		}
+
+		#if defined(SerialPort_AVAILABLE) && defined(PortProtocol_AVAILABLE)
+		virtual void addConnectionStateChanger(MethodStateChanger changer){
+			m_methodStateChanger_onConnection.addLValue(changer);
+		}
+
+		virtual void removeConnectionStateChanger(MethodStateChanger changer){
+			m_methodStateChanger_onConnection.removeByLValue(changer);
+		}
+
+		virtual void removeDeleteConnectionStateChanger(MethodStateChanger changer){
+			m_methodStateChanger_onConnection.removeDeleteByLValue(changer);
 		}
 
 		virtual void addDisconnectionStateChanger(MethodStateChanger changer){
@@ -475,20 +515,25 @@ class SerialController{
 		virtual void removeDeleteDisconnectionStateChanger(MethodStateChanger changer){
 			m_methodStateChanger_onDisconnection.removeDeleteByLValue(changer);
 		}
+		#endif
 
 	protected:
+		#if defined(SerialServer_AVAILABLE) && defined(ServerProtocol_AVAILABLE)
 		PrimitiveMap<SerialServer,ServerProtocol> m_servers;
+		#endif
 
+		#if defined(SerialPort_AVAILABLE) && defined(PortProtocol_AVAILABLE)
 		PrimitiveMap<SerialPort,PortProtocol> m_ports;
+
+		PrimitiveList<MethodStateChanger> m_methodStateChanger_onConnection;
+		PrimitiveList<MethodStateChanger> m_methodStateChanger_onDisconnection;
+		#endif
 
 		//StateChanger
 		PrimitiveList<SerialConnectionStateChanger> m_stateChanger;
 
 		PrimitiveList<MethodStateGlobalChanger> m_methodStateGlobalChanger_onConnection;
 		PrimitiveList<MethodStateGlobalChanger> m_methodStateGlobalChanger_onDisconnection;
-
-		PrimitiveList<MethodStateChanger> m_methodStateChanger_onConnection;
-		PrimitiveList<MethodStateChanger> m_methodStateChanger_onDisconnection;
 };
 
 }

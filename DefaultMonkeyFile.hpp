@@ -4,19 +4,32 @@
  * @author PankeyCR - Manuel Sanchez Badilla
  *
  */
- 
-#include "ame_Enviroment.hpp"
 
-#if defined(DISABLE_DefaultMonkeyFile)
-	#define DefaultMonkeyFile_hpp
+#ifndef CONFIGURATION_DefaultMonkeyFile_hpp
+#define CONFIGURATION_DefaultMonkeyFile_hpp
+
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_DefaultMonkeyFile)
+		#define DefaultMonkeyFile_hpp
+
+		#define IMPLEMENTATION_DefaultMonkeyFile
+		#define IMPLEMENTING_DefaultMonkeyFile
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_DefaultMonkeyFile)
+			#define IMPLEMENTATION_DefaultMonkeyFile
+			#define IMPLEMENTING_DefaultMonkeyFile
+		#endif
+	#endif
 #endif
 
 #ifndef DefaultMonkeyFile_hpp
 #define DefaultMonkeyFile_hpp
 #define DefaultMonkeyFile_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
+#ifndef DISABLE_IMPLEMENTATION_DefaultMonkeyFile
+	#define IMPLEMENTATION_DefaultMonkeyFile IMPLEMENTATION(public DefaultMonkeyFile)
+	#define IMPLEMENTING_DefaultMonkeyFile IMPLEMENTING(public DefaultMonkeyFile)
 #endif
 
 #ifdef ame_Windows
@@ -34,6 +47,7 @@
 
 #include "MonkeyFile.hpp"
 #include "PrimitiveMap.hpp"
+#include "ArgsClass.hpp"
 
 #ifdef DefaultMonkeyFile_LogApp
 	#include "ame_Logger_config.hpp"
@@ -67,6 +81,7 @@ class DefaultMonkeyFile : public MonkeyFile{
 		#ifdef ame_ArduinoIDE
 		DefaultMonkeyFile(const DefaultMonkeyFile& file) : m_sd(file.m_sd){}
 		DefaultMonkeyFile(T &t) : m_sd(t){}
+		DefaultMonkeyFile(){}
 		#endif
 		
 		virtual ~DefaultMonkeyFile(){}
@@ -75,55 +90,55 @@ class DefaultMonkeyFile : public MonkeyFile{
 			if(!init){
 				init = true;
 				#if defined(ame_ESP32_DEV)
-				DefaultMonkeyFile(ame_Log_Statement, "Constructor",  "println", "ARDUINO_ESP32_DEV");
+				DefaultMonkeyFileLog(ame_Log_Statement, "initialize",  "println", "ARDUINO_ESP32_DEV");
 				SPI.begin(14, 2, 15, 13);
 				m_sd.begin(13);
 				uint8_t cardType = m_sd.cardType();
 
 				if(cardType == CARD_NONE){
-					DefaultMonkeyFile(ame_Log_Statement, "Constructor",  "println", "No SD card attached");
+					DefaultMonkeyFileLog(ame_Log_Statement, "initialize",  "println", "No SD card attached");
 					return;
 				}
 				#elif defined(ame_TTGO_T7)
-				DefaultMonkeyFile(ame_Log_Statement, "Constructor",  "println", "ARDUINO_TTGO_T7_V14_Mini32");
+				DefaultMonkeyFileLog(ame_Log_Statement, "initialize",  "println", "ARDUINO_TTGO_T7_V14_Mini32");
 				SPI.begin(21, 22, 19, 0);//sclk , miso , mosi , cs
 				m_sd.begin(0);
 				uint8_t cardType = m_sd.cardType();
 
 				if(cardType == CARD_NONE){
-					DefaultMonkeyFile(ame_Log_Statement, "Constructor",  "println", "No SD card attached");
+					DefaultMonkeyFileLog(ame_Log_Statement, "initialize",  "println", "No SD card attached");
 					return;
 				}
 				#elif defined(ame_GENERIC_ARDUINO)
-				DefaultMonkeyFile(ame_Log_Statement, "Constructor",  "println", "ARDUINO_ARCH_AVR");
+				DefaultMonkeyFileLog(ame_Log_Statement, "initialize",  "println", "ARDUINO_ARCH_AVR");
 				m_sd.begin(4);
 				#elif defined(ame_ADAFRUIT_FEATHER_M0)
-				DefaultMonkeyFile(ame_Log_Statement, "Constructor",  "println", "ARDUINO_SAMD_ZERO");
+				DefaultMonkeyFileLog(ame_Log_Statement, "initialize",  "println", "ARDUINO_SAMD_ZERO");
 				m_sd.begin(4);
 				#endif
 				this->m_open = true;
-				DefaultMonkeyFile(ame_Log_Statement, "Constructor",  "println", "ARDUINO_SAMD_ZERO");
+				DefaultMonkeyFileLog(ame_Log_Statement, "initialize",  "println", "ARDUINO_SAMD_ZERO");
 			}
 		}
 		
 		virtual bool fastCreateDir(Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "fastCreateDir",  "println", Note(path));
+			DefaultMonkeyFileLog(ame_Log_Statement, "fastCreateDir",  "println", Note(path));
 			return m_sd.mkdir(path.toString());
 		}
 		
 		virtual bool createDir(Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "createDir",  "println", Note(path));
+			DefaultMonkeyFileLog(ame_Log_Statement, "createDir",  "println", Note(path));
 			if(m_sd.exists(path.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "createDir",  "println", "all ready exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "createDir",  "println", "all ready exists");
 				return false;
 			}
 			if(m_sd.mkdir(path.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "createDir",  "println", "Dir created");
+				DefaultMonkeyFileLog(ame_Log_Statement, "createDir",  "println", "Dir created");
 				return true;
 			}else{
-				DefaultMonkeyFile(ame_Log_Statement, "createDir",  "println", "mkdir failed");
+				DefaultMonkeyFileLog(ame_Log_Statement, "createDir",  "println", "mkdir failed");
 			}
 			return false;
 		}
@@ -132,55 +147,55 @@ class DefaultMonkeyFile : public MonkeyFile{
 			Note rpath = this->fixRootPath(path);
 			if(!m_sd.exists(this->rootPath.toString())){
 				m_sd.mkdir(this->rootPath.toString());
-				DefaultMonkeyFile(ame_Log_Statement, "createRootDir",  "println", "creates rootdir");
+				DefaultMonkeyFileLog(ame_Log_Statement, "createRootDir",  "println", "creates rootdir");
 			}
 			if(m_sd.exists(rpath.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "createRootDir",  "println", "all ready exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "createRootDir",  "println", "all ready exists");
 				return false;
 			}
-			DefaultMonkeyFile(ame_Log_Statement, "createRootDir",  "println", this->rootPath+"/"+path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "createRootDir",  "println", this->rootPath+"/"+path);
 			if(m_sd.mkdir(rpath.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "createRootDir",  "println", "Dir created");
+				DefaultMonkeyFileLog(ame_Log_Statement, "createRootDir",  "println", "Dir created");
 			}else{
-				DefaultMonkeyFile(ame_Log_Statement, "createRootDir",  "println", "mkdir failed");
+				DefaultMonkeyFileLog(ame_Log_Statement, "createRootDir",  "println", "mkdir failed");
 			}
 			return true;
 		}
 		
 		virtual bool deleteDir(Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "deleteDir",  "println", Note(path));
+			DefaultMonkeyFileLog(ame_Log_Statement, "deleteDir",  "println", Note(path));
 			if(!m_sd.exists(path.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "deleteDir",  "println", "doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "deleteDir",  "println", "doesnt exists");
 				return false;
 			}
 			if(m_sd.rmdir(path.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "deleteDir",  "println", "Dir deleted");
+				DefaultMonkeyFileLog(ame_Log_Statement, "deleteDir",  "println", "Dir deleted");
 				return true;
 			}else{
-				DefaultMonkeyFile(ame_Log_Statement, "deleteDir",  "println", "rmdir failed");
+				DefaultMonkeyFileLog(ame_Log_Statement, "deleteDir",  "println", "rmdir failed");
 			}
 			return false;
 		}
 		
 		virtual bool deleteRootDir(Note path){
 			Note rpath = this->fixRootPath(path);
-			DefaultMonkeyFile(ame_Log_Statement, "deleteRootDir",  "println", rpath);
+			DefaultMonkeyFileLog(ame_Log_Statement, "deleteRootDir",  "println", rpath);
 			if(!m_sd.exists(rpath.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "deleteRootDir",  "println", "doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "deleteRootDir",  "println", "doesnt exists");
 				return false;
 			}
 			if(m_sd.rmdir(rpath.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "deleteRootDir",  "println", "Dir deleted");
+				DefaultMonkeyFileLog(ame_Log_Statement, "deleteRootDir",  "println", "Dir deleted");
 			}else{
-				DefaultMonkeyFile(ame_Log_Statement, "deleteRootDir",  "println", "rmdir failed");
+				DefaultMonkeyFileLog(ame_Log_Statement, "deleteRootDir",  "println", "rmdir failed");
 			}
 			return true;
 		}
 		
 		virtual bool fastCreateFile(Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "createFile",  "println", path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "createFile",  "println", path);
 			File myFile = m_sd.open(path.toString(), FILE_WRITE);
 			myFile.close();
 			return true;
@@ -188,14 +203,14 @@ class DefaultMonkeyFile : public MonkeyFile{
 		
 		virtual bool createFile(Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "createFile",  "println", path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "createFile",  "println", path);
 			File myFile = m_sd.open(path.toString(), FILE_WRITE);
 			myFile.close();
 			return true;
 		}
 		virtual bool createRootFile(Note path){
 			Note rpath = this->fixRootPath(path);
-			DefaultMonkeyFile(ame_Log_Statement, "createRootFile",  "println", rpath);
+			DefaultMonkeyFileLog(ame_Log_Statement, "createRootFile",  "println", rpath);
 			File myFile = m_sd.open(rpath.toString(), FILE_WRITE);
 			myFile.close();
 			return true;
@@ -203,14 +218,14 @@ class DefaultMonkeyFile : public MonkeyFile{
 		
 		virtual bool deleteFile(Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "deleteFile",  "println", path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "deleteFile",  "println", path);
 			return m_sd.remove(path.toString());
 		}
 		virtual bool deleteRootFile(Note path){
 			Note rpath = this->fixRootPath(path);
-			DefaultMonkeyFile(ame_Log_Statement, "deleteRootFile",  "println", rpath);
+			DefaultMonkeyFileLog(ame_Log_Statement, "deleteRootFile",  "println", rpath);
 			if(!m_sd.exists(rpath.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "deleteRootDir",  "println", "doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "deleteRootDir",  "println", "doesnt exists");
 				return false;
 			}
 			return m_sd.remove(rpath.toString());
@@ -227,7 +242,7 @@ class DefaultMonkeyFile : public MonkeyFile{
 		virtual bool clearFile(Note p){
 			Note path = fixPath(p);
 			if(!m_sd.exists(path.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "clearFile",  "println", "doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "clearFile",  "println", "doesnt exists");
 				return false;
 			}
 			m_sd.remove(path.toString());
@@ -239,7 +254,7 @@ class DefaultMonkeyFile : public MonkeyFile{
 		virtual bool clearRootFile(Note p){
 			Note path = fixRootPath(p);
 			if(!m_sd.exists(path.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "clearRootFile",  "println", "doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "clearRootFile",  "println", "doesnt exists");
 				return false;
 			}
 			m_sd.remove(path.toString());
@@ -250,8 +265,8 @@ class DefaultMonkeyFile : public MonkeyFile{
 		
 		virtual bool fastWriteText(Note text, Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "fastWriteText",  "println", path);
-			DefaultMonkeyFile(ame_Log_Statement, "fastWriteText",  "println", text);
+			DefaultMonkeyFileLog(ame_Log_Statement, "fastWriteText",  "println", path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "fastWriteText",  "println", text);
 			#if defined(ARDUINO_ARCH_AVR)
 			File myFile = m_sd.open(path.toString(), FILE_WRITE);
 			#elif defined(ARDUINO_ESP32_DEV)
@@ -268,10 +283,10 @@ class DefaultMonkeyFile : public MonkeyFile{
 		
 		virtual bool writeText(Note text, Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "writeText",  "println", path);
-			DefaultMonkeyFile(ame_Log_Statement, "writeText",  "println", text);
+			DefaultMonkeyFileLog(ame_Log_Statement, "writeText",  "println", path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "writeText",  "println", text);
 			if(!m_sd.exists(path.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "writeText",  "println", "path doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "writeText",  "println", "path doesnt exists");
 				return false;
 			}
 			#if defined(ARDUINO_ARCH_AVR)
@@ -289,10 +304,10 @@ class DefaultMonkeyFile : public MonkeyFile{
 		}
 		virtual bool writeRootText(Note text, Note path){
 			Note rpath = this->fixRootPath(path);
-			DefaultMonkeyFile(ame_Log_Statement, "writeRootText",  "println", rpath);
-			DefaultMonkeyFile(ame_Log_Statement, "writeRootText",  "println", text);
+			DefaultMonkeyFileLog(ame_Log_Statement, "writeRootText",  "println", rpath);
+			DefaultMonkeyFileLog(ame_Log_Statement, "writeRootText",  "println", text);
 			if(!m_sd.exists(rpath.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "writeRootText",  "println", "path doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "writeRootText",  "println", "path doesnt exists");
 				return false;
 			}
 			#if defined(ARDUINO_ARCH_AVR)
@@ -311,13 +326,13 @@ class DefaultMonkeyFile : public MonkeyFile{
 		
 		virtual Note fastReadText(Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "readText",  "println", path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "readText",  "println", path);
 			File myFile = m_sd.open(path.toString());
 			Note r = "";
 			while(myFile.available()){
 				char c = (char)myFile.read();
-				DefaultMonkeyFile(ame_Log_Statement, "readText",  "println", Note(c));
-				r.concat(c);
+				DefaultMonkeyFileLog(ame_Log_Statement, "readText",  "println", Note(c));
+				r.addLocalValue(c);
 			}
 			myFile.close();
 			return r;
@@ -325,34 +340,34 @@ class DefaultMonkeyFile : public MonkeyFile{
 		
 		virtual Note readText(Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "readText",  "println", path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "readText",  "println", path);
 			if(!m_sd.exists(path.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "readText",  "println", "file doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "readText",  "println", "file doesnt exists");
 				return "";
 			}
 			File myFile = m_sd.open(path.toString());
 			Note r = "";
 			while(myFile.available()){
 				char c = (char)myFile.read();
-				DefaultMonkeyFile(ame_Log_Statement, "readText",  "println", Note(c));
-				r.concat(c);
+				DefaultMonkeyFileLog(ame_Log_Statement, "readText",  "println", Note(c));
+				r.addLocalValue(c);
 			}
 			myFile.close();
 			return r;
 		}
 		virtual Note readRootText(Note path){
 			Note rpath = this->fixRootPath(path);
-			DefaultMonkeyFile(ame_Log_Statement, "readRootText",  "println", rpath);
+			DefaultMonkeyFileLog(ame_Log_Statement, "readRootText",  "println", rpath);
 			if(!m_sd.exists(rpath.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "readRootText",  "println", "path doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "readRootText",  "println", "path doesnt exists");
 				return "";
 			}
 			File myFile = m_sd.open(rpath.toString());
 			Note r = "";
 			while (myFile.available()) {
 				char c = (char)myFile.read();
-				DefaultMonkeyFile(ame_Log_Statement, "readRootText",  "println", Note(c));
-				r.concat(c);
+				DefaultMonkeyFileLog(ame_Log_Statement, "readRootText",  "println", Note(c));
+				r.addLocalValue(c);
 			}
 			myFile.close();
 			return r;
@@ -360,10 +375,10 @@ class DefaultMonkeyFile : public MonkeyFile{
 		
 		virtual bool writeByteArray(ByteArray array, Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "writeByteArray",  "println", path);
-			DefaultMonkeyFile(ame_Log_Statement, "writeByteArray",  "println", array.toNote());
+			DefaultMonkeyFileLog(ame_Log_Statement, "writeByteArray",  "println", path);
+			// DefaultMonkeyFileLog(ame_Log_Statement, "writeByteArray",  "println", array.toNote());
 			if(!m_sd.exists(path.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "writeByteArray",  "println", "path doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "writeByteArray",  "println", "path doesnt exists");
 				return false;
 			}
 			#if defined(ARDUINO_ARCH_AVR)
@@ -375,16 +390,16 @@ class DefaultMonkeyFile : public MonkeyFile{
 			#elif defined(ARDUINO_SAMD_ZERO)
 			File myFile = m_sd.open(path.toString(), FILE_WRITE);
 			#endif
-			myFile.print(array.toNote().toString());
+			// myFile.print(array.toNote().toString());
 			myFile.close();
 			return true;
 		}
 		virtual bool writeRootByteArray(ByteArray array, Note path){
 			Note rpath = this->fixRootPath(path);
-			DefaultMonkeyFile(ame_Log_Statement, "writeRootByteArray",  "println", rpath);
-			DefaultMonkeyFile(ame_Log_Statement, "writeRootByteArray",  "println", array.toNote());
+			DefaultMonkeyFileLog(ame_Log_Statement, "writeRootByteArray",  "println", rpath);
+			// DefaultMonkeyFileLog(ame_Log_Statement, "writeRootByteArray",  "println", array.toNote());
 			if(!m_sd.exists(rpath.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "writeRootByteArray",  "println", "path doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "writeRootByteArray",  "println", "path doesnt exists");
 				return false;
 			}
 			#if defined(ARDUINO_ARCH_AVR)
@@ -396,61 +411,63 @@ class DefaultMonkeyFile : public MonkeyFile{
 			#elif defined(ARDUINO_SAMD_ZERO)
 			File myFile = m_sd.open(rpath.toString(), FILE_WRITE);
 			#endif
-			myFile.print(array.toNote().toString());
+			// myFile.print(array.toNote().toString());
 			myFile.close();
 			return true;
 		}
 		
 		virtual ByteArray readByteArray(Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "readByteArray",  "println", path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "readByteArray",  "println", path);
 			if(!m_sd.exists(path.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "readByteArray",  "println", "file doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "readByteArray",  "println", "file doesnt exists");
 				return ByteArray();
 			}
 			File myFile = m_sd.open(path.toString());
 			Note sr = "";
 			while(myFile.available()){
 				char c = (char)myFile.read();
-				DefaultMonkeyFile(ame_Log_Statement, "readByteArray",  "println", Note(c));
-				sr.concat(c);
+				DefaultMonkeyFileLog(ame_Log_Statement, "readByteArray",  "println", Note(c));
+				sr.addLocalValue(c);
 			}
 			myFile.close();
-			ByteArray array = sr;
+			// ByteArray array = sr;
+			ByteArray array;
 			return array;
 		}
 		
 		virtual ByteArray readRootByteArray(Note path){
 			Note rpath = this->fixRootPath(path);
-			DefaultMonkeyFile(ame_Log_Statement, "readRootByteArray",  "println", rpath);
+			DefaultMonkeyFileLog(ame_Log_Statement, "readRootByteArray",  "println", rpath);
 			if(!m_sd.exists(rpath.toString())){
-				DefaultMonkeyFile(ame_Log_Statement, "readRootByteArray",  "println", "path doesnt exists");
+				DefaultMonkeyFileLog(ame_Log_Statement, "readRootByteArray",  "println", "path doesnt exists");
 				return ByteArray();
 			}
 			File myFile = m_sd.open(rpath.toString());
 			Note s;
 			while (myFile.available()) {
 				char c = (char)myFile.read();
-				DefaultMonkeyFile(ame_Log_Statement, "readRootByteArray",  "println", Note(c));
-				s.concat(c);
+				DefaultMonkeyFileLog(ame_Log_Statement, "readRootByteArray",  "println", Note(c));
+				s.addLocalValue(c);
 			}
 			myFile.close();
-			ByteArray array = s;
+			// ByteArray array = sr;
+			ByteArray array;
 			return array;
 		}
 		
 		virtual bool exist(Note p){
 			Note path = fixPath(p);
-			DefaultMonkeyFile(ame_Log_Statement, "exist",  "println", "");
-			DefaultMonkeyFile(ame_Log_Statement, "path ",  "println", path);
-			DefaultMonkeyFile(ame_Log_Statement, "does exist? ",  "println", m_sd.exists(path.toString()));
+			DefaultMonkeyFileLog(ame_Log_Statement, "exist",  "println", "");
+			DefaultMonkeyFileLog(ame_Log_Statement, "path ",  "println", path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "does exist? ",  "println", m_sd.exists(path.toString()));
 			return m_sd.exists(path.toString());
 		}
 		virtual bool existRoot(Note path){
 			Note rpath = this->fixRootPath(path);
-			DefaultMonkeyFile(ame_Log_Statement, "existRoot",  "println", "");
-			DefaultMonkeyFile(ame_Log_Statement, "path ",  "println", rpath);
-			DefaultMonkeyFile(ame_Log_Statement, "does exist? ",  "println", m_sd.exists(rpath.toString()));
+			DefaultMonkeyFileLog(ame_Log_Statement, "existRoot",  "println", "");
+			DefaultMonkeyFileLog(ame_Log_Statement, "path ",  "println", rpath);
+			DefaultMonkeyFileLog(ame_Log_Statement, "does exist? ",  "println", m_sd.exists(rpath.toString()));
 			return m_sd.exists(rpath.toString());
 		}
 		
@@ -459,15 +476,15 @@ class DefaultMonkeyFile : public MonkeyFile{
 		}
 		
 		virtual int getFileSize(Note path){
-			DefaultMonkeyFile(ame_Log_Statement, "getDirectoriesSize",  "println", Note("path: ") + path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "getDirectoriesSize",  "println", Note("path: ") + path);
 
 			File root = m_sd.open(path.toString());
 			if(!root){
-				DefaultMonkeyFile(ame_Log_Statement, "getDirectoriesSize",  "println", "Failed to open directory");
+				DefaultMonkeyFileLog(ame_Log_Statement, "getDirectoriesSize",  "println", "Failed to open directory");
 				return 0;
 			}
 			if(!root.isDirectory()){
-				DefaultMonkeyFile(ame_Log_Statement, "getDirectoriesSize",  "println", "Not a directory");
+				DefaultMonkeyFileLog(ame_Log_Statement, "getDirectoriesSize",  "println", "Not a directory");
 				return 0;
 			}
 			int x = 0;
@@ -482,15 +499,15 @@ class DefaultMonkeyFile : public MonkeyFile{
 		}
 		
 		virtual int getDirectoriesSize(Note path){
-			DefaultMonkeyFile(ame_Log_Statement, "getDirectoriesSize",  "println", Note("path: ") + path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "getDirectoriesSize",  "println", Note("path: ") + path);
 
 			File root = m_sd.open(path.toString());
 			if(!root){
-				DefaultMonkeyFile(ame_Log_Statement, "getDirectoriesSize",  "println", "Failed to open directory");
+				DefaultMonkeyFileLog(ame_Log_Statement, "getDirectoriesSize",  "println", "Failed to open directory");
 				return 0;
 			}
 			if(!root.isDirectory()){
-				DefaultMonkeyFile(ame_Log_Statement, "getDirectoriesSize",  "println", "Not a directory");
+				DefaultMonkeyFileLog(ame_Log_Statement, "getDirectoriesSize",  "println", "Not a directory");
 				return 0;
 			}
 			int x = 0;
@@ -505,16 +522,16 @@ class DefaultMonkeyFile : public MonkeyFile{
 		}
 		
 		virtual PrimitiveMap<Note,Note> getDirectories(Note dirname, int levels){
-			DefaultMonkeyFile(ame_Log_Statement, "getDirectories",  "println", Note("Listing directory: ") + dirname);
+			DefaultMonkeyFileLog(ame_Log_Statement, "getDirectories",  "println", Note("Listing directory: ") + dirname);
 
 			PrimitiveMap<Note,Note> m_map;
 			File root = m_sd.open(dirname.toString());
 			if(!root){
-				DefaultMonkeyFile(ame_Log_Statement, "getDirectories",  "println", "Failed to open directory");
+				DefaultMonkeyFileLog(ame_Log_Statement, "getDirectories",  "println", "Failed to open directory");
 				return m_map;
 			}
 			if(!root.isDirectory()){
-				DefaultMonkeyFile(ame_Log_Statement, "getDirectories",  "println", "Not a directory");
+				DefaultMonkeyFileLog(ame_Log_Statement, "getDirectories",  "println", "Not a directory");
 				return m_map;
 			}
 			File file = root.openNextFile();
@@ -522,7 +539,8 @@ class DefaultMonkeyFile : public MonkeyFile{
 				if(file.isDirectory()){
 					m_map.add("Dir", file.name());
 					if(levels){
-						m_map.add(getDirectories(file.name(), levels -1));
+						PrimitiveMap<Note,Note> i_directories = getDirectories(file.name(), levels -1);
+						m_map.addMap(i_directories);
 					}
 				} else {
 					m_map.add("File", file.name());
@@ -530,8 +548,17 @@ class DefaultMonkeyFile : public MonkeyFile{
 				file = root.openNextFile();
 			}
 			return m_map;
+		}	
+
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(ArgsClass_AVAILABLE)
+		virtual cppObjectClass* getClass(){
+			return ArgsClass<DefaultMonkeyFile>::getClass();
 		}
 		
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == ArgsClass<DefaultMonkeyFile>::getClass();
+		}
+		#endif
 		
 	protected:
 		T& m_sd;

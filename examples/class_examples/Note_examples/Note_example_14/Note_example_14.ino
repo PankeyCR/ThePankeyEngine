@@ -10,9 +10,12 @@ void setup() {
 void loop() {
   ame_Debuging(ame_Log_StartLoop, "loop");
 
-  Note note = Note("hi user,") + Note(" trying to") + Note(" add notes");
+  Note note = "hi username";
+  Note subNote = note.subNote(3, 7);
   
-  Serial.println(note);
+  Serial.print("subNote size: ");Serial.println(subNote.length());
+  
+  Serial.println(subNote);
   
   ame_Debuging(ame_Log_EndLoop, "loop");
 }
