@@ -14,27 +14,36 @@ void Feed(DataNetwork<float>* actual, DataNetwork<float>* next){
 }
 
 DataNetwork<float> network;
+DataNetwork<float> network_2;
+DataNetwork<float> network_3;
 
 void setup() {
   Serial.begin(9600);
-  
-  network.createFlatNetwork(2, 4, 4, 2);
 
-  network.setFlatNetwork(0, 5, 10);
-  network.setFlatNetwork(1, 5, 10, 15, 20);
-  network.setFlatNetwork(2, 5, 10, 15, 20);
-  network.setFlatNetwork(3, 5, 10);
+  network.addValue(5);
+  network.addValue(10);
+  network.addValue(15);
+
+  network_2.addValue(3);
+  network_2.addValue(2);
+  network_2.addValue(4);
+
+  network_3.addValue(3);
 }
 
 void loop() {
   ame_Debuging(ame_Log_StartLoop, "loop");
 
-  network.applyFlatNetwork(Layer, Feed);
-  
-  Array<float> array = network.getFlatLayerArray(3);
+  if(network.similar(network_2)){
+    System::console.println("network similar to network_2");
+  }
 
-  for(float value : array){
-    System::console.println(value);
+  if(!network.similar(network_3)){
+    System::console.println("network not similar to network_3");
+  }
+
+  if(!network_2.similar(network_3)){
+    System::console.println("network_2 not similar to network_3");
   }
   
   ame_Debuging(ame_Log_EndLoop, "loop");

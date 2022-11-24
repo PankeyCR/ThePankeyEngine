@@ -172,6 +172,13 @@ class RawList : virtual public RawPointerList<T>{
 			return this->addLValue(a_value);
 		}
 		
+		template<class... Args>
+		T* create(Args... args){
+			RawListLog(ame_Log_StartMethod, "addLast", "println", "");
+			RawListLog(ame_Log_EndMethod, "addLast", "println", "");
+			return this->addPointer(new T(args...));
+		}
+		
 		//operators
 		virtual T& operator[](int x)=0;
 	private:

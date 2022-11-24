@@ -17,8 +17,10 @@ void setup() {
 void loop() {
   ame_Debuging(ame_Log_StartLoop, "loop");
 
-  if(network.belongs(10)){
-    System::console.println("network contains value 10");
+  LinkedList<float> list = network.getValues();
+
+  for(float value : list){
+    System::console.println(value);
   }
   
   ame_Debuging(ame_Log_EndLoop, "loop");

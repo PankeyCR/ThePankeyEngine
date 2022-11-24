@@ -78,6 +78,25 @@ class DataNetwork : public LinkedList<DataNetwork<T>>{
 			this->set(c_value);
 			DataNetworkLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
+		DataNetwork(const DataNetwork<T>& c_network){
+			DataNetworkLog(ame_Log_StartMethod, "Constructor", "println", "");
+			this->set(c_network.get());
+
+			if(c_network.isTransfinite()){
+				return;
+			}
+			for(int x = 0; x < c_network.getPosition(); x++){
+				DataNetwork<T>* f_network = c_network.getByPosition(x);
+				if(f_network == nullptr){
+					this->addPointer(nullptr);
+					continue;
+				}
+				DataNetwork<T>* f_network_2 = new DataNetwork<T>();
+				*f_network_2 = *f_network;
+				this->addPointer(nullptr);
+			}
+			DataNetworkLog(ame_Log_EndMethod, "Constructor", "println", "");
+		}
 		virtual ~DataNetwork(){
 			DataNetworkLog(ame_Log_StartMethod, "Destructor", "println", "");
 			DataNetworkLog(ame_Log_EndMethod, "Destructor", "println", "");
@@ -92,17 +111,17 @@ class DataNetwork : public LinkedList<DataNetwork<T>>{
 		}
 		
 		virtual void set(T a_value){
-			DataNetworkLog(ame_Log_StartMethod, "Destructor", "println", "");
+			DataNetworkLog(ame_Log_StartMethod, "set", "println", "");
 			if(m_value == nullptr){
 				m_value = new T();
 			}
 			*m_value = a_value;
-			DataNetworkLog(ame_Log_EndMethod, "Destructor", "println", "a_value");
-			DataNetworkLog(ame_Log_EndMethod, "Destructor", "println", a_value);
-			DataNetworkLog(ame_Log_EndMethod, "Destructor", "println", "");
+			DataNetworkLog(ame_Log_EndMethod, "set", "println", "a_value");
+			DataNetworkLog(ame_Log_EndMethod, "set", "println", a_value);
+			DataNetworkLog(ame_Log_EndMethod, "set", "println", "");
 		}
 		
-		virtual T get(){
+		virtual T get()const{
 			if(m_value == nullptr){
 				return T();
 			}
@@ -113,43 +132,99 @@ class DataNetwork : public LinkedList<DataNetwork<T>>{
 			m_transfinite = a_transfinite;
 		}
 
-		virtual bool isTransfinite(){
+		virtual bool isTransfinite()const{
 			return m_transfinite;
 		}
-
-		virtual bool belongs(DataNetwork<T>* a_network){
-			return this->containByPointer(a_network);
+		
+		virtual DataNetwork<T>* addValue(T a_value){
+			DataNetworkLog(ame_Log_StartMethod, "addValue", "println", "");
+			DataNetwork<T>* dateNetwork = new DataNetwork<T>();
+			dateNetwork->set(a_value);
+			this->addPointer(dateNetwork);
+			DataNetworkLog(ame_Log_EndMethod, "addValue", "println", "a_value");
+			DataNetworkLog(ame_Log_EndMethod, "addValue", "println", a_value);
+			DataNetworkLog(ame_Log_EndMethod, "addValue", "println", "");
+			return dateNetwork;
 		}
 
-		virtual bool similar(DataNetwork<T>* a_network){
-			if(a_network == nullptr){
-				return this->isEmpty();
+		virtual LinkedList<T> getValues(){
+			LinkedList<T> i_list;
+			i_list.setOwner(false);
+
+			for(int x = 0; x < this->getPosition(); x++){
+				LinkedListNode<DataNetwork<T>>* f_node = this->getNode(x);
+				DataNetwork<T>* f_network = f_node->get();
+				i_list.addPointer(f_network->getData());
 			}
-			if(a_network->getPosition() != this->getPosition()){
+
+			return i_list;
+		}
+
+		virtual LinkedList<T> getCloneValues(){
+			LinkedList<T> i_list;
+
+			for(int x = 0; x < this->getPosition(); x++){
+				DataNetwork<T>* f_network = this->getByPosition(x);
+				i_list.add(f_network->get());
+			}
+
+			return i_list;
+		}
+
+		virtual void addValues(const LinkedList<T>& a_values){
+			for(int x = 0; x < a_values.getPosition(); x++){
+				this->addValue(a_values[x]);
+			}
+		}
+
+		virtual bool belongs(const T& a_value){
+			for(int x = 0; x < this->getPosition(); x++){
+				DataNetwork<T>* f_network = this->getByPosition(x);
+				if(f_network == nullptr){
+					continue;
+				}
+				T* f_value = f_network->getData();
+				if(f_value == nullptr){
+					continue;
+				}
+				if(a_value == *f_value){
+					return true;
+				}
+			}
+			return false;
+		}
+
+		virtual bool similar(DataNetwork<T>& a_network){
+			return a_network.getPosition() == this->getPosition();
+		}
+
+		virtual bool similarToAll(DataNetwork<T>& a_network){
+			if(a_network.getPosition() != this->getPosition()){
 				return false;
 			}
-			if(a_network->isTransfinite() && this->isTransfinite()){
+			if(a_network.isTransfinite() && this->isTransfinite()){
 				return true;
 			}
 			for(int x = 0; x < this->getPosition(); x++){
 				DataNetwork<T>* i_set_1 = this->getByPosition(x);
-				DataNetwork<T>* i_set_2 = a_network->getByPosition(x);
-				if(!i_set_1->similar(i_set_2)){
+				DataNetwork<T>* i_set_2 = a_network.getByPosition(x);
+				if(!i_set_1->similar(*i_set_2)){
 					return false;
 				}
 			}
 			return true;
 		}
 		
-		virtual DataNetwork<T>* Intersection(DataNetwork<T>* a_set){
-			DataNetwork<T>* i_network = new DataNetwork<T>();
+		virtual DataNetwork<T> Intersection(DataNetwork<T>& a_set){
+			DataNetwork<T> i_network;
 
-			for(int x = 0; x < this->getPosition(); x++){
-				DataNetwork<T>* i_set_1 = this->getByPosition(x);
-				if(a_set->containByPointer(i_set_1)){
-					i_network->addPointer(i_set_1);
-				}
-			}
+			//LinkedList<T>
+			// for(int x = 0; x < a_set.getPosition(); x++){
+			// 	DataNetwork<T>* i_set_1 = a_set.getByPosition(x);
+			// 	if(this->belongs(i_set_1->get())){
+			// 		i_network.addValue(i_set_1);
+			// 	}
+			// }
 			return i_network;
 		}
 		
@@ -266,8 +341,6 @@ class DataNetwork : public LinkedList<DataNetwork<T>>{
 
 		virtual Array<T> getFlatLayerArray(int a_position){
 			DataNetworkLog(ame_Log_StartMethod, "getVerticalLayerArray", "println", "");
-			DataNetworkLog(ame_Log_Statement, "createVerticalLayer", "println", "a_layer");
-			DataNetworkLog(ame_Log_Statement, "createVerticalLayer", "println", a_layer);
 			Array<T> i_array;
 			if(this->isEmpty()){
 				return i_array;
@@ -289,8 +362,6 @@ class DataNetwork : public LinkedList<DataNetwork<T>>{
 
 		virtual Array<T> getVerticalLayerArray(){
 			DataNetworkLog(ame_Log_StartMethod, "getVerticalLayerArray", "println", "");
-			DataNetworkLog(ame_Log_Statement, "createVerticalLayer", "println", "a_layer");
-			DataNetworkLog(ame_Log_Statement, "createVerticalLayer", "println", a_layer);
 			Array<T> i_array;
 			if(this->isEmpty()){
 				return i_array;
@@ -336,9 +407,90 @@ class DataNetwork : public LinkedList<DataNetwork<T>>{
 			return LinkedList<DataNetwork<T>>::instanceof(cls) || 
 					cls == Class<DataNetwork<T>>::getClass();
 		}
-protected:
-	T* m_value = nullptr;
-	bool m_transfinite = false;
+
+		virtual DataNetwork<T>& operator=(const DataNetwork<T>& c_network){
+			DataNetworkLog(ame_Log_StartMethod, "Constructor", "println", "");
+			this->resetDelete();
+
+			this->set(c_network.get());
+			
+			if(c_network.isTransfinite()){
+				return *this;
+			}
+			for(int x = 0; x < c_network.getPosition(); x++){
+				DataNetwork<T>* f_network = c_network.getByPosition(x);
+				if(f_network == nullptr){
+					this->addPointer(nullptr);
+					continue;
+				}
+				DataNetwork<T>* f_network_2 = new DataNetwork<T>();
+				*f_network_2 = *f_network;
+				this->addPointer(nullptr);
+			}
+			DataNetworkLog(ame_Log_EndMethod, "Constructor", "println", "");
+			return *this;
+		}
+
+		virtual bool operator==(const DataNetwork<T>& c_dateNetwork){
+			DataNetworkLog(ame_Log_StartMethod, "operator==", "println", "");
+			if(c_dateNetwork.getPosition() != this->getPosition()){
+				DataNetworkLog(ame_Log_EndMethod, "operator==", "println", "c_dateNetwork.getPosition() != this->getPosition()");
+				return false;
+			}
+			if(c_dateNetwork.isTransfinite() && this->isTransfinite()){
+				DataNetworkLog(ame_Log_EndMethod, "operator==", "println", "c_dateNetwork.isTransfinite() && this->isTransfinite()");
+				return true;
+			}
+			for(int x = 0; x < this->getPosition(); x++){
+				DataNetwork<T>* i_set_1 = this->getByPosition(x);
+				DataNetwork<T>* i_set_2 = c_dateNetwork.getByPosition(x);
+				if(i_set_1 != i_set_2 && (i_set_1 == nullptr || i_set_2 == nullptr)){
+					return false;
+				}
+				if(i_set_1->get() != i_set_2->get()){
+					DataNetworkLog(ame_Log_EndMethod, "operator==", "println", "i_set_1.get() != i_set_2.get()");
+					return false;
+				}
+				if(*i_set_1 != *i_set_2){
+					DataNetworkLog(ame_Log_EndMethod, "operator==", "println", "i_set_1 != i_set_2");
+					return false;
+				}
+			}
+			DataNetworkLog(ame_Log_EndMethod, "operator=", "println", "");
+			return true;
+		}
+
+		virtual bool operator!=(const DataNetwork<T>& c_dateNetwork){
+			DataNetworkLog(ame_Log_StartMethod, "operator!=", "println", "");
+			if(c_dateNetwork.getPosition() != this->getPosition()){
+				DataNetworkLog(ame_Log_EndMethod, "operator!=", "println", "c_dateNetwork.getPosition() != this->getPosition()");
+				return true;
+			}
+			if(c_dateNetwork.isTransfinite() && this->isTransfinite()){
+				DataNetworkLog(ame_Log_EndMethod, "operator!=", "println", "c_dateNetwork.isTransfinite() && this->isTransfinite()");
+				return false;
+			}
+			for(int x = 0; x < this->getPosition(); x++){
+				DataNetwork<T>* i_set_1 = this->getByPosition(x);
+				DataNetwork<T>* i_set_2 = c_dateNetwork.getByPosition(x);
+				if(i_set_1 != i_set_2 && (i_set_1 == nullptr || i_set_2 == nullptr)){
+					return true;
+				}
+				if(i_set_1->get() != i_set_2->get()){
+					DataNetworkLog(ame_Log_EndMethod, "operator!=", "println", "i_set_1.get() != i_set_2.get()");
+					return true;
+				}
+				if(*i_set_1 != *i_set_2){
+					DataNetworkLog(ame_Log_EndMethod, "operator!=", "println", "i_set_1 != i_set_2");
+					return true;
+				}
+			}
+			DataNetworkLog(ame_Log_EndMethod, "operator!=", "println", "");
+			return false;
+		}
+	protected:
+		T* m_value = nullptr;
+		bool m_transfinite = false;
 };
 
 }
