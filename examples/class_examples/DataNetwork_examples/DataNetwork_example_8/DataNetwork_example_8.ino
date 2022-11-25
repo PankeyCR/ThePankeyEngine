@@ -9,9 +9,10 @@ DataNetwork<float> network;
 void setup() {
   Serial.begin(9600);
 
-  network.addValue(5);
-  network.addValue(10);
-  network.addValue(15);
+  LinkedList<float> list;
+  list.addPack(5,10,15,20);
+
+  network.addValues(list);
 }
 
 void loop() {

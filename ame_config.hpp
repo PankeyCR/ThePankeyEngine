@@ -133,7 +133,7 @@
 
 // #define DISABLE_ame_Enviroment
 
-#define DISABLE_Note
+// #define DISABLE_Note
 #define DISABLE_ByteArray
 
 // #define DISABLE_cppObject

@@ -173,7 +173,13 @@ class DataNetwork : public LinkedList<DataNetwork<T>>{
 
 		virtual void addValues(const LinkedList<T>& a_values){
 			for(int x = 0; x < a_values.getPosition(); x++){
-				this->addValue(a_values[x]);
+				T* f_value = a_values.getByPosition(x);
+				DataNetwork<T>* dateNetwork = new DataNetwork<T>();
+				this->addPointer(dateNetwork);
+				if(f_value == nullptr){
+					continue;
+				}
+				dateNetwork->set(*f_value);
 			}
 		}
 

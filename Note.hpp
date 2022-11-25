@@ -858,19 +858,19 @@ class Note : public Array<char>, public Printable{
 			NoteLog(ame_Log_EndMethod, "insertLocalBool", "println", "");
 			return *this;
 		}
-/*
-		Note subNote(int start){
-			NoteLog(ame_Log_StartMethod, "subNote", "println", "");
+
+		Note getPart(int start){
+			NoteLog(ame_Log_StartMethod, "getPart", "println", "");
 			
 			if(this->isEmpty()){
-				NoteLog(ame_Log_StartMethod, "subNote", "println", "this->isEmpty()");
+				NoteLog(ame_Log_StartMethod, "getPart", "println", "this->isEmpty()");
 				return Note();
 			}
 			
 			int t_size = this->length();
 			int s_size = t_size - start;
-			NoteLog(ame_Log_StartMethod, "subNote", "println", "subNote size");
-			NoteLog(ame_Log_StartMethod, "subNote", "println", s_size);
+			NoteLog(ame_Log_StartMethod, "getPart", "println", "getPart size");
+			NoteLog(ame_Log_StartMethod, "getPart", "println", s_size);
 			char* buff = this->createArrayClone(s_size);
 			
 			char* i_array = this->pointer();
@@ -883,15 +883,15 @@ class Note : public Array<char>, public Printable{
 			Note note = buff;
 			delete[] buff;
 
-			NoteLog(ame_Log_EndMethod, "subNote", "println", "");
+			NoteLog(ame_Log_EndMethod, "getPart", "println", "");
 			return note;
 		}
 
-		Note subNote(int start, int end){
-			NoteLog(ame_Log_StartMethod, "subNote", "println", "");
+		Note getPart(int start, int end){
+			NoteLog(ame_Log_StartMethod, "getPart", "println", "");
 			
 			if(this->isEmpty()){
-				NoteLog(ame_Log_StartMethod, "subNote", "println", "this->isEmpty()");
+				NoteLog(ame_Log_StartMethod, "getPart", "println", "this->isEmpty()");
 				return Note();
 			}
 			
@@ -903,8 +903,8 @@ class Note : public Array<char>, public Printable{
 				t_size = end;
 			}
 			
-			NoteLog(ame_Log_StartMethod, "subNote", "println", "subNote size");
-			NoteLog(ame_Log_StartMethod, "subNote", "println", s_size);
+			NoteLog(ame_Log_StartMethod, "getPart", "println", "getPart size");
+			NoteLog(ame_Log_StartMethod, "getPart", "println", s_size);
 			char* buff = this->createArrayClone(s_size);
 			
 			char* i_array = this->pointer();
@@ -917,10 +917,10 @@ class Note : public Array<char>, public Printable{
 			Note note = buff;
 			delete[] buff;
 			
-			NoteLog(ame_Log_EndMethod, "subNote", "println", "");
+			NoteLog(ame_Log_EndMethod, "getPart", "println", "");
 			return note;
 		}
-
+/*
 		virtual char get(int x) const{
 			NoteLog(ame_Log_StartMethod, "get", "println", "");
 			if(this->isEmpty() || x >= this->getPosition()){
