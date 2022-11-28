@@ -259,11 +259,13 @@ class Note : public Array<char>, public Printable{
 
 			this->m_t_value = this->create(this->m_size);
 			byteToCharPointer(c_byte, this->m_pos, 0, this->m_t_value, ame_DECIMAL, true);
-			NoteLog(ame_Log_Statement, "Constructor", "println", this->m_pos);
-			NoteLog(ame_Log_Statement, "Constructor", "println", this->m_size);
+			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
+			NoteLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
+			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Size:");
+			NoteLog(ame_Log_Statement, "Constructor", "println", this->getSize());
 			NoteLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
-
+/*
 		Note(const ame_Byte& c_byte, int a_type){
 			NoteLog(ame_Log_StartMethod, "Constructor", "println", "start");
 			NoteLog(ame_Log_Statement, "Constructor", "println", "const byte& c_byte, int a_type");
@@ -859,78 +861,6 @@ class Note : public Array<char>, public Printable{
 			return *this;
 		}
 
-		Note getPart(int start){
-			NoteLog(ame_Log_StartMethod, "getPart", "println", "");
-			
-			if(this->isEmpty()){
-				NoteLog(ame_Log_StartMethod, "getPart", "println", "this->isEmpty()");
-				return Note();
-			}
-			
-			int t_size = this->length();
-			int s_size = t_size - start;
-			NoteLog(ame_Log_StartMethod, "getPart", "println", "getPart size");
-			NoteLog(ame_Log_StartMethod, "getPart", "println", s_size);
-			char* buff = this->createArrayClone(s_size);
-			
-			char* i_array = this->pointer();
-
-			for(int x = start; x < t_size; x++){
-				buff[x - start] = i_array[x];
-			}
-			this->copyExternEndValue(buff, s_size);
-
-			Note note = buff;
-			delete[] buff;
-
-			NoteLog(ame_Log_EndMethod, "getPart", "println", "");
-			return note;
-		}
-
-		Note getPart(int start, int end){
-			NoteLog(ame_Log_StartMethod, "getPart", "println", "");
-			
-			if(this->isEmpty()){
-				NoteLog(ame_Log_StartMethod, "getPart", "println", "this->isEmpty()");
-				return Note();
-			}
-			
-			int t_size = this->length();
-			int s_size = t_size - start;
-			
-			if(end < t_size){
-				s_size -= t_size - end;
-				t_size = end;
-			}
-			
-			NoteLog(ame_Log_StartMethod, "getPart", "println", "getPart size");
-			NoteLog(ame_Log_StartMethod, "getPart", "println", s_size);
-			char* buff = this->createArrayClone(s_size);
-			
-			char* i_array = this->pointer();
-
-			for(int x = start; x < t_size; x++){
-				buff[x - start] = i_array[x];
-			}
-			this->copyExternEndValue(buff, s_size);
-
-			Note note = buff;
-			delete[] buff;
-			
-			NoteLog(ame_Log_EndMethod, "getPart", "println", "");
-			return note;
-		}
-/*
-		virtual char get(int x) const{
-			NoteLog(ame_Log_StartMethod, "get", "println", "");
-			if(this->isEmpty() || x >= this->getPosition()){
-				NoteLog(ame_Log_EndMethod, "get", "println", "");
-				return -1;
-			}
-			NoteLog(ame_Log_EndMethod, "get", "println", "");
-			return this->m_t_value[x];
-		}*/
-
 		virtual bool isNumber(char a_char) const{
 			NoteLog(ame_Log_StartMethod, "isNumber", "println", "");
 			NoteLog(ame_Log_EndMethod, "isNumber", "println", "");
@@ -1123,6 +1053,44 @@ class Note : public Array<char>, public Printable{
 			return output;
 		}
 
+		Note split(int a_position, char a_char) const{
+			const_NoteLog(ame_Log_StartMethod, "split", "println", "");
+			Note i_note;
+			int i_position = 0;
+
+			for(int x = 0; x < this->getPosition(); x++){
+				const_NoteLog(ame_Log_Statement, "split", "println", "iteration: ");
+				const_NoteLog(ame_Log_Statement, "split", "println", x);
+				const char f_char = this->m_t_value[x];
+				const_NoteLog(ame_Log_Statement, "split", "println", "char: ");
+				const_NoteLog(ame_Log_Statement, "split", "println", f_char);
+				const_NoteLog(ame_Log_Statement, "split", "println", "i_note: ");
+				const_NoteLog(ame_Log_Statement, "split", "println", i_note);
+				if(f_char == a_char){
+					const_NoteLog(ame_Log_Statement, "split", "println", "f_char == a_char");
+					i_position++;
+					const_NoteLog(ame_Log_Statement, "split", "println", "end for loop");
+					continue;
+				}
+				if(i_position == a_position){
+					const_NoteLog(ame_Log_Statement, "split", "println", "f_char == a_char");
+					i_note.addLocalValue(f_char);
+					const_NoteLog(ame_Log_Statement, "split", "println", "i_note: ");
+					const_NoteLog(ame_Log_Statement, "split", "println", i_note);
+					const_NoteLog(ame_Log_Statement, "split", "println", "end for loop");
+					continue;
+				}
+				if(i_position > a_position){
+					const_NoteLog(ame_Log_Statement, "split", "println", "i_position > a_position");
+					const_NoteLog(ame_Log_Statement, "split", "println", "end for loop");
+					break;
+				}
+				const_NoteLog(ame_Log_Statement, "split", "println", "end for loop");
+			}
+			const_NoteLog(ame_Log_EndMethod, "split", "println", "");
+			return i_note;
+		}
+
 		RawList<Note>* split(char a_char, RawList<Note>* a_list) const{
 			const_NoteLog(ame_Log_StartMethod, "split", "println", "");
 			if(a_list == nullptr){
@@ -1141,8 +1109,11 @@ class Note : public Array<char>, public Printable{
 					const_NoteLog(ame_Log_Statement, "split", "println", "f_char == a_char");
 					const_NoteLog(ame_Log_Statement, "split", "println", "i_note: ");
 					const_NoteLog(ame_Log_Statement, "split", "println", i_note);
+					if(i_note.isEmpty()){
+						continue;
+					}
 					a_list->add(i_note);
-					i_note = "";
+					i_note.clear();
 					const_NoteLog(ame_Log_Statement, "split", "println", "end for loop");
 					continue;
 				}
@@ -1153,6 +1124,9 @@ class Note : public Array<char>, public Printable{
 					const_NoteLog(ame_Log_Statement, "split", "println", "x == this->getPosition() - 1");
 					const_NoteLog(ame_Log_Statement, "split", "println", "i_note: ");
 					const_NoteLog(ame_Log_Statement, "split", "println", i_note);
+					if(i_note.isEmpty()){
+						continue;
+					}
 					a_list->add(i_note);
 				}
 				const_NoteLog(ame_Log_Statement, "split", "println", "end for loop");
@@ -1175,6 +1149,12 @@ class Note : public Array<char>, public Printable{
 			NoteLog(ame_Log_StartMethod, "addLine", "println", "");
 			this->addLocalValue('\n');
 			NoteLog(ame_Log_EndMethod, "addLine", "println", "");
+		}
+
+		virtual bool isEndLine(const char& a_char) const{
+			NoteLog(ame_Log_StartMethod, "isEndLine", "println", "");
+			NoteLog(ame_Log_EndMethod, "isEndLine", "println", "");
+			return a_char == '\n';
 		}
 
 		virtual int getOrder(Note a_note, char a_split, char a_end){

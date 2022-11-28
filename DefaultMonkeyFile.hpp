@@ -48,6 +48,7 @@
 #include "MonkeyFile.hpp"
 #include "PrimitiveMap.hpp"
 #include "ArgsClass.hpp"
+#include "ByteArrayHelper.hpp"
 
 #ifdef DefaultMonkeyFile_LogApp
 	#include "ame_Logger_config.hpp"
@@ -373,27 +374,28 @@ class DefaultMonkeyFile : public MonkeyFile{
 			return r;
 		}
 		
-		virtual bool writeByteArray(ByteArray array, Note p){
-			Note path = fixPath(p);
-			DefaultMonkeyFileLog(ame_Log_Statement, "writeByteArray",  "println", path);
+		virtual bool writeByteArray(ByteArray array, Note a_path){
+			Note i_path = fixPath(a_path);
+			DefaultMonkeyFileLog(ame_Log_Statement, "writeByteArray",  "println", i_path);
 			// DefaultMonkeyFileLog(ame_Log_Statement, "writeByteArray",  "println", array.toNote());
-			if(!m_sd.exists(path.toString())){
+			if(!m_sd.exists(i_path.toString())){
 				DefaultMonkeyFileLog(ame_Log_Statement, "writeByteArray",  "println", "path doesnt exists");
 				return false;
 			}
 			#if defined(ARDUINO_ARCH_AVR)
-			File myFile = m_sd.open(path.toString(), FILE_WRITE);
+			File myFile = m_sd.open(i_path.toString(), FILE_WRITE);
 			#elif defined(ARDUINO_ESP32_DEV)
-			File myFile = m_sd.open(path.toString(), FILE_APPEND);
+			File myFile = m_sd.open(i_path.toString(), FILE_APPEND);
 			#elif defined(ARDUINO_TTGO_T7_V14_Mini32)
-			File myFile = m_sd.open(path.toString(), FILE_APPEND);
+			File myFile = m_sd.open(i_path.toString(), FILE_APPEND);
 			#elif defined(ARDUINO_SAMD_ZERO)
-			File myFile = m_sd.open(path.toString(), FILE_WRITE);
+			File myFile = m_sd.open(i_path.toString(), FILE_WRITE);
 			#endif
-			// myFile.print(array.toNote().toString());
+			myFile.print(toNote(array).toString());
 			myFile.close();
 			return true;
 		}
+
 		virtual bool writeRootByteArray(ByteArray array, Note path){
 			Note rpath = this->fixRootPath(path);
 			DefaultMonkeyFileLog(ame_Log_Statement, "writeRootByteArray",  "println", rpath);
@@ -411,7 +413,7 @@ class DefaultMonkeyFile : public MonkeyFile{
 			#elif defined(ARDUINO_SAMD_ZERO)
 			File myFile = m_sd.open(rpath.toString(), FILE_WRITE);
 			#endif
-			// myFile.print(array.toNote().toString());
+			myFile.print(toNote(array).toString());
 			myFile.close();
 			return true;
 		}
@@ -431,8 +433,7 @@ class DefaultMonkeyFile : public MonkeyFile{
 				sr.addLocalValue(c);
 			}
 			myFile.close();
-			// ByteArray array = sr;
-			ByteArray array;
+			ByteArray array = toByteArray(sr);
 			return array;
 		}
 		
@@ -451,8 +452,7 @@ class DefaultMonkeyFile : public MonkeyFile{
 				s.addLocalValue(c);
 			}
 			myFile.close();
-			// ByteArray array = sr;
-			ByteArray array;
+			ByteArray array = toByteArray(s);
 			return array;
 		}
 		

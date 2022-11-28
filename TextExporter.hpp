@@ -5,15 +5,32 @@
  *
  */
  
-#include "ame_Enviroment.hpp"
+#ifndef CONFIGURATION_TextExporter_hpp
+#define CONFIGURATION_TextExporter_hpp
 
-#if defined(DISABLE_TextExporter)
-	#define TextExporter_hpp
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_TextExporter)
+		#define TextExporter_hpp
+
+		#define IMPLEMENTATION_TextExporter
+		#define IMPLEMENTING_TextExporter
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_TextExporter)
+			#define IMPLEMENTATION_TextExporter
+			#define IMPLEMENTING_TextExporter
+		#endif
+	#endif
 #endif
 
 #ifndef TextExporter_hpp
 #define TextExporter_hpp
 #define TextExporter_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_TextExporter
+	#define IMPLEMENTATION_TextExporter IMPLEMENTATION(public TextExporter)
+	#define IMPLEMENTING_TextExporter IMPLEMENTING(public TextExporter)
+#endif
 
 #ifndef ame_Enviroment_Defined
 
@@ -55,374 +72,423 @@ namespace ame{
 
 class TextExporter : public MonkeyExporter{
     public:
-		TextExporter(){}
-		TextExporter(const Note& strng){
-			text = strng;
+		TextExporter(){
+			TextExporterLog(ame_Log_StartMethod, "Constructor", "println", "");
+			TextExporterLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
-		virtual ~TextExporter(){}
-		
-    	virtual PrimitiveList<ElementId> read(ElementId id, PrimitiveList<ElementId> value){
-			TextExporterLog(ame_Log_StartMethod, "read PrimitiveList ElementId",  "println", "");
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
-			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
-			PrimitiveList<ElementId> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
-			for(int x = 0; x < s; x++){
-				ElementId t = arg.split(x, m_list_divide );
-				list.addLValue(t);
-			}
-			return list;
+		TextExporter(const Note& c_note){
+			TextExporterLog(ame_Log_StartMethod, "Constructor", "println", "");
+			m_text = c_note;
+			TextExporterLog(ame_Log_EndMethod, "Constructor", "println", "");
+		}
+		virtual ~TextExporter(){
+			TextExporterLog(ame_Log_StartMethod, "Destructor", "println", "");
+			TextExporterLog(ame_Log_EndMethod, "Destructor", "println", "");
 		}
 		
-    	virtual PrimitiveMap<ElementId,Note> read(ElementId id, PrimitiveMap<ElementId,Note> value){
-			TextExporterLog(ame_Log_StartMethod, "read PrimitiveMap<ElementId,Note>",  "println", "");
+    	virtual PrimitiveList<ElementId> read(ElementId a_id, PrimitiveList<ElementId> a_value){
+			TextExporterLog(ame_Log_StartMethod, "read",  "println", "");
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				TextExporterLog(ame_Log_EndMethod, "read", "println", "i_order == -1");
+				return a_value;
+			}
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			PrimitiveList<ElementId> i_list;
+			int i_size = i_arg.getSizeNoStartNoEnd( m_list_divide );
+			for(int x = 0; x < i_size; x++){
+				ElementId f_element_id= i_arg.split(x, m_list_divide );
+				i_list.addLValue(f_element_id);
+			}
+			TextExporterLog(ame_Log_EndMethod, "read", "println", "");
+			return i_list;
+		}
+		
+    	virtual PrimitiveMap<ElementId,Note> read(ElementId a_id, PrimitiveMap<ElementId,Note> a_value){
+			TextExporterLog(ame_Log_StartMethod, "read",  "println", "");
 			
-			int x_key = text.getOrder(id.child("key").getId(), m_split, m_end);
-			int x_value = text.getOrder(id.child("value").getId(), m_split, m_end);
-			if(x_key == -1 || x_value == -1){
-				return value;
+			int i_key = m_text.getOrder(a_id.child("key").getId(), m_split, m_end);
+			int i_value = m_text.getOrder(a_id.child("value").getId(), m_split, m_end);
+			if(i_key == -1 || i_value == -1){
+				TextExporterLog(ame_Log_EndMethod, "read", "println", "i_key == -1 || i_value == -1");
+				return a_value;
 			}
 			
-			Note arg_key = text.getArgument(x_key, m_split, m_end);
-			Note arg_value = text.getArgument(x_value, m_split, m_end);
+			Note i_arg_key = m_text.getArgument(i_key, m_split, m_end);
+			Note i_arg_value = m_text.getArgument(i_value, m_split, m_end);
 			
-			PrimitiveMap<ElementId,Note> map;
-			
-			int s_key = arg_key.getSizeNoStartNoEnd( m_list_divide );
-			int s_value = arg_value.getSizeNoStartNoEnd( m_list_divide );
-			if(s_key != s_value){
-				return value;
+			int i_key_size = i_arg_key.getSizeNoStartNoEnd( m_list_divide );
+			int i_value_size = i_arg_value.getSizeNoStartNoEnd( m_list_divide );
+			if(i_key_size != i_value_size){
+				TextExporterLog(ame_Log_EndMethod, "read", "println", "s_key != s_value");
+				return a_value;
 			}
 			
-			for(int x = 0; x < s_key; x++){
-				ElementId k = ElementId(arg_key.split(x, m_list_divide ));
-				Note v = arg_value.split(x, m_list_divide );
-				map.addLValues(k,v);
+			PrimitiveMap<ElementId,Note> i_map;
+			
+			for(int x = 0; x < i_key_size; x++){
+				ElementId f_element_id = ElementId(i_arg_key.split(x, m_list_divide ));
+				Note f_note = i_arg_value.split(x, m_list_divide );
+				i_map.addLValues(f_element_id, f_note);
 			}
-			return map;
+			TextExporterLog(ame_Log_EndMethod, "read", "println", "");
+			return i_map;
 		}
 		
 		// int primitive
-    	virtual bool write(ElementId id, const int& value){
-			TextExporterLog(ame_Log_StartMethod, "write int",  "println", Note(value));
-			TextExporterLog(ame_Log_StartMethod, "write int",  "println", Note("making the id: ") + id.getId() + Note(" ") + Note(value) + Note("\n"));
-			text += id.getId() + Note(" ") + Note(value) + Note("\n");
+    	virtual bool write(ElementId a_id, const int& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", Note(a_value));
+			TextExporterLog(ame_Log_Statement, "write",  "println", Note("making the id: ") + a_id.getId() + Note(" ") + Note(a_value) + Note("\n"));
+			m_text += a_id.getId() + Note(" ") + Note(a_value) + Note("\n");
+			TextExporterLog(ame_Log_EndMethod, "read", "println", "");
 			return true;
 		}
-    	virtual bool write(ElementId id, const LinkedList<int>& value){
-			TextExporterLog(ame_Log_StartMethod, "write LinkedList int",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const LinkedList<int>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+				TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				int v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += Note(v) + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				int v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += Note(v) + Note("\n");
 				}else{
-					text += Note(v) + Note(",");
+					m_text += Note(v) + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "read", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const PrimitiveList<int>& value){
-			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList int",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const PrimitiveList<int>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+				TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				int v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += Note(v) + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				int v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += Note(v) + Note("\n");
 				}else{
-					text += Note(v) + Note(",");
+					m_text += Note(v) + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-
 		// ByteArray primitive
-    	virtual bool write(ElementId id, const ByteArray& value){
-			TextExporterLog(ame_Log_StartMethod, "write Note",  "println", value.toNote());
-			text += id.getId() + Note(" ") + value.toNote() + "\n";
+    	virtual bool write(ElementId a_id, const ByteArray& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", toNote(a_value));
+			m_text += a_id.getId() + Note(" ") + toNote(a_value) + "\n";
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const LinkedList<ByteArray>& value){
-			TextExporterLog(ame_Log_StartMethod, "write LinkedList ByteArray",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const LinkedList<ByteArray>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+				TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				ByteArray v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += v.toNote() + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				ByteArray f_byte_array = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += toNote(f_byte_array) + Note("\n");
 				}else{
-					text += v.toNote() + Note(",");
+					m_text += toNote(f_byte_array) + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const PrimitiveList<ByteArray>& value){
-			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList ByteArray",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const PrimitiveList<ByteArray>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+				TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				ByteArray v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += v.toNote() + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				ByteArray f_byte_array = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += toNote(f_byte_array) + Note("\n");
 				}else{
-					text += v.toNote() + Note(",");
+					m_text += toNote(f_byte_array) + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "read", "println", "");
 			return true;
 		}
 		
-
 		// bool primitive
-    	virtual bool write(ElementId id, const bool& value){
-			TextExporterLog(ame_Log_StartMethod, "write bool",  "println", Note(value));
-			text += id.getId() + Note(" ") + Note(value) + "\n";
+    	virtual bool write(ElementId a_id, const bool& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", Note(a_value));
+			m_text += a_id.getId() + Note(" ") + Note(a_value) + "\n";
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const LinkedList<bool>& value){
-			TextExporterLog(ame_Log_StartMethod, "write LinkedList bool",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const LinkedList<bool>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+				TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				bool v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += Note(v) + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				bool v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += Note(v) + Note("\n");
 				}else{
-					text += Note(v) + Note(",");
+					m_text += Note(v) + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const PrimitiveList<bool>& value){
-			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList bool",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const PrimitiveList<bool>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+				TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				bool v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += Note(v) + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				bool v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += Note(v) + Note("\n");
 				}else{
-					text += Note(v) + Note(",");
+					m_text += Note(v) + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
-		
 		
 		// char primitive
-    	virtual bool write(ElementId id, const char& value){
-			TextExporterLog(ame_Log_StartMethod, "write Note",  "println", Note(value));
-			text += id.getId() + Note(" ") + Note(value) + "\n";
+    	virtual bool write(ElementId a_id, const char& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", Note(a_value));
+			m_text += a_id.getId() + Note(" ") + Note(a_value) + "\n";
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const LinkedList<char>& value){
-			TextExporterLog(ame_Log_StartMethod, "write LinkedList char",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const LinkedList<char>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+				TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				char v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += Note(v) + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				char v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += Note(v) + Note("\n");
 				}else{
-					text += Note(v) + Note(",");
+					m_text += Note(v) + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const PrimitiveList<char>& value){
-			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList char",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const PrimitiveList<char>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+				TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				char v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += Note(v) + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				char v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += Note(v) + Note("\n");
 				}else{
-					text += Note(v) + Note(",");
+					m_text += Note(v) + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 
 		// ElementId primitive
-    	virtual bool write(ElementId id, const ElementId& value){
-			TextExporterLog(ame_Log_StartMethod, "write Note",  "println", value.getId());
-			text += id.getId() + Note(" ") + value.getId() + "\n";
+    	virtual bool write(ElementId a_id, const ElementId& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", a_value.getId());
+			m_text += a_id.getId() + Note(" ") + a_value.getId() + "\n";
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const PrimitiveList<ElementId>& value){
-			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList ElementId",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const PrimitiveList<ElementId>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				ElementId v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += v.getId() + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				ElementId v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += v.getId() + Note("\n");
 				}else{
-					text += v.getId() + Note(",");
+					m_text += v.getId() + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
 		// Note primitive
-    	virtual bool write(ElementId id, const Note& value){
-			TextExporterLog(ame_Log_StartMethod, "write Note",  "println", value);
-			text += id.getId() + Note(" ") + value + "\n";
+    	virtual bool write(ElementId a_id, const Note& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", a_value);
+			m_text += a_id.getId() + Note(" ") + a_value + "\n";
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const char* value){
-			TextExporterLog(ame_Log_StartMethod, "write Note",  "println", Note(value));
-			text += id.getId() + Note(" ") + Note(value) + "\n";
+    	virtual bool write(ElementId a_id, const char* a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", Note(a_value));
+			m_text += a_id.getId() + Note(" ") + Note(a_value) + "\n";
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const LinkedList<Note>& value){
-			TextExporterLog(ame_Log_StartMethod, "write LinkedList Note",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const LinkedList<Note>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				Note v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += v + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				Note v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += v + Note("\n");
 				}else{
-					text += v + Note(",");
+					m_text += v + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const PrimitiveList<Note>& value){
-			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList Note",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const PrimitiveList<Note>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				Note v = *value.getByPosition(x);
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				Note v = *a_value.getByPosition(x);
 				if(x == value.getPosition() - 1){
-					text += v + Note("\n");
+					m_text += v + Note("\n");
 				}else{
-					text += v + Note(",");
+					m_text += v + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
 		
 		// long primitive
-    	virtual bool write(ElementId id, const long& value){
-			TextExporterLog(ame_Log_StartMethod, "write Note",  "println", Note(value));
-			text += id.getId() + Note(" ") + Note(value) + "\n";
+    	virtual bool write(ElementId a_id, const long& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", Note(a_value));
+			m_text += a_id.getId() + Note(" ") + Note(a_value) + "\n";
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const LinkedList<long>& value){
-			TextExporterLog(ame_Log_StartMethod, "write LinkedList long",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const LinkedList<long>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				long v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += Note(v) + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				long v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += Note(v) + Note("\n");
 				}else{
-					text += Note(v) + Note(",");
+					m_text += Note(v) + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const PrimitiveList<long>& value){
-			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList long",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const PrimitiveList<long>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				long v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += Note(v) + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				long v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += Note(v) + Note("\n");
 				}else{
-					text += Note(v) + Note(",");
+					m_text += Note(v) + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
 		// float primitive
-    	virtual bool write(ElementId id, const float& value){
-			TextExporterLog(ame_Log_StartMethod, "write float",  "println", Note(value));
-			text += id.getId() + Note(" ") + Note(value) + "\n";
+    	virtual bool write(ElementId a_id, const float& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", Note(a_value));
+			m_text += a_id.getId() + Note(" ") + Note(a_value) + "\n";
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const LinkedList<float>& value){
-			TextExporterLog(ame_Log_StartMethod, "write LinkedList float",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const LinkedList<float>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				float v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += Note(v) + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				float v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += Note(v) + Note("\n");
 				}else{
-					text += Note(v) + Note(",");
+					m_text += Note(v) + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-    	virtual bool write(ElementId id, const PrimitiveList<float>& value){
-			TextExporterLog(ame_Log_StartMethod, "write PrimitiveList float",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const PrimitiveList<float>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			text += id.getId() + Note(" ");
-			for(int x = 0; x < value.getPosition(); x++){
-				float v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					text += Note(v) + Note("\n");
+			m_text += a_id.getId() + Note(" ");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				float v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					m_text += Note(v) + Note("\n");
 				}else{
-					text += Note(v) + Note(",");
+					m_text += Note(v) + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
@@ -442,31 +508,34 @@ class TextExporter : public MonkeyExporter{
     	// virtual bool write(ElementId id, const PrimitiveMap<char,char>& value)=0;
     	// virtual bool write(ElementId id, const PrimitiveMap<long,long>& value)=0;
     	// virtual bool write(ElementId id, const PrimitiveMap<float,float>& value)=0;
-    	virtual bool write(ElementId id, const PrimitiveMap<Note,Note>& value){
-			TextExporterLog(ame_Log_StartMethod, "write PrimitiveMap<Note,Note>",  "println", "");
-			if(value.getPosition() == 0){
+
+    	virtual bool write(ElementId a_id, const PrimitiveMap<Note,Note>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			ElementId keyId = id.child("key");
-			ElementId valueId = id.child("value");
+			ElementId i_key_id = a_id.child("key");
+			ElementId i_value_id = a_id.child("value");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			for(int x = 0; x < value.getPosition(); x++){
-				Note k = *value.getKeyByPosition(x);
-				Note v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					var_key += k + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				Note k = *a_value.getKeyByPosition(x);
+				Note v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					i_var_key += k + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			text += var_key;
-			text += var_value;
+			m_text += i_var_key;
+			m_text += i_var_value;
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
@@ -508,30 +577,34 @@ class TextExporter : public MonkeyExporter{
     	// virtual bool write(ElementId id, const PrimitiveMap<float,Savable>& value)=0;
 		
     	// virtual bool write(ElementId id, const PrimitiveMap<Note,int>& value)=0;
-    	virtual bool write(ElementId id, const PrimitiveMap<Note,bool>& value){
-			TextExporterLog(ame_Log_StartMethod, "write PrimitiveMap<Note,bool>",  "println", "");
-			if(value.getPosition() == 0){
+
+    	virtual bool write(ElementId a_id, const PrimitiveMap<Note,bool>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			ElementId keyId = id.child("key");
-			ElementId valueId = id.child("value");
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			ElementId i_key_id = a_id.child("key");
+			ElementId i_value_id = a_id.child("value");
+
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			for(int x = 0; x < value.getPosition(); x++){
-				Note k = *value.getKeyByPosition(x);
-				bool v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					var_key += k + Note("\n");
-					var_value += Note(v) + Note("\n");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				Note k = *a_value.getKeyByPosition(x);
+				bool v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					i_var_key += k + Note("\n");
+					i_var_value += Note(v) + Note("\n");
 				}else{
-					var_key += k + Note(",");
-					var_value += Note(v) + Note(",");
+					i_var_key += k + Note(",");
+					i_var_value += Note(v) + Note(",");
 				}
 			}
 			
-			text += var_key;
-			text += var_value;
+			m_text += i_var_key;
+			m_text += i_var_value;
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
@@ -547,573 +620,647 @@ class TextExporter : public MonkeyExporter{
     	// virtual bool write(ElementId id, const PrimitiveMap<Savable,float>& value)=0;
     	// virtual bool write(ElementId id, const PrimitiveMap<Savable,Note>& value)=0;
 		
-    	virtual bool write(ElementId id, const PrimitiveMap<ElementId,Note>& value){
-			TextExporterLog(ame_Log_StartMethod, "write PrimitiveMap<ElementId,Note>",  "println", "");
-			if(value.getPosition() == 0){
+    	virtual bool write(ElementId a_id, const PrimitiveMap<ElementId,Note>& a_value){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_value.getPosition() == 0){
+				TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 				return false;
 			}
-			ElementId keyId = id.child("key");
-			ElementId valueId = id.child("value");
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			ElementId i_key_id = a_id.child("key");
+			ElementId i_value_id = a_id.child("value");
+
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			for(int x = 0; x < value.getPosition(); x++){
-				ElementId k = *value.getKeyByPosition(x);
-				Note v = *value.getByPosition(x);
-				if(x == value.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < a_value.getPosition(); x++){
+				ElementId k = *a_value.getKeyByPosition(x);
+				Note v = *a_value.getByPosition(x);
+				if(x == a_value.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			text += var_key;
-			text += var_value;
+			m_text += i_var_key;
+			m_text += i_var_value;
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 			return true;
 		}
 		
-		virtual void remove(ElementId id){
+		virtual void remove(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "remove",  "println", "");
-			text.removeLine(id.getId(), m_split, m_end);
+			m_text.removeLine(a_id.getId(), m_split, m_end);
+			TextExporterLog(ame_Log_EndMethod, "remove", "println", "");
 		}
 		
 		virtual void clear(){
 			TextExporterLog(ame_Log_StartMethod, "clear",  "println", "");
-			text = "";
+			m_text.clear();
+			TextExporterLog(ame_Log_EndMethod, "clear", "println", "");
 		}
 		
 		/////////////////////////////////////////////////////////////////// ids
-		virtual void addId(ElementId m_id){
+		virtual void addId(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "addId",  "println", "");
-			ids.add(m_id);
+			ids.add(a_id);
+			TextExporterLog(ame_Log_EndMethod, "addId", "println", "");
 		}
 		
-		virtual void addIds(PrimitiveList<ElementId>& m_ids){
+		virtual void addIds(PrimitiveList<ElementId>& a_ids_list){
 			TextExporterLog(ame_Log_StartMethod, "addIds",  "println", "");
-			for(int x = 0; x < m_ids.getPosition(); x++){
-				ElementId* l_eid = m_ids.getByPosition(x);
-				ids.addLValue(*l_eid);
+			for(int x = 0; x < a_ids_list.getPosition(); x++){
+				ElementId* f_element_id = a_ids_list.getByPosition(x);
+				m_ids_list.addLValue(*f_element_id);
 			}
+			TextExporterLog(ame_Log_EndMethod, "addIds", "println", "");
 		}
 		
-		virtual bool containId(ElementId m_id){
+		virtual bool containId(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "containId",  "println", "");
-			return ids.containByLValue(m_id);
+			TextExporterLog(ame_Log_EndMethod, "containId", "println", "");
+			return m_ids_list.containByLValue(a_id);
 		}
 		
 		virtual PrimitiveList<ElementId>& getIds(){
 			TextExporterLog(ame_Log_StartMethod, "getIds",  "println", "");
-			return ids;
+			TextExporterLog(ame_Log_EndMethod, "getIds", "println", "");
+			return m_ids_list;
 		}
 		
 		virtual ElementId getId(int x){
 			TextExporterLog(ame_Log_StartMethod, "getId",  "println", "");
-			if(x >= ids.getPosition()){
+			if(x >= m_ids_list.getPosition()){
+				TextExporterLog(ame_Log_EndMethod, "getId", "println", "");
 				return ElementId();
 			}
-			return ids[x];
+			TextExporterLog(ame_Log_EndMethod, "getId", "println", "");
+			return m_ids_list[x];
 		}
 		
 		virtual int getIdSize(){
 			TextExporterLog(ame_Log_StartMethod, "getIdSize",  "println", "");
-			return ids.getPosition();
+			TextExporterLog(ame_Log_EndMethod, "getIdSize", "println", "");
+			return m_ids_list.getPosition();
 		}
 		
-		virtual void removeId(ElementId i_id){
+		virtual void removeId(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "removeId",  "println", "");
-			ids.removeDeleteByLValue(i_id);
+			m_ids_list.removeDeleteByLValua(a_id);
+			TextExporterLog(ame_Log_EndMethod, "removeId", "println", "");
 		}
 		
-		virtual void removeIds(PrimitiveList<ElementId>& i_ids){
+		virtual void removeIds(PrimitiveList<ElementId>& a_ids_list){
 			TextExporterLog(ame_Log_StartMethod, "removeIds",  "println", "");
-			for(int x = 0; x < i_ids.getPosition(); x++){
-				ElementId* l_eid = i_ids.getByPosition(x);
-				ids.removeDeleteByLValue(*l_eid);
+			for(int x = 0; x < a_ids_list.getPosition(); x++){
+				ElementId* f_element_id = a_ids_list.getByPosition(x);
+				m_ids_list.removeDeleteByLValue(*f_element_id);
 			}
+			TextExporterLog(ame_Log_EndMethod, "removeIds", "println", "");
 		}
 		
 		virtual void removeIds(){
 			TextExporterLog(ame_Log_StartMethod, "removeIds",  "println", "");
-			ids.resetDelete();
+			m_ids_list.resetDelete();
+			TextExporterLog(ame_Log_EndMethod, "removeIds", "println", "");
 		}
 		
 		virtual void writeIds(){
 			TextExporterLog(ame_Log_StartMethod, "writeIds",  "println", "");
 			
-			if(ids.getPosition() == 0){
+			if(m_ids_list.getPosition() == 0){
 				TextExporterLog(ame_Log_StartMethod, "writeIds",  "println", "ids.isEmpty");
-				idText = "";
+				m_ids.clear();
+				TextExporterLog(ame_Log_EndMethod, "writeIds", "println", "");
 				return;
 			}
-			ElementId id = ElementId("transporter.ids");
+			ElementId i_id = ElementId("transporter.ids");
 			
-			idText = id.getId() + Note(" ");
-			for(int x = 0; x < ids.getPosition(); x++){
-				ElementId v = *ids.getByPosition(x);
-				if(x == ids.getPosition() - 1){
-					idText += v.getId() + Note("\n");
+			m_ids = i_id.getId() + Note(" ");
+			for(int x = 0; x < m_ids_list.getPosition(); x++){
+				ElementId f_element_id = *m_ids_list.getByPosition(x);
+				if(x == m_ids_list.getPosition() - 1){
+					m_ids += f_element_id.getId() + Note("\n");
 				}else{
-					idText += v.getId() + Note(",");
+					m_ids += f_element_id.getId() + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "writeIds", "println", "");
 		}
 		
-		virtual void writeId(ElementId value){
+		virtual void writeId(ElementId a_value){
 			TextExporterLog(ame_Log_StartMethod, "writeId",  "println", "");
-			ids.put(value);
-			ElementId id = ElementId("transporter.ids");
+			m_ids_list.put(a_value);
+
+			ElementId i_id = ElementId("transporter.ids");
 			
-			idText = id.getId() + Note(" ");
-			for(int x = 0; x < ids.getPosition(); x++){
-				ElementId v = *ids.getByPosition(x);
-				if(x == ids.getPosition() - 1){
-					idText += v.getId() + Note("\n");
+			m_ids = i_id.getId() + Note(" ");
+
+			for(int x = 0; x < m_ids_list.getPosition(); x++){
+				ElementId f_element_id = *m_ids_list.getByPosition(x);
+				if(x == m_ids_list.getPosition() - 1){
+					m_ids += f_element_id.getId() + Note("\n");
 				}else{
-					idText += v.getId() + Note(",");
+					m_ids += f_element_id.getId() + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "writeId", "println", "");
 		}
 		
-		virtual void eraseId(ElementId value){
+		virtual void eraseId(ElementId a_value){
 			TextExporterLog(ame_Log_StartMethod, "eraseId",  "println", "");
-			if(ids.getPosition() == 0){
+			if(m_ids_list.getPosition() == 0){
+				TextExporterLog(ame_Log_EndMethod, "eraseId", "println", "");
 				return;
 			}
-			if(!ids.containByLValue(value)){
-				return;
-			}
-			
-			ids.removeDeleteByLValue(value);
-			if(ids.getPosition() == 0){
+			if(!m_ids_list.containByLValue(a_value)){
+				TextExporterLog(ame_Log_EndMethod, "eraseId", "println", "");
 				return;
 			}
 			
-			ElementId id = ElementId("transporter.ids");
+			m_ids_list.removeDeleteByLValue(a_value);
+			if(m_ids_list.getPosition() == 0){
+				TextExporterLog(ame_Log_EndMethod, "eraseId", "println", "");
+				return;
+			}
 			
-			idText = id.getId() + Note(" ");
-			for(int x = 0; x < ids.getPosition(); x++){
-				ElementId v = *ids.getByPosition(x);
-				if(x == ids.getPosition() - 1){
-					idText += v.getId() + Note("\n");
+			ElementId i_id = ElementId("transporter.ids");
+			
+			m_ids = i_id.getId() + Note(" ");
+			for(int x = 0; x < m_ids_list.getPosition(); x++){
+				ElementId f_element_id = *m_ids_list.getByPosition(x);
+				if(x == m_ids_list.getPosition() - 1){
+					m_ids += f_element_id.getId() + Note("\n");
 				}else{
-					idText += v.getId() + Note(",");
+					m_ids += f_element_id.getId() + Note(",");
 				}
 			}
+			TextExporterLog(ame_Log_EndMethod, "eraseId", "println", "");
 		}
 		
 		virtual void eraseIds(){
 			TextExporterLog(ame_Log_StartMethod, "eraseIds",  "println", "");
-			idText = "";
+			m_ids.clear();
+			TextExporterLog(ame_Log_EndMethod, "eraseIds", "println", "");
 		}
 		
 		virtual void clearIds(){
 			TextExporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
-			idText = "";
-			ids.resetDelete();
+			m_ids.clear();
+			m_ids_list.resetDelete();
+			TextExporterLog(ame_Log_EndMethod, "clearIds", "println", "");
 		}
 		
 		/////////////////////////////////////////////////////////////////// idType
-		virtual void addIdType(ElementId m_id, Note m_type){
+		virtual void addType(ElementId a_id, Note a_type){
 			TextExporterLog(ame_Log_StartMethod, "addIdType",  "println", "");
-			idsType.addLValues(m_id, m_type);
+			m_types_map.addLValues(a_id, a_type);
+			TextExporterLog(ame_Log_EndMethod, "addIdType", "println", "");
 		}
 		
-		virtual void addIdType(PrimitiveMap<ElementId,Note>& m_idsType){
-			TextExporterLog(ame_Log_StartMethod, "addIdType",  "println", "");
-			for(int x = 0; x < m_idsType.getPosition(); x++){
-				idsType.addLValues(m_idsType.getKey(x), m_idsType.getValue(x));
+		virtual void addType(PrimitiveMap<ElementId,Note>& a_types){
+			TextExporterLog(ame_Log_StartMethod, "addType",  "println", "");
+			for(int x = 0; x < a_types.getPosition(); x++){
+				m_types_map.addLValues(a_types.getKey(x), a_types.getValue(x));
 			}
+			TextExporterLog(ame_Log_EndMethod, "addType", "println", "");
 		}
 		
-		virtual bool containIdType(ElementId id){
-			TextExporterLog(ame_Log_StartMethod, "containIdType",  "println", "");
-			return idsType.containKeyByLValue(id);
+		virtual bool containType(ElementId a_id){
+			TextExporterLog(ame_Log_StartMethod, "containType",  "println", "");
+			TextExporterLog(ame_Log_EndMethod, "containType", "println", "");
+			return m_types_map.containKeyByLValue(a_id);
 		}
 		
-		virtual PrimitiveMap<ElementId,Note>& getIdTypes(){
-			TextExporterLog(ame_Log_StartMethod, "getIdTypes",  "println", "");
-			return idsType;
+		virtual PrimitiveMap<ElementId,Note>& getTypes(){
+			TextExporterLog(ame_Log_StartMethod, "getTypes",  "println", "");
+			TextExporterLog(ame_Log_EndMethod, "getTypes", "println", "");
+			return m_types_map;
 		}
 		
-		virtual Note getIdType(ElementId id){
-			TextExporterLog(ame_Log_StartMethod, "getIdType",  "println", "");
-			return idsType.get(id);
+		virtual Note getType(ElementId a_id){
+			TextExporterLog(ame_Log_StartMethod, "getType",  "println", "");
+			TextExporterLog(ame_Log_EndMethod, "getType", "println", "");
+			return m_types_map.get(a_id);
 		}
 		
-		virtual int getIdTypeSize(){
-			TextExporterLog(ame_Log_StartMethod, "getIdTypeSize",  "println", "");
-			return idsType.getPosition();
+		virtual int getTypeSize(){
+			TextExporterLog(ame_Log_StartMethod, "getTypeSize",  "println", "");
+			TextExporterLog(ame_Log_EndMethod, "getTypeSize", "println", "");
+			return m_types_map.getPosition();
 		}
 		
-		virtual void removeIdType(ElementId m_id){
+		virtual void removeIdType(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "removeIdType",  "println", "");
-			idsType.removeDeleteByLValue(m_id);
+			m_types_map.removeDeleteByLValue(a_id);
+			TextExporterLog(ame_Log_EndMethod, "removeIdType", "println", "");
 		}
 		
-		virtual void removeIdTypes(PrimitiveMap<ElementId,Note>& m_idsType){
-			TextExporterLog(ame_Log_StartMethod, "removeIdTypes",  "println", "");
-			for(int x = 0; x < m_idsType.getPosition(); x++){
-				idsType.removeDeleteByLValue(m_idsType.getKey(x));
+		virtual void removeTypes(PrimitiveMap<ElementId,Note>& a_types_map){
+			TextExporterLog(ame_Log_StartMethod, "removeTypes",  "println", "");
+			for(int x = 0; x < a_types_map.getPosition(); x++){
+				m_types_map.removeDeleteByLValue(a_types_map.getKey(x));
 			}
+			TextExporterLog(ame_Log_EndMethod, "removeTypes", "println", "");
 		}
 		
-		virtual void removeIdTypes(){
-			TextExporterLog(ame_Log_StartMethod, "removeIdTypes",  "println", "");
-			idsType.resetDelete();
+		virtual void removeTypes(){
+			TextExporterLog(ame_Log_StartMethod, "removeTypes",  "println", "");
+			m_types_map.resetDelete();
+			TextExporterLog(ame_Log_EndMethod, "removeTypes", "println", "");
 		}
 		
-		virtual void writeIdTypes(){
-			TextExporterLog(ame_Log_StartMethod, "writeIdTypes",  "println", "");
-			if(idsType.getPosition() == 0){
-				TextExporterLog(ame_Log_StartMethod, "writeIdTypes",  "println", "ids.isEmpty");
-				idTypeText = "";
+		virtual void writeTypes(){
+			TextExporterLog(ame_Log_StartMethod, "writeTypes",  "println", "");
+			if(m_types_map.getPosition() == 0){
+				TextExporterLog(ame_Log_StartMethod, "writeTypes",  "println", "ids.isEmpty");
+				m_types.clear();
+				TextExporterLog(ame_Log_EndMethod, "writeTypes", "println", "");
 				return;
 			}
 			
-			ElementId id = ElementId("transporter.idsType");
+			ElementId i_id = ElementId("transporter.types");
 			
-			ElementId keyId = id.child("key");
+			ElementId i_key_id = i_id.child("key");
 			
-			ElementId valueId = id.child("value");
+			ElementId i_value_id = i_id.child("value");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			for(int x = 0; x < idsType.getPosition(); x++){
-				ElementId k = *idsType.getKeyByPosition(x);
-				Note v = *idsType.getByPosition(x);
-				if(x == idsType.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < m_types_map.getPosition(); x++){
+				ElementId k = *m_types_map.getKeyByPosition(x);
+				Note v = *m_types_map.getByPosition(x);
+				if(x == m_types_map.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			idTypeText += var_key;
-			idTypeText += var_value;
+			m_types += i_var_key;
+			m_types += i_var_value;
+			TextExporterLog(ame_Log_EndMethod, "writeTypes", "println", "");
 		}
 		
-		virtual void writeIdType(ElementId i_id, Note type){
-			TextExporterLog(ame_Log_StartMethod, "writeIdType",  "println", "");
+		virtual void writeType(ElementId a_id, Note a_type){
+			TextExporterLog(ame_Log_StartMethod, "writeType",  "println", "");
 			
-			idsType.addLValues(i_id, type);
+			m_types_map.addLValues(a_id, a_type);
 			
-			ElementId id = ElementId("transporter.idsType");
+			ElementId i_id = ElementId("transporter.types");
 			
-			ElementId keyId = id.child("key");
+			ElementId i_key_id = i_id.child("key");
 			
-			ElementId valueId = id.child("value");
+			ElementId i_value_id = i_id.child("value");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			for(int x = 0; x < idsType.getPosition(); x++){
-				ElementId k = *idsType.getKeyByPosition(x);
-				Note v = *idsType.getByPosition(x);
-				if(x == idsType.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < m_types_map.getPosition(); x++){
+				ElementId k = *m_types_map.getKeyByPosition(x);
+				Note v = *m_types_map.getByPosition(x);
+				if(x == m_types_map.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			idTypeText += var_key;
-			idTypeText += var_value;
+			m_types += i_var_key;
+			m_types += i_var_value;
+			TextExporterLog(ame_Log_EndMethod, "writeIdType", "println", "");
 		}
 		
-		virtual void eraseIdType(ElementId i_id){
-			TextExporterLog(ame_Log_StartMethod, "eraseIdType",  "println", "");
-			idsType.removeDeleteByLValue(i_id);
+		virtual void eraseType(ElementId a_id){
+			TextExporterLog(ame_Log_StartMethod, "eraseType",  "println", "");
+			m_types_map.removeDeleteByLValue(a_id);
 			
-			if(idsType.getPosition() == 0){
-				idTypeText = "";
+			if(m_types_map.getPosition() == 0){
+				m_types.clear();
+				TextExporterLog(ame_Log_EndMethod, "eraseType", "println", "");
 				return;
 			}
 			
-			ElementId id = ElementId("transporter.idsType");
+			ElementId i_id = ElementId("transporter.types");
 			
-			ElementId keyId = id.child("key");
+			ElementId i_key_id = i_id.child("key");
 			
-			ElementId valueId = id.child("value");
+			ElementId i_value_id = i_id.child("value");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			for(int x = 0; x < idsType.getPosition(); x++){
-				ElementId k = *idsType.getKeyByPosition(x);
-				Note v = *idsType.getByPosition(x);
-				if(x == idsType.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < m_types_map.getPosition(); x++){
+				ElementId k = *m_types_map.getKeyByPosition(x);
+				Note v = *m_types_map.getByPosition(x);
+				if(x == m_types_map.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			idTypeText += var_key;
-			idTypeText += var_value;
+			m_types += i_var_key;
+			m_types += i_var_value;
+			TextExporterLog(ame_Log_EndMethod, "eraseType", "println", "");
 		}
 		
-		virtual void eraseIdTypes(){
-			TextExporterLog(ame_Log_StartMethod, "eraseIdTypes",  "println", "");
-			idTypeText = "";
+		virtual void eraseTypes(){
+			TextExporterLog(ame_Log_StartMethod, "eraseTypes",  "println", "");
+			m_types.clear();
+			TextExporterLog(ame_Log_EndMethod, "eraseTypes", "println", "");
 		}
 		
-		virtual void clearIdTypes(){
-			TextExporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
-			idTypeText = "";
-			idsType.resetDelete();
+		virtual void clearTypes(){
+			TextExporterLog(ame_Log_StartMethod, "clearTypes",  "println", "");
+			m_types.clear();
+			m_types_map.resetDelete();
+			TextExporterLog(ame_Log_EndMethod, "clearTypes", "println", "");
 		}
 		
 		/////////////////////////////////////////////////////////////////// tags
-		virtual void addTag(ElementId m_id, Note m_type){
+		virtual void addTag(ElementId a_id, Note a_type){
 			TextExporterLog(ame_Log_StartMethod, "addTag",  "println", "");
-			tags.addLValues(m_id, m_type);
+			m_tags_map.addLValues(a_id, a_type);
+			TextExporterLog(ame_Log_EndMethod, "addTag", "println", "");
 		}
 		
-		virtual void addTag(PrimitiveMap<ElementId,Note>& m_idsType){
+		virtual void addTag(PrimitiveMap<ElementId,Note>& a_tags_map){
 			TextExporterLog(ame_Log_StartMethod, "addTag",  "println", "");
-			for(int x = 0; x < m_idsType.getPosition(); x++){
-				tags.addLValues(m_idsType.getKey(x), m_idsType.getValue(x));
+			for(int x = 0; x < a_tags_map.getPosition(); x++){
+				m_tags_map.addLValues(a_tags_map.getKey(x), a_tags_map.getValue(x));
 			}
+			TextExporterLog(ame_Log_EndMethod, "addTag", "println", "");
 		}
 		
-		virtual bool containTag(ElementId id){
+		virtual bool containTag(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "containTag",  "println", "");
-			return tags.containKeyByLValue(id);
+			TextExporterLog(ame_Log_EndMethod, "containTag", "println", "");
+			return m_tags_map.containKeyByLValue(a_id);
 		}
 		
 		virtual PrimitiveMap<ElementId,Note>& getTags(){
 			TextExporterLog(ame_Log_StartMethod, "getTags",  "println", "");
-			return tags;
+			TextExporterLog(ame_Log_EndMethod, "getTags", "println", "");
+			return m_tags_map;
 		}
 		
-		virtual Note getTag(ElementId id){
+		virtual Note getTag(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "getTag",  "println", "");
-			return tags.get(id);
+			TextExporterLog(ame_Log_EndMethod, "getTag", "println", "");
+			return m_tags_map.get(a_id);
 		}
 		
 		virtual int getTagSize(){
 			TextExporterLog(ame_Log_StartMethod, "getTagSize",  "println", "");
-			return tags.getPosition();
+			TextExporterLog(ame_Log_EndMethod, "getTagSize", "println", "");
+			return m_tags_map.getPosition();
 		}
 		
 		virtual void removeTag(ElementId m_id){
 			TextExporterLog(ame_Log_StartMethod, "removeTag",  "println", "");
-			tags.removeDeleteByLValue(m_id);
+			m_tags_map.removeDeleteByLValue(m_id);
+			TextExporterLog(ame_Log_EndMethod, "removeTag", "println", "");
 		}
 		
-		virtual void removeTags(PrimitiveMap<ElementId,Note>& m_idsType){
+		virtual void removeTags(PrimitiveMap<ElementId,Note>& a_types){
 			TextExporterLog(ame_Log_StartMethod, "removeTags",  "println", "");
-			for(int x = 0; x < m_idsType.getPosition(); x++){
-				tags.removeDeleteByLValue(m_idsType.getKey(x));
+			for(int x = 0; x < a_types.getPosition(); x++){
+				m_tags_map.removeDeleteByLValue(a_types.getKey(x));
 			}
+			TextExporterLog(ame_Log_EndMethod, "removeTags", "println", "");
 		}
 		
 		virtual void removeTags(){
 			TextExporterLog(ame_Log_StartMethod, "removeTags",  "println", "");
-			tags.resetDelete();
+			m_tags_map.resetDelete();
+			TextExporterLog(ame_Log_EndMethod, "removeTags", "println", "");
 		}
 		
 		virtual void writeTags(){
 			TextExporterLog(ame_Log_StartMethod, "writeTags",  "println", "");
-			if(tags.getPosition() == 0){
-				TextExporterLog(ame_Log_StartMethod, "writeTags",  "println", "ids.isEmpty");
-				tagText = "";
+			if(m_tags_map.isEmpty()){
+				m_tags.clear();
+				TextExporterLog(ame_Log_EndMethod, "writeTags", "println", "m_tags.isEmpty()");
 				return;
 			}
 			
-			ElementId id = ElementId("transporter.tags");
+			ElementId i_id = ElementId("transporter.tags");
 			
-			ElementId keyId = id.child("key");
+			ElementId i_key_id = i_id.child("key");
 			
-			ElementId valueId = id.child("value");
+			ElementId i_value_id = i_id.child("value");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			for(int x = 0; x < tags.getPosition(); x++){
-				ElementId k = *tags.getKeyByPosition(x);
-				Note v = *tags.getByPosition(x);
-				if(x == tags.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < m_tags_map.getPosition(); x++){
+				ElementId k = *m_tags_map.getKeyByPosition(x);
+				Note v = *m_tags_map.getByPosition(x);
+				if(x == m_tags_map.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			tagText = var_key;
-			tagText += var_value;
+			m_tags = i_var_key;
+			m_tags += i_var_value;
+			TextExporterLog(ame_Log_EndMethod, "writeTags", "println", "");
 		}
 		
-		virtual void writeTag(ElementId i_id, Note type){
+		virtual void writeTag(ElementId a_id, Note a_tag){
 			TextExporterLog(ame_Log_StartMethod, "writeTag",  "println", "");
 			
-			tags.addLValues(i_id, type);
+			m_tags_map.addLValues(a_id, a_tag);
 			
-			ElementId id = ElementId("transporter.tags");
+			ElementId i_id = ElementId("transporter.tags");
 			
-			ElementId keyId = id.child("key");
+			ElementId i_keyId = i_id.child("key");
 			
-			ElementId valueId = id.child("value");
+			ElementId i_valueId = i_id.child("value");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			Note i_var_key = i_keyId.getId() + Note(" ");
+			Note i_var_value = i_valueId.getId() + Note(" ");
 			
-			for(int x = 0; x < tags.getPosition(); x++){
-				ElementId k = *tags.getKeyByPosition(x);
-				Note v = *tags.getByPosition(x);
-				if(x == tags.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < m_tags_map.getPosition(); x++){
+				ElementId k = *m_tags_map.getKeyByPosition(x);
+				Note v = *m_tags_map.getByPosition(x);
+				if(x == m_tags_map.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			tagText += var_key;
-			tagText += var_value;
+			m_tags += i_var_key;
+			m_tags += i_var_value;
+			TextExporterLog(ame_Log_EndMethod, "writeTag", "println", "");
 		}
 		
-		virtual void eraseTag(ElementId i_id){
+		virtual void eraseTag(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "eraseTag",  "println", "");
-			tags.removeDeleteByLValue(i_id);
+			m_tags_map.removeDeleteByLValue(a_id);
 			
-			if(tags.getPosition() == 0){
-				tagText = "";
+			if(m_tags_map.getPosition() == 0){
+				m_tags.clear();
+				TextExporterLog(ame_Log_EndMethod, "eraseTag", "println", "");
 				return;
 			}
 			
-			ElementId id = ElementId("transporter.tags");
+			ElementId i_id = ElementId("transporter.tags");
 			
-			ElementId keyId = id.child("key");
+			ElementId i_keyId = i_id.child("key");
 			
-			ElementId valueId = id.child("value");
+			ElementId i_valueId = i_id.child("value");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			Note var_key = i_keyId.getId() + Note(" ");
+			Note var_value = i_valueId.getId() + Note(" ");
 			
-			for(int x = 0; x < tags.getPosition(); x++){
-				ElementId k = *tags.getKeyByPosition(x);
-				Note v = *tags.getByPosition(x);
-				if(x == tags.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < m_tags_map.getPosition(); x++){
+				ElementId k = *m_tags_map.getKeyByPosition(x);
+				Note v = *m_tags_map.getByPosition(x);
+				if(x == m_tags_map.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			tagText += var_key;
-			tagText += var_value;
+			m_tags += i_var_key;
+			m_tags += i_var_value;
+			TextExporterLog(ame_Log_EndMethod, "eraseTag", "println", "");
 		}
 		
 		virtual void eraseTags(){
-			TextExporterLog(ame_Log_StartMethod, "eraseIdType",  "println", "");
-			tagText = "";
+			TextExporterLog(ame_Log_StartMethod, "eraseTags",  "println", "");
+			m_tags.clear();
+			TextExporterLog(ame_Log_EndMethod, "eraseTags", "println", "");
 		}
 		
 		virtual void clearTags(){
-			TextExporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
-			tagText = "";
-			tags.resetDelete();
+			TextExporterLog(ame_Log_StartMethod, "clearTags",  "println", "");
+			m_tags.clear();
+			m_tags_map.resetDelete();
+			TextExporterLog(ame_Log_EndMethod, "clearTags", "println", "");
 		}
 		
-		virtual void setMessage(Message* message){
+		virtual void setMessage(Message* a_message){
 			TextExporterLog(ame_Log_StartMethod, "setMessage",  "println", "");
-			if(message == nullptr){
+			if(a_message == nullptr){
+			TextExporterLog(ame_Log_EndMethod, "setMessage", "println", "");
 				return;
 			}
-			setText(message->text());
+			setText( a_message->text() );
 			fix();
+			TextExporterLog(ame_Log_EndMethod, "setMessage", "println", "");
 		}
 		
-		virtual void read(MonkeyFile* file, Note path){
+		virtual void read(MonkeyFile* a_file, Note a_path){
 			TextExporterLog(ame_Log_StartMethod, "read",  "println", "");
-			if(file == nullptr){
+			if(a_file == nullptr){
+			TextExporterLog(ame_Log_EndMethod, "read", "println", "");
 				return;
 			}
-			setText( file->readText(path) );
+			setText( a_file->readText(a_path) );
 			fix();
+			TextExporterLog(ame_Log_EndMethod, "read", "println", "");
 		}
 		
-		virtual void write(MonkeyFile* file, Note path){
-			TextExporterLog(ame_Log_StartMethod, "write(file,path)",  "println", "");
-			if(file == nullptr){
-				TextExporterLog(ame_Log_StartMethod, "write(file,path)",  "println", path);
+		virtual void write(MonkeyFile* a_file, Note a_path){
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "");
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", "a_path");
+			TextExporterLog(ame_Log_StartMethod, "write",  "println", a_path);
+			if(a_file == nullptr){
+				TextExporterLog(ame_Log_EndMethod, "write",  "println", "a_file == nullptr");
 				return;
 			}
-			// file->fastWriteText(tagText, path);
-			// file->fastWriteText(idText, path);
-			// file->fastWriteText(idTypeText, path);
-			// file->fastWriteText(text, path);
 			
-			file->fastWriteText(tagText + idText + idTypeText+ text, path);
+			a_file->fastWriteText(this->toNote(), a_path);
+			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 		}
 		
-		virtual void setText(Note strng){
-			TextExporterLog(ame_Log_StartMethod, "setText",  "println", Note("text ") + strng);
-			text = strng;
+		virtual void setText(Note a_note){
+			TextExporterLog(ame_Log_StartMethod, "setText",  "println", Note("text ") + a_note);
+			m_text = a_note;
+			TextExporterLog(ame_Log_EndMethod, "setText", "println", "");
 		}
 		
 		virtual Note getText(){
-			return text;
+			TextExporterLog(ame_Log_EndMethod, "getText", "println", "");
+			TextExporterLog(ame_Log_EndMethod, "getText", "println", "");
+			return m_text;
 		}
 		
-		virtual void setIdText(Note strng){
-			TextExporterLog(ame_Log_StartMethod, "setIdText",  "println", Note("text ") + strng);
-			idText = strng;
+		virtual void setIds(Note a_note){
+			TextExporterLog(ame_Log_StartMethod, "setIds",  "println", Note("text ") + a_note);
+			m_ids = a_note;
+			TextExporterLog(ame_Log_EndMethod, "setIds", "println", "");
 		}
 		
-		virtual Note getIdText(){
-			return idText;
+		virtual Note getIds(){
+			TextExporterLog(ame_Log_EndMethod, "getIds", "println", "");
+			TextExporterLog(ame_Log_EndMethod, "getIds", "println", "");
+			return m_ids;
 		}
 		
-		virtual void setIdTypeText(Note strng){
-			TextExporterLog(ame_Log_StartMethod, "setIdTypeText",  "println", Note("text ") + strng);
-			idTypeText = strng;
+		virtual void getTypes(Note a_note){
+			TextExporterLog(ame_Log_StartMethod, "getTypes",  "println", Note("text ") + strng);
+			m_types = a_note;
+			TextExporterLog(ame_Log_EndMethod, "getTypes", "println", "");
 		}
 		
-		virtual Note getIdTypeText(){
-			return idTypeText;
+		virtual Note getTypes(){
+			TextExporterLog(ame_Log_StartMethod, "getTypes", "println", "");
+			TextExporterLog(ame_Log_EndMethod, "getTypes", "println", "");
+			return m_types;
 		}
 		
-		virtual void setTagText(Note strng){
-			TextExporterLog(ame_Log_StartMethod, "setTagText",  "println", Note("text ") + strng);
-			tagText = strng;
+		virtual void setTags(Note a_note){
+			TextExporterLog(ame_Log_StartMethod, "setTags",  "println", Note("text ") + strng);
+			m_tags = a_note;
+			TextExporterLog(ame_Log_EndMethod, "setTags", "println", "");
 		}
 		
-		virtual Note getTagText(){
-			return tagText;
+		virtual Note getTags(){
+			TextExporterLog(ame_Log_StartMethod, "getTags", "println", "");
+			TextExporterLog(ame_Log_EndMethod, "getTags", "println", "");
+			return m_tags;
 		}
 		
 		virtual Note getExporterText(){
-			return tagText + idText + idTypeText + text;
+			TextExporterLog(ame_Log_StartMethod, "getExporterText", "println", "");
+			TextExporterLog(ame_Log_EndMethod, "getExporterText", "println", "");
+			return m_tags + m_ids + m_types + m_text;
 		}
 		
 		virtual void fix(){
 			TextExporterLog(ame_Log_StartMethod, "fix",  "println", "");
-			ids = read(ElementId("transporter.ids"), PrimitiveList<ElementId>());
-			idsType = read(ElementId("transporter.idsType"), PrimitiveMap<ElementId,Note>());
-			tags = read(ElementId("transporter.tags"), PrimitiveMap<ElementId,Note>());
+			m_tags = read(ElementId("transporter.tags"), PrimitiveMap<ElementId,Note>());
+			m_ids = read(ElementId("transporter.ids"), PrimitiveList<ElementId>());
+			m_types = read(ElementId("transporter.types"), PrimitiveMap<ElementId,Note>());
 			
 			eraseIds();
-			eraseIdTypes();
+			eraseTypes();
 			eraseTags();
 			
 			writeIds();
-			writeIdTypes();
+			writeTypes();
 			writeTags();
 			
 			remove("transporter.tags.key");
@@ -1122,28 +1269,32 @@ class TextExporter : public MonkeyExporter{
 			remove("transporter.ids.key");
 			remove("transporter.ids.value");
 			
-			remove("transporter.idsType.key");
-			remove("transporter.idsType.value");
+			remove("transporter.types.key");
+			remove("transporter.types.value");
 			
-			TextExporterLog(ame_Log_StartMethod, "fix",  "println", Note("tagText ") + tagText);
-			TextExporterLog(ame_Log_StartMethod, "fix",  "println", Note("idText ") + idText);
-			TextExporterLog(ame_Log_StartMethod, "fix",  "println", Note("idTypeText ") + idTypeText);
-			TextExporterLog(ame_Log_StartMethod, "fix",  "println", Note("text ") + text);
+			TextExporterLog(ame_Log_Statement, "fix",  "println", Note("tags ") + m_tags);
+			TextExporterLog(ame_Log_Statement, "fix",  "println", Note("ids ") + m_ids);
+			TextExporterLog(ame_Log_Statement, "fix",  "println", Note("types ") + m_types);
+			TextExporterLog(ame_Log_Statement, "fix",  "println", Note("text ") + m_text);
+			TextExporterLog(ame_Log_EndMethod, "fix", "println", "");
 		}
 		
 		virtual Note toNote(){
-			return tagText + idText + idTypeText + text;
+			TextExporterLog(ame_Log_StartMethod, "toNote", "println", "");
+			TextExporterLog(ame_Log_EndMethod, "toNote", "println", "");
+			return m_tags + m_ids + m_types + m_text;
 		}
 		
 	protected:
-		Note text = "";
-		Note idText = "";
-		Note idTypeText = "";
-		Note tagText = "";
-		PrimitiveList<ElementId> ids;
-		PrimitiveMap<ElementId,Note> idsType;
-		PrimitiveMap<ElementId,Note> tags;
+		Note m_text = "";
+		Note m_ids = "";
+		Note m_types = "";
+		Note m_tags = "";
+		PrimitiveList<ElementId> m_ids_list;
+		PrimitiveMap<ElementId,Note> m_types_map;
+		PrimitiveMap<ElementId,Note> m_tags_map;
 		
+		char m_elementid_divider = ':';
 		char m_list_divide = ',';
 		char m_split = ' ';
 		char m_end = '\n';

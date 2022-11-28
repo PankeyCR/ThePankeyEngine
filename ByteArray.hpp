@@ -1,22 +1,30 @@
 
-#include "ame_Enviroment.hpp"
+#ifndef CONFIGURATION_ByteArray_hpp
+#define CONFIGURATION_ByteArray_hpp
 
-#if defined(DISABLE_ByteArray)
-	#define ByteArray_hpp
-	
-	#ifdef ame_Windows
-		typedef std::bitset<8>* ByteArray;
-	#endif
+	#include "ame_Enviroment.hpp"
 
-	#ifdef ame_ArduinoIDE
-		typedef byte* ByteArray;
+	#if defined(DISABLE_ByteArray)
+		#define ByteArray_hpp
+
+		#define IMPLEMENTATION_ByteArray
+		#define IMPLEMENTING_ByteArray
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_ByteArray)
+			#define IMPLEMENTATION_ByteArray
+			#define IMPLEMENTING_ByteArray
+		#endif
 	#endif
 #endif
-
 
 #ifndef ByteArray_hpp
 #define ByteArray_hpp
 #define ByteArray_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_ByteArray
+	#define IMPLEMENTATION_ByteArray IMPLEMENTATION(public ByteArray)
+	#define IMPLEMENTING_ByteArray IMPLEMENTING(public ByteArray)
+#endif
 
 #ifdef ame_Windows
 	#include "ame_Printable.hpp"
@@ -62,6 +70,18 @@ class ByteArray : public Array<ame_Byte>, public Printable{
 			ByteArrayLog(ame_Log_Statement, "Constructor", "println", "Default Constructor");
 			ByteArrayLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
+
+		ByteArray(const Array<ame_Byte>& c_array){
+			ByteArrayLog(ame_Log_StartMethod, "Constructor", "println", "");
+			int i_array_length = c_array.getPosition();
+			if(i_array_length > 0){
+				this->createArray(i_array_length);
+				this->copyPointer(c_array.pointer(), i_array_length);
+				this->copyEndValue();
+			}
+			ByteArrayLog(ame_Log_EndMethod, "Constructor", "println", "");
+		}
+
 		ByteArray(const ByteArray& c_array){
 			ByteArrayLog(ame_Log_StartMethod, "Constructor", "println", "");
 			int i_array_length = c_array.getPosition();
@@ -172,8 +192,11 @@ class ByteArray : public Array<ame_Byte>, public Printable{
 
 		virtual void setBit(int cell, int bit, bool value){
 			ByteArrayLog(ame_Log_StartMethod, "setBit", "println", "");
+			ByteArrayLog(ame_Log_Statement, "setBit", "println", "bit");
+			ByteArrayLog(ame_Log_Statement, "setBit", "println", bit);
 			byte* c = this->getPointer(cell);
 			if(c == nullptr || bit >= 8){
+				ByteArrayLog(ame_Log_EndMethod, "setBit", "println", "c == nullptr || bit >= 8");
 				return;
 			}
 			bitWrite((*c), bit, value);
@@ -231,19 +254,6 @@ class ByteArray : public Array<ame_Byte>, public Printable{
 			}
 			const_ByteArrayLog(ame_Log_EndMethod, "getBit", "println", "");
 			return bitRead((*c), bit);
-		}
-
-		virtual ByteArray getByteArray(int start, int end) const {
-			const_ByteArrayLog(ame_Log_StartMethod, "getByteArray", "println", "");
-			ByteArray array;
-			if(start >= this->getPosition() || end >= this->getPosition()){
-				return 0;
-			}
-			for(int x = start; x <= end; x++){
-				array.addValue(this->get(x));
-			}
-			const_ByteArrayLog(ame_Log_EndMethod, "getByteArray", "println", "");
-			return array;
 		}
 		
 		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)

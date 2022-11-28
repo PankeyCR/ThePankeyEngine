@@ -70,7 +70,7 @@ class MonkeyFile IMPLEMENTATION_cppObject {
 		}
 		virtual ~MonkeyFile(){}
 
-		virtual void initialize();
+		virtual void initialize(){}
 
 		virtual bool isOpen(){
 			return m_open;
@@ -120,7 +120,7 @@ class MonkeyFile IMPLEMENTATION_cppObject {
 		virtual bool exist(Note file){return false;}
 		virtual bool existRoot(Note file){return false;}
 
-		virtual Note fixRootPath(Note p);
+		virtual Note fixRootPath(Note p);//defined at the boton of the code, implemented to its specific location
 
 		virtual Note fixPath(Note p);
 
@@ -129,7 +129,9 @@ class MonkeyFile IMPLEMENTATION_cppObject {
 		virtual int getFileSize(Note path){return 0;}
 		virtual int getDirectoriesSize(Note path){return 0;}
 
-		virtual PrimitiveMap<Note,Note> getDirectories(Note dirname, int levels);
+		virtual PrimitiveMap<Note,Note> getDirectories(Note dirname, int levels){
+			return PrimitiveMap<Note,Note>();
+		}
 			
 		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
 		virtual cppObjectClass* getClass(){
@@ -162,7 +164,7 @@ Note MonkeyFile::fixRootPath(Note p){
 	int sizeRP = this->rootPath.length();
 	if(this->rootPath[sizeRP - 1] == '/' && p[0] == '/'){
 		MonkeyFileLog(ame_Log_Statement, "fixRootPath",  "println", Note("this->rootPath[sizeRP - 1] == '/' && p[0] == '/'"));
-		return this->rootPath + p.subNote(1);
+		return this->rootPath + p.getArrayPart(1);
 	}
 	if(this->rootPath[sizeRP - 1] != '/' && p[0] == '/'){
 		MonkeyFileLog(ame_Log_Statement, "fixRootPath",  "println", Note("this->rootPath[sizeRP - 1] != '/' && p[0] == '/'"));
@@ -214,7 +216,7 @@ Note MonkeyFile::fixPath(Note p, Note f){
 	int sizeRP = p.length();
 	if(p[sizeRP - 1] == '/' && f[0] == '/'){
 		MonkeyFileLog(ame_Log_Statement, "fixPath",  "println", "p[sizeRP - 1] == '/' && f[0] == '/'");
-		return p + f.subNote(1);
+		return p + f.getArrayPart(1);
 	}
 	if(p[sizeRP - 1] != '/' && f[0] == '/'){
 		MonkeyFileLog(ame_Log_Statement, "fixPath",  "println", "p[sizeRP - 1] != '/' && f[0] == '/'");

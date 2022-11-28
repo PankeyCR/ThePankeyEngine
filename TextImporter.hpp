@@ -5,15 +5,32 @@
  *
  */
  
-#include "ame_Enviroment.hpp"
+#ifndef CONFIGURATION_TextImporter_hpp
+#define CONFIGURATION_TextImporter_hpp
 
-#if defined(DISABLE_TextImporter)
-	#define TextImporter_hpp
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_TextImporter)
+		#define TextImporter_hpp
+
+		#define IMPLEMENTATION_TextImporter
+		#define IMPLEMENTING_TextImporter
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_TextImporter)
+			#define IMPLEMENTATION_TextImporter
+			#define IMPLEMENTING_TextImporter
+		#endif
+	#endif
 #endif
 
 #ifndef TextImporter_hpp
 #define TextImporter_hpp
 #define TextImporter_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_TextImporter
+	#define IMPLEMENTATION_TextImporter IMPLEMENTATION(public TextImporter)
+	#define IMPLEMENTING_TextImporter IMPLEMENTING(public TextImporter)
+#endif
 
 #ifndef ame_Enviroment_Defined
 
@@ -55,11 +72,17 @@ namespace ame{
 
 class TextImporter : public MonkeyImporter{
     public:
-		TextImporter(){}
+		TextImporter(){
+			TextImporterLog(ame_Log_StartMethod, "Constructor", "println", "");
+			TextImporterLog(ame_Log_EndMethod, "Constructor", "println", "");
+		}
 		TextImporter(const Note& strng){
 			setText(strng);
 		}
-		virtual ~TextImporter(){}
+		virtual ~TextImporter(){
+			TextImporterLog(ame_Log_StartMethod, "Destructor", "println", "");
+			TextImporterLog(ame_Log_EndMethod, "Destructor", "println", "");
+		}
 		
 		// int primitive
     	virtual int read(ElementId id, int value){
@@ -588,18 +611,18 @@ class TextImporter : public MonkeyImporter{
 			
 			if(ids.getPosition() == 0){
 				TextImporterLog(ame_Log_StartMethod, "writeIds",  "println", "ids.isEmpty");
-				idText = "";
+				m_ids = "";
 				return;
 			}
 			ElementId id = ElementId("transporter.ids");
 			
-			idText = id.getId() + Note(" ");
+			m_ids = id.getId() + Note(" ");
 			for(int x = 0; x < ids.getPosition(); x++){
 				ElementId v = *ids.getByPosition(x);
 				if(x == ids.getPosition() - 1){
-					idText += v.getId() + Note("\n");
+					m_ids += v.getId() + Note("\n");
 				}else{
-					idText += v.getId() + Note(",");
+					m_ids += v.getId() + Note(",");
 				}
 			}
 		}
@@ -609,13 +632,13 @@ class TextImporter : public MonkeyImporter{
 			ids.put(value);
 			ElementId id = ElementId("transporter.ids");
 			
-			idText = id.getId() + Note(" ");
+			m_ids = id.getId() + Note(" ");
 			for(int x = 0; x < ids.getPosition(); x++){
 				ElementId v = *ids.getByPosition(x);
 				if(x == ids.getPosition() - 1){
-					idText += v.getId() + Note("\n");
+					m_ids += v.getId() + Note("\n");
 				}else{
-					idText += v.getId() + Note(",");
+					m_ids += v.getId() + Note(",");
 				}
 			}
 		}
@@ -636,25 +659,25 @@ class TextImporter : public MonkeyImporter{
 			
 			ElementId id = ElementId("transporter.ids");
 			
-			idText = id.getId() + Note(" ");
+			m_ids = id.getId() + Note(" ");
 			for(int x = 0; x < ids.getPosition(); x++){
 				ElementId v = *ids.getByPosition(x);
 				if(x == ids.getPosition() - 1){
-					idText += v.getId() + Note("\n");
+					m_ids += v.getId() + Note("\n");
 				}else{
-					idText += v.getId() + Note(",");
+					m_ids += v.getId() + Note(",");
 				}
 			}
 		}
 		
 		virtual void eraseIds(){
 			TextImporterLog(ame_Log_StartMethod, "eraseIds",  "println", "");
-			idText = "";
+			m_ids = "";
 		}
 		
 		virtual void clearIds(){
 			TextImporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
-			idText = "";
+			m_ids = "";
 			ids.resetDelete();
 		}
 		
@@ -712,7 +735,7 @@ class TextImporter : public MonkeyImporter{
 			TextImporterLog(ame_Log_StartMethod, "writeIdTypes",  "println", "");
 			if(idsType.getPosition() == 0){
 				TextImporterLog(ame_Log_StartMethod, "writeIdTypes",  "println", "idsType.isEmpty");
-				idTypeText = "";
+				m_types = "";
 				return;
 			}
 			
@@ -737,8 +760,8 @@ class TextImporter : public MonkeyImporter{
 				}
 			}
 			
-			idTypeText += var_key;
-			idTypeText += var_value;
+			m_types += var_key;
+			m_types += var_value;
 		}
 		
 		virtual void writeIdType(ElementId i_id, Note type){
@@ -767,8 +790,8 @@ class TextImporter : public MonkeyImporter{
 				}
 			}
 			
-			idTypeText += var_key;
-			idTypeText += var_value;
+			m_types += var_key;
+			m_types += var_value;
 		}
 		
 		virtual void eraseIdType(ElementId i_id){
@@ -776,7 +799,7 @@ class TextImporter : public MonkeyImporter{
 			idsType.removeDeleteByLValue(i_id);
 			
 			if(idsType.getPosition() == 0){
-				idTypeText = "";
+				m_types = "";
 				return;
 			}
 			
@@ -801,18 +824,18 @@ class TextImporter : public MonkeyImporter{
 				}
 			}
 			
-			idTypeText += var_key;
-			idTypeText += var_value;
+			m_types += var_key;
+			m_types += var_value;
 		}
 		
 		virtual void eraseIdTypes(){
 			TextImporterLog(ame_Log_StartMethod, "eraseIdTypes",  "println", "");
-			idTypeText = "";
+			m_types = "";
 		}
 		
 		virtual void clearIdTypes(){
 			TextImporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
-			idTypeText = "";
+			m_types = "";
 			idsType.resetDelete();
 		}
 		
@@ -870,7 +893,7 @@ class TextImporter : public MonkeyImporter{
 			TextImporterLog(ame_Log_StartMethod, "writeTags",  "println", "");
 			if(tags.getPosition() == 0){
 				TextImporterLog(ame_Log_StartMethod, "writeTags",  "println", "tags.isEmpty");
-				tagText = "";
+				m_tags = "";
 				return;
 			}
 			
@@ -895,8 +918,8 @@ class TextImporter : public MonkeyImporter{
 				}
 			}
 			
-			tagText += var_key;
-			tagText += var_value;
+			m_tags += var_key;
+			m_tags += var_value;
 		}
 		
 		virtual void writeTag(ElementId i_id, Note type){
@@ -925,8 +948,8 @@ class TextImporter : public MonkeyImporter{
 				}
 			}
 			
-			tagText += var_key;
-			tagText += var_value;
+			m_tags += var_key;
+			m_tags += var_value;
 		}
 		
 		virtual void eraseTag(ElementId i_id){
@@ -934,7 +957,7 @@ class TextImporter : public MonkeyImporter{
 			tags.removeDeleteByLValue(i_id);
 			
 			if(tags.getPosition() == 0){
-				tagText = "";
+				m_tags = "";
 				return;
 			}
 			
@@ -959,18 +982,18 @@ class TextImporter : public MonkeyImporter{
 				}
 			}
 			
-			tagText += var_key;
-			tagText += var_value;
+			m_tags += var_key;
+			m_tags += var_value;
 		}
 		
 		virtual void eraseTags(){
 			TextImporterLog(ame_Log_StartMethod, "eraseIdType",  "println", "");
-			tagText = "";
+			m_tags = "";
 		}
 		
 		virtual void clearTags(){
 			TextImporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
-			tagText = "";
+			m_tags = "";
 			tags.resetDelete();
 		}
 		
@@ -992,72 +1015,72 @@ class TextImporter : public MonkeyImporter{
 			fix();
 		}
 		
-		virtual void write(MonkeyFile* file, Note path){
-			TextImporterLog(ame_Log_StartMethod, "write(file,path)",  "println", "");
-			if(file == nullptr){
-				TextImporterLog(ame_Log_StartMethod, "write(file,path)",  "println", path);
+		virtual void write(MonkeyFile* a_file, Note a_path){
+			TextImporterLog(ame_Log_StartMethod, "write",  "println", "");
+			if(a_file == nullptr){
+				TextImporterLog(ame_Log_StartMethod, "write",  "println", a_path);
 				return;
 			}
-			// file->fastWriteText(tagText, path);
-			// file->fastWriteText(idText, path);
-			// file->fastWriteText(idTypeText, path);
-			// file->fastWriteText(text, path);
+			// file->fastWriteText(m_tags, path);
+			// file->fastWriteText(m_ids, path);
+			// file->fastWriteText(m_types, path);
+			// file->fastWriteText(m_text, path);
 			
-			file->fastWriteText(tagText + idText + idTypeText+ text, path);
+			file->fastWriteText(this->toNote(), a_path);
 		}
 		
 		virtual void setText(Note strng){
 			TextImporterLog(ame_Log_StartMethod, "setText",  "println", Note("text ") + strng);
-			text = strng;
+			m_text = strng;
 		}
 		
 		virtual Note getText(){
-			return text;
+			return m_text;
 		}
 		
-		virtual void setIdText(Note strng){
-			TextImporterLog(ame_Log_StartMethod, "setIdText",  "println", Note("text ") + strng);
-			text = strng;
+		virtual void setIds(Note strng){
+			TextImporterLog(ame_Log_StartMethod, "setm_ids",  "println", Note("text ") + strng);
+			m_ids = strng;
 		}
 		
-		virtual Note getIdText(){
-			return text;
+		virtual Note getIds(){
+			return m_ids;
 		}
 		
-		virtual void setIdTypeText(Note strng){
-			TextImporterLog(ame_Log_StartMethod, "setIdTypeText",  "println", Note("text ") + strng);
-			text = strng;
+		virtual void setTypes(Note strng){
+			TextImporterLog(ame_Log_StartMethod, "setm_types",  "println", Note("text ") + strng);
+			m_types = strng;
 		}
 		
-		virtual Note getIdTypeText(){
-			return text;
+		virtual Note getTypes(){
+			return m_types;
 		}
 		
-		virtual void setTagText(Note strng){
-			TextImporterLog(ame_Log_StartMethod, "setTagText",  "println", Note("text ") + strng);
-			text = strng;
+		virtual void setTags(Note strng){
+			TextImporterLog(ame_Log_StartMethod, "setTags",  "println", Note("text ") + strng);
+			m_tags = strng;
 		}
 		
-		virtual Note getTagText(){
-			return text;
+		virtual Note getTags(){
+			return m_tags;
 		}
 		
 		virtual Note getExporterText(){
-			return tagText + idText + idTypeText + text;
+			return m_tags + m_ids + m_types + m_text;
 		}
 		
 		virtual void fix(){
 			TextImporterLog(ame_Log_StartMethod, "fix",  "println", "");
-			ids = read(ElementId("transporter.ids"), PrimitiveList<ElementId>());
-			idsType = read(ElementId("transporter.idsType"), PrimitiveMap<ElementId,Note>());
-			tags = read(ElementId("transporter.tags"), PrimitiveMap<ElementId,Note>());
+			m_ids = read(ElementId("transporter.ids"), PrimitiveList<ElementId>());
+			m_types = read(ElementId("transporter.types"), PrimitiveMap<ElementId,Note>());
+			m_tags = read(ElementId("transporter.tags"), PrimitiveMap<ElementId,Note>());
 			
 			eraseIds();
-			eraseIdTypes();
+			eraseTypes();
 			eraseTags();
 			
 			writeIds();
-			writeIdTypes();
+			writeTypes();
 			writeTags();
 			
 			remove("transporter.tags.key");
@@ -1066,27 +1089,27 @@ class TextImporter : public MonkeyImporter{
 			remove("transporter.ids.key");
 			remove("transporter.ids.value");
 			
-			remove("transporter.idsType.key");
-			remove("transporter.idsType.value");
+			remove("transporter.types.key");
+			remove("transporter.types.value");
 			
-			TextImporterLog(ame_Log_StartMethod, "fix",  "println", Note("tagText ") + tagText);
-			TextImporterLog(ame_Log_StartMethod, "fix",  "println", Note("idText ") + idText);
-			TextImporterLog(ame_Log_StartMethod, "fix",  "println", Note("idTypeText ") + idTypeText);
-			TextImporterLog(ame_Log_StartMethod, "fix",  "println", Note("text ") + text);
+			TextImporterLog(ame_Log_StartMethod, "fix",  "println", Note("m_tags ") + m_tags);
+			TextImporterLog(ame_Log_StartMethod, "fix",  "println", Note("m_ids ") + m_ids);
+			TextImporterLog(ame_Log_StartMethod, "fix",  "println", Note("m_types ") + m_types);
+			TextImporterLog(ame_Log_StartMethod, "fix",  "println", Note("text ") + m_text);
 		}
 		
 		virtual Note toNote(){
-			return tagText + idText + idTypeText + text;
+			return m_tags + m_ids + m_types + m_text;
 		}
 		
 	protected:
-		Note text = "";
-		Note idText = "";
-		Note idTypeText = "";
-		Note tagText = "";
-		PrimitiveList<ElementId> ids;
-		PrimitiveMap<ElementId,Note> idsType;
-		PrimitiveMap<ElementId,Note> tags;
+		Note m_text = "";
+		Note m_ids = "";
+		Note m_types = "";
+		Note m_tags = "";
+		PrimitiveList<ElementId> m_ids_list;
+		PrimitiveMap<ElementId,Note> m_types_map;
+		PrimitiveMap<ElementId,Note> m_tags_map;
 		
 		char m_list_divide = ',';
 		char m_split = ' ';

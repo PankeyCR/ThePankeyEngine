@@ -53,10 +53,10 @@
 
 //logger
 
-// #define ame_LogApp
-// #define ame_LogPrint
+#define ame_LogApp
+#define ame_LogPrint
 // #define ame_Arduino_Log
-// #define ame_SystemFullLog
+#define ame_SystemFullLog
 
 // #define DataNetwork_LogApp
 
@@ -90,6 +90,8 @@
 // #define Array_LogApp
 // #define Note_LogApp
 // #define ByteArray_LogApp
+
+// #define DefaultMonkeyFile_LogApp
 
 // #define ElementId_LogApp
 
@@ -134,7 +136,7 @@
 // #define DISABLE_ame_Enviroment
 
 // #define DISABLE_Note
-#define DISABLE_ByteArray
+// #define DISABLE_ByteArray
 
 // #define DISABLE_cppObject
 // #define DISABLE_AbstractClass
@@ -178,10 +180,10 @@
 
 
 
-// #ifndef ame_LogDebug
-// 	#include "ame_debug.hpp"
-// 	#define ame_LogDebug(pointer,location,name,method,type) debug(pointer,location,name,method,type)
-// #endif
+#ifndef ame_LogDebug
+	#include "ame_debug.hpp"
+	#define ame_LogDebug(pointer,location,name,method,type) debug(pointer,location,name,method,type)
+#endif
 
 // #ifndef ame_LogDebug
 // 	#include "ame_list_debug.hpp"

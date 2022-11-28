@@ -1,5 +1,5 @@
 
-#include "ElementId.hpp"
+#include "MonkeyFile.hpp"
 
 using namespace ame;
 
@@ -9,11 +9,10 @@ void setup() {
 
 void loop() {
   ame_Debuging(ame_Log_StartLoop, "loop");
-  
-  ElementId parent = "parent";
-  ElementId child = parent.child("child");
-  Serial.println(parent);
-  Serial.println(child);
 
+  MonkeyFile file;
+  Note path = file.fixPath("memory.txt");
+  Serial.println(path);
+  
   ame_Debuging(ame_Log_EndLoop, "loop");
 }

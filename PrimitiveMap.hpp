@@ -39,7 +39,6 @@ class PrimitiveMap : public PrimitiveRawMap<K,V> , public Map<K,V>{
 
 		PrimitiveMap(const PrimitiveMap& c_map){
 			PrimitiveMapLog(ame_Log_StartMethod, "Constructor", "println", "const PrimitiveMap& c_map");
-			this->setOwner(c_map.m_owner);
 			this->expandLocal(c_map.getPosition());
 			for(int x = 0; x < c_map.getPosition(); x++){
 				K* k = c_map.getKeyByPosition(x);

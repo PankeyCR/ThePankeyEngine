@@ -135,8 +135,8 @@ class ElementId : public Printable IMPLEMENTING_cppObject {
 			bool startConcat = false;
 			const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", Note("id.length() ") + Note(id.length()));
 			for(int i=0; i < id.length(); i++){
-				char c = id.charAt(i);
-				char c2 = m_delimiter.charAt(delimiterEqual);
+				char c = id.get(i);
+				char c2 = m_delimiter.get(delimiterEqual);
 				const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", Note("iteration ") + Note(i));
 				const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", Note("char ") + Note(c));
 				const_ElementIdLog(ame_Log_StartMethod, "getPart",  "println", Note("char delimiter ") + Note(c2));
@@ -171,8 +171,8 @@ class ElementId : public Printable IMPLEMENTING_cppObject {
 			int delimiterSize = m_delimiter.length();
 			int delimiterEqual = 0;
 			for(int i=0; i < id.length(); i++){
-				char c = id.charAt(i);
-				if(c == m_delimiter.charAt(delimiterEqual)){                   
+				char c = id.get(i);
+				if(c == m_delimiter.get(delimiterEqual)){                   
 					delimiterEqual++;
 					if(delimiterEqual == delimiterSize){
 						delimiter++;

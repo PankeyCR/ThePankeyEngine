@@ -1,13 +1,4 @@
 
-#define ame_Level_7
-
-#define LogApp
-//#define MonkeyFileLogApp
-
-#include "DefaultLogging.hpp"
-#include "Logger.hpp"
-
-#include "MonkeyFile.hpp"
 #include "DefaultMonkeyFile.hpp"
 #include "TextExporter.hpp"
 #include "TextImporter.hpp"
@@ -18,16 +9,15 @@ DefaultMonkeyFile<SDFileSystemClass> file = SD;
 
 void setup() {
   Serial.begin(9600);
-  initializeLogger(new DefaultLogging(&Serial, true, false));
-  LogClass("MonkeyFile");
-
-  file.setRootPathFile("monkey");
+  
+  file.initialize();
   
   file.deleteFile("memory.txt");
   file.createFile("memory.txt");
   
   TextExporter exporter;
   exporter.write("parent", 10);
+  
   file.writeText(exporter.getText(), "memory.txt");
 }
 
