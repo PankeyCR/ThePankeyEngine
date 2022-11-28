@@ -76,8 +76,8 @@ class TextImporter : public MonkeyImporter{
 			TextImporterLog(ame_Log_StartMethod, "Constructor", "println", "");
 			TextImporterLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
-		TextImporter(const Note& strng){
-			setText(strng);
+		TextImporter(const Note& c_note){
+			setText(c_note);
 		}
 		virtual ~TextImporter(){
 			TextImporterLog(ame_Log_StartMethod, "Destructor", "println", "");
@@ -85,164 +85,180 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		// int primitive
-    	virtual int read(ElementId id, int value){
-			TextImporterLog(ame_Log_StartMethod, "read int",  "println", Note(value));
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				TextImporterLog(ame_Log_StartMethod, "read int",  "println", "id line position = -1");
-				return value;
+    	virtual int read(ElementId a_id, int a_value){
+			TextImporterLog(ame_Log_StartMethod, "read int",  "println", Note(a_value));
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				TextImporterLog(ame_Log_StartMethod, "read int",  "println", "i_order == -1");
+				return a_value;
 			}
 			TextImporterLog(ame_Log_StartMethod, "read int",  "println", Note("argument ") + cmd.getArgument(x_1));
-			return text.getArgument(x_1, m_split, m_end).toInt();
+			return m_text.getArgument(i_order, m_split, m_end).toInt();
 		}
 		
-    	virtual LinkedList<int> read(ElementId id, LinkedList<int> value){
-			TextImporterLog(ame_Log_StartMethod, "read LinkedList int",  "println", "");
+    	virtual LinkedList<int> read(ElementId a_id, LinkedList<int> a_value){
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				return a_value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
-			LinkedList<int> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
-			for(int x = 0; x < s; x++){
-				int t = arg.split(x, m_list_divide).toInt();
-				list.addLValue(t);
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			LinkedList<int> i_list;
+			int i_size = i_arg.getSizeNoStartNoEnd( m_list_divide );
+			for(int x = 0; x < i_size; x++){
+				int f_value = i_arg.split(x, m_list_divide).toInt();
+				i_list.addLValue(f_value);
 			}
-			return list;
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			return i_list;
 		}
 		
-    	virtual PrimitiveList<int> read(ElementId id, PrimitiveList<int> value){
+    	virtual PrimitiveList<int> read(ElementId a_id, PrimitiveList<int> a_value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList int",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				return a_value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
-			PrimitiveList<int> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
-			for(int x = 0; x < s; x++){
-				int t = arg.split(x, m_list_divide).toInt();
-				list.addLValue(t);
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			PrimitiveList<int> i_list;
+			int i_size = i_arg.getSizeNoStartNoEnd( m_list_divide );
+			for(int x = 0; x < i_size; x++){
+				int f_value = i_arg.split(x, m_list_divide).toInt();
+				i_list.addLValue(f_value);
 			}
-			return list;
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			return i_list;
 		}
 		
 		// ByteArray primitive
-    	virtual ByteArray read(ElementId id, ByteArray value){
-			TextImporterLog(ame_Log_StartMethod, "read ByteArray",  "println", value.toNote());
+    	virtual ByteArray read(ElementId a_id, ByteArray a_value){
+			TextImporterLog(ame_Log_StartMethod, "read ByteArray",  "println", toNote(a_value));
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(id.getId(), m_split, m_end);
+			if(i_order == -1){
+				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				return a_value;
 			}
-			return ByteArray(text.getArgument(x_1, m_split, m_end));
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			ByteArray i_byte_array = toByteArray(m_text.getArgument(i_order, m_split, m_end));
+			return i_byte_array;
 		}
 		
-    	virtual LinkedList<ByteArray> read(ElementId id, LinkedList<ByteArray> value){
+    	virtual LinkedList<ByteArray> read(ElementId a_id, LinkedList<ByteArray> a_value){
 			TextImporterLog(ame_Log_StartMethod, "read LinkedList ByteArray",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
 				return value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
-			LinkedList<ByteArray> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
-			for(int x = 0; x < s; x++){
-				ByteArray t = arg.split(x, m_list_divide);
-				list.addLValue(t);
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			LinkedList<ByteArray> i_list;
+			int i_size = arg.getSizeNoStartNoEnd( m_list_divide );
+			for(int x = 0; x < i_size; x++){
+				ByteArray f_byte_array = i_arg.split(x, m_list_divide);
+				i_list.addLValue(f_byte_array);
 			}
-			return list;
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			return i_list;
 		}
 		
-    	virtual PrimitiveList<ByteArray> read(ElementId id, PrimitiveList<ByteArray> value){
-			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList ByteArray",  "println", "");
+    	virtual PrimitiveList<ByteArray> read(ElementId a_id, PrimitiveList<ByteArray> a_value){
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				return a_value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
-			PrimitiveList<ByteArray> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
-			for(int x = 0; x < s; x++){
-				ByteArray t = arg.split(x, m_list_divide);
-				list.addLValue(t);
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			PrimitiveList<ByteArray> i_list;
+			int i_size = i_arg.getSizeNoStartNoEnd( m_list_divide );
+			for(int x = 0; x < i_size; x++){
+				ByteArray f_byte_array = i_arg.split(x, m_list_divide);
+				i_list.addLValue(f_byte_array);
 			}
-			return list;
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			return i_list;
 		}
 		
 		// bool primitive
-    	virtual bool read(ElementId id, bool value){
-			TextImporterLog(ame_Log_StartMethod, "read bool",  "println", Note(value));
+    	virtual bool read(ElementId a_id, bool a_value){
+			TextImporterLog(ame_Log_StartMethod, "read bool",  "println", Note(a_value));
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				return a_value;
 			}
-			return text.getArgument(x_1, m_split, m_end) == "1";
+			Note i_note_bool = m_text.getArgument(i_order, m_split, m_end);
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			return i_note_bool == "1";
 		}
 		
-    	virtual LinkedList<bool> read(ElementId id, LinkedList<bool> value){
+    	virtual LinkedList<bool> read(ElementId a_id, LinkedList<bool> a_value){
 			TextImporterLog(ame_Log_StartMethod, "read LinkedList bool",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				return a_value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
-			LinkedList<bool> list;
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			LinkedList<bool> i_list;
 			int s = arg.getSizeNoStartNoEnd(m_list_divide);
 			for(int x = 0; x < s; x++){
-				bool t = arg.split(x, m_list_divide) == "1";
-				list.addLValue(t);
+				bool f_value = i_arg.split(x, m_list_divide) == "1";
+				i_list.addLValue(f_value);
 			}
-			return list;
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			return i_list;
 		}
 		
-    	virtual PrimitiveList<bool> read(ElementId id, PrimitiveList<bool> value){
+    	virtual PrimitiveList<bool> read(ElementId a_id, PrimitiveList<bool> a_value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList bool",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
-			PrimitiveList<bool> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			PrimitiveList<bool> i_list;
+			int s = i_arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < s; x++){
-				bool t = arg.split(x, m_list_divide) == "1";
-				list.addLValue(t);
+				bool t = i_arg.split(x, m_list_divide) == "1";
+				i_list.addLValue(t);
 			}
-			return list;
+			return i_list;
 		}
 		
 		// char primitive
-    	virtual char read(ElementId id, char value){
-			TextImporterLog(ame_Log_StartMethod, "read char",  "println", Note(value));
+    	virtual char read(ElementId a_id, char a_value){
+			TextImporterLog(ame_Log_StartMethod, "read char",  "println", Note(a_value));
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			Note r = text.getArgument(x_1, m_split, m_end);
+			Note r = m_text.getArgument(i_order, m_split, m_end);
 			if(r.length() == 0){
-				return value;
+				return a_value;
 			}
 			return r.charAt(0);
 		}
 		
-    	virtual LinkedList<char> read(ElementId id, LinkedList<char> value){
+    	virtual LinkedList<char> read(ElementId a_id, LinkedList<char> a_value){
 			TextImporterLog(ame_Log_StartMethod, "read LinkedList char",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
+			Note arg = m_text.getArgument(i_order, m_split, m_end);
 			LinkedList<char> list;
 			int s = arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < s; x++){
@@ -259,11 +275,11 @@ class TextImporter : public MonkeyImporter{
     	virtual PrimitiveList<char> read(ElementId id, PrimitiveList<char> value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList char",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
+			Note arg = m_text.getArgument(x_1, m_split, m_end);
 			PrimitiveList<char> list;
 			int s = arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < s; x++){
@@ -281,21 +297,21 @@ class TextImporter : public MonkeyImporter{
     	virtual ElementId read(ElementId id, ElementId value){
 			TextImporterLog(ame_Log_StartMethod, "read ElementId",  "println", value.getId());
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
 			}
-			return ElementId(text.getArgument(x_1, m_split, m_end));
+			return ElementId(m_text.getArgument(x_1, m_split, m_end));
 		}
 		
     	virtual PrimitiveList<ElementId> read(ElementId id, PrimitiveList<ElementId> value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList ElementId",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
+			Note arg = m_text.getArgument(x_1, m_split, m_end);
 			PrimitiveList<ElementId> list;
 			int s = arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < s; x++){
@@ -310,31 +326,31 @@ class TextImporter : public MonkeyImporter{
     	virtual Note read(ElementId id, Note value){
 			TextImporterLog(ame_Log_StartMethod, "read Note",  "println", value);
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
 			}
-			return text.getArgument(x_1, m_split, m_end);
+			return m_text.getArgument(x_1, m_split, m_end);
 		}
 		
     	virtual Note read(ElementId id, char* value){
 			TextImporterLog(ame_Log_StartMethod, "read char*",  "println", Note(value));
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return Note(value);
 			}
-			return text.getArgument(x_1, m_split, m_end);
+			return m_text.getArgument(x_1, m_split, m_end);
 		}
 		
     	virtual LinkedList<Note> read(ElementId id, LinkedList<Note> value){
 			TextImporterLog(ame_Log_StartMethod, "read LinkedList Note",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
+			Note arg = m_text.getArgument(x_1, m_split, m_end);
 			LinkedList<Note> list;
 			int s = arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < s; x++){
@@ -347,11 +363,11 @@ class TextImporter : public MonkeyImporter{
     	virtual PrimitiveList<Note> read(ElementId id, PrimitiveList<Note> value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList Note",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
+			Note arg = m_text.getArgument(x_1, m_split, m_end);
 			PrimitiveList<Note> list;
 			int s = arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < s; x++){
@@ -365,21 +381,21 @@ class TextImporter : public MonkeyImporter{
     	virtual long read(ElementId id, long value){
 			TextImporterLog(ame_Log_StartMethod, "read long",  "println", Note(value));
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
 			}
-			return text.getArgument(x_1, m_split, m_end).toInt();
+			return m_text.getArgument(x_1, m_split, m_end).toInt();
 		}
 		
     	virtual LinkedList<long> read(ElementId id, LinkedList<long> value){
 			TextImporterLog(ame_Log_StartMethod, "read LinkedList long",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
+			Note arg = m_text.getArgument(x_1, m_split, m_end);
 			LinkedList<long> list;
 			int s = arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < s; x++){
@@ -392,11 +408,11 @@ class TextImporter : public MonkeyImporter{
     	virtual PrimitiveList<long> read(ElementId id, PrimitiveList<long> value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList long",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
+			Note arg = m_text.getArgument(x_1, m_split, m_end);
 			PrimitiveList<long> list;
 			int s = arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < s; x++){
@@ -409,21 +425,21 @@ class TextImporter : public MonkeyImporter{
     	virtual float read(ElementId id, float value){
 			TextImporterLog(ame_Log_StartMethod, "read float",  "println", Note(value));
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
 			}
-			return text.getArgument(x_1, m_split, m_end).toFloat();
+			return m_text.getArgument(x_1, m_split, m_end).toFloat();
 		}
 		
     	virtual LinkedList<float> read(ElementId id, LinkedList<float> value){
 			TextImporterLog(ame_Log_StartMethod, "read LinkedList float",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
+			Note arg = m_text.getArgument(x_1, m_split, m_end);
 			LinkedList<float> list;
 			int s = arg.getSizeNoStartNoEnd( m_list_divide);
 			for(int x = 0; x < s; x++){
@@ -436,11 +452,11 @@ class TextImporter : public MonkeyImporter{
     	virtual PrimitiveList<float> read(ElementId id, PrimitiveList<float> value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList float",  "println", "");
 			
-			int x_1 = text.getOrder(id.getId(), m_split, m_end);
+			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
 			if(x_1 == -1){
 				return value;
 			}
-			Note arg = text.getArgument(x_1, m_split, m_end);
+			Note arg = m_text.getArgument(x_1, m_split, m_end);
 			PrimitiveList<float> list;
 			int s = arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < s; x++){
@@ -459,14 +475,14 @@ class TextImporter : public MonkeyImporter{
     	virtual PrimitiveMap<Note,bool> read(ElementId id, PrimitiveMap<Note,bool> value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveMap<Note,bool>",  "println", "");
 			
-			int x_key = text.getOrder(id.child("key").getId(), m_split, m_end);
-			int x_value = text.getOrder(id.child("value").getId(), m_split, m_end);
+			int x_key = m_text.getOrder(id.child("key").getId(), m_split, m_end);
+			int x_value = m_text.getOrder(id.child("value").getId(), m_split, m_end);
 			if(x_key == -1 || x_value == -1){
 				return value;
 			}
 			
-			Note arg_key = text.getArgument(x_key, m_split, m_end);
-			Note arg_value = text.getArgument(x_value, m_split, m_end);
+			Note arg_key = m_text.getArgument(x_key, m_split, m_end);
+			Note arg_value = m_text.getArgument(x_value, m_split, m_end);
 			
 			PrimitiveMap<Note,bool> map;
 			
@@ -487,14 +503,14 @@ class TextImporter : public MonkeyImporter{
     	virtual PrimitiveMap<Note,Note> read(ElementId id, PrimitiveMap<Note,Note> value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveMap<Note,Note>",  "println", "");
 			
-			int x_key = text.getOrder(id.child("key").getId(), m_split, m_end);
-			int x_value = text.getOrder(id.child("value").getId(), m_split, m_end);
+			int x_key = m_text.getOrder(id.child("key").getId(), m_split, m_end);
+			int x_value = m_text.getOrder(id.child("value").getId(), m_split, m_end);
 			if(x_key == -1 || x_value == -1){
 				return value;
 			}
 			
-			Note arg_key = text.getArgument(x_key, m_split, m_end);
-			Note arg_value = text.getArgument(x_value, m_split, m_end);
+			Note arg_key = m_text.getArgument(x_key, m_split, m_end);
+			Note arg_value = m_text.getArgument(x_value, m_split, m_end);
 			
 			PrimitiveMap<Note,Note> map;
 			
@@ -515,14 +531,14 @@ class TextImporter : public MonkeyImporter{
     	virtual PrimitiveMap<ElementId,Note> read(ElementId id, PrimitiveMap<ElementId,Note> value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveMap<ElementId,Note>",  "println", "");
 			
-			int x_key = text.getOrder(id.child("key").getId(), m_split, m_end);
-			int x_value = text.getOrder(id.child("value").getId(), m_split, m_end);
+			int x_key = m_text.getOrder(id.child("key").getId(), m_split, m_end);
+			int x_value = m_text.getOrder(id.child("value").getId(), m_split, m_end);
 			if(x_key == -1 || x_value == -1){
 				return value;
 			}
 			
-			Note arg_key = text.getArgument(x_key, m_split, m_end);
-			Note arg_value = text.getArgument(x_value, m_split, m_end);
+			Note arg_key = m_text.getArgument(x_key, m_split, m_end);
+			Note arg_value = m_text.getArgument(x_value, m_split, m_end);
 			
 			PrimitiveMap<ElementId,Note> map;
 			
@@ -543,7 +559,7 @@ class TextImporter : public MonkeyImporter{
 		virtual void remove(ElementId id){
 			TextImporterLog("TextExporter", "remove",  "println", "");
 			
-			text.removeLine(id.getId(), m_split, m_end);
+			m_text.removeLine(id.getId(), m_split, m_end);
 		}
 		
 		virtual void clear(){
