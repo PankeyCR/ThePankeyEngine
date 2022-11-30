@@ -5,15 +5,32 @@
  *
  */
  
-#include "ame_Enviroment.hpp"
+#ifndef CONFIGURATION_MonkeyExporter_hpp
+#define CONFIGURATION_MonkeyExporter_hpp
 
-#if defined(DISABLE_MonkeyExporter)
-	#define MonkeyExporter_hpp
+	#include "ame_Enviroment.hpp"
+
+	#if defined(DISABLE_MonkeyExporter)
+		#define MonkeyExporter_hpp
+
+		#define IMPLEMENTATION_MonkeyExporter
+		#define IMPLEMENTING_MonkeyExporter
+	#else
+		#if defined(DISABLE_IMPLEMENTATION_MonkeyExporter)
+			#define IMPLEMENTATION_MonkeyExporter
+			#define IMPLEMENTING_MonkeyExporter
+		#endif
+	#endif
 #endif
 
 #ifndef MonkeyExporter_hpp
 #define MonkeyExporter_hpp
 #define MonkeyExporter_AVAILABLE
+
+#ifndef DISABLE_IMPLEMENTATION_MonkeyExporter
+	#define IMPLEMENTATION_MonkeyExporter IMPLEMENTATION(public MonkeyExporter)
+	#define IMPLEMENTING_MonkeyExporter IMPLEMENTING(public MonkeyExporter)
+#endif
 
 #ifndef ame_Enviroment_Defined
 
@@ -27,7 +44,9 @@
 	#include "Arduino.h"
 #endif
 
+#include "cppObject.hpp"
 #include "ElementId.hpp"
+#include "Note.hpp"
 #include "ByteArray.hpp"
 #include "LinkedList.hpp"
 #include "PrimitiveList.hpp"
@@ -35,16 +54,9 @@
 #include "MonkeyFile.hpp"
 #include "Message.hpp"
 
-#ifdef MonkeyExporterLogApp
-	#include "Logger.hpp"
-	#define MonkeyExporterLog(name,method,type,mns) Log(name,method,type,mns)
-#else
-	#define MonkeyExporterLog(name,method,type,mns)
-#endif
-
 namespace ame{
 
-class MonkeyExporter{
+class MonkeyExporter IMPLEMENTATION_cppObject {
     public:
 		virtual ~MonkeyExporter(){}
 		
@@ -183,24 +195,24 @@ class MonkeyExporter{
 		virtual void clearIds()=0;
 		
 		///////////////// map id types
-		virtual void addIdType(ElementId m_id, Note m_type)=0;
-		virtual void addIdType(PrimitiveMap<ElementId,Note>& m_idsType)=0;
+		virtual void addType(ElementId m_id, Note m_type)=0;
+		virtual void addType(PrimitiveMap<ElementId,Note>& m_idsType)=0;
 		
-		virtual bool containIdType(ElementId id)=0;
+		virtual bool containType(ElementId id)=0;
 		virtual PrimitiveMap<ElementId,Note>& getIdTypes()=0;
-		virtual Note getIdType(ElementId id)=0;
-		virtual int getIdTypeSize()=0;
+		virtual Note getType(ElementId id)=0;
+		virtual int getTypeSize()=0;
 		
-		virtual void removeIdType(ElementId m_id)=0;
-		virtual void removeIdTypes(PrimitiveMap<ElementId,Note>& m_idsType)=0;
-		virtual void removeIdTypes()=0;
+		virtual void removeType(ElementId m_id)=0;
+		virtual void removeTypes(PrimitiveMap<ElementId,Note>& m_idsType)=0;
+		virtual void removeTypes()=0;
 		
-		virtual void writeIdTypes()=0;
-		virtual void writeIdType(ElementId id, Note type)=0;
-		virtual void eraseIdType(ElementId id)=0;
-		virtual void eraseIdTypes()=0;
+		virtual void writeTypes()=0;
+		virtual void writeType(ElementId id, Note type)=0;
+		virtual void eraseType(ElementId id)=0;
+		virtual void eraseTypes()=0;
 		
-		virtual void clearIdTypes()=0;
+		virtual void clearTypes()=0;
 		
 		///////////////// tags
 		virtual void addTag(ElementId id, Note tag)=0;

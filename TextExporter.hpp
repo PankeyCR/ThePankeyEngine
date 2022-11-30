@@ -1207,37 +1207,37 @@ class TextExporter : public MonkeyExporter{
 			return m_text;
 		}
 		
-		virtual void setIds(Note a_note){
+		virtual void setIdsText(Note a_note){
 			TextExporterLog(ame_Log_StartMethod, "setIds",  "println", Note("text ") + a_note);
 			m_ids = a_note;
 			TextExporterLog(ame_Log_EndMethod, "setIds", "println", "");
 		}
 		
-		virtual Note getIds(){
+		virtual Note getIdsText(){
 			TextExporterLog(ame_Log_EndMethod, "getIds", "println", "");
 			TextExporterLog(ame_Log_EndMethod, "getIds", "println", "");
 			return m_ids;
 		}
 		
-		virtual void getTypes(Note a_note){
+		virtual void getTypesText(Note a_note){
 			TextExporterLog(ame_Log_StartMethod, "getTypes",  "println", Note("text ") + strng);
 			m_types = a_note;
 			TextExporterLog(ame_Log_EndMethod, "getTypes", "println", "");
 		}
 		
-		virtual Note getTypes(){
+		virtual Note getTypesText(){
 			TextExporterLog(ame_Log_StartMethod, "getTypes", "println", "");
 			TextExporterLog(ame_Log_EndMethod, "getTypes", "println", "");
 			return m_types;
 		}
 		
-		virtual void setTags(Note a_note){
+		virtual void setTagsText(Note a_note){
 			TextExporterLog(ame_Log_StartMethod, "setTags",  "println", Note("text ") + strng);
 			m_tags = a_note;
 			TextExporterLog(ame_Log_EndMethod, "setTags", "println", "");
 		}
 		
-		virtual Note getTags(){
+		virtual Note getTagsText(){
 			TextExporterLog(ame_Log_StartMethod, "getTags", "println", "");
 			TextExporterLog(ame_Log_EndMethod, "getTags", "println", "");
 			return m_tags;

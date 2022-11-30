@@ -258,212 +258,211 @@ class TextImporter : public MonkeyImporter{
 			if(i_order == -1){
 				return a_value;
 			}
-			Note arg = m_text.getArgument(i_order, m_split, m_end);
-			LinkedList<char> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
-			for(int x = 0; x < s; x++){
-				Note tt = arg.split(x, m_list_divide);
-				if(tt == ""){
-					return value;
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			LinkedList<char> i_list;
+			int i_size = i_arg.getSizeNoStartNoEnd( m_list_divide );
+			for(int x = 0; x < i_size; x++){
+				Note f_value = i_arg.split(x, m_list_divide);
+				if(f_value.isEmpty()){
+					return a_value;
 				}
-				char t = tt.charAt(0);
-				list.addLValue(t);
+				char f_char = f_value.get(0);
+				i_list.addLValue(f_char);
 			}
-			return list;
+			return i_list;
 		}
 		
-    	virtual PrimitiveList<char> read(ElementId id, PrimitiveList<char> value){
+    	virtual PrimitiveList<char> read(ElementId a_id, PrimitiveList<char> a_value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList char",  "println", "");
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			Note arg = m_text.getArgument(x_1, m_split, m_end);
-			PrimitiveList<char> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
-			for(int x = 0; x < s; x++){
-				Note tt = arg.split(x, m_list_divide);
-				if(tt == ""){
-					return value;
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			PrimitiveList<char> i_list;
+			int i_size = i_arg.getSizeNoStartNoEnd( m_list_divide );
+			for(int x = 0; x < i_size; x++){
+				Note f_note = i_arg.split(x, m_list_divide);
+				if(f_note == ""){
+					return a_value;
 				}
-				char t = tt.charAt(0);
-				list.addLValue(t);
+				char f_char = f_note.get(0);
+				i_list.addLValue(f_char);
 			}
-			return list;
+			return i_list;
 		}
 
 		// ElementId primitive
-    	virtual ElementId read(ElementId id, ElementId value){
-			TextImporterLog(ame_Log_StartMethod, "read ElementId",  "println", value.getId());
+    	virtual ElementId read(ElementId a_id, ElementId a_value){
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", a_value.getId());
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			return ElementId(m_text.getArgument(x_1, m_split, m_end));
+			return ElementId(m_text.getArgument(i_order, m_split, m_end));
 		}
 		
-    	virtual PrimitiveList<ElementId> read(ElementId id, PrimitiveList<ElementId> value){
-			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList ElementId",  "println", "");
+    	virtual PrimitiveList<ElementId> read(ElementId a_id, PrimitiveList<ElementId> a_value){
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			Note arg = m_text.getArgument(x_1, m_split, m_end);
-			PrimitiveList<ElementId> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			PrimitiveList<ElementId> i_list;
+			int s = i_arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < s; x++){
-				ElementId t = arg.split(x, m_list_divide);
-				list.addLValue(t);
+				ElementId f_element_id = i_arg.split(x, m_list_divide);
+				i_list.addLValue(f_element_id);
 			}
-			return list;
+			return i_list;
 		}
 		
-
 		// Note primitive
-    	virtual Note read(ElementId id, Note value){
-			TextImporterLog(ame_Log_StartMethod, "read Note",  "println", value);
+    	virtual Note read(ElementId a_id, Note a_value){
+			TextImporterLog(ame_Log_StartMethod, "read Note",  "println", a_value);
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			return m_text.getArgument(x_1, m_split, m_end);
+			return m_text.getArgument(i_order, m_split, m_end);
 		}
 		
-    	virtual Note read(ElementId id, char* value){
-			TextImporterLog(ame_Log_StartMethod, "read char*",  "println", Note(value));
+    	virtual Note read(ElementId a_id, char* a_value){
+			TextImporterLog(ame_Log_StartMethod, "read char*",  "println", Note(a_value));
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return Note(value);
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return Note(a_value);
 			}
-			return m_text.getArgument(x_1, m_split, m_end);
+			return m_text.getArgument(i_order, m_split, m_end);
 		}
 		
-    	virtual LinkedList<Note> read(ElementId id, LinkedList<Note> value){
-			TextImporterLog(ame_Log_StartMethod, "read LinkedList Note",  "println", "");
+    	virtual LinkedList<Note> read(ElementId a_id, LinkedList<Note> a_value){
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			Note arg = m_text.getArgument(x_1, m_split, m_end);
-			LinkedList<Note> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
-			for(int x = 0; x < s; x++){
-				Note t = arg.split(x, m_list_divide);
-				list.addLValue(t);
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			LinkedList<Note> i_list;
+			int i_size = i_arg.getSizeNoStartNoEnd( m_list_divide );
+			for(int x = 0; x < i_size; x++){
+				Note t = i_arg.split(x, m_list_divide);
+				i_list.addLValue(t);
 			}
-			return list;
+			return i_list;
 		}
 		
-    	virtual PrimitiveList<Note> read(ElementId id, PrimitiveList<Note> value){
-			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList Note",  "println", "");
+    	virtual PrimitiveList<Note> read(ElementId a_id, PrimitiveList<Note> a_value){
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			Note arg = m_text.getArgument(x_1, m_split, m_end);
-			PrimitiveList<Note> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
-			for(int x = 0; x < s; x++){
-				Note t = arg.split(x, m_list_divide);
-				list.addLValue(t);
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			PrimitiveList<Note> i_list;
+			int i_size = i_arg.getSizeNoStartNoEnd( m_list_divide );
+			for(int x = 0; x < i_size; x++){
+				Note f_note = i_arg.split(x, m_list_divide);
+				i_list.addLValue(f_note);
 			}
-			return list;
+			return i_list;
 		}
 		
 		// long primitive
-    	virtual long read(ElementId id, long value){
-			TextImporterLog(ame_Log_StartMethod, "read long",  "println", Note(value));
+    	virtual long read(ElementId a_id, long a_value){
+			TextImporterLog(ame_Log_StartMethod, "read long",  "println", Note(a_value));
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			return m_text.getArgument(x_1, m_split, m_end).toInt();
+			return m_text.getArgument(i_order, m_split, m_end).toInt();
 		}
 		
-    	virtual LinkedList<long> read(ElementId id, LinkedList<long> value){
-			TextImporterLog(ame_Log_StartMethod, "read LinkedList long",  "println", "");
+    	virtual LinkedList<long> read(ElementId a_id, LinkedList<long> a_value){
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			Note arg = m_text.getArgument(x_1, m_split, m_end);
-			LinkedList<long> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
-			for(int x = 0; x < s; x++){
-				long t = arg.split(x, m_list_divide).toInt();
-				list.addLValue(t);
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			LinkedList<long> i_list;
+			int i_size = i_arg.getSizeNoStartNoEnd( m_list_divide );
+			for(int x = 0; x < i_size; x++){
+				long t = i_arg.split(x, m_list_divide).toInt();
+				i_list.addLValue(t);
 			}
-			return list;
+			return i_list;
 		}
 		
-    	virtual PrimitiveList<long> read(ElementId id, PrimitiveList<long> value){
+    	virtual PrimitiveList<long> read(ElementId a_id, PrimitiveList<long> a_value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList long",  "println", "");
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			Note arg = m_text.getArgument(x_1, m_split, m_end);
-			PrimitiveList<long> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
-			for(int x = 0; x < s; x++){
-				long t = arg.split(x, m_list_divide).toInt();
-				list.addLValue(t);
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			PrimitiveList<long> i_list;
+			int i_size = i_arg.getSizeNoStartNoEnd( m_list_divide );
+			for(int x = 0; x < i_size; x++){
+				long f_value = i_arg.split(x, m_list_divide).toInt();
+				i_list.addLValue(f_value);
 			}
-			return list;
+			return i_list;
 		}
 		
-    	virtual float read(ElementId id, float value){
-			TextImporterLog(ame_Log_StartMethod, "read float",  "println", Note(value));
+    	virtual float read(ElementId a_id, float a_value){
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", Note(value));
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			return m_text.getArgument(x_1, m_split, m_end).toFloat();
+			return m_text.getArgument(i_order, m_split, m_end).toFloat();
 		}
 		
-    	virtual LinkedList<float> read(ElementId id, LinkedList<float> value){
-			TextImporterLog(ame_Log_StartMethod, "read LinkedList float",  "println", "");
+    	virtual LinkedList<float> read(ElementId a_id, LinkedList<float> a_value){
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			Note arg = m_text.getArgument(x_1, m_split, m_end);
-			LinkedList<float> list;
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			LinkedList<float> i_list;
 			int s = arg.getSizeNoStartNoEnd( m_list_divide);
 			for(int x = 0; x < s; x++){
-				float t = arg.split(x, m_list_divide).toFloat();
-				list.addLValue(t);
+				float f_value = i_arg.split(x, m_list_divide).toFloat();
+				i_list.addLValue(f_value);
 			}
-			return list;
+			return i_list;
 		}
 		
-    	virtual PrimitiveList<float> read(ElementId id, PrimitiveList<float> value){
-			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList float",  "println", "");
+    	virtual PrimitiveList<float> read(ElementId a_id, PrimitiveList<float> a_value){
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
 			
-			int x_1 = m_text.getOrder(id.getId(), m_split, m_end);
-			if(x_1 == -1){
-				return value;
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
+			if(i_order == -1){
+				return a_value;
 			}
-			Note arg = m_text.getArgument(x_1, m_split, m_end);
-			PrimitiveList<float> list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide );
+			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
+			PrimitiveList<float> i_list;
+			int s = i_arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < s; x++){
-				float t = arg.split(x, m_list_divide).toFloat();
-				list.addLValue(t);
+				float f_value = i_arg.split(x, m_list_divide).toFloat();
+				i_list.addLValue(f_value);
 			}
-			return list;
+			return i_list;
 		}
 		
 		// Savable primitive
@@ -472,160 +471,161 @@ class TextImporter : public MonkeyImporter{
     	// virtual PrimitiveMap<float> read(ElementId id, PrimitiveMap<float> value)=0;
 		*/
 		
-    	virtual PrimitiveMap<Note,bool> read(ElementId id, PrimitiveMap<Note,bool> value){
-			TextImporterLog(ame_Log_StartMethod, "read PrimitiveMap<Note,bool>",  "println", "");
+    	virtual PrimitiveMap<Note,bool> read(ElementId a_id, PrimitiveMap<Note,bool> a_value){
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
 			
-			int x_key = m_text.getOrder(id.child("key").getId(), m_split, m_end);
-			int x_value = m_text.getOrder(id.child("value").getId(), m_split, m_end);
-			if(x_key == -1 || x_value == -1){
-				return value;
+			int i_key_order = m_text.getOrder(a_id.child("key").getId(), m_split, m_end);
+			int i_value_order = m_text.getOrder(a_id.child("value").getId(), m_split, m_end);
+			if(i_key_order == -1 || i_value_order == -1){
+				return a_value;
 			}
 			
-			Note arg_key = m_text.getArgument(x_key, m_split, m_end);
-			Note arg_value = m_text.getArgument(x_value, m_split, m_end);
+			Note i_arg_key = m_text.getArgument(i_key_order, m_split, m_end);
+			Note i_arg_value = m_text.getArgument(i_value_order, m_split, m_end);
 			
-			PrimitiveMap<Note,bool> map;
+			PrimitiveMap<Note,bool> i_map;
 			
-			int s_key = arg_key.getSizeNoStartNoEnd( m_list_divide );
-			int s_value = arg_value.getSizeNoStartNoEnd( m_list_divide );
-			if(s_key != s_value){
-				return value;
+			int i_key_size = i_arg_key.getSizeNoStartNoEnd( m_list_divide );
+			int i_value_size = i_arg_value.getSizeNoStartNoEnd( m_list_divide );
+			if(i_key_size != i_value_size){
+				return a_value;
 			}
 			
-			for(int x = 0; x < s_key; x++){
-				Note k = arg_key.split(x, m_list_divide);
-				bool v = arg_value.split(x, m_list_divide) == "1";
-				map.addLValues(k,v);
+			for(int x = 0; x < i_key_size; x++){
+				Note k = i_arg_key.split(x, m_list_divide);
+				bool v = i_arg_value.split(x, m_list_divide) == "1";
+				i_map.addLValues(k,v);
 			}
-			return map;
+			return i_map;
 		}
 		
-    	virtual PrimitiveMap<Note,Note> read(ElementId id, PrimitiveMap<Note,Note> value){
-			TextImporterLog(ame_Log_StartMethod, "read PrimitiveMap<Note,Note>",  "println", "");
+    	virtual PrimitiveMap<Note,Note> read(ElementId a_id, PrimitiveMap<Note,Note> a_value){
+			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
 			
-			int x_key = m_text.getOrder(id.child("key").getId(), m_split, m_end);
-			int x_value = m_text.getOrder(id.child("value").getId(), m_split, m_end);
-			if(x_key == -1 || x_value == -1){
-				return value;
+			int i_key_order = m_text.getOrder(a_id.child("key").getId(), m_split, m_end);
+			int i_value_order = m_text.getOrder(a_id.child("value").getId(), m_split, m_end);
+			if(i_key_order == -1 || i_value_order == -1){
+				return a_value;
 			}
 			
-			Note arg_key = m_text.getArgument(x_key, m_split, m_end);
-			Note arg_value = m_text.getArgument(x_value, m_split, m_end);
+			Note i_arg_key = m_text.getArgument(i_key_order, m_split, m_end);
+			Note i_arg_value = m_text.getArgument(i_value_order, m_split, m_end);
 			
-			PrimitiveMap<Note,Note> map;
+			PrimitiveMap<Note,Note> i_map;
 			
-			int s_key = arg_key.getSizeNoStartNoEnd( m_list_divide );
-			int s_value = arg_value.getSizeNoStartNoEnd( m_list_divide );
-			if(s_key != s_value){
-				return value;
+			int i_key_size = i_arg_key.getSizeNoStartNoEnd( m_list_divide );
+			int i_value_size = i_arg_value.getSizeNoStartNoEnd( m_list_divide );
+			if(i_key_size != i_value_size){
+				return a_value;
 			}
 			
-			for(int x = 0; x < s_key; x++){
-				Note k = arg_key.split(x, m_list_divide);
-				Note v = arg_value.split(x, m_list_divide);
-				map.addLValues(k,v);
+			for(int x = 0; x < i_key_size; x++){
+				Note k = i_arg_key.split(x, m_list_divide);
+				Note v = i_arg_value.split(x, m_list_divide);
+				i_map.addLValues(k,v);
 			}
-			return map;
+			return i_map;
 		}
 		
-    	virtual PrimitiveMap<ElementId,Note> read(ElementId id, PrimitiveMap<ElementId,Note> value){
+    	virtual PrimitiveMap<ElementId,Note> read(ElementId a_id, PrimitiveMap<ElementId,Note> a_value){
 			TextImporterLog(ame_Log_StartMethod, "read PrimitiveMap<ElementId,Note>",  "println", "");
 			
-			int x_key = m_text.getOrder(id.child("key").getId(), m_split, m_end);
-			int x_value = m_text.getOrder(id.child("value").getId(), m_split, m_end);
-			if(x_key == -1 || x_value == -1){
-				return value;
+			int i_key_order = m_text.getOrder(a_id.child("key").getId(), m_split, m_end);
+			int i_value_order = m_text.getOrder(a_id.child("value").getId(), m_split, m_end);
+			if(i_key_order == -1 || i_value_order == -1){
+				return a_value;
 			}
 			
-			Note arg_key = m_text.getArgument(x_key, m_split, m_end);
-			Note arg_value = m_text.getArgument(x_value, m_split, m_end);
+			Note i_arg_key = m_text.getArgument(i_key_order, m_split, m_end);
+			Note i_arg_value = m_text.getArgument(i_value_order, m_split, m_end);
 			
-			PrimitiveMap<ElementId,Note> map;
-			
-			int s_key = arg_key.getSizeNoStartNoEnd( m_list_divide );
-			int s_value = arg_value.getSizeNoStartNoEnd( m_list_divide );
-			if(s_key != s_value){
-				return value;
+			int i_key_size = i_arg_key.getSizeNoStartNoEnd( m_list_divide );
+			int i_value_size = i_arg_value.getSizeNoStartNoEnd( m_list_divide );
+
+			if(i_key_size != i_value_size){
+				return a_value;
 			}
 			
-			for(int x = 0; x < s_key; x++){
-				ElementId k = ElementId(arg_key.split(x, m_list_divide));
-				Note v = arg_value.split(x, ',');
-				map.addLValues(k,v);
+			PrimitiveMap<ElementId,Note> i_map;
+			
+			for(int x = 0; x < i_key_size; x++){
+				ElementId k = ElementId(i_arg_key.split(x, m_list_divide));
+				Note v = i_arg_value.split(x, ',');
+				i_map.addLValues(k,v);
 			}
-			return map;
+			return i_map;
 		}
 		
-		virtual void remove(ElementId id){
+		virtual void remove(ElementId a_id){
 			TextImporterLog("TextExporter", "remove",  "println", "");
 			
-			m_text.removeLine(id.getId(), m_split, m_end);
+			m_text.removeLine(a_id.getId(), m_split, m_end);
 		}
 		
 		virtual void clear(){
 			TextImporterLog(ame_Log_StartMethod, "clear",  "println", "");
-			text = "";
+			m_text.clear();
 		}
 		
 		/////////////////////////////////////////////////////////////////// ids
-		virtual void addId(ElementId m_id){
+		virtual void addId(ElementId a_id){
 			TextImporterLog(ame_Log_StartMethod, "addId",  "println", "");
-			ids.add(m_id);
+			m_ids_list.add(a_id);
 		}
 		
-		virtual void addIds(PrimitiveList<ElementId>& m_ids){
+		virtual void addIds(PrimitiveList<ElementId>& a_ids){
 			TextImporterLog(ame_Log_StartMethod, "addIds",  "println", "");
-			for(int x = 0; x < m_ids.getPosition(); x++){
-				ElementId* l_eid = m_ids.getByPosition(x);
-				ids.addLValue(*l_eid);
+			for(int x = 0; x < a_ids.getPosition(); x++){
+				ElementId* f_element_id = a_ids.getByPosition(x);
+				m_ids_list.addLValue(*f_element_id);
 			}
 		}
 		
-		virtual bool containId(ElementId m_id){
+		virtual bool containId(ElementId a_id){
 			TextImporterLog(ame_Log_StartMethod, "containId",  "println", "");
-			return ids.containByLValue(m_id);
+			return m_ids_list.containByLValue(a_id);
 		}
 		
 		virtual PrimitiveList<ElementId>& getIds(){
 			TextImporterLog(ame_Log_StartMethod, "getIds",  "println", "");
-			return ids;
+			return m_ids_list;
 		}
 		
 		virtual ElementId getId(int x){
 			TextImporterLog(ame_Log_StartMethod, "getId",  "println", "");
-			if(x >= ids.getPosition()){
+			if(x >= m_ids_list.getPosition()){
 				return ElementId();
 			}
-			return ids[x];
+			return m_ids_list[x];
 		}
 		
 		virtual int getIdSize(){
 			TextImporterLog(ame_Log_StartMethod, "getIdSize",  "println", "");
-			return ids.getPosition();
+			return m_ids_list.getPosition();
 		}
 		
 		virtual void removeId(ElementId i_id){
 			TextImporterLog(ame_Log_StartMethod, "removeId",  "println", "");
-			ids.removeDeleteByLValue(i_id);
+			m_ids_list.removeDeleteByLValue(i_id);
 		}
 		
 		virtual void removeIds(PrimitiveList<ElementId>& i_ids){
 			TextImporterLog(ame_Log_StartMethod, "removeIds",  "println", "");
 			for(int x = 0; x < i_ids.getPosition(); x++){
 				ElementId* l_eid = i_ids.getByPosition(x);
-				ids.removeDeleteByLValue(*l_eid);
+				m_ids_list.removeDeleteByLValue(*l_eid);
 			}
 		}
 		
 		virtual void removeIds(){
 			TextImporterLog(ame_Log_StartMethod, "removeIds",  "println", "");
-			ids.resetDelete();
+			m_ids_list.resetDelete();
 		}
 		
 		virtual void writeIds(){
 			TextImporterLog(ame_Log_StartMethod, "writeIds",  "println", "");
 			
-			if(ids.getPosition() == 0){
+			if(m_ids_list.getPosition() == 0){
 				TextImporterLog(ame_Log_StartMethod, "writeIds",  "println", "ids.isEmpty");
 				m_ids = "";
 				return;
@@ -633,9 +633,9 @@ class TextImporter : public MonkeyImporter{
 			ElementId id = ElementId("transporter.ids");
 			
 			m_ids = id.getId() + Note(" ");
-			for(int x = 0; x < ids.getPosition(); x++){
-				ElementId v = *ids.getByPosition(x);
-				if(x == ids.getPosition() - 1){
+			for(int x = 0; x < m_ids_list.getPosition(); x++){
+				ElementId v = *m_ids_list.getByPosition(x);
+				if(x == m_ids_list.getPosition() - 1){
 					m_ids += v.getId() + Note("\n");
 				}else{
 					m_ids += v.getId() + Note(",");
@@ -645,13 +645,13 @@ class TextImporter : public MonkeyImporter{
 		
 		virtual void writeId(ElementId value){
 			TextImporterLog(ame_Log_StartMethod, "writeId",  "println", "");
-			ids.put(value);
+			m_ids_list.put(value);
 			ElementId id = ElementId("transporter.ids");
 			
 			m_ids = id.getId() + Note(" ");
-			for(int x = 0; x < ids.getPosition(); x++){
-				ElementId v = *ids.getByPosition(x);
-				if(x == ids.getPosition() - 1){
+			for(int x = 0; x < m_ids_list.getPosition(); x++){
+				ElementId v = *m_ids_list.getByPosition(x);
+				if(x == m_ids_list.getPosition() - 1){
 					m_ids += v.getId() + Note("\n");
 				}else{
 					m_ids += v.getId() + Note(",");
@@ -661,24 +661,24 @@ class TextImporter : public MonkeyImporter{
 		
 		virtual void eraseId(ElementId value){
 			TextImporterLog(ame_Log_StartMethod, "eraseId",  "println", "");
-			if(ids.getPosition() == 0){
+			if(m_ids_list.getPosition() == 0){
 				return;
 			}
-			if(!ids.containByLValue(value)){
+			if(!m_ids_list.containByLValue(value)){
 				return;
 			}
 			
-			ids.removeDeleteByLValue(value);
-			if(ids.getPosition() == 0){
+			m_ids_list.removeDeleteByLValue(value);
+			if(m_ids_list.getPosition() == 0){
 				return;
 			}
 			
 			ElementId id = ElementId("transporter.ids");
 			
 			m_ids = id.getId() + Note(" ");
-			for(int x = 0; x < ids.getPosition(); x++){
-				ElementId v = *ids.getByPosition(x);
-				if(x == ids.getPosition() - 1){
+			for(int x = 0; x < m_ids_list.getPosition(); x++){
+				ElementId v = *m_ids_list.getByPosition(x);
+				if(x == m_ids_list.getPosition() - 1){
 					m_ids += v.getId() + Note("\n");
 				}else{
 					m_ids += v.getId() + Note(",");
@@ -694,340 +694,340 @@ class TextImporter : public MonkeyImporter{
 		virtual void clearIds(){
 			TextImporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
 			m_ids = "";
-			ids.resetDelete();
+			m_ids_list.resetDelete();
 		}
 		
 		/////////////////////////////////////////////////////////////////// idType
-		virtual void addIdType(ElementId m_id, Note m_type){
+		virtual void addIdType(ElementId a_id, Note a_type){
 			TextImporterLog(ame_Log_StartMethod, "addIdType",  "println", "");
-			idsType.addLValues(m_id, m_type);
+			m_types_map.addLValues(a_id, a_type);
 		}
 		
-		virtual void addIdType(PrimitiveMap<ElementId,Note>& m_idsType){
+		virtual void addType(PrimitiveMap<ElementId,Note>& a_types_map){
 			TextImporterLog(ame_Log_StartMethod, "addIdType",  "println", "");
-			for(int x = 0; x < m_idsType.getPosition(); x++){
-				idsType.addLValues(m_idsType.getKey(x), m_idsType.getValue(x));
+			for(int x = 0; x < a_types_map.getPosition(); x++){
+				m_types_map.addLValues(a_types_map.getKey(x), a_types_map.getValue(x));
 			}
 		}
 		
-		virtual bool containIdType(ElementId id){
+		virtual bool containType(ElementId a_id){
 			TextImporterLog(ame_Log_StartMethod, "containIdType",  "println", "");
-			return idsType.containKeyByLValue(id);
+			return m_types_map.containKeyByLValue(a_id);
 		}
 		
-		virtual PrimitiveMap<ElementId,Note>& getIdTypes(){
+		virtual PrimitiveMap<ElementId,Note>& getTypes(){
 			TextImporterLog(ame_Log_StartMethod, "getIdTypes",  "println", "");
-			return idsType;
+			return m_types_map;
 		}
 		
-		virtual Note getIdType(ElementId id){
+		virtual Note getType(ElementId id){
 			TextImporterLog(ame_Log_StartMethod, "getIdType",  "println", "");
-			return idsType.get(id);
+			return m_types_map.get(id);
 		}
 		
-		virtual int getIdTypeSize(){
+		virtual int getTypeSize(){
 			TextImporterLog(ame_Log_StartMethod, "getIdTypeSize",  "println", "");
-			return idsType.getPosition();
+			return m_types_map.getPosition();
 		}
 		
-		virtual void removeIdType(ElementId m_id){
+		virtual void removeType(ElementId m_id){
 			TextImporterLog(ame_Log_StartMethod, "removeIdType",  "println", "");
-			idsType.removeDeleteByLValue(m_id);
+			m_types_map.removeDeleteByLValue(m_id);
 		}
 		
-		virtual void removeIdTypes(PrimitiveMap<ElementId,Note>& m_idsType){
+		virtual void removeTypes(PrimitiveMap<ElementId,Note>& a_types_map){
 			TextImporterLog(ame_Log_StartMethod, "removeIdTypes",  "println", "");
-			for(int x = 0; x < m_idsType.getPosition(); x++){
-				idsType.removeDeleteByLValue(m_idsType.getKey(x));
+			for(int x = 0; x < a_types_map.getPosition(); x++){
+				m_types_map.removeDeleteByLValue(a_types_map.getKey(x));
 			}
 		}
 		
-		virtual void removeIdTypes(){
+		virtual void removeTypes(){
 			TextImporterLog(ame_Log_StartMethod, "removeIdTypes",  "println", "");
-			idsType.resetDelete();
+			m_types_map.resetDelete();
 		}
 		
-		virtual void writeIdTypes(){
+		virtual void writeTypes(){
 			TextImporterLog(ame_Log_StartMethod, "writeIdTypes",  "println", "");
-			if(idsType.getPosition() == 0){
+			if(m_types_map.getPosition() == 0){
 				TextImporterLog(ame_Log_StartMethod, "writeIdTypes",  "println", "idsType.isEmpty");
-				m_types = "";
+				m_types.clear();
 				return;
 			}
 			
-			ElementId id = ElementId("transporter.idsType");
+			ElementId i_id = ElementId("transporter.idsType");
 			
-			ElementId keyId = id.child("key");
+			ElementId i_key_id = i_id.child("key");
 			
-			ElementId valueId = id.child("value");
+			ElementId i_value_id = i_id.child("value");
+
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
-			
-			for(int x = 0; x < idsType.getPosition(); x++){
-				ElementId k = *idsType.getKeyByPosition(x);
-				Note v = *idsType.getByPosition(x);
-				if(x == idsType.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < m_types_map.getPosition(); x++){
+				ElementId k = *m_types_map.getKeyByPosition(x);
+				Note v = *m_types_map.getValueByPosition(x);
+				if(x == m_types_map.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			m_types += var_key;
-			m_types += var_value;
+			m_types += i_var_key;
+			m_types += i_var_value;
 		}
 		
 		virtual void writeIdType(ElementId i_id, Note type){
 			TextImporterLog(ame_Log_StartMethod, "writeIdType",  "println", "");
 			
-			idsType.addLValues(i_id, type);
+			m_types_map.addLValues(i_id, type);
 			
-			ElementId id = ElementId("transporter.idsType");
+			ElementId i_id = ElementId("transporter.idsType");
 			
-			ElementId keyId = id.child("key");
+			ElementId i_key_id = i_id.child("key");
 			
-			ElementId valueId = id.child("value");
+			ElementId i_value_id = i_id.child("value");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			for(int x = 0; x < idsType.getPosition(); x++){
-				ElementId k = *idsType.getKeyByPosition(x);
-				Note v = *idsType.getByPosition(x);
-				if(x == idsType.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < m_types_map.getPosition(); x++){
+				ElementId k = *m_types_map.getKeyByPosition(x);
+				Note v = *m_types_map.getByPosition(x);
+				if(x == m_types_map.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			m_types += var_key;
-			m_types += var_value;
+			m_types += i_var_key;
+			m_types += i_var_value;
 		}
 		
 		virtual void eraseIdType(ElementId i_id){
 			TextImporterLog(ame_Log_StartMethod, "eraseIdType",  "println", "");
-			idsType.removeDeleteByLValue(i_id);
+			m_types_map.removeDeleteByLValue(i_id);
 			
-			if(idsType.getPosition() == 0){
-				m_types = "";
+			if(m_types_map.getPosition() == 0){
+				m_types.clear();
 				return;
 			}
 			
-			ElementId id = ElementId("transporter.idsType");
+			ElementId i_id = ElementId("transporter.idsType");
 			
-			ElementId keyId = id.child("key");
+			ElementId i_key_id = i_id.child("key");
 			
-			ElementId valueId = id.child("value");
+			ElementId i_value_id = i_id.child("value");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			for(int x = 0; x < idsType.getPosition(); x++){
-				ElementId k = *idsType.getKeyByPosition(x);
-				Note v = *idsType.getByPosition(x);
-				if(x == idsType.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < m_types_map.getPosition(); x++){
+				ElementId k = *m_types_map.getKeyByPosition(x);
+				Note v = *m_types_map.getByPosition(x);
+				if(x == m_types_map.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			m_types += var_key;
-			m_types += var_value;
+			m_types += i_var_key;
+			m_types += i_var_value;
 		}
 		
 		virtual void eraseIdTypes(){
 			TextImporterLog(ame_Log_StartMethod, "eraseIdTypes",  "println", "");
-			m_types = "";
+			m_types.clear();
 		}
 		
 		virtual void clearIdTypes(){
 			TextImporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
-			m_types = "";
-			idsType.resetDelete();
+			m_types.clear();
+			m_types_map.resetDelete();
 		}
 		
 		/////////////////////////////////////////////////////////////////// tags
 		virtual void addTag(ElementId m_id, Note m_type){
 			TextImporterLog(ame_Log_StartMethod, "addTag",  "println", "");
-			tags.addLValues(m_id, m_type);
+			m_tags_map.addLValues(m_id, m_type);
 		}
 		
 		virtual void addTag(PrimitiveMap<ElementId,Note>& m_idsType){
 			TextImporterLog(ame_Log_StartMethod, "addTag",  "println", "");
 			for(int x = 0; x < m_idsType.getPosition(); x++){
-				tags.addLValues(m_idsType.getKey(x), m_idsType.getValue(x));
+				m_tags_map.addLValues(m_idsType.getKey(x), m_idsType.getValue(x));
 			}
 		}
 		
 		virtual bool containTag(ElementId id){
 			TextImporterLog(ame_Log_StartMethod, "containTag",  "println", "");
-			return tags.containKeyByLValue(id);
+			return m_tags_map.containKeyByLValue(id);
 		}
 		
 		virtual PrimitiveMap<ElementId,Note>& getTags(){
 			TextImporterLog(ame_Log_StartMethod, "getTags",  "println", "");
-			return tags;
+			return m_tags_map;
 		}
 		
 		virtual Note getTag(ElementId id){
 			TextImporterLog(ame_Log_StartMethod, "getTag",  "println", "");
-			return tags.get(id);
+			return m_tags_map.get(id);
 		}
 		
 		virtual int getTagSize(){
 			TextImporterLog(ame_Log_StartMethod, "getTagSize",  "println", "");
-			return tags.getPosition();
+			return m_tags_map.getPosition();
 		}
 		
 		virtual void removeTag(ElementId m_id){
 			TextImporterLog(ame_Log_StartMethod, "removeTag",  "println", "");
-			tags.removeDeleteByLValue(m_id);
+			m_tags_map.removeDeleteByLValue(m_id);
 		}
 		
 		virtual void removeTags(PrimitiveMap<ElementId,Note>& m_idsType){
 			TextImporterLog(ame_Log_StartMethod, "removeTags",  "println", "");
 			for(int x = 0; x < m_idsType.getPosition(); x++){
-				tags.removeDeleteByLValue(m_idsType.getKey(x));
+				m_tags_map.removeDeleteByLValue(m_idsType.getKey(x));
 			}
 		}
 		
 		virtual void removeTags(){
 			TextImporterLog(ame_Log_StartMethod, "removeTags",  "println", "");
-			tags.resetDelete();
+			m_tags_map.resetDelete();
 		}
 		
 		virtual void writeTags(){
 			TextImporterLog(ame_Log_StartMethod, "writeTags",  "println", "");
-			if(tags.getPosition() == 0){
-				TextImporterLog(ame_Log_StartMethod, "writeTags",  "println", "tags.isEmpty");
-				m_tags = "";
+			if(m_tags_map.getPosition() == 0){
+				TextImporterLog(ame_Log_StartMethod, "writeTags",  "println", "m_tags_map.isEmpty");
+				m_tags.clear();
 				return;
 			}
 			
-			ElementId id = ElementId("transporter.tags");
+			ElementId i_id = ElementId("transporter.tags");
 			
-			ElementId keyId = id.child("key");
+			ElementId i_key_id = i_id.child("key");
 			
-			ElementId valueId = id.child("value");
+			ElementId i_value_id = i_id.child("value");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			for(int x = 0; x < tags.getPosition(); x++){
-				ElementId k = *tags.getKeyByPosition(x);
-				Note v = *tags.getByPosition(x);
-				if(x == tags.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < m_tags_map.getPosition(); x++){
+				ElementId k = *m_tags_map.getKeyByPosition(x);
+				Note v = *m_tags_map.getValueByPosition(x);
+				if(x == m_tags_map.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			m_tags += var_key;
-			m_tags += var_value;
+			m_tags += i_var_key;
+			m_tags += i_var_value;
 		}
 		
 		virtual void writeTag(ElementId i_id, Note type){
 			TextImporterLog(ame_Log_StartMethod, "writeTag",  "println", "");
 			
-			tags.addLValues(i_id, type);
+			m_tags_map.addLValues(i_id, type);
 			
-			ElementId id = ElementId("transporter.tags");
+			ElementId i_id = ElementId("transporter.tags");
 			
-			ElementId keyId = id.child("key");
+			ElementId i_key_id = i_id.child("key");
 			
-			ElementId valueId = id.child("value");
+			ElementId i_value_id = i_id.child("value");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			for(int x = 0; x < tags.getPosition(); x++){
-				ElementId k = *tags.getKeyByPosition(x);
-				Note v = *tags.getByPosition(x);
-				if(x == tags.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < m_tags_map.getPosition(); x++){
+				ElementId k = *m_tags_map.getKeyByPosition(x);
+				Note v = *m_tags_map.getValueByPosition(x);
+				if(x == m_tags_map.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			m_tags += var_key;
-			m_tags += var_value;
+			m_tags += i_var_key;
+			m_tags += i_var_value;
 		}
 		
 		virtual void eraseTag(ElementId i_id){
 			TextImporterLog(ame_Log_StartMethod, "eraseTag",  "println", "");
-			tags.removeDeleteByLValue(i_id);
+			m_tags_map.removeDeleteByLValue(i_id);
 			
-			if(tags.getPosition() == 0){
-				m_tags = "";
+			if(m_tags_map.getPosition() == 0){
+				m_tags.clear();
 				return;
 			}
 			
-			ElementId id = ElementId("transporter.tags");
+			ElementId i_id = ElementId("transporter.tags");
 			
-			ElementId keyId = id.child("key");
+			ElementId i_key_id = i_id.child("key");
 			
-			ElementId valueId = id.child("value");
+			ElementId i_value_id = i_id.child("value");
 			
-			Note var_key = keyId.getId() + Note(" ");
-			Note var_value = valueId.getId() + Note(" ");
+			Note i_var_key = i_key_id.getId() + Note(" ");
+			Note i_var_value = i_value_id.getId() + Note(" ");
 			
-			for(int x = 0; x < tags.getPosition(); x++){
-				ElementId k = *tags.getKeyByPosition(x);
-				Note v = *tags.getByPosition(x);
-				if(x == tags.getPosition() - 1){
-					var_key += k.getId() + Note("\n");
-					var_value += v + Note("\n");
+			for(int x = 0; x < m_tags_map.getPosition(); x++){
+				ElementId k = *m_tags_map.getKeyByPosition(x);
+				Note v = *m_tags_map.getValueByPosition(x);
+				if(x == m_tags_map.getPosition() - 1){
+					i_var_key += k.getId() + Note("\n");
+					i_var_value += v + Note("\n");
 				}else{
-					var_key += k.getId() + Note(",");
-					var_value += v + Note(",");
+					i_var_key += k.getId() + Note(",");
+					i_var_value += v + Note(",");
 				}
 			}
 			
-			m_tags += var_key;
-			m_tags += var_value;
+			m_tags += i_var_key;
+			m_tags += i_var_value;
 		}
 		
 		virtual void eraseTags(){
 			TextImporterLog(ame_Log_StartMethod, "eraseIdType",  "println", "");
-			m_tags = "";
+			m_tags.clear();
 		}
 		
 		virtual void clearTags(){
 			TextImporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
-			m_tags = "";
-			tags.resetDelete();
+			m_tags.clear();
+			m_tags_map.resetDelete();
 		}
 		
-		virtual void setMessage(Message* message){
+		virtual void setMessage(Message* a_message){
 			TextImporterLog(ame_Log_StartMethod, "setMessage",  "println", "");
-			if(message == nullptr){
+			if(a_message == nullptr){
 				return;
 			}
-			setText(message->text());
+			setText(a_message->text());
 			fix();
 		}
 		
-		virtual void read(MonkeyFile* file, Note path){
+		virtual void read(MonkeyFile* a_file, Note a_path){
 			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
-			if(file == nullptr){
+			if(a_file == nullptr){
 				return;
 			}
-			setText( file->readText(path) );
+			setText( a_file->readText(a_path) );
 			fix();
 		}
 		
@@ -1042,7 +1042,7 @@ class TextImporter : public MonkeyImporter{
 			// file->fastWriteText(m_types, path);
 			// file->fastWriteText(m_text, path);
 			
-			file->fastWriteText(this->toNote(), a_path);
+			a_file->fastWriteText(this->toNote(), a_path);
 		}
 		
 		virtual void setText(Note strng){
@@ -1054,30 +1054,30 @@ class TextImporter : public MonkeyImporter{
 			return m_text;
 		}
 		
-		virtual void setIds(Note strng){
+		virtual void setIdsText(Note strng){
 			TextImporterLog(ame_Log_StartMethod, "setm_ids",  "println", Note("text ") + strng);
 			m_ids = strng;
 		}
 		
-		virtual Note getIds(){
+		virtual Note getIdsText(){
 			return m_ids;
 		}
 		
-		virtual void setTypes(Note strng){
+		virtual void setTypesText(Note strng){
 			TextImporterLog(ame_Log_StartMethod, "setm_types",  "println", Note("text ") + strng);
 			m_types = strng;
 		}
 		
-		virtual Note getTypes(){
+		virtual Note getTypesText(){
 			return m_types;
 		}
 		
-		virtual void setTags(Note strng){
+		virtual void setTagsText(Note strng){
 			TextImporterLog(ame_Log_StartMethod, "setTags",  "println", Note("text ") + strng);
 			m_tags = strng;
 		}
 		
-		virtual Note getTags(){
+		virtual Note getTagsText(){
 			return m_tags;
 		}
 		
@@ -1119,10 +1119,10 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 	protected:
-		Note m_text = "";
+		Note m_text;
 		Note m_ids = "";
-		Note m_types = "";
-		Note m_tags = "";
+		Note m_types;
+		Note m_tags;
 		PrimitiveList<ElementId> m_ids_list;
 		PrimitiveMap<ElementId,Note> m_types_map;
 		PrimitiveMap<ElementId,Note> m_tags_map;
