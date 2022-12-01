@@ -194,22 +194,34 @@ class ByteArray : public Array<ame_Byte>, public Printable{
 			ByteArrayLog(ame_Log_StartMethod, "setBit", "println", "");
 			ByteArrayLog(ame_Log_Statement, "setBit", "println", "bit");
 			ByteArrayLog(ame_Log_Statement, "setBit", "println", bit);
-			byte* c = this->getPointer(cell);
+			ame_Byte* c = this->getPointer(cell);
 			if(c == nullptr || bit >= 8){
 				ByteArrayLog(ame_Log_EndMethod, "setBit", "println", "c == nullptr || bit >= 8");
 				return;
 			}
+			#ifdef ame_ArduinoIDE
 			bitWrite((*c), bit, value);
+			#elif defined(ame_Windows)
+
+			#else
+
+			#endif
 			ByteArrayLog(ame_Log_EndMethod, "setBit", "println", "");
 		}
 
 		virtual void clearBit(int cell, int bit){
 			ByteArrayLog(ame_Log_StartMethod, "clearBit", "println", "");
-			byte* c = this->getPointer(cell);
+			ame_Byte* c = this->getPointer(cell);
 			if(c == nullptr){
 				return;
 			}
+			#ifdef ame_ArduinoIDE
 			bitWrite((*c), bit, false);
+			#elif defined(ame_Windows)
+
+			#else
+
+			#endif
 			ByteArrayLog(ame_Log_EndMethod, "clearBit", "println", "");
 		}
 
@@ -218,7 +230,13 @@ class ByteArray : public Array<ame_Byte>, public Printable{
 			for(int xi = 0; xi < this->getPosition(); xi++){
 				for(int xo = 0; xo < 8; xo++){
 					ame_Byte f_byte = this->get(xi);
+                    #ifdef ame_ArduinoIDE
 					bitWrite(f_byte, xo, !bitRead(f_byte, xo));
+                    #elif defined(ame_Windows)
+
+                    #else
+
+                    #endif
 				}
 			}
 			ByteArrayLog(ame_Log_EndMethod, "toggleAll", "println", "");
@@ -226,36 +244,54 @@ class ByteArray : public Array<ame_Byte>, public Printable{
 
 		virtual void toggleByte(int cell){
 			ByteArrayLog(ame_Log_StartMethod, "toggleByte", "println", "");
-			byte* c = this->getPointer(cell);
+			ame_Byte* c = this->getPointer(cell);
 			if(c == nullptr){
 				return;
 			}
 			for(int x = 0; x < 8; x++){
+                #ifdef ame_ArduinoIDE
 				bitWrite((*c), x, !bitRead((*c), x));
+                #elif defined(ame_Windows)
+
+                #else
+
+                #endif
 			}
 			ByteArrayLog(ame_Log_EndMethod, "toggleByte", "println", "");
 		}
 
 		virtual void toggleBit(int cell, int bit){
 			ByteArrayLog(ame_Log_StartMethod, "toggleBit", "println", "");
-			byte* c = this->getPointer(cell);
+			ame_Byte* c = this->getPointer(cell);
 			if(c == nullptr){
 				return;
 			}
+            #ifdef ame_ArduinoIDE
 			bitWrite((*c), bit, !bitRead((*c), bit));
+            #elif defined(ame_Windows)
+
+            #else
+
+            #endif
 			ByteArrayLog(ame_Log_EndMethod, "toggleBit", "println", "");
 		}
 
 		virtual bool getBit(int cell, int bit) const {
 			const_ByteArrayLog(ame_Log_StartMethod, "getBit", "println", "");
-			byte* c = this->getPointer(cell);
+			ame_Byte* c = this->getPointer(cell);
 			if(c == nullptr){
 				return false;
 			}
 			const_ByteArrayLog(ame_Log_EndMethod, "getBit", "println", "");
+            #ifdef ame_ArduinoIDE
 			return bitRead((*c), bit);
+            #elif defined(ame_Windows)
+
+            #else
+
+            #endif
 		}
-		
+
 		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
 		virtual cppObjectClass* getClass(){return Class<ByteArray>::getClass();}
 		virtual bool instanceof(cppObjectClass* cls){

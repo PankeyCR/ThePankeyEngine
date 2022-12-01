@@ -2,6 +2,7 @@
 #ifndef ame_Print_hpp
 #define ame_Print_hpp
 
+#include "ame_Byte.hpp"
 #include "ame_Printable.hpp"
 #include "ame_String.hpp"
 
@@ -104,6 +105,7 @@ class Print{
     // should be overriden by subclasses with buffering
     virtual int availableForWrite() { return 0; }
 
+    virtual size_t print(const ame_Byte& a_value){ return 0; }
     virtual size_t print(const bool& a_value){ return 0; }
     virtual size_t print(const float& a_value){ return 0; }
     virtual size_t print(const ame_String &){ return 0; }
