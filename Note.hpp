@@ -255,10 +255,10 @@ class Note : public Array<char>, public Printable{
 			NoteLog(ame_Log_StartMethod, "Constructor", "println", "start");
 			NoteLog(ame_Log_Statement, "Constructor", "println", "const byte& i");
 			this->m_pos = byteCharSize(ame_DECIMAL, c_byte);
-			this->m_size = getAvailableSize(this->m_pos);
+			this->m_size = getAvailableSize(this->getPosition());
 
 			this->m_t_value = this->create(this->m_size);
-			byteToCharPointer(c_byte, this->m_pos, 0, this->m_t_value, ame_DECIMAL, true);
+			byteToCharPointer(c_byte, this->getPosition(), 0, this->m_t_value, ame_DECIMAL, true);
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Position:");
 			NoteLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
 			NoteLog(ame_Log_Statement, "Constructor", "println", "Array Size:");
@@ -270,11 +270,11 @@ class Note : public Array<char>, public Printable{
 			NoteLog(ame_Log_StartMethod, "Constructor", "println", "start");
 			NoteLog(ame_Log_Statement, "Constructor", "println", "const byte& c_byte, int a_type");
 			this->m_pos = byteCharSize(a_type, c_byte);
-			this->m_size = getAvailableSize(this->m_pos);
+			this->m_size = getAvailableSize(this->getPosition());
 
 			this->m_t_value = this->create(this->m_size);
-			byteToCharPointer(c_byte, this->m_pos, 0, this->m_t_value, a_type, true);
-			NoteLog(ame_Log_Statement, "Constructor", "println", this->m_pos);
+			byteToCharPointer(c_byte, this->getPosition(), 0, this->m_t_value, a_type, true);
+			NoteLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
 			NoteLog(ame_Log_Statement, "Constructor", "println", this->m_size);
 			NoteLog(ame_Log_EndMethod, "Constructor", "println", "");
 		}
@@ -288,7 +288,7 @@ class Note : public Array<char>, public Printable{
 				this->createArray(i_pos);
 				this->copyPointer(source.c_str(), i_pos);
 				this->copyEndValue();
-				NoteLog(ame_Log_Statement, "Constructor", "println", this->m_pos);
+				NoteLog(ame_Log_Statement, "Constructor", "println", this->getPosition());
 				NoteLog(ame_Log_Statement, "Constructor", "println", this->m_size);
 				NoteLog(ame_Log_Statement, "Constructor", "println", this->m_t_value);
 			}
@@ -731,7 +731,7 @@ class Note : public Array<char>, public Printable{
 		}
 
 		virtual void fix(){
-			if(this->getPosition() == this->getSize()){
+			if(this->m_pos == this->getSize()){
 				return;
 			}
 			for(int x = this->getPosition(); x < this->getSize(); x++){
@@ -881,7 +881,7 @@ class Note : public Array<char>, public Printable{
 
 		bool toBool(){
 			NoteLog(ame_Log_StartMethod, "toBool", "println", "");
-			if(this->getPosition() == 1){
+			if(this->m_pos == 1){
 				if(this->get(0) == '1'){
 					NoteLog(ame_Log_EndMethod, "toInt", "println", "true");
 					return true;
@@ -1205,6 +1205,252 @@ class Note : public Array<char>, public Printable{
 			}
 			NoteLog(ame_Log_EndMethod, "getOrder", "println", "");
 			return -1;
+		}
+
+		int getSplitSize(char a_split){
+			NoteLog(ame_Log_StartMethod, "getSplitSize", "println", "");
+			NoteLog(ame_Log_Statement, "getSplitSize", "println", "~Note");
+			if(this->isEmpty()){
+				return 0;
+			}
+			int i_size = 1;
+			for(int x = 0; x < this->getPosition(); x++){
+				char f_char = this->get(x);
+				if(f_char == a_split){
+					i_size++;
+				}
+			}
+
+			NoteLog(ame_Log_EndMethod, "getSplitSize", "println", "");
+			return i_size;
+		}
+
+		int getSizeNoStartNoEnd(char a_split){
+			NoteLog(ame_Log_StartMethod, "getSizeNoStartNoEnd", "println", "");
+			NoteLog(ame_Log_Statement, "getSizeNoStartNoEnd", "println", "~Note");
+			int i_size = 0;
+			for(int x = 0; x < length(); x++){
+				char f_char = this->get(x);
+				if(f_char == a_split){
+					i_size++;
+					continue;
+				}
+			}
+
+			NoteLog(ame_Log_EndMethod, "getSizeNoStartNoEnd", "println", "");
+			return i_size + 1;
+		}
+
+		int getLineSize(){
+			NoteLog(ame_Log_StartMethod, "getLineSize", "println", "");
+			NoteLog(ame_Log_Statement, "getLineSize", "println", "");
+			int i_size = 0;
+			int x_c = 0;
+			for(int x = 0; x < getPosition(); x++){
+				char f_char = this->get(x);
+				if(f_char == '\n'){
+					i_size++;
+					x_c = 0;
+					continue;
+				}
+				x_c++;
+			}
+			if(x_c == 0){
+				return i_size;
+			}
+			if(x_c > 0){
+				return i_size + 1;
+			}
+			NoteLog(ame_Log_EndMethod, "getLineSize", "println", "");
+			return i_size;
+		}
+
+		Note getLine(int l, char end){
+			NoteLog(ame_Log_StartMethod, "getLine", "println", "");
+			NoteLog(ame_Log_Statement, "getLine", "println", "");
+			Note c = "";
+			int i_size = 0;
+			for(int x = 0; x < length(); x++){
+				char f_char = this->get(x);
+				if(f_char == end){
+					if(i_size == l){
+						NoteLog(ame_Log_EndMethod, "getLine", "println", "");
+						return c;
+					}
+					c = "";
+					i_size++;
+					continue;
+				}
+				c.addLocalValue(f_char);
+			}
+
+			NoteLog(ame_Log_EndMethod, "getLine", "println", "");
+			return Note();
+		}
+
+		void removeLine(int a_line, char a_end){
+			NoteLog(ame_Log_StartMethod, "removeLine", "println", "");
+			NoteLog(ame_Log_Statement, "removeLine", "println", "");
+			if(a_line == -1){
+				NoteLog(ame_Log_EndMethod, "removeLine", "println", "");
+				return;
+			}
+			Note i_newTxt;
+			int xLine = 0;
+			for(int x = 0; x < length(); x++){
+				char f_char = this->get(x);
+				if(f_char == a_end){
+					xLine++;
+					if(i_newTxt == ""){
+						continue;
+					}
+					char cnewTxt = i_newTxt.get(i_newTxt.length()-1);
+					if(!i_newTxt.isEmpty() && cnewTxt != a_end){
+						i_newTxt.addLocalValue(a_end);
+					}
+					continue;
+				}
+				if(xLine != a_line){
+					i_newTxt.addLocalValue(f_char);
+				}
+			}
+
+			NoteLog(ame_Log_EndMethod, "removeLine", "println", "");
+			this->clear();
+			this->addLocalNote(i_newTxt);
+		}
+
+		void removeLine(Note a_txt, char a_split, char a_end){
+			NoteLog(ame_Log_StartMethod, "removeLine", "println", "");
+			NoteLog(ame_Log_Statement, "removeLine", "println", "~Note");
+			int i_order = getOrder(a_txt, a_split, a_end);
+			if(i_order == -1){
+				NoteLog(ame_Log_EndMethod, "removeLine", "println", "");
+				return;
+			}
+			removeLine(i_order, a_end);
+
+			NoteLog(ame_Log_EndMethod, "removeLine", "println", "");
+		}
+
+		void writeLine(int line, Note txt, char end){
+			NoteLog(ame_Log_StartMethod, "writeLine", "println", "");
+			NoteLog(ame_Log_Statement, "writeLine", "println", "");
+			Note newTxt = "";
+			int xLine = 0;
+			int xTxt = 0;
+			int xText = 0;
+			for(int x = 0; x < length() + txt.length(); x++){
+				char ctext = get(xText);
+				char ctxt = txt.get(xTxt);
+				if(ctext == end){
+					xLine++;
+					xText++;
+					newTxt.addLocalValue(end);
+					continue;
+				}
+				if((xLine == line || xText >= length())){
+					newTxt.addLocalValue(ctxt);
+					xTxt++;
+					if(xTxt == txt.length()){
+						newTxt.addLocalValue('\n');
+						xLine++;
+					}
+				}else{
+					newTxt.addLocalValue(ctext);
+					xText++;
+				}
+			}
+			
+			this->clear();
+			this->addLocalNote(newTxt);
+
+			NoteLog(ame_Log_EndMethod, "writeLine", "println", "");
+		}
+
+		void writeLine(Note cmdt, Note txt, char split, char end){
+			NoteLog(ame_Log_StartMethod, "writeLine", "println", "");
+			NoteLog(ame_Log_Statement, "writeLine", "println", "~Note");
+			int line = getOrder(cmdt, split, end);
+			if(line == -1){
+				NoteLog(ame_Log_EndMethod, "writeLine", "println", "");
+				return;
+			}
+			writeLine(line, txt, end);
+			removeLine(line + 1, end);
+
+			NoteLog(ame_Log_EndMethod, "writeLine", "println", "");
+		}
+
+		Note getCommand(int l, char split, char end){
+			NoteLog(ame_Log_StartMethod, "getCommand", "println", "");
+			NoteLog(ame_Log_Statement, "getCommand", "println", "~Note");
+			Note c = "";
+			bool init = true;
+			int gcmd = 0;
+			for(int x = 0; x < length(); x++){
+				char cr = get(x);
+				if(cr == end){
+					if(gcmd == l){
+						NoteLog(ame_Log_EndMethod, "getCommand", "println", "");
+						return c;
+					}
+					init = true;
+					gcmd++;
+					c = "";
+					continue;
+				}
+				if(init){
+					if(cr == split){
+						if(gcmd == l){
+							NoteLog(ame_Log_EndMethod, "getCommand", "println", "");
+							return c;
+						}
+						init = false;
+						c = "";
+						continue;
+					}
+					c.addLocalValue(cr);
+				}
+			}
+
+			NoteLog(ame_Log_EndMethod, "getCommand", "println", "");
+			return "";
+		}
+
+		Note getArgument(int l, char split, char end){
+			NoteLog(ame_Log_StartMethod, "getArgument", "println", "");
+			NoteLog(ame_Log_Statement, "getArgument", "println", "~Note");
+			Note c = "";
+			bool init = false;
+			int gcmd = 0;
+			for(int x = 0; x < length(); x++){
+				char cr = get(x);
+				if(cr == end){
+					if(gcmd == l){
+						NoteLog(ame_Log_EndMethod, "getArgument", "println", "");
+						return c;
+					}
+					gcmd++;
+					c = "";
+					init = false;
+					continue;
+				}
+				if(cr == split && !init){
+					init = true;
+					continue;
+				}
+				if(init && gcmd == l){
+					c.addLocalValue(cr);
+				}
+			}
+			if(gcmd == l){
+				NoteLog(ame_Log_EndMethod, "getArgument", "println", "");
+				return c;
+			}
+
+			NoteLog(ame_Log_EndMethod, "getArgument", "println", "");
+			return Note();
 		}
 		
 		virtual int getIndex(Note a_search){

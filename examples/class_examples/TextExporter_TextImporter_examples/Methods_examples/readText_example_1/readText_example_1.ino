@@ -2,6 +2,7 @@
 #include "DefaultMonkeyFile.hpp"
 #include "TextExporter.hpp"
 #include "TextImporter.hpp"
+#include "System.hpp"
 
 using namespace ame;
 
@@ -22,7 +23,14 @@ void setup() {
 }
 
 void loop() {
+  ame_Debuging(ame_Log_StartLoop, "loop");
+  
   TextImporter importer = file.readText("memory.txt");
   int number = importer.read("parent", -1);
-  Serial.println(number);
+  System::console.println(number);
+  
+  ame_Debuging(ame_Log_EndLoop, "loop");
 }
+
+
+//

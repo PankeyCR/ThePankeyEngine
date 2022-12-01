@@ -146,7 +146,7 @@ class MonkeyImporter IMPLEMENTATION_cppObject {
 		virtual void addType(PrimitiveMap<ElementId,Note>& m_idsType)=0;
 		
 		virtual bool containType(ElementId id)=0;
-		virtual PrimitiveMap<ElementId,Note>& getIdTypes()=0;
+		virtual PrimitiveMap<ElementId,Note>& getTypes()=0;
 		virtual Note getType(ElementId id)=0;
 		virtual int getTypeSize()=0;
 		
@@ -186,8 +186,6 @@ class MonkeyImporter IMPLEMENTATION_cppObject {
 		virtual void write(MonkeyFile* file, Note path)=0;
 		
 		virtual void fix()=0;
-		
-		virtual Note toNote()=0;
 	protected:
 };
 

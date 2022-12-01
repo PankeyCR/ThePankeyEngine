@@ -44,8 +44,11 @@
 	#include "Arduino.h"
 #endif
 
-#include "ElementId.hpp"
+#include "Note.hpp"
+#include "NoteHelper.hpp"
 #include "ByteArray.hpp"
+#include "ByteArrayHelper.hpp"
+#include "ElementId.hpp"
 #include "LinkedList.hpp"
 #include "PrimitiveList.hpp"
 #include "PrimitiveMap.hpp"
@@ -389,7 +392,7 @@ class TextExporter : public MonkeyExporter{
 			m_text += a_id.getId() + Note(" ");
 			for(int x = 0; x < a_value.getPosition(); x++){
 				Note v = *a_value.getByPosition(x);
-				if(x == value.getPosition() - 1){
+				if(x == a_value.getPosition() - 1){
 					m_text += v + Note("\n");
 				}else{
 					m_text += v + Note(",");
@@ -523,7 +526,7 @@ class TextExporter : public MonkeyExporter{
 			
 			for(int x = 0; x < a_value.getPosition(); x++){
 				Note k = *a_value.getKeyByPosition(x);
-				Note v = *a_value.getByPosition(x);
+				Note v = *a_value.getValueByPosition(x);
 				if(x == a_value.getPosition() - 1){
 					i_var_key += k + Note("\n");
 					i_var_value += v + Note("\n");
@@ -592,7 +595,7 @@ class TextExporter : public MonkeyExporter{
 			
 			for(int x = 0; x < a_value.getPosition(); x++){
 				Note k = *a_value.getKeyByPosition(x);
-				bool v = *a_value.getByPosition(x);
+				bool v = *a_value.getValueByPosition(x);
 				if(x == a_value.getPosition() - 1){
 					i_var_key += k + Note("\n");
 					i_var_value += Note(v) + Note("\n");
@@ -634,7 +637,7 @@ class TextExporter : public MonkeyExporter{
 			
 			for(int x = 0; x < a_value.getPosition(); x++){
 				ElementId k = *a_value.getKeyByPosition(x);
-				Note v = *a_value.getByPosition(x);
+				Note v = *a_value.getValueByPosition(x);
 				if(x == a_value.getPosition() - 1){
 					i_var_key += k.getId() + Note("\n");
 					i_var_value += v + Note("\n");
@@ -665,7 +668,7 @@ class TextExporter : public MonkeyExporter{
 		/////////////////////////////////////////////////////////////////// ids
 		virtual void addId(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "addId",  "println", "");
-			ids.add(a_id);
+			m_ids.addLocalNote(a_id.getId());
 			TextExporterLog(ame_Log_EndMethod, "addId", "println", "");
 		}
 		
@@ -708,7 +711,7 @@ class TextExporter : public MonkeyExporter{
 		
 		virtual void removeId(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "removeId",  "println", "");
-			m_ids_list.removeDeleteByLValua(a_id);
+			m_ids_list.removeDeleteByLValue(a_id);
 			TextExporterLog(ame_Log_EndMethod, "removeId", "println", "");
 		}
 		
@@ -852,16 +855,16 @@ class TextExporter : public MonkeyExporter{
 			return m_types_map.getPosition();
 		}
 		
-		virtual void removeIdType(ElementId a_id){
+		virtual void removeType(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "removeIdType",  "println", "");
-			m_types_map.removeDeleteByLValue(a_id);
+			m_types_map.removeDeleteByKeyLValue(a_id);
 			TextExporterLog(ame_Log_EndMethod, "removeIdType", "println", "");
 		}
 		
 		virtual void removeTypes(PrimitiveMap<ElementId,Note>& a_types_map){
 			TextExporterLog(ame_Log_StartMethod, "removeTypes",  "println", "");
 			for(int x = 0; x < a_types_map.getPosition(); x++){
-				m_types_map.removeDeleteByLValue(a_types_map.getKey(x));
+				m_types_map.removeDeleteByKeyLValue(a_types_map.getKey(x));
 			}
 			TextExporterLog(ame_Log_EndMethod, "removeTypes", "println", "");
 		}
@@ -892,7 +895,7 @@ class TextExporter : public MonkeyExporter{
 			
 			for(int x = 0; x < m_types_map.getPosition(); x++){
 				ElementId k = *m_types_map.getKeyByPosition(x);
-				Note v = *m_types_map.getByPosition(x);
+				Note v = *m_types_map.getValueByPosition(x);
 				if(x == m_types_map.getPosition() - 1){
 					i_var_key += k.getId() + Note("\n");
 					i_var_value += v + Note("\n");
@@ -923,7 +926,7 @@ class TextExporter : public MonkeyExporter{
 			
 			for(int x = 0; x < m_types_map.getPosition(); x++){
 				ElementId k = *m_types_map.getKeyByPosition(x);
-				Note v = *m_types_map.getByPosition(x);
+				Note v = *m_types_map.getValueByPosition(x);
 				if(x == m_types_map.getPosition() - 1){
 					i_var_key += k.getId() + Note("\n");
 					i_var_value += v + Note("\n");
@@ -940,7 +943,7 @@ class TextExporter : public MonkeyExporter{
 		
 		virtual void eraseType(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "eraseType",  "println", "");
-			m_types_map.removeDeleteByLValue(a_id);
+			m_types_map.removeDeleteByKeyLValue(a_id);
 			
 			if(m_types_map.getPosition() == 0){
 				m_types.clear();
@@ -959,7 +962,7 @@ class TextExporter : public MonkeyExporter{
 			
 			for(int x = 0; x < m_types_map.getPosition(); x++){
 				ElementId k = *m_types_map.getKeyByPosition(x);
-				Note v = *m_types_map.getByPosition(x);
+				Note v = *m_types_map.getValueByPosition(x);
 				if(x == m_types_map.getPosition() - 1){
 					i_var_key += k.getId() + Note("\n");
 					i_var_value += v + Note("\n");
@@ -1028,14 +1031,14 @@ class TextExporter : public MonkeyExporter{
 		
 		virtual void removeTag(ElementId m_id){
 			TextExporterLog(ame_Log_StartMethod, "removeTag",  "println", "");
-			m_tags_map.removeDeleteByLValue(m_id);
+			m_tags_map.removeDeleteByKeyLValue(m_id);
 			TextExporterLog(ame_Log_EndMethod, "removeTag", "println", "");
 		}
 		
 		virtual void removeTags(PrimitiveMap<ElementId,Note>& a_types){
 			TextExporterLog(ame_Log_StartMethod, "removeTags",  "println", "");
 			for(int x = 0; x < a_types.getPosition(); x++){
-				m_tags_map.removeDeleteByLValue(a_types.getKey(x));
+				m_tags_map.removeDeleteByKeyLValue(a_types.getKey(x));
 			}
 			TextExporterLog(ame_Log_EndMethod, "removeTags", "println", "");
 		}
@@ -1065,7 +1068,7 @@ class TextExporter : public MonkeyExporter{
 			
 			for(int x = 0; x < m_tags_map.getPosition(); x++){
 				ElementId k = *m_tags_map.getKeyByPosition(x);
-				Note v = *m_tags_map.getByPosition(x);
+				Note v = *m_tags_map.getValueByPosition(x);
 				if(x == m_tags_map.getPosition() - 1){
 					i_var_key += k.getId() + Note("\n");
 					i_var_value += v + Note("\n");
@@ -1096,7 +1099,7 @@ class TextExporter : public MonkeyExporter{
 			
 			for(int x = 0; x < m_tags_map.getPosition(); x++){
 				ElementId k = *m_tags_map.getKeyByPosition(x);
-				Note v = *m_tags_map.getByPosition(x);
+				Note v = *m_tags_map.getValueByPosition(x);
 				if(x == m_tags_map.getPosition() - 1){
 					i_var_key += k.getId() + Note("\n");
 					i_var_value += v + Note("\n");
@@ -1113,7 +1116,7 @@ class TextExporter : public MonkeyExporter{
 		
 		virtual void eraseTag(ElementId a_id){
 			TextExporterLog(ame_Log_StartMethod, "eraseTag",  "println", "");
-			m_tags_map.removeDeleteByLValue(a_id);
+			m_tags_map.removeDeleteByKeyLValue(a_id);
 			
 			if(m_tags_map.getPosition() == 0){
 				m_tags.clear();
@@ -1127,12 +1130,12 @@ class TextExporter : public MonkeyExporter{
 			
 			ElementId i_valueId = i_id.child("value");
 			
-			Note var_key = i_keyId.getId() + Note(" ");
-			Note var_value = i_valueId.getId() + Note(" ");
+			Note i_var_key = i_keyId.getId() + Note(" ");
+			Note i_var_value = i_valueId.getId() + Note(" ");
 			
 			for(int x = 0; x < m_tags_map.getPosition(); x++){
 				ElementId k = *m_tags_map.getKeyByPosition(x);
-				Note v = *m_tags_map.getByPosition(x);
+				Note v = *m_tags_map.getValueByPosition(x);
 				if(x == m_tags_map.getPosition() - 1){
 					i_var_key += k.getId() + Note("\n");
 					i_var_value += v + Note("\n");
@@ -1191,7 +1194,7 @@ class TextExporter : public MonkeyExporter{
 				return;
 			}
 			
-			a_file->fastWriteText(this->toNote(), a_path);
+			a_file->fastWriteText(this->getExporterText(), a_path);
 			TextExporterLog(ame_Log_EndMethod, "write", "println", "");
 		}
 		
@@ -1251,9 +1254,9 @@ class TextExporter : public MonkeyExporter{
 		
 		virtual void fix(){
 			TextExporterLog(ame_Log_StartMethod, "fix",  "println", "");
-			m_tags = read(ElementId("transporter.tags"), PrimitiveMap<ElementId,Note>());
-			m_ids = read(ElementId("transporter.ids"), PrimitiveList<ElementId>());
-			m_types = read(ElementId("transporter.types"), PrimitiveMap<ElementId,Note>());
+			m_ids_list = this->read(ElementId("transporter.ids"), PrimitiveList<ElementId>());
+			m_types_map = this->read(ElementId("transporter.types"), PrimitiveMap<ElementId,Note>());
+			m_tags_map = this->read(ElementId("transporter.tags"), PrimitiveMap<ElementId,Note>());
 			
 			eraseIds();
 			eraseTypes();
@@ -1277,12 +1280,6 @@ class TextExporter : public MonkeyExporter{
 			TextExporterLog(ame_Log_Statement, "fix",  "println", Note("types ") + m_types);
 			TextExporterLog(ame_Log_Statement, "fix",  "println", Note("text ") + m_text);
 			TextExporterLog(ame_Log_EndMethod, "fix", "println", "");
-		}
-		
-		virtual Note toNote(){
-			TextExporterLog(ame_Log_StartMethod, "toNote", "println", "");
-			TextExporterLog(ame_Log_EndMethod, "toNote", "println", "");
-			return m_tags + m_ids + m_types + m_text;
 		}
 		
 	protected:

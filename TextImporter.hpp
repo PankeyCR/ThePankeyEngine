@@ -44,8 +44,11 @@
 	#include "Arduino.h"
 #endif
 
-#include "ElementId.hpp"
+#include "Note.hpp"
+#include "NoteHelper.hpp"
 #include "ByteArray.hpp"
+#include "ByteArrayHelper.hpp"
+#include "ElementId.hpp"
 #include "LinkedList.hpp"
 #include "PrimitiveList.hpp"
 #include "PrimitiveMap.hpp"
@@ -138,7 +141,7 @@ class TextImporter : public MonkeyImporter{
     	virtual ByteArray read(ElementId a_id, ByteArray a_value){
 			TextImporterLog(ame_Log_StartMethod, "read ByteArray",  "println", toNote(a_value));
 			
-			int i_order = m_text.getOrder(id.getId(), m_split, m_end);
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
 				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
 				return a_value;
@@ -154,13 +157,14 @@ class TextImporter : public MonkeyImporter{
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
 				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
-				return value;
+				return a_value;
 			}
 			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
 			LinkedList<ByteArray> i_list;
-			int i_size = arg.getSizeNoStartNoEnd( m_list_divide );
+			int i_size = i_arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < i_size; x++){
-				ByteArray f_byte_array = i_arg.split(x, m_list_divide);
+				Note f_note = i_arg.split(x, m_list_divide);
+				ByteArray f_byte_array = toByteArray(f_note);
 				i_list.addLValue(f_byte_array);
 			}
 			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
@@ -179,7 +183,8 @@ class TextImporter : public MonkeyImporter{
 			PrimitiveList<ByteArray> i_list;
 			int i_size = i_arg.getSizeNoStartNoEnd( m_list_divide );
 			for(int x = 0; x < i_size; x++){
-				ByteArray f_byte_array = i_arg.split(x, m_list_divide);
+				Note f_note = i_arg.split(x, m_list_divide);
+				ByteArray f_byte_array = toByteArray(f_note);
 				i_list.addLValue(f_byte_array);
 			}
 			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
@@ -210,7 +215,7 @@ class TextImporter : public MonkeyImporter{
 			}
 			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
 			LinkedList<bool> i_list;
-			int s = arg.getSizeNoStartNoEnd(m_list_divide);
+			int s = i_arg.getSizeNoStartNoEnd(m_list_divide);
 			for(int x = 0; x < s; x++){
 				bool f_value = i_arg.split(x, m_list_divide) == "1";
 				i_list.addLValue(f_value);
@@ -248,13 +253,13 @@ class TextImporter : public MonkeyImporter{
 			if(r.length() == 0){
 				return a_value;
 			}
-			return r.charAt(0);
+			return r.get(0);
 		}
 		
     	virtual LinkedList<char> read(ElementId a_id, LinkedList<char> a_value){
 			TextImporterLog(ame_Log_StartMethod, "read LinkedList char",  "println", "");
 			
-			int i_order = m_text.getOrder(id.getId(), m_split, m_end);
+			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
 				return a_value;
 			}
@@ -440,7 +445,7 @@ class TextImporter : public MonkeyImporter{
 			}
 			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
 			LinkedList<float> i_list;
-			int s = arg.getSizeNoStartNoEnd( m_list_divide);
+			int s = i_arg.getSizeNoStartNoEnd( m_list_divide);
 			for(int x = 0; x < s; x++){
 				float f_value = i_arg.split(x, m_list_divide).toFloat();
 				i_list.addLValue(f_value);
@@ -698,13 +703,13 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		/////////////////////////////////////////////////////////////////// idType
-		virtual void addIdType(ElementId a_id, Note a_type){
-			TextImporterLog(ame_Log_StartMethod, "addIdType",  "println", "");
+		virtual void addType(ElementId a_id, Note a_type){
+			TextImporterLog(ame_Log_StartMethod, "addType",  "println", "");
 			m_types_map.addLValues(a_id, a_type);
 		}
 		
 		virtual void addType(PrimitiveMap<ElementId,Note>& a_types_map){
-			TextImporterLog(ame_Log_StartMethod, "addIdType",  "println", "");
+			TextImporterLog(ame_Log_StartMethod, "addType",  "println", "");
 			for(int x = 0; x < a_types_map.getPosition(); x++){
 				m_types_map.addLValues(a_types_map.getKey(x), a_types_map.getValue(x));
 			}
@@ -732,13 +737,13 @@ class TextImporter : public MonkeyImporter{
 		
 		virtual void removeType(ElementId m_id){
 			TextImporterLog(ame_Log_StartMethod, "removeIdType",  "println", "");
-			m_types_map.removeDeleteByLValue(m_id);
+			m_types_map.removeDeleteByKeyLValue(m_id);
 		}
 		
 		virtual void removeTypes(PrimitiveMap<ElementId,Note>& a_types_map){
 			TextImporterLog(ame_Log_StartMethod, "removeIdTypes",  "println", "");
 			for(int x = 0; x < a_types_map.getPosition(); x++){
-				m_types_map.removeDeleteByLValue(a_types_map.getKey(x));
+				m_types_map.removeDeleteByKeyLValue(a_types_map.getKey(x));
 			}
 		}
 		
@@ -780,12 +785,12 @@ class TextImporter : public MonkeyImporter{
 			m_types += i_var_value;
 		}
 		
-		virtual void writeIdType(ElementId i_id, Note type){
+		virtual void writeType(ElementId a_id, Note a_type){
 			TextImporterLog(ame_Log_StartMethod, "writeIdType",  "println", "");
 			
-			m_types_map.addLValues(i_id, type);
+			m_types_map.addLValues(a_id, a_type);
 			
-			ElementId i_id = ElementId("transporter.idsType");
+			ElementId i_id = ElementId("transporter.types");
 			
 			ElementId i_key_id = i_id.child("key");
 			
@@ -796,7 +801,7 @@ class TextImporter : public MonkeyImporter{
 			
 			for(int x = 0; x < m_types_map.getPosition(); x++){
 				ElementId k = *m_types_map.getKeyByPosition(x);
-				Note v = *m_types_map.getByPosition(x);
+				Note v = *m_types_map.getValueByPosition(x);
 				if(x == m_types_map.getPosition() - 1){
 					i_var_key += k.getId() + Note("\n");
 					i_var_value += v + Note("\n");
@@ -810,9 +815,9 @@ class TextImporter : public MonkeyImporter{
 			m_types += i_var_value;
 		}
 		
-		virtual void eraseIdType(ElementId i_id){
+		virtual void eraseType(ElementId a_id){
 			TextImporterLog(ame_Log_StartMethod, "eraseIdType",  "println", "");
-			m_types_map.removeDeleteByLValue(i_id);
+			m_types_map.removeDeleteByKeyLValue(a_id);
 			
 			if(m_types_map.getPosition() == 0){
 				m_types.clear();
@@ -830,7 +835,7 @@ class TextImporter : public MonkeyImporter{
 			
 			for(int x = 0; x < m_types_map.getPosition(); x++){
 				ElementId k = *m_types_map.getKeyByPosition(x);
-				Note v = *m_types_map.getByPosition(x);
+				Note v = *m_types_map.getValueByPosition(x);
 				if(x == m_types_map.getPosition() - 1){
 					i_var_key += k.getId() + Note("\n");
 					i_var_value += v + Note("\n");
@@ -844,12 +849,12 @@ class TextImporter : public MonkeyImporter{
 			m_types += i_var_value;
 		}
 		
-		virtual void eraseIdTypes(){
+		virtual void eraseTypes(){
 			TextImporterLog(ame_Log_StartMethod, "eraseIdTypes",  "println", "");
 			m_types.clear();
 		}
 		
-		virtual void clearIdTypes(){
+		virtual void clearTypes(){
 			TextImporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
 			m_types.clear();
 			m_types_map.resetDelete();
@@ -890,13 +895,13 @@ class TextImporter : public MonkeyImporter{
 		
 		virtual void removeTag(ElementId m_id){
 			TextImporterLog(ame_Log_StartMethod, "removeTag",  "println", "");
-			m_tags_map.removeDeleteByLValue(m_id);
+			m_tags_map.removeDeleteByKeyLValue(m_id);
 		}
 		
 		virtual void removeTags(PrimitiveMap<ElementId,Note>& m_idsType){
 			TextImporterLog(ame_Log_StartMethod, "removeTags",  "println", "");
 			for(int x = 0; x < m_idsType.getPosition(); x++){
-				m_tags_map.removeDeleteByLValue(m_idsType.getKey(x));
+				m_tags_map.removeDeleteByKeyLValue(m_idsType.getKey(x));
 			}
 		}
 		
@@ -938,10 +943,10 @@ class TextImporter : public MonkeyImporter{
 			m_tags += i_var_value;
 		}
 		
-		virtual void writeTag(ElementId i_id, Note type){
+		virtual void writeTag(ElementId a_id, Note a_type){
 			TextImporterLog(ame_Log_StartMethod, "writeTag",  "println", "");
 			
-			m_tags_map.addLValues(i_id, type);
+			m_tags_map.addLValues(a_id, a_type);
 			
 			ElementId i_id = ElementId("transporter.tags");
 			
@@ -968,9 +973,9 @@ class TextImporter : public MonkeyImporter{
 			m_tags += i_var_value;
 		}
 		
-		virtual void eraseTag(ElementId i_id){
+		virtual void eraseTag(ElementId a_id){
 			TextImporterLog(ame_Log_StartMethod, "eraseTag",  "println", "");
-			m_tags_map.removeDeleteByLValue(i_id);
+			m_tags_map.removeDeleteByKeyLValue(a_id);
 			
 			if(m_tags_map.getPosition() == 0){
 				m_tags.clear();
@@ -1087,9 +1092,9 @@ class TextImporter : public MonkeyImporter{
 		
 		virtual void fix(){
 			TextImporterLog(ame_Log_StartMethod, "fix",  "println", "");
-			m_ids = read(ElementId("transporter.ids"), PrimitiveList<ElementId>());
-			m_types = read(ElementId("transporter.types"), PrimitiveMap<ElementId,Note>());
-			m_tags = read(ElementId("transporter.tags"), PrimitiveMap<ElementId,Note>());
+			m_ids_list = read(ElementId("transporter.ids"), PrimitiveList<ElementId>());
+			m_types_map = read(ElementId("transporter.types"), PrimitiveMap<ElementId,Note>());
+			m_tags_map = read(ElementId("transporter.tags"), PrimitiveMap<ElementId,Note>());
 			
 			eraseIds();
 			eraseTypes();
