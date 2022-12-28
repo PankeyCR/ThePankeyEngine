@@ -104,6 +104,12 @@ class RawList : virtual public RawPointerList<T>{
 			RawListLog(ame_Log_EndMethod, "remove", "println", "");
 			return this->removeDeleteByLValue(a_value);
 		}
+		
+		virtual bool removeByIndex(int a_position){
+			RawListLog(ame_Log_StartMethod, "removeByIndex", "println", "");
+			RawListLog(ame_Log_EndMethod, "removeByIndex", "println", "");
+			return this->removeDeleteByPosition(a_position);
+		}
 
 		virtual bool removeDeleteByLValue(T a_value){
 			RawListLog(ame_Log_StartMethod, "removeDeleteByLValue", "println", "");

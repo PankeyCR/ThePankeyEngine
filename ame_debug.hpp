@@ -66,10 +66,10 @@ void debug(void* pointer, int location, ame_String name, ame_String method, ame_
 	// }
 	// System::console.println("debugging");
 	if(location == ame_Log_Statement){
-		   System::console.print("Loggin class: ");
-		   System::console.print(name);
-		   System::console.print(" - Method: ");
-		   System::console.println(method);
+		//    System::console.print("Loggin class: ");
+		//    System::console.print(name);
+		//    System::console.print(" - Method: ");
+		//    System::console.println(method);
 	}
 }
 

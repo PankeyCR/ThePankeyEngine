@@ -55,7 +55,7 @@ class LinkedRawPointerList : virtual public RawPointerList<T>{
 		virtual ~LinkedRawPointerList<T>(){
 			LinkedRawPointerListLog(ame_Log_StartMethod, "Destructor", "println", "");
 			LinkedListNode<T>* node = this->getStartNode();
-			this->deleteNodeList(node);
+			this->deleteListNode(node);
 			m_start = nullptr;
 			m_end = nullptr;
 			m_node = nullptr;
@@ -64,8 +64,8 @@ class LinkedRawPointerList : virtual public RawPointerList<T>{
 			LinkedRawPointerListLog(ame_Log_EndMethod, "Destructor", "println", "");
 		}
 		
-		virtual bool deleteNodeList(LinkedListNode<T>* a_node){
-			LinkedRawPointerListLog(ame_Log_StartMethod, "deleteNodeList", "println", "");
+		virtual bool deleteListNode(LinkedListNode<T>* a_node){
+			LinkedRawPointerListLog(ame_Log_StartMethod, "deleteListNode", "println", "");
 			if(a_node == nullptr){
 				return false;
 			}
@@ -84,7 +84,7 @@ class LinkedRawPointerList : virtual public RawPointerList<T>{
 				nextNode->last = nullptr;
 				node = nextNode;
 			}
-			LinkedRawPointerListLog(ame_Log_EndMethod, "deleteNodeList", "println", "");
+			LinkedRawPointerListLog(ame_Log_EndMethod, "deleteListNode", "println", "");
 			return true;
 		}
 		
@@ -553,9 +553,16 @@ class LinkedRawPointerList : virtual public RawPointerList<T>{
 			if(i_node == nullptr){
 				return nullptr;
 			}
-			i_node->removeNode();
 			T* i_value = i_node->get();
+			i_node->set(nullptr);
+			if(!this->isInOrder()){
+				LinkedRawPointerListLog(ame_Log_EndMethod, "removeByPointer", "println", "!this->isInOrder()");
+				return i_value;
+			}
+			i_node->removeNode();
 			delete i_node;
+			this->decrementPosition();
+			this->decrementSize();
 			LinkedRawPointerListLog(ame_Log_EndMethod, "removeByPointer", "println", "");
 			return i_value;
 		}
@@ -566,9 +573,16 @@ class LinkedRawPointerList : virtual public RawPointerList<T>{
 			if(i_node == nullptr){
 				return nullptr;
 			}
-			i_node->removeNode();
 			T* i_value = i_node->get();
+			i_node->set(nullptr);
+			if(!this->isInOrder()){
+				LinkedRawPointerListLog(ame_Log_EndMethod, "removeByPosition", "println", "!this->isInOrder()");
+				return i_value;
+			}
+			i_node->removeNode();
 			delete i_node;
+			this->decrementPosition();
+			this->decrementSize();
 			LinkedRawPointerListLog(ame_Log_EndMethod, "removeByPosition", "println", "");
 			return i_value;
 		}
@@ -578,8 +592,24 @@ class LinkedRawPointerList : virtual public RawPointerList<T>{
 		//cuts the list in 2 parts, it removes all nodes before the position a_position
 		virtual LinkedListNode<T>* cutBefore(int a_position){
 			LinkedRawPointerListLog(ame_Log_StartMethod, "cutBefore", "println", "");
-			if(this->isEmpty() || a_position == 0){
-				LinkedRawPointerListLog(ame_Log_StartMethod, "cutBefore", "println", "this->isEmpty() || a_position == 0");
+			if(this->isEmpty() || a_position <= 0){
+				LinkedRawPointerListLog(ame_Log_EndMethod, "cutBefore", "println", "this->isEmpty() || a_position == 0");
+				return nullptr;
+			}
+			if(!this->isInOrder()){
+				LinkedRawPointerListLog(ame_Log_Statement, "cutBefore", "println", "!this->isInOrder()");
+				LinkedListNode<T>* node = this->getNode(a_position);
+				LinkedListNode<T>* lastNode = nullptr;
+				for(int x = 0; node != nullptr; x++){
+					lastNode = node->last;
+					node->value = nullptr;
+					node = nullptr;
+					if(lastNode == nullptr){
+						break;
+					}
+					node = lastNode;
+				}
+				LinkedRawPointerListLog(ame_Log_EndMethod, "cutBefore", "println", "");
 				return nullptr;
 			}
 			if(a_position == this->getPosition() - 1){
@@ -613,7 +643,7 @@ class LinkedRawPointerList : virtual public RawPointerList<T>{
 			if(node == nullptr){
 				return false;
 			}
-			this->deleteNodeList(node);
+			this->deleteListNode(node);
 			LinkedRawPointerListLog(ame_Log_EndMethod, "cutDeleteBefore", "println", "");
 			return true;
 		}
@@ -623,6 +653,22 @@ class LinkedRawPointerList : virtual public RawPointerList<T>{
 			LinkedRawPointerListLog(ame_Log_StartMethod, "cutAfter", "println", "");
 			if(this->isEmpty() || a_position == this->getPosition() - 1){
 				LinkedRawPointerListLog(ame_Log_StartMethod, "cutAfter", "println", "this->isEmpty()");
+				return nullptr;
+			}
+			if(!this->isInOrder()){
+				LinkedRawPointerListLog(ame_Log_Statement, "cutBefore", "println", "!this->isInOrder()");
+				LinkedListNode<T>* node = this->getNode(a_position);
+				LinkedListNode<T>* nextNode = nullptr;
+				for(int x = 0; node != nullptr; x++){
+					nextNode = node->next;
+					node->value = nullptr;
+					node = nullptr;
+					if(nextNode == nullptr){
+						break;
+					}
+					node = nextNode;
+				}
+				LinkedRawPointerListLog(ame_Log_EndMethod, "cutBefore", "println", "");
 				return nullptr;
 			}
 			if(a_position == 0){
@@ -654,7 +700,7 @@ class LinkedRawPointerList : virtual public RawPointerList<T>{
 			if(node == nullptr){
 				return false;
 			}
-			this->deleteNodeList(node);
+			this->deleteListNode(node);
 			LinkedRawPointerListLog(ame_Log_EndMethod, "cutDeleteAfter", "println", "");
 			return false;
 		}

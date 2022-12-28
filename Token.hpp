@@ -1,10 +1,4 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Token)
-	#define Token_hpp
-#endif
-
 #ifndef Token_hpp
 #define Token_hpp
 #define Token_AVAILABLE
@@ -14,7 +8,7 @@
 #endif
 
 #ifdef ame_Windows
-
+	#include "ame_Printable.hpp"
 #endif
 
 #ifdef ame_ArduinoIDE
@@ -37,9 +31,6 @@ int line_Position;
 int list_Position;
 
 Token(){
-	name = "";
-	value = "";
-	info = "";
 	text_Position = -1;
 	line_Position = -1;
 	list_Position = -1;
@@ -71,15 +62,12 @@ Token(Note n, Note t, Note i){
 Token(Note n, Note t){
 	name = n;
 	value = t;
-	info = "";
 	text_Position = -1;
 	line_Position = -1;
 	list_Position = -1;
 }
 Token(const Note& n){
 	name = n;
-	value = "";
-	info = "";
 	text_Position = -1;
 	line_Position = -1;
 	list_Position = -1;
@@ -96,7 +84,6 @@ virtual void operator=(const Token& t){
 virtual bool operator==(Token b){return value == b.value;}
 virtual bool operator!=(Token b){return value != b.value;}
 
-#ifdef ame_ArduinoIDE
 size_t printTo(Print& p) const{
 	size_t i_size = 0;
 	i_size += p.print("Token( ");
@@ -114,7 +101,6 @@ size_t printTo(Print& p) const{
 	i_size += p.print(" )");
 	return i_size;
 }
-#endif
 
 Note toNote(){
 	return 	Note("Token( ") +

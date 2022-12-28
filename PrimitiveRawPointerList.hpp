@@ -278,11 +278,12 @@ class PrimitiveRawPointerList : virtual public RawPointerList<T>{
 			}
 			T* i_value = this->m_values[a_position];
 			this->m_values[a_position] = nullptr;
-			int i_iteration = this->getPosition();
-			this->decrementPosition();
-			if(!this->m_reorder){
+			if(!this->isInOrder()){
+				PrimitiveRawPointerListLog(ame_Log_EndMethod, "removeByPosition", "println", "!this->isInOrder()");
 				return i_value;
 			}
+			int i_iteration = this->getPosition();
+			this->decrementPosition();
 			for(int x = a_position + 1; x < i_iteration; x++){
 				this->m_values[x - 1] = this->m_values[x];
 			}
@@ -303,10 +304,12 @@ class PrimitiveRawPointerList : virtual public RawPointerList<T>{
 				this->m_values[x] = nullptr;
 				i_iteration++;
 			}
-			if(this->m_reorder){
-				for(int x = i_iteration; x < this->getPosition(); x++){
-					this->m_values[x - i_iteration] = this->m_values[x];
-				}
+			if(!this->isInOrder()){
+				PrimitiveRawPointerListLog(ame_Log_EndMethod, "removeFirstIndex", "println", "!this->isInOrder()");
+				return true;
+			}
+			for(int x = i_iteration; x < this->getPosition(); x++){
+				this->m_values[x - i_iteration] = this->m_values[x];
 			}
 			this->decrementPosition(i_iteration);
 			PrimitiveRawPointerListLog(ame_Log_EndMethod, "removeFirstIndex", "println", "");
@@ -325,6 +328,10 @@ class PrimitiveRawPointerList : virtual public RawPointerList<T>{
 				}
 				this->m_values[x] = nullptr;
 				i_iteration++;
+			}
+			if(!this->isInOrder()){
+				PrimitiveRawPointerListLog(ame_Log_EndMethod, "removeLastIndex", "println", "!this->isInOrder()");
+				return true;
 			}
 			this->decrementPosition(i_iteration);
 			PrimitiveRawPointerListLog(ame_Log_EndMethod, "removeLastIndex", "println", "");
@@ -391,11 +398,25 @@ class PrimitiveRawPointerList : virtual public RawPointerList<T>{
 			PrimitiveRawPointerListLog(ame_Log_EndMethod, "operator=", "println", "");
 			return *this;
 		}
+
+		virtual void reoder(){
+			PrimitiveRawPointerListLog(ame_Log_StartMethod, "reoder", "println", "");
+			int i_offset = 0;
+			for(int x = 0; x < this->getPosition(); x++){
+				T* f_value = this->getByPosition(x);
+				if(f_value == nullptr){
+					continue;
+				}
+				this->m_values[i_offset] = f_value;
+				i_offset++;
+			}
+			this->setPosition(i_offset);
+			PrimitiveRawPointerListLog(ame_Log_EndMethod, "reoder", "println", "");
+		}
 		
 	protected:
 		T** m_values = nullptr;
 		int m_expandSize = 5;
-		bool m_reorder = true;
 };
 
 }

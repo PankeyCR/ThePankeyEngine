@@ -58,6 +58,11 @@
 // #define ame_Arduino_Log
 #define ame_SystemFullLog
 
+// #define Lexer_LogApp
+
+// #define InputState_LogApp
+// #define DebounceInput_LogApp
+
 // #define DataNetwork_LogApp
 
 // #define LoRaNetwork_LogApp
@@ -178,6 +183,13 @@
 
 #define ame_ErrorWarning
 
+// #ifndef ame_Log
+// 	#include "ame_List_Logger.hpp"
+// 	#define ame_Log(pointer,location,name,method,type,mns) List_LogPrint_(pointer,location,name,method,type,mns)
+// #endif
+
+//   addClassToLog("Note");
+//   addClassMethodToLog("toLong");
 
 
 #ifndef ame_LogDebug

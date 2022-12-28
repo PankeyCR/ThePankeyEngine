@@ -139,7 +139,7 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 		
 		virtual int getIndexByLValue(T a_key){
 			PrimitiveRawListLog(ame_Log_StartMethod, "getIndexByLValue", "println", "");
-			if(this->m_values == nullptr){
+			if(this->isEmpty()){
 				return -1;
 			}
 			for(int x = 0; x < this->getPosition(); x++){
@@ -156,10 +156,11 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 		
 		virtual T* removeByLValue(T a_key){
 			PrimitiveRawListLog(ame_Log_StartMethod, "removeByLValue", "println", "");
-			if(this->m_values == nullptr){
+			if(this->isEmpty()){
+				PrimitiveRawListLog(ame_Log_EndMethod, "removeByLValue", "println", "");
 				return nullptr;
 			}
-			int i_position = 0;
+			int i_position = -1;
 			for(int x = 0; x < this->getPosition(); x++){
 				if(this->m_values[x] == nullptr){
 					continue;
@@ -176,18 +177,30 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 		////////////////////////////////////////////special removes part///////////////////////////////////////////////
 		virtual bool removeAll(T a_value){
 			PrimitiveRawListLog(ame_Log_StartMethod, "removeAll", "println", "");
+			if(this->isEmpty()){
+				PrimitiveRawListLog(ame_Log_EndMethod, "removeAll", "println", "");
+				return false;
+			}
 			bool r_val = false;
 			int p_x = 0;
 			for(int x = 0; x < this->getPosition(); x++){
 				if(a_value == *this->m_values[x]){
-					if(this->m_owner){
+					if(this->isOwner()){
 						delete this->m_values[x];
 					}
 					r_val = true;
+					this->m_values[x] = nullptr;
 				}else{
+					if(!this->isInOrder()){
+						continue;
+					}
 					this->m_values[p_x] = this->m_values[x];
 					p_x++;
 				}
+			}
+			if(!this->isInOrder()){
+				PrimitiveRawListLog(ame_Log_EndMethod, "removeAll", "println", "!this->isInOrder()");
+				return r_val;
 			}
 			this->setPosition(p_x);
 			PrimitiveRawListLog(ame_Log_EndMethod, "removeAll", "println", "");
@@ -196,54 +209,28 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 		
 		virtual bool removeFirst(T a_value){
 			PrimitiveRawListLog(ame_Log_StartMethod, "removeFirst", "println", "");
-			bool r_val = false;
-			bool r_once = true;
-			int p_x = 0;
-			for(int x = 0; x < this->getPosition(); x++){
-				if(a_value == *this->m_values[x] && r_once){
-					if(this->m_owner){
-						delete this->m_values[x];
-					}
-					r_once = false;
-					r_val = true;
-				}else{
-					this->m_values[p_x] = this->m_values[x];
-					p_x++;
-				}
-			}
-			this->setPosition(p_x);
 			PrimitiveRawListLog(ame_Log_EndMethod, "removeFirst", "println", "");
-			return r_val;
+			return this->removeDeleteByLValue(a_value);
 		}
 		
 		virtual bool removeLast(T a_value){
 			PrimitiveRawListLog(ame_Log_StartMethod, "removeLast", "println", "");
-			int r_pos = this->getPosition();
+			if(this->isEmpty()){
+				PrimitiveRawListLog(ame_Log_EndMethod, "removeLast", "println", "");
+				return false;
+			}
+			int i_position = -1;
 			for(int x = this->getPosition() - 1; x >= 0; x--){
+				if(this->m_values[x] == nullptr){
+					continue;
+				}
 				if(a_value == *this->m_values[x]){
-					r_pos = x;
+					i_position = x;
 					break;
 				}
 			}
-			
-			bool r_val = false;
-			bool r_once = true;
-			int p_x = r_pos;
-			for(int x = p_x; x < this->getPosition(); x++){
-				if(a_value == *this->m_values[x] && r_once){
-					if(this->m_owner){
-						delete this->m_values[x];
-					}
-					r_once = false;
-					r_val = true;
-				}else{
-					this->m_values[p_x] = this->m_values[x];
-					p_x++;
-				}
-			}
-			this->setPosition(p_x);
 			PrimitiveRawListLog(ame_Log_EndMethod, "removeLast", "println", "");
-			return r_val;
+			return this->removeByPosition(i_position);
 		}
 		
 		virtual T& operator[](int x){

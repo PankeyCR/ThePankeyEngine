@@ -156,9 +156,16 @@ class LinkedRawList : public LinkedRawPointerList<T>, virtual public RawList<T>{
 			if(i_node == nullptr){
 				return nullptr;
 			}
-			i_node->removeNode();
 			T* i_value = i_node->get();
+			i_node->set(nullptr);
+			if(!this->isInOrder()){
+				LinkedRawPointerListLog(ame_Log_EndMethod, "removeByPosition", "println", "!this->isInOrder()");
+				return i_value;
+			}
+			i_node->removeNode();
 			delete i_node;
+			this->decrementPosition();
+			this->decrementSize();
 			LinkedRawListLog(ame_Log_EndMethod, "removeByLValue", "println", "");
 			return i_value;
 		}
@@ -166,21 +173,27 @@ class LinkedRawList : public LinkedRawPointerList<T>, virtual public RawList<T>{
 		virtual bool removeAll(T a_value){
 			LinkedRawListLog(ame_Log_StartMethod, "removeAll", "println", "");
 			LinkedListNode<T>* node = this->getStartNode();
-			for(int count = 0; node != nullptr; count++){
+			int count = 0;
+			for( ; node != nullptr; count++){
 				T* i_value = node->get();
 				if(i_value == nullptr){
 					node = this->getNextNode(node);
 					continue;
 				}
 				if(a_value == *i_value){
-					node->removeNode();
-					if(this->isOwner()){
-						delete i_value;
+					node->set(nullptr);
+					if(this->isInOrder()){
+						node->removeNode();
+						if(this->isOwner()){
+							delete i_value;
+						}
+						delete node;
 					}
-					delete node;
 				}
 				node = this->getNextNode(node);
 			}
+			this->decrementPosition(count);
+			this->decrementSize(count);
 			LinkedRawListLog(ame_Log_EndMethod, "removeAll", "println", "");
 			return -1;
 		}
@@ -197,10 +210,19 @@ class LinkedRawList : public LinkedRawPointerList<T>, virtual public RawList<T>{
 			if(i_node == nullptr){
 				return false;
 			}
-			i_node->removeNode();
 			T* i_value = i_node->get();
-			delete i_value;
+			i_node->set(nullptr);
+			if(!this->isInOrder()){
+				LinkedRawPointerListLog(ame_Log_EndMethod, "removeLast", "println", "!this->isInOrder()");
+				return i_value;
+			}
+			i_node->removeNode();
+			if(this->isOwner() && i_value != nullptr){
+				delete i_value;
+			}
 			delete i_node;
+			this->decrementPosition();
+			this->decrementSize();
 			LinkedRawListLog(ame_Log_EndMethod, "removeLast", "println", "");
 			return true;
 		}

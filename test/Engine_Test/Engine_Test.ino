@@ -5,6 +5,7 @@
 #include "DefaultApplication.hpp"
 #include "TestRunnerState.hpp"
 #include "TR_Full_List_Testing.hpp"
+#include "TR_List_Reorder_Testing.hpp"
 #include "TR_LinkedList_Testing.hpp"
 #include "TR_Random_Testing.hpp"
 #include "TR_Array_Testing.hpp"
@@ -37,6 +38,7 @@ void setup() {
 
   testRunner = app->getStateManager()->addState(new TestRunnerState());
   testRunner->addUnitTest("Full_List_Testing", TR_Full_List_Testing);
+  testRunner->addUnitTest("List_Reorder_Testing", TR_List_Reorder_Testing);
   testRunner->addUnitTest("LinkedList_Testing", TR_LinkedList_Testing);
   testRunner->addUnitTest("Random_Testing", TR_Random_Testing);
   testRunner->addUnitTest("Array_Testing", TR_Array_Testing);

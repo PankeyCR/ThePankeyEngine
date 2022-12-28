@@ -61,13 +61,7 @@ class PrimitiveList : public PrimitiveRawList<T>, public List<T>{
 		
 		//cppObject part
 		virtual void onDelete(){
-			for(int x=0; x < this->getPosition(); x++){
-				if(this->m_values[x] != nullptr && this->m_owner){
-					delete this->m_values[x];
-				}
-				this->m_values[x] = nullptr;
-			}
-			this->incrementPosition();
+			this->resetDelete();
 		}
 		
 		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
@@ -99,12 +93,57 @@ class PrimitiveList : public PrimitiveRawList<T>, public List<T>{
 		////////////////////////////////////////////operator part///////////////////////////////////////////////
 		
 		
-		virtual PrimitiveList& operator=(const PrimitiveList& a_list){
+		virtual PrimitiveList<T>& operator=(const PrimitiveList<T>& a_list){
 			this->resetDelete();
 			for(int x = 0; x < a_list.getPosition(); x++){
+				T* f_list_value = a_list.getByPosition(x);
+				if(f_list_value == nullptr){
+					this->addPointer(nullptr);
+					continue;
+				}
 				this->addLValue(*a_list.getByPosition(x));
 			}
 			return *this;
+		}
+		
+		virtual bool operator==(const PrimitiveList<T>& a_list){
+			if(this->getPosition() != a_list.getPosition()){
+				return false;
+			}
+			for(int x = 0; x < a_list.getPosition(); x++){
+				T* f_list_value = a_list.getByPosition(x);
+				T* f_value = this->getByPosition(x);
+				if(f_list_value == nullptr && f_value == nullptr){
+					continue;
+				}
+				if(f_list_value == nullptr || f_value == nullptr){
+					return false;
+				}
+				if(*f_list_value != *f_value){
+					return false;
+				}
+			}
+			return true;
+		}
+
+		virtual bool operator!=(const PrimitiveList<T>& a_list){
+			if(this->getPosition() != a_list.getPosition()){
+				return true;
+			}
+			for(int x = 0; x < a_list.getPosition(); x++){
+				T* f_list_value = a_list.getByPosition(x);
+				T* f_value = this->getByPosition(x);
+				if(f_list_value == nullptr && f_value == nullptr){
+					continue;
+				}
+				if(f_list_value == nullptr || f_value == nullptr){
+					return true;
+				}
+				if(*f_list_value != *f_value){
+					return true;
+				}
+			}
+			return false;
 		}
 		
 	protected:

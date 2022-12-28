@@ -448,6 +448,16 @@ class Note : public Array<char>, public Printable{
 			return i_pointer;
 		}
 
+		virtual bool isBool() const{
+			NoteLog(ame_Log_StartMethod, "isBool", "println", "");
+			if(this->getPosition() != 1){
+				NoteLog(ame_Log_EndMethod, "isBool", "println", "Not a bool");
+				return false;
+			}
+			NoteLog(ame_Log_EndMethod, "isBool", "println", "Is a bool");
+			return this->get(0) == '0' || this->get(0) == '1';
+		}
+
 		virtual int intCharSize(int a_value)const{
 			const_NoteLog(ame_Log_StartMethod, "intCharSize", "println", "");
 			const_NoteLog(ame_Log_Statement, "intCharSize", "println", "");
@@ -532,6 +542,23 @@ class Note : public Array<char>, public Printable{
 			NoteLog(ame_Log_EndMethod, "getInt", "println", "");
 			return i_pointer;
 		}
+		
+		virtual bool isInt() const{ 
+			NoteLog(ame_Log_StartMethod, "isInt", "println", "");
+			if(this->isEmpty()){
+				NoteLog(ame_Log_EndMethod, "isInt", "println", "Not a float");
+				return false;
+			}
+			for(int i = 0; i < this->length(); i++){
+				char f_char = this->get(i);
+				if(!this->isNumber(f_char)){
+					NoteLog(ame_Log_EndMethod, "isInt", "println", "Not a float");
+					return false;
+				}
+			}
+			NoteLog(ame_Log_EndMethod, "isInt", "println", "Is a float");
+			return true;
+		}
 
 		virtual int longCharSize(long value)const{
 			NoteLog(ame_Log_StartMethod, "longCharSize", "println", "");
@@ -608,6 +635,27 @@ class Note : public Array<char>, public Printable{
 			return i_pointer;
 		}
 
+		virtual bool isLong() const{
+			NoteLog(ame_Log_StartMethod, "isLong", "println", "");
+			if(this->isEmpty()){
+				NoteLog(ame_Log_EndMethod, "isLong", "println", "Not a long");
+				return false;
+			}
+			if(this->getLastChar() != 'l'){
+				NoteLog(ame_Log_EndMethod, "isLong", "println", "Not a long");
+				return false;
+			}
+			for(int i = 0; i < this->length() - 1; i++){
+				char f_char = this->get(i);
+				if(!this->isNumber(f_char)){
+					NoteLog(ame_Log_EndMethod, "isLong", "println", "Not a long");
+					return false;
+				}
+			}
+			NoteLog(ame_Log_EndMethod, "isLong", "println", "Is a long");
+			return true;
+		}
+		
 		virtual int floatCharSize(float a_value, int extra){
 			NoteLog(ame_Log_StartMethod, "floatCharSize", "println", "");
 			NoteLog(ame_Log_Statement, "floatCharSize", "println", "");
@@ -728,6 +776,94 @@ class Note : public Array<char>, public Printable{
 			this->copyExternEndValue(i_pointer, i_array_length);
 			NoteLog(ame_Log_EndMethod, "getFloat", "println", "");
 			return i_pointer;
+		}
+		
+		virtual bool isFloat() const{ 
+			NoteLog(ame_Log_StartMethod, "isFloat", "println", "");
+			if(this->isEmpty()){
+				NoteLog(ame_Log_EndMethod, "isFloat", "println", "Not a float");
+				return false;
+			}
+			if(this->getLastChar() != 'f'){
+				NoteLog(ame_Log_EndMethod, "isFloat", "println", "Not a float");
+				return false;
+			}
+			bool i_has_decimal_point = false;
+			for(int i = 0; i < this->length() - 1; i++){
+				char f_char = this->get(i);
+				if(!this->isNumber(f_char) && f_char != '.'){
+					NoteLog(ame_Log_EndMethod, "isFloat", "println", "Not a float");
+					return false;
+				}
+				if(f_char == '.'){
+					if(i_has_decimal_point){
+						NoteLog(ame_Log_EndMethod, "isFloat", "println", "Not a float");
+						return false;
+					}else{
+						i_has_decimal_point = true;
+					}
+				}
+			}
+			NoteLog(ame_Log_EndMethod, "isFloat", "println", "Is a float");
+			return true;
+		}
+		
+		virtual bool isNote() const{
+			if(this->isEmpty()){
+				return false;
+			}
+			if(this->get(0) != '"' && this->getLastChar() != '"'){
+				return false;
+			}
+			for(int i = 0; i < this->length(); i++){
+				if(i != 0 && i != this->length() - 1){
+					if(this->get(i) == '"'){
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		
+		virtual Note extractNote(){//   \"Hellow\"
+			if(this->isEmpty()){
+				return Note();
+			}
+			if(this->get(0) != '"' && this->getLastChar() != '"'){
+				return Note();
+			}
+			Note i_extract = *this;
+			i_extract.removeFirstIndex();
+			i_extract.removeLastIndex();
+			return i_extract;
+		}
+		
+		virtual bool isNumber() const{
+			if(this->isEmpty()){
+				return false;
+			}
+			char lastChar = this->getLastChar();
+			int c_size = this->length();
+			if(lastChar == 'f' || lastChar == 'l'){
+				c_size = this->length() - 1;
+			}
+			bool i_has_decimal_point = false;
+			for(int i = 0; i < c_size; i++){
+				char f_char = this->get(i);
+				if(!this->isNumber(f_char) && f_char != '.'){
+					NoteLog(ame_Log_EndMethod, "isFloat", "println", "Not a float");
+					return false;
+				}
+				if(f_char == '.'){
+					if(i_has_decimal_point){
+						NoteLog(ame_Log_EndMethod, "isFloat", "println", "Not a float");
+						return false;
+					}else{
+						i_has_decimal_point = true;
+					}
+				}
+			}
+			return true;
 		}
 
 		virtual void fix(){
@@ -956,6 +1092,9 @@ class Note : public Array<char>, public Printable{
 			}
 			long output = 0;
 			int c_size = this->length();
+			if(this->getLastChar() == 'l'){
+				c_size -= 1;
+			}
 			bool lastDecimals = false;
 			for(int x = i_start; x < c_size; x++){
 				char f_char = this->m_t_value[x];
@@ -1005,6 +1144,9 @@ class Note : public Array<char>, public Printable{
 			}
 			float output = 0;
 			int c_size = this->length();
+			if(this->getLastChar() == 'f'){
+				c_size -= 1;
+			}
 			bool lastDecimals = false;
 			int lastDecimalPosition= 0;
 			for(int x = i_start; x < c_size; x++){
@@ -1135,7 +1277,7 @@ class Note : public Array<char>, public Printable{
 			return a_list;
 		}
 
-		virtual char getLastChar(){
+		virtual char getLastChar() const{
 			NoteLog(ame_Log_StartMethod, "getLastChar", "println", "");
 			NoteLog(ame_Log_Statement, "getLastChar", "println", "");
 			if(this->isEmpty()){
@@ -1710,9 +1852,3 @@ class Note : public Array<char>, public Printable{
 }
 
 #endif
-
-
-
-
-
-

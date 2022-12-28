@@ -667,7 +667,19 @@ class Array IMPLEMENTATION_cppObject {
 			return i_array;
 		}
 
-		Array<T> getArrayPart(int start, int end){
+		Array<T> getArrayPartBySize(int a_start, int a_size){//subNote
+			return this->getArrayPart(a_start, a_start + a_size);
+		}
+
+		Array<T> getArrayPartByExtraSpace(int a_start, int a_size){//subNote
+			return this->getArrayPart(a_start, this->getPosition() - a_size);
+		}
+
+		Array<T> getArrayPartByLastExtraSpace(int a_size){//subNote
+			return this->getArrayPart(0, this->getPosition() - a_size);
+		}
+
+		Array<T> getArrayPart(int a_start, int a_end){//subNote
 			ArrayLog(ame_Log_StartMethod, "getArrayPart", "println", "");
 			
 			if(this->isEmpty()){
@@ -675,12 +687,17 @@ class Array IMPLEMENTATION_cppObject {
 				return Array<T>();
 			}
 			
-			int t_size = this->length();
-			int s_size = t_size - start;
+			// if(a_end > this->getPosition()){
+			// 	ArrayLog(ame_Log_StartMethod, "getArrayPart", "println", "this->isEmpty()");
+			// 	return Array<T>();
+			// }
 			
-			if(end < t_size){
-				s_size -= t_size - end;
-				t_size = end;
+			int t_size = this->getPosition();
+			int s_size = t_size - a_start;
+			
+			if(a_end < t_size){
+				s_size -= this->getPosition() - a_end;
+				t_size = a_end;
 			}
 			
 			ArrayLog(ame_Log_StartMethod, "getArrayPart", "println", "subNote size");
@@ -693,8 +710,8 @@ class Array IMPLEMENTATION_cppObject {
 				return Array<T>();
 			}
 
-			for(int x = start; x < t_size; x++){
-				buff[x - start] = i_arrayPointer[x];
+			for(int x = a_start; x < t_size; x++){
+				buff[x - a_start] = i_arrayPointer[x];
 			}
 			this->copyExternEndValue(buff, s_size);
 
@@ -1068,6 +1085,24 @@ class Array IMPLEMENTATION_cppObject {
 			}
 			this->remove(index);
 			ArrayLog(ame_Log_EndMethod, "removeLast", "println", "");
+		}
+
+		virtual void removeFirstIndex(){
+			ArrayLog(ame_Log_StartMethod, "removeFirstIndex", "println", "");
+			if(this->isEmpty()){
+				return;
+			}
+			this->remove(0);
+			ArrayLog(ame_Log_EndMethod, "removeFirstIndex", "println", "");
+		}
+
+		virtual void removeLastIndex(){
+			ArrayLog(ame_Log_StartMethod, "removeLastIndex", "println", "");
+			if(this->isEmpty()){
+				return;
+			}
+			this->remove(this->getPosition() - 1);
+			ArrayLog(ame_Log_EndMethod, "removeLastIndex", "println", "");
 		}
 /*
 		Array<Array<T>> split(const T& divide){

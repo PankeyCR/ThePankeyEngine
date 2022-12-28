@@ -161,6 +161,10 @@ class RawPointerList{
 			RawPointerListLog(ame_Log_EndMethod, "removeLast", "println", "");
 			return this->removeDeleteByPosition(this->getPosition() - 1);
 		}
+
+		virtual bool isInOrder(){return this->m_reorder;}
+		virtual void setReorder(bool a_reorder){this->m_reorder = a_reorder;}
+		virtual void reorder(){}
 		
 	protected:
 		
@@ -259,6 +263,7 @@ class RawPointerList{
 		}
 
 	protected:
+		bool m_reorder = true;
 		bool m_owner = true;
 		int m_position = 0;
 		int m_size = 0;

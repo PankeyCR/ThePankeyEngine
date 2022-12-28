@@ -44,12 +44,17 @@ class TestResult{
 			}
 			Note i_errors = "Test Failed at:\n";
 			for(int x = 0; x < m_errors.getPosition(); x++){
-				i_errors += "Index: ";
-				i_errors += (int)*m_indexs.getByPosition(x);
-				i_errors += '\n';
-				i_errors += *m_errors.getByPosition(x);
+				int* f_index = m_indexs.getByPosition(x);
+				Note* f_error = m_errors.getByPosition(x);
+				if(f_index == nullptr || f_error == nullptr){
+					continue;
+				}
+				i_errors.addLocalArrayPointer("Index: ");
+				i_errors.addLocalInt(*f_index);
+				i_errors.addLocalValue('\n');
+				i_errors.addLocalNote(*f_error);
 				if(x != m_errors.getPosition() - 1){
-					i_errors += '\n';
+					i_errors.addLocalValue('\n');
 				}
 			}
 			return i_errors;
