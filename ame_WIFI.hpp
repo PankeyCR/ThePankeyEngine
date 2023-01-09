@@ -69,7 +69,7 @@ void initializeWIFI(Note a_ip, Note a_gateway, Note a_subnet, Note a_dns, uint8_
 	if(!WiFi.config(ip,gateway,subnet,dns)) {
 		ame_WIFILog(ame_Log_Statement, "initializeWIFI",  "println", "STA Failed to configure");
 	}
-	WiFi.begin(name.c_str(), pasword.c_str());
+	WiFi.begin(name.pointer(), pasword.pointer());
 	if(WiFi.status() == WL_CONNECTED) {
 		ame_WIFILog(ame_Log_Statement, "initializeWIFI",  "println", "connected");
 		delay(1000);

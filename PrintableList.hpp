@@ -3,6 +3,17 @@
 #define PrintableList_hpp
 #define PrintableList_AVAILABLE
 
+#ifdef ame_Windows
+	#include "ame_Printable.hpp"
+	#include "ame_Print.hpp"
+#endif
+
+#ifdef ame_ArduinoIDE
+	#include "Arduino.h"
+	#include "Printable.h"
+#endif
+
+#include "cppObject.hpp"
 #include "cppObject.hpp"
 #include "Class.hpp"
 
@@ -31,13 +42,34 @@ namespace ame{
 *	Class Configuration:
 *	DISABLE_IMPLEMENTING_cppObject
 */
-template <class T>
-class PrintableList : public T {	
+template <class TL, class V>
+class PrintableList : public Printable {	
 	public:
-	PrintableList(){}
+	PrintableList(TL& c_list) : m_list(c_list){
+	}
 	virtual ~PrintableList(){}
+
+	virtual size_t printTo(Print& p) const{
+		if(this->m_list.isEmpty()){
+			return 0;
+		}
+		size_t i_size = 0;
+		for(int x = 0; x < this->m_list.getPosition(); x++){
+			V* f_value = this->m_list.getByPosition(x);
+			if(f_value == nullptr){
+				continue;
+			}
+			if(x == this->m_list.getPosition() - 1){
+				i_size += p.print(*f_value);
+			}else{
+				i_size += p.println(*f_value);
+			}
+		}
+		return i_size;
+	}
 	
-	private:
+	protected:
+		TL& m_list;
 };
 
 }

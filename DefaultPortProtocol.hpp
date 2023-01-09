@@ -1,13 +1,9 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_DefaultPortProtocol)
-	#define DefaultPortProtocol_hpp
-#endif
-
 #ifndef DefaultPortProtocol_hpp
 #define DefaultPortProtocol_hpp
 #define DefaultPortProtocol_AVAILABLE
+
+#include "ame_Enviroment.hpp"
 
 #ifndef ame_Enviroment_Defined
 
@@ -113,8 +109,8 @@ class DefaultPortProtocol : public PortProtocol{
 		}
 		
 		void Read(int index, SerialPort* port){
-			char m = port->read();
-			if((m == '\n') && messageText.length() != 0){
+			char i_char = port->read();
+			if((i_char == '\n') && messageText.length() != 0){
 				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", "adding Message to serialState");
 				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", Note("messageText: ") + messageText);
 				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", Note("index: ") + Note(index));
@@ -123,9 +119,9 @@ class DefaultPortProtocol : public PortProtocol{
 				this->DeliverMessage(i_delivery);
 				messageText = "";
 			}
-			if(m != '\r' && m != '\n'){
-				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", Note("adding char to messageText: ") + Note(m));
-				messageText.concat(m);
+			if(i_char != '\r' && i_char != '\n'){
+				DefaultPortProtocolLog(ame_Log_Statement, "Read",  "println", Note("adding char to messageText: ") + Note(i_char));
+				messageText.addLocalValue(i_char);
 			}
 		}
 		

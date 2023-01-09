@@ -286,9 +286,9 @@ class ByteArray : public Array<ame_Byte>, public Printable{
             #ifdef ame_ArduinoIDE
 			return bitRead((*c), bit);
             #elif defined(ame_Windows)
-
+			return false;
             #else
-
+			return false;
             #endif
 		}
 

@@ -38,7 +38,7 @@
   
  namespace ame{
 
-class Lexer : public Printable{
+class Lexer IMPLEMENTATION_cppObject {
 	protected:
 		struct DelimiterCapture{
 			Token token;
@@ -94,28 +94,6 @@ class Lexer : public Printable{
 			LexerLog(ame_Log_StartMethod, "addDelimiterToken",  "println", a_token);
 			this->m_delimiter_tokens.addLValue(a_token);
 			LexerLog(ame_Log_EndMethod, "addDelimiterToken",  "println", "");
-		}
-
-		virtual size_t printTo(Print& p) const{
-			const_LexerLog(ame_Log_StartMethod, "printTo", "println", "");
-			if(this->m_capturedTokens.isEmpty()){
-                const_LexerLog(ame_Log_EndMethod, "printTo", "println", "");
-				return 0;
-			}
-			size_t i_size = 0;
-			for(int x = 0; x < this->m_capturedTokens.getPosition(); x++){
-				Token* f_token = this->m_capturedTokens.getByPosition(x);
-				if(f_token == nullptr){
-					continue;
-				}
-				if(x == this->m_capturedTokens.getPosition() - 1){
-					i_size += p.print(*f_token);
-				}else{
-					i_size += p.println(*f_token);
-				}
-			}
-			const_LexerLog(ame_Log_EndMethod, "printTo", "println", "");
-			return i_size;
 		}
 
 	protected:
@@ -247,28 +225,70 @@ class Lexer : public Printable{
 			LexerLog(ame_Log_EndMethod, "addCapturedTokens",  "println", "");
 		}
 		
+		virtual void captureTokenByBreakPoint(){
+			LexerLog(ame_Log_StartMethod, "captureToken",  "println", "");
+			Token i_token = this->getToken(this->m_capture_note);
+			i_token.text_Position = this->m_text_position - this->m_capture_note.getPosition();
+			i_token.line_Position = this->m_line_position;
+			i_token.list_Position = this->getCapturedTokensPosition();
+			this->m_capturedTokens.add(i_token);
+			LexerLog(ame_Log_EndMethod, "captureToken",  "println", "");
+		}
+		
 		virtual void captureToken(){
 			LexerLog(ame_Log_StartMethod, "captureToken",  "println", "");
 			Token i_token = this->getToken(this->m_capture_note);
+			i_token.text_Position = this->m_text_position - this->m_capture_note.getPosition() + 1;
+			i_token.line_Position = this->m_line_position;
+			i_token.list_Position = this->getCapturedTokensPosition();
 			this->m_capturedTokens.add(i_token);
+			LexerLog(ame_Log_EndMethod, "captureToken",  "println", "");
+		}
+		
+		virtual void captureToken(Token a_token, int a_text_Position){
+			LexerLog(ame_Log_StartMethod, "captureToken",  "println", "");
+			a_token.text_Position = a_text_Position;
+			a_token.line_Position = this->m_line_position;
+			a_token.list_Position = this->getCapturedTokensPosition();
+			this->m_capturedTokens.add(a_token);
 			LexerLog(ame_Log_EndMethod, "captureToken",  "println", "");
 		}
 		
 		virtual void captureToken(Token a_token){
 			LexerLog(ame_Log_StartMethod, "captureToken",  "println", "");
-			this->m_capturedTokens.add(a_token);
+			this->captureToken(a_token, this->m_text_position - a_token.value.getPosition() + 1);
 			LexerLog(ame_Log_EndMethod, "captureToken",  "println", "");
+		}
+		
+		virtual void captureToken(Note a_token, int a_text_Position){
+			LexerLog(ame_Log_StartMethod, "captureTokenVariable",  "println", "");
+			Token i_token = this->getToken(a_token);
+			i_token.text_Position = a_text_Position;
+			i_token.line_Position = this->m_line_position;
+			i_token.list_Position = this->getCapturedTokensPosition();
+			this->m_capturedTokens.add(i_token);
+			LexerLog(ame_Log_EndMethod, "captureTokenVariable",  "println", "");
 		}
 		
 		virtual void captureToken(Note a_token){
 			LexerLog(ame_Log_StartMethod, "captureTokenVariable",  "println", "");
-			this->m_capturedTokens.add(this->getToken(a_token));
+			this->captureToken(a_token, this->m_text_position - a_token.getPosition() + 1);
+			LexerLog(ame_Log_EndMethod, "captureTokenVariable",  "println", "");
+		}
+		
+		virtual void captureTokenVariable(Note a_token, int a_text_Position){
+			LexerLog(ame_Log_StartMethod, "captureTokenVariable",  "println", "");
+			Token i_token = Token("Variable", a_token);
+			i_token.text_Position = a_text_Position;
+			i_token.line_Position = this->m_line_position;
+			i_token.list_Position = this->getCapturedTokensPosition();
+			this->m_capturedTokens.add(i_token);
 			LexerLog(ame_Log_EndMethod, "captureTokenVariable",  "println", "");
 		}
 		
 		virtual void captureTokenVariable(Note a_token){
 			LexerLog(ame_Log_StartMethod, "captureTokenVariable",  "println", "");
-			this->m_capturedTokens.addPointer(new Token("Variable", a_token));
+			this->captureTokenVariable(a_token, this->m_text_position - a_token.getPosition() + 1);
 			LexerLog(ame_Log_EndMethod, "captureTokenVariable",  "println", "");
 		}
 		
@@ -376,7 +396,7 @@ class Lexer : public Printable{
 			LexerLog(ame_Log_StartMethod, "captureByBreakPoint",  "println", "this->isBreakPoint(a_char)");
 			if(!this->m_capture_note.isEmpty()){
 				LexerLog(ame_Log_Statement, "captureByBreakPoint",  "println", "!this->m_capture_note.isEmpty()");
-				this->captureToken();
+				this->captureTokenByBreakPoint();
 			}
 			LexerLog(ame_Log_EndMethod, "captureByBreakPoint",  "println", "");
 		}
@@ -475,11 +495,12 @@ class Lexer : public Printable{
 					LexerLog(ame_Log_Statement, "captureDelimiter",  "println", "f_token.value.getPosition() == f_index");
 					LexerLog(ame_Log_Statement, "captureDelimiter",  "println", "f_index: ");
 					LexerLog(ame_Log_Statement, "captureDelimiter",  "println", f_index);
+					int i_text_new_position = this->m_text_position;
 					if(this->m_capture_note.getPosition() != f_index){
 						Note variable = this->m_capture_note.getArrayPartByLastExtraSpace(f_index);
-						this->captureToken(variable);
+						this->captureToken(variable, this->m_text_position - this->m_capture_note.getPosition() + 1);
 					}
-					this->captureToken(f_token);
+					this->captureToken(f_token, this->m_text_position - f_index + 1);
 					this->realeseDelimitersTokens();
 					this->m_capture_note.clear();
 					break;
@@ -570,12 +591,25 @@ class Lexer : public Printable{
 		}
 		
 	public:
-		virtual void capture(const Note& a_script){
+		virtual PrimitiveList<Token>& capture(const Note& a_script){
 			for(int x = 0; x < a_script.getPosition(); x++){
 				char f_char = a_script[x];
 				this->capture(f_char, x != (a_script.getPosition() - 1));
 			}
+			return this->m_capturedTokens;
 		}
+
+		virtual PrimitiveList<Token> copyCapturedTokensList() const{return this->m_capturedTokens;}
+		
+		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
+		virtual cppObjectClass* getClass(){
+			return Class<Lexer>::getClass();
+		}
+		
+		virtual bool instanceof(cppObjectClass* cls){
+			return cls == Class<Lexer>::getClass();
+		}
+		#endif
 		
 	protected:
 		PrimitiveList<char> m_breakPoint;

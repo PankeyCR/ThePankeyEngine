@@ -53,10 +53,10 @@
 
 //logger
 
-#define ame_LogApp
-#define ame_LogPrint
-// #define ame_Arduino_Log
-#define ame_SystemFullLog
+// #define ame_LogApp
+// #define ame_LogPrint
+// #define ame_SystemFullLog
+//#define ame_Arduino_Log
 
 // #define Lexer_LogApp
 
@@ -71,6 +71,9 @@
 // #define ame_WIFI_LogApp
 // #define ame_ETHERNET_LogApp
 // #define ame_LoRa_LogApp
+
+// #define SerialNetwork_LogApp
+// #define SerialState_LogApp
 
 // #define SerialDelivery_LogApp
 
@@ -143,30 +146,30 @@
 // #define DISABLE_Note
 // #define DISABLE_ByteArray
 
-// #define DISABLE_cppObject
-// #define DISABLE_AbstractClass
-// #define DISABLE_Class
+#define DISABLE_cppObject
+#define DISABLE_AbstractClass
+#define DISABLE_Class
 
-// #define DISABLE_Memory
-// #define DISABLE_MemoryManager
-// #define DISABLE_MemoryPool
-// #define DISABLE_MemoryChunk
-// #define DISABLE_Chunk
+#define DISABLE_Memory
+#define DISABLE_MemoryManager
+#define DISABLE_MemoryPool
+#define DISABLE_MemoryChunk
+#define DISABLE_Chunk
 
-// #define DISABLE_cppObjectClass
-// #define DISABLE_Annotation
-// #define DISABLE_Method
+#define DISABLE_cppObjectClass
+#define DISABLE_Annotation
+#define DISABLE_Method
 
 // #define DISABLE_Application
 // #define DISABLE_DefaultApplication
 
-// #define DISABLE_RenderManager
-// #define DISABLE_AppSettings
-// #define DISABLE_TimeControl
+#define DISABLE_RenderManager
+#define DISABLE_AppSettings
+#define DISABLE_TimeControl
 // #define DISABLE_AppStateManager
 
-// #define DISABLE_DefaultSettings
-// #define DISABLE_SimpleTimer
+#define DISABLE_DefaultSettings
+#define DISABLE_SimpleTimer
 // #define DISABLE_DefaultStateManager
 
 // #define DISABLE_AppState
@@ -192,10 +195,10 @@
 //   addClassMethodToLog("toLong");
 
 
-#ifndef ame_LogDebug
-	#include "ame_debug.hpp"
-	#define ame_LogDebug(pointer,location,name,method,type) debug(pointer,location,name,method,type)
-#endif
+// #ifndef ame_LogDebug
+// 	#include "ame_debug.hpp"
+// 	#define ame_LogDebug(pointer,location,name,method,type) debug(pointer,location,name,method,type)
+// #endif
 
 // #ifndef ame_LogDebug
 // 	#include "ame_list_debug.hpp"

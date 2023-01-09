@@ -62,6 +62,7 @@ class BaseAppState IMPLEMENTATION_AppState {
 			m_app = app;
 			m_init = true;
 			initializeState(app);
+			initializeState();
 			BaseAppStateLog(ame_Log_EndMethod, "initialize", "println", "");
 		}
 		
@@ -69,6 +70,7 @@ class BaseAppState IMPLEMENTATION_AppState {
 		virtual Application* getApplication(){return m_app;}
 		#endif
 		
+		virtual void initializeState(){}
 		virtual bool hasInitialize(){return m_init;}
 		
 		virtual void onEnable(){m_enable = true;}

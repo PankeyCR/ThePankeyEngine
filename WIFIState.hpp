@@ -1,37 +1,14 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_WIFIState)
-	#define WIFIState_hpp
-#endif
-
 #ifndef WIFIState_hpp
 #define WIFIState_hpp
 #define WIFIState_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-	#include "Printable.h"
-#endif
-
-#include "AppState.h"
-#include "Arduino.h"
+#include "BaseAppState.h"
 #include "SerialMessageState.h"
-#include "List.h"
 #include "PrimitiveList.h"
-#include "AnnotationMap.h"
 #include "SerialMessageControlledState.h"
 #include "WIFISerialPort.h"
 #include "DefaultPortProtocol.h"
-// #include "MemoryFree.h"
 
 #if defined(ARDUINO_ARCH_ESP8266)
 	#include "WiFi.h"
@@ -48,26 +25,10 @@
 
 namespace ame{
 
-template<class T>
-class WIFIState : public SerialMessageControlledState , public T{
+class WIFIState IMPLEMENTATION_BaseAppState {
     public:
-		WIFIState(){
-			WIFIStateLog("WIFIState", "Constructor",  "println", "");
-			requests = new PrimitiveList<String>();
-			events = false;
-			
-			events.addLValues("ConectWifi",&WIFIState::ConectWifi);
-			events.addLValues("DisconectWifi",&WIFIState::DisconectWifi);
-			events.addLValues("SendScan",&WIFIState::SendScan);
-			events.addLValues("netsize",&WIFIState::SendNetworkSize);
-			events.addLValues("containnet",&WIFIState::SendContainID);
-			events.addLValues("wifistate",&WIFIState::WifiState);
-			events.addLValues("ConectPort",&WIFIState::ConectPort);
-		}
-		virtual ~WIFIState(){
-			WIFIStateLog("WIFIState", "Destructor",  "println", "");
-			delete requests;
-		}
+		WIFIState(){}
+		virtual ~WIFIState(){}
 		bool instanceof(cppObjectClass* cls){
 			return cls == Class<WIFIState>::classType || SerialMessageControlledState::instanceof(cls);
 		}
