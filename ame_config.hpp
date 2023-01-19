@@ -146,30 +146,31 @@
 // #define DISABLE_Note
 // #define DISABLE_ByteArray
 
-#define DISABLE_cppObject
-#define DISABLE_AbstractClass
-#define DISABLE_Class
-
 #define DISABLE_Memory
 #define DISABLE_MemoryManager
 #define DISABLE_MemoryPool
 #define DISABLE_MemoryChunk
 #define DISABLE_Chunk
 
-#define DISABLE_cppObjectClass
+// #define DISABLE_cppObjectClass
 #define DISABLE_Annotation
 #define DISABLE_Method
+
+// #define DISABLE_cppObject
+
+// #define DISABLE_AbstractClass
+// #define DISABLE_Class
 
 // #define DISABLE_Application
 // #define DISABLE_DefaultApplication
 
 #define DISABLE_RenderManager
-#define DISABLE_AppSettings
-#define DISABLE_TimeControl
+// #define DISABLE_AppSettings
+// #define DISABLE_TimeControl
 // #define DISABLE_AppStateManager
 
-#define DISABLE_DefaultSettings
-#define DISABLE_SimpleTimer
+// #define DISABLE_DefaultSettings
+// #define DISABLE_SimpleTimer
 // #define DISABLE_DefaultStateManager
 
 // #define DISABLE_AppState

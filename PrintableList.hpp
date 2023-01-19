@@ -45,8 +45,7 @@ namespace ame{
 template <class TL, class V>
 class PrintableList : public Printable {	
 	public:
-	PrintableList(TL& c_list) : m_list(c_list){
-	}
+	PrintableList(TL& c_list) : m_list(c_list){}
 	virtual ~PrintableList(){}
 
 	virtual size_t printTo(Print& p) const{

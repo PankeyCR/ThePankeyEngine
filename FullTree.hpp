@@ -19,7 +19,7 @@ class FullTreeNode{
 };
 
 template<class T, class UniversalNode = FullTreeNode>
-class FullTree : public Tree<T>{
+class FullTree : virtual public Tree{
 	public:
 		FullTree(){}
 

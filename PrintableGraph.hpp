@@ -1,7 +1,7 @@
 
-#ifndef PrintableFullTree_hpp
-#define PrintableFullTree_hpp
-#define PrintableFullTree_AVAILABLE
+#ifndef PrintableGraph_hpp
+#define PrintableGraph_hpp
+#define PrintableGraph_AVAILABLE
 
 #ifdef ame_Windows
 	#include "ame_Printable.hpp"
@@ -14,25 +14,25 @@
 #endif
 
 #include "cppObject.hpp"
-#include "cppObject.hpp"
+#include "Graph.hpp"
 #include "Class.hpp"
 
-#ifdef PrintableFullTree_LogApp
+#ifdef PrintableGraph_LogApp
 	#include "ame_Logger_config.hpp"
 	#include "ame_Logger.hpp"
 
-	#define PrintableFullTreeLog(location,method,type,mns) ame_Log(this,location,"PrintableFullTree",method,type,mns)
-	#define const_PrintableFullTreeLog(location,method,type,mns)
+	#define PrintableGraphLog(location,method,type,mns) ame_Log(this,location,"PrintableGraph",method,type,mns)
+	#define const_PrintableGraphLog(location,method,type,mns)
 #else
-	#ifdef PrintableFullTree_LogDebugApp
+	#ifdef PrintableGraph_LogDebugApp
 		#include "ame_Logger_config.hpp"
 		#include "ame_Logger.hpp"
 
-		#define PrintableFullTreeLog(location,method,type,mns) ame_LogDebug(this,location,"PrintableFullTree",method,type)
-		#define const_PrintableFullTreeLog(location,method,type,mns)
+		#define PrintableGraphLog(location,method,type,mns) ame_LogDebug(this,location,"PrintableGraph",method,type)
+		#define const_PrintableGraphLog(location,method,type,mns)
 	#else
-		#define PrintableFullTreeLog(location,method,type,mns)
-		#define const_PrintableFullTreeLog(location,method,type,mns)
+		#define PrintableGraphLog(location,method,type,mns)
+		#define const_PrintableGraphLog(location,method,type,mns)
 	#endif
 #endif
 
@@ -43,11 +43,11 @@ namespace ame{
 *	DISABLE_IMPLEMENTING_cppObject
 */
 template <class T>
-class PrintableFullTree : public Printable {	
+class PrintableGraph : public Printable {	
 	public:
-	PrintableFullTree(FullTree<T>& c_tree) : m_tree(c_tree){
+	PrintableGraph(Graph<T>& c_graph) : m_graph(c_graph){
 	}
-	virtual ~PrintableFullTree(){}
+	virtual ~PrintableGraph(){}
 
 	virtual size_t printTo(Print& p) const{/*
 		if(this->m_tree.isEmpty()){
@@ -69,7 +69,7 @@ class PrintableFullTree : public Printable {
 	}
 	
 	protected:
-		FullTree<T>& m_tree;
+		Graph<T>& m_graph;
 };
 
 }

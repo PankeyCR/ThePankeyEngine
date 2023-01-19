@@ -24,7 +24,9 @@
 
 #ifndef DISABLE_IMPLEMENTATION_cppObject
 	#define IMPLEMENTATION_cppObject IMPLEMENTATION(public cppObject)
+	#define VIRTUAL_IMPLEMENTATION_cppObject IMPLEMENTATION(virtual public cppObject)
 	#define IMPLEMENTING_cppObject IMPLEMENTING(public cppObject)
+	#define VIRTUAL_IMPLEMENTING_cppObject IMPLEMENTING(virtual public cppObject)
 #endif
 
 namespace ame{
