@@ -1,30 +1,11 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Order)
-	#define Order_hpp
-#endif
-
 #ifndef Order_hpp
 #define Order_hpp
-#define Order_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "cppObject.hpp"
 #include "PrimitiveList.hpp"
 
-namespace ame{
+namespace higgs{
 
 template<class T,class... args>
 class Order : public cppObject{

@@ -1,87 +1,64 @@
 
-#ifndef CONFIGURATION_AppSettings_hpp
-#define CONFIGURATION_AppSettings_hpp
-
-	#include "ame_Enviroment.hpp"
-
-	#if defined(DISABLE_AppSettings)
-		#define AppSettings_hpp
-
-		#define IMPLEMENTATION_AppSettings
-		#define IMPLEMENTING_AppSettings
-	#else
-		#if defined(DISABLE_IMPLEMENTATION_AppSettings)
-			#define IMPLEMENTATION_AppSettings
-			#define IMPLEMENTING_AppSettings
-		#endif
-	#endif
-#endif
-
 #ifndef AppSettings_hpp
-#define AppSettings_hpp
-#define AppSettings_AVAILABLE
+	#define AppSettings_hpp
 
-#ifndef DISABLE_IMPLEMENTATION_AppSettings
-	#define IMPLEMENTATION_AppSettings IMPLEMENTATION(public AppSettings)
-	#define IMPLEMENTING_AppSettings IMPLEMENTING(public AppSettings)
-#endif
+	#include "Note.hpp"
 
-#include "cppObject.hpp"
-#include "Note.hpp"
+	namespace higgs{
+		
+		class AppSettings{
+			public:
+				virtual ~AppSettings(){}
+				
+				virtual void addInt(const Note& a_name,int a_var)=0;
+				virtual void putInt(const Note& a_name, int a_var)=0;
+				virtual void setInt(const Note& a_name, int a_var)=0;
+				virtual void changeInt(const Note& a_name, int a_var)=0;
+				virtual int getInt(const Note& a_name)=0;
+				virtual void removeInt(const Note& a_name)=0;
+				virtual bool containInt(const Note& a_name)=0;
+				
+				virtual void addLong(const Note& a_name, long a_var)=0;
+				virtual void putLong(const Note& a_name, long a_var)=0;
+				virtual void setLong(const Note& a_name, long a_var)=0;
+				virtual void changeLong(const Note& a_name, long a_var)=0;
+				virtual long getLong(const Note& a_name)=0;
+				virtual void removeLong(const Note& a_name)=0;
+				virtual bool containLong(const Note& a_name)=0;
+				
+				virtual void addFloat(const Note& a_name, float a_var)=0;
+				virtual void putFloat(const Note& a_name, float a_var)=0;
+				virtual void setFloat(const Note& a_name, float a_var)=0;
+				virtual void changeFloat(const Note& a_name, float a_var)=0;
+				virtual float getFloat(const Note& a_name)=0;
+				virtual void removeFloat(const Note& a_name)=0;
+				virtual bool containFloat(const Note& a_name)=0;
+				
+				virtual void addNote(const Note& a_name, const Note& a_var)=0;
+				virtual void putNote(const Note& a_name, const Note& a_var)=0;
+				virtual void setNote(const Note& a_name, const Note& a_var)=0;
+				virtual void changeNote(const Note& a_name, const Note& a_var)=0;
+				virtual Note getNote(const Note& a_name)=0;
+				virtual void removeNote(const Note& a_name)=0;
+				virtual bool containNote(const Note& a_name)=0;
+				
+				virtual void addBoolean(const Note& a_name, bool a_var)=0;
+				virtual void putBoolean(const Note& a_name, bool a_var)=0;
+				virtual void setBoolean(const Note& a_name, bool a_var)=0;
+				virtual void changeBoolean(const Note& a_name, bool a_var)=0;
+				virtual bool getBoolean(const Note& a_name)=0;
+				virtual void removeBoolean(const Note& a_name)=0;
+				virtual bool containBoolean(const Note& a_name)=0;
 
-namespace ame{
+				virtual void add(const Note& a_name, var a_var)=0;
+				virtual void put(const Note& a_name, var a_var)=0;
+				virtual void set(const Note& a_name, var a_var)=0;
+				virtual void change(const Note& a_name, var a_var)=0;
+				virtual var get(const Note& a_name)=0;
+				virtual void remove(const Note& a_name)=0;
+				virtual bool contain(const Note& a_name)=0;
+		};
 
-/*
-*	Class Configuration:
-*	DISABLE_cppObject
-*	DISABLE_cppObjectClass
-*	DISABLE_AbstractClass
-*	DISABLE_IMPLEMENTATION_cppObject
-*/
-class AppSettings IMPLEMENTATION_cppObject {
-	private:	
-	
-    public:
-		virtual ~AppSettings(){}
-		
-		virtual void addInt(Note s, int i)=0;
-		virtual void setInt(Note s, int i)=0;
-		virtual int getInt(Note s)=0;
-		virtual bool containInt(Note s)=0;
-		
-		virtual void addFloat(Note s, float i)=0;
-		virtual void setFloat(Note s, float i)=0;
-		virtual float getFloat(Note s)=0;
-		virtual bool containFloat(Note s)=0;
-		
-		virtual void addNote(Note s, Note i)=0;
-		virtual void setNote(Note s, Note i)=0;
-		virtual bool containNote(Note s)=0;
-		virtual Note getNote(Note s)=0;
-		
-		virtual void addBoolean(Note s, bool i)=0;
-		virtual void setBoolean(Note s, bool i)=0;
-		virtual bool getBoolean(Note s)=0;
-		virtual bool containBoolean(Note s)=0;
-		
-		#if defined(cppObject_AVAILABLE)
-		virtual void addCppObject(Note s, cppObject *i)=0;
-		virtual void setCppObject(Note s, cppObject *i)=0;
-		virtual cppObject *getCppObject(Note s)=0;
-		virtual bool containCppObject(Note s)=0;
-		#endif
-
-		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(AbstractClass_AVAILABLE)
-		virtual cppObjectClass* getClass(){
-			return AbstractClass<AppSettings>::classType;
-		}
-		
-		virtual bool instanceof(cppObjectClass* cls){
-			return cls == AbstractClass<AppSettings>::classType;
-		}
-		#endif
-};
-
-}
+	}
 
 #endif

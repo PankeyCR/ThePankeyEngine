@@ -7,7 +7,7 @@
 #include "Lexer.hpp"
 #include "FullTree.hpp"
 
-namespace ame{
+namespace higgs{
 
 class TokenStructure{
 	public:

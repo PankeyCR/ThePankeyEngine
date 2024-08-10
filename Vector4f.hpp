@@ -1,5 +1,5 @@
 
-#include "ame_Enviroment.hpp"
+#include "higgs_Enviroment.hpp"
 
 #if defined(DISABLE_Vector4f)
 	#define Vector4f_hpp
@@ -9,15 +9,15 @@
 #define Vector4f_hpp
 #define Vector4f_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#ifndef higgs_Enviroment_Defined
 
 #endif
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 #endif
 
@@ -27,7 +27,7 @@
 #include "cppObject.hpp"
 #include "Class.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Vector4f : public cppObject , public Printable{
     private:

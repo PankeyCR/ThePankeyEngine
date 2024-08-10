@@ -6,7 +6,7 @@
 
 #include "Vector2f.hpp"
 
-namespace ame{
+namespace higgs{
 	
 	TestResult TR_Vector2f_Testing(){
 		TestResult result;

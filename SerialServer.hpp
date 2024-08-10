@@ -1,33 +1,13 @@
 
-#ifndef CONFIGURATION_SerialServer_hpp
-#define CONFIGURATION_SerialServer_hpp
-
-	#include "ame_Enviroment.hpp"
-
-	#if defined(DISABLE_SerialServer)
-		#define SerialServer_hpp
-	#endif
-#endif
-
 #ifndef SerialServer_hpp
 #define SerialServer_hpp
-#define SerialServer_AVAILABLE
 
 #include "cppObject.hpp"
 #include "SerialPort.hpp"
 
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-    #include "IPAddress.h"
-#endif
-
 #include "Note.hpp"
 
-namespace ame{
+namespace higgs{
 
 /*
 *	Class Configuration:
@@ -71,7 +51,7 @@ class SerialServer IMPLEMENTATION_cppObject{
 
 		virtual void send(Note a_port, Note a_message){}
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 		virtual void send(IPAddress a_port, Note a_message){}
 #endif
 

@@ -1,25 +1,6 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Quaternion)
-	#define Quaternion_hpp
-#endif
-
 #ifndef Quaternion_hpp
 #define Quaternion_hpp
-#define Quaternion_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "FastMonkeyMath.hpp"
 #include "cppObject.hpp"
@@ -27,7 +8,7 @@
 #include "Matrix3f.hpp"
 #include "Matrix4f.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Quaternion : public cppObject , public Printable{	
     private:

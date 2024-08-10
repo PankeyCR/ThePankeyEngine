@@ -1,25 +1,6 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_TimeRecorderOnce)
-	#define TimeRecorderOnce_hpp
-#endif
-
 #ifndef TimeRecorderOnce_hpp
 #define TimeRecorderOnce_hpp
-#define TimeRecorderOnce_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Now.hpp"
 #include "List.hpp"
@@ -27,7 +8,7 @@
 #include "TimeCheck.hpp"
 #include "TimeRecorder.hpp"
 
-namespace ame{
+namespace higgs{
 	
 #define isRecorder() 
 class TimeRecorderOnce : public TimeRecorder{

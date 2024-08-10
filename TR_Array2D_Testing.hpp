@@ -7,7 +7,7 @@
 #include "Array2D.hpp"
 #include "MemoryRam.hpp"
 
-namespace ame{
+namespace higgs{
 	
 	TestResult TR_Array2D_Testing(){
 		TestResult result;

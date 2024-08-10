@@ -1,11 +1,10 @@
 
 #ifndef Now_hpp
 #define Now_hpp
-#define Now_AVAILABLE
 
 #include "TimeCheck.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Now {
     public:

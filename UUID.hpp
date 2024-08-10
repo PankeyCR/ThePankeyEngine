@@ -1,37 +1,18 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_UUID)
-	#define UUID_hpp
-#endif
-
 #ifndef UUID_hpp
 #define UUID_hpp
-#define UUID_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Random.hpp"
 #include "NoRepiteRandom.hpp"
 #include "Note.hpp"
 
-namespace ame{
+namespace higgs{
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 class UUID{
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 class UUID : public Printable{
 #endif
     public:
@@ -46,7 +27,7 @@ class UUID : public Printable{
 		}
 		virtual ~UUID(){}
 		
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 		size_t printTo(Print& p) const{
 			p.print(uuid);
 			return sizeof(uuid);

@@ -1,5 +1,5 @@
 
-#include "ame_Enviroment.hpp"
+#include "higgs_Enviroment.hpp"
 
 #if defined(DISABLE_Mesh)
 	#define Mesh_hpp
@@ -9,15 +9,15 @@
 #define Mesh_hpp
 #define Mesh_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#ifndef higgs_Enviroment_Defined
 
 #endif
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "SD.h"
 	#include "Arduino.h"
 #endif
@@ -29,7 +29,7 @@
 #include "LinkedList.hpp"
 #include "CommandReader.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Mesh : public Printable{
     public:

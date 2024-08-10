@@ -1,27 +1,26 @@
 
 #ifndef System_hpp
 #define System_hpp
-#define System_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#ifndef higgs_Enviroment_Defined
 
 #endif
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 	#include <stdio.h>
-	#include "ame_Print.hpp"
-	#include "ame_Printable.hpp"
+	#include "higgs_Print.hpp"
+	#include "higgs_Printable.hpp"
 	#include "ConsolePrint.hpp"
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif
 
-#include "ame_String.hpp"
+#include "higgs_String.hpp"
 
-namespace ame{
+namespace higgs{
 
 class System{
     public:
@@ -29,52 +28,43 @@ class System{
 		virtual ~System(){}
 
 		static long milliSeconds(){
-		#ifdef ame_Windows
-			return 0;
-		#elif defined(ame_ArduinoIDE)
-			return millis();
-		#else
-			return 0;
-		#endif
+			#ifdef higgs_Windows
+				return 0;
+			#elif defined(higgs_ArduinoIDE)
+				return millis();
+			#else
+				return 0;
+			#endif
 		}
 
 		static long microSeconds(){
-		#ifdef ame_Windows
-			return 0;
-		#elif defined(ame_ArduinoIDE)
-			return micros();
-		#else
-			return 0;
-		#endif
+			#ifdef higgs_Windows
+				return 0;
+			#elif defined(higgs_ArduinoIDE)
+				return micros();
+			#else
+				return 0;
+			#endif
 		}
 
 		static void sleep(long a_time){
-		#ifdef ame_Windows
-			
-		#elif defined(ame_ArduinoIDE)
-			delay(a_time);
-		#else
-			
-		#endif
+			#ifdef higgs_Windows
+				
+			#elif defined(higgs_ArduinoIDE)
+				delay(a_time);
+			#else
+				
+			#endif
 		}
 
-		static void startEngine(){
-			bool i_halt = true;
-
-			#ifdef ame_Enviroment_Name
-			System::console.println(ame_Enviroment_Name);
-			i_halt = false;
-			#endif
-
-			while(i_halt){
-				System::console.println("No Engine detected");
+		static void recycle(){
+			#ifdef higgs_Windows
 				
-				#ifndef ame_Enviroment_Name
-				System::console.println("No Enviroment detected");
-				#endif
-
-				System::sleep(1000);
-			}
+			#elif defined(higgs_ArduinoIDE)
+			
+			#else
+				
+			#endif
 		}
 
 	protected:
@@ -82,14 +72,14 @@ class System{
 		System(){}
 
 };
-#ifdef ame_Windows
+#ifdef higgs_Windows
 
 ConsolePrint PConsole;
 Print& System::console = PConsole;
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 Print& System::console = Serial;
 #endif
 

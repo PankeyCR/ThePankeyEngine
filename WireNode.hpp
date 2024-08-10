@@ -6,7 +6,7 @@
 #include "cppObject.hpp"
 #include "Class.hpp"
 
-namespace ame{
+namespace higgs{
 
 template<class Data>
 class WireNode IMPLEMENTATION_cppObject {

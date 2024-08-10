@@ -1,0 +1,12 @@
+
+#ifndef higgs_Memory_Manager_define_hpp
+    #define higgs_Memory_Manager_define_hpp
+
+    ///////////////////////////////////////////
+
+
+
+    ///////////////////////////////////////////
+
+
+#endif

@@ -1,27 +1,8 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_NoteIterator)
-	#define NoteIterator_hpp
-#endif
-
 #ifndef NoteIterator_hpp
 #define NoteIterator_hpp
-#define NoteIterator_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-namespace ame{
+namespace higgs{
 
 class NoteIterator{
 	public:

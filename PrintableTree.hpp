@@ -3,12 +3,12 @@
 #define PrintableTree_hpp
 #define PrintableTree_AVAILABLE
 
-#ifdef ame_Windows
-	#include "ame_Printable.hpp"
-	#include "ame_Print.hpp"
+#ifdef higgs_Windows
+	#include "higgs_Printable.hpp"
+	#include "higgs_Print.hpp"
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif
@@ -18,17 +18,17 @@
 #include "Class.hpp"
 
 #ifdef PrintableTree_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "higgs_Logger_config.hpp"
+	#include "higgs_Logger.hpp"
 
-	#define PrintableTreeLog(location,method,type,mns) ame_Log(this,location,"PrintableTree",method,type,mns)
+	#define PrintableTreeLog(location,method,type,mns) higgs_Log(this,location,"PrintableTree",method,type,mns)
 	#define const_PrintableTreeLog(location,method,type,mns)
 #else
 	#ifdef PrintableTree_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+		#include "higgs_Logger_config.hpp"
+		#include "higgs_Logger.hpp"
 
-		#define PrintableTreeLog(location,method,type,mns) ame_LogDebug(this,location,"PrintableTree",method,type)
+		#define PrintableTreeLog(location,method,type,mns) higgs_LogDebug(this,location,"PrintableTree",method,type)
 		#define const_PrintableTreeLog(location,method,type,mns)
 	#else
 		#define PrintableTreeLog(location,method,type,mns)
@@ -36,7 +36,7 @@
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
 /*
 *	Class Configuration:

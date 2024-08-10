@@ -5,7 +5,7 @@
 
 //#include "MemoryManager.hpp"
 
-namespace ame{
+namespace higgs{
 
 class ManegedMemory{
     public:

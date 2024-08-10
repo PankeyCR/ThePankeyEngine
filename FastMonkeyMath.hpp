@@ -15,7 +15,7 @@
 #define INV_PI 1.0f / PI
 #define INV_TWO_PI 1.0f / TWO_PI
 
-namespace ame{
+namespace higgs{
 
 class FastMonkeyMath{
 	private:
@@ -190,10 +190,10 @@ class FastMonkeyMath{
             return 0.0f;
         }
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 		return M_PI;
 #endif
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 		return PI;
 #endif
 

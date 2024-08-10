@@ -1,29 +1,10 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_TypeErasedInvoke)
-	#define TypeErasedInvoke_hpp
-#endif
-
 #ifndef TypeErasedInvoke_hpp
 #define TypeErasedInvoke_hpp
-#define TypeErasedInvoke_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Note.hpp"
 
-namespace ame{
+namespace higgs{
 
 template<class... Args>
 struct TypeErasedInvoke{

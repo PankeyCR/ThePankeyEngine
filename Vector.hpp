@@ -1,29 +1,10 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Vector)
-	#define Vector_hpp
-#endif
-
 #ifndef Vector_hpp
 #define Vector_hpp
-#define Vector_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "cppObject.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Vector : public cppObject , public Printable{
 public:

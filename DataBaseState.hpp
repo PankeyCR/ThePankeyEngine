@@ -20,13 +20,13 @@
 #define DataBaseState_hpp
 #define DataBaseState_AVAILABLE
 
-#include "ame_Enviroment.hpp"
+#include "higgs_Enviroment.hpp"
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 	#include "WindowsFile.hpp"
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "ArduinoSDFile.hpp"
 #endif
 
@@ -41,42 +41,42 @@
 #include "PrimitiveList.hpp"
 
 #ifdef DataBaseState_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "higgs_Logger_config.hpp"
+	#include "higgs_Logger.hpp"
 
-	#define DataBaseStateLog(location,method,type,mns) ame_Log(this,location,"DataBaseState",method,type,mns)
+	#define DataBaseStateLog(location,method,type,mns) higgs_Log(this,location,"DataBaseState",method,type,mns)
 #else
 	#ifdef DataBaseState_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+		#include "higgs_Logger_config.hpp"
+		#include "higgs_Logger.hpp"
 
-		#define DataBaseStateLog(location,method,type,mns) ame_LogDebug((void*)this,location,"DataBaseState",method,type)
+		#define DataBaseStateLog(location,method,type,mns) higgs_LogDebug((void*)this,location,"DataBaseState",method,type)
 	#else
 		#define DataBaseStateLog(location,method,type,mns)
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
 class DataBaseState : public BaseAppState{
     public:
 		DataBaseState(){
-			DataBaseStateLog(ame_Log_Statement, "Constructor",  "println", "");
+			DataBaseStateLog(higgs_Log_Statement, "Constructor",  "println", "");
 			m_owner = true;
 			m_exporter = new TextExporter();
 			m_importer = new TextImporter();
 
-			#ifdef ame_Windows
+			#ifdef higgs_Windows
 				m_file = new WindowsFile();
 			#endif
 
-			#ifdef ame_ArduinoIDE
+			#ifdef higgs_ArduinoIDE
 				m_file = new ArduinoSDFile<SDFileSystemClass>(SD);
 			#endif
 			
 		}
 		DataBaseState(MonkeyFile* f){
-			DataBaseStateLog(ame_Log_Statement, "Constructor",  "println", "");
+			DataBaseStateLog(higgs_Log_Statement, "Constructor",  "println", "");
 			owner = true;
 			exporter = new TextExporter();
 			importer = new TextImporter();
@@ -84,14 +84,14 @@ class DataBaseState : public BaseAppState{
 		}
 		
 		DataBaseState(MonkeyExporter* e, MonkeyImporter* i, bool o){
-			DataBaseStateLog(ame_Log_Statement, "Constructor",  "println", "");
+			DataBaseStateLog(higgs_Log_Statement, "Constructor",  "println", "");
 			owner = o;
 			exporter = e;
 			importer = i;
 		}
 		
 		DataBaseState(MonkeyExporter* e, MonkeyImporter* i, MonkeyFile* f, bool o){
-			DataBaseStateLog(ame_Log_Statement, "Constructor",  "println", "");
+			DataBaseStateLog(higgs_Log_Statement, "Constructor",  "println", "");
 			owner = o;
 			exporter = e;
 			importer = i;
@@ -99,7 +99,7 @@ class DataBaseState : public BaseAppState{
 		}
 		
 		virtual ~DataBaseState(){
-			DataBaseStateLog(ame_Log_Statement, "Destructor",  "println", "");
+			DataBaseStateLog(higgs_Log_Statement, "Destructor",  "println", "");
 			if(owner){
 				delete exporter;
 				delete importer;
@@ -116,7 +116,7 @@ class DataBaseState : public BaseAppState{
 		virtual cppObjectClass* getClass(){return Class<DataBaseState>::classType;}
 		
 		virtual void initialize(Application *app){
-			DataBaseStateLog(ame_Log_Statement, "initialize",  "println", "start");
+			DataBaseStateLog(higgs_Log_Statement, "initialize",  "println", "start");
 			AppState* m_state = app->getStateManager()->get(Class<SerialMessageState>::classType);
 			if(m_state == nullptr){
 				return;
@@ -127,7 +127,7 @@ class DataBaseState : public BaseAppState{
 				DataBaseConfig* c = configuration.getByPosition(x);
 				c->initialize(exporter, importer, file, serialState);
 			}
-			DataBaseStateLog(ame_Log_Statement, "initialize",  "println", "end");
+			DataBaseStateLog(higgs_Log_Statement, "initialize",  "println", "end");
 			if(file == nullptr){
 				return;
 			}
@@ -135,16 +135,16 @@ class DataBaseState : public BaseAppState{
 		}
 		
 		virtual void execute(Message* message){
-			DataBaseStateLog(ame_Log_Statement, "execute",  "println", "start execute");
+			DataBaseStateLog(higgs_Log_Statement, "execute",  "println", "start execute");
 			if(file == nullptr || serialState == nullptr || exporter == nullptr || importer == nullptr){
-				DataBaseStateLog(ame_Log_Statement, "execute",  "println", "file == nullptr || serialState == nullptr || exporter == nullptr || importer == nullptr");
+				DataBaseStateLog(higgs_Log_Statement, "execute",  "println", "file == nullptr || serialState == nullptr || exporter == nullptr || importer == nullptr");
 			}
 			if(exporter == nullptr || importer == nullptr){
 				return;
 			}
-			DataBaseStateLog(ame_Log_Statement, "execute",  "println", message->text());
+			DataBaseStateLog(higgs_Log_Statement, "execute",  "println", message->text());
 			importer->setMessage(message);
-			// DataBaseStateLog(ame_Log_Statement, "execute",  "println", importer->toNote());
+			// DataBaseStateLog(higgs_Log_Statement, "execute",  "println", importer->toNote());
 			
 			Note command = importer->getTag(ElementId("DataBase.command"));
 			Note type = importer->getTag(ElementId("DataBase.type"));
@@ -155,38 +155,38 @@ class DataBaseState : public BaseAppState{
 			DataBaseConfig* config = configuration.getByLValue(type);
 			
 			if(config == nullptr || command == ""){
-				DataBaseStateLog(ame_Log_Statement, "execute",  "println", "config == nullptr || command.isEmpty");
+				DataBaseStateLog(higgs_Log_Statement, "execute",  "println", "config == nullptr || command.isEmpty");
 				exporter->clear();
 				importer->clear();
 				return;
 			}
 			
 			if(command == "put"){
-				DataBaseStateLog(ame_Log_Statement, "execute",  "println", "command == put");
+				DataBaseStateLog(higgs_Log_Statement, "execute",  "println", "command == put");
 				exporter->clear();
 				config->put(exporter,importer,file,serialState);
 			}
 			
 			if(command == "get"){
-				DataBaseStateLog(ame_Log_Statement, "execute",  "println", "command == get");
+				DataBaseStateLog(higgs_Log_Statement, "execute",  "println", "command == get");
 				exporter->clear();
 				config->get(exporter,importer,file,serialState);
 			}
 			
 			if(command == "delete"){
-				DataBaseStateLog(ame_Log_Statement, "execute",  "println", "command == delete");
+				DataBaseStateLog(higgs_Log_Statement, "execute",  "println", "command == delete");
 				exporter->clear();
 				config->erase(exporter,importer,file,serialState);
 			}
 			
 			if(command == "copy"){
-				DataBaseStateLog(ame_Log_Statement, "execute",  "println", "command == copy");
+				DataBaseStateLog(higgs_Log_Statement, "execute",  "println", "command == copy");
 				exporter->clear();
 				config->copy(exporter,importer,file,serialState);
 			}
 			
 			if(command == "cut"){
-				DataBaseStateLog(ame_Log_Statement, "execute",  "println", "command == cut");
+				DataBaseStateLog(higgs_Log_Statement, "execute",  "println", "command == cut");
 				exporter->clear();
 				config->cut(exporter,importer,file,serialState);
 			}

@@ -6,17 +6,17 @@
 #include "Note.hpp"
 #include "ByteArray.hpp"
 
-#ifdef ame_Windows
-	#include "ame_Printable.hpp"
-	#include "ame_Print.hpp"
+#ifdef higgs_Windows
+	#include "higgs_Printable.hpp"
+	#include "higgs_Print.hpp"
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif
 
-namespace ame{
+namespace higgs{
 
 class Message : public Printable{
 public:

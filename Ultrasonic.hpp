@@ -1,27 +1,8 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Ultrasonic)
-	#define Ultrasonic_hpp
-#endif
-
 #ifndef Ultrasonic_hpp
 #define Ultrasonic_hpp
-#define Ultrasonic_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-namespace ame{
+namespace higgs{
 
 class Ultrasonic {
     public:

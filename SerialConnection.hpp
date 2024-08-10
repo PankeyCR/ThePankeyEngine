@@ -1,25 +1,6 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_SerialConnection)
-	#define SerialConnection_hpp
-#endif
-
 #ifndef SerialConnection_hpp
 #define SerialConnection_hpp
-#define SerialConnection_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "ArrayList.hpp"
 #include "List.hpp"
@@ -31,7 +12,7 @@
 	#define SerialConnectionLog(name,method,type,mns)
 #endif
 
-namespace ame{
+namespace higgs{
 	
 bool SerialConnectionValidChars(char c){
 	if(c > 40 && c < 126){

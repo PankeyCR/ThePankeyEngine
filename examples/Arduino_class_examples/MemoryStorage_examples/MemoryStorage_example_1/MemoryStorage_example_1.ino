@@ -1,40 +1,42 @@
 
 #include "ame_Enviroment.hpp"
+#include "ame_Enviroment_config.hpp"
 #include "System.hpp"
-
-#include "RawPointer.hpp"
-#include "MemoryStorage.hpp"
-#include "PointerArrayStorage.hpp"
-#include "ReferenceCount.hpp"
-
-#include "MemoryRam.hpp"
 
 using namespace ame;
 
-MemoryStorage<RawPointer>* i_storage;
+DataStorage<int>* i_storage;
 
-void setup(){
-    Serial.begin(9600);
-    i_storage = new PointerArrayStorage<RawPointer>();
-    i_storage->setManager( new ReferenceCount<RawPointer>() );
-
-    i_storage->expandLocal(3);
+void setup() {
+  Serial.begin(9600);
+  createDataAllocator<int>();
+  
+  i_storage = new ArrayDataStorage<int>();
+  i_storage->expand(3);
 }
 
-void loop(){
-    i_storage->set(0, new RawPointer(new int(5)));
-    i_storage->set(1, new RawPointer(new int(7)));
-    i_storage->set(2, new RawPointer(new int(9)));
-    
-    for(int x = 0; x < i_storage->getSize(); x++){
-        RawPointer* f_pointer = i_storage->get(x);
-        if(f_pointer == nullptr){
-            continue;
-        }
-        int f_value = f_pointer->cast<int>();
-        System::console.println(f_value);
-    }
+void loop() {
+  ame_Debuging(ame_Log_StartLoop, "loop");
+  
+  Var<int> i = 100;
+  Var<int> j = 200;
+  Var<int> k = 300;
 
-    System::console.print("ram: ");
-    System::console.println(getRamSize());
+  i_storage->set(0, i);
+  i_storage->set(1, j);
+  i_storage->set(2, k);
+
+  for(int x = 0; x < i_storage->getSize(); x++){
+      Var<int> f_var = i_storage->get(x);
+      if(f_var.isNull()){
+          continue;
+      }
+      int f_value = f_var.getValue();
+      System::console.println(f_value);
+  }
+  
+  ame_Debuging(ame_Log_EndLoop, "loop");
 }
+
+
+//

@@ -5,7 +5,7 @@
 
 #include "Class.hpp"
 
-namespace ame{
+namespace higgs{
 
 template<class T>
 T* CastObject(cppObject* obj){

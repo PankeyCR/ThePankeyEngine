@@ -1,6 +1,8 @@
 
+#include "ame_Enviroment.hpp"
+#include "ame_Enviroment_config.hpp"
+
 #include "Array.hpp"
-#include "System.hpp"
 #include "Cast.hpp"
 
 using namespace ame;

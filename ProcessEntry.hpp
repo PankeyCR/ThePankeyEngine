@@ -1,29 +1,10 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_ProcessEntry)
-	#define ProcessEntry_hpp
-#endif
-
 #ifndef ProcessEntry_hpp
 #define ProcessEntry_hpp
-#define ProcessEntry_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Processing.hpp"
 
-namespace ame{
+namespace higgs{
 
 template<class P, class V>
 class ProcessEntry{

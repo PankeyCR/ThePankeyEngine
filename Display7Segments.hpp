@@ -1,28 +1,8 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Display7Segments)
-	#define Display7Segments_hpp
-#endif
-
 #ifndef Display7Segments_hpp
 #define Display7Segments_hpp
-#define Display7Segments_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-	#include "Printable.h"
-#endif
-
-namespace ame{
+namespace higgs{
 
 class Display7Segments{
     public:

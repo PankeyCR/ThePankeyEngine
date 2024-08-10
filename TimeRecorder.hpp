@@ -1,30 +1,11 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_TimeRecorder)
-	#define TimeRecorder_hpp
-#endif
-
 #ifndef TimeRecorder_hpp
 #define TimeRecorder_hpp
-#define TimeRecorder_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Now.hpp"
 #include "TimeCheck.hpp"
 
-namespace ame{
+namespace higgs{
 
 #define isRecorder() 
 class TimeRecorder {

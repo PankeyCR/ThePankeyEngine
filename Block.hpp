@@ -3,7 +3,7 @@
 #define Block_hpp
 #define Block_AVAILABLE
 
-namespace ame{
+namespace higgs{
 
 class Block{
     public:

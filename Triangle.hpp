@@ -1,29 +1,10 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Triangle)
-	#define Triangle_hpp
-#endif
-
 #ifndef Triangle_hpp
 #define Triangle_hpp
-#define Triangle_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Vector3f.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Triangle : public Printable{
     public:

@@ -3,24 +3,24 @@
 #define ConsolePrint_hpp
 #define ConsolePrint_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#ifndef higgs_Enviroment_Defined
 
 #endif
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 	#include <stdio.h>
-	#include "ame_Print.hpp"
-	#include "ame_Printable.hpp"
+	#include "higgs_Print.hpp"
+	#include "higgs_Printable.hpp"
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif
 
-#include "ame_String.hpp"
+#include "higgs_String.hpp"
 
-namespace ame{
+namespace higgs{
 
 class ConsolePrint : public Print{
     public:
@@ -34,7 +34,7 @@ class ConsolePrint : public Print{
         return sizeof(a_value);
     }
 
-    size_t print(const ame_String& a_value){
+    size_t print(const higgs_String& a_value){
         printf ("%s", a_value.c_str());
         return sizeof(a_value);
     }
@@ -89,7 +89,7 @@ class ConsolePrint : public Print{
         return sizeof(a_value);
     }
 
-    size_t println(const ame_String& a_value){
+    size_t println(const higgs_String& a_value){
         printf ("%s \n", a_value.c_str());
         return sizeof(a_value);
     }

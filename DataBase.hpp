@@ -23,22 +23,21 @@
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
+template<class M, class D>
 class DataBase{
     public:
 		virtual ~DataBase(){}
-		virtual void initialize(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file){}
-		virtual void put(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file){}
-		virtual void get(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file){}
-		virtual void erase(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file){}
-		virtual void copy(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file){}
-		virtual void cut(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file){}
-		virtual void update(float tpc){}
 		
-		virtual void operator=(DataBase db){}
-		virtual bool operator==(DataBase db){return false;}
-		virtual bool operator!=(DataBase db){return false;}
+		virtual void initialize(){}
+		virtual void update(float tpc){}
+
+		virtual bool put(const M& a_meta, const D& a_data)=0;
+		virtual D get(const M& a_meta)=0;
+		virtual bool erase(const M& a_meta)=0;
+		virtual bool copy(const M& a_meta)=0;
+		virtual bool cut(const M& a_meta)=0;
 };
 
 }

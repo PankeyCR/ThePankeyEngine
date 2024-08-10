@@ -22,7 +22,7 @@
 
 #include "SerialPort.hpp"
 
-namespace ame{
+namespace higgs{
 
 class WindowsUsb : public SerialPort{	
     public:

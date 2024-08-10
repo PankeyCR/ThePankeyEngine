@@ -1,27 +1,8 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_TemperatureNTC)
-	#define TemperatureNTC_hpp
-#endif
-
 #ifndef TemperatureNTC_hpp
 #define TemperatureNTC_hpp
-#define TemperatureNTC_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-namespace ame{
+namespace higgs{
 
 class TemperatureNTC{
     public:

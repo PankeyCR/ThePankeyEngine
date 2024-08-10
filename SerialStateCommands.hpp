@@ -9,56 +9,72 @@
 #include "MemoryRam.hpp"
 
 #ifdef SerialStateCommands_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "higgs_Logger_config.hpp"
+	#include "higgs_Logger.hpp"
 	
-	#define SerialStateCommandsLog(location,method,type,mns) ame_Log(nullptr,location,"SerialStateCommands",method,type,mns)
+	#define SerialStateCommandsLog(location,method,type,mns) higgs_Log(nullptr,location,"SerialStateCommands",method,type,mns)
 #else
 	#ifdef SerialStateCommands_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+		#include "higgs_Logger_config.hpp"
+		#include "higgs_Logger.hpp"
 		
-		#define SerialStateCommandsLog(location,method,type,mns) ame_LogDebug(nullptr,location,"SerialStateCommands",method,type)
+		#define SerialStateCommandsLog(location,method,type,mns) higgs_LogDebug(nullptr,location,"SerialStateCommands",method,type)
 	#else
 		#define SerialStateCommandsLog(location,method,type,mns) 
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
-SerialState* g_serialState = nullptr;
-
-void setSerialState(SerialState* a_state){
-	g_serialState = a_state;
-}
-
-void SerialStateCommands(const Note& message){
-	if(g_serialState == nullptr) {
-		System::console.println("message == nullptr || g_serialState == nullptr");
-		return;
-	}
-	System::console.println("SerialStateCommands");
-	
-	PrimitiveList<Note> commands = splitNote(message, ' ');
-
-	if(commands.getPosition() == 1){
-		Note command_0 = commands[0];
-
-		if (command_0 == "getSerialPortSize") {
-			g_serialState->instantSend("SerialPort Size");
-			g_serialState->instantSend(Note(g_serialState->getSerialPortSize()));
+class SerialStateCommands : public Command<Note>{
+	public:
+		SerialStateCommands(){
+			SerialStateCommandsLog(higgs_Log_StartMethod, "Constructor",  "println", "");
+			SerialStateCommandsLog(higgs_Log_EndMethod, "Constructor",  "println", "");
 		}
-	}
-
-	if(commands.getPosition() == 2){
-		Note command_0 = commands[0];
-		Note command_1 = commands[1];
-
-		if (command_0 == "broadcastSerialState") {
-			g_serialState->instantSend(command_1);
+		SerialStateCommands(SerialState* a_serial){
+			SerialStateCommandsLog(higgs_Log_StartMethod, "Constructor",  "println", "");
+			m_serialState = a_serial;
+			SerialStateCommandsLog(higgs_Log_EndMethod, "Constructor",  "println", "");
 		}
-	}
-}
+		virtual ~SerialStateCommands(){
+			SerialStateCommandsLog(higgs_Log_StartMethod, "Destructor",  "println", "");
+			SerialStateCommandsLog(higgs_Log_EndMethod, "Destructor",  "println", "");
+		}
+
+		virtual void execute(const Note& message){
+			SerialStateCommandsLog(higgs_Log_StartMethod, "Destructor",  "println", "");
+			if(m_serialState == nullptr) {
+				System::console.println("message == nullptr || m_serialState == nullptr");
+				return;
+			}
+			System::console.println("SerialStateCommands");
+			
+			PrimitiveList<Note> commands = splitNote(message, ' ');
+
+			if(commands.getPosition() == 1){
+				Note command_0 = commands[0];
+
+				if (command_0 == "getSerialPortSize") {
+					m_serialState->instantSend("SerialPort Size");
+					m_serialState->instantSend(Note(m_serialState->getSerialPortSize()));
+				}
+			}
+
+			if(commands.getPosition() == 2){
+				Note command_0 = commands[0];
+				Note command_1 = commands[1];
+
+				if (command_0 == "broadcastSerialState") {
+					m_serialState->instantSend(command_1);
+				}
+			}
+			SerialStateCommandsLog(higgs_Log_EndMethod, "Destructor",  "println", "");
+		}
+
+	protected:
+		SerialState* m_serialState = nullptr;
+};
 
 }
 

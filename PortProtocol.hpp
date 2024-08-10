@@ -1,14 +1,4 @@
 
-#ifndef CONFIGURATION_PortProtocol_hpp
-#define CONFIGURATION_PortProtocol_hpp
-
-	#include "ame_Enviroment.hpp"
-
-	#if defined(DISABLE_PortProtocol)
-		#define PortProtocol_hpp
-	#endif
-#endif
-
 #ifndef PortProtocol_hpp
 #define PortProtocol_hpp
 #define PortProtocol_AVAILABLE
@@ -20,7 +10,7 @@
 
 #include "MessageDelivery.hpp"
 
-namespace ame{
+namespace higgs{
 
 /*
 *	Class Configuration:

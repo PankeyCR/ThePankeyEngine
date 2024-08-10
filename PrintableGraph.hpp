@@ -3,12 +3,12 @@
 #define PrintableGraph_hpp
 #define PrintableGraph_AVAILABLE
 
-#ifdef ame_Windows
-	#include "ame_Printable.hpp"
-	#include "ame_Print.hpp"
+#ifdef higgs_Windows
+	#include "higgs_Printable.hpp"
+	#include "higgs_Print.hpp"
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif
@@ -18,17 +18,17 @@
 #include "Class.hpp"
 
 #ifdef PrintableGraph_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "higgs_Logger_config.hpp"
+	#include "higgs_Logger.hpp"
 
-	#define PrintableGraphLog(location,method,type,mns) ame_Log(this,location,"PrintableGraph",method,type,mns)
+	#define PrintableGraphLog(location,method,type,mns) higgs_Log(this,location,"PrintableGraph",method,type,mns)
 	#define const_PrintableGraphLog(location,method,type,mns)
 #else
 	#ifdef PrintableGraph_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+		#include "higgs_Logger_config.hpp"
+		#include "higgs_Logger.hpp"
 
-		#define PrintableGraphLog(location,method,type,mns) ame_LogDebug(this,location,"PrintableGraph",method,type)
+		#define PrintableGraphLog(location,method,type,mns) higgs_LogDebug(this,location,"PrintableGraph",method,type)
 		#define const_PrintableGraphLog(location,method,type,mns)
 	#else
 		#define PrintableGraphLog(location,method,type,mns)
@@ -36,7 +36,7 @@
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
 /*
 *	Class Configuration:

@@ -6,7 +6,7 @@
 
 #include "Vector3f.hpp"
 
-namespace ame{
+namespace higgs{
 	
 	TestResult TR_Vector3f_Testing(){
 		TestResult result;

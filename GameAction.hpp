@@ -5,7 +5,7 @@
 
 #include "GameOn.hpp"
 
-namespace ame{
+namespace higgs{
 
 class GameAction : public GameOn{
     public:

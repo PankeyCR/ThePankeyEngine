@@ -1,5 +1,5 @@
 
-#include "ame_Enviroment.hpp"
+#include "higgs_Enviroment.hpp"
 
 #if defined(DISABLE_Average)
 	#define Average_hpp
@@ -9,19 +9,19 @@
 #define Average_hpp
 #define Average_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#ifndef higgs_Enviroment_Defined
 
 #endif
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 #endif
 
-namespace ame{
+namespace higgs{
 
 template<class T>
 class Average{

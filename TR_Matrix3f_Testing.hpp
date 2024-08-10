@@ -6,7 +6,7 @@
 
 #include "Matrix3f.hpp"
 
-namespace ame{
+namespace higgs{
 	
 	TestResult TR_Matrix3f_Testing(){
 		TestResult result;

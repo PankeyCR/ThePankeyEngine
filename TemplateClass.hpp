@@ -1,15 +1,6 @@
 
-#ifndef DISABLE_TemplateClass_hpp
-#define DISABLE_TemplateClass_hpp
-
-	#if defined(DISABLE_cppObjectClass) || defined(DISABLE_TemplateClass) || defined(DISABLE_cppObjectClass)
-		#define TemplateClass_hpp
-	#endif
-#endif
-
 #ifndef TemplateClass_hpp
 #define TemplateClass_hpp
-#define TemplateClass_AVAILABLE
 
 #include "cppObject.hpp"
 #include "ClassAnnotationList.hpp"

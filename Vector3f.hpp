@@ -3,16 +3,16 @@
 #define Vector3f_hpp
 #define Vector3f_AVAILABLE
 
-#include "ame_Enviroment.hpp"
+#include "higgs_Enviroment.hpp"
 
-#ifdef ame_Windows
-	#include "ame_Printable.hpp"
-	#include "ame_Print.hpp"
+#ifdef higgs_Windows
+	#include "higgs_Printable.hpp"
+	#include "higgs_Print.hpp"
     #define _USE_MATH_DEFINES
     #include <cmath>
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 	#include "IPAddress.h"
@@ -22,7 +22,7 @@
 #include "Note.hpp"
 #include "Class.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Vector3f : public cppObject , public Printable{
     public:

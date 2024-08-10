@@ -1,22 +1,11 @@
 
-#ifndef CONFIGURATION_ServerProtocol_hpp
-#define CONFIGURATION_ServerProtocol_hpp
-
-	#include "ame_Enviroment.hpp"
-
-	#if defined(DISABLE_ServerProtocol)
-		#define ServerProtocol_hpp
-	#endif
-#endif
-
 #ifndef ServerProtocol_hpp
 #define ServerProtocol_hpp
-#define ServerProtocol_AVAILABLE
 
 #include "cppObject.hpp"
 #include "SerialNetwork.hpp"
 
-namespace ame{
+namespace higgs{
 
 /*
 *	Class Configuration:

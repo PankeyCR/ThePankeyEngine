@@ -1,40 +1,21 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_ClassName)
-	#define ClassName_hpp
-#endif
-
 #ifndef ClassName_hpp
-#define ClassName_hpp
-#define ClassName_AVAILABLE
+	#define ClassName_hpp
 
-#ifndef ame_Enviroment_Defined
+	#include "CharArray.hpp"
 
-#endif
+	namespace higgs{
+		
+		template<class cls>
+		struct ClassName{
+			static CharArray className;
+			
+			static CharArray get(){return className;}
+			static void set(CharArray a_note){className = a_note;}
+		};
 
-#ifdef ame_Windows
+		template<class cls> CharArray ClassName<cls>::className = "Default";
 
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "Note.hpp"
-
-namespace ame{
-	
-template<class cls>
-struct ClassName{
-	static Note className;
-	
-	static Note get(){return className;}
-	static void set(Note a_note){className = a_note;}
-};
-
-template<class cls> Note ClassName<cls>::className = "Default";
-
-}
+	}
 
 #endif

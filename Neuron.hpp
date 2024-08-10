@@ -1,42 +1,19 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Neuron)
-	#define Neuron_hpp
-#endif
-
 #ifndef Neuron_hpp
-#define Neuron_hpp
-#define Neuron_AVAILABLE
+	#define Neuron_hpp
 
-#ifndef ame_Enviroment_Defined
+	namespace higgs{
 
-#endif
+		class Neuron{
+			public:
+			
+			Neuron(){}
+			virtual ~Neuron(){}
+			
+			float weight = 1;
+			float data = 1;
+		};
 
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "DataSet.hpp"
-#include "Function.hpp"
-#include "Logger.hpp"
-
-namespace ame{
-
-class Neuron{
-	public:
-	
-	Neuron(){}
-	virtual ~Neuron(){}
-	
-	float weight = 1;
-	float data = 1;
-};
-
-}
+	}
 
 #endif

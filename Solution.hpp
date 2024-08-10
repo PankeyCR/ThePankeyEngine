@@ -1,27 +1,8 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Solution)
-	#define Solution_hpp
-#endif
-
 #ifndef Solution_hpp
 #define Solution_hpp
-#define Solution_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-namespace ame{
+namespace higgs{
 
 template<class T>
 class Solution{

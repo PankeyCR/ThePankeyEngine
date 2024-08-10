@@ -5,15 +5,15 @@
 
 #include "SerialNetwork.hpp"
 
-#ifndef ame_Enviroment_Defined
+#ifndef higgs_Enviroment_Defined
 
 #endif
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 	#include "IPAddress.h"
 #endif
@@ -27,71 +27,71 @@
 #endif
 
 #ifdef WIFISerialServer_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "higgs_Logger_config.hpp"
+	#include "higgs_Logger.hpp"
 	
-	#define WIFISerialServerLog(location,method,type,mns) ame_Log(this,location,"WIFISerialServer",method,type,mns)
+	#define WIFISerialServerLog(location,method,type,mns) higgs_Log(this,location,"WIFISerialServer",method,type,mns)
 	#define const_WIFISerialServerLog(location,method,type,mns) 
-	#define StaticWIFISerialServerLog(pointer,location,method,type,mns) ame_Log(pointer,location,"WIFISerialServer",method,type,mns)
+	#define StaticWIFISerialServerLog(pointer,location,method,type,mns) higgs_Log(pointer,location,"WIFISerialServer",method,type,mns)
 #else
 	#ifdef WIFISerialServer_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+		#include "higgs_Logger_config.hpp"
+		#include "higgs_Logger.hpp"
 		
-		#define WIFISerialServerLog(location,method,type,mns) ame_LogDebug(this,location,"WIFISerialServer",method,type)
+		#define WIFISerialServerLog(location,method,type,mns) higgs_LogDebug(this,location,"WIFISerialServer",method,type)
 		#define const_WIFISerialServerLog(location,method,type,mns) 
-		#define StaticWIFISerialServerLog(pointer,location,method,type,mns) ame_LogDebug(pointer,location,"WIFISerialServer",method,type)
+		#define StaticWIFISerialServerLog(pointer,location,method,type,mns) higgs_LogDebug(pointer,location,"WIFISerialServer",method,type)
 	#else
 		#define WIFISerialServerLog(location,method,type,mns) 
 		#define const_WIFISerialServerLog(location,method,type,mns) 
 		#define StaticWIFISerialServerLog(pointer,location,method,type,mns) 
 	#endif
 #endif
-namespace ame{
+namespace higgs{
 
 class WIFISerialServer : public SerialServer{	
     public:
     WIFISerialServer():server(80){
-		WIFISerialServerLog(ame_Log_StartMethod, "Contructor",  "println", "server(80)");
+		WIFISerialServerLog(higgs_Log_StartMethod, "Contructor",  "println", "server(80)");
 		server.begin();
-		WIFISerialServerLog(ame_Log_EndMethod, "Contructor",  "println", "");
+		WIFISerialServerLog(higgs_Log_EndMethod, "Contructor",  "println", "");
     }
     WIFISerialServer(int port):server(port){
-		WIFISerialServerLog(ame_Log_StartMethod, "Contructor",  "println", "server(port)");
+		WIFISerialServerLog(higgs_Log_StartMethod, "Contructor",  "println", "server(port)");
 		server.begin();
-		WIFISerialServerLog(ame_Log_EndMethod, "Contructor",  "println", "");
+		WIFISerialServerLog(higgs_Log_EndMethod, "Contructor",  "println", "");
     }
 	
 	virtual ~WIFISerialServer(){
-		WIFISerialServerLog(ame_Log_StartMethod, "Destructor",  "println", "");
-		WIFISerialServerLog(ame_Log_EndMethod, "Destructor",  "println", "");
+		WIFISerialServerLog(higgs_Log_StartMethod, "Destructor",  "println", "");
+		WIFISerialServerLog(higgs_Log_EndMethod, "Destructor",  "println", "");
 	}
 	
 	SerialPort* accept(){
-		WIFISerialServerLog(ame_Log_StartMethod, "accept",  "println", "");
-		#if defined(ame_GENERIC_ESP32)
-		WIFISerialServerLog(ame_Log_Statement, "accept",  "println", "ame_GENERIC_ESP32");
+		WIFISerialServerLog(higgs_Log_StartMethod, "accept",  "println", "");
+		#if defined(higgs_GENERIC_ESP32)
+		WIFISerialServerLog(higgs_Log_Statement, "accept",  "println", "higgs_GENERIC_ESP32");
 		WiFiClient client = server.accept();   // Listen for incoming clients
-		#elif defined(ame_GENERIC_ESP8266)
-		WIFISerialServerLog(ame_Log_Statement, "accept",  "println", "ame_GENERIC_ESP8266");
+		#elif defined(higgs_GENERIC_ESP8266)
+		WIFISerialServerLog(higgs_Log_Statement, "accept",  "println", "higgs_GENERIC_ESP8266");
 		WiFiClient client = server.available();
 		#endif 
 		if(client){
-			WIFISerialServerLog(ame_Log_EndMethod, "accept",  "println", "if(client)");
+			WIFISerialServerLog(higgs_Log_EndMethod, "accept",  "println", "if(client)");
 			return new WIFISerialPort(client,"ethernet");
 		}
-		WIFISerialServerLog(ame_Log_EndMethod, "accept",  "println", "return nullptr");
+		WIFISerialServerLog(higgs_Log_EndMethod, "accept",  "println", "return nullptr");
 		return nullptr;
 	} 
 	
 	SerialPort* available(){
-		WIFISerialServerLog(ame_Log_StartMethod, "available",  "println", "");
+		WIFISerialServerLog(higgs_Log_StartMethod, "available",  "println", "");
 		WiFiClient client = server.available();   // Listen for incoming clients
 		if(client){
-			WIFISerialServerLog(ame_Log_EndMethod, "available",  "println", "if(client)");
+			WIFISerialServerLog(higgs_Log_EndMethod, "available",  "println", "if(client)");
 			return new WIFISerialPort(client,"ethernet");
 		}
-		WIFISerialServerLog(ame_Log_EndMethod, "accept",  "println", "return nullptr");
+		WIFISerialServerLog(higgs_Log_EndMethod, "accept",  "println", "return nullptr");
 		return nullptr;
 	}
 	
@@ -102,7 +102,7 @@ class WIFISerialServer : public SerialServer{
 	#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
 	virtual cppObjectClass* getClass(){return Class<WIFISerialServer>::getClass();}
 	virtual bool equal(cppObject *b){
-		WIFISerialServerLog(ame_Log_Statement, "available",  "println", "equal");
+		WIFISerialServerLog(higgs_Log_Statement, "available",  "println", "equal");
 		if(b == this){
 			return true;
 		}

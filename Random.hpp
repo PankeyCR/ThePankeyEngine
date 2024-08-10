@@ -1,13 +1,12 @@
 
 #ifndef Random_hpp
 #define Random_hpp
-#define Random_AVAILABLE
 
 #include "cppObject.hpp"
 #include "Function.hpp"
 #include "RealRandom.hpp"
 
-namespace ame{
+namespace higgs{
 
 template<class T>
 class Random IMPLEMENTATION_cppObject {

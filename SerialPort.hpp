@@ -1,34 +1,23 @@
 
-#ifndef CONFIGURATION_SerialPort_hpp
-#define CONFIGURATION_SerialPort_hpp
-
-	#include "ame_Enviroment.hpp"
-
-	#if defined(DISABLE_SerialPort)
-		#define SerialPort_hpp
-	#endif
-#endif
-
 #ifndef SerialPort_hpp
 #define SerialPort_hpp
-#define SerialPort_AVAILABLE
 
 #include "cppObject.hpp"
 #include "Note.hpp"
 #include "ByteArray.hpp"
-#include "ame_Byte.hpp"
+#include "higgs_Byte.hpp"
 
-#ifdef ame_Windows
-	#include "ame_Stream.hpp"
+#ifdef higgs_Windows
+	#include "higgs_Stream.hpp"
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 	#include "Stream.h"
 	#include "IPAddress.h"
 #endif
 
-namespace ame{
+namespace higgs{
 
 /*
 *	Class Configuration:
@@ -44,7 +33,7 @@ class SerialPort : public Stream IMPLEMENTING_cppObject {
 		virtual int available(){return 0;}
 
 		virtual int read(){return -1;}
-		virtual ame_Byte readByte(){return 255;}
+		virtual higgs_Byte readByte(){return 255;}
 		virtual Note readNote(){return "";}
 
 		virtual int peek(){return -1;}
@@ -57,7 +46,7 @@ class SerialPort : public Stream IMPLEMENTING_cppObject {
 		virtual bool connect(const char* a_address){return connect(a_address,-1);}
 		virtual bool connect(const char* a_address, int port){return false;}
 
-		#ifdef ame_ArduinoIDE
+		#ifdef higgs_ArduinoIDE
 		virtual bool connect(IPAddress ip, int port){return false;}
 		#endif
 

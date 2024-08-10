@@ -9,7 +9,7 @@
 #include "NoRepiteRandom.hpp"
 #include "MemoryRam.hpp"
 
-namespace ame{
+namespace higgs{
 	
 	int tipesOfRandoms(){
 		return 3;

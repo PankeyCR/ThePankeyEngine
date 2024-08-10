@@ -8,17 +8,17 @@
 #include "Class.hpp"
 
 #ifdef PrimitiveMap_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "higgs_Logger_config.hpp"
+	#include "higgs_Logger.hpp"
 
-	#define PrimitiveMapLog(location,method,type,mns) ame_Log(this,location,"PrimitiveMap",method,type,mns)
+	#define PrimitiveMapLog(location,method,type,mns) higgs_Log(this,location,"PrimitiveMap",method,type,mns)
 	#define const_PrimitiveMapLog(location,method,type,mns)
 #else
 	#ifdef PrimitiveMap_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+		#include "higgs_Logger_config.hpp"
+		#include "higgs_Logger.hpp"
 
-		#define PrimitiveMapLog(location,method,type,mns) ame_LogDebug(this,location,"PrimitiveMap",method,type)
+		#define PrimitiveMapLog(location,method,type,mns) higgs_LogDebug(this,location,"PrimitiveMap",method,type)
 		#define const_PrimitiveMapLog(location,method,type,mns)
 	#else
 		#define PrimitiveMapLog(location,method,type,mns)
@@ -26,19 +26,19 @@
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
 template <class K,class V>
 class PrimitiveMap : public PrimitiveRawMap<K,V> , public Map<K,V>{
     public:
 
 		PrimitiveMap(){
-			PrimitiveMapLog(ame_Log_StartMethod, "Constructor", "println", "");
-			PrimitiveMapLog(ame_Log_EndMethod, "Constructor", "println", "");
+			PrimitiveMapLog(higgs_Log_StartMethod, "Constructor", "println", "");
+			PrimitiveMapLog(higgs_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		PrimitiveMap(const PrimitiveMap& c_map){
-			PrimitiveMapLog(ame_Log_StartMethod, "Constructor", "println", "const PrimitiveMap& c_map");
+			PrimitiveMapLog(higgs_Log_StartMethod, "Constructor", "println", "const PrimitiveMap& c_map");
 			this->expandLocal(c_map.getPosition());
 			for(int x = 0; x < c_map.getPosition(); x++){
 				K* k = c_map.getKeyByPosition(x);
@@ -50,26 +50,26 @@ class PrimitiveMap : public PrimitiveRawMap<K,V> , public Map<K,V>{
 					this->addPointer(*k,nullptr);
 				}
 			}
-			PrimitiveMapLog(ame_Log_EndMethod, "Constructor", "println", "");
+			PrimitiveMapLog(higgs_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		PrimitiveMap(int c_size) : PrimitiveRawMap<K,V>(c_size){
-			PrimitiveMapLog(ame_Log_StartMethod, "Constructor", "println", "int c_size");
-			PrimitiveMapLog(ame_Log_EndMethod, "Constructor", "println", "");
+			PrimitiveMapLog(higgs_Log_StartMethod, "Constructor", "println", "int c_size");
+			PrimitiveMapLog(higgs_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		PrimitiveMap(int c_size, bool c_key_own, bool c_value_own, bool c_reorder) : PrimitiveRawMap<K,V>(c_size, c_key_own, c_value_own, c_reorder){
-			PrimitiveMapLog(ame_Log_StartMethod, "Constructor", "println", "int c_size, bool c_own");
-			PrimitiveMapLog(ame_Log_EndMethod, "Constructor", "println", "");
+			PrimitiveMapLog(higgs_Log_StartMethod, "Constructor", "println", "int c_size, bool c_own");
+			PrimitiveMapLog(higgs_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		virtual ~PrimitiveMap(){
-			PrimitiveMapLog(ame_Log_StartMethod, "Destructor", "println", "");
-			PrimitiveMapLog(ame_Log_EndMethod, "Destructor", "println", "");
+			PrimitiveMapLog(higgs_Log_StartMethod, "Destructor", "println", "");
+			PrimitiveMapLog(higgs_Log_EndMethod, "Destructor", "println", "");
 		}
 
 		virtual PrimitiveMap& operator=(const PrimitiveMap& a_map){
-			PrimitiveMapLog(ame_Log_StartMethod, "Constructor", "println", "");
+			PrimitiveMapLog(higgs_Log_StartMethod, "Constructor", "println", "");
 			this->resetDelete();
 			for(int x = 0; x < a_map.getPosition(); x++){
 				K* k = a_map.getKeyByPosition(x);
@@ -83,7 +83,7 @@ class PrimitiveMap : public PrimitiveRawMap<K,V> , public Map<K,V>{
 					continue;
 				}
 			}
-			PrimitiveMapLog(ame_Log_EndMethod, "Constructor", "println", "");
+			PrimitiveMapLog(higgs_Log_EndMethod, "Constructor", "println", "");
 			return *this;
 		}
 		

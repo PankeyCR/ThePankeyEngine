@@ -1,25 +1,6 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_RadioServerProtocol)
-	#define RadioServerProtocol_hpp
-#endif
-
 #ifndef RadioServerProtocol_hpp
 #define RadioServerProtocol_hpp
-#define RadioServerProtocol_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "ServerProtocol.hpp"
 #include "SerialServer.hpp"
@@ -28,7 +9,7 @@
 #include "RadioType.hpp"
 #include "RadioReliability.hpp"
 
-namespace ame{
+namespace higgs{
 
 class RadioServerProtocol : public ServerProtocol{	
     public:

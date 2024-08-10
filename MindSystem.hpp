@@ -23,7 +23,7 @@
 
 #include "GameSystem.hpp"
 
-namespace ame{
+namespace higgs{
 
 template<class T>
 class MindSystem : public GameSystem<T>{

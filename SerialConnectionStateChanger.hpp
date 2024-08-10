@@ -1,22 +1,11 @@
 
-#ifndef CONFIGURATION_SerialConnectionStateChanger_hpp
-#define CONFIGURATION_SerialConnectionStateChanger_hpp
-
-	#include "ame_Enviroment.hpp"
-
-	#if defined(DISABLE_SerialConnectionStateChanger)
-		#define SerialConnectionStateChanger_hpp
-	#endif
-#endif
-
 #ifndef SerialConnectionStateChanger_hpp
 #define SerialConnectionStateChanger_hpp
-#define SerialConnectionStateChanger_AVAILABLE
 
 #include "SerialPort.hpp"
 #include "PortProtocol.hpp"
 
-namespace ame{
+namespace higgs{
 
 class SerialConnectionStateChanger{
     public:

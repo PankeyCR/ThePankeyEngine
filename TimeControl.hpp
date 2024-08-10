@@ -1,43 +1,18 @@
 
-#ifndef CONFIGURATION_TimeControl_hpp
-#define CONFIGURATION_TimeControl_hpp
-
-	#include "ame_Enviroment.hpp"
-
-	#if defined(DISABLE_TimeControl) || defined(DISABLE_TimeElapsed)
-		#define TimeControl_hpp
-
-		#define IMPLEMENTATION_TimeControl
-		#define IMPLEMENTING_TimeControl
-	#else
-		#if defined(DISABLE_IMPLEMENTATION_TimeControl)
-			#define IMPLEMENTATION_TimeControl
-			#define IMPLEMENTING_TimeControl
-		#endif
-	#endif
-
-#endif
-
 #ifndef TimeControl_hpp
 #define TimeControl_hpp
-#define TimeControl_AVAILABLE
-
-#ifndef DISABLE_IMPLEMENTATION_TimeControl
-	#define IMPLEMENTATION_TimeControl IMPLEMENTATION(public TimeControl)
-	#define IMPLEMENTING_TimeControl IMPLEMENTING(public TimeControl)
-#endif
 
 #include "cppObject.hpp"
 #include "PrimitiveList.hpp"
 #include "Note.hpp"
 
-namespace ame{
+namespace higgs{
 	class TimeControl;
 }
 
 #include "TimeElapsed.hpp"
 
-namespace ame{
+namespace higgs{
 
 /*
 *	Class Configuration:

@@ -1,30 +1,11 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_MonkeyTime)
-	#define MonkeyTime_hpp
-#endif
-
 #ifndef MonkeyTime_hpp
 #define MonkeyTime_hpp
-#define MonkeyTime_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Now.hpp"
 #include "TimeCheck.hpp"
 
-namespace ame{
+namespace higgs{
 
 class MonkeyTime {
     public:		

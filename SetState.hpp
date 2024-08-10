@@ -1,31 +1,12 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_SetState)
-	#define SetState_hpp
-#endif
-
 #ifndef SetState_hpp
 #define SetState_hpp
-#define SetState_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Note.hpp"
 #include "AppState.hpp"
 #include "Class.hpp"
 
-namespace ame{
+namespace higgs{
 
 class SetState : public AppState{
     public:

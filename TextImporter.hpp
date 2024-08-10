@@ -5,44 +5,8 @@
  *
  */
  
-#ifndef CONFIGURATION_TextImporter_hpp
-#define CONFIGURATION_TextImporter_hpp
-
-	#include "ame_Enviroment.hpp"
-
-	#if defined(DISABLE_TextImporter)
-		#define TextImporter_hpp
-
-		#define IMPLEMENTATION_TextImporter
-		#define IMPLEMENTING_TextImporter
-	#else
-		#if defined(DISABLE_IMPLEMENTATION_TextImporter)
-			#define IMPLEMENTATION_TextImporter
-			#define IMPLEMENTING_TextImporter
-		#endif
-	#endif
-#endif
-
 #ifndef TextImporter_hpp
 #define TextImporter_hpp
-#define TextImporter_AVAILABLE
-
-#ifndef DISABLE_IMPLEMENTATION_TextImporter
-	#define IMPLEMENTATION_TextImporter IMPLEMENTATION(public TextImporter)
-	#define IMPLEMENTING_TextImporter IMPLEMENTING(public TextImporter)
-#endif
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Note.hpp"
 #include "NoteHelper.hpp"
@@ -56,55 +20,55 @@
 #include "Message.hpp"
 
 #ifdef TextImporter_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "higgs_Logger_config.hpp"
+	#include "higgs_Logger.hpp"
 	
-	#define TextImporterLog(location,method,type,mns) ame_Log(this,location,"TextImporter",method,type,mns)
+	#define TextImporterLog(location,method,type,mns) higgs_Log(this,location,"TextImporter",method,type,mns)
 #else
 	#ifdef TextImporter_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+		#include "higgs_Logger_config.hpp"
+		#include "higgs_Logger.hpp"
 		
-		#define TextImporterLog(location,method,type,mns) ame_LogDebug(this,location,"TextImporter",method,type)
+		#define TextImporterLog(location,method,type,mns) higgs_LogDebug(this,location,"TextImporter",method,type)
 	#else
 		#define TextImporterLog(location,method,type,mns) 
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
 class TextImporter : public MonkeyImporter{
     public:
 		TextImporter(){
-			TextImporterLog(ame_Log_StartMethod, "Constructor", "println", "");
-			TextImporterLog(ame_Log_EndMethod, "Constructor", "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "Constructor", "println", "");
+			TextImporterLog(higgs_Log_EndMethod, "Constructor", "println", "");
 		}
 		TextImporter(const Note& c_note){
 			setText(c_note);
 		}
 		virtual ~TextImporter(){
-			TextImporterLog(ame_Log_StartMethod, "Destructor", "println", "");
-			TextImporterLog(ame_Log_EndMethod, "Destructor", "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "Destructor", "println", "");
+			TextImporterLog(higgs_Log_EndMethod, "Destructor", "println", "");
 		}
 		
 		// int primitive
     	virtual int read(ElementId a_id, int a_value){
-			TextImporterLog(ame_Log_StartMethod, "read int",  "println", Note(a_value));
+			TextImporterLog(higgs_Log_StartMethod, "read int",  "println", Note(a_value));
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
-				TextImporterLog(ame_Log_StartMethod, "read int",  "println", "i_order == -1");
+				TextImporterLog(higgs_Log_StartMethod, "read int",  "println", "i_order == -1");
 				return a_value;
 			}
-			TextImporterLog(ame_Log_StartMethod, "read int",  "println", Note("argument ") + cmd.getArgument(x_1));
+			TextImporterLog(higgs_Log_StartMethod, "read int",  "println", Note("argument ") + cmd.getArgument(x_1));
 			return m_text.getArgument(i_order, m_split, m_end).toInt();
 		}
 		
     	virtual LinkedList<int> read(ElementId a_id, LinkedList<int> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
-				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 				return a_value;
 			}
 			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
@@ -114,16 +78,16 @@ class TextImporter : public MonkeyImporter{
 				int f_value = i_arg.split(x, m_list_divide).toInt();
 				i_list.addLValue(f_value);
 			}
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			return i_list;
 		}
 		
     	virtual PrimitiveList<int> read(ElementId a_id, PrimitiveList<int> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList int",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read PrimitiveList int",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
-				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 				return a_value;
 			}
 			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
@@ -133,30 +97,30 @@ class TextImporter : public MonkeyImporter{
 				int f_value = i_arg.split(x, m_list_divide).toInt();
 				i_list.addLValue(f_value);
 			}
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			return i_list;
 		}
 		
 		// ByteArray primitive
     	virtual ByteArray read(ElementId a_id, ByteArray a_value){
-			TextImporterLog(ame_Log_StartMethod, "read ByteArray",  "println", toNote(a_value));
+			TextImporterLog(higgs_Log_StartMethod, "read ByteArray",  "println", toNote(a_value));
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
-				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 				return a_value;
 			}
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			ByteArray i_byte_array = toByteArray(m_text.getArgument(i_order, m_split, m_end));
 			return i_byte_array;
 		}
 		
     	virtual LinkedList<ByteArray> read(ElementId a_id, LinkedList<ByteArray> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read LinkedList ByteArray",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read LinkedList ByteArray",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
-				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 				return a_value;
 			}
 			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
@@ -167,16 +131,16 @@ class TextImporter : public MonkeyImporter{
 				ByteArray f_byte_array = toByteArray(f_note);
 				i_list.addLValue(f_byte_array);
 			}
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			return i_list;
 		}
 		
     	virtual PrimitiveList<ByteArray> read(ElementId a_id, PrimitiveList<ByteArray> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
-				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 				return a_value;
 			}
 			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
@@ -187,30 +151,30 @@ class TextImporter : public MonkeyImporter{
 				ByteArray f_byte_array = toByteArray(f_note);
 				i_list.addLValue(f_byte_array);
 			}
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			return i_list;
 		}
 		
 		// bool primitive
     	virtual bool read(ElementId a_id, bool a_value){
-			TextImporterLog(ame_Log_StartMethod, "read bool",  "println", Note(a_value));
+			TextImporterLog(higgs_Log_StartMethod, "read bool",  "println", Note(a_value));
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
-				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 				return a_value;
 			}
 			Note i_note_bool = m_text.getArgument(i_order, m_split, m_end);
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			return i_note_bool == "1";
 		}
 		
     	virtual LinkedList<bool> read(ElementId a_id, LinkedList<bool> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read LinkedList bool",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read LinkedList bool",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
-				TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+				TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 				return a_value;
 			}
 			Note i_arg = m_text.getArgument(i_order, m_split, m_end);
@@ -220,12 +184,12 @@ class TextImporter : public MonkeyImporter{
 				bool f_value = i_arg.split(x, m_list_divide) == "1";
 				i_list.addLValue(f_value);
 			}
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			return i_list;
 		}
 		
     	virtual PrimitiveList<bool> read(ElementId a_id, PrimitiveList<bool> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList bool",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read PrimitiveList bool",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -243,7 +207,7 @@ class TextImporter : public MonkeyImporter{
 		
 		// char primitive
     	virtual char read(ElementId a_id, char a_value){
-			TextImporterLog(ame_Log_StartMethod, "read char",  "println", Note(a_value));
+			TextImporterLog(higgs_Log_StartMethod, "read char",  "println", Note(a_value));
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -257,7 +221,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual LinkedList<char> read(ElementId a_id, LinkedList<char> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read LinkedList char",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read LinkedList char",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -278,7 +242,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual PrimitiveList<char> read(ElementId a_id, PrimitiveList<char> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList char",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read PrimitiveList char",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -300,7 +264,7 @@ class TextImporter : public MonkeyImporter{
 
 		// ElementId primitive
     	virtual ElementId read(ElementId a_id, ElementId a_value){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", a_value.getId());
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", a_value.getId());
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -310,7 +274,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual PrimitiveList<ElementId> read(ElementId a_id, PrimitiveList<ElementId> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -328,7 +292,7 @@ class TextImporter : public MonkeyImporter{
 		
 		// Note primitive
     	virtual Note read(ElementId a_id, Note a_value){
-			TextImporterLog(ame_Log_StartMethod, "read Note",  "println", a_value);
+			TextImporterLog(higgs_Log_StartMethod, "read Note",  "println", a_value);
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -338,7 +302,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual Note read(ElementId a_id, char* a_value){
-			TextImporterLog(ame_Log_StartMethod, "read char*",  "println", Note(a_value));
+			TextImporterLog(higgs_Log_StartMethod, "read char*",  "println", Note(a_value));
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -348,7 +312,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual LinkedList<Note> read(ElementId a_id, LinkedList<Note> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -365,7 +329,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual PrimitiveList<Note> read(ElementId a_id, PrimitiveList<Note> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -383,7 +347,7 @@ class TextImporter : public MonkeyImporter{
 		
 		// long primitive
     	virtual long read(ElementId a_id, long a_value){
-			TextImporterLog(ame_Log_StartMethod, "read long",  "println", Note(a_value));
+			TextImporterLog(higgs_Log_StartMethod, "read long",  "println", Note(a_value));
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -393,7 +357,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual LinkedList<long> read(ElementId a_id, LinkedList<long> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -410,7 +374,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual PrimitiveList<long> read(ElementId a_id, PrimitiveList<long> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read PrimitiveList long",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read PrimitiveList long",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -427,7 +391,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual float read(ElementId a_id, float a_value){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", Note(value));
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", Note(value));
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -437,7 +401,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual LinkedList<float> read(ElementId a_id, LinkedList<float> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -454,7 +418,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual PrimitiveList<float> read(ElementId a_id, PrimitiveList<float> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			
 			int i_order = m_text.getOrder(a_id.getId(), m_split, m_end);
 			if(i_order == -1){
@@ -477,7 +441,7 @@ class TextImporter : public MonkeyImporter{
 		*/
 		
     	virtual PrimitiveMap<Note,bool> read(ElementId a_id, PrimitiveMap<Note,bool> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			
 			int i_key_order = m_text.getOrder(a_id.child("key").getId(), m_split, m_end);
 			int i_value_order = m_text.getOrder(a_id.child("value").getId(), m_split, m_end);
@@ -505,7 +469,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual PrimitiveMap<Note,Note> read(ElementId a_id, PrimitiveMap<Note,Note> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			
 			int i_key_order = m_text.getOrder(a_id.child("key").getId(), m_split, m_end);
 			int i_value_order = m_text.getOrder(a_id.child("value").getId(), m_split, m_end);
@@ -533,7 +497,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
     	virtual PrimitiveMap<ElementId,Note> read(ElementId a_id, PrimitiveMap<ElementId,Note> a_value){
-			TextImporterLog(ame_Log_StartMethod, "read PrimitiveMap<ElementId,Note>",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read PrimitiveMap<ElementId,Note>",  "println", "");
 			
 			int i_key_order = m_text.getOrder(a_id.child("key").getId(), m_split, m_end);
 			int i_value_order = m_text.getOrder(a_id.child("value").getId(), m_split, m_end);
@@ -568,18 +532,18 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void clear(){
-			TextImporterLog(ame_Log_StartMethod, "clear",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "clear",  "println", "");
 			m_text.clear();
 		}
 		
 		/////////////////////////////////////////////////////////////////// ids
 		virtual void addId(ElementId a_id){
-			TextImporterLog(ame_Log_StartMethod, "addId",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "addId",  "println", "");
 			m_ids_list.add(a_id);
 		}
 		
 		virtual void addIds(PrimitiveList<ElementId>& a_ids){
-			TextImporterLog(ame_Log_StartMethod, "addIds",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "addIds",  "println", "");
 			for(int x = 0; x < a_ids.getPosition(); x++){
 				ElementId* f_element_id = a_ids.getByPosition(x);
 				m_ids_list.addLValue(*f_element_id);
@@ -587,17 +551,17 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual bool containId(ElementId a_id){
-			TextImporterLog(ame_Log_StartMethod, "containId",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "containId",  "println", "");
 			return m_ids_list.containByLValue(a_id);
 		}
 		
 		virtual PrimitiveList<ElementId>& getIds(){
-			TextImporterLog(ame_Log_StartMethod, "getIds",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "getIds",  "println", "");
 			return m_ids_list;
 		}
 		
 		virtual ElementId getId(int x){
-			TextImporterLog(ame_Log_StartMethod, "getId",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "getId",  "println", "");
 			if(x >= m_ids_list.getPosition()){
 				return ElementId();
 			}
@@ -605,17 +569,17 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual int getIdSize(){
-			TextImporterLog(ame_Log_StartMethod, "getIdSize",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "getIdSize",  "println", "");
 			return m_ids_list.getPosition();
 		}
 		
 		virtual void removeId(ElementId i_id){
-			TextImporterLog(ame_Log_StartMethod, "removeId",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "removeId",  "println", "");
 			m_ids_list.removeDeleteByLValue(i_id);
 		}
 		
 		virtual void removeIds(PrimitiveList<ElementId>& i_ids){
-			TextImporterLog(ame_Log_StartMethod, "removeIds",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "removeIds",  "println", "");
 			for(int x = 0; x < i_ids.getPosition(); x++){
 				ElementId* l_eid = i_ids.getByPosition(x);
 				m_ids_list.removeDeleteByLValue(*l_eid);
@@ -623,15 +587,15 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void removeIds(){
-			TextImporterLog(ame_Log_StartMethod, "removeIds",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "removeIds",  "println", "");
 			m_ids_list.resetDelete();
 		}
 		
 		virtual void writeIds(){
-			TextImporterLog(ame_Log_StartMethod, "writeIds",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "writeIds",  "println", "");
 			
 			if(m_ids_list.getPosition() == 0){
-				TextImporterLog(ame_Log_StartMethod, "writeIds",  "println", "ids.isEmpty");
+				TextImporterLog(higgs_Log_StartMethod, "writeIds",  "println", "ids.isEmpty");
 				m_ids = "";
 				return;
 			}
@@ -649,7 +613,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void writeId(ElementId value){
-			TextImporterLog(ame_Log_StartMethod, "writeId",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "writeId",  "println", "");
 			m_ids_list.put(value);
 			ElementId id = ElementId("transporter.ids");
 			
@@ -665,7 +629,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void eraseId(ElementId value){
-			TextImporterLog(ame_Log_StartMethod, "eraseId",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "eraseId",  "println", "");
 			if(m_ids_list.getPosition() == 0){
 				return;
 			}
@@ -692,70 +656,70 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void eraseIds(){
-			TextImporterLog(ame_Log_StartMethod, "eraseIds",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "eraseIds",  "println", "");
 			m_ids = "";
 		}
 		
 		virtual void clearIds(){
-			TextImporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "clearIds",  "println", "");
 			m_ids = "";
 			m_ids_list.resetDelete();
 		}
 		
 		/////////////////////////////////////////////////////////////////// idType
 		virtual void addType(ElementId a_id, Note a_type){
-			TextImporterLog(ame_Log_StartMethod, "addType",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "addType",  "println", "");
 			m_types_map.addLValues(a_id, a_type);
 		}
 		
 		virtual void addType(PrimitiveMap<ElementId,Note>& a_types_map){
-			TextImporterLog(ame_Log_StartMethod, "addType",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "addType",  "println", "");
 			for(int x = 0; x < a_types_map.getPosition(); x++){
 				m_types_map.addLValues(a_types_map.getKey(x), a_types_map.getValue(x));
 			}
 		}
 		
 		virtual bool containType(ElementId a_id){
-			TextImporterLog(ame_Log_StartMethod, "containIdType",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "containIdType",  "println", "");
 			return m_types_map.containKeyByLValue(a_id);
 		}
 		
 		virtual PrimitiveMap<ElementId,Note>& getTypes(){
-			TextImporterLog(ame_Log_StartMethod, "getIdTypes",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "getIdTypes",  "println", "");
 			return m_types_map;
 		}
 		
 		virtual Note getType(ElementId id){
-			TextImporterLog(ame_Log_StartMethod, "getIdType",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "getIdType",  "println", "");
 			return m_types_map.get(id);
 		}
 		
 		virtual int getTypeSize(){
-			TextImporterLog(ame_Log_StartMethod, "getIdTypeSize",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "getIdTypeSize",  "println", "");
 			return m_types_map.getPosition();
 		}
 		
 		virtual void removeType(ElementId m_id){
-			TextImporterLog(ame_Log_StartMethod, "removeIdType",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "removeIdType",  "println", "");
 			m_types_map.removeDeleteByKeyLValue(m_id);
 		}
 		
 		virtual void removeTypes(PrimitiveMap<ElementId,Note>& a_types_map){
-			TextImporterLog(ame_Log_StartMethod, "removeIdTypes",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "removeIdTypes",  "println", "");
 			for(int x = 0; x < a_types_map.getPosition(); x++){
 				m_types_map.removeDeleteByKeyLValue(a_types_map.getKey(x));
 			}
 		}
 		
 		virtual void removeTypes(){
-			TextImporterLog(ame_Log_StartMethod, "removeIdTypes",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "removeIdTypes",  "println", "");
 			m_types_map.resetDelete();
 		}
 		
 		virtual void writeTypes(){
-			TextImporterLog(ame_Log_StartMethod, "writeIdTypes",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "writeIdTypes",  "println", "");
 			if(m_types_map.getPosition() == 0){
-				TextImporterLog(ame_Log_StartMethod, "writeIdTypes",  "println", "idsType.isEmpty");
+				TextImporterLog(higgs_Log_StartMethod, "writeIdTypes",  "println", "idsType.isEmpty");
 				m_types.clear();
 				return;
 			}
@@ -786,7 +750,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void writeType(ElementId a_id, Note a_type){
-			TextImporterLog(ame_Log_StartMethod, "writeIdType",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "writeIdType",  "println", "");
 			
 			m_types_map.addLValues(a_id, a_type);
 			
@@ -816,7 +780,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void eraseType(ElementId a_id){
-			TextImporterLog(ame_Log_StartMethod, "eraseIdType",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "eraseIdType",  "println", "");
 			m_types_map.removeDeleteByKeyLValue(a_id);
 			
 			if(m_types_map.getPosition() == 0){
@@ -850,70 +814,70 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void eraseTypes(){
-			TextImporterLog(ame_Log_StartMethod, "eraseIdTypes",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "eraseIdTypes",  "println", "");
 			m_types.clear();
 		}
 		
 		virtual void clearTypes(){
-			TextImporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "clearIds",  "println", "");
 			m_types.clear();
 			m_types_map.resetDelete();
 		}
 		
 		/////////////////////////////////////////////////////////////////// tags
 		virtual void addTag(ElementId m_id, Note m_type){
-			TextImporterLog(ame_Log_StartMethod, "addTag",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "addTag",  "println", "");
 			m_tags_map.addLValues(m_id, m_type);
 		}
 		
 		virtual void addTag(PrimitiveMap<ElementId,Note>& m_idsType){
-			TextImporterLog(ame_Log_StartMethod, "addTag",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "addTag",  "println", "");
 			for(int x = 0; x < m_idsType.getPosition(); x++){
 				m_tags_map.addLValues(m_idsType.getKey(x), m_idsType.getValue(x));
 			}
 		}
 		
 		virtual bool containTag(ElementId id){
-			TextImporterLog(ame_Log_StartMethod, "containTag",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "containTag",  "println", "");
 			return m_tags_map.containKeyByLValue(id);
 		}
 		
 		virtual PrimitiveMap<ElementId,Note>& getTags(){
-			TextImporterLog(ame_Log_StartMethod, "getTags",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "getTags",  "println", "");
 			return m_tags_map;
 		}
 		
 		virtual Note getTag(ElementId id){
-			TextImporterLog(ame_Log_StartMethod, "getTag",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "getTag",  "println", "");
 			return m_tags_map.get(id);
 		}
 		
 		virtual int getTagSize(){
-			TextImporterLog(ame_Log_StartMethod, "getTagSize",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "getTagSize",  "println", "");
 			return m_tags_map.getPosition();
 		}
 		
 		virtual void removeTag(ElementId m_id){
-			TextImporterLog(ame_Log_StartMethod, "removeTag",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "removeTag",  "println", "");
 			m_tags_map.removeDeleteByKeyLValue(m_id);
 		}
 		
 		virtual void removeTags(PrimitiveMap<ElementId,Note>& m_idsType){
-			TextImporterLog(ame_Log_StartMethod, "removeTags",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "removeTags",  "println", "");
 			for(int x = 0; x < m_idsType.getPosition(); x++){
 				m_tags_map.removeDeleteByKeyLValue(m_idsType.getKey(x));
 			}
 		}
 		
 		virtual void removeTags(){
-			TextImporterLog(ame_Log_StartMethod, "removeTags",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "removeTags",  "println", "");
 			m_tags_map.resetDelete();
 		}
 		
 		virtual void writeTags(){
-			TextImporterLog(ame_Log_StartMethod, "writeTags",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "writeTags",  "println", "");
 			if(m_tags_map.getPosition() == 0){
-				TextImporterLog(ame_Log_StartMethod, "writeTags",  "println", "m_tags_map.isEmpty");
+				TextImporterLog(higgs_Log_StartMethod, "writeTags",  "println", "m_tags_map.isEmpty");
 				m_tags.clear();
 				return;
 			}
@@ -944,7 +908,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void writeTag(ElementId a_id, Note a_type){
-			TextImporterLog(ame_Log_StartMethod, "writeTag",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "writeTag",  "println", "");
 			
 			m_tags_map.addLValues(a_id, a_type);
 			
@@ -974,7 +938,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void eraseTag(ElementId a_id){
-			TextImporterLog(ame_Log_StartMethod, "eraseTag",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "eraseTag",  "println", "");
 			m_tags_map.removeDeleteByKeyLValue(a_id);
 			
 			if(m_tags_map.getPosition() == 0){
@@ -1008,18 +972,18 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void eraseTags(){
-			TextImporterLog(ame_Log_StartMethod, "eraseIdType",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "eraseIdType",  "println", "");
 			m_tags.clear();
 		}
 		
 		virtual void clearTags(){
-			TextImporterLog(ame_Log_StartMethod, "clearIds",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "clearIds",  "println", "");
 			m_tags.clear();
 			m_tags_map.resetDelete();
 		}
 		
 		virtual void setMessage(Message* a_message){
-			TextImporterLog(ame_Log_StartMethod, "setMessage",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "setMessage",  "println", "");
 			if(a_message == nullptr){
 				return;
 			}
@@ -1028,7 +992,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void read(MonkeyFile* a_file, Note a_path){
-			TextImporterLog(ame_Log_StartMethod, "read",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "read",  "println", "");
 			if(a_file == nullptr){
 				return;
 			}
@@ -1037,9 +1001,9 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void write(MonkeyFile* a_file, Note a_path){
-			TextImporterLog(ame_Log_StartMethod, "write",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "write",  "println", "");
 			if(a_file == nullptr){
-				TextImporterLog(ame_Log_StartMethod, "write",  "println", a_path);
+				TextImporterLog(higgs_Log_StartMethod, "write",  "println", a_path);
 				return;
 			}
 			// file->fastWriteText(m_tags, path);
@@ -1051,7 +1015,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void setText(Note strng){
-			TextImporterLog(ame_Log_StartMethod, "setText",  "println", Note("text ") + strng);
+			TextImporterLog(higgs_Log_StartMethod, "setText",  "println", Note("text ") + strng);
 			m_text = strng;
 		}
 		
@@ -1060,7 +1024,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void setIdsText(Note strng){
-			TextImporterLog(ame_Log_StartMethod, "setm_ids",  "println", Note("text ") + strng);
+			TextImporterLog(higgs_Log_StartMethod, "setm_ids",  "println", Note("text ") + strng);
 			m_ids = strng;
 		}
 		
@@ -1069,7 +1033,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void setTypesText(Note strng){
-			TextImporterLog(ame_Log_StartMethod, "setm_types",  "println", Note("text ") + strng);
+			TextImporterLog(higgs_Log_StartMethod, "setm_types",  "println", Note("text ") + strng);
 			m_types = strng;
 		}
 		
@@ -1078,7 +1042,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void setTagsText(Note strng){
-			TextImporterLog(ame_Log_StartMethod, "setTags",  "println", Note("text ") + strng);
+			TextImporterLog(higgs_Log_StartMethod, "setTags",  "println", Note("text ") + strng);
 			m_tags = strng;
 		}
 		
@@ -1091,7 +1055,7 @@ class TextImporter : public MonkeyImporter{
 		}
 		
 		virtual void fix(){
-			TextImporterLog(ame_Log_StartMethod, "fix",  "println", "");
+			TextImporterLog(higgs_Log_StartMethod, "fix",  "println", "");
 			m_ids_list = read(ElementId("transporter.ids"), PrimitiveList<ElementId>());
 			m_types_map = read(ElementId("transporter.types"), PrimitiveMap<ElementId,Note>());
 			m_tags_map = read(ElementId("transporter.tags"), PrimitiveMap<ElementId,Note>());
@@ -1113,10 +1077,10 @@ class TextImporter : public MonkeyImporter{
 			remove("transporter.types.key");
 			remove("transporter.types.value");
 			
-			TextImporterLog(ame_Log_StartMethod, "fix",  "println", Note("m_tags ") + m_tags);
-			TextImporterLog(ame_Log_StartMethod, "fix",  "println", Note("m_ids ") + m_ids);
-			TextImporterLog(ame_Log_StartMethod, "fix",  "println", Note("m_types ") + m_types);
-			TextImporterLog(ame_Log_StartMethod, "fix",  "println", Note("text ") + m_text);
+			TextImporterLog(higgs_Log_StartMethod, "fix",  "println", Note("m_tags ") + m_tags);
+			TextImporterLog(higgs_Log_StartMethod, "fix",  "println", Note("m_ids ") + m_ids);
+			TextImporterLog(higgs_Log_StartMethod, "fix",  "println", Note("m_types ") + m_types);
+			TextImporterLog(higgs_Log_StartMethod, "fix",  "println", Note("text ") + m_text);
 		}
 		
 		virtual Note toNote(){

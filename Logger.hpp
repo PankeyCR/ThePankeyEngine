@@ -34,26 +34,26 @@
 	#define UnLogMethod(name) 
 #endif
 
-#include "ame_Level.hpp"
+#include "higgs_Level.hpp"
 
-#if defined(ame_untilLevel_1)
+#if defined(higgs_untilLevel_1)
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
+#ifndef higgs_Enviroment_Defined
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_Windows
+
+#endif
+
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 	#include "Stream.h"
 #endif
 
 #include "Logging.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Logger {
 	public:

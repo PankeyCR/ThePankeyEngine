@@ -25,22 +25,22 @@
 #include "MemoryRam.hpp"
 
 #ifdef ObjectDataBase_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "higgs_Logger_config.hpp"
+	#include "higgs_Logger.hpp"
 
-	#define ObjectDataBaseLog(location,method,type,mns) ame_Log(this,location,"ObjectDataBase",method,type,mns)
+	#define ObjectDataBaseLog(location,method,type,mns) higgs_Log(this,location,"ObjectDataBase",method,type,mns)
 #else
 	#ifdef ObjectDataBase_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+		#include "higgs_Logger_config.hpp"
+		#include "higgs_Logger.hpp"
 
-		#define ObjectDataBaseLog(location,method,type,mns) ame_LogDebug((void*)this,location,"ObjectDataBase",method,type)
+		#define ObjectDataBaseLog(location,method,type,mns) higgs_LogDebug((void*)this,location,"ObjectDataBase",method,type)
 	#else
 		#define ObjectDataBaseLog(location,method,type,mns)
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
 class ObjectDataBase : public DataBase{
     public:
@@ -51,7 +51,7 @@ class ObjectDataBase : public DataBase{
 			if(file == nullptr || exporter == nullptr || importer == nullptr){
 				return;
 			}
-			ObjectDataBaseLog(ame_Log_Statement, "initialize", "println", "");
+			ObjectDataBaseLog(higgs_Log_Statement, "initialize", "println", "");
 			Note i_root_dir = file->fixPath(m_rootDir);
 			Note i_tag_path = file->fixPath(m_rootPath, m_tagPath);
 			if(!file->exist(m_rootDir)){
@@ -60,26 +60,26 @@ class ObjectDataBase : public DataBase{
 			if(!file->existPath(m_rootDir, m_tagPath)){
 				file->createFilePath(m_rootDir, m_tagPath);
 			}
-			ObjectDataBaseLog(ame_Log_Statement, "initialize", "println", "");
+			ObjectDataBaseLog(higgs_Log_Statement, "initialize", "println", "");
 		}
 		
 		virtual void put(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file){
 			if(file == nullptr || exporter == nullptr || importer == nullptr){
 				return;
 			}
-			ObjectDataBaseLog(ame_Log_Statement, "put", "println", "");
+			ObjectDataBaseLog(higgs_Log_Statement, "put", "println", "");
 			
 			Note project_dir = importer->getTag("DataBase.project");
 			
 			
-			ObjectDataBaseLog(ame_Log_Statement, "put",  "println", "");
+			ObjectDataBaseLog(higgs_Log_Statement, "put",  "println", "");
 		}
 			
 		virtual void get(MonkeyExporter* exporter, MonkeyImporter* importer, MonkeyFile* file){
 			if(file == nullptr || exporter == nullptr || importer == nullptr){
 				return;
 			}
-			ObjectDataBaseLog(ame_Log_Statement, "get",  "println", "");
+			ObjectDataBaseLog(higgs_Log_Statement, "get",  "println", "");
 			
 			Note project_dir = importer->getTag("DataBase.project");
 			if(project_dir == ""){
@@ -92,22 +92,22 @@ class ObjectDataBase : public DataBase{
 			Note project_folder_helper_path = file->fixPath(project_folder_path, helperPath);
 			
 			if(!file->exist(project_folder_path)){
-				ObjectDataBaseLog(ame_Log_Statement, "put", "println", "!file->exist(project_folder_path)");
-				// ObjectDataBaseLog(ame_Log_Statement, "put", "println", Note("project_folder_path ") + project_folder_path);
+				ObjectDataBaseLog(higgs_Log_Statement, "put", "println", "!file->exist(project_folder_path)");
+				// ObjectDataBaseLog(higgs_Log_Statement, "put", "println", Note("project_folder_path ") + project_folder_path);
 				return;
 			}
 			
 			Note folder_dir = importer->getTag("DataBase.dir");
 			
 			if(folder_dir == ""){
-				ObjectDataBaseLog(ame_Log_Statement, "put",  "println", "folder_dir.isEmpty");
+				ObjectDataBaseLog(higgs_Log_Statement, "put",  "println", "folder_dir.isEmpty");
 				return;
 			}
 			
 			ElementId id = importer->getTag("DataBase.id");
 			
 			if(id == ""){
-				ObjectDataBaseLog(ame_Log_Statement, "get",  "println", "id.isEmpty");
+				ObjectDataBaseLog(higgs_Log_Statement, "get",  "println", "id.isEmpty");
 				return;
 			}
 			
@@ -119,23 +119,23 @@ class ObjectDataBase : public DataBase{
 			Note idPath = textImporter.read(id, "");
 			
 			if(idPath == ""){
-				ObjectDataBaseLog(ame_Log_Statement, "get",  "println", "path.isEmpty");
+				ObjectDataBaseLog(higgs_Log_Statement, "get",  "println", "path.isEmpty");
 				return;
 			}
-			// ObjectDataBaseLog(ame_Log_Statement, "get",  "println", Note("idPath ") + Note(idPath));
+			// ObjectDataBaseLog(higgs_Log_Statement, "get",  "println", Note("idPath ") + Note(idPath));
 			
 			Note port = importer->getTag("DataBase.port");
 			Note idText = file->fastReadText(idPath);
 			
 			if(port == ""){
-				ObjectDataBaseLog(ame_Log_Statement, "get",  "println", "broadcast");
+				ObjectDataBaseLog(higgs_Log_Statement, "get",  "println", "broadcast");
 				serialState->send(idText);
 			}else{
-				ObjectDataBaseLog(ame_Log_Statement, "get",  "println", "not broadcast");
+				ObjectDataBaseLog(higgs_Log_Statement, "get",  "println", "not broadcast");
 				importer->removeTag("DataBase.port");
 				serialState->send(port.toInt(), idText);
 			}
-			// ObjectDataBaseLog(ame_Log_Statement, "get",  "println", Note("sending ") + objTextImporter.getText());
+			// ObjectDataBaseLog(higgs_Log_Statement, "get",  "println", Note("sending ") + objTextImporter.getText());
 			// exporter->clear();
 			// exporter->read(file, idPath);
 		}
@@ -150,7 +150,7 @@ class ObjectDataBase : public DataBase{
 			Note path = file->fixPath(m_rootPath, m_tagPath);
 			
 			if(all != ""){
-				ObjectDataBaseLog(ame_Log_Statement, "get",  "println", "delete all");
+				ObjectDataBaseLog(higgs_Log_Statement, "get",  "println", "delete all");
 				file->deleteFile(path);
 				return;
 			}
@@ -158,7 +158,7 @@ class ObjectDataBase : public DataBase{
 			ElementId id = importer->read("DataBase.id", ElementId());
 			
 			if(id == ""){
-				ObjectDataBaseLog(ame_Log_Statement, "get",  "println", "id.isEmpty");
+				ObjectDataBaseLog(higgs_Log_Statement, "get",  "println", "id.isEmpty");
 				return;
 			}
 			

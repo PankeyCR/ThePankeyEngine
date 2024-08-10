@@ -1,17 +1,6 @@
 
-#ifndef CONFIGURATION_ElementId_hpp
-#define CONFIGURATION_ElementId_hpp
-
-	#include "ame_Enviroment.hpp"
-
-	#if defined(DISABLE_ElementId)
-		#define ElementId_hpp
-	#endif
-#endif
-
 #ifndef ElementId_hpp
 #define ElementId_hpp
-#define ElementId_AVAILABLE
 
 #ifdef ame_ArduinoIDE
 	#include "Arduino.h"
@@ -42,7 +31,7 @@
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
 class ElementId : public Printable IMPLEMENTING_cppObject {
 	public:

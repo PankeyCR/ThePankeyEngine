@@ -1,273 +1,407 @@
 
 #ifndef PointerArrayStorage_hpp
-#define PointerArrayStorage_hpp
-#define PointerArrayStorage_AVAILABLE
+	#define PointerArrayStorage_hpp
 
-#include "MemoryStorage.hpp"
+	#include "MemoryStorage.hpp"
 
-#ifdef PointerArrayStorage_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
-
-	#define PointerArrayStorageLog(location,method,type,mns) ame_Log((void*)this,location,"PointerArrayStorage",method,type,mns)
-#else
-	#ifdef PointerArrayStorage_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
-
-		#define PointerArrayStorageLog(location,method,type,mns) ame_LogDebug((void*)this,location,"PointerArrayStorage",method,type)
+	#ifdef PointerArrayStorage_LogApp
+		#include "higgs_Logger.hpp"
+		#define PointerArrayStorageLog(location,method,type,mns) higgs_Log((void*)this,location,"PointerArrayStorage",method,type,mns)
 	#else
 		#define PointerArrayStorageLog(location,method,type,mns)
 	#endif
-#endif
 
-namespace ame{
+	namespace higgs{
 
-template<class T>
-class PointerArrayStorage : public MemoryStorage<T>{
-	public:
-		PointerArrayStorage(){
-			PointerArrayStorageLog(ame_Log_StartMethod, "Constructor", "println", "");
-			PointerArrayStorageLog(ame_Log_EndMethod, "Constructor", "println", "");
-		}
+		template<class P, class H, class A>
+		class PointerArrayStorage : public MemoryStorage<P,H,A>{
+			public:
+				using INSTANCE_TYPE = typename MemoryStorage<P,H,A>::INSTANCE_TYPE;
+                using ALLOCATOR_TYPE = typename MemoryStorage<P,H,A>::ALLOCATOR_TYPE;
+                using POINTER_TYPE = typename MemoryStorage<P,H,A>::POINTER_TYPE;
+                using HOLDER_TYPE = typename MemoryStorage<P,H,A>::HOLDER_TYPE;
+                using HOLDER_ARRAY_TYPE = typename MemoryStorage<P,H,A>::HOLDER_ARRAY_TYPE;
 
-		virtual ~PointerArrayStorage(){
-			PointerArrayStorageLog(ame_Log_StartMethod, "Destructor", "println", "");
-			if(this->m_values == nullptr){
-				PointerArrayStorageLog(ame_Log_EndMethod, "Destructor", "println", "");
-				return;
-			}
-			for(int x = 0; x < this->getSize(); x++){
-				this->removingMemory(this->m_values[x]);
-				this->m_values[x] = nullptr;
-			}
-			this->setSize(0);
-			delete[] this->m_values;
-			this->m_values = nullptr;
-			this->removeManager();
-			PointerArrayStorageLog(ame_Log_EndMethod, "Destructor", "println", "");
-		}
-		
-		virtual bool isNull()const{
-			PointerArrayStorageLog(ame_Log_StartMethod, "isNull", "println", "");
-			PointerArrayStorageLog(ame_Log_EndMethod, "isNull", "println", this->m_values == nullptr);
-			return this->m_values == nullptr;
-		}
-		
-		virtual bool isEmpty()const{
-			PointerArrayStorageLog(ame_Log_StartMethod, "isEmpty", "println", "");
-			PointerArrayStorageLog(ame_Log_Statement, "isEmpty", "println", "List Size:");
-			PointerArrayStorageLog(ame_Log_Statement, "isEmpty", "println", this->getSize());
-			PointerArrayStorageLog(ame_Log_EndMethod, "isEmpty", "println", this->getSize() == 0 || this->m_values == nullptr);
-			return this->getSize() == 0 || this->m_values == nullptr;
-		}
+				PointerArrayStorage(){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "Constructor", "println", "");
+					PointerArrayStorageLog(higgs_Log_EndMethod, "Constructor", "println", "");
+				}
 
-		virtual void set(int a_position, T* a_pointer){
-			PointerArrayStorageLog(ame_Log_StartMethod, "set", "println", "T* a_pointer");
-			PointerArrayStorageLog(ame_Log_Statement, "set", "println", "Position: ");
-			PointerArrayStorageLog(ame_Log_Statement, "set", "println", a_position);
-			if(this->isEmpty() && a_position >= this->getSize()){
-				PointerArrayStorageLog(ame_Log_EndMethod, "set", "println", "this->isEmpty()");
-				return;
-			}
-			if(this->m_values[a_position] == a_pointer){
-				PointerArrayStorageLog(ame_Log_EndMethod, "set", "println", "this->m_values[a_position] == a_value");
-				return;
-			}
-			this->removingMemory(this->m_values[a_position]);
-			this->m_values[a_position] = a_pointer;
-			this->addingMemory(a_pointer);
-			PointerArrayStorageLog(ame_Log_EndMethod, "set", "println", "");
-		}
+				virtual ~PointerArrayStorage(){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "Destructor", "println", "");
+					this->destroy();
+					PointerArrayStorageLog(higgs_Log_EndMethod, "Destructor", "println", "");
+				}
+				
+				virtual bool isNull()const{
+					PointerArrayStorageLog(higgs_Log_StartMethod, "isNull", "println", "");
+					PointerArrayStorageLog(higgs_Log_EndMethod, "isNull", "println", this->m_values == nullptr);
+					return this->m_values == nullptr;
+				}
+				
+				virtual bool isNull(int a_index)const{
+					PointerArrayStorageLog(higgs_Log_StartMethod, "isNull", "println", "");
+					PointerArrayStorageLog(higgs_Log_Statement, "isNull", "println", "Index:");
+					PointerArrayStorageLog(higgs_Log_Statement, "isNull", "println", a_index);
+					if(this->m_values == nullptr){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "isNull", "println", "this->m_values == nullptr");
+						return true;
+					}
+					if(this->m_values[a_index] == nullptr){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "isNull", "println", "this->m_values[a_index] == nullptr");
+						return true;
+					}
+					PointerArrayStorageLog(higgs_Log_EndMethod, "isNull", "println", "");
+					return false;
+				}
 
-		virtual void set(int a_position, const Pointer<T>& a_pointer){
-			PointerArrayStorageLog(ame_Log_StartMethod, "set", "println", "const Pointer<T>& a_pointer");
-			this->set(a_position, a_pointer.get());
-			PointerArrayStorageLog(ame_Log_EndMethod, "set", "println", "");
-		}
-		
-		virtual Pointer<T> get(int a_position)const{
-			PointerArrayStorageLog(ame_Log_StartMethod, "get", "println", "");
-			if(this->isEmpty() || a_position >= this->getSize()){
-				PointerArrayStorageLog(ame_Log_EndMethod, "get", "println", "");
-				return Pointer<T>(nullptr, this->m_manager);
-			}
-			PointerArrayStorageLog(ame_Log_EndMethod, "get", "println", "");
-			return Pointer<T>(this->m_values[a_position], this->m_manager);
-		}
+				virtual bool replace(int a_index_1, int a_index_2){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "replace", "println", "");
+					PointerArrayStorageLog(higgs_Log_Statement, "replace", "println", "Position 1: ");
+					PointerArrayStorageLog(higgs_Log_Statement, "replace", "println", a_index_1);
+					PointerArrayStorageLog(higgs_Log_Statement, "replace", "println", "Position 2: ");
+					PointerArrayStorageLog(higgs_Log_Statement, "replace", "println", a_index_2);
 
-		virtual bool contain(T* a_value){
-			PointerArrayStorageLog(ame_Log_StartMethod, "contain", "println", "");
-			if(this->isEmpty()){
-				PointerArrayStorageLog(ame_Log_Statement, "contain", "println", "this->isEmpty()");
-				PointerArrayStorageLog(ame_Log_EndMethod, "contain", "println", "return false");
-				return false;
-			}
-			for(int x = 0; x < this->getSize(); x++){
-				if(a_value == this->m_values[x]){
-					PointerArrayStorageLog(ame_Log_Statement, "contain", "println", "a_value == this->m_values[x]");
-					PointerArrayStorageLog(ame_Log_EndMethod, "contain", "println", "return true");
+					if(this->isNull() || a_index_1 >= this->getSize() || a_index_2 >= this->getSize() || a_index_1 < 0 || a_index_2 < 0){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "replace", "println", "this->isNull()");
+						return false;
+					}
+
+					if(a_index_1 == a_index_2){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "replace", "println", "a_index_1 == a_index_2");
+						return true;
+					}
+					HOLDER_TYPE i_holder_1 = this->m_values[a_index_1];
+					HOLDER_TYPE i_holder_2 = this->m_values[a_index_2];
+					this->m_values[a_index_1] = i_holder_2;
+					this->m_values[a_index_2] = i_holder_1;
+
+					PointerArrayStorageLog(higgs_Log_EndMethod, "replace", "println", "");
 					return true;
 				}
-			}
-			PointerArrayStorageLog(ame_Log_EndMethod, "contain", "println", "");
-			return false;
-		}
 
-		virtual bool contain(const Pointer<T>& a_value){
-			PointerArrayStorageLog(ame_Log_StartMethod, "contain", "println", "");
-			PointerArrayStorageLog(ame_Log_EndMethod, "contain", "println", "");
-			return this->contain(a_value.get());
-		}
-		
-		virtual int getIndex(T* a_value){
-			PointerArrayStorageLog(ame_Log_StartMethod, "getIndex", "println", "");
-			if(this->isEmpty()){
-				PointerArrayStorageLog(ame_Log_EndMethod, "getIndex", "println", "this->isEmpty()");
-				return -1;
-			}
-			for(int x = 0; x < this->getSize(); x++){
-				if(a_value == this->m_values[x]){
-					PointerArrayStorageLog(ame_Log_EndMethod, "getIndex", "println", "a_value == this->m_values[x]");
-					return x;
+				virtual bool set(int a_position, const Pointer<P,H,A>& a_pointer){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "set", "println", "");
+					PointerArrayStorageLog(higgs_Log_Statement, "set", "println", "Position: ");
+					PointerArrayStorageLog(higgs_Log_Statement, "set", "println", a_position);
+
+					if(this->isNull() || a_position >= this->getSize() || a_position < 0){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "set", "println", "this->isNull()");
+						return false;
+					}
+
+					HOLDER_TYPE i_holder = a_pointer.getHolder();
+
+					PointerArrayStorageLog(higgs_Log_Statement, "set", "println", "Is Holder == nullptr");
+					PointerArrayStorageLog(higgs_Log_Statement, "set", "println", i_holder == nullptr);
+
+					AllocatorManager<H,A>::add(i_holder);
+					AllocatorManager<H,A>::remove(this->m_values[a_position]);
+					this->m_values[a_position] = i_holder;
+
+					PointerArrayStorageLog(higgs_Log_EndMethod, "set", "println", "");
+					return true;
 				}
-			}
-			PointerArrayStorageLog(ame_Log_EndMethod, "getIndex", "println", "");
-			return -1;
-		}
 
-		virtual int getIndex(const Pointer<T>& a_value){
-			PointerArrayStorageLog(ame_Log_StartMethod, "getIndex", "println", "");
-			PointerArrayStorageLog(ame_Log_EndMethod, "getIndex", "println", "");
-			return this->getIndex(a_value.get());
-		}
+				virtual bool add(int a_position, const Pointer<P,H,A>& a_pointer){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "add", "println", "");
+					PointerArrayStorageLog(higgs_Log_Statement, "add", "println", "Position: ");
+					PointerArrayStorageLog(higgs_Log_Statement, "add", "println", a_position);
 
-		virtual void clear(){
-			PointerArrayStorageLog(ame_Log_StartMethod, "clear", "println", "");
-			if(this->isEmpty()){
-				PointerArrayStorageLog(ame_Log_EndMethod, "clear", "println", "this->isEmpty()");
-				return;
-			}
-			for(int x = 0; x < this->getSize(); x++){
-				this->removingMemory(this->m_values[x]);
-				this->m_values[x] = nullptr;
-			}
-			PointerArrayStorageLog(ame_Log_EndMethod, "clear", "println", "");
-		}
-
-		virtual bool removeByPointer(T* a_value){
-			PointerArrayStorageLog(ame_Log_StartMethod, "removeByPointer", "println", "");
-			int i_position = this->getIndex(a_value);
-			PointerArrayStorageLog(ame_Log_Statement, "removeByPointer", "println", "removed position: ");
-			PointerArrayStorageLog(ame_Log_Statement, "removeByPointer", "println", i_position);
-			if(this->isEmpty() || i_position >= this->getSize() || i_position < 0){
-				PointerArrayStorageLog(ame_Log_EndMethod, "removeByPointer", "println", "");
-				return false;
-			}
-			this->removeByPosition(i_position);
-			PointerArrayStorageLog(ame_Log_EndMethod, "removeByPointer", "println", "");
-			return true;
-		}
-
-		virtual bool removeByPointer(const Pointer<T>& a_value){
-			PointerArrayStorageLog(ame_Log_StartMethod, "removeByPointer", "println", "");
-			PointerArrayStorageLog(ame_Log_EndMethod, "removeByPointer", "println", "");
-			return this->removeByPointer(a_value.get());
-		}
-
-		virtual Pointer<T> removeByPosition(int a_position){
-			PointerArrayStorageLog(ame_Log_StartMethod, "removeByPosition", "println", "");
-			if(this->isEmpty() || a_position >= this->getSize() || a_position < 0){
-				PointerArrayStorageLog(ame_Log_EndMethod, "removeByPosition", "println", "");
-				return nullptr;
-			}
-			T* i_value = this->m_values[a_position];
-			Pointer<T> i_pointer = Pointer<T>(i_value, this->m_manager);
-			this->m_values[a_position] = nullptr;
-			this->removingMemory(i_value);
-			PointerArrayStorageLog(ame_Log_EndMethod, "removeByPosition", "println", "");
-			return i_pointer;
-		}
-
-		virtual int reorder(){
-			PointerArrayStorageLog(ame_Log_StartMethod, "reorder", "println", "");
-			if(this->isNull()){
-				PointerArrayStorageLog(ame_Log_EndMethod, "reorder", "println", "this->isNull()");
-				return -1;
-			}
-			if(this->isEmpty()){
-				PointerArrayStorageLog(ame_Log_EndMethod, "reorder", "println", "this->isEmpty()");
-				return 0;
-			}
-			int i_offset = 0;
-			for(int x = 0; x < this->getSize(); x++){
-				T* f_value = this->m_values[x];
-				if(f_value == nullptr){
-					continue;
+					if(this->isNull() || a_position >= this->getSize() || a_position < 0){
+						PointerArrayStorageLog(higgs_Log_Statement, "add", "println", "this->isNull() || a_position >= this->getSize() || a_position < 0");
+						this->expand(a_position - this->getSize() + 5);
+					}
+					PointerArrayStorageLog(higgs_Log_EndMethod, "add", "println", "");
+					return this->set(a_position, a_pointer);
 				}
-				this->m_values[i_offset] = f_value;
-				i_offset++;
-			}
-			PointerArrayStorageLog(ame_Log_EndMethod, "reorder", "println", "");
-			return i_offset;
-		}
+				
+				virtual Pointer<P,H,A> get(int a_position)const{
+					PointerArrayStorageLog(higgs_Log_StartMethod, "get", "println", "");
+					if(this->isNull() || a_position >= this->getSize() || a_position < 0){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "get", "println", "");
+						return Pointer<P,H,A>();
+					}
 
-		virtual MemoryStorage<T>* clone()const{
-			PointerArrayStorageLog(ame_Log_StartMethod, "clone", "println", "");
-			PointerArrayStorage<T>* i_clone = new PointerArrayStorage<T>();
-			i_clone->expandLocal(this->getSize());
-			for(int x = 0; x < this->getSize(); x++){
-				i_clone->set(x, this->get(x));
-			}
-			PointerArrayStorageLog(ame_Log_EndMethod, "clone", "println", "");
-			return i_clone;
-		}
+					Pointer<P,H,A> i_pointer;
+					i_pointer.setHolder(this->m_values[a_position]);
 
-		virtual bool expandLocal(int a_size){
-			PointerArrayStorageLog(ame_Log_StartMethod, "expandLocal", "println", "");
+					PointerArrayStorageLog(higgs_Log_EndMethod, "get", "println", "");
+					return i_pointer;
+				}
+				
+				virtual P* getRawPointer(int a_position)const{
+					PointerArrayStorageLog(higgs_Log_StartMethod, "getRawPointer", "println", "");
+					if(this->isNull() || a_position >= this->getSize() || a_position < 0){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "getRawPointer", "println", "");
+						return nullptr;
+					}
+					PointerArrayStorageLog(higgs_Log_EndMethod, "getRawPointer", "println", "");
+					return AllocatorManager<H,A>::get(this->m_values[a_position]);
+				}
+
+				virtual bool contain(const Pointer<P,H,A>& a_value){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "contain", "println", "");
+					if(this->isNull()){
+						PointerArrayStorageLog(higgs_Log_Statement, "contain", "println", "this->isNull()");
+						PointerArrayStorageLog(higgs_Log_EndMethod, "contain", "println", "return false");
+						return false;
+					}
+					POINTER_TYPE i_pointer_1 = a_value.get();
+					for(int x = 0; x < this->getSize(); x++){
+						POINTER_TYPE f_pointer_2 = AllocatorManager<H,A>::get(this->m_values[x]);;
+						if(i_pointer_1 == f_pointer_2){
+							PointerArrayStorageLog(higgs_Log_Statement, "contain", "println", "a_value == this->m_values[x]");
+							PointerArrayStorageLog(higgs_Log_EndMethod, "contain", "println", "return true");
+							return true;
+						}
+					}
+					PointerArrayStorageLog(higgs_Log_EndMethod, "contain", "println", "");
+					return false;
+				}
+				
+				virtual int getIndex(const Pointer<P,H,A>& a_value){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "getIndex", "println", "");
+					if(this->isNull()){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "getIndex", "println", "this->isNull()");
+						return -1;
+					}
+					POINTER_TYPE i_pointer_1 = a_value.get();
+					for(int x = 0; x < this->getSize(); x++){
+						POINTER_TYPE f_pointer_2 = AllocatorManager<H,A>::get(this->m_values[x]);;
+						if(i_pointer_1 == f_pointer_2){
+							PointerArrayStorageLog(higgs_Log_EndMethod, "getIndex", "println", "a_value == this->m_values[x]");
+							return x;
+						}
+					}
+					PointerArrayStorageLog(higgs_Log_EndMethod, "getIndex", "println", "");
+					return -1;
+				}
+
+				virtual bool clear(){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "clear", "println", "");
+					if(this->isNull()){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "clear", "println", "this->isNull()");
+						return false;
+					}
+					for(int x = 0; x < this->getSize(); x++){
+						AllocatorManager<H,A>::remove(this->m_values[x]);
+					}
+					PointerArrayStorageLog(higgs_Log_EndMethod, "clear", "println", "");
+					return true;
+				}
+
+				virtual bool removeByPointer(const Pointer<P,H,A>& a_value){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "removeByPointer", "println", "");
+					int i_position = this->getIndex(a_value);
+					PointerArrayStorageLog(higgs_Log_Statement, "removeByPointer", "println", "removed position: ");
+					PointerArrayStorageLog(higgs_Log_Statement, "removeByPointer", "println", i_position);
+					if(this->isNull() || i_position >= this->getSize() || i_position < 0){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "removeByPointer", "println", "");
+						return false;
+					}
+					this->removeByPosition(i_position);
+					PointerArrayStorageLog(higgs_Log_EndMethod, "removeByPointer", "println", "");
+					return true;
+				}
+
+				virtual Pointer<P,H,A> removeByPosition(int a_position){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "removeByPosition", "println", "");
+					if(this->isNull() || a_position >= this->getSize() || a_position < 0){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "removeByPosition", "println", "");
+						return Pointer<P,H,A>();
+					}
+					HOLDER_TYPE i_holder = this->m_values[a_position];
+					Pointer<P,H,A> i_pointer;
+					i_pointer.setHolder(i_holder);
+					AllocatorManager<H,A>::remove(i_holder);
+					PointerArrayStorageLog(higgs_Log_EndMethod, "removeByPosition", "println", "");
+					return i_pointer;
+				}
+
+				virtual bool removeFirstIndex(int a_amount){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "removeFirstIndex", "println", "");
+					if(this->isNull() || a_amount <= 0){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "removeFirstIndex", "println", "");
+						return false;
+					}
+					if(a_amount > this->getSize()){
+						PointerArrayStorageLog(higgs_Log_Statement, "removeFirstIndex", "println", "a_amount > this->getSize()");
+						a_amount = this->getSize();
+					}
+					for(int x = 0; x < a_amount; x++){
+						HOLDER_TYPE i_holder = this->m_values[x];
+						AllocatorManager<H,A>::remove(i_holder);
+					}
+					PointerArrayStorageLog(higgs_Log_EndMethod, "removeFirstIndex", "println", "");
+					return true;
+				}
+
+				virtual bool removeLastIndex(int a_amount){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "removeLastIndex", "println", "");
+					if(this->isNull() || a_amount < 0){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "removeLastIndex", "println", "");
+						return false;
+					}
+					if(a_amount > this->getSize()){
+						PointerArrayStorageLog(higgs_Log_Statement, "removeFirstIndex", "println", "a_amount > this->getSize()");
+						a_amount = this->getSize();
+					}
+					for(int x = this->getSize() - 1; x >= this->getSize() - a_amount; x++){
+						HOLDER_TYPE i_holder = this->m_values[x];
+						AllocatorManager<H,A>::remove(i_holder);
+					}
+					PointerArrayStorageLog(higgs_Log_EndMethod, "removeLastIndex", "println", "");
+					return true;
+				}
+
+				virtual bool removePart(int a_index, int a_amount){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "removePart", "println", "");
+					if(this->isNull() || a_index <= 0 || a_amount <= 0){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "removePart", "println", "");
+						return false;
+					}
+					if(a_index + a_amount > this->getSize()){
+						PointerArrayStorageLog(higgs_Log_Statement, "removePart", "println", "a_amount > this->getSize()");
+						a_amount = this->getSize() - a_index;
+					}
+					for(int x = a_index; x < a_amount; x++){
+						HOLDER_TYPE i_holder = this->m_values[x];
+						AllocatorManager<H,A>::remove(i_holder);
+					}
+					PointerArrayStorageLog(higgs_Log_EndMethod, "removePart", "println", "");
+					return true;
+				}
+
+				virtual bool removeFirst(){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "removeFirst", "println", "");
+					PointerArrayStorageLog(higgs_Log_EndMethod, "removeFirst", "println", "");
+					return this->removeByPosition(0);
+				}
+
+				virtual bool removeLast(){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "removeLast", "println", "");
+					PointerArrayStorageLog(higgs_Log_EndMethod, "removeLast", "println", "");
+					return this->removeByPosition(this->getSize());
+				}
+
+				virtual int reorder(){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "reorder", "println", "");
+					if(this->isNull()){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "reorder", "println", "this->isNull()");
+						return -1;
+					}
+					int i_offset = 0;
+					for(int x = 0; x < this->getSize(); x++){
+						HOLDER_TYPE f_value = this->m_values[x];
+						if(f_value == nullptr){
+							continue;
+						}
+						this->m_values[i_offset] = f_value;
+						i_offset++;
+					}
+					PointerArrayStorageLog(higgs_Log_EndMethod, "reorder", "println", "");
+					return i_offset;
+				}
+
+				virtual int reorder(int a_index, int a_size){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "reorder", "println", "");
+					if(this->isNull()){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "reorder", "println", "this->isNull()");
+						return -1;
+					}
+					int i_offset = a_index + a_size;
+					for(int x = a_index; x < this->getSize() - a_size - 1 + a_index; x++){
+						HOLDER_TYPE f_value = this->m_values[x];
+						this->m_values[i_offset] = f_value;
+						i_offset++;
+					}
+					PointerArrayStorageLog(higgs_Log_EndMethod, "reorder", "println", "");
+					return i_offset;
+				}
+
+				virtual int insert(int a_index, int a_size){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "insert", "println", "");
+					if(this->isNull()){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "insert", "println", "this->isNull()");
+						return -1;
+					}
+					int i_offset = a_index + a_size;
+					for(int x = a_index; x < this->getSize() - a_size - 1 + a_index; x++){
+						HOLDER_TYPE f_value = this->m_values[x];
+						this->m_values[i_offset] = f_value;
+						i_offset++;
+					}
+					PointerArrayStorageLog(higgs_Log_EndMethod, "insert", "println", "");
+					return i_offset;
+				}
+
+				virtual bool expand(int a_size){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "expand", "println", "");
+					
+					int i_size = this->getSize() + a_size;
+					PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", "List Size:");
+					PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", this->getSize());	
+					PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", "List extra size added:");
+					PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", a_size);
+					PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", "List new size:");
+					PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", i_size);
+					if(i_size <= 1){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "expand", "println", "new size is too small");
+						return false;
+					}
+					HOLDER_ARRAY_TYPE nT;
+					nT = AllocatorManager<H,A>::newHolderArray(i_size);
+					if(this->m_values != nullptr){
+						PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", "this->m_values != nullptr");
+						for(int x = 0; x < this->getSize(); x++){
+							PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", "iteration:");
+							PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", x);
+							nT[x] = this->m_values[x];
+						}
+						AllocatorManager<H,A>::removeHolderArray(this->m_values);
+					}
+					for(int x = this->getSize(); x < i_size; x++){
+						PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", "iteration:");
+						PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", x);
+						nT[x] = nullptr;
+					}
+					this->m_values = nT;
+					this->m_size = i_size;
+					
+					PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", "List Size:");
+					PointerArrayStorageLog(higgs_Log_Statement, "expand", "println", this->getSize());	
+					PointerArrayStorageLog(higgs_Log_EndMethod, "expand", "println", "");
+					return true;
+				}
+
+				virtual bool shrink(int a_amount){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "shrink", "println", "");
+					if(this->m_values == nullptr || this->getSize() == 0){
+						PointerArrayStorageLog(higgs_Log_EndMethod, "shrink", "println", "");
+						return false;
+					}
+					for(int x = this->getSize() - 1; x >= this->getSize() - a_amount && x >= 0; x--){
+						AllocatorManager<H,A>::remove(this->m_values[x]);
+					}
+					this->m_size -= a_amount;
+
+					PointerArrayStorageLog(higgs_Log_EndMethod, "shrink", "println", "");
+					return true;
+				}
+
+				virtual bool destroy(){
+					PointerArrayStorageLog(higgs_Log_StartMethod, "destroy", "println", "");
+					this->shrink(this->getSize());
+					AllocatorManager<H,A>::removeHolderArray(this->m_values);
+					PointerArrayStorageLog(higgs_Log_EndMethod, "destroy", "println", "");
+					return true;
+				}
 			
-			int i_size = this->getSize() + a_size;
-			PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", "List Size:");
-			PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", this->getSize());	
-			PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", "List extra size added:");
-			PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", a_size);
-			PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", "List new size:");
-			PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", i_size);
-			if(i_size <= 1){
-				PointerArrayStorageLog(ame_Log_EndMethod, "expandLocal", "println", "new size is too small");
-				return false;
-			}
-			T **nT;
-			nT = new T*[i_size];
-			for(int x = 0; x < this->getSize(); x++){
-				PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", "iteration:");
-				PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", x);
-				if(this->m_values != nullptr){
-					nT[x] = this->m_values[x];
-				}
-			}
-			for(int x = this->getSize(); x < i_size; x++){
-				PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", "iteration:");
-				PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", x);
-				nT[x] = nullptr;
-			}
-			if(this->m_values != nullptr){
-				PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", "this->m_values != nullptr");
-				delete[] this->m_values;
-			}
-			this->m_values = nT;
-			this->setSize(i_size);
-			
-			PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", "List Size:");
-			PointerArrayStorageLog(ame_Log_Statement, "expandLocal", "println", this->getSize());	
-			PointerArrayStorageLog(ame_Log_EndMethod, "expandLocal", "println", "");
-			return true;
-		}
-	
-	protected:
-		T** m_values = nullptr;
-};
+			protected:
+				HOLDER_ARRAY_TYPE m_values = nullptr;
+		};
 
-}
+	}
 
 #endif

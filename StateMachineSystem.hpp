@@ -1,45 +1,27 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_StateMachineSystem)
-	#define StateMachineSystem_hpp
-#endif
 
 #ifndef StateMachineSystem_hpp
 #define StateMachineSystem_hpp
-#define StateMachineSystem_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "StaticMethodMap.hpp"
 
 #ifdef SMS_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "higgs_Logger_config.hpp"
+	#include "higgs_Logger.hpp"
 	
-	#define SMSLog(location,method,type,mns) ame_Log(nullptr,location,"StateMachineSystem",method,type,mns)
+	#define SMSLog(location,method,type,mns) higgs_Log(nullptr,location,"StateMachineSystem",method,type,mns)
 #else
 	#ifdef SMS_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+		#include "higgs_Logger_config.hpp"
+		#include "higgs_Logger.hpp"
 		
-		#define SMSLog(location,method,type,mns) ame_LogDebug(nullptr,location,"StateMachineSystem",method,type)
+		#define SMSLog(location,method,type,mns) higgs_LogDebug(nullptr,location,"StateMachineSystem",method,type)
 	#else
 		#define SMSLog(location,method,type,mns) 
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
 template<class T>
 class StateMachineSystem{	
@@ -78,8 +60,8 @@ class StateMachineSystem{
 		void nextState(){
 			statePosition++;
 			actualState = states.getByPosition(statePosition);
-			SMSLog(ame_Log_Statement, "nextState",  "println", Note(statePosition));
-			SMSLog(ame_Log_Statement, "nextState",  "println", Note(actualState == nullptr));
+			SMSLog(higgs_Log_Statement, "nextState",  "println", Note(statePosition));
+			SMSLog(higgs_Log_Statement, "nextState",  "println", Note(actualState == nullptr));
 		}
 		
 		StateMethod* getState(){

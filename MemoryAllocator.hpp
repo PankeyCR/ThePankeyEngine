@@ -1,43 +1,28 @@
 
 #ifndef MemoryAllocator_hpp
-#define MemoryAllocator_hpp
-#define MemoryAllocator_AVAILABLE
+	#define MemoryAllocator_hpp
 
-#ifdef MemoryAllocator_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "PointerSize.hpp"
 
-	#define MemoryAllocatorLog(location,method,type,mns) ame_Log((void*)this,location,"MemoryAllocator",method,type,mns)
-	#define const_MemoryAllocatorLog(location,method,type,mns)
-#else
-	#ifdef MemoryAllocator_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+	namespace higgs{
 
-		#define MemoryAllocatorLog(location,method,type,mns) ame_LogDebug((void*)this,location,"MemoryAllocator",method,type)
-		#define const_MemoryAllocatorLog(location,method,type,mns)
-	#else
-		#define MemoryAllocatorLog(location,method,type,mns)
-		#define const_MemoryAllocatorLog(location,method,type,mns)
-	#endif
-#endif
+		class MemoryAllocator{
+			public:
+				virtual ~MemoryAllocator(){}
 
-namespace ame{
+				virtual void* create(pointer_size a_size){return malloc(a_size);}
+				virtual void* create(){return nullptr;}
+				virtual void destroy(pointer_size a_size, void* a_destroy){free(a_destroy);}
+				virtual void destroy(void* a_destroy){free(a_destroy);}
 
-template<class T>
-class MemoryAllocator{
-	public:
-		MemoryAllocator(){}
-		virtual ~MemoryAllocator(){}
+				virtual bool isManaged(){
+					return this->m_managed;
+				}
 
-		virtual void operator=(const MemoryAllocator<T>& c_MemoryAllocator){}
-		virtual bool operator==(MemoryAllocator<T> b){return false;}
-		virtual bool operator!=(MemoryAllocator<T> b){return false;}
-	
-	protected:
-	
-};
+			protected:
+				bool m_managed = false;
+		};
 
-}
+	}
 
 #endif

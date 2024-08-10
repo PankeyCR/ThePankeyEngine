@@ -1,37 +1,46 @@
 
-#ifndef CONFIGURATION_MemoryManager_hpp
-#define CONFIGURATION_MemoryManager_hpp
-
-	#if defined(DISABLE_cppObject) || defined(DISABLE_Memory) || defined(DISABLE_MemoryManager) || defined(DISABLE_MemoryPool) || defined(DISABLE_MemoryChunk) || defined(DISABLE_Chunk)
-		#define MemoryManager_hpp
-
-		#define IMPLEMENTATION_MemoryManager
-		#define IMPLEMENTING_MemoryManager
-	#endif
-#endif
-
 #ifndef MemoryManager_hpp
-#define MemoryManager_hpp
-#define MemoryManager_AVAILABLE
+	#define MemoryManager_hpp
 
-#define IMPLEMENTATION_MemoryManager IMPLEMENTATION(public MemoryManager)
-#define IMPLEMENTING_MemoryManager IMPLEMENTING(public MemoryManager)
+	#include "MemoryAllocator.hpp"
 
-#include "MemoryPool.hpp"
+	namespace higgs{
 
-namespace ame{
-	
-class MemoryManager : public MemoryPool{
-	public:
-		MemoryManager(){}
-		virtual ~MemoryManager(){}
-		
-		virtual void initialize(long sizeofMemory, int a_reference_tracker){}
-		virtual void release(){}
+		template<class H>
+		class MemoryManager{
+			public:				
+				using VOID_TYPE = void*;
+				using HOLDER_TYPE = H*;
 
-	protected:
-};
+				MemoryManager(){}
+				virtual ~MemoryManager(){}
+				
+				virtual void setType(HOLDER_TYPE& a_holder, long a_type){}
+				
+				virtual long getType(const HOLDER_TYPE& a_holder){return -1;}
+				
+				virtual void setBaseType(HOLDER_TYPE& a_holder, long a_type){}
+				
+				virtual long getBaseType(const HOLDER_TYPE& a_holder){return -1;}
 
-}
+				virtual HOLDER_TYPE newHolder(){return nullptr;}
+
+				virtual HOLDER_TYPE newInstance(long a_type, MemoryAllocator* a_allocator){return nullptr;}
+				virtual HOLDER_TYPE newInstance(long a_type, pointer_size a_size, MemoryAllocator* a_allocator){return nullptr;}
+
+				virtual void setManageableCheck(HOLDER_TYPE& a_holder, bool a_check){}
+				
+				virtual void set(HOLDER_TYPE& a_holder, HOLDER_TYPE& a_set_holder){}
+
+				virtual void add(HOLDER_TYPE& a_holder){}
+
+				virtual void remove(HOLDER_TYPE& a_holder){}
+
+				virtual void destroy(HOLDER_TYPE& a_holder){}
+
+				virtual VOID_TYPE get(const HOLDER_TYPE& a_holder){return nullptr;}
+		};
+
+	}
 
 #endif

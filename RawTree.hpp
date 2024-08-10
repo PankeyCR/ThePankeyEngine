@@ -4,21 +4,14 @@
 #define RawTree_AVAILABLE
 
 #include "RawPointerTree.hpp"
+#include "RawList.hpp"
 
-namespace ame{
+namespace higgs{
 
 template<class T>
-class RawTree : virtual public RawPointerTree<T>{
+class RawTree : virtual public RawPointerTree<T>, virtual public RawList<RawTree<T>>{
 	public:
-		RawTree(){}
-
-		RawTree(const RawTree<T>& c_RawTree){}
-
 		virtual ~RawTree(){}
-
-		virtual void operator=(const RawTree<T>& c_RawTree){}
-		virtual bool operator==(RawTree<T> b){return false;}
-		virtual bool operator!=(RawTree<T> b){return false;}
 	
 	protected:
 };

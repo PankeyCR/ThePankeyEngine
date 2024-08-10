@@ -1,29 +1,10 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_VectorValue)
-	#define VectorValue_hpp
-#endif
-
 #ifndef VectorValue_hpp
 #define VectorValue_hpp
-#define VectorValue_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "cppObject.hpp"
 
-namespace ame{
+namespace higgs{
 
 class VectorValue : public cppObject{
 public:

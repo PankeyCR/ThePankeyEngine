@@ -1,29 +1,10 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_VectorDirection)
-	#define VectorDirection_hpp
-#endif
-
 #ifndef VectorDirection_hpp
 #define VectorDirection_hpp
-#define VectorDirection_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "cppObject.hpp"
 
-namespace ame{
+namespace higgs{
 
 class VectorDirection : public cppObject{
 public:

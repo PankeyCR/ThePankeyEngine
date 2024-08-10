@@ -1,50 +1,28 @@
 
-#ifndef CONFIGURATION_Memory_hpp
-#define CONFIGURATION_Memory_hpp
-
-	#if defined(DISABLE_cppObject) || defined(DISABLE_Memory) || defined(DISABLE_MemoryManager) || defined(DISABLE_MemoryPool) || defined(DISABLE_MemoryChunk) || defined(DISABLE_Chunk)
-		#define Memory_hpp
-	#endif
-#endif
-
 #ifndef Memory_hpp
-#define Memory_hpp
-#define Memory_AVAILABLE
+	#define Memory_hpp
 
-#include "MemoryManager.hpp"
+	#include "PointerSize.hpp"
 
-namespace ame{
-	
-class cppObject;
+	namespace higgs{
 
-struct Memory{
-	static MemoryManager* manager;
-	
-	static cppObject* newObject(size_t a_size){
-		if(manager == nullptr){
-			return (cppObject*)malloc(a_size);
-		}
-		return manager->newObject(a_size);
+		class Memory{
+			public:
+				virtual ~Memory(){}
+
+				virtual void* create(pointer_size a_size){return malloc(a_size);}
+				virtual void destroy(pointer_size a_size, void* a_destroy){free(a_destroy);}
+
+				template<class T>
+				T* newInstance(){
+					void* i_instance = this->create(sizeOfPointer<T>());
+					if(i_instance == nullptr){
+						return nullptr;
+					}
+					return (T*)i_instance;
+				}
+		};
+
 	}
-	
-	static cppObject* newObject(cppObject* a_obj){
-		if(manager == nullptr){
-			return a_obj;
-		}
-		return manager->newObject(a_obj);
-	}
-	
-	static void deleteObject(cppObject* a_obj){
-		if(manager == nullptr){
-			free(a_obj);
-			return;
-		}
-		manager->deleteObject(a_obj);
-	}
-};
-
-MemoryManager* Memory::manager = nullptr;
-
-}
 
 #endif

@@ -1,5 +1,5 @@
 
-#include "ame_Enviroment.hpp"
+#include "higgs_Enviroment.hpp"
 
 #if defined(DISABLE_Bluetooth)
 	#define Bluetooth_hpp
@@ -9,15 +9,15 @@
 #define Bluetooth_hpp
 #define Bluetooth_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#ifndef higgs_Enviroment_Defined
 
 #endif
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 #endif
 
@@ -28,7 +28,7 @@
 #define STATE_ATMODE_1 2
 #define STATE_ATMODE_2 3
 
-namespace ame{
+namespace higgs{
 
 class Bluetooth {
 	public:

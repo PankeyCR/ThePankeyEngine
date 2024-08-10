@@ -6,22 +6,13 @@
 *	2. polimorfic = is intended to be inheret to another class
 *	3. unit = method that has a single and basic function, cant be reduce to smaller functions
 *	4. contruct = method that helps create the basic functionality of the class
-*	5. reduce = method that is compose of methods of the same class the reduces the complexity of the code
+*	5. reduce = method that is compose of methods of the same class that reduces the complexity of the code
 *	6. reductive = method that encapsulates a part of the logic of the class to reduce complexity and size of the code
 *
 */
 
-#ifndef DISABLE_Method_hpp
-#define DISABLE_Method_hpp
-
-	#if defined(DISABLE_Method) || defined(DISABLE_cppObject) || defined(DISABLE_cppObjectClass)
-		#define Method_hpp
-	#endif
-#endif
-
 #ifndef Method_hpp
 #define Method_hpp
-#define Method_AVAILABLE
 
 #include "RawPointerList.hpp"
 
@@ -29,14 +20,7 @@
 #include "MethodType.hpp"
 #include "MethodReturn.hpp"
 
-#include "MethodMap.hpp"
-#include "MethodReturnMap.hpp"
-#include "ClassMethodMap.hpp"
-#include "ClassMethodReturnMap.hpp"
-#include "ObjectMethodMap.hpp"
-#include "ObjectMethodReturnMap.hpp"
-
-namespace ame{
+namespace higgs{
 
 class Method{
 	public:
@@ -59,27 +43,27 @@ class Method{
 			return m_name;
 		}
 		
-		template<class T = cppObject, class R = bool, class... Args>
+		template<class T, class R, class... Args>
 		R invoke(T* a_instance, Args... args){
 			R i_return = MethodReturn<R>::getReturn();
-			if(m_type == MethodType::Method){
-				return MethodMap<Args...>::invoke(methodClass, args...);
-			}
-			if(m_type == MethodType::MethodReturn){
-				return MethodReturnMap<R,Args...>::invoke(methodClass, i_return, args...);
-			}
-			if(m_type == MethodType::ClassMethod){
-				return ClassMethodMap<T,Args...>::invoke(a_instance, methodClass, args...);
-			}
-			if(m_type == MethodType::ClassMethodReturn){
-				return ClassMethodReturnMap<T,R,Args...>::invoke(a_instance, methodClass, i_return, args...);
-			}
-			if(m_type == MethodType::ObjectMethod){
-				return ObjectMethodMap<T,Args...>::invoke(a_instance, methodClass, args...);
-			}
-			if(m_type == MethodType::ObjectMethodReturn){
-				return ObjectMethodReturnMap<T,R,Args...>::invoke(a_instance, methodClass, i_return, args...);
-			}
+			// if(m_type == MethodType::Method){
+			// 	return MethodMap<Args...>::invoke(methodClass, args...);
+			// }
+			// if(m_type == MethodType::MethodReturn){
+			// 	return MethodReturnMap<R,Args...>::invoke(methodClass, i_return, args...);
+			// }
+			// if(m_type == MethodType::ClassMethod){
+			// 	return ClassMethodMap<T,Args...>::invoke(a_instance, methodClass, args...);
+			// }
+			// if(m_type == MethodType::ClassMethodReturn){
+			// 	return ClassMethodReturnMap<T,R,Args...>::invoke(a_instance, methodClass, i_return, args...);
+			// }
+			// if(m_type == MethodType::ObjectMethod){
+			// 	return ObjectMethodMap<T,Args...>::invoke(a_instance, methodClass, args...);
+			// }
+			// if(m_type == MethodType::ObjectMethodReturn){
+			// 	return ObjectMethodReturnMap<T,R,Args...>::invoke(a_instance, methodClass, i_return, args...);
+			// }
 			return i_return;
 		}
 		

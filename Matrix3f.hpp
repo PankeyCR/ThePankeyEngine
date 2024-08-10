@@ -1,25 +1,6 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Matrix3f)
-	#define Matrix3f_hpp
-#endif
-
 #ifndef Matrix3f_hpp
 #define Matrix3f_hpp
-#define Matrix3f_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 //#include "Quaternion.hpp"
 #include "Vector3f.hpp"
@@ -31,7 +12,7 @@
 //class Quaternion;
 //class Matrix4f;
 
-namespace ame{
+namespace higgs{
 
 class Matrix3f : public cppObject, public Printable{
     private:

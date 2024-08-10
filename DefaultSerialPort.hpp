@@ -1,26 +1,13 @@
 
 #ifndef DefaultSerialPort_hpp
 #define DefaultSerialPort_hpp
-#define DefaultSerialPort_AVAILABLE
 
 #include "cppObject.hpp"
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "SerialPort.hpp"
 #include "Stream.h"
 
-namespace ame{
+namespace higgs{
 
 class DefaultSerialPort : public SerialPort{	
     public:

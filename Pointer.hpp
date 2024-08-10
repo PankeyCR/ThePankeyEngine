@@ -1,142 +1,92 @@
 
 #ifndef Pointer_hpp
-#define Pointer_hpp
-#define Pointer_AVAILABLE
+	#define Pointer_hpp
 
-#include "ManegedMemory.hpp"
-#include "ReferenceCount.hpp"
+	#include "StaticManagerInstance.hpp"
+	#include "MemoryHolderManager.hpp"
+	#include "ClassCount.hpp"
+	#include "MemoryHolder.hpp"
+    #include "Member.hpp"
+    #include "StaticAllocatorInstance.hpp"
+    #include "PointerSize.hpp"
 
-#ifdef Pointer_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
-
-	#define PointerLog(location,method,type,mns) ame_Log(this,location,"Pointer",method,type,mns)
-#else
-	#ifdef Pointer_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
-
-		#define PointerLog(location,method,type,mns) ame_LogDebug(this,location,"Pointer",method,type)
+	#ifdef Pointer_LogApp
+		#include "higgs_Logger.hpp"
+		#define PointerLog(location,method,type,mns) higgs_Log(this,location,"Pointer",method,type,mns)
 	#else
 		#define PointerLog(location,method,type,mns)
 	#endif
-#endif
 
-namespace ame{
+	namespace higgs{
 
-template<class T>
-class Pointer : public ManegedMemory{
-	public:
-		Pointer(){
-			PointerLog(ame_Log_StartMethod, "Contructor", "println","T* a_pointer");
-			PointerLog(ame_Log_EndMethod, "Contructor", "println","");
-		}
-
-		Pointer(T* a_pointer){
-			PointerLog(ame_Log_StartMethod, "Contructor", "println","T* a_pointer");
-			this->addPointer(a_pointer, nullptr);
-			PointerLog(ame_Log_EndMethod, "Contructor", "println","");
-		}
-		
-		Pointer(T* a_pointer, MemoryStorageManager<T>* a_manager){
-			PointerLog(ame_Log_StartMethod, "Contructor", "println","T* a_pointer, MemoryStorageManager<T>* a_manager");
-			this->addPointer(a_pointer, a_manager);
-			PointerLog(ame_Log_EndMethod, "Contructor", "println","");
-		}
-
-		Pointer(const Pointer &a_pointer){
-			PointerLog(ame_Log_StartMethod, "Contructor", "println","const Pointer &a_pointer");
-			this->addPointer(a_pointer.m_pointer, a_pointer.m_manager);
-			PointerLog(ame_Log_EndMethod, "Contructor", "println","");
-		}
-
-		virtual ~Pointer(){
-			PointerLog(ame_Log_StartMethod, "Destructor", "println","const Pointer &a_pointer");
-			this->removePointer();
-			PointerLog(ame_Log_EndMethod, "Destructor", "println","");
-		}
-
-		virtual T* operator ->(){
-			return m_pointer;
-		}
-
-		virtual T* get()const{
-			return m_pointer;
-		}
-
-		virtual bool isNull(){
-			return m_pointer == nullptr;
-		}
-		
-		virtual T cast(){
-			if(this->isNull()){
-				return T();
-			}
-			return *m_pointer;
-		}
-		
-		virtual T& getReference(){
-			return *m_pointer;
-		}
-
-		virtual void operator=(const Pointer& a_pointer){
-			PointerLog(ame_Log_StartMethod, "operator=", "println","");
-			this->removePointer();
-			this->addPointer(a_pointer.m_pointer, a_pointer.m_manager);
-			PointerLog(ame_Log_EndMethod, "operator=", "println","");
-		}
-
-		virtual bool operator==(const Pointer& a_pointer){
-			PointerLog(ame_Log_StartMethod, "operator==", "println","");
-			//m_pointer == a_pointer.m_pointer && m_manager == a_pointer.m_manager
-			PointerLog(ame_Log_EndMethod, "operator==", "println", m_pointer == a_pointer.m_pointer);
-			return m_pointer == a_pointer.m_pointer;
-		}
-
-		virtual bool operator!=(const Pointer& a_pointer){
-			PointerLog(ame_Log_StartMethod, "operator!=", "println","");
-			//m_pointer == a_pointer.m_pointer && m_manager == a_pointer.m_manager
-			PointerLog(ame_Log_EndMethod, "operator!=", "println", m_pointer == a_pointer.m_pointer);
-			return m_pointer != a_pointer.m_pointer;
-		}
-
-	protected:
-		virtual void addPointer(T* a_pointer, MemoryStorageManager<T>* a_manager){
-			PointerLog(ame_Log_StartMethod, "addPointer", "println","T* a_pointer, MemoryStorageManager<T>* a_manager");
-			if(a_pointer == nullptr && a_manager == nullptr){
-				PointerLog(ame_Log_EndMethod, "addPointer", "println","a_pointer == nullptr && a_manager == nullptr");
-				return;
-			}
-			if(a_pointer == nullptr && a_manager != nullptr){
-				m_manager = a_manager;
-				m_manager->addingManager();
-				PointerLog(ame_Log_EndMethod, "addPointer", "println","a_pointer == nullptr && a_manager != nullptr");
-				return;
-			}
-			m_manager = a_manager;
-			m_manager->addingManager();
-
-			m_pointer = a_pointer;
-			m_manager->addingPointer(m_pointer);
-			PointerLog(ame_Log_EndMethod, "addPointer", "println","");
-		}
-		
-		virtual void removePointer(){
-			PointerLog(ame_Log_StartMethod, "removePointer", "println","");
-			if(m_manager != nullptr){
-				if(m_pointer != nullptr){
-					m_manager->removingPointer(m_pointer);
+		template<class P, class H, class M>
+		class Pointer : public Member<H,M>{
+			public:
+				using INSTANCE_TYPE = P*;
+                using MANAGER_TYPE = typename Member<H,M>::MANAGER_TYPE;
+                using VOID_TYPE = typename Member<H,M>::VOID_TYPE;
+                using HOLDER_TYPE = typename Member<H,M>::HOLDER_TYPE;
+				
+				Pointer(){
+					PointerLog(higgs_Log_StartMethod, "Contructor", "println","");
+					PointerLog(higgs_Log_EndMethod, "Contructor", "println","");
 				}
-				m_manager->removingManager();
-			}
-			PointerLog(ame_Log_EndMethod, "removePointer", "println","");
-		}
 
-	protected:
-		T* m_pointer;
-		MemoryStorageManager<T>* m_manager = nullptr;
-};
+				Pointer(const MemoryHolder<H>& a_pointer){
+					PointerLog(higgs_Log_StartMethod, "Contructor", "println","const Pointer &a_pointer");
+                    if(!this->isMember(a_pointer)){
+                        PointerLog(higgs_Log_EndMethod, "Constructor", "println","");
+                        return;
+                    }
+                    this->setHolder(a_pointer.getHolder());
+					PointerLog(higgs_Log_EndMethod, "Contructor", "println","");
+				}
 
-}
+				Pointer(const Member<H,M>& a_pointer){
+					PointerLog(higgs_Log_StartMethod, "Contructor", "println","const Pointer &a_pointer");
+                    if(!this->sameType(a_pointer.getType())){
+                        PointerLog(higgs_Log_EndMethod, "Constructor", "println","");
+                        return;
+                    }
+                    this->setHolder(a_pointer.getHolder());
+					PointerLog(higgs_Log_EndMethod, "Contructor", "println","");
+				}
+
+				Pointer(const Pointer<P,H,M>& a_pointer){
+					PointerLog(higgs_Log_StartMethod, "Contructor", "println","const Pointer &a_pointer");
+                    this->setHolder(a_pointer.getHolder());
+					PointerLog(higgs_Log_EndMethod, "Contructor", "println","");
+				}
+
+				virtual ~Pointer(){
+					PointerLog(higgs_Log_StartMethod, "Destructor", "println","");
+					PointerLog(higgs_Log_EndMethod, "Destructor", "println","");
+				}
+
+				virtual void create(){
+					PointerLog(higgs_Log_StartMethod, "create", "println","");
+					VOID_TYPE i_pointer = this->getRawPointer();
+					if(i_pointer != nullptr){
+						return;
+					}
+					HOLDER_TYPE i_holder = MemoryHolderManager<H>::newInstance(this->getManager(), ClassCount<P>::get(), sizeOfPointer<P>(), StaticAllocatorInstance<P>::getAllocator());
+					this->setHolder(i_holder);
+					PointerLog(higgs_Log_EndMethod, "create", "println","");
+				}
+
+				//unsafe method
+				virtual INSTANCE_TYPE operator ->(){
+					PointerLog(higgs_Log_StartMethod, "operator ->", "println","");
+					PointerLog(higgs_Log_EndMethod, "operator ->", "println","");
+					return (INSTANCE_TYPE)MemoryHolderManager<H>::get(StaticManagerInstance<H,M>::getManager(), this->getHolder());
+				}
+
+				//unsafe method
+				virtual INSTANCE_TYPE get()const{
+					return (INSTANCE_TYPE)MemoryHolderManager<H>::get(StaticManagerInstance<H,M>::getManager(), this->getHolder());
+				}
+		};
+
+	}
 
 #endif

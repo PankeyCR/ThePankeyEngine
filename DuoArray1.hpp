@@ -6,7 +6,7 @@
 
 #include "DataSet.hpp"
 
-namespace ame{
+namespace higgs{
 
 template<class T, int xS1 = 3, int xS2 = 3>
 class DuoArray1 : public DataSet<T>{

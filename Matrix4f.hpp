@@ -1,25 +1,6 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Matrix4f)
-	#define Matrix4f_hpp
-#endif
-
 #ifndef Matrix4f_hpp
 #define Matrix4f_hpp
-#define Matrix4f_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 // #include "FastMonkeyMath.hpp"
 #include "Vector3f.hpp"
@@ -30,7 +11,7 @@
 #include "Class.hpp"
 
 
-namespace ame{
+namespace higgs{
 
 class Matrix4f : public cppObject , public Printable{
     private:

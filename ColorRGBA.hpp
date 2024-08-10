@@ -1,23 +1,12 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_ColorRGBA)
-	#define ColorRGBA_hpp
-#endif
-
 #ifndef ColorRGBA_hpp
 #define ColorRGBA_hpp
-#define ColorRGBA_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
+#include "higgs_Enviroment.hpp"
+#ifdef higgs_Windows
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 	#include "SD.h"
@@ -26,7 +15,7 @@
 #include "Note.hpp"
 #include "LinkedList.hpp"
 
-namespace ame{
+namespace higgs{
 
 class ColorRGBA : public Printable{
     public:

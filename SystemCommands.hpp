@@ -10,22 +10,22 @@
 #include "MemoryRam.hpp"
 
 #ifdef SystemCommands_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "higgs_Logger_config.hpp"
+	#include "higgs_Logger.hpp"
 	
-	#define SystemCommandsLog(location,method,type,mns) ame_Log(nullptr,location,"SystemCommands",method,type,mns)
+	#define SystemCommandsLog(location,method,type,mns) higgs_Log(nullptr,location,"SystemCommands",method,type,mns)
 #else
 	#ifdef SystemCommands_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+		#include "higgs_Logger_config.hpp"
+		#include "higgs_Logger.hpp"
 		
-		#define SystemCommandsLog(location,method,type,mns) ame_LogDebug(nullptr,location,"SystemCommands",method,type)
+		#define SystemCommandsLog(location,method,type,mns) higgs_LogDebug(nullptr,location,"SystemCommands",method,type)
 	#else
 		#define SystemCommandsLog(location,method,type,mns) 
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
 void SystemCommands(const PrimitiveList<Note>& a_commands){
 	if(a_commands.getPosition() == 1){

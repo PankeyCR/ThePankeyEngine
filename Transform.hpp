@@ -1,25 +1,6 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Transform)
-	#define Transform_hpp
-#endif
-
 #ifndef Transform_hpp
 #define Transform_hpp
-#define Transform_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Quaternion.hpp"
 #include "Vector3f.hpp"
@@ -27,7 +8,7 @@
 #include "cppObject.hpp"
 #include "cppObjectClass.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Transform : public cppObject{
     public:

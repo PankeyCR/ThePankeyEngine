@@ -1,40 +1,22 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_ByteArrayForm)
-	#define ByteArrayForm_hpp
-#endif
-
 #ifndef ByteArrayForm_hpp
-#define ByteArrayForm_hpp
-#define ByteArrayForm_AVAILABLE
+	#define ByteArrayForm_hpp
 
-#ifndef ame_Enviroment_Defined
+	#include "higgs_Enviroment.hpp"
+	#include "ByteArray.hpp"
 
-#endif
+	namespace ame{
+		
+		class ByteArrayForm{
+			public:
+			ByteArrayForm(){}
+			virtual ~ByteArrayForm(){}
 
-#ifdef ame_Windows
+			virtual void setByteArray(const ByteArray& array){}
 
-#endif
+			virtual ByteArray getByteArray(){return 0;}
+		};
 
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-#include "ByteArray.hpp"
-
-namespace ame{
-	
-class ByteArrayForm{
-public:
-ByteArrayForm(){}
-virtual ~ByteArrayForm(){}
-
-virtual void setByteArray(const ByteArray& array){}
-
-virtual ByteArray getByteArray(){return 0;}
-};
-
-}
+	}
 
 #endif

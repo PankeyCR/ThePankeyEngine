@@ -1,25 +1,6 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Spatial)
-	#define Spatial_hpp
-#endif
-
 #ifndef Spatial_hpp
 #define Spatial_hpp
-#define Spatial_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "cppObject.hpp"
 #include "Transform.hpp"
@@ -29,7 +10,7 @@
 
 // class RenderManager;
 
-namespace ame{
+namespace higgs{
 
 class Node;
 

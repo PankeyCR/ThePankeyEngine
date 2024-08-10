@@ -1,344 +1,208 @@
 
 #ifndef TR_Note_Testing_hpp
-#define TR_Note_Testing_hpp
-
-#include "TestResult.hpp"
-
-#include "Note.hpp"
-#include "MemoryRam.hpp"
-
-namespace ame{
+	#define TR_Note_Testing_hpp
 	
-	TestResult TR_Note_Testing(){
-		TestResult result;
-		
-		#if defined(Note_AVAILABLE)
+	#include "higgs_Enviroment.hpp"
+	#include "higgs_Enviroment_config.hpp"
 
-		{
+	#include "TestResult.hpp"
+	#include "TestRunner.hpp"
 
-		Note i_note = "note test";
+	#include "Note.hpp"
+	#include "MemoryRam.hpp"
 
-		if(i_note != "note test"){
-			result.catchError(0, "Contructor char* or operator!= has an error");
+	namespace higgs{
+			
+		TestResult TR_Note_Testing_1(){
+			TestResult result;
+
+			Note note = true;
+			
+			result.assertEqual(0, "Note Constructor Bool", note.get(0), '1');
+			result.assertEqual(1, "Note getPosition", note.getPosition(), 1);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_2(){
+			TestResult result;
 
+			Note note = "note test";
+			
+			result.assertEqual(0, "Note getPosition", note.getPosition(), 9);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_3(){
+			TestResult result;
 
-		{
-
-		Note i_note = "note";
-		i_note.addLocalArrayPointer(" ");
-		i_note.addLocalArrayPointer("test");
-		i_note.addLocalArrayPointer(" ");
-		i_note.addLocalArrayPointer("example");
-
-		if(i_note != "note test example"){
-			result.catchError(1, "Contructor char* or operator!= has an error");
+			Note note = 123.4567f;
+			
+			result.assertEqual(0, "Note getPosition", note.getPosition(), 8);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_4(){
+			TestResult result;
 
+			Note note = 150;
+			
+			result.assertEqual(0, "Note getPosition", note.getPosition(), 3);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_5(){
+			TestResult result;
 
-		{
-
-		Note i_note = "note";
-  		Note n_note = i_note.addArrayPointer(" test example");
-
-		if(n_note != "note test example"){
-			result.catchError(2, "Contructor char* or operator!= has an error");
+			Note note = 1234567l;
+			
+			result.assertEqual(0, "Note getPosition", note.getPosition(), 7);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_6(){
+			TestResult result;
 
+			Note note = -150;
+			
+			result.assertEqual(0, "Note getPosition", note.getPosition(), 4);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_7(){
+			TestResult result;
 
-		#if defined(ame_ArduinoIDE)
-		{
-
-		Note i_note = String("note test example");
-
-		if(i_note != "note test example"){
-			result.catchError(3, "Contructor char* or operator!= has an error");
+			Note note;
+			
+			result.assertEqual(0, "Note getPosition", note.getPosition(), 0);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_8(){
+			TestResult result;
 
+			// Note note = String("note test example");
+			
+			// result.assertEqual(0, "Note getPosition", note.getPosition(), 17);
+			
+			return result;
 		}
-		#endif
+			
+		TestResult TR_Note_Testing_9(){
+			TestResult result;
 
-		{
-		
-		Note i_note = "note";
-		i_note += " test example";
-
-		if(i_note != "note test example"){
-			result.catchError(4, "Contructor char* or operator!= has an error");
+			Note note = "note";
+  			Note n_note = note.addArrayPointer(" test example");
+			
+			result.assertEqual(0, "Note getPosition", n_note.getPosition(), 17);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_10(){
+			TestResult result;
 
+			Note note = "hola ";
+  			note.addLocalBool(true);
+			
+			result.assertEqual(0, "Note getPosition", note.getPosition(), 6);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_11(){
+			TestResult result;
 
-		{
-		
-		Note i_note = 150;
-
-		if(i_note != "150"){
-			result.catchError(5, "Contructor int error");
+			Note note = "note";
+			note.addLocalArrayPointer(" ");
+			note.addLocalArrayPointer("test");
+			note.addLocalArrayPointer(" ");
+			note.addLocalArrayPointer("example");
+			
+			result.assertEqual(0, "Note getPosition", note.getPosition(), 17);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_12(){
+			TestResult result;
 
+			Note note = "hola ";
+  			note.addLocalFloat(123.4567f);
+			
+			result.assertNoteEqual(0, "Note getPosition", note.getPosition(), 13);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_13(){
+			TestResult result;
 
-		{
-		
-		Note i_note = -150;
-
-		if(i_note != "-150"){
-			result.catchError(6, "Contructor int error with negative value");
+			Note note = "hola ";
+  			note.addLocalInt(150);
+			
+			result.assertEqual(0, "Note getPosition", note.getPosition(), 8);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_14(){
+			TestResult result;
 
+			// Note note = "hola ";
+  			// note.addLocalNote(String("user"));
+			
+			// result.assertEqual(0, "Note getPosition", note.getPosition(), 9);
+			
+			return result;
 		}
+			
+		TestResult TR_Note_Testing_15(){
+			TestResult result;
 
-		{
-		
-		Note i_note = "hi user";
-  		Note subNote = i_note.getArrayPart(3);
-
-		if(subNote != "user"){
-			result.catchError(7, "Contructor int error with negative value");
+			Note note = "hellow";
+  			note.addLocalValue(' ');
+  			note.addLocalArrayPointer("world");
+			
+			result.assertEqual(0, "Note getPosition", note.getPosition(), 12);
+			
+			return result;
 		}
-
-		}
-
-		{
-		
-  		Note i_note = Note("note") + Note(" ") + Note("test example");
-
-		if(i_note != "note test example"){
-			result.catchError(8, "Contructor int error with negative value");
-		}
-
-		}
-
-		{
-		
-  		Note i_note = "note test";
-
-		if(i_note.get(0) != 'n' && i_note.get(1) != 'o'){
-			result.catchError(9, "get error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = "hi username";
-  		Note subNote = i_note.getArrayPart(3, 7);
-
-		if(subNote != "user"){
-			result.catchError(10, "subNote error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = 1234567l;
-
-		if(i_note != "1234567"){
-			result.catchError(11, "Contructor long error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = 'h';
-
-		if(i_note != "h"){
-			result.catchError(12, "Contructor char error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = "hol";
-		char c = 'a';
-		i_note.addLocalValue(c);
-
-		if(i_note != "hola"){
-			result.catchError(13, "addLocalValue error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = "hola ";
-  		i_note.addLocalBool(true);
-
-		if(i_note != "hola 1"){
-			result.catchError(14, "addLocalBool error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = "user:  hola";
-  		i_note.insertLocalBool(6, true);
-
-		if(i_note != "user: 1 hola"){
-			result.catchError(15, "insertLocalBool error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = "hola ";
-  		i_note.addLocalInt(150);
-
-		if(i_note != "hola 150"){
-			result.catchError(16, "addLocalInt error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = "user:  hola";
-  		i_note.insertLocalInt(6, 150);
-
-		if(i_note != "user: 150 hola"){
-			result.catchError(17, "insertLocalInt error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = "hola ";
-  		i_note.addLocalLong(1234567l);
-
-		if(i_note != "hola 1234567"){
-			result.catchError(18, "addLocalLong error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = "user:  hola";
-  		i_note.insertLocalLong(6, 1234567l);
-
-		if(i_note != "user: 1234567 hola"){
-			result.catchError(19, "insertLocalLong error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = "hola ";
-  		i_note.addLocalFloat(123.456f);
-
-		if(i_note != "hola 123.4560"){
-			result.catchError(20, "addLocalFloat error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = "user:  hola";
-  		i_note.insertLocalFloat(6, 123.456f);
-
-		if(i_note != "user: 123.4560 hola"){
-			result.catchError(21, Note("insertLocalFloat error: ") + i_note);
-		}
-
-		}
-
-		{
-		
-		Note i_note = true;
-
-		if(i_note.toBool() != true){
-			result.catchError(22, "toInt error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = false;
-
-		if(i_note.toBool() != false){
-			result.catchError(23, "toInt error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = 123;
-
-		if(i_note.toInt() != 123){
-			result.catchError(24, "toInt error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = -123;
-
-		if(i_note.toInt() != -123){
-			result.catchError(25, "toInt error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = 1234567l;
-
-		if(i_note.toLong() != 1234567l){
-			result.catchError(26, "toLong error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = -1234567l;
-
-		if(i_note.toLong() != -1234567l){
-			result.catchError(27, "toLong error");
-		}
-
-		}
-
-		{
-		
-		Note i_note = 123.456f;
-
-		if(i_note.toFloat() != 123.4560f){
-			result.catchError(28, Note("toFloat error: ") + Note(i_note.toFloat()));
-		}
-
-		}
-
-		{
-		
-		Note i_note = -123.456f;
-
-		if(i_note.toFloat() != -123.4560f){
-			result.catchError(29, Note("toFloat error: ") + Note(i_note.toFloat()));
-		}
-
+			
+		TestResult TR_Note_Testing_16(){
+			TestResult result;
+
+			Note note = "hellow world";
+			
+			result.assertEqual(0, "Note getPosition", note.get(0), 'h');
+			
+			return result;
 		}
 		
-		
-		#endif
-		
-		return result;
+		void TR_Note_Testing(TestRunner& a_test_runner){
+			a_test_runner.map.add("Note Constructor Bool", TR_Note_Testing_1);
+			a_test_runner.map.add("Note Constructor chararray", TR_Note_Testing_2);
+			a_test_runner.map.add("Note Constructor float", TR_Note_Testing_3);
+			a_test_runner.map.add("Note Constructor int", TR_Note_Testing_4);
+			a_test_runner.map.add("Note Constructor long", TR_Note_Testing_5);
+			a_test_runner.map.add("Note Constructor negative int", TR_Note_Testing_6);
+			a_test_runner.map.add("Note Constructor", TR_Note_Testing_7);
+			a_test_runner.map.add("Note Arduino String", TR_Note_Testing_8);
+			a_test_runner.map.add("Note addArrayPointer", TR_Note_Testing_9);
+			a_test_runner.map.add("Note addLocalBool", TR_Note_Testing_10);
+			a_test_runner.map.add("Note addLocalArrayPointer", TR_Note_Testing_11);
+			a_test_runner.map.add("Note addLocalFloat", TR_Note_Testing_12);
+			a_test_runner.map.add("Note addLocalInt", TR_Note_Testing_13);
+			a_test_runner.map.add("Note addLocalNote", TR_Note_Testing_14);
+			a_test_runner.map.add("Note addLocalValue", TR_Note_Testing_15);
+			a_test_runner.map.add("Note ", TR_Note_Testing_16);
+		}
 	}
-}
 
 #endif

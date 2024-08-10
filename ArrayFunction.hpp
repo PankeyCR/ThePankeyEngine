@@ -1,5 +1,5 @@
 
-#include "ame_Enviroment.hpp"
+#include "higgs_Enviroment.hpp"
 
 #if defined(DISABLE_ArrayFunction)
 	#define ArrayFunction_hpp
@@ -9,15 +9,15 @@
 #define ArrayFunction_hpp
 #define ArrayFunction_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#ifndef higgs_Enviroment_Defined
 
 #endif
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif
@@ -25,7 +25,7 @@
 #include "ArrayList.hpp"
 #include "ModifiableFunction.hpp"
 
-namespace ame{
+namespace higgs{
 
 template<int C, int V, int S1, int S2, int S3, class T, class... args>
 class ArrayFunction : public ModifiableFunction<T,args...>{

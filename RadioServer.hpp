@@ -1,32 +1,13 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_RadioServer)
-	#define RadioServer_hpp
-#endif
-
 #ifndef RadioServer_hpp
 #define RadioServer_hpp
-#define RadioServer_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "SerialServer.hpp"
 #include "SerialPort.hpp"
 #include "RadioType.hpp"
 #include "RadioReliability.hpp"
 
-namespace ame{
+namespace higgs{
 
 class RadioServer : public SerialServer{	
     public:

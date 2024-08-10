@@ -10,7 +10,7 @@
 #include "TemplateClass.hpp"
 #include "Set.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Number : public Set{
     public:

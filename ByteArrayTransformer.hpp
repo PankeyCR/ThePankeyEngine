@@ -1,23 +1,17 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_ByteArrayTransformer)
-	#define ByteArrayTransformer_hpp
-#endif
-
 #ifndef ByteArrayTransformer_hpp
 #define ByteArrayTransformer_hpp
 #define ByteArrayTransformer_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#ifndef higgs_Enviroment_Defined
 
 #endif
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 #endif
 
@@ -26,7 +20,7 @@
 #include "Iterator.hpp"
 #include "ByteArrayForm.hpp"
 
-namespace ame{
+namespace higgs{
 
 template<class T>
 class ByteTransformer{

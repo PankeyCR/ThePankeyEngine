@@ -1,25 +1,6 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_RadioProtocol)
-	#define RadioProtocol_hpp
-#endif
-
 #ifndef RadioProtocol_hpp
 #define RadioProtocol_hpp
-#define RadioProtocol_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "PortProtocol.hpp"
 #include "SerialPort.hpp"
@@ -31,7 +12,7 @@
 	#define RadioProtocolLog(name,method,type,mns) 
 #endif
 
-namespace ame{
+namespace higgs{
 
 class RadioProtocol : public BufferProtocol{	
     public:

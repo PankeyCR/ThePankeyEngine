@@ -1,25 +1,6 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Vector2f)
-	#define Vector2f_hpp
-#endif
-
 #ifndef Vector2f_hpp
 #define Vector2f_hpp
-#define Vector2f_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-    #define _USE_MATH_DEFINES
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Vector3f.hpp"
 #include "List.hpp"
@@ -27,7 +8,7 @@
 #include "cppObject.hpp"
 #include "Class.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Vector2f : public cppObject{
     private:

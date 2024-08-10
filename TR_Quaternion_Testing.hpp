@@ -6,7 +6,7 @@
 
 #include "Quaternion.hpp"
 
-namespace ame{
+namespace higgs{
 	
 	TestResult TR_Quaternion_Testing(){
 		TestResult result;

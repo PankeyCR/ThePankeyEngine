@@ -1,23 +1,23 @@
 
-#include "ame_Enviroment.hpp"
+#include "higgs_Enviroment.hpp"
 
 #ifndef Array2DIterator_hpp
 #define Array2DIterator_hpp
 #define Array2DIterator_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#ifndef higgs_Enviroment_Defined
 
 #endif
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 #endif
 
-namespace ame{
+namespace higgs{
 
 template<class T>
 class Array2DIterator{

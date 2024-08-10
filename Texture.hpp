@@ -1,16 +1,15 @@
 
 #ifndef Texture_hpp
 #define Texture_hpp
-#define Texture_AVAILABLE
 
-#include "ame_Enviroment.hpp"
+#include "higgs_Enviroment.hpp"
 
-#ifdef ame_Windows
-	#include "ame_Printable.hpp"
-	#include "ame_Print.hpp"
+#ifdef higgs_Windows
+	#include "higgs_Printable.hpp"
+	#include "higgs_Print.hpp"
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif
@@ -19,7 +18,7 @@
 #include "Array2D.hpp"
 #include "Font.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Texture{
 

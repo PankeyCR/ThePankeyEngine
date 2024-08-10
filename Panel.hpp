@@ -1,5 +1,5 @@
 
-#include "ame_Enviroment.hpp"
+#include "higgs_Enviroment.hpp"
 
 #if defined(DISABLE_Panel)
 	#define Panel_hpp
@@ -9,22 +9,22 @@
 #define Panel_hpp
 #define Panel_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
+#ifndef higgs_Enviroment_Defined
 
 #endif
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "Arduino.h"
 #endif
 
 #include "cppObject.hpp"
 #include "Node.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Panel : public Node{	
     public:

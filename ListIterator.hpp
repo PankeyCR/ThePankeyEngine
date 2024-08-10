@@ -1,29 +1,10 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_ListIterator) || defined(ame_upToLevel_1)
-	#define ListIterator_hpp
-#endif
-
 #ifndef ListIterator_hpp
 #define ListIterator_hpp
-#define ListIterator_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "RawList.hpp"
 
-namespace ame{
+namespace higgs{
 
 template<class T>
 class ListIterator{

@@ -7,15 +7,15 @@
 #include "Note.hpp"
 #include "PrimitiveList.hpp"
 
-#ifdef ame_Windows
+#ifdef higgs_Windows
 
 #endif
 
-#ifdef ame_ArduinoIDE
+#ifdef higgs_ArduinoIDE
 	#include "IPAddress.h"
 #endif
 
-namespace ame{
+namespace higgs{
 	#if defined(ByteArray_AVAILABLE)
 	
 	#if defined(Note_AVAILABLE)

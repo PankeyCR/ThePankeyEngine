@@ -1,25 +1,6 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_WebSerialServer)
-	#define WebSerialServer_hpp
-#endif
-
 #ifndef WebSerialServer_hpp
 #define WebSerialServer_hpp
-#define WebSerialServer_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "SerialPort.h"
 #include "SerialServer.h"
@@ -40,7 +21,7 @@
 	#define WebSerialServerLog(name,method,type,mns)
 #endif
 
- namespace ame{
+ namespace higgs{
 
 class WebSerialServer : public SerialServer{	
     public:

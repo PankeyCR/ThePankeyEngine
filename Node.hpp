@@ -1,31 +1,11 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Node)
-	#define Node_hpp
-#endif
-
 #ifndef Node_hpp
 #define Node_hpp
-#define Node_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-	#include "Printable.h"
-#endif
 
 #include "cppObject.hpp"
 #include "Spatial.hpp"
 
-namespace ame{
+namespace higgs{
 
 class Node : public Spatial{
     public:

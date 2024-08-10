@@ -1,31 +1,12 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_X9C10x)
-	#define X9C10x_hpp
-#endif
-
 #ifndef X9C10x_hpp
 #define X9C10x_hpp
-#define X9C10x_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "AbstractRead.hpp"
 #include "TimeControl.hpp"
 #include "TimeElapsed.hpp"
 
-namespace ame{
+namespace higgs{
 
 class X9C10x : public AbstractRead , public TimeElapsed{
     public:

@@ -23,7 +23,7 @@
 	#define WIFIStateLog(name,method,type,mns)
 #endif
 
-namespace ame{
+namespace higgs{
 
 class WIFIState IMPLEMENTATION_BaseAppState {
     public:

@@ -10,22 +10,22 @@
 #include <EthernetUdp.h>
 
 #ifdef UDPNetwork_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "higgs_Logger_config.hpp"
+	#include "higgs_Logger.hpp"
 	
-	#define UDPNetworkLog(location,method,type,mns) ame_Log(this,location,"UDPNetwork",method,type,mns)
+	#define UDPNetworkLog(location,method,type,mns) higgs_Log(this,location,"UDPNetwork",method,type,mns)
 #else
 	#ifdef UDPNetwork_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+		#include "higgs_Logger_config.hpp"
+		#include "higgs_Logger.hpp"
 		
-		#define UDPNetworkLog(location,method,type,mns) ame_LogDebug(this,location,"UDPNetwork",method,type)
+		#define UDPNetworkLog(location,method,type,mns) higgs_LogDebug(this,location,"UDPNetwork",method,type)
 	#else
 		#define UDPNetworkLog(location,method,type,mns) 
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
 /*
 *	Class Configuration:
@@ -128,25 +128,25 @@ class UDPNetwork : public SerialNetwork{
 		}
 		
 		virtual void initializeState(){
-			UDPNetworkLog(ame_Log_StartMethod, "initializeState", "println", "");
-			UDPNetworkLog(ame_Log_Statement, "initializeState", "println", "Port:");
-			UDPNetworkLog(ame_Log_Statement, "initializeState", "println", m_port);
+			UDPNetworkLog(higgs_Log_StartMethod, "initializeState", "println", "");
+			UDPNetworkLog(higgs_Log_Statement, "initializeState", "println", "Port:");
+			UDPNetworkLog(higgs_Log_Statement, "initializeState", "println", m_port);
 			SerialNetwork::initializeState();
 			Udp.begin(m_port);
-			UDPNetworkLog(ame_Log_EndMethod, "initializeState", "println", "");
+			UDPNetworkLog(higgs_Log_EndMethod, "initializeState", "println", "");
 		}
 		
 		virtual void updateState(float tpc){
-			//UDPNetworkLog(ame_Log_StartMethod, "updateState", "println", "");
+			//UDPNetworkLog(higgs_Log_StartMethod, "updateState", "println", "");
 			int packetSize = Udp.parsePacket();
 			if (packetSize) {
-				UDPNetworkLog(ame_Log_Statement, "updateState", "println", "packetSize");
-				UDPNetworkLog(ame_Log_Statement, "updateState", "println", packetSize);
+				UDPNetworkLog(higgs_Log_Statement, "updateState", "println", "packetSize");
+				UDPNetworkLog(higgs_Log_Statement, "updateState", "println", packetSize);
 				IPAddress i_remote = Udp.remoteIP();
 				int i_port = Udp.remotePort();
 				int i_id = this->getPortId(i_remote);
 				if(i_id == -1){
-					UDPNetworkLog(ame_Log_EndMethod, "updateState", "println", "i_id == -1");
+					UDPNetworkLog(higgs_Log_EndMethod, "updateState", "println", "i_id == -1");
 					return;
 				}
 				// Udp.read(m_read, UDP_TX_PACKET_MAX_SIZE);
@@ -162,9 +162,9 @@ class UDPNetwork : public SerialNetwork{
 				i_message.name(*m_ports.getKeyByPosition(i_id));
 				i_message.text(i_text);
 				this->DeliverMessage(i_message);
-				UDPNetworkLog(ame_Log_EndMethod, "updateState", "println", "packetSize");
+				UDPNetworkLog(higgs_Log_EndMethod, "updateState", "println", "packetSize");
 			}
-			//UDPNetworkLog(ame_Log_EndMethod, "updateState", "println", "");
+			//UDPNetworkLog(higgs_Log_EndMethod, "updateState", "println", "");
 		}
 
 		virtual void addPort(const Note& a_name, IPAddress a_ip, int a_port){

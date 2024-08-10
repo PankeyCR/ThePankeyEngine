@@ -6,34 +6,34 @@
 #include "Function.hpp"
 
 #ifdef RealRandom_LogApp
-	#include "ame_Logger_config.hpp"
-	#include "ame_Logger.hpp"
+	#include "higgs_Logger_config.hpp"
+	#include "higgs_Logger.hpp"
 
-	#define RealRandomLog(location,method,type,mns) ame_Log(this,location,"RealRandom",method,type,mns)
+	#define RealRandomLog(location,method,type,mns) higgs_Log(this,location,"RealRandom",method,type,mns)
 #else
 	#ifdef RealRandom_LogDebugApp
-		#include "ame_Logger_config.hpp"
-		#include "ame_Logger.hpp"
+		#include "higgs_Logger_config.hpp"
+		#include "higgs_Logger.hpp"
 
-		#define RealRandomLog(location,method,type,mns) ame_LogDebug(this,location,"RealRandom",method,type)
+		#define RealRandomLog(location,method,type,mns) higgs_LogDebug(this,location,"RealRandom",method,type)
 	#else
 		#define RealRandomLog(location,method,type,mns)
 	#endif
 #endif
 
-namespace ame{
+namespace higgs{
 
 class RealRandom : public Function<float>{
     public:
 		RealRandom(){
 			float limitMax = ((float)2147483646/1000000.0f);
 			this->initializeConstantes(1,limitMax);
-			RealRandomLog(ame_Log_StartMethod, "Contructor", "println",limitMax);
+			RealRandomLog(higgs_Log_StartMethod, "Contructor", "println",limitMax);
 		}
 		RealRandom(const RealRandom& a_random){
 			float limitMax = ((float)2147483646/1000000.0f);
 			this->initializeConstantes(1,limitMax);
-			RealRandomLog(ame_Log_StartMethod, "Contructor", "println",limitMax);
+			RealRandomLog(higgs_Log_StartMethod, "Contructor", "println",limitMax);
 		}
 		
 		virtual ~RealRandom(){}
@@ -51,15 +51,15 @@ class RealRandom : public Function<float>{
 			float tdx = ((float)(time / dx));
 			float tx = (((float)(tdx))-((long)(tdx)));
 			float x = d*tx;
-			RealRandomLog(ame_Log_StartMethod, "getRandom", "println","");
-			RealRandomLog(ame_Log_StartMethod, "getRandom", "println","RealRandom");
-			RealRandomLog(ame_Log_StartMethod, "getRandom", "print","time ");RealRandomLog(ame_Log_StartMethod, "getRandom", "println",Note(time));
-			RealRandomLog(ame_Log_StartMethod, "getRandom", "print","d ");RealRandomLog(ame_Log_StartMethod, "getRandom", "println",Note(d));
-			RealRandomLog(ame_Log_StartMethod, "getRandom", "print","dx ");RealRandomLog(ame_Log_StartMethod, "getRandom", "println",Note(dx));
-			RealRandomLog(ame_Log_StartMethod, "getRandom", "print","tdx ");RealRandomLog(ame_Log_StartMethod, "getRandom", "println",Note(tdx));
-			RealRandomLog(ame_Log_StartMethod, "getRandom", "print","tx ");RealRandomLog(ame_Log_StartMethod, "getRandom", "println",Note(tx));
-			RealRandomLog(ame_Log_StartMethod, "getRandom", "print","x ");RealRandomLog(ame_Log_StartMethod, "getRandom", "println",Note(x));
-			RealRandomLog(ame_Log_StartMethod, "getRandom", "println","");
+			RealRandomLog(higgs_Log_StartMethod, "getRandom", "println","");
+			RealRandomLog(higgs_Log_StartMethod, "getRandom", "println","RealRandom");
+			RealRandomLog(higgs_Log_StartMethod, "getRandom", "print","time ");RealRandomLog(higgs_Log_StartMethod, "getRandom", "println",Note(time));
+			RealRandomLog(higgs_Log_StartMethod, "getRandom", "print","d ");RealRandomLog(higgs_Log_StartMethod, "getRandom", "println",Note(d));
+			RealRandomLog(higgs_Log_StartMethod, "getRandom", "print","dx ");RealRandomLog(higgs_Log_StartMethod, "getRandom", "println",Note(dx));
+			RealRandomLog(higgs_Log_StartMethod, "getRandom", "print","tdx ");RealRandomLog(higgs_Log_StartMethod, "getRandom", "println",Note(tdx));
+			RealRandomLog(higgs_Log_StartMethod, "getRandom", "print","tx ");RealRandomLog(higgs_Log_StartMethod, "getRandom", "println",Note(tx));
+			RealRandomLog(higgs_Log_StartMethod, "getRandom", "print","x ");RealRandomLog(higgs_Log_StartMethod, "getRandom", "println",Note(x));
+			RealRandomLog(higgs_Log_StartMethod, "getRandom", "println","");
 			return x + i_min;
 		}
 

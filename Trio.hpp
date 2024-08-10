@@ -1,27 +1,8 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_Trio)
-	#define Trio_hpp
-#endif
-
 #ifndef Trio_hpp
 #define Trio_hpp
-#define Trio_AVAILABLE
 
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-namespace ame{
+namespace higgs{
 
 template<class T,class M,class B>
 class Trio{

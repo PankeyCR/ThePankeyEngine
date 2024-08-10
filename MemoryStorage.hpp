@@ -1,100 +1,120 @@
 
 #ifndef MemoryStorage_hpp
-#define MemoryStorage_hpp
-#define MemoryStorage_AVAILABLE
+	#define MemoryStorage_hpp
 
-#include "MemoryStorageManager.hpp"
-#include "ManegedMemory.hpp"
-#include "Pointer.hpp"
+	#include "MemoryHolder.hpp"
 
-namespace ame{
+	#ifdef MemoryStorage_LogApp
+		#include "higgs_Logger.hpp"
+		#define MemoryStorageLog(location,method,type,mns) higgs_Log((void*)this,location,"MemoryStorage",method,type,mns)
+	#else
+		#define MemoryStorageLog(location,method,type,mns)
+	#endif
 
-template<class T>
-class MemoryStorage : public ManegedMemory{
-	public:
-		MemoryStorage(){}
-		virtual ~MemoryStorage(){
-			if(m_manager != nullptr){
-				delete m_manager;
-			}
-		}
-		
-		virtual bool isNull()const=0;
-		virtual bool isEmpty()const=0;
-		
-		virtual void setSize(int a_size){this->m_size = a_size;}
-		virtual int getSize() const {return this->m_size;}
-		
-		virtual void replace(int a_index_1, int a_index_2)=0;
-		
-		virtual void set(int a_position, T* a_value)=0;
-		virtual void set(int a_position, const Pointer<T>& a_value)=0;
-		
-		virtual Pointer<T> get(int a_position)const=0;
+	namespace higgs{
 
-		virtual bool contain(T* a_value)=0;
-		virtual bool contain(const Pointer<T>& a_value)=0;
-		
-		virtual int getIndex(T* a_value)=0;
-		virtual int getIndex(const Pointer<T>& a_value)=0;
+		template<class H>
+		class MemoryStorage{
+			public:
 
-		virtual void clear()=0;
+                using MANAGER_TYPE = typename MemoryHolder<H>::MANAGER_TYPE;
+                using VOID_TYPE = typename MemoryHolder<H>::VOID_TYPE;
+                using HOLDER_TYPE = typename MemoryHolder<H>::HOLDER_TYPE;
+                using HOLDER_ARRAY_TYPE = H**;
 
-		virtual bool removeByPointer(T* a_value)=0;
-		virtual bool removeByPointer(const Pointer<T>& a_value)=0;
+				virtual ~MemoryStorage(){
+					MemoryStorageLog(higgs_Log_StartMethod, "Destructor", "println", "");
+					MemoryStorageLog(higgs_Log_EndMethod, "Destructor", "println", "");
+				}
+				
+				virtual void setManager(MANAGER_TYPE a_Manager)=0;
+				virtual MANAGER_TYPE getManager()const=0;
+				
+				virtual bool isNull()const=0;
+				
+				virtual bool isNull(int a_index)const=0;
+				
+				virtual int getSize() const {return this->m_size;}
+				
+				virtual bool replace(int a_index_1, int a_index_2)=0;
+				
+				virtual bool set(int a_position, MemoryHolder<H>& a_value)=0;
+				
+				virtual bool add(int a_position, MemoryHolder<H>& a_value)=0;
 
-		virtual Pointer<T> removeByPosition(int a_position)=0;
+				virtual bool contain(const MemoryHolder<H>& a_value)const=0;
+				
+				virtual int getIndex(const MemoryHolder<H>& a_value)const=0;
+				
+				virtual VOID_TYPE getRawPointer(int a_position)const=0;
+				
+				virtual HOLDER_TYPE getHolder(int a_position)const=0;
 
-		virtual int reorder()=0;
+				virtual bool removeByPointer(const MemoryHolder<H>& a_value)=0;
 
-		virtual bool expandLocal(int a_adding_size)=0;
+				virtual bool removeFirstIndex(int a_length, int a_amount)=0;
 
-		virtual MemoryStorage<T>* clone()const=0;
+				virtual bool removeLastIndex(int a_length, int a_amount)=0;
 
-		virtual void addManager(MemoryStorageManager<T>* a_manager){
-			PointerLog(ame_Log_StartMethod, "addManager", "println","MemoryStorageManager<T>* a_manager");
-			if(this->m_manager == a_manager){
-				PointerLog(ame_Log_EndMethod, "addManager", "println","a_manager == nullptr");
-				return;
-			}
-			this->removeManager();
-			if(a_manager == nullptr){
-				PointerLog(ame_Log_EndMethod, "addManager", "println","a_manager == nullptr");
-				return;
-			}
-			this->m_manager = a_manager;
-			this->m_manager->addingManager();
-			PointerLog(ame_Log_EndMethod, "addManager", "println","");
-		}
+				virtual bool removePart(int a_index, int a_length, int a_amount)=0;
 
-		virtual void removeManager(){
-			PointerLog(ame_Log_StartMethod, "removeManager", "println","");
-			if(this->m_manager != nullptr){
-				this->m_manager = this->m_manager->removingManager();
-			}
-			PointerLog(ame_Log_EndMethod, "removeManager", "println","");
-		}
-		
-		virtual MemoryStorageManager<T>* getManager(){return this->m_manager;}
+				virtual bool removeFirst()=0;
 
-	protected:
-		virtual void addingMemory(T* a_value){
-			if(this->m_manager != nullptr && a_value != nullptr){
-				this->m_manager->addingPointer(a_value);
-			}
-		}
-		
-		virtual void removingMemory(T* a_value){
-			if(this->m_manager != nullptr && a_value != nullptr){
-				this->m_manager->removingPointer(a_value);
-			}
-		}
-		
-	protected:
-		int m_size = 0;
-		MemoryStorageManager<T>* m_manager = nullptr;
-};
+				virtual bool removeLast()=0;
 
-}
+				virtual bool clear()=0;
+
+				virtual int reorder()=0;
+
+				virtual int reorder(int a_index, int a_length, int a_amount)=0;
+
+				virtual int reorder(int a_index, int a_length)=0;
+
+				//inserts space on the array, moves the variables from the index to the size specified
+				virtual int insert(int a_index, int a_length, int a_size)=0;//return a_index + a_size - 1
+
+				virtual bool expand(int a_adding_size)=0;
+				
+				virtual bool shrink(int a_amount)=0;
+				
+				virtual bool destroy()=0;
+				
+				template<class IM>
+				void forEach(IM a_iteration_method){
+					MemoryStorageLog(higgs_Log_StartMethod, "forEach", "println", "");
+					if(this->isNull() || this->getSize() <= 0){
+						MemoryStorageLog(higgs_Log_EndMethod, "forEach", "println", "this->isNull() || this->getSize() <= 0");
+						return;
+					}
+					for(int x = 0; x < this->getSize(); x++){
+						HOLDER_TYPE f_pointer = this->getHolder(x);
+						a_iteration_method(x, this->getSize(), f_pointer);
+					}
+					MemoryStorageLog(higgs_Log_EndMethod, "forEach", "println", "");
+				}
+				
+				template<class IM>
+				void forEachNotNull(IM a_iteration_method){
+					MemoryStorageLog(higgs_Log_StartMethod, "forEachNotNull", "println", "");
+					if(this->isNull() || this->getSize() <= 0){
+						MemoryStorageLog(higgs_Log_EndMethod, "forEachNotNull", "println", "this->isNull() || this->getSize() <= 0");
+						return;
+					}
+					for(int x = 0; x < this->getSize(); x++){
+						HOLDER_TYPE f_pointer = this->getHolder(x);
+						if(f_pointer == nullptr){
+							MemoryStorageLog(higgs_Log_Statement, "forEachNotNull", "println", "f_pointer == nullptr");
+							continue;
+						}
+						a_iteration_method(x, this->getSize(), f_pointer);
+					}
+					MemoryStorageLog(higgs_Log_EndMethod, "forEachNotNull", "println", "");
+				}
+				
+			protected:
+				int m_size = 0;
+		};
+
+	}
 
 #endif
