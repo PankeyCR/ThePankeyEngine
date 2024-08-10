@@ -8,6 +8,8 @@
 
 	#include "higgs_Hardware_config.hpp"
 
+	// #include "higgs_Render_config.hpp"
+
 	#include "higgs_Logger_config.hpp"
 	#include "higgs_Logger.hpp"
 
