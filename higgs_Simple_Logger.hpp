@@ -29,14 +29,14 @@ void Simple_LogPrint_(void* a_log_pointer, int location, const higgs_String& nam
 		System::console.print(" - Log: ");
 		System::console.println(mns);
 	#elif defined(higgs_Arduino_Log)
-		Serial.console.print("Loggin class: ");
-		Serial.console.print(name);
-		Serial.console.print(" - Method: ");
-		Serial.console.print(method);
-		Serial.console.print(" - Location: ");
-		Serial.console.print(location);
-		Serial.console.print(" - Log: ");
-		Serial.console.println(mns);
+		Serial.print("Loggin class: ");
+		Serial.print(name);
+		Serial.print(" - Method: ");
+		Serial.print(method);
+		Serial.print(" - Location: ");
+		Serial.print(location);
+		Serial.print(" - Log: ");
+		Serial.println(mns);
 	#endif
 }
 

@@ -5,7 +5,8 @@
 	#include "higgs_Logger_position.hpp"
 
 	#ifndef higgs_Log_Module
-		#define higgs_Log_Module(pointer,location,name,method,type,mns) 
+		#include "higgs_Simple_Logger.hpp"
+		#define higgs_Log_Module(pointer,location,name,method,type,mns) Simple_LogPrint_(pointer,location,name,method,type,mns)
 	#endif
 
 	#ifndef higgs_LogDebug

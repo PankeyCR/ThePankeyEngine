@@ -1,17 +1,17 @@
 
-#include "ame_Enviroment.hpp"
-#include "ame_Enviroment_config.hpp"
+#include "higgs_Enviroment.hpp"
+#include "higgs_Enviroment_config.hpp"
 
 #include "Array.hpp"
 
-using namespace ame;
+using namespace higgs;
 
 void setup() {
   Serial.begin(9600);
 }
 
 void loop() {
-  ame_Debuging(ame_Log_StartLoop, "loop");
+  higgs_Debuging(higgs_Log_StartLoop, "loop");
   
   Array<int> array = {1,2,3,4,5};
 
@@ -19,5 +19,5 @@ void loop() {
     System::console.println(i);
   }
   
-  ame_Debuging(ame_Log_EndLoop, "loop");
+  higgs_Debuging(higgs_Log_EndLoop, "loop");
 }

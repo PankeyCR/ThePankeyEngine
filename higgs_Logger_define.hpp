@@ -10,6 +10,8 @@
 #define higgs_SystemFullLog
 //#define higgs_Arduino_Log
 
+#define Average_LogApp
+
 // #define DebounceInput_LogApp
 
 // #define DigitalInput_LogApp

@@ -1,9 +1,9 @@
 
-#include "Average.hpp"
-#include "Vector3f.hpp"
-#include "MemoryRam.hpp"
+#include "higgs.hpp"
 
-using namespace ame;
+#include "Average.hpp"
+
+using namespace higgs;
 
 void setup() {
   Serial.begin(9600);
@@ -11,31 +11,18 @@ void setup() {
 
 void loop() {
   Serial.println("//////////////////////start");
-  Serial.println(getRamSize());
-  Vector3f *size = new Vector3f();
 
-  //The average class can have 0, 1 or 2 parameters
-  //the first parameter is for the variable you are going to hold the average of the sums
-  //the second parameter is a bool, true to delete the first paramete when the instance of Average is deleted, if you dont specify that parameter, the code will but true
-  //Average<Vector3f> average(size);
-  {
-  Average<Vector3f> average(size, true);
-  average.reset();
+  Average<float> average = 0;
   
-  average.addRValue(Vector3f(1,1,1));
-  average.addRValue(Vector3f(1,1,1));
-  average.addRValue(Vector3f(1,1,1));
+  average.add(5);
+  average.add(5);
+  average.add(5);
+
+  float i_value = average.getValue();
+  float i_average = average.getAverage();
   
-  Serial.println(average.getAverage().toNote());
-  average.reset();
-  
-  average.addRValue(Vector3f(10,10,0));
-  average.addRValue(Vector3f(80,80,0));
-  average.addRValue(Vector3f(10,10,0));
-  
-  Serial.println(average.getAverage().toNote());
-  }
-  Serial.println(getRamSize());
+  Serial.println(i_value);
+  Serial.println(i_average);
   
   Serial.println("//////////////////////end");
 }

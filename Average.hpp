@@ -1,101 +1,85 @@
 
-#include "higgs_Enviroment.hpp"
-
-#if defined(DISABLE_Average)
-	#define Average_hpp
-#endif
-
 #ifndef Average_hpp
-#define Average_hpp
-#define Average_AVAILABLE
+	#define Average_hpp
 
-#ifndef higgs_Enviroment_Defined
+	#ifdef Average_LogApp
+		#include "higgs_Logger.hpp"
+		#define AverageLog(location,method,type,mns) higgs_Log(nullptr,location,"Average",method,type,mns)
+	#else
+		#define AverageLog(location,method,type,mns)
+	#endif
 
-#endif
+	namespace higgs{
 
-#ifdef higgs_Windows
+		template<class T>
+		class Average{
+			public:
+				
+				Average(T a_value){
+					AverageLog(higgs_Log_StartMethod, "Constructor", "println", "");
+					this->value = a_value;
+					this->size = 0;
+					AverageLog(higgs_Log_Statement, "Constructor", "println", "Value: ");
+					AverageLog(higgs_Log_Statement, "Constructor", "println", this->value);
+					AverageLog(higgs_Log_Statement, "Constructor", "println", "Size: ");
+					AverageLog(higgs_Log_Statement, "Constructor", "println", this->size);
+					AverageLog(higgs_Log_EndMethod, "Constructor", "println", "");
+				}
+				
+				virtual ~Average(){
+					AverageLog(higgs_Log_StartMethod, "Destructor", "println", "");
+					AverageLog(higgs_Log_EndMethod, "Destructor", "println", "");
+				}
+				
+				virtual int getSize(){
+					AverageLog(higgs_Log_StartMethod, "getSize", "println", "");
+					AverageLog(higgs_Log_EndMethod, "getSize", "println", "");
+					return this->size;
+				}
+				
+				virtual T getValue(){
+					AverageLog(higgs_Log_StartMethod, "getValue", "println", "");
+					AverageLog(higgs_Log_EndMethod, "getValue", "println", "");
+					return this->value;
+				}
+				
+				virtual void add(T t){
+					AverageLog(higgs_Log_StartMethod, "add", "println", "");
+					this->value += t;
+					this->size++;
+					AverageLog(higgs_Log_Statement, "Constructor", "println", "Value: ");
+					AverageLog(higgs_Log_Statement, "Constructor", "println", this->value);
+					AverageLog(higgs_Log_Statement, "Constructor", "println", "Size: ");
+					AverageLog(higgs_Log_Statement, "Constructor", "println", this->size);
+					AverageLog(higgs_Log_EndMethod, "add", "println", "");
+				}
+				
+				virtual T getAverage(){
+					AverageLog(higgs_Log_StartMethod, "getAverage", "println", "");
+					AverageLog(higgs_Log_Statement, "Constructor", "println", "Value: ");
+					AverageLog(higgs_Log_Statement, "Constructor", "println", this->value);
+					AverageLog(higgs_Log_Statement, "Constructor", "println", "Size: ");
+					AverageLog(higgs_Log_Statement, "Constructor", "println", this->size);
+					AverageLog(higgs_Log_EndMethod, "getAverage", "println", "");
+					return this->value / this->size;
+				}
+				
+				virtual void clear(T a_value){
+					AverageLog(higgs_Log_StartMethod, "clear", "println", "");
+					this->value = a_value;
+					this->size = 0;
+					AverageLog(higgs_Log_Statement, "Constructor", "println", "Value: ");
+					AverageLog(higgs_Log_Statement, "Constructor", "println", this->value);
+					AverageLog(higgs_Log_Statement, "Constructor", "println", "Size: ");
+					AverageLog(higgs_Log_Statement, "Constructor", "println", this->size);
+					AverageLog(higgs_Log_EndMethod, "clear", "println", "");
+				}
+				
+			protected:
+				T value;
+				int size = 0;
+		};
 
-#endif
-
-#ifdef higgs_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-namespace higgs{
-
-template<class T>
-class Average{
-	public:
-		Average(){
-			this->value = new T();
-			this->size = 0;
-			this->mm = true;
-		}
-		
-		Average(T *t){
-			this->value = t;
-			this->size = 0;
-			this->mm = true;
-		}
-		
-		Average(T *t, bool manageMemory){
-			this->value = t;
-			this->size = 0;
-			this->mm = manageMemory;
-		}
-		
-		virtual ~Average(){
-			if(this->value != nullptr && this->mm){
-				delete this->value;
-			}
-		}
-		
-		virtual int getSize(){
-			return this->size;
-		}
-		
-		virtual T getLValue(){
-			return *this->value;
-		}
-		
-		virtual T* getPointer(){
-			return this->value;
-		}
-		
-		virtual void addRValue(T&& t){
-			*this->value += t;
-			this->size++;
-		}
-		
-		void addLValue(T t){
-			this->addLValue(t);
-		}
-		
-		virtual void add(T t){
-			*this->value += t;
-			this->size++;
-		}
-		
-		virtual void addPointer(T *t){
-			*this->value += *t;
-			this->size++;
-		}
-		
-		virtual T getAverage(){
-			return *this->value / this->size;
-		}
-		
-		virtual void reset(){
-			*this->value = 0;
-			this->size = 0;
-		}
-		
-	protected:
-		T *value = nullptr;
-		int size = 0;
-		bool mm = true;
-};
-
-}
+	}
 
 #endif
