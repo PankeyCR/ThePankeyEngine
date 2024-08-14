@@ -2,7 +2,9 @@
 #ifndef Class_hpp
 	#define Class_hpp
 
-	#include "ClassType.hpp"
+	#include "ClassName.hpp"
+	#include "ClassTYPE.hpp"
+	#include "ClassCount.hpp"
 
 	#ifdef Class_LogApp
 		#include "higgs_Logger.hpp"
@@ -23,12 +25,18 @@
 			
 			template<class IC, class O>
 			static CLASS_TYPE get(){
-				return ClassType<BC,IC,O>::get();
+				return ClassTYPE<BC,IC,O>::get();
 			}
 			
 			template<class IC, class O>
+			static Class<BC> getDerivedClass(){
+				Class<BC> i_class = Class<BC>(ClassTYPE<BC,IC,O>::get(), ClassName<O>::get(), ClassCount<O>::get());
+				return i_class;
+			}
+			
+			template<class O>
 			static Class<BC> getClass(){
-				Class<BC> i_class = ClassType<BC,IC,O>::get();
+				Class<BC> i_class = Class<BC>(ClassTYPE<BC,BC,O>::get(), ClassName<O>::get(), ClassCount<O>::get());
 				return i_class;
 			}
 			
@@ -40,12 +48,16 @@
 			Class(const Class<BC>& c_cls){
 				ClassLog(higgs_Log_StartMethod, "Constructor", "println", "");
 				m_class = c_cls.m_class;
+				m_name = c_cls.m_name;
+				m_type = c_cls.m_type;
 				ClassLog(higgs_Log_EndMethod, "Constructor", "println", "");
 			}
 
-			Class(CLASS_TYPE c_cls){
+			Class(CLASS_TYPE c_cls, CharArray c_name, long c_type){
 				ClassLog(higgs_Log_StartMethod, "Constructor", "println", "");
 				m_class = c_cls;
+				m_name = c_name;
+				m_type = c_type;
 				ClassLog(higgs_Log_EndMethod, "Constructor", "println", "");
 			}
 
@@ -54,34 +66,26 @@
 				ClassLog(higgs_Log_EndMethod, "Destructor", "println", "");
 			}
 			
-			void setName(char* a_name){
-				ClassLog(higgs_Log_StartMethod, "setName", "println", "");
-				i(this->m_class == nullptr){
-					ClassLog(higgs_Log_EndMethod, "setName", "println", "this->m_class == nullptr");
-					return;
-				}
-				this->m_class->setName(a_name);
-				ClassLog(higgs_Log_EndMethod, "setName", "println", "");
-			}
-			
-			char* getName(){
+			CharArray getName(){
 				ClassLog(higgs_Log_StartMethod, "getName", "println", "");
-				i(this->m_class == nullptr){
-					ClassLog(higgs_Log_EndMethod, "getName", "println", "this->m_class == nullptr");
-					return;
-				}
 				ClassLog(higgs_Log_EndMethod, "getName", "println", "");
-				return this->m_class->getName();
+				return m_name;
 			}
 			
 			long getType(){
 				ClassLog(higgs_Log_StartMethod, "getType", "println", "");
-				i(this->m_class == nullptr){
-					ClassLog(higgs_Log_EndMethod, "getType", "println", "this->m_class == nullptr");
-					return;
-				}
 				ClassLog(higgs_Log_EndMethod, "getType", "println", "");
-				return this->m_class->getType();
+				return m_type;
+			}
+			
+			bool isNull(){
+				ClassLog(higgs_Log_StartMethod, "isNull", "println", "");
+				if(m_class == nullptr){
+					ClassLog(higgs_Log_EndMethod, "isNull", "println", "m_class == nullptr");
+					return true;
+				}
+				ClassLog(higgs_Log_EndMethod, "isNull", "println", "");
+				return false;
 			}
 			
 			void operator=(const Class<BC>& o_cls){
@@ -104,6 +108,8 @@
 			}
 			
 			CLASS_TYPE m_class = nullptr;
+			CharArray m_name = "Default";
+			long m_type = -1;
 		};
 
 	}

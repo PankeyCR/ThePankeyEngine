@@ -1,15 +1,17 @@
 
+#include "higgs.hpp"
+
 #include "ByteArray.hpp"
 //Set individual bits, checking if bits are true and if array contains byte, ByteArray:
 
-using namespace ame;
+using namespace higgs;
 
 void setup() {
   Serial.begin(9600);
 }
 
 void loop() {
-  ame_Debuging(ame_Log_StartLoop, "loop");
+  higgs_Debuging(higgs_Log_StartLoop, "loop");
   
   ByteArray array;
   array += 0b00000000;//adds a single byte
@@ -40,5 +42,5 @@ void loop() {
     Serial.print("in position: ");Serial.println(array.getFirstIndex(0b01010101));
   }
   
-  ame_Debuging(ame_Log_EndLoop, "loop");
+  higgs_Debuging(higgs_Log_EndLoop, "loop");
 }
