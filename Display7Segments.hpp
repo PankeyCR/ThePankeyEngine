@@ -2,7 +2,7 @@
 #ifndef Display7Segments_hpp
 #define Display7Segments_hpp
 
-namespace higgs{
+namespace pankey{
 
 class Display7Segments{
     public:

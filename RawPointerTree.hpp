@@ -5,61 +5,61 @@
     #include "Array.hpp"
 
     #ifdef RawPointerTree_LogApp
-        #include "higgs_Logger_config.hpp"
-        #define RawPointerTreeLog(location,method,type,mns) higgs_Log((void*)this,location,"RawPointerTree",method,type,mns)
+        #include "pankey_Logger_config.hpp"
+        #define RawPointerTreeLog(location,method,type,mns) pankey_Log((void*)this,location,"RawPointerTree",method,type,mns)
     #else
         #define RawPointerTreeLog(location,method,type,mns)
     #endif
 
-    namespace higgs{
+    namespace pankey{
 
         template <class T>
         class RawPointerTree{
             public:
                 virtual ~RawPointerTree(){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "Destructor", "println", "");
-                    RawPointerTreeLog(higgs_Log_EndMethod, "Destructor", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "Destructor", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "Destructor", "println", "");
                 }
                 
                 virtual void setBranchOwner(bool a_owning){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "setBranchOwner", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "setBranchOwner", "println", "");
                     this->m_branch_owner = a_owning;
-                    RawPointerTreeLog(higgs_Log_EndMethod, "setBranchOwner", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "setBranchOwner", "println", "");
                 }
                 virtual bool isBranchOwner()const{
-                    RawPointerTreeLog(higgs_Log_StartMethod, "isBranchOwner", "println", "");
-                    RawPointerTreeLog(higgs_Log_EndMethod, "isBranchOwner", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "isBranchOwner", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "isBranchOwner", "println", "");
                     return this->m_branch_owner;
                 }
                 virtual void setValueOwner(bool a_owning){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "setValueOwner", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "setValueOwner", "println", "");
                     this->m_value_owner = a_owning;
-                    RawPointerTreeLog(higgs_Log_EndMethod, "setValueOwner", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "setValueOwner", "println", "");
                 }
                 virtual bool isValueOwner()const{
-                    RawPointerTreeLog(higgs_Log_StartMethod, "isValueOwner", "println", "");
-                    RawPointerTreeLog(higgs_Log_EndMethod, "isValueOwner", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "isValueOwner", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "isValueOwner", "println", "");
                     return this->m_value_owner;
                 }
                 virtual void setPosition(int a_position){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "setPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "setPosition", "println", "");
                     this->m_position = a_position;
-                    RawPointerTreeLog(higgs_Log_EndMethod, "setPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "setPosition", "println", "");
                 }
                 virtual int getPosition()const{
-                    RawPointerTreeLog(higgs_Log_StartMethod, "getPosition", "println", "");
-                    RawPointerTreeLog(higgs_Log_EndMethod, "getPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "getPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "getPosition", "println", "");
                     return this->m_position;
                 }
                 
                 virtual void setSize(int a_size){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "setSize", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "setSize", "println", "");
                     this->m_size = a_size;
-                    RawPointerTreeLog(higgs_Log_EndMethod, "setSize", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "setSize", "println", "");
                 }
                 virtual int getSize()const{
-                    RawPointerTreeLog(higgs_Log_StartMethod, "getSize", "println", "");
-                    RawPointerTreeLog(higgs_Log_EndMethod, "getSize", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "getSize", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "getSize", "println", "");
                     return this->m_size;
                 }
                 
@@ -79,13 +79,13 @@
                 }
                 
                 virtual bool removeDeleteParent(){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "removeDeleteParent", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "removeDeleteParent", "println", "");
                     RawPointerTree<T>* i_parent = this->removeParent();
                     if(i_parent == nullptr){
                         return false;
                     }
                     delete i_parent;
-                    RawPointerTreeLog(higgs_Log_EndMethod, "removeDeleteParent", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "removeDeleteParent", "println", "");
                     return true;
                 }
                 
@@ -134,13 +134,13 @@
                 virtual T* remove()=0;
                 
                 virtual bool removeDelete(){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "removeDelete", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "removeDelete", "println", "");
                     T* i_var = this->remove();
                     if(i_var == nullptr){
                         return false;
                     }
                     delete i_var;
-                    RawPointerTreeLog(higgs_Log_EndMethod, "removeDelete", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "removeDelete", "println", "");
                     return true;
                 }
                 
@@ -149,33 +149,33 @@
                 virtual bool replaceBranch(int i, int j)=0;
                 
                 virtual void addMoveBranch(RawPointerTree<T>* a_list){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "addMoveBranch", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "addMoveBranch", "println", "");
                     for(int x = 0; x < a_list->getPosition(); x++){
                         RawPointerTree<T>* f_value = a_list->getBranchByPosition(x);
                         this->addBranchPointer(f_value);
                     }
                     a_list->clearBranches();
-                    RawPointerTreeLog(higgs_Log_EndMethod, "addMoveBranch", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "addMoveBranch", "println", "");
                 }
                 
                 virtual void addDuplicateBranch(RawPointerTree<T>* a_list){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "addDuplicateBranch", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "addDuplicateBranch", "println", "");
                     this->setBranchOwner(false);
                     for(int x = 0; x < a_list->getPosition(); x++){
                         RawPointerTree<T>* f_value = a_list->getBranchByPosition(x);
                         this->addBranchPointer(f_value);
                     }
-                    RawPointerTreeLog(higgs_Log_EndMethod, "addDuplicateBranch", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "addDuplicateBranch", "println", "");
                 }
 
                 virtual RawPointerTree<T>* addBranchPointer(RawPointerTree<T>* a_value)=0;
                 
                 virtual RawPointerTree<T>* putBranchPointer(RawPointerTree<T>* a_value){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "putPointer", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "putPointer", "println", "");
                     if(this->containBranchByPointer(a_value)){
                         return a_value;
                     }
-                    RawPointerTreeLog(higgs_Log_EndMethod, "putPointer", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "putPointer", "println", "");
                     return this->addBranchPointer(a_value);
                 }
 
@@ -204,24 +204,24 @@
                 virtual RawPointerTree<T>* removeBranchByPosition(int a_position)=0;
 
                 virtual bool removeDeleteBranchByPointer(RawPointerTree<T>* a_value){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "removeDeleteBranchByPointer", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "removeDeleteBranchByPointer", "println", "");
                     RawPointerTree<T>* t = this->removeBranchByPointer(a_value);
                     bool removed = t != nullptr;
                     if(removed && this->isBranchOwner()){
                         delete t;
                     }
-                    RawPointerTreeLog(higgs_Log_EndMethod, "removeDeleteBranchByPointer", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "removeDeleteBranchByPointer", "println", "");
                     return removed;
                 }
 
                 virtual bool removeDeleteBranchByPosition(int a_position){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "removeDeleteBranchByPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "removeDeleteBranchByPosition", "println", "");
                     RawPointerTree<T>* t = this->removeBranchByPosition(a_position);
                     bool removed = t != nullptr;
                     if(removed && this->isBranchOwner()){
                         delete t;
                     }
-                    RawPointerTreeLog(higgs_Log_EndMethod, "removeDeleteBranchByPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "removeDeleteBranchByPosition", "println", "");
                     return removed;
                 }
 
@@ -230,20 +230,20 @@
                 virtual bool removeBranchLastIndex(int a_amount)=0;
                 
                 virtual bool removeFirstBranch(){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "removeFirstBranch", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "removeFirstBranch", "println", "");
                     if(this->isEmpty()){
                         return false;
                     }
-                    RawPointerTreeLog(higgs_Log_EndMethod, "removeFirstBranch", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "removeFirstBranch", "println", "");
                     return this->removeDeleteBranchByPosition(0);
                 }
 
                 virtual bool removeLastBranch(){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "removeLastBranch", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "removeLastBranch", "println", "");
                     if(this->isEmpty()){
                         return false;
                     }
-                    RawPointerTreeLog(higgs_Log_EndMethod, "removeLastBranch", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "removeLastBranch", "println", "");
                     return this->removeDeleteBranchByPosition(this->getPosition() - 1);
                 }
 
@@ -258,28 +258,28 @@
                 virtual RawPointerTree<T>* getBranch(const Array<int>& a_location)=0;
 
                 virtual T* setBranchValuePointer(const Array<int>& a_location, T* a_value){
-					RawPointerTreeLog(higgs_Log_StartMethod, "setBranchValuePointer", "println", "");
+					RawPointerTreeLog(pankey_Log_StartMethod, "setBranchValuePointer", "println", "");
 					RawPointerTree<T>* i_sub_tree = this->createBranch(a_location);
 					if(i_sub_tree == nullptr){
 						return nullptr;
 					}
-					RawPointerTreeLog(higgs_Log_EndMethod, "setBranchValuePointer", "println", "");
+					RawPointerTreeLog(pankey_Log_EndMethod, "setBranchValuePointer", "println", "");
                     return i_sub_tree->set(a_value);
                 }
 
                 virtual T* getBranchValuePointer(const Array<int>& a_location){
-					RawPointerTreeLog(higgs_Log_StartMethod, "setBranchValuePointer", "println", "");
+					RawPointerTreeLog(pankey_Log_StartMethod, "setBranchValuePointer", "println", "");
 					RawPointerTree<T>* i_sub_tree = this->getBranch(a_location);
 					if(i_sub_tree == nullptr){
 						return nullptr;
 					}
-					RawPointerTreeLog(higgs_Log_EndMethod, "setBranchValuePointer", "println", "");
+					RawPointerTreeLog(pankey_Log_EndMethod, "setBranchValuePointer", "println", "");
                     return i_sub_tree->get();
                 }
 
                 template<class IM, class... Args>
 				void forEachTopDownPointer(IM a_iteration_method, Args... args){
-					RawPointerTreeLog(higgs_Log_StartMethod, "forEachTopDownPointer", "println", "");
+					RawPointerTreeLog(pankey_Log_StartMethod, "forEachTopDownPointer", "println", "");
 
                     Array<int> i_location;
                     RawPointerTree<T>* i_actual_tree = this;
@@ -291,26 +291,26 @@
                     i_branch_iteration++;
 
                     for(int x = 1; i_actual_tree != nullptr; x++){
-						RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", "iteration: ");
-						RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", x);
-						RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", "branch_position: ");
-						RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", i_branch_position);
+						RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", "iteration: ");
+						RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", x);
+						RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", "branch_position: ");
+						RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", i_branch_position);
                         
                         RawPointerTree<int>* i_sub_tree_iterator_sub = nullptr;
 
                         for(int x_sub = i_branch_position; x_sub < i_actual_tree->getPosition(); x_sub++){
-                            RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", "iteration sub: ");
-                            RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", x_sub);
+                            RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", "iteration sub: ");
+                            RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", x_sub);
                             i_sub_tree_iterator_sub = i_actual_tree->getBranchByPosition(x_sub);
                             if(i_sub_tree_iterator_sub != nullptr){
-                                RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", "x_sub i_sub_tree_iterator_sub != nullptr");
+                                RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", "x_sub i_sub_tree_iterator_sub != nullptr");
                                 i_location.addLocalValue(x_sub);
                                 break;
                             }
                         }
 
                         if(i_sub_tree_iterator_sub != nullptr){
-						    RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", "i_sub_tree_iterator_sub != nullptr");
+						    RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", "i_sub_tree_iterator_sub != nullptr");
                             i_actual_tree = i_sub_tree_iterator_sub;
                             i_branch_position = 0;
 
@@ -322,7 +322,7 @@
 
                         if(i_actual_tree == this){
                             i_actual_tree = nullptr;
-                            RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", "i_sub_tree_iterator_parent != nullptr");
+                            RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", "i_sub_tree_iterator_parent != nullptr");
                             continue;
                         }
 
@@ -331,30 +331,30 @@
                         i_location.removeLastIndex();
 
                         if(i_sub_tree_iterator_parent->getPosition() == i_actual_tree->getBranchPosition() + 1){
-                            RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", "i_sub_tree_iterator_parent->getPosition() == i_actual_tree->getBranchPosition() + 1");
+                            RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", "i_sub_tree_iterator_parent->getPosition() == i_actual_tree->getBranchPosition() + 1");
                             i_actual_tree = i_sub_tree_iterator_parent->getParent();
                             i_branch_position = i_sub_tree_iterator_parent->getBranchPosition() + 1;
                             
                             i_location.removeLastIndex();
 
-                            RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", "parent new branch_position: ");
-                            RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", i_branch_position);
+                            RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", "parent new branch_position: ");
+                            RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", i_branch_position);
                             continue;
                         }
 
                         i_branch_position = i_actual_tree->getBranchPosition() + 1;
                         i_actual_tree = i_sub_tree_iterator_parent;
 
-						RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", "new branch_position: ");
-						RawPointerTreeLog(higgs_Log_Statement, "forEachTopDownPointer", "println", i_branch_position);
+						RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", "new branch_position: ");
+						RawPointerTreeLog(pankey_Log_Statement, "forEachTopDownPointer", "println", i_branch_position);
                     }
 
-					RawPointerTreeLog(higgs_Log_EndMethod, "forEachTopDownPointer", "println", "");
+					RawPointerTreeLog(pankey_Log_EndMethod, "forEachTopDownPointer", "println", "");
 				}
 
                 template<class IM, class... Args>
 				void forEachDownTopPointer(IM a_iteration_method, Args... args){
-					RawPointerTreeLog(higgs_Log_StartMethod, "forEachDownTopPointer", "println", "");
+					RawPointerTreeLog(pankey_Log_StartMethod, "forEachDownTopPointer", "println", "");
 
                     Array<int> i_location;
                     RawPointerTree<T>* i_actual_tree = this;
@@ -363,26 +363,26 @@
                     int i_branch_iteration = 0;
 
                     for(int x = 0; i_actual_tree != nullptr; x++){
-						RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", "iteration: ");
-						RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", x);
-						RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", "branch_position: ");
-						RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", i_branch_position);
+						RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", "iteration: ");
+						RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", x);
+						RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", "branch_position: ");
+						RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", i_branch_position);
                         
                         RawPointerTree<int>* i_sub_tree_iterator_sub = nullptr;
 
                         for(int x_sub = i_branch_position; x_sub < i_actual_tree->getPosition(); x_sub++){
-                            RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", "iteration sub: ");
-                            RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", x_sub);
+                            RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", "iteration sub: ");
+                            RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", x_sub);
                             i_sub_tree_iterator_sub = i_actual_tree->getBranchByPosition(x_sub);
                             if(i_sub_tree_iterator_sub != nullptr){
-                                RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", "x_sub i_sub_tree_iterator_sub != nullptr");
+                                RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", "x_sub i_sub_tree_iterator_sub != nullptr");
                                 i_location.addLocalValue(x_sub);
                                 break;
                             }
                         }
 
                         if(i_sub_tree_iterator_sub != nullptr){
-						    RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", "i_sub_tree_iterator_sub != nullptr");
+						    RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", "i_sub_tree_iterator_sub != nullptr");
                             i_actual_tree = i_sub_tree_iterator_sub;
                             i_branch_position = 0;
                             continue;
@@ -394,7 +394,7 @@
 
                         if(i_actual_tree == this){
                             i_actual_tree = nullptr;
-                            RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", "i_sub_tree_iterator_parent != nullptr");
+                            RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", "i_sub_tree_iterator_parent != nullptr");
                             continue;
                         }
 
@@ -403,7 +403,7 @@
                         i_location.removeLastIndex();
 
                         if(i_sub_tree_iterator_parent->getPosition() == i_actual_tree->getBranchPosition() + 1){
-                            RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", "i_sub_tree_iterator_parent->getPosition() == i_actual_tree->getBranchPosition() + 1");
+                            RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", "i_sub_tree_iterator_parent->getPosition() == i_actual_tree->getBranchPosition() + 1");
                             i_actual_tree = i_sub_tree_iterator_parent->getParent();
                             i_branch_position = i_sub_tree_iterator_parent->getBranchPosition() + 1;
 
@@ -412,19 +412,19 @@
                             
                             i_location.removeLastIndex();
 
-                            RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", "parent new branch_position: ");
-                            RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", i_branch_position);
+                            RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", "parent new branch_position: ");
+                            RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", i_branch_position);
                             continue;
                         }
 
                         i_branch_position = i_actual_tree->getBranchPosition() + 1;
                         i_actual_tree = i_sub_tree_iterator_parent;
 
-						RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", "new branch_position: ");
-						RawPointerTreeLog(higgs_Log_Statement, "forEachDownTopPointer", "println", i_branch_position);
+						RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", "new branch_position: ");
+						RawPointerTreeLog(pankey_Log_Statement, "forEachDownTopPointer", "println", i_branch_position);
                     }
 
-					RawPointerTreeLog(higgs_Log_EndMethod, "forEachDownTopPointer", "println", "");
+					RawPointerTreeLog(pankey_Log_EndMethod, "forEachDownTopPointer", "println", "");
 				}
 
 				virtual void expandLocal(int a_size)=0;
@@ -434,96 +434,96 @@
             protected:
                 
                 virtual void incrementPosition(){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "incrementPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "incrementPosition", "println", "");
                     this->m_position++;
-                    RawPointerTreeLog(higgs_Log_EndMethod, "incrementPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "incrementPosition", "println", "");
                 }
                 virtual void decrementPosition(){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "decrementPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "decrementPosition", "println", "");
                     this->m_position--;
                     if(this->m_position < 0){
                         this->m_position = 0;
                     }
-                    RawPointerTreeLog(higgs_Log_EndMethod, "decrementPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "decrementPosition", "println", "");
                 }
                 
                 virtual void incrementPosition(int a_size){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "incrementPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "incrementPosition", "println", "");
                     this->m_position += a_size;
-                    RawPointerTreeLog(higgs_Log_EndMethod, "incrementPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "incrementPosition", "println", "");
                 }
                 virtual void decrementPosition(int a_size){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "decrementPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "decrementPosition", "println", "");
                     this->m_position -= a_size;
                     if(this->m_position < 0){
                         this->m_position = 0;
                     }
-                    RawPointerTreeLog(higgs_Log_EndMethod, "decrementPosition", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "decrementPosition", "println", "");
                 }
                 
                 virtual void incrementSize(){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "incrementSize", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "incrementSize", "println", "");
                     this->m_size++;
-                    RawPointerTreeLog(higgs_Log_EndMethod, "incrementSize", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "incrementSize", "println", "");
                 }
                 virtual void decrementSize(){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "decrementSize", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "decrementSize", "println", "");
                     this->m_size--;
                     if(this->m_size < 0){
                         this->m_size = 0;
                     }
-                    RawPointerTreeLog(higgs_Log_EndMethod, "decrementSize", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "decrementSize", "println", "");
                 }
                 
                 virtual void incrementSize(int a_size){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "incrementSize", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "incrementSize", "println", "");
                     this->m_size += a_size;
-                    RawPointerTreeLog(higgs_Log_EndMethod, "incrementSize", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "incrementSize", "println", "");
                 }
                 virtual void decrementSize(int a_size){
-                    RawPointerTreeLog(higgs_Log_StartMethod, "decrementSize", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "decrementSize", "println", "");
                     this->m_size -= a_size;
                     if(this->m_size < 0){
                         this->m_size = 0;
                     }
-                    RawPointerTreeLog(higgs_Log_EndMethod, "decrementSize", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "decrementSize", "println", "");
                 }
 
             public:
             
                 virtual bool operator<(int x) const{
-                    RawPointerTreeLog(higgs_Log_StartMethod, "operator<", "println", "");
-                    RawPointerTreeLog(higgs_Log_EndMethod, "operator<", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "operator<", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "operator<", "println", "");
                     return this->getPosition() < x;
                 }
                 
                 virtual bool operator>(int x) const{
-                    RawPointerTreeLog(higgs_Log_StartMethod, "operator>", "println", "");
-                    RawPointerTreeLog(higgs_Log_EndMethod, "operator>", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "operator>", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "operator>", "println", "");
                     return this->getPosition() > x;
                 }
                 
                 virtual bool operator<=(int x) const{
-                    RawPointerTreeLog(higgs_Log_StartMethod, "operator<=", "println", "");
-                    RawPointerTreeLog(higgs_Log_EndMethod, "operator<=", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "operator<=", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "operator<=", "println", "");
                     return this->getPosition() <= x;
                 }
                 
                 virtual bool operator>=(int x) const{
-                    RawPointerTreeLog(higgs_Log_StartMethod, "operator>=", "println", "");
-                    RawPointerTreeLog(higgs_Log_EndMethod, "operator>=", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "operator>=", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "operator>=", "println", "");
                     return this->getPosition() >= x;
                 }
                 
                 virtual bool operator==(int x) const{
-                    RawPointerTreeLog(higgs_Log_StartMethod, "operator==", "println", "");
-                    RawPointerTreeLog(higgs_Log_EndMethod, "operator==", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "operator==", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "operator==", "println", "");
                     return this->getPosition() == x;
                 }
                 
                 virtual bool operator!=(int x) const{
-                    RawPointerTreeLog(higgs_Log_StartMethod, "operator!=", "println", "");
-                    RawPointerTreeLog(higgs_Log_EndMethod, "operator!=", "println", "");
+                    RawPointerTreeLog(pankey_Log_StartMethod, "operator!=", "println", "");
+                    RawPointerTreeLog(pankey_Log_EndMethod, "operator!=", "println", "");
                     return this->getPosition() != x;
                 }
 

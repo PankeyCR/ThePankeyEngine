@@ -4,7 +4,7 @@
 
 #include "cppObject.hpp"
 
-namespace higgs{
+namespace pankey{
 
 class VectorDirection : public cppObject{
 public:

@@ -7,7 +7,7 @@
 #include "Lexer.hpp"
 #include "FullTree.hpp"
 
-namespace higgs{
+namespace pankey{
 
 class TokenStructure{
 	public:

@@ -2,37 +2,37 @@
 #ifndef StateListManager_hpp
 	#define StateListManager_hpp
 
-	#include "higgs_Enviroment.hpp"
-	#include "higgs_Enviroment_config.hpp"
+	#include "pankey_Enviroment.hpp"
+	#include "pankey_Enviroment_config.hpp"
 
 	#include "State.hpp"
 	#include "UpdateManager.hpp"
 
 	#ifdef StateListManager_LogApp
-		#include "higgs_Logger.hpp"
-		#define StateListManagerLog(location,method,type,mns) higgs_Log(this,location,"StateListManager",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define StateListManagerLog(location,method,type,mns) pankey_Log(this,location,"StateListManager",method,type,mns)
 	#else
 		#define StateListManagerLog(location,method,type,mns)
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class... Args>
 		class StateListManager : virtual public UpdateManager<Args...>{
 			public:
 				StateListManager(){
-					StateListManagerLog(higgs_Log_StartMethod, "Constructor", "println", "");
-					StateListManagerLog(higgs_Log_EndMethod, "Constructor", "println", "");
+					StateListManagerLog(pankey_Log_StartMethod, "Constructor", "println", "");
+					StateListManagerLog(pankey_Log_EndMethod, "Constructor", "println", "");
 				}
 				virtual ~StateListManager(){
-					StateListManagerLog(higgs_Log_StartMethod, "Destructor", "println", "");
-					StateListManagerLog(higgs_Log_EndMethod, "Destructor", "println", "");
+					StateListManagerLog(pankey_Log_StartMethod, "Destructor", "println", "");
+					StateListManagerLog(pankey_Log_EndMethod, "Destructor", "println", "");
 				}
 
 				virtual state<Args...> add(state<Args...> a_state){
-					StateListManagerLog(higgs_Log_StartMethod, "add",  "println", "");
+					StateListManagerLog(pankey_Log_StartMethod, "add",  "println", "");
 					m_initialize.add(a_state);
-					StateListManagerLog(higgs_Log_EndMethod, "add", "println", "");
+					StateListManagerLog(pankey_Log_EndMethod, "add", "println", "");
 					return a_state;
 				}
 				
@@ -83,7 +83,7 @@
 				}
 				
 				virtual void removeAllStateList(){
-					StateListManagerLog(higgs_Log_StartMethod, "removeAllStateList",  "println", "");
+					StateListManagerLog(pankey_Log_StartMethod, "removeAllStateList",  "println", "");
 					for(int x = 0; x < m_states.length(); x++){
 						state<Args...> f_state = m_states.get(x);
 						if(f_state.isNull()){
@@ -100,16 +100,16 @@
 					}
 					m_states.clear();
 					m_initialize.clear();
-					StateListManagerLog(higgs_Log_EndMethod, "removeAllStateList", "println", "");
+					StateListManagerLog(pankey_Log_EndMethod, "removeAllStateList", "println", "");
 				}
 				
 				virtual void removeAll(){
-					StateListManagerLog(higgs_Log_StartMethod, "removeAll",  "println", "");
+					StateListManagerLog(pankey_Log_StartMethod, "removeAll",  "println", "");
 					this->removeAllStateList();
-					StateListManagerLog(higgs_Log_EndMethod, "removeAll", "println", "");
+					StateListManagerLog(pankey_Log_EndMethod, "removeAll", "println", "");
 				}
 				virtual void initialize(){
-					StateListManagerLog(higgs_Log_StartMethod, "initialize",  "println", "");
+					StateListManagerLog(pankey_Log_StartMethod, "initialize",  "println", "");
 					if(!this->m_initialize.isEmpty()){
 						for(int x = 0; x < this->m_initialize.length();x++){
 							state<Args...> f_state = this->m_initialize.get(x);
@@ -120,14 +120,14 @@
 							f_state->onEnable();
 							this->m_states.add(f_state);
 						}
-						StateListManagerLog(higgs_Log_StartMethod, "initialize",  "println", "m_initialize");
+						StateListManagerLog(pankey_Log_StartMethod, "initialize",  "println", "m_initialize");
 						this->m_initialize.clear();
 					}
-					StateListManagerLog(higgs_Log_EndMethod, "initialize", "println", "");
+					StateListManagerLog(pankey_Log_EndMethod, "initialize", "println", "");
 				}
 
 				virtual void update(Args... a_values){
-					StateListManagerLog(higgs_Log_StartMethod, "update",  "println", "");
+					StateListManagerLog(pankey_Log_StartMethod, "update",  "println", "");
 					
 					if(!this->m_initialize.isEmpty()){
 						for(int x = 0; x < this->m_initialize.length();x++){
@@ -139,22 +139,22 @@
 							f_state->onEnable();
 							this->m_states.add(f_state);
 						}
-						StateListManagerLog(higgs_Log_StartMethod, "update",  "println", "m_initialize");
+						StateListManagerLog(pankey_Log_StartMethod, "update",  "println", "m_initialize");
 						this->m_initialize.clear();
 					}
 					for(int x = 0; x < this->m_states.length(); x++){
-						StateListManagerLog(higgs_Log_StartMethod, "update",  "println", "iterating through all states");
-						StateListManagerLog(higgs_Log_StartMethod, "update",  "println", "iteration: ");
-						StateListManagerLog(higgs_Log_StartMethod, "update",  "println", x);
+						StateListManagerLog(pankey_Log_StartMethod, "update",  "println", "iterating through all states");
+						StateListManagerLog(pankey_Log_StartMethod, "update",  "println", "iteration: ");
+						StateListManagerLog(pankey_Log_StartMethod, "update",  "println", x);
 						state<Args...> f_state = this->m_states.get(x);
 						if(f_state.isNull()){
-							StateListManagerLog(higgs_Log_StartMethod, "update",  "println", "f_state.isNull()");
+							StateListManagerLog(pankey_Log_StartMethod, "update",  "println", "f_state.isNull()");
 							continue;
 						}
 						f_state->update(a_values...);
 					}
 
-					StateListManagerLog(higgs_Log_EndMethod, "update", "println", "");
+					StateListManagerLog(pankey_Log_EndMethod, "update", "println", "");
 				}
 
 			protected:

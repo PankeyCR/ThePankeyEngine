@@ -6,13 +6,13 @@
 	#include "Note.hpp"
 
 	#ifdef EventManager_LogApp
-		#include "higgs_Logger.hpp"
-		#define EventManagerLog(location,method,type,mns) higgs_Log((void*)this,location,"EventManager",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define EventManagerLog(location,method,type,mns) pankey_Log((void*)this,location,"EventManager",method,type,mns)
 	#else
 		#define EventManagerLog(location,method,type,mns) 
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class A>
 		class EventManager{
@@ -103,7 +103,7 @@
 					invoke<Note,A&>(g_app_events, a_name, a_app);
 				}
 
-				void runMethod(Note a_name, A& a_app){
+				void runMethod(Note a_name){
 					invoke<Note>(g_events, a_name);
 				}
 
@@ -116,7 +116,7 @@
 					invokeAll<Note,A&>(g_app_events, a_app);
 				}
 
-				void runAllMethods(A& a_app){
+				void runAllMethods(){
 					invokeAll<Note>(g_events);
 				}
 

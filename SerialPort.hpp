@@ -2,7 +2,6 @@
 #ifndef SerialPort_hpp
 #define SerialPort_hpp
 
-#include "cppObject.hpp"
 #include "Note.hpp"
 #include "ByteArray.hpp"
 #include "higgs_Byte.hpp"
@@ -19,11 +18,7 @@
 
 namespace higgs{
 
-/*
-*	Class Configuration:
-*	DISABLE_IMPLEMENTATION_cppObject
-*/
-class SerialPort : public Stream IMPLEMENTING_cppObject {
+class SerialPort : public Stream{
 
     public:
 		SerialPort(){}
@@ -68,10 +63,6 @@ class SerialPort : public Stream IMPLEMENTING_cppObject {
 		virtual bool operator==(SerialPort b){return false;}
 		virtual bool operator!=(SerialPort b){return true;}
 		
-		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
-		virtual cppObjectClass* getClass(){return Class<SerialPort>::getClass();}
-		virtual bool instanceof(cppObjectClass* cls){return cls == Class<SerialPort>::getClass();}
-		#endif
 	protected:
 		Note m_name;
 		Note m_ip = "150.1.0.0";

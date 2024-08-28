@@ -2,7 +2,7 @@
 #ifndef cppObjectClass_hpp
 	#define cppObjectClass_hpp
 
-	namespace higgs{
+	namespace pankey{
 
 		class cppObjectClass;
 
@@ -13,7 +13,7 @@
 	#include "Method.hpp"
 	#include "Pointer.hpp"
 
-	namespace higgs{
+	namespace pankey{
 		
 		template<class H, class A>
 		class cppObjectClass{	

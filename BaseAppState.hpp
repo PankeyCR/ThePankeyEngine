@@ -5,13 +5,13 @@
 	#include "AppState.hpp"
 
 	#ifdef BaseAppState_LogApp
-		#include "higgs_Logger.hpp"
-		#define BaseAppStateLog(location,method,type,mns) higgs_Log((void*)this,location,"BaseAppState",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define BaseAppStateLog(location,method,type,mns) pankey_Log((void*)this,location,"BaseAppState",method,type,mns)
 	#else
 		#define BaseAppStateLog(location,method,type,mns) 
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class A, class... Args>
 		class BaseAppState : public AppState<A,Args...>{
@@ -20,11 +20,11 @@
 				virtual ~BaseAppState(){}
 				
 				virtual void initialize(A& a_app){
-					BaseAppStateLog(higgs_Log_StartMethod, "initialize", "println", "");
+					BaseAppStateLog(pankey_Log_StartMethod, "initialize", "println", "");
 					m_init = true;
 					initializeState(a_app);
 					initializeState();
-					BaseAppStateLog(higgs_Log_EndMethod, "initialize", "println", "");
+					BaseAppStateLog(pankey_Log_EndMethod, "initialize", "println", "");
 				}
 				
 				virtual void initializeState(A& a_app){}

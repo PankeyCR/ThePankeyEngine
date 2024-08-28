@@ -2,7 +2,7 @@
 #ifndef Button_hpp
 	#define Button_hpp
 
-	namespace higgs{
+	namespace pankey{
 		
 	class Button {
 		private:

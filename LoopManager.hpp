@@ -16,24 +16,24 @@
 	// #include "AppStateMapManager.hpp"
 
 	#ifdef LoopManager_LogApp
-		#include "higgs_Logger.hpp"
-		#define LoopManagerLog(location,method,type,mns) higgs_Log(this,location,"LoopManager",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define LoopManagerLog(location,method,type,mns) pankey_Log(this,location,"LoopManager",method,type,mns)
 	#else
 		#define LoopManagerLog(location,method,type,mns)
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class A>
 		class LoopManager : public UpdateManager<A&,float>{
 			public:
 				LoopManager(){
-					LoopManagerLog(higgs_Log_StartMethod, "Constructor", "println", "");
-					LoopManagerLog(higgs_Log_EndMethod, "Constructor", "println", "");
+					LoopManagerLog(pankey_Log_StartMethod, "Constructor", "println", "");
+					LoopManagerLog(pankey_Log_EndMethod, "Constructor", "println", "");
 				}
 				virtual ~LoopManager(){
-					LoopManagerLog(higgs_Log_StartMethod, "Destructor", "println", "");
-					LoopManagerLog(higgs_Log_EndMethod, "Destructor", "println", "");
+					LoopManagerLog(pankey_Log_StartMethod, "Destructor", "println", "");
+					LoopManagerLog(pankey_Log_EndMethod, "Destructor", "println", "");
 				}
 				
 				virtual void removeAll(){
@@ -81,7 +81,7 @@
 				}
 
 				virtual void update(A& a_app, float a_tpc){
-					LoopManagerLog(higgs_Log_StartMethod, "update",  "println", "");
+					LoopManagerLog(pankey_Log_StartMethod, "update",  "println", "");
 					functions_list.update();
 					app_functions_list.update(a_app);
 					timed_functions_list.update(a_tpc);
@@ -105,7 +105,7 @@
 					class_timed_functions_map.update(a_app, a_tpc);
 					
 					// app_state_functions_map.update(a_app, a_tpc);
-					LoopManagerLog(higgs_Log_EndMethod, "update",  "println", "");
+					LoopManagerLog(pankey_Log_EndMethod, "update",  "println", "");
 				}
 
 			public:

@@ -4,7 +4,7 @@
 
 #include "Vector3f.hpp"
 
-namespace higgs{
+namespace pankey{
 
 class Triangle : public Printable{
     public:

@@ -1,22 +1,6 @@
 
-#include "higgs_Enviroment.hpp"
-
 #ifndef Array2D_hpp
 #define Array2D_hpp
-#define Array2D_AVAILABLE
-
-#ifndef higgs_Enviroment_Defined
-
-#endif
-
-#ifdef higgs_Windows
-
-#endif
-
-#ifdef higgs_ArduinoIDE
-	#include "Arduino.h"
-	
-#endif
 
 #include "Array2DIterator.hpp"
 
@@ -30,20 +14,20 @@
 #include "PrimitiveRawMap.hpp"
 
 #ifdef Array2D_LogApp
-	#include "higgs_Logger_config.hpp"
-	#include "higgs_Logger.hpp"
+	#include "pankey_Logger_config.hpp"
+	#include "pankey_Logger.hpp"
 	
-	#define Array2DLog(location,method,type,mns) higgs_Log((void*)this,location,"Array2D",method,type,mns)
+	#define Array2DLog(location,method,type,mns) pankey_Log((void*)this,location,"Array2D",method,type,mns)
 	#define const_Array2DLog(location,method,type,mns) 
-	#define StaticArray2DLog(pointer,location,method,type,mns) higgs_Log(pointer,location,"Array2D",method,type,mns)
+	#define StaticArray2DLog(pointer,location,method,type,mns) pankey_Log(pointer,location,"Array2D",method,type,mns)
 #else
 	#ifdef Array2D_LogDebugApp
-		#include "higgs_Logger_config.hpp"
-		#include "higgs_Logger.hpp"
+		#include "pankey_Logger_config.hpp"
+		#include "pankey_Logger.hpp"
 		
-		#define Array2DLog(location,method,type,mns) higgs_LogDebug((void*)this,location,"Array2D",method,type)
+		#define Array2DLog(location,method,type,mns) pankey_LogDebug((void*)this,location,"Array2D",method,type)
 		#define const_Array2DLog(location,method,type,mns) 
-		#define StaticArray2DLog(pointer,location,method,type,mns) higgs_LogDebug(pointer,location,"Array2D",method,type)
+		#define StaticArray2DLog(pointer,location,method,type,mns) pankey_LogDebug(pointer,location,"Array2D",method,type)
 	#else
 		#define Array2DLog(location,method,type,mns) 
 		#define const_Array2DLog(location,method,type,mns) 
@@ -52,7 +36,7 @@
 #endif
 
 
-namespace higgs{
+namespace pankey{
 	
 template<class T>
 class Array2D : public Printable, public cppObject{
@@ -73,38 +57,38 @@ class Array2D : public Printable, public cppObject{
 
     public:
 		Array2D(){
-			Array2DLog(higgs_Log_StartMethod, "Constructor", "println", "");
-			Array2DLog(higgs_Log_Statement, "Constructor", "println", "Default Constructor");
-			Array2DLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			Array2DLog(pankey_Log_StartMethod, "Constructor", "println", "");
+			Array2DLog(pankey_Log_Statement, "Constructor", "println", "Default Constructor");
+			Array2DLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		Array2D(int c_x, int c_y){
-			Array2DLog(higgs_Log_StartMethod, "Constructor", "println", "");
+			Array2DLog(pankey_Log_StartMethod, "Constructor", "println", "");
 			if(c_x > 0 || c_y > 0){
 				m_size_X = c_x;
 				m_size_Y = c_y;
 				m_t_value = create(m_size_X, m_size_Y);
-				Array2DLog(higgs_Log_Statement, "Constructor", "println", p_size);
+				Array2DLog(pankey_Log_Statement, "Constructor", "println", p_size);
 			}
-			Array2DLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			Array2DLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		Array2D(const Array2D<T>& source){
-			Array2DLog(higgs_Log_StartMethod, "Constructor", "println", "");
-			Array2DLog(higgs_Log_Statement, "Constructor", "println", "const Array2D& val");
+			Array2DLog(pankey_Log_StartMethod, "Constructor", "println", "");
+			Array2DLog(pankey_Log_Statement, "Constructor", "println", "const Array2D& val");
 			m_size_X = source.getSizeX();
 			m_size_Y = source.getSizeY();
 			if(m_size_X > 0 && m_size_Y > 0){
-				Array2DLog(higgs_Log_Statement, "Constructor", "println", "copy");
+				Array2DLog(pankey_Log_Statement, "Constructor", "println", "copy");
 				m_t_value = create(m_size_X, m_size_Y);
 				copy(source.m_t_value, m_size_X, m_size_Y);
 			}
-			Array2DLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			Array2DLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		Array2D(Array2D&& source){
-			Array2DLog(higgs_Log_StartMethod, "Constructor", "println", "start");
-			Array2DLog(higgs_Log_Statement, "Constructor", "println", "Array2D&& source");
+			Array2DLog(pankey_Log_StartMethod, "Constructor", "println", "start");
+			Array2DLog(pankey_Log_Statement, "Constructor", "println", "Array2D&& source");
 			m_size_X = source.getSizeX();
 			m_size_Y = source.getSizeY();
 			if(m_size_X > 0 && m_size_Y > 0){
@@ -114,20 +98,20 @@ class Array2D : public Printable, public cppObject{
 				source.m_t_value = nullptr;
 				source.m_size_X = 0;
 				source.m_size_Y = 0;
-				Array2DLog(higgs_Log_Statement, "Constructor", "println", m_pos);
-				Array2DLog(higgs_Log_Statement, "Constructor", "println", m_size);
+				Array2DLog(pankey_Log_Statement, "Constructor", "println", m_pos);
+				Array2DLog(pankey_Log_Statement, "Constructor", "println", m_size);
 			}
-			Array2DLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			Array2DLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		virtual ~Array2D(){
-			Array2DLog(higgs_Log_StartMethod, "Destructor", "println", "");
-			Array2DLog(higgs_Log_Statement, "Destructor", "println", "~Array2D");
-			Array2DLog(higgs_Log_Statement, "Destructor", "println", m_pos);
-			Array2DLog(higgs_Log_Statement, "Destructor", "println", m_size);
+			Array2DLog(pankey_Log_StartMethod, "Destructor", "println", "");
+			Array2DLog(pankey_Log_Statement, "Destructor", "println", "~Array2D");
+			Array2DLog(pankey_Log_Statement, "Destructor", "println", m_pos);
+			Array2DLog(pankey_Log_Statement, "Destructor", "println", m_size);
 			fix();
 			erase();
-			Array2DLog(higgs_Log_EndMethod, "Destructor", "println", "");
+			Array2DLog(pankey_Log_EndMethod, "Destructor", "println", "");
 		}
 
 		virtual size_t printTo(Print& p) const{
@@ -144,16 +128,16 @@ class Array2D : public Printable, public cppObject{
 		}
 
 		virtual void createArray(int c_x, int c_y){
-			Array2DLog(higgs_Log_StartMethod, "Constructor", "println", "");
+			Array2DLog(pankey_Log_StartMethod, "Constructor", "println", "");
 			fix();
 			erase();
 			if(c_x > 0 || c_y > 0){
 				m_size_X = c_x;
 				m_size_Y = c_y;
 				m_t_value = create(m_size_X, m_size_Y);
-				Array2DLog(higgs_Log_Statement, "Constructor", "println", p_size);
+				Array2DLog(pankey_Log_Statement, "Constructor", "println", p_size);
 			}
-			Array2DLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			Array2DLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 		
 		virtual void fix(){
@@ -201,8 +185,8 @@ class Array2D : public Printable, public cppObject{
 		}
 
 		virtual T** pointer(){
-			Array2DLog(higgs_Log_StartMethod, "pointer", "println", "");
-			Array2DLog(higgs_Log_EndMethod, "pointer", "println", "");
+			Array2DLog(pankey_Log_StartMethod, "pointer", "println", "");
+			Array2DLog(pankey_Log_EndMethod, "pointer", "println", "");
 			return m_t_value;
 		}
 
@@ -243,18 +227,18 @@ class Array2D : public Printable, public cppObject{
 		}
 
 		virtual Array2DIterator<T> begin(){
-			Array2DLog(higgs_Log_StartMethod, "begin", "println", "");
-			Array2DLog(higgs_Log_EndMethod, "begin", "println", "");
+			Array2DLog(pankey_Log_StartMethod, "begin", "println", "");
+			Array2DLog(pankey_Log_EndMethod, "begin", "println", "");
 			return Array2DIterator<T>(m_t_value,0,0,m_size_X,m_size_Y);
 		}
 		virtual Array2DIterator<T> end(){
-			Array2DLog(higgs_Log_StartMethod, "end", "println", "");
-			Array2DLog(higgs_Log_EndMethod, "end", "println", "");
+			Array2DLog(pankey_Log_StartMethod, "end", "println", "");
+			Array2DLog(pankey_Log_EndMethod, "end", "println", "");
 			return Array2DIterator<T>(m_t_value,m_size_X,m_size_Y,m_size_X,m_size_Y);
 		}
 
 		virtual bool contain(const T& a_value){
-			Array2DLog(higgs_Log_StartMethod, "contain", "println", "");
+			Array2DLog(pankey_Log_StartMethod, "contain", "println", "");
 			if(m_t_value == nullptr || m_size_X == 0 || m_size_Y == 0){
 				return false;
 			}
@@ -265,24 +249,24 @@ class Array2D : public Printable, public cppObject{
 					}
 				}
 			}
-			Array2DLog(higgs_Log_EndMethod, "contain", "println", "");
+			Array2DLog(pankey_Log_EndMethod, "contain", "println", "");
 			return false;
 		}
 
 		Array2D<T>& operator=(const Array2D<T>& source){
-			Array2DLog(higgs_Log_StartMethod, "operator=", "println", "operator= const Array2D<T>&");
+			Array2DLog(pankey_Log_StartMethod, "operator=", "println", "operator= const Array2D<T>&");
 			fix();
 			erase();
 				
 			if(source.isEmpty()){
-				Array2DLog(higgs_Log_EndMethod, "operator=", "println", "source.isEmpty()");
+				Array2DLog(pankey_Log_EndMethod, "operator=", "println", "source.isEmpty()");
 				return *this;
 			}
 			m_size_X = source.getSizeX();
 			m_size_Y = source.getSizeY();
 			m_t_value = create(m_size_X,m_size_Y);
 			copy(source.m_t_value, source.m_size_X,source.m_size_Y);
-			Array2DLog(higgs_Log_EndMethod, "operator=", "println", "");
+			Array2DLog(pankey_Log_EndMethod, "operator=", "println", "");
 			return *this;
 		}
 		
@@ -324,13 +308,13 @@ class Array2D : public Printable, public cppObject{
 			fix();
 			erase();
 			if(source->isEmpty()){
-				Array2DLog(higgs_Log_EndMethod, "copy", "println", "source.isEmpty()");
+				Array2DLog(pankey_Log_EndMethod, "copy", "println", "source.isEmpty()");
 				return true;
 			}
 			m_size_X = source->getSizeX();
 			m_size_Y = source->getSizeY();
 			if(m_size_X > 0 && m_size_Y > 0){
-				Array2DLog(higgs_Log_Statement, "copy", "println", "copy");
+				Array2DLog(pankey_Log_Statement, "copy", "println", "copy");
 				m_t_value = create(m_size_X, m_size_Y);
 				copy(source->m_t_value, m_size_X, m_size_Y);
 			}
@@ -348,7 +332,7 @@ class Array2D : public Printable, public cppObject{
 			fix();
 			erase();
 			if(source->isEmpty()){
-				Array2DLog(higgs_Log_EndMethod, "operator=", "println", "source.isEmpty()");
+				Array2DLog(pankey_Log_EndMethod, "operator=", "println", "source.isEmpty()");
 				return true;
 			}
 			m_size_X = source->m_size_X;

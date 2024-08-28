@@ -3,35 +3,35 @@
 	#define MemoryStructure_hpp
 
 	#ifdef MemoryStructure_LogApp
-		#include "higgs_Logger.hpp"
-		#define MemoryStructureLog(location,method,type,mns) higgs_Log((void*)this,location,"MemoryStructure",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define MemoryStructureLog(location,method,type,mns) pankey_Log((void*)this,location,"MemoryStructure",method,type,mns)
 	#else
 		#define MemoryStructureLog(location,method,type,mns)
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class T>
 		class MemoryStructure{
 			public:
 				
 				virtual ~MemoryStructure<T>(){
-					MemoryStructureLog(higgs_Log_StartMethod, "Destructor", "println", "");
-					MemoryStructureLog(higgs_Log_EndMethod, "Destructor", "println", "");
+					MemoryStructureLog(pankey_Log_StartMethod, "Destructor", "println", "");
+					MemoryStructureLog(pankey_Log_EndMethod, "Destructor", "println", "");
 				}
                 
                 virtual void setOwner(bool a_owning){
-                    MemoryStructureLog(higgs_Log_StartMethod, "isOwner", "println", "");
+                    MemoryStructureLog(pankey_Log_StartMethod, "isOwner", "println", "");
                     this->m_owner = a_owning;
-                    MemoryStructureLog(higgs_Log_Statement, "isOwner", "println", "isOwner:");
-                    MemoryStructureLog(higgs_Log_Statement, "isOwner", "println", this->m_owner);
-                    MemoryStructureLog(higgs_Log_EndMethod, "isOwner", "println", "");
+                    MemoryStructureLog(pankey_Log_Statement, "isOwner", "println", "isOwner:");
+                    MemoryStructureLog(pankey_Log_Statement, "isOwner", "println", this->m_owner);
+                    MemoryStructureLog(pankey_Log_EndMethod, "isOwner", "println", "");
                 }
                 virtual bool isOwner()const{
-                    MemoryStructureLog(higgs_Log_StartMethod, "isOwner", "println", "");
-                    MemoryStructureLog(higgs_Log_Statement, "isOwner", "println", "isOwner:");
-                    MemoryStructureLog(higgs_Log_Statement, "isOwner", "println", this->m_owner);
-                    MemoryStructureLog(higgs_Log_EndMethod, "isOwner", "println", "");
+                    MemoryStructureLog(pankey_Log_StartMethod, "isOwner", "println", "");
+                    MemoryStructureLog(pankey_Log_Statement, "isOwner", "println", "isOwner:");
+                    MemoryStructureLog(pankey_Log_Statement, "isOwner", "println", this->m_owner);
+                    MemoryStructureLog(pankey_Log_EndMethod, "isOwner", "println", "");
                     return this->m_owner;
                 }
 				

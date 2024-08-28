@@ -5,7 +5,7 @@
 	#include "Button.hpp"
 	#include "Vector2f.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
 		class ScreenButton : public Button{
 			private:

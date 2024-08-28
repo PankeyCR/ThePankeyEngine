@@ -5,16 +5,16 @@
 	#include "Note.hpp"
 	#include "PrimitiveRawList.hpp"
 
-	#ifdef higgs_Windows
+	#ifdef pankey_Windows
 
 	#endif
 
-	#ifdef higgs_ArduinoIDE
+	#ifdef pankey_ArduinoIDE
 		#include "IPAddress.h"
 	#endif
 
-	namespace higgs{
-		#if defined(higgs_ArduinoIDE)
+	namespace pankey{
+		#if defined(pankey_ArduinoIDE)
 		
 			Array<uint8_t> toMAC(const Note& a_note){
 				Array<uint8_t> i_mac;
@@ -153,7 +153,7 @@
 			
 		#endif
 		
-		#if defined(higgs_Windows)
+		#if defined(pankey_Windows)
 		
 		// IPAddress toIPAddress(const Note& a_note){
 		// 	IPAddress ip;

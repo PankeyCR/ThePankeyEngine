@@ -12,13 +12,13 @@
 	#include <WiFi.h>
 
 	#ifdef WIFIWebPage_LogApp
-		#include "higgs_Logger.hpp"
-		#define WIFIWebPageLog(location,method,type,mns) higgs_Log((void*)this,location,"WIFIWebPage",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define WIFIWebPageLog(location,method,type,mns) pankey_Log((void*)this,location,"WIFIWebPage",method,type,mns)
 	#else
 		#define WIFIWebPageLog(location,method,type,mns) 
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		class WIFIWebPage : public BaseAppState<Application>{
 			public:
@@ -30,30 +30,30 @@
 				virtual ~WIFIWebPage(){}
 
 				virtual void initializeState(Application& a_app){
-					WIFIWebPageLog(higgs_Log_StartMethod, "initialize", "println", "");
+					WIFIWebPageLog(pankey_Log_StartMethod, "initialize", "println", "");
 					server.begin();
-					WIFIWebPageLog(higgs_Log_EndMethod, "initialize", "println", "");
+					WIFIWebPageLog(pankey_Log_EndMethod, "initialize", "println", "");
 				}
 				
 				virtual void updateState(Application& a_app){
-					// WIFIWebPageLog(higgs_Log_StartMethod, "updateState", "println", "");
+					// WIFIWebPageLog(pankey_Log_StartMethod, "updateState", "println", "");
 
 					WiFiClient client = server.available();
 
 					if (client) {
-						WIFIWebPageLog(higgs_Log_Statement, "updateState", "println", "connecting to client...");
+						WIFIWebPageLog(pankey_Log_Statement, "updateState", "println", "connecting to client...");
 						currentTime = millis();
 						previousTime = currentTime;
 						Note currentLine = "";
 						while (client.connected() && currentTime - previousTime <= timeoutTime) {
-							WIFIWebPageLog(higgs_Log_Statement, "updateState", "println", "connected to client");
+							WIFIWebPageLog(pankey_Log_Statement, "updateState", "println", "connected to client");
 							currentTime = millis();
       						if (client.available()) {
-								WIFIWebPageLog(higgs_Log_Statement, "updateState", "println", "client available");
+								WIFIWebPageLog(pankey_Log_Statement, "updateState", "println", "client available");
 								char c = client.read();
 								m_header.addLocalValue(c); 
 								if (c == '\n') {
-									WIFIWebPageLog(higgs_Log_Statement, "updateState", "println", "client end of line");
+									WIFIWebPageLog(pankey_Log_Statement, "updateState", "println", "client end of line");
 									if (currentLine.length() == 0) {
 										header_event.update(m_header);
 										header_state_event.update(m_header);
@@ -72,12 +72,12 @@
 
 										client.println(i_http_responce);
 										client.println();
-										WIFIWebPageLog(higgs_Log_Statement, "updateState", "println", "printing page");
+										WIFIWebPageLog(pankey_Log_Statement, "updateState", "println", "printing page");
 										client.println(i_web_page_js);
 										client.println();
 									}else{
 										currentLine.clear();
-										WIFIWebPageLog(higgs_Log_Statement, "updateState", "println", "clearing currentLine");
+										WIFIWebPageLog(pankey_Log_Statement, "updateState", "println", "clearing currentLine");
 									}
 								}else if(c != '\r'){
 									currentLine.addLocalValue(c); 
@@ -87,7 +87,7 @@
 						client.stop();
 						m_header.clear();
 					}
-					// WIFIWebPageLog(higgs_Log_EndMethod, "updateState", "println", "");
+					// WIFIWebPageLog(pankey_Log_EndMethod, "updateState", "println", "");
   				}
 
 				virtual Note getDefaultHTTPResponce(){

@@ -2,7 +2,7 @@
 #ifndef ClassCount_hpp
 	#define ClassCount_hpp
 
-	namespace higgs{
+	namespace pankey{
 		
 		static long class_count = 0;
 			

@@ -1,23 +1,8 @@
 
-#include "higgs_Enviroment.hpp"
-
 #ifndef Array2DIterator_hpp
 #define Array2DIterator_hpp
-#define Array2DIterator_AVAILABLE
 
-#ifndef higgs_Enviroment_Defined
-
-#endif
-
-#ifdef higgs_Windows
-
-#endif
-
-#ifdef higgs_ArduinoIDE
-	#include "Arduino.h"
-#endif
-
-namespace higgs{
+namespace pankey{
 
 template<class T>
 class Array2DIterator{

@@ -2,7 +2,7 @@
 #ifndef LinkedListNode_hpp
 	#define LinkedListNode_hpp
 
-	namespace higgs{
+	namespace pankey{
 
 		template <class T>
 		class LinkedListNode{

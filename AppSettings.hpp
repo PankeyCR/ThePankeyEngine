@@ -4,7 +4,7 @@
 
 	#include "Note.hpp"
 
-	namespace higgs{
+	namespace pankey{
 		
 		class AppSettings{
 			public:

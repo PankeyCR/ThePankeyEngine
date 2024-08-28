@@ -6,17 +6,17 @@
 #include "Note.hpp"
 #include "ByteArray.hpp"
 
-#ifdef higgs_Windows
-	#include "higgs_Printable.hpp"
-	#include "higgs_Print.hpp"
+#ifdef pankey_Windows
+	#include "pankey_Printable.hpp"
+	#include "pankey_Print.hpp"
 #endif
 
-#ifdef higgs_ArduinoIDE
+#ifdef pankey_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif
 
-namespace higgs{
+namespace pankey{
 
 class Message : public Printable{
 public:

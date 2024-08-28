@@ -2,7 +2,7 @@
 #ifndef UpdateManager_hpp
 	#define UpdateManager_hpp
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class... Args>
 		class UpdateManager{

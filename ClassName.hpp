@@ -4,7 +4,7 @@
 
 	#include "CharArray.hpp"
 
-	namespace higgs{
+	namespace pankey{
 		
 		template<class cls>
 		struct ClassName{

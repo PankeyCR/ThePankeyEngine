@@ -7,25 +7,25 @@
 #include "RawMapIterator.hpp"
 
 #ifdef PrimitiveRawMap_LogApp
-	#include "higgs_Logger.hpp"
-	#define PrimitiveRawMapLog(location,method,type,mns) higgs_Log((void*)this,location,"PrimitiveRawMap",method,type,mns)
+	#include "pankey_Logger.hpp"
+	#define PrimitiveRawMapLog(location,method,type,mns) pankey_Log((void*)this,location,"PrimitiveRawMap",method,type,mns)
 #else
 	#define PrimitiveRawMapLog(location,method,type,mns)
 #endif
 
-namespace higgs{
+namespace pankey{
 
 template <class K,class V>
 class PrimitiveRawMap : public PrimitiveRawPointerMap<K,V>, virtual public RawMap<K,V>{	
     public:
 		
 		PrimitiveRawMap(){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "Constructor", "println", "");
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "Constructor", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 		
 		PrimitiveRawMap(const PrimitiveRawMap<K,V>& c_map){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "Constructor", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "Constructor", "println", "");
 			this->setOwner(false);
 			this->expandLocal(c_map.getPosition());
 			
@@ -39,26 +39,26 @@ class PrimitiveRawMap : public PrimitiveRawPointerMap<K,V>, virtual public RawMa
 					this->addPointer(*k,v);
 				}
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 		
 		PrimitiveRawMap(int c_size) : PrimitiveRawPointerMap<K,V>(c_size){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "Constructor", "println", "");
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "Constructor", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 		
 		PrimitiveRawMap(int c_size, bool c_key_own, bool c_value_own, bool c_reorder) : PrimitiveRawPointerMap<K,V>(c_size, c_key_own, c_value_own, c_reorder){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "Constructor", "println", "");
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "Constructor", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 		
 		virtual ~PrimitiveRawMap(){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "Destructor", "println", "");
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "Destructor", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "Destructor", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "Destructor", "println", "");
 		}
 		
 		virtual void addMap(const PrimitiveRawMap<K,V>& a_map){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "addLValues", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "addLValues", "println", "");
 			if(a_map.getSize() < this->getPosition() + a_map.getPosition()){
 				this->expandLocal(a_map.getPosition());
 			}
@@ -72,241 +72,241 @@ class PrimitiveRawMap : public PrimitiveRawPointerMap<K,V>, virtual public RawMa
 					this->addPointer(*k,nullptr);
 				}
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "addLValues", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "addLValues", "println", "");
 		}
 		
 		virtual RawMapEntry<K,V> addLValues(K a_key, V a_value){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "addLValues", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "addLValues", "println", "");
 			K* i_key = new K(a_key);
 			V* i_value = new V(a_value);
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "addLValues", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "addLValues", "println", "");
 			return this->addPointers(i_key, i_value);
 		}
 		
 		virtual RawMapEntry<K,V> addPointer(K a_key, V *a_value){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "addPointer", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "addPointer", "println", "");
 			K* i_key = new K(a_key);
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "addPointer", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "addPointer", "println", "");
 			return this->addPointers(i_key, a_value);
 		}
 		
 		virtual RawMapEntry<K,V> setLValues(K a_key, V a_value){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "setLValues", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "setLValues", "println", "");
 			int i_index = this->getKeyIndexByLValue(a_key);
 			if(i_index == -1){
-				PrimitiveRawMapLog(higgs_Log_EndMethod, "setLValues", "println", "");
+				PrimitiveRawMapLog(pankey_Log_EndMethod, "setLValues", "println", "");
 				return RawMapEntry<K,V>();
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "setLValues", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "setLValues", "println", "");
 			return this->setValueLValueByPosition(i_index, a_value);
 		}
 		
 		virtual RawMapEntry<K,V> setPointer(K a_key, V *a_value){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "setPointer", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "setPointer", "println", "");
 			int i_index = this->getKeyIndexByLValue(a_key);
 			if(i_index == -1){
-				PrimitiveRawMapLog(higgs_Log_EndMethod, "setPointer", "println", "");
+				PrimitiveRawMapLog(pankey_Log_EndMethod, "setPointer", "println", "");
 				return RawMapEntry<K,V>();
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "setPointer", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "setPointer", "println", "");
 			return this->setValuePointerByPosition(i_index, a_value);
 		}
 		
 		virtual RawMapEntry<K,V> setKeyLValueByPosition(int a_position, K a_key){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "setKeyLValueByPosition", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "setKeyLValueByPosition", "println", "");
 			K* i_key = new K(a_key);
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "setKeyLValueByPosition", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "setKeyLValueByPosition", "println", "");
 			return this->setKeyPointerByPosition(a_position, i_key);
 		}
 		
 		virtual RawMapEntry<K,V> setValueLValueByPosition(int a_position, V a_value){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "setValueLValueByPosition", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "setValueLValueByPosition", "println", "");
 			V* i_value = new V(a_value);
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "setValueLValueByPosition", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "setValueLValueByPosition", "println", "");
 			return this->setValuePointerByPosition(a_position, i_value);
 		}
 		
 		virtual bool containKeyByLValue(K a_key){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "containKeyByLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "containKeyByLValue", "println", "");
 			for(int x = 0; x < this->getPosition(); x++){
 				K* f_key = this->getKeyByPosition(x);
 				if(f_key == nullptr){
 					continue;
 				}
 				if(*f_key == a_key){
-					PrimitiveRawMapLog(higgs_Log_EndMethod, "containKeyByLValue", "println", "");
+					PrimitiveRawMapLog(pankey_Log_EndMethod, "containKeyByLValue", "println", "");
 					return true;
 				}
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "containKeyByLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "containKeyByLValue", "println", "");
 			return false;
 		}
 		
 		virtual bool containValueByLValue(V a_value){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "containValueByLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "containValueByLValue", "println", "");
 			for(int x = 0; x < this->getPosition(); x++){
 				V* f_value = this->getValueByPosition(x);
 				if(f_value == nullptr){
 					continue;
 				}
 				if(*f_value == a_value){
-					PrimitiveRawMapLog(higgs_Log_EndMethod, "containValueByLValue", "println", "");
+					PrimitiveRawMapLog(pankey_Log_EndMethod, "containValueByLValue", "println", "");
 					return true;
 				}
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "containValueByLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "containValueByLValue", "println", "");
 			return false;
 		}
 		
 		virtual K* getKeyByLValue(V a_value)const{
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "getKeyByLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "getKeyByLValue", "println", "");
 			for(int x = 0; x < this->getPosition(); x++){
 				V* f_value = this->getValueByPosition(x);
 				if(f_value == nullptr){
 					continue;
 				}
 				if(*f_value == a_value){
-					PrimitiveRawMapLog(higgs_Log_EndMethod, "getKeyByLValue", "println", "");
+					PrimitiveRawMapLog(pankey_Log_EndMethod, "getKeyByLValue", "println", "");
 					return this->getKeyByPosition(x);
 				}
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "getKeyByLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "getKeyByLValue", "println", "");
 			return nullptr;
 		}
 		
 		virtual V* getValueByLValue(K a_key)const{
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "getValueByLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "getValueByLValue", "println", "");
 			for(int x = 0; x < this->getPosition(); x++){
 				K* f_key = this->getKeyByPosition(x);
 				if(f_key == nullptr){
 					continue;
 				}
 				if(*f_key == a_key){
-					PrimitiveRawMapLog(higgs_Log_EndMethod, "getValueByLValue", "println", "");
+					PrimitiveRawMapLog(pankey_Log_EndMethod, "getValueByLValue", "println", "");
 					return this->getValueByPosition(x);
 				}
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "getValueByLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "getValueByLValue", "println", "");
 			return nullptr;
 		}
 		
 		virtual RawMapEntry<K,V> removeByKeyLValue(K a_key){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "removeByKeyLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "removeByKeyLValue", "println", "");
 			int i_position = this->getKeyIndexByLValue(a_key);
 			if(i_position == -1){
-				PrimitiveRawMapLog(higgs_Log_EndMethod, "removeByKeyLValue", "println", "");
+				PrimitiveRawMapLog(pankey_Log_EndMethod, "removeByKeyLValue", "println", "");
 				return RawMapEntry<K,V>();
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "removeByKeyLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "removeByKeyLValue", "println", "");
 			return this->removeByPosition(i_position);
 		}
 		
 		virtual RawMapEntry<K,V> removeByValueLValue(V a_value){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "removeByValueLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "removeByValueLValue", "println", "");
 			int i_position = this->getValueIndexByLValue(a_value);
 			if(i_position == -1){
-				PrimitiveRawMapLog(higgs_Log_EndMethod, "removeByValueLValue", "println", "");
+				PrimitiveRawMapLog(pankey_Log_EndMethod, "removeByValueLValue", "println", "");
 				return RawMapEntry<K,V>();
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "removeByValueLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "removeByValueLValue", "println", "");
 			return this->removeByPosition(i_position);
 		}
 		
 		virtual bool removeDeleteByKeyLValue(K a_key){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "removeDeleteByKeyLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "removeDeleteByKeyLValue", "println", "");
 			int i_position = this->getKeyIndexByLValue(a_key);
 			if(i_position == -1){
-				PrimitiveRawMapLog(higgs_Log_EndMethod, "removeDeleteByKeyLValue", "println", "");
+				PrimitiveRawMapLog(pankey_Log_EndMethod, "removeDeleteByKeyLValue", "println", "");
 				return false;
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "removeDeleteByKeyLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "removeDeleteByKeyLValue", "println", "");
 			return this->removeDeleteByPosition(i_position);
 		}
 		
 		virtual bool removeDeleteByValueLValue(V a_value){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "removeDeleteByValueLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "removeDeleteByValueLValue", "println", "");
 			int i_position = this->getValueIndexByLValue(a_value);
 			if(i_position == -1){
-				PrimitiveRawMapLog(higgs_Log_EndMethod, "removeDeleteByValueLValue", "println", "");
+				PrimitiveRawMapLog(pankey_Log_EndMethod, "removeDeleteByValueLValue", "println", "");
 				return false;
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "removeDeleteByValueLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "removeDeleteByValueLValue", "println", "");
 			return this->removeDeleteByPosition(i_position);
 		}
 		
 		virtual bool remove(K a_key){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "remove", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "remove", "println", "");
 			int i_position = this->getKeyIndexByLValue(a_key);
 			if(i_position == -1){
-				PrimitiveRawMapLog(higgs_Log_EndMethod, "remove", "println", "");
+				PrimitiveRawMapLog(pankey_Log_EndMethod, "remove", "println", "");
 				return false;
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "remove", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "remove", "println", "");
 			return this->removeDeleteByPosition(i_position);
 		}
 		
 		virtual RawMapEntry<K,V> putLValues(K a_key, V a_value){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "putLValues", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "putLValues", "println", "");
 			int index = this->getKeyIndexByLValue(a_key);
 			if(index != -1){
-				PrimitiveRawMapLog(higgs_Log_EndMethod, "putLValues", "println", "index != -1");
+				PrimitiveRawMapLog(pankey_Log_EndMethod, "putLValues", "println", "index != -1");
 				return this->getRawMapEntryByPosition(index);
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "putLValues", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "putLValues", "println", "");
 			return this->addLValues(a_key, a_value);
 		}
 		
 		virtual RawMapEntry<K,V> putPointer(K a_key, V* a_value){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "putPointer", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "putPointer", "println", "");
 			int index = this->getKeyIndexByLValue(a_key);
 			if(index != -1){
-				PrimitiveRawMapLog(higgs_Log_EndMethod, "putLValues", "println", "index != -1");
+				PrimitiveRawMapLog(pankey_Log_EndMethod, "putLValues", "println", "index != -1");
 				return this->getRawMapEntryByPosition(index);
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "putPointer", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "putPointer", "println", "");
 			return this->addPointer(a_key, a_value);
 		}
 		
 		virtual int getKeyIndexByLValue(K a_key){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "getKeyIndexByLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "getKeyIndexByLValue", "println", "");
 			for(int x=0; x < this->getPosition(); x++){
 				K* i_key = this->getKeyByPosition(x);
 				if(i_key == nullptr){
 					continue;
 				}
 				if(a_key == *i_key){
-					PrimitiveRawMapLog(higgs_Log_EndMethod, "getKeyIndexByLValue", "println", x);
+					PrimitiveRawMapLog(pankey_Log_EndMethod, "getKeyIndexByLValue", "println", x);
 					return x;
 				}
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "getKeyIndexByLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "getKeyIndexByLValue", "println", "");
 			return -1;
 		}
 		
 		virtual int getValueIndexByLValue(V a_value){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "getValueIndexByLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "getValueIndexByLValue", "println", "");
 			for(int x=0; x < this->getPosition(); x++){
 				V* i_value = this->getValueByPosition(x);
 				if(i_value == nullptr){
 					continue;
 				}
 				if(a_value == *i_value){
-					PrimitiveRawMapLog(higgs_Log_EndMethod, "getValueIndexByLValue", "println", "");
+					PrimitiveRawMapLog(pankey_Log_EndMethod, "getValueIndexByLValue", "println", "");
 					return x;
 				}
 			}
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "getValueIndexByLValue", "println", "");
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "getValueIndexByLValue", "println", "");
 			return -1;
 		}
 		
 		virtual RawMapIterator<K,V> begin(){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "begin", "println", this->getPosition());
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "begin", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "begin", "println", this->getPosition());
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "begin", "println", "");
 			return RawMapIterator<K,V>(this, 0, this->getPosition());
 		}
 		virtual RawMapIterator<K,V> end(){
-			PrimitiveRawMapLog(higgs_Log_StartMethod, "end", "println", this->getPosition());
-			PrimitiveRawMapLog(higgs_Log_EndMethod, "end", "println", "");
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "end", "println", this->getPosition());
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "end", "println", "");
 			return RawMapIterator<K,V>(this, this->getPosition() - 1, this->getPosition());
 		}
 		

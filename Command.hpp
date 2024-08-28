@@ -2,7 +2,7 @@
 #ifndef Command_hpp
 	#define Command_hpp
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class... Args>
 		class Command{

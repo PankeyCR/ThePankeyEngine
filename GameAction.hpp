@@ -5,18 +5,11 @@
 
 #include "GameOn.hpp"
 
-namespace higgs{
+namespace pankey{
 
 class GameAction : public GameOn{
     public:
-	
-		virtual cppObjectClass* getClassName(){
-			return Class<GameAction>::getClass();
-		}
-		
-		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<GameAction>::getClass() || GameOn::instanceof(cls);
-		}
+		virtual ~GameAction(){}
 	
 		virtual void Action(){}
 };

@@ -6,28 +6,28 @@
 	#include "Member.hpp"
 
 	#ifdef Collection_LogApp
-		#include "higgs_Logger.hpp"
-		#define CollectionLog(location,method,type,mns) higgs_Log((void*)this,location,"Collection",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define CollectionLog(location,method,type,mns) pankey_Log((void*)this,location,"Collection",method,type,mns)
 	#else
 		#define CollectionLog(location,method,type,mns)
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class H, class M>
 		class Collection{
 			public:
 
 				virtual ~Collection(){
-					CollectionLog(higgs_Log_StartMethod, "Destructor", "println", "");
-					CollectionLog(higgs_Log_EndMethod, "Destructor", "println", "");
+					CollectionLog(pankey_Log_StartMethod, "Destructor", "println", "");
+					CollectionLog(pankey_Log_EndMethod, "Destructor", "println", "");
 				}
 				
 				virtual bool isEmpty()const=0;
 
 				virtual int length()const{
-					CollectionLog(higgs_Log_StartMethod, "length", "println", "");
-					CollectionLog(higgs_Log_EndMethod, "length", "println", "");
+					CollectionLog(pankey_Log_StartMethod, "length", "println", "");
+					CollectionLog(pankey_Log_EndMethod, "length", "println", "");
 					return this->m_length;
 				}
 				
@@ -72,68 +72,68 @@
 			protected:
 				
 				virtual void incrementPosition(){
-					CollectionLog(higgs_Log_StartMethod, "incrementPosition", "println", "");
+					CollectionLog(pankey_Log_StartMethod, "incrementPosition", "println", "");
 					this->m_length++;
-					CollectionLog(higgs_Log_EndMethod, "incrementPosition", "println", "");
+					CollectionLog(pankey_Log_EndMethod, "incrementPosition", "println", "");
 				}
 				virtual void decrementPosition(){
-					CollectionLog(higgs_Log_StartMethod, "decrementPosition", "println", "");
+					CollectionLog(pankey_Log_StartMethod, "decrementPosition", "println", "");
 					this->m_length--;
 					if(this->m_length < 0){
 						this->m_length = 0;
 					}
-					CollectionLog(higgs_Log_EndMethod, "decrementPosition", "println", "");
+					CollectionLog(pankey_Log_EndMethod, "decrementPosition", "println", "");
 				}
 				
 				virtual void incrementPosition(int a_size){
-					CollectionLog(higgs_Log_StartMethod, "incrementPosition", "println", "");
+					CollectionLog(pankey_Log_StartMethod, "incrementPosition", "println", "");
 					this->m_length += a_size;
-					CollectionLog(higgs_Log_EndMethod, "incrementPosition", "println", "");
+					CollectionLog(pankey_Log_EndMethod, "incrementPosition", "println", "");
 				}
 				virtual void decrementPosition(int a_size){
-					CollectionLog(higgs_Log_StartMethod, "decrementPosition", "println", "");
+					CollectionLog(pankey_Log_StartMethod, "decrementPosition", "println", "");
 					this->m_length -= a_size;
 					if(this->m_length < 0){
 						this->m_length = 0;
 					}
-					CollectionLog(higgs_Log_EndMethod, "decrementPosition", "println", "");
+					CollectionLog(pankey_Log_EndMethod, "decrementPosition", "println", "");
 				}
 
 			public:
 			
 				virtual bool operator<(int x) const{
-					CollectionLog(higgs_Log_StartMethod, "operator<", "println", "");
-					CollectionLog(higgs_Log_EndMethod, "operator<", "println", "");
+					CollectionLog(pankey_Log_StartMethod, "operator<", "println", "");
+					CollectionLog(pankey_Log_EndMethod, "operator<", "println", "");
 					return this->length() < x;
 				}
 				
 				virtual bool operator>(int x) const{
-					CollectionLog(higgs_Log_StartMethod, "operator>", "println", "");
-					CollectionLog(higgs_Log_EndMethod, "operator>", "println", "");
+					CollectionLog(pankey_Log_StartMethod, "operator>", "println", "");
+					CollectionLog(pankey_Log_EndMethod, "operator>", "println", "");
 					return this->length() > x;
 				}
 				
 				virtual bool operator<=(int x) const{
-					CollectionLog(higgs_Log_StartMethod, "operator<=", "println", "");
-					CollectionLog(higgs_Log_EndMethod, "operator<=", "println", "");
+					CollectionLog(pankey_Log_StartMethod, "operator<=", "println", "");
+					CollectionLog(pankey_Log_EndMethod, "operator<=", "println", "");
 					return this->length() <= x;
 				}
 				
 				virtual bool operator>=(int x) const{
-					CollectionLog(higgs_Log_StartMethod, "operator>=", "println", "");
-					CollectionLog(higgs_Log_EndMethod, "operator>=", "println", "");
+					CollectionLog(pankey_Log_StartMethod, "operator>=", "println", "");
+					CollectionLog(pankey_Log_EndMethod, "operator>=", "println", "");
 					return this->length() >= x;
 				}
 				
 				virtual bool operator==(int x) const{
-					CollectionLog(higgs_Log_StartMethod, "operator==", "println", "");
-					CollectionLog(higgs_Log_EndMethod, "operator==", "println", "");
+					CollectionLog(pankey_Log_StartMethod, "operator==", "println", "");
+					CollectionLog(pankey_Log_EndMethod, "operator==", "println", "");
 					return this->length() == x;
 				}
 				
 				virtual bool operator!=(int x) const{
-					CollectionLog(higgs_Log_StartMethod, "operator!=", "println", "");
-					CollectionLog(higgs_Log_EndMethod, "operator!=", "println", "");
+					CollectionLog(pankey_Log_StartMethod, "operator!=", "println", "");
+					CollectionLog(pankey_Log_EndMethod, "operator!=", "println", "");
 					return this->length() != x;
 				}
 			

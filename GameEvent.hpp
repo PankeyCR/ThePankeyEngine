@@ -1,25 +1,6 @@
 
-#include "ame_Enviroment.hpp"
-
-#if defined(DISABLE_GameEvent)
-	#define GameEvent_hpp
-#endif
-
 #ifndef GameEvent_hpp
 #define GameEvent_hpp
-#define GameEvent_AVAILABLE
-
-#ifndef ame_Enviroment_Defined
-
-#endif
-
-#ifdef ame_Windows
-
-#endif
-
-#ifdef ame_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Event.hpp"
 #include "GameOn.hpp"

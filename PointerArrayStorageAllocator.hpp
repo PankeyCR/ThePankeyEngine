@@ -5,7 +5,7 @@
     #include "MemoryStorageAllocator.hpp"
     #include "PointerArrayStorage.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class P, class H, class A>
 		class PointerArrayStorageAllocator : public MemoryStorageAllocator<P,H,A>{

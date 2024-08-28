@@ -1,27 +1,18 @@
 
 #ifndef ActionComponent_hpp
-#define ActionComponent_hpp
-#define ActionComponent_AVAILABLE
+	#define ActionComponent_hpp
 
-#include "GameOn.hpp"
+	#include "GameOn.hpp"
 
-namespace ame{
+	namespace pankey{
 
-class ActionComponent : public GameOn{
-    public:
-		virtual ~ActionComponent(){}
-	
-		virtual cppObjectClass* getClassName(){
-			return Class<ActionComponent>::getClass();
-		}
-		
-		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<ActionComponent>::getClass() || GameOn::instanceof(cls);
-		}
-	
-		virtual void Action(){}
-};
+		class ActionComponent : public GameOn{
+			public:
+				virtual ~ActionComponent(){}
+			
+				virtual void Action(){}
+		};
 
-}
+	}
 
 #endif

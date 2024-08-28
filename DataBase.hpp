@@ -23,7 +23,7 @@
 	#endif
 #endif
 
-namespace higgs{
+namespace pankey{
 
 template<class M, class D>
 class DataBase{

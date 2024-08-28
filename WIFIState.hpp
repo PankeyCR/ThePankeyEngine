@@ -23,7 +23,7 @@
 	#define WIFIStateLog(name,method,type,mns)
 #endif
 
-namespace higgs{
+namespace pankey{
 
 class WIFIState IMPLEMENTATION_BaseAppState {
     public:

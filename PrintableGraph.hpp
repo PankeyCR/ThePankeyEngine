@@ -3,12 +3,12 @@
 #define PrintableGraph_hpp
 #define PrintableGraph_AVAILABLE
 
-#ifdef higgs_Windows
-	#include "higgs_Printable.hpp"
-	#include "higgs_Print.hpp"
+#ifdef pankey_Windows
+	#include "pankey_Printable.hpp"
+	#include "pankey_Print.hpp"
 #endif
 
-#ifdef higgs_ArduinoIDE
+#ifdef pankey_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif
@@ -18,17 +18,17 @@
 #include "Class.hpp"
 
 #ifdef PrintableGraph_LogApp
-	#include "higgs_Logger_config.hpp"
-	#include "higgs_Logger.hpp"
+	#include "pankey_Logger_config.hpp"
+	#include "pankey_Logger.hpp"
 
-	#define PrintableGraphLog(location,method,type,mns) higgs_Log(this,location,"PrintableGraph",method,type,mns)
+	#define PrintableGraphLog(location,method,type,mns) pankey_Log(this,location,"PrintableGraph",method,type,mns)
 	#define const_PrintableGraphLog(location,method,type,mns)
 #else
 	#ifdef PrintableGraph_LogDebugApp
-		#include "higgs_Logger_config.hpp"
-		#include "higgs_Logger.hpp"
+		#include "pankey_Logger_config.hpp"
+		#include "pankey_Logger.hpp"
 
-		#define PrintableGraphLog(location,method,type,mns) higgs_LogDebug(this,location,"PrintableGraph",method,type)
+		#define PrintableGraphLog(location,method,type,mns) pankey_LogDebug(this,location,"PrintableGraph",method,type)
 		#define const_PrintableGraphLog(location,method,type,mns)
 	#else
 		#define PrintableGraphLog(location,method,type,mns)
@@ -36,7 +36,7 @@
 	#endif
 #endif
 
-namespace higgs{
+namespace pankey{
 
 /*
 *	Class Configuration:

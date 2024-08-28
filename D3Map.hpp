@@ -4,7 +4,7 @@
 
 	#include "DMap.hpp"
 
-	namespace ame{
+	namespace pankey{
 
 		template <class T,int i0,int i1,int i2>
 		class D3Map : DMap<T>{

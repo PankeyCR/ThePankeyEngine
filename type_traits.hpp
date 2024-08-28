@@ -2,7 +2,7 @@
 #ifndef type_traits_hpp
   #define type_traits_hpp
 
-  namespace higgs{
+  namespace pankey{
     
     template<class T, T v>
     struct integral_constant{

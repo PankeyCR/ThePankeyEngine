@@ -2,7 +2,7 @@
 #ifndef Annotation_hpp
 	#define Annotation_hpp
 
-	namespace ame{
+	namespace pankey{
 
 		class Annotation{
 			public:

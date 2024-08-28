@@ -4,7 +4,7 @@
 
 #define unknown -1
 
-namespace higgs{
+namespace pankey{
 	
 class trilean{
 	protected:

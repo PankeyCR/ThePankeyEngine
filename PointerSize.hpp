@@ -2,15 +2,15 @@
 #ifndef PointerSize_hpp
 	#define PointerSize_hpp
 
-	#include "higgs_Enviroment.hpp"
+	#include "pankey_Enviroment.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
-		#if defined(higgs_Windows)
+		#if defined(pankey_Windows)
 			//#include <iostream>
 			//using pointer_size = size_t;
 			using pointer_size = decltype(alignof(char));
-		#elif defined(higgs_ArduinoIDE)
+		#elif defined(pankey_ArduinoIDE)
 			using pointer_size = size_t;
 		#else
 			using pointer_size = long;

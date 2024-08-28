@@ -5,7 +5,7 @@
 
 #include "RawPointerTree.hpp"
 
-namespace higgs{
+namespace pankey{
 
 template<class T>
 class RawPointerGraph : virtual public RawPointerTree<T>{

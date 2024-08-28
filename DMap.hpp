@@ -2,7 +2,7 @@
 #ifndef DMap_hpp
 #define DMap_hpp
 
-namespace higgs{
+namespace pankey{
 
 template <class T>
 class DMap {

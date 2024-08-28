@@ -14,7 +14,7 @@
 		#define InputEventAppStateLog(location,method,type,mns) 
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class I>
 		class InputEventAppState : public BaseAppState<Application,float> {

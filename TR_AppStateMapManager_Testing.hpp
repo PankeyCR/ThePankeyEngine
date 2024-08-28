@@ -2,8 +2,8 @@
 #ifndef TR_AppStateMapManager_Testing_hpp
 	#define TR_AppStateMapManager_Testing_hpp
 	
-	#include "higgs_Enviroment.hpp"
-	#include "higgs_Enviroment_config.hpp"
+	#include "pankey_Enviroment.hpp"
+	#include "pankey_Enviroment_config.hpp"
 
 	#include "TestResult.hpp"
 	#include "TestRunner.hpp"
@@ -11,7 +11,7 @@
 	#include "AppState.hpp"
 	#include "AppStateMapManager.hpp"
 
-	namespace higgs{
+	namespace pankey{
 		
 		class AppMapExample{};
 		

@@ -2,7 +2,7 @@
 #ifndef ClassTYPE_hpp
 	#define ClassTYPE_hpp
 
-	namespace higgs{
+	namespace pankey{
 		/*
 			BC = is the base class that represents all classes
 			IC = is the intance of the base class

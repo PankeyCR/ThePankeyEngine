@@ -5,7 +5,7 @@
 	#include "AppSettings.hpp"
 	#include "PrimitiveRawMap.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
 		class DefaultAppSettings : public AppSettings{
 			public:
@@ -26,8 +26,11 @@
 				}
 
 				virtual void changeInt(const Note& a_name, int a_var){
-					m_int_map.remove(a_name);
-					m_int_map.add(a_name, a_var);
+					if(m_int_map.contain(a_name)){
+						m_int_map.set(a_name, a_var);
+					}else{
+						m_int_map.add(a_name, a_var);
+					}
 				}
 
 				virtual int getInt(const Note& a_name){
@@ -55,8 +58,11 @@
 				}
 
 				virtual void changeLong(const Note& a_name, long a_var){
-					m_long_map.remove(a_name);
-					m_long_map.add(a_name, a_var);
+					if(m_long_map.contain(a_name)){
+						m_long_map.set(a_name, a_var);
+					}else{
+						m_long_map.add(a_name, a_var);
+					}
 				}
 
 				virtual long getLong(const Note& a_name){
@@ -84,8 +90,11 @@
 				}
 
 				virtual void changeFloat(const Note& a_name, float a_var){
-					m_float_map.remove(a_name);
-					m_float_map.add(a_name, a_var);
+					if(m_float_map.contain(a_name)){
+						m_float_map.set(a_name, a_var);
+					}else{
+						m_float_map.add(a_name, a_var);
+					}
 				}
 
 				virtual float getFloat(const Note& a_name){
@@ -113,8 +122,11 @@
 				}
 
 				virtual void changeNote(const Note& a_name, const Note& a_var){
-					m_note_map.remove(a_name);
-					m_note_map.add(a_name, a_var);
+					if(m_note_map.contain(a_name)){
+						m_note_map.set(a_name, a_var);
+					}else{
+						m_note_map.add(a_name, a_var);
+					}
 				}
 
 				virtual Note getNote(const Note& a_name){
@@ -142,8 +154,11 @@
 				}
 
 				virtual void changeBoolean(const Note& a_name, bool a_var){
-					m_boolean_map.remove(a_name);
-					m_boolean_map.add(a_name, a_var);
+					if(m_boolean_map.contain(a_name)){
+						m_boolean_map.set(a_name, a_var);
+					}else{
+						m_boolean_map.add(a_name, a_var);
+					}
 				}
 
 				virtual bool getBoolean(const Note& a_name){
@@ -171,8 +186,11 @@
 				}
 
 				virtual void change(const Note& a_name, var a_var){
-					m_var_map.remove(a_name);
-					m_var_map.add(a_name, a_var);
+					if(m_var_map.contain(a_name)){
+						m_var_map.set(a_name, a_var);
+					}else{
+						m_var_map.add(a_name, a_var);
+					}
 				}
 
 				virtual var get(const Note& a_name){

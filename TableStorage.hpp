@@ -6,13 +6,13 @@
 	#include "PrimitiveRawList.hpp"
 
 	#ifdef TableStorage_LogApp
-		#include "higgs_Logger.hpp"
-		#define TableStorageLog(location,method,type,mns) higgs_Log((void*)this,location,"TableStorage",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define TableStorageLog(location,method,type,mns) pankey_Log((void*)this,location,"TableStorage",method,type,mns)
 	#else
 		#define TableStorageLog(location,method,type,mns)
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class H>
 		class TableStorage{
@@ -23,8 +23,8 @@
                 using HOLDER_TYPE = typename MemoryHolder<H>::HOLDER_TYPE;
 
 				virtual ~TableStorage(){
-					TableStorageLog(higgs_Log_StartMethod, "Destructor", "println", "");
-					TableStorageLog(higgs_Log_EndMethod, "Destructor", "println", "");
+					TableStorageLog(pankey_Log_StartMethod, "Destructor", "println", "");
+					TableStorageLog(pankey_Log_EndMethod, "Destructor", "println", "");
 				}
 				
 				virtual void setManager(MANAGER_TYPE a_Manager)=0;
@@ -93,9 +93,9 @@
 				
 				template<class IM>
 				void forEach(IM a_iteration_method){
-					TableStorageLog(higgs_Log_StartMethod, "forEach", "println", "");
+					TableStorageLog(pankey_Log_StartMethod, "forEach", "println", "");
 					if(this->isNull() || this->getSize() <= 0){
-						TableStorageLog(higgs_Log_EndMethod, "forEach", "println", "this->isNull() || this->getSize() <= 0");
+						TableStorageLog(pankey_Log_EndMethod, "forEach", "println", "this->isNull() || this->getSize() <= 0");
 						return;
 					}
 					for(int x = 0; x < this->getSize(); x++){
@@ -103,26 +103,26 @@
 						VOID_TYPE f_value_pointer = this->getValueRawPointer(x);
 						a_iteration_method(x, this->getSize(), f_key_pointer, f_value_pointer);
 					}
-					TableStorageLog(higgs_Log_EndMethod, "forEach", "println", "");
+					TableStorageLog(pankey_Log_EndMethod, "forEach", "println", "");
 				}
 				
 				template<class IM>
 				void forEachNotNull(IM a_iteration_method){
-					TableStorageLog(higgs_Log_StartMethod, "forEachNotNull", "println", "");
+					TableStorageLog(pankey_Log_StartMethod, "forEachNotNull", "println", "");
 					if(this->isNull() || this->getSize() <= 0){
-						TableStorageLog(higgs_Log_EndMethod, "forEachNotNull", "println", "this->isNull() || this->getSize() <= 0");
+						TableStorageLog(pankey_Log_EndMethod, "forEachNotNull", "println", "this->isNull() || this->getSize() <= 0");
 						return;
 					}
 					for(int x = 0; x < this->getSize(); x++){
 						VOID_TYPE f_key_pointer = this->getKeyRawPointer(x);
 						VOID_TYPE f_value_pointer = this->getValueRawPointer(x);
 						if(f_key_pointer == nullptr || f_value_pointer == nullptr){
-							TableStorageLog(higgs_Log_Statement, "forEachNotNull", "println", "f_pointer == nullptr");
+							TableStorageLog(pankey_Log_Statement, "forEachNotNull", "println", "f_pointer == nullptr");
 							continue;
 						}
 						a_iteration_method(x, this->getSize(), f_key_pointer, f_value_pointer);
 					}
-					TableStorageLog(higgs_Log_EndMethod, "forEachNotNull", "println", "");
+					TableStorageLog(pankey_Log_EndMethod, "forEachNotNull", "println", "");
 				}
 				
 			protected:

@@ -2,7 +2,7 @@
 #ifndef SafeList_hpp
 	#define SafeList_hpp
 
-	namespace higgs{
+	namespace pankey{
 
 		template <class T>
 		class SafeList : virtual public RawPointerList<T>{	

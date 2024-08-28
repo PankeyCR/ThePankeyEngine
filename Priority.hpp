@@ -2,7 +2,7 @@
 #ifndef Priority_hpp
 	#define Priority_hpp
 
-	namespace higgs{
+	namespace pankey{
 
 		enum class Priority {
 			First,

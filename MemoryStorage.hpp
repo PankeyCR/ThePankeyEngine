@@ -5,13 +5,13 @@
 	#include "MemoryHolder.hpp"
 
 	#ifdef MemoryStorage_LogApp
-		#include "higgs_Logger.hpp"
-		#define MemoryStorageLog(location,method,type,mns) higgs_Log((void*)this,location,"MemoryStorage",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define MemoryStorageLog(location,method,type,mns) pankey_Log((void*)this,location,"MemoryStorage",method,type,mns)
 	#else
 		#define MemoryStorageLog(location,method,type,mns)
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class H>
 		class MemoryStorage{
@@ -23,8 +23,8 @@
                 using HOLDER_ARRAY_TYPE = H**;
 
 				virtual ~MemoryStorage(){
-					MemoryStorageLog(higgs_Log_StartMethod, "Destructor", "println", "");
-					MemoryStorageLog(higgs_Log_EndMethod, "Destructor", "println", "");
+					MemoryStorageLog(pankey_Log_StartMethod, "Destructor", "println", "");
+					MemoryStorageLog(pankey_Log_EndMethod, "Destructor", "println", "");
 				}
 				
 				virtual void setManager(MANAGER_TYPE a_Manager)=0;
@@ -81,34 +81,34 @@
 				
 				template<class IM>
 				void forEach(IM a_iteration_method){
-					MemoryStorageLog(higgs_Log_StartMethod, "forEach", "println", "");
+					MemoryStorageLog(pankey_Log_StartMethod, "forEach", "println", "");
 					if(this->isNull() || this->getSize() <= 0){
-						MemoryStorageLog(higgs_Log_EndMethod, "forEach", "println", "this->isNull() || this->getSize() <= 0");
+						MemoryStorageLog(pankey_Log_EndMethod, "forEach", "println", "this->isNull() || this->getSize() <= 0");
 						return;
 					}
 					for(int x = 0; x < this->getSize(); x++){
 						HOLDER_TYPE f_pointer = this->getHolder(x);
 						a_iteration_method(x, this->getSize(), f_pointer);
 					}
-					MemoryStorageLog(higgs_Log_EndMethod, "forEach", "println", "");
+					MemoryStorageLog(pankey_Log_EndMethod, "forEach", "println", "");
 				}
 				
 				template<class IM>
 				void forEachNotNull(IM a_iteration_method){
-					MemoryStorageLog(higgs_Log_StartMethod, "forEachNotNull", "println", "");
+					MemoryStorageLog(pankey_Log_StartMethod, "forEachNotNull", "println", "");
 					if(this->isNull() || this->getSize() <= 0){
-						MemoryStorageLog(higgs_Log_EndMethod, "forEachNotNull", "println", "this->isNull() || this->getSize() <= 0");
+						MemoryStorageLog(pankey_Log_EndMethod, "forEachNotNull", "println", "this->isNull() || this->getSize() <= 0");
 						return;
 					}
 					for(int x = 0; x < this->getSize(); x++){
 						HOLDER_TYPE f_pointer = this->getHolder(x);
 						if(f_pointer == nullptr){
-							MemoryStorageLog(higgs_Log_Statement, "forEachNotNull", "println", "f_pointer == nullptr");
+							MemoryStorageLog(pankey_Log_Statement, "forEachNotNull", "println", "f_pointer == nullptr");
 							continue;
 						}
 						a_iteration_method(x, this->getSize(), f_pointer);
 					}
-					MemoryStorageLog(higgs_Log_EndMethod, "forEachNotNull", "println", "");
+					MemoryStorageLog(pankey_Log_EndMethod, "forEachNotNull", "println", "");
 				}
 				
 			protected:

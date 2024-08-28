@@ -7,7 +7,7 @@
 #include "Array2D.hpp"
 #include "MemoryRam.hpp"
 
-namespace higgs{
+namespace pankey{
 	
 	TestResult TR_Array2D_Testing(){
 		TestResult result;

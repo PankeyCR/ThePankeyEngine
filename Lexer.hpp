@@ -2,15 +2,15 @@
 #ifndef Lexer_hpp
 	#define Lexer_hpp
 	
-	#include "higgs_Enviroment.hpp"
-	#include "higgs_Enviroment_config.hpp"
+	#include "pankey_Enviroment.hpp"
+	#include "pankey_Enviroment_config.hpp"
 
-	#ifdef higgs_Windows
-		#include "higgs_Printable.hpp"
-		#include "higgs_Print.hpp"
+	#ifdef pankey_Windows
+		#include "pankey_Printable.hpp"
+		#include "pankey_Print.hpp"
 	#endif
 
-	#ifdef higgs_ArduinoIDE
+	#ifdef pankey_ArduinoIDE
 		#include "Arduino.h"
 		#include "Printable.h"
 	#endif
@@ -20,13 +20,13 @@
 	#include "PrimitiveRawList.hpp"
 
 	#ifdef Lexer_LogApp
-		#include "higgs_Logger.hpp"
-		#define LexerLog(location,method,type,mns) higgs_Log((void*)this,location,"Lexer",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define LexerLog(location,method,type,mns) pankey_Log((void*)this,location,"Lexer",method,type,mns)
 	#else
 		#define LexerLog(location,method,type,mns)
 	#endif
 	
-	namespace higgs{
+	namespace pankey{
 
 		class Lexer{
 			protected:
@@ -60,250 +60,250 @@
 				};
 			public:
 				Lexer(){
-					LexerLog(higgs_Log_StartMethod, "Contructor",  "println", "");
-					LexerLog(higgs_Log_EndMethod, "Contructor",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "Contructor",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "Contructor",  "println", "");
 				}
 				virtual ~Lexer(){
-					LexerLog(higgs_Log_StartMethod, "Destructor",  "println", "");
-					LexerLog(higgs_Log_EndMethod, "Destructor",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "Destructor",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "Destructor",  "println", "");
 				}
 				
 				virtual void addBreakPoint(char a_break){
-					LexerLog(higgs_Log_StartMethod, "addBreakPoint",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "addBreakPoint",  "println", "");
 					this->m_breakPoint.addLValue(a_break);
-					LexerLog(higgs_Log_EndMethod, "addBreakPoint",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "addBreakPoint",  "println", "");
 				}
 			
 				virtual Token addTypeToken(Token a_token){
-					LexerLog(higgs_Log_StartMethod, "addTypeToken",  "println", a_token);
+					LexerLog(pankey_Log_StartMethod, "addTypeToken",  "println", a_token);
 					this->m_typeTokens.addLValue(a_token);
-					LexerLog(higgs_Log_EndMethod, "addTypeToken",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "addTypeToken",  "println", "");
 					return a_token;
 				}
 			
 				virtual Token addDelimiterToken(Token a_token){
-					LexerLog(higgs_Log_StartMethod, "addDelimiterToken",  "println", a_token);
+					LexerLog(pankey_Log_StartMethod, "addDelimiterToken",  "println", a_token);
 					this->m_delimiter_tokens.addLValue(a_token);
-					LexerLog(higgs_Log_EndMethod, "addDelimiterToken",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "addDelimiterToken",  "println", "");
 					return a_token;
 				}
 
 			protected:
 				virtual bool isTypeToken(const Note& a_token){
-					LexerLog(higgs_Log_StartMethod, "isTypeToken",  "println", "");
-					LexerLog(higgs_Log_Statement, "isTypeToken",  "println", "Token:");
-					LexerLog(higgs_Log_Statement, "isTypeToken",  "println", a_token);
+					LexerLog(pankey_Log_StartMethod, "isTypeToken",  "println", "");
+					LexerLog(pankey_Log_Statement, "isTypeToken",  "println", "Token:");
+					LexerLog(pankey_Log_Statement, "isTypeToken",  "println", a_token);
 					for(int x = 0; x < this->m_typeTokens.getPosition(); x++){
 						Token* f_token = this->m_typeTokens.getByPosition(x);
 						if(f_token == nullptr){
-							LexerLog(higgs_Log_Statement, "isTypeToken",  "println", "continue");
+							LexerLog(pankey_Log_Statement, "isTypeToken",  "println", "continue");
 							continue;
 						}
 						if(f_token->value == a_token){
-							LexerLog(higgs_Log_EndMethod, "isTypeToken",  "println", "true");
+							LexerLog(pankey_Log_EndMethod, "isTypeToken",  "println", "true");
 							return true;
 						}
 					}
-					LexerLog(higgs_Log_EndMethod, "isTypeToken",  "println", "false");
+					LexerLog(pankey_Log_EndMethod, "isTypeToken",  "println", "false");
 					return false;
 				}
 				
 				virtual bool isDelimiterToken(const Note& a_token){
-					LexerLog(higgs_Log_StartMethod, "isDelimiterToken",  "println", "");
-					LexerLog(higgs_Log_Statement, "isDelimiterToken",  "println", "Token:");
-					LexerLog(higgs_Log_Statement, "isDelimiterToken",  "println", a_token);
+					LexerLog(pankey_Log_StartMethod, "isDelimiterToken",  "println", "");
+					LexerLog(pankey_Log_Statement, "isDelimiterToken",  "println", "Token:");
+					LexerLog(pankey_Log_Statement, "isDelimiterToken",  "println", a_token);
 					for(int x = 0; x < this->m_delimiter_tokens.getPosition(); x++){
 						Token* f_token = this->m_delimiter_tokens.getByPosition(x);
 						if(f_token == nullptr){
-							LexerLog(higgs_Log_Statement, "isDelimiterToken",  "println", "continue");
+							LexerLog(pankey_Log_Statement, "isDelimiterToken",  "println", "continue");
 							continue;
 						}
 						if(f_token->value == a_token){
-							LexerLog(higgs_Log_EndMethod, "isDelimiterToken",  "println", "true");
+							LexerLog(pankey_Log_EndMethod, "isDelimiterToken",  "println", "true");
 							return true;
 						}
 					}
-					LexerLog(higgs_Log_EndMethod, "isDelimiterToken",  "println", "false");
+					LexerLog(pankey_Log_EndMethod, "isDelimiterToken",  "println", "false");
 					return false;
 				}
 				
 				virtual bool isBreakPoint(char a_break_point){
-					LexerLog(higgs_Log_StartMethod, "isBreakPoint",  "println", "");
-					LexerLog(higgs_Log_EndMethod, "isBreakPoint",  "println", "false");
+					LexerLog(pankey_Log_StartMethod, "isBreakPoint",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "isBreakPoint",  "println", "false");
 					return this->m_breakPoint.contain(a_break_point);
 				}
 			
 				virtual Token getTypeToken(const Note& a_token){
-					LexerLog(higgs_Log_StartMethod, "getTypeToken",  "println", "");
-					LexerLog(higgs_Log_Statement, "getTypeToken",  "println", "Token:");
-					LexerLog(higgs_Log_Statement, "getTypeToken",  "println", a_token);
+					LexerLog(pankey_Log_StartMethod, "getTypeToken",  "println", "");
+					LexerLog(pankey_Log_Statement, "getTypeToken",  "println", "Token:");
+					LexerLog(pankey_Log_Statement, "getTypeToken",  "println", a_token);
 					for(int x = 0; x < this->m_typeTokens.getPosition(); x++){
 						Token* f_token = this->m_typeTokens.getByPosition(x);
 						if(f_token == nullptr){
 							continue;
 						}
 						if(f_token->value == a_token){
-							LexerLog(higgs_Log_EndMethod, "getTypeToken",  "println", "true");
+							LexerLog(pankey_Log_EndMethod, "getTypeToken",  "println", "true");
 							return *f_token;
 						}
 					}
-					LexerLog(higgs_Log_StartMethod, "getTypeToken",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "getTypeToken",  "println", "");
 					return Token();
 				}
 			
 				virtual Token getDelimiterToken(const Note& a_token){
-					LexerLog(higgs_Log_StartMethod, "getDelimiterToken",  "println", "");
-					LexerLog(higgs_Log_Statement, "getDelimiterToken",  "println", "Token:");
-					LexerLog(higgs_Log_Statement, "getDelimiterToken",  "println", a_token);
+					LexerLog(pankey_Log_StartMethod, "getDelimiterToken",  "println", "");
+					LexerLog(pankey_Log_Statement, "getDelimiterToken",  "println", "Token:");
+					LexerLog(pankey_Log_Statement, "getDelimiterToken",  "println", a_token);
 					for(int x = 0; x < this->m_delimiter_tokens.getPosition(); x++){
 						Token* f_token = this->m_delimiter_tokens.getByPosition(x);
 						if(f_token == nullptr){
 							continue;
 						}
 						if(f_token->value == a_token){
-							LexerLog(higgs_Log_EndMethod, "getDelimiterToken",  "println", "true");
+							LexerLog(pankey_Log_EndMethod, "getDelimiterToken",  "println", "true");
 							return *f_token;
 						}
 					}
-					LexerLog(higgs_Log_StartMethod, "getDelimiterToken",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "getDelimiterToken",  "println", "");
 					return Token();
 				}
 			
 			public:
 				virtual Token getToken(const Note& a_token){
-					LexerLog(higgs_Log_StartMethod, "getToken",  "println", "");
-					LexerLog(higgs_Log_Statement, "getToken",  "println", "Token:");
-					LexerLog(higgs_Log_Statement, "getToken",  "println", a_token);
+					LexerLog(pankey_Log_StartMethod, "getToken",  "println", "");
+					LexerLog(pankey_Log_Statement, "getToken",  "println", "Token:");
+					LexerLog(pankey_Log_Statement, "getToken",  "println", a_token);
 					if(a_token.isCharArray()){
-						LexerLog(higgs_Log_EndMethod, "getToken",  "println", "");
+						LexerLog(pankey_Log_EndMethod, "getToken",  "println", "");
 						return Token("Note",a_token);
 					}
 					if(a_token.isBool()){
-						LexerLog(higgs_Log_EndMethod, "getToken",  "println", "");
+						LexerLog(pankey_Log_EndMethod, "getToken",  "println", "");
 						return Token("Bool",a_token);
 					}
 					if(a_token.isFloat()){
-						LexerLog(higgs_Log_EndMethod, "getToken",  "println", "");
+						LexerLog(pankey_Log_EndMethod, "getToken",  "println", "");
 						return Token("Float",a_token);
 					}
 					if(a_token.isInt()){
-						LexerLog(higgs_Log_EndMethod, "getToken",  "println", "");
+						LexerLog(pankey_Log_EndMethod, "getToken",  "println", "");
 						return Token("Int",a_token);
 					}
 					if(a_token.isLong()){
-						LexerLog(higgs_Log_EndMethod, "getToken",  "println", "");
+						LexerLog(pankey_Log_EndMethod, "getToken",  "println", "");
 						return Token("Long",a_token);
 					}
 					if(a_token.isNumber()){
-						LexerLog(higgs_Log_EndMethod, "getToken",  "println", "");
+						LexerLog(pankey_Log_EndMethod, "getToken",  "println", "");
 						return Token("Number",a_token);
 					}
 					if(this->isDelimiterToken(a_token)){
-						LexerLog(higgs_Log_EndMethod, "getToken",  "println", "");
+						LexerLog(pankey_Log_EndMethod, "getToken",  "println", "");
 						return this->getDelimiterToken(a_token);
 					}
 					if(this->isTypeToken(a_token)){
-						LexerLog(higgs_Log_EndMethod, "getToken",  "println", "");
+						LexerLog(pankey_Log_EndMethod, "getToken",  "println", "");
 						return this->getTypeToken(a_token);
 					}
-					LexerLog(higgs_Log_EndMethod, "getToken",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "getToken",  "println", "");
 					return Token("Variable",a_token);
 				}
 				
 			protected:
 				virtual void addCapturedTokens(Token a_token){
-					LexerLog(higgs_Log_StartMethod, "addCapturedTokens",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "addCapturedTokens",  "println", "");
 					this->m_capturedTokens.addLValue(a_token);
-					LexerLog(higgs_Log_EndMethod, "addCapturedTokens",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "addCapturedTokens",  "println", "");
 				}
 				
 				virtual void captureTokenByBreakPoint(){
-					LexerLog(higgs_Log_StartMethod, "captureToken",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "captureToken",  "println", "");
 					Token i_token = this->getToken(this->m_capture_note);
 					i_token.text_Position = this->m_text_position - this->m_capture_note.getPosition();
 					i_token.line_Position = this->m_line_position;
 					i_token.list_Position = this->getCapturedTokensPosition();
 					this->m_capturedTokens.add(i_token);
-					LexerLog(higgs_Log_EndMethod, "captureToken",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureToken",  "println", "");
 				}
 				
 				virtual void captureToken(){
-					LexerLog(higgs_Log_StartMethod, "captureToken",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "captureToken",  "println", "");
 					Token i_token = this->getToken(this->m_capture_note);
 					i_token.text_Position = this->m_text_position - this->m_capture_note.getPosition() + 1;
 					i_token.line_Position = this->m_line_position;
 					i_token.list_Position = this->getCapturedTokensPosition();
 					this->m_capturedTokens.add(i_token);
-					LexerLog(higgs_Log_EndMethod, "captureToken",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureToken",  "println", "");
 				}
 				
 				virtual void captureToken(Token a_token, int a_text_Position){
-					LexerLog(higgs_Log_StartMethod, "captureToken",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "captureToken",  "println", "");
 					a_token.text_Position = a_text_Position;
 					a_token.line_Position = this->m_line_position;
 					a_token.list_Position = this->getCapturedTokensPosition();
 					this->m_capturedTokens.add(a_token);
-					LexerLog(higgs_Log_EndMethod, "captureToken",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureToken",  "println", "");
 				}
 				
 				virtual void captureToken(Token a_token){
-					LexerLog(higgs_Log_StartMethod, "captureToken",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "captureToken",  "println", "");
 					this->captureToken(a_token, this->m_text_position - a_token.value.getPosition() + 1);
-					LexerLog(higgs_Log_EndMethod, "captureToken",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureToken",  "println", "");
 				}
 				
 				virtual void captureToken(Note a_token, int a_text_Position){
-					LexerLog(higgs_Log_StartMethod, "captureTokenVariable",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "captureTokenVariable",  "println", "");
 					Token i_token = this->getToken(a_token);
 					i_token.text_Position = a_text_Position;
 					i_token.line_Position = this->m_line_position;
 					i_token.list_Position = this->getCapturedTokensPosition();
 					this->m_capturedTokens.add(i_token);
-					LexerLog(higgs_Log_EndMethod, "captureTokenVariable",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureTokenVariable",  "println", "");
 				}
 				
 				virtual void captureToken(Note a_token){
-					LexerLog(higgs_Log_StartMethod, "captureTokenVariable",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "captureTokenVariable",  "println", "");
 					this->captureToken(a_token, this->m_text_position - a_token.getPosition() + 1);
-					LexerLog(higgs_Log_EndMethod, "captureTokenVariable",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureTokenVariable",  "println", "");
 				}
 				
 				virtual void captureTokenVariable(Note a_token, int a_text_Position){
-					LexerLog(higgs_Log_StartMethod, "captureTokenVariable",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "captureTokenVariable",  "println", "");
 					Token i_token = Token("Variable", a_token);
 					i_token.text_Position = a_text_Position;
 					i_token.line_Position = this->m_line_position;
 					i_token.list_Position = this->getCapturedTokensPosition();
 					this->m_capturedTokens.add(i_token);
-					LexerLog(higgs_Log_EndMethod, "captureTokenVariable",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureTokenVariable",  "println", "");
 				}
 				
 				virtual void captureTokenVariable(Note a_token){
-					LexerLog(higgs_Log_StartMethod, "captureTokenVariable",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "captureTokenVariable",  "println", "");
 					this->captureTokenVariable(a_token, this->m_text_position - a_token.getPosition() + 1);
-					LexerLog(higgs_Log_EndMethod, "captureTokenVariable",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureTokenVariable",  "println", "");
 				}
 				
 				virtual int getCapturedTokensPosition(){
-					LexerLog(higgs_Log_StartMethod, "getCapturedTokensPosition",  "println", "");
-					LexerLog(higgs_Log_EndMethod, "getCapturedTokensPosition",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "getCapturedTokensPosition",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "getCapturedTokensPosition",  "println", "");
 					return this->m_capturedTokens.getPosition();
 				}
 				
 				virtual PrimitiveRawList<Token>& getCapturedTokens(){
-					LexerLog(higgs_Log_StartMethod, "getCapturedTokens",  "println", "");
-					LexerLog(higgs_Log_EndMethod, "getCapturedTokens",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "getCapturedTokens",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "getCapturedTokens",  "println", "");
 					return this->m_capturedTokens;
 				}
 				
 				virtual int getDelimiterTokenSize(){
-					LexerLog(higgs_Log_StartMethod, "getDelimiterTokenSize",  "println", "");
-					LexerLog(higgs_Log_EndMethod, "getDelimiterTokenSize",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "getDelimiterTokenSize",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "getDelimiterTokenSize",  "println", "");
 					return this->m_delimiter_tokens.getPosition();
 				}
 			
 				virtual bool containDelimiterTokenChar(int a_position, char a_char){
-					LexerLog(higgs_Log_StartMethod, "containDelimiterTokenChar",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "containDelimiterTokenChar",  "println", "");
 					for(int x = 0; x < this->m_delimiter_tokens.getPosition(); x++){
 						Token* f_token = this->m_delimiter_tokens.getByPosition(x);
 						if(f_token == nullptr){
@@ -315,27 +315,27 @@
 							continue;
 						}
 						if(f_token_value[a_position] == a_char){
-							LexerLog(higgs_Log_EndMethod, "containDelimiterTokenChar",  "println", "");
+							LexerLog(pankey_Log_EndMethod, "containDelimiterTokenChar",  "println", "");
 							return true;
 						}
 					}
-					LexerLog(higgs_Log_EndMethod, "containDelimiterTokenChar",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "containDelimiterTokenChar",  "println", "");
 					return false;
 				}
 
 				virtual bool syntax(){
-					LexerLog(higgs_Log_StartMethod, "syntax",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "syntax",  "println", "");
 					for(int x = 0; x < this->m_capturedTokens.getPosition(); x++){
 						Token* f_token = this->m_capturedTokens.getByPosition(x);
 						if(f_token == nullptr){
 							continue;
 						}
 						if(f_token->info == "error"){
-							LexerLog(higgs_Log_EndMethod, "syntax", "println", "");
+							LexerLog(pankey_Log_EndMethod, "syntax", "println", "");
 							return false;
 						}
 					}
-					LexerLog(higgs_Log_EndMethod, "syntax", "println", "");
+					LexerLog(pankey_Log_EndMethod, "syntax", "println", "");
 					return true;
 				}
 				
@@ -344,88 +344,88 @@
 				}
 				
 				virtual void capturingToken(Note a_token, int a_text_Position){
-					LexerLog(higgs_Log_StartMethod, "capturingToken",  "println", Note("token is: ") + Note(a_token));
-					LexerLog(higgs_Log_Statement, "capturingToken",  "println", Note("a_text_Position: ") + Note(a_text_Position));
+					LexerLog(pankey_Log_StartMethod, "capturingToken",  "println", Note("token is: ") + Note(a_token));
+					LexerLog(pankey_Log_Statement, "capturingToken",  "println", Note("a_text_Position: ") + Note(a_text_Position));
 					Token i_token = this->getToken(a_token);
 					i_token.text_Position = a_text_Position;
 					i_token.line_Position = m_line_position;
 					i_token.list_Position = this->getCapturedTokensPosition();
-					LexerLog(higgs_Log_Statement, "capturingToken",  "println", "Token:");
-					LexerLog(higgs_Log_Statement, "capturingToken",  "println", i_token);
+					LexerLog(pankey_Log_Statement, "capturingToken",  "println", "Token:");
+					LexerLog(pankey_Log_Statement, "capturingToken",  "println", i_token);
 					this->addCapturedTokens(i_token);
 					this->m_capture_note.clear();
 					this->realeseDelimitersTokens();
-					LexerLog(higgs_Log_EndMethod, "capturingToken",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "capturingToken",  "println", "");
 				}
 				
 				virtual void capturingToken(Token a_token, int a_text_Position){
-					LexerLog(higgs_Log_StartMethod, "capturingToken",  "println", Note("token is: ") + a_token.value);
-					LexerLog(higgs_Log_Statement, "capturingToken",  "println", Note("a_text_Position: ") + Note(a_text_Position));
+					LexerLog(pankey_Log_StartMethod, "capturingToken",  "println", Note("token is: ") + a_token.value);
+					LexerLog(pankey_Log_Statement, "capturingToken",  "println", Note("a_text_Position: ") + Note(a_text_Position));
 					a_token.text_Position = a_text_Position;
 					a_token.line_Position = m_line_position;
 					a_token.list_Position = this->getCapturedTokensPosition();
-					LexerLog(higgs_Log_Statement, "capturingToken",  "println", "Token:");
-					LexerLog(higgs_Log_Statement, "capturingToken",  "println", a_token);
+					LexerLog(pankey_Log_Statement, "capturingToken",  "println", "Token:");
+					LexerLog(pankey_Log_Statement, "capturingToken",  "println", a_token);
 					this->addCapturedTokens(a_token);
 					this->m_capture_note.clear();
 					this->realeseDelimitersTokens();
-					LexerLog(higgs_Log_EndMethod, "capturingToken",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "capturingToken",  "println", "");
 				}
 
 				virtual void realeseDelimitersTokens(){
-					LexerLog(higgs_Log_StartMethod, "realeseDelimitersTokens",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "realeseDelimitersTokens",  "println", "");
 					this->m_delimiter_checker.resetDelete();
-					LexerLog(higgs_Log_EndMethod, "realeseDelimitersTokens",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "realeseDelimitersTokens",  "println", "");
 				}
 
 				virtual bool containCaptureDelimiterToken(){
-					LexerLog(higgs_Log_StartMethod, "containCaptureDelimiterToken",  "println", "");
-					LexerLog(higgs_Log_EndMethod, "containCaptureDelimiterToken",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "containCaptureDelimiterToken",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "containCaptureDelimiterToken",  "println", "");
 					return !this->m_delimiter_checker.isEmpty();
 				}
 
 				virtual void captureByBreakPoint(){
-					LexerLog(higgs_Log_StartMethod, "captureByBreakPoint",  "println", "this->isBreakPoint(a_char)");
+					LexerLog(pankey_Log_StartMethod, "captureByBreakPoint",  "println", "this->isBreakPoint(a_char)");
 					if(!this->m_capture_note.isEmpty()){
-						LexerLog(higgs_Log_Statement, "captureByBreakPoint",  "println", "!this->m_capture_note.isEmpty()");
+						LexerLog(pankey_Log_Statement, "captureByBreakPoint",  "println", "!this->m_capture_note.isEmpty()");
 						this->captureTokenByBreakPoint();
 					}
-					LexerLog(higgs_Log_EndMethod, "captureByBreakPoint",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureByBreakPoint",  "println", "");
 				}
 
 				virtual void realeseBreakPoint(){
-					LexerLog(higgs_Log_StartMethod, "realeseBreakPoint",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "realeseBreakPoint",  "println", "");
 					this->m_delimiter_checker.resetDelete();
 
 					this->m_capture_note.clear();
-					LexerLog(higgs_Log_EndMethod, "realeseBreakPoint",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "realeseBreakPoint",  "println", "");
 				}
 
 				virtual void captureNewDelimiter(char a_char){
-					LexerLog(higgs_Log_StartMethod, "captureNewDelimiter",  "println", "");
-					LexerLog(higgs_Log_Statement, "captureNewDelimiter",  "println", "Char:");
-					LexerLog(higgs_Log_Statement, "captureNewDelimiter",  "println", a_char);
+					LexerLog(pankey_Log_StartMethod, "captureNewDelimiter",  "println", "");
+					LexerLog(pankey_Log_Statement, "captureNewDelimiter",  "println", "Char:");
+					LexerLog(pankey_Log_Statement, "captureNewDelimiter",  "println", a_char);
 					for(int x = 0; x < this->m_delimiter_tokens.getPosition(); x++){
 						Token* f_token = this->m_delimiter_tokens.getByPosition(x);
 						if(f_token == nullptr){
 							continue;
 						}
 						if(f_token->value[0] == a_char){
-							LexerLog(higgs_Log_Statement, "captureNewDelimiter",  "println", "f_token->value[0] == a_char");
+							LexerLog(pankey_Log_Statement, "captureNewDelimiter",  "println", "f_token->value[0] == a_char");
 							DelimiterCapture* f_capture = new DelimiterCapture(*f_token);
 							this->m_delimiter_checker.addPointer(f_capture);
 						}
 					}
-					LexerLog(higgs_Log_EndMethod, "captureNewDelimiter",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureNewDelimiter",  "println", "");
 				}
 
 				virtual void captureDelimiterChecker(char a_char){
-					LexerLog(higgs_Log_StartMethod, "captureDelimiterChecker",  "println", "");
-					LexerLog(higgs_Log_Statement, "captureDelimiterChecker",  "println", "Char:");
-					LexerLog(higgs_Log_Statement, "captureDelimiterChecker",  "println", a_char);
+					LexerLog(pankey_Log_StartMethod, "captureDelimiterChecker",  "println", "");
+					LexerLog(pankey_Log_Statement, "captureDelimiterChecker",  "println", "Char:");
+					LexerLog(pankey_Log_Statement, "captureDelimiterChecker",  "println", a_char);
 
 					if(this->m_delimiter_checker.isEmpty()){
-						LexerLog(higgs_Log_EndMethod, "captureDelimiterChecker",  "println", "");
+						LexerLog(pankey_Log_EndMethod, "captureDelimiterChecker",  "println", "");
 						return;
 					}
 
@@ -439,9 +439,9 @@
 						Token& f_token = f_capture->token;
 						int f_index = f_capture->index;
 						if(f_token.value[f_index] != a_char){
-							LexerLog(higgs_Log_Statement, "captureDelimiterChecker",  "println", "f_token.value[f_index] != a_char");
-							LexerLog(higgs_Log_Statement, "captureDelimiterChecker",  "println", "iteration: ");
-							LexerLog(higgs_Log_Statement, "captureDelimiterChecker",  "println", x);
+							LexerLog(pankey_Log_Statement, "captureDelimiterChecker",  "println", "f_token.value[f_index] != a_char");
+							LexerLog(pankey_Log_Statement, "captureDelimiterChecker",  "println", "iteration: ");
+							LexerLog(pankey_Log_Statement, "captureDelimiterChecker",  "println", x);
 							i_checker_remove.add(x);
 							continue;
 						}
@@ -452,11 +452,11 @@
 						return;
 					}
 
-					LexerLog(higgs_Log_Statement, "captureDelimiterChecker",  "println", "removing checker");
+					LexerLog(pankey_Log_Statement, "captureDelimiterChecker",  "println", "removing checker");
 
 					for(int x = i_checker_remove.getPosition() - 1; x >= 0; x--){
-						LexerLog(higgs_Log_Statement, "captureDelimiterChecker",  "println", "iteration: ");
-						LexerLog(higgs_Log_Statement, "captureDelimiterChecker",  "println", x);
+						LexerLog(pankey_Log_Statement, "captureDelimiterChecker",  "println", "iteration: ");
+						LexerLog(pankey_Log_Statement, "captureDelimiterChecker",  "println", x);
 						int f_list_index = i_checker_remove[x];
 						this->m_delimiter_checker.removeDeleteByPosition(f_list_index);
 					}
@@ -464,17 +464,17 @@
 					this->m_delimiter_checker.reorder();
 
 
-					LexerLog(higgs_Log_EndMethod, "captureDelimiterChecker",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureDelimiterChecker",  "println", "");
 				}
 
 				virtual void captureDelimiter(){
-					LexerLog(higgs_Log_StartMethod, "captureDelimiter",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "captureDelimiter",  "println", "");
 					if(this->m_delimiter_checker.isEmpty()){
-						LexerLog(higgs_Log_EndMethod, "captureDelimiter",  "println", "this->m_delimiter_checker.isEmpty()");
+						LexerLog(pankey_Log_EndMethod, "captureDelimiter",  "println", "this->m_delimiter_checker.isEmpty()");
 						return;
 					}
 					if(this->m_capture_note.getPosition() == 0){
-						LexerLog(higgs_Log_EndMethod, "captureDelimiter",  "println", "this->m_capture_note.getPosition() == 0");
+						LexerLog(pankey_Log_EndMethod, "captureDelimiter",  "println", "this->m_capture_note.getPosition() == 0");
 						return;
 					}
 
@@ -483,14 +483,14 @@
 						if(f_capture == nullptr){
 							continue;
 						}
-						LexerLog(higgs_Log_Statement, "captureDelimiter",  "println", "iteration: ");
-						LexerLog(higgs_Log_Statement, "captureDelimiter",  "println", x);
+						LexerLog(pankey_Log_Statement, "captureDelimiter",  "println", "iteration: ");
+						LexerLog(pankey_Log_Statement, "captureDelimiter",  "println", x);
 						Token& f_token = f_capture->token;
 						int f_index = f_capture->index;
 						if(f_token.value.getPosition() == f_index){
-							LexerLog(higgs_Log_Statement, "captureDelimiter",  "println", "f_token.value.getPosition() == f_index");
-							LexerLog(higgs_Log_Statement, "captureDelimiter",  "println", "f_index: ");
-							LexerLog(higgs_Log_Statement, "captureDelimiter",  "println", f_index);
+							LexerLog(pankey_Log_Statement, "captureDelimiter",  "println", "f_token.value.getPosition() == f_index");
+							LexerLog(pankey_Log_Statement, "captureDelimiter",  "println", "f_index: ");
+							LexerLog(pankey_Log_Statement, "captureDelimiter",  "println", f_index);
 							int i_text_new_position = this->m_text_position;
 							if(this->m_capture_note.getPosition() != f_index){
 								Note variable = this->m_capture_note.getArrayPartByLastExtraSpace(f_index);
@@ -503,11 +503,11 @@
 						}
 					}
 
-					LexerLog(higgs_Log_EndMethod, "captureDelimiter",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureDelimiter",  "println", "");
 				}
 				
 				virtual void captureDelimiterToken(char a_char){
-					LexerLog(higgs_Log_StartMethod, "captureDelimiterToken",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "captureDelimiterToken",  "println", "");
 
 					this->captureNewDelimiter(a_char);
 
@@ -515,37 +515,37 @@
 
 					this->captureDelimiter();
 					
-					LexerLog(higgs_Log_EndMethod, "captureDelimiterToken",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureDelimiterToken",  "println", "");
 				}
 				
 				virtual void captureByEndOfText(){
-					LexerLog(higgs_Log_StartMethod, "captureByEndOfText",  "println", "");
+					LexerLog(pankey_Log_StartMethod, "captureByEndOfText",  "println", "");
 					if(!this->m_capture_note.isEmpty()){
-						LexerLog(higgs_Log_Statement, "captureByEndOfText",  "println", "!this->m_capture_note.isEmpty()");
+						LexerLog(pankey_Log_Statement, "captureByEndOfText",  "println", "!this->m_capture_note.isEmpty()");
 						this->captureToken();
 					}
-					LexerLog(higgs_Log_EndMethod, "captureByEndOfText",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "captureByEndOfText",  "println", "");
 				}
 				
 				virtual void realeseEndOfText(){
-					LexerLog(higgs_Log_StartMethod, "realeseEndOfText",  "println", "!a_capturing");
+					LexerLog(pankey_Log_StartMethod, "realeseEndOfText",  "println", "!a_capturing");
 					this->m_delimiter_checker.resetDelete();
 
 					this->m_capture_note.clear();
 					
 					this->m_text_position = 0;
 					this->m_line_position = 0;
-					LexerLog(higgs_Log_EndMethod, "realeseEndOfText",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "realeseEndOfText",  "println", "");
 				}
 
 				virtual void addPositionAndLine(char a_char){
-					LexerLog(higgs_Log_StartMethod, "addPositionAndLine",  "println", Note("position: ") + Note(this->m_text_position));
+					LexerLog(pankey_Log_StartMethod, "addPositionAndLine",  "println", Note("position: ") + Note(this->m_text_position));
 					this->m_text_position++;
 					if(a_char == '\n'){
-						LexerLog(higgs_Log_Statement, "addPositionAndLine",  "println", "new line");
+						LexerLog(pankey_Log_Statement, "addPositionAndLine",  "println", "new line");
 						this->m_line_position++;
 					}
-					LexerLog(higgs_Log_EndMethod, "addPositionAndLine",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "addPositionAndLine",  "println", "");
 				}
 				
 				//types of caputering
@@ -555,35 +555,35 @@
 				//4. "== " || "Hellow== " capturing delimiter alone or by break point
 				//5. "==" || "Hellow==" capturing delimiter alone or by end of text
 				virtual void capture(char a_char, bool a_capturing){
-					LexerLog(higgs_Log_StartMethod, "capture",  "println", "");
-					LexerLog(higgs_Log_Statement, "capture",  "println", Note("Capturing last char? ") + Note(!a_capturing));
-					LexerLog(higgs_Log_Statement, "capture",  "println", "Char:");
-					LexerLog(higgs_Log_Statement, "capture",  "println", a_char);
+					LexerLog(pankey_Log_StartMethod, "capture",  "println", "");
+					LexerLog(pankey_Log_Statement, "capture",  "println", Note("Capturing last char? ") + Note(!a_capturing));
+					LexerLog(pankey_Log_Statement, "capture",  "println", "Char:");
+					LexerLog(pankey_Log_Statement, "capture",  "println", a_char);
 
 					if(this->isBreakPoint(a_char)){// "Hellow\n" || "Hellow World" the Hellow is capture by breakpoint
-						LexerLog(higgs_Log_Statement, "capture",  "println", "this->isBreakPoint(a_char)");
+						LexerLog(pankey_Log_Statement, "capture",  "println", "this->isBreakPoint(a_char)");
 						this->captureByBreakPoint();
 						this->realeseBreakPoint();
 						this->addPositionAndLine(a_char);
-						LexerLog(higgs_Log_EndMethod, "capture",  "println", "");
+						LexerLog(pankey_Log_EndMethod, "capture",  "println", "");
 						return;
 					}
 					
 					m_capture_note.addLocalValue(a_char);
-					LexerLog(higgs_Log_Statement, "capture",  "println", "captured note:");
-					LexerLog(higgs_Log_Statement, "capture",  "println", m_capture_note);
+					LexerLog(pankey_Log_Statement, "capture",  "println", "captured note:");
+					LexerLog(pankey_Log_Statement, "capture",  "println", m_capture_note);
 
 					this->captureDelimiterToken(a_char);// "Hellow==" || "==" 
 
 					if(!a_capturing){// "Hellow"
-						LexerLog(higgs_Log_Statement, "capture",  "println", "End of text");
+						LexerLog(pankey_Log_Statement, "capture",  "println", "End of text");
 						this->captureByEndOfText();
 						this->realeseEndOfText();
-						LexerLog(higgs_Log_EndMethod, "capture",  "println", "");
+						LexerLog(pankey_Log_EndMethod, "capture",  "println", "");
 						return;
 					}
 					this->addPositionAndLine(a_char);
-					LexerLog(higgs_Log_EndMethod, "capture",  "println", "");
+					LexerLog(pankey_Log_EndMethod, "capture",  "println", "");
 				}
 				
 			public:

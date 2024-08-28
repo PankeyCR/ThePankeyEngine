@@ -2,30 +2,30 @@
 #ifndef AppStateMapManager_hpp
 	#define AppStateMapManager_hpp
 
-	#include "higgs_Enviroment.hpp"
-	#include "higgs_Enviroment_config.hpp"
+	#include "pankey_Enviroment.hpp"
+	#include "pankey_Enviroment_config.hpp"
 
 	#include "AppState.hpp"
 	#include "UpdateManager.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class A, class... Args>
 		class AppStateMapManager : public UpdateManager<A&,Args...>{
 			public:
 				AppStateMapManager(){
-					AppStateListManagerLog(higgs_Log_StartMethod, "Constructor", "println", "");
-					AppStateListManagerLog(higgs_Log_EndMethod, "Constructor", "println", "");
+					AppStateListManagerLog(pankey_Log_StartMethod, "Constructor", "println", "");
+					AppStateListManagerLog(pankey_Log_EndMethod, "Constructor", "println", "");
 				}
 				virtual ~AppStateMapManager(){
-					AppStateListManagerLog(higgs_Log_StartMethod, "Destructor", "println", "");
-					AppStateListManagerLog(higgs_Log_EndMethod, "Destructor", "println", "");
+					AppStateListManagerLog(pankey_Log_StartMethod, "Destructor", "println", "");
+					AppStateListManagerLog(pankey_Log_EndMethod, "Destructor", "println", "");
 				}
 
 				virtual app_state<A,Args...> add(Note a_id, app_state<A,Args...> a_state){
-					AppStateListManagerLog(higgs_Log_StartMethod, "add",  "println", "");
+					AppStateListManagerLog(pankey_Log_StartMethod, "add",  "println", "");
 					m_initialize.add(a_state);
-					AppStateListManagerLog(higgs_Log_EndMethod, "add", "println", "");
+					AppStateListManagerLog(pankey_Log_EndMethod, "add", "println", "");
 					return a_state;
 				}
 				

@@ -11,7 +11,7 @@
 		#define GlobalEventsLog(location,method,type,mns) 
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class K, class... Args>
 		struct GlobalEvents{

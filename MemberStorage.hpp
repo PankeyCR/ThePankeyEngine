@@ -6,13 +6,13 @@
 	#include "Member.hpp"
 
 	#ifdef MemberStorage_LogApp
-		#include "higgs_Logger.hpp"
-		#define MemberStorageLog(location,method,type,mns) higgs_Log((void*)this,location,"MemberStorage",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define MemberStorageLog(location,method,type,mns) pankey_Log((void*)this,location,"MemberStorage",method,type,mns)
 	#else
 		#define MemberStorageLog(location,method,type,mns)
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class H, class M>
 		class MemberStorage : virtual public MemoryStorage<H>{
@@ -23,8 +23,8 @@
                 using HOLDER_ARRAY_TYPE = typename MemoryStorage<H>::HOLDER_ARRAY_TYPE;
 
 				virtual ~MemberStorage(){
-					MemberStorageLog(higgs_Log_StartMethod, "Destructor", "println", "");
-					MemberStorageLog(higgs_Log_EndMethod, "Destructor", "println", "");
+					MemberStorageLog(pankey_Log_StartMethod, "Destructor", "println", "");
+					MemberStorageLog(pankey_Log_EndMethod, "Destructor", "println", "");
 				}
 				
 				virtual Member<H,M> get(int a_position)const=0;
@@ -33,9 +33,9 @@
 				
 				template<class IM>
 				Member<H,M> getMember(IM a_iteration_method){
-					MemoryStorageLog(higgs_Log_StartMethod, "getMember", "println", "");
+					MemoryStorageLog(pankey_Log_StartMethod, "getMember", "println", "");
 					if(this->isNull() || this->getSize() <= 0){
-						MemoryStorageLog(higgs_Log_EndMethod, "getMember", "println", "this->isNull() || this->getSize() <= 0");
+						MemoryStorageLog(pankey_Log_EndMethod, "getMember", "println", "this->isNull() || this->getSize() <= 0");
 						return Member<H,M>();
 					}
 					for(int x = 0; x < this->getSize(); x++){
@@ -44,7 +44,7 @@
 							return f_member;
 						}
 					}
-					MemoryStorageLog(higgs_Log_EndMethod, "getMember", "println", "");
+					MemoryStorageLog(pankey_Log_EndMethod, "getMember", "println", "");
 					return Member<H,M>();
 				}
 				

@@ -6,13 +6,13 @@
 	#include "LinkedListNode.hpp" 
 
 	#ifdef LinkedRawPointerList_LogApp
-		#include "higgs_Logger.hpp"
-		#define LinkedRawPointerListLog(location,method,type,mns) higgs_Log((void*)this,location,"LinkedRawPointerList",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define LinkedRawPointerListLog(location,method,type,mns) pankey_Log((void*)this,location,"LinkedRawPointerList",method,type,mns)
 	#else
 		#define LinkedRawPointerListLog(location,method,type,mns)
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class T>
 		class LinkedRawPointerList : virtual public RawPointerList<T>{
@@ -22,12 +22,12 @@
 				LinkedListNode<T>* m_node = nullptr;
 				
 				LinkedRawPointerList<T>(){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "Constructor", "println", "");
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "Constructor", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "Constructor", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "Constructor", "println", "");
 				}
 				
 				LinkedRawPointerList<T>(const LinkedRawPointerList<T>& c_list){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "Constructor", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "Constructor", "println", "");
 					LinkedListNode<T>* c_node = c_list.getStartNode();
 					if(c_node == nullptr){
 						return;
@@ -36,15 +36,15 @@
 						this->addPointer(c_node->get());
 						c_node = c_list.getNextNode(c_node);
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "Constructor", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "Constructor", "println", "");
 				}
 				
 				virtual ~LinkedRawPointerList<T>(){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "Destructor", "println", "");
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "Destructor", "println", "Position:");
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "Destructor", "println", this->getPosition());
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "Destructor", "println", "Size:");
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "Destructor", "println", this->getSize());
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "Destructor", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "Destructor", "println", "Position:");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "Destructor", "println", this->getPosition());
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "Destructor", "println", "Size:");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "Destructor", "println", this->getSize());
 					LinkedListNode<T>* node = this->getStartNode();
 					this->deleteListNode(node);
 					m_start = nullptr;
@@ -52,71 +52,71 @@
 					m_node = nullptr;
 					this->setPosition(0);
 					this->setSize(0);
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "Destructor", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "Destructor", "println", "");
 				}
 				
 				protected:
 				
 				virtual bool deleteListNode(LinkedListNode<T>* a_node){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "deleteListNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "deleteListNode", "println", "");
 					if(a_node == nullptr){
 						return false;
 					}
 					LinkedListNode<T>* node = a_node;
 					LinkedListNode<T>* nextNode = nullptr;
 					for(int x = 0; node != nullptr; x++){
-						LinkedRawPointerListLog(higgs_Log_Statement, "deleteListNode", "println", "node != nullptr:");
-						LinkedRawPointerListLog(higgs_Log_Statement, "deleteListNode", "println", node != nullptr);
-						LinkedRawPointerListLog(higgs_Log_Statement, "deleteListNode", "println", "iteration index:");
-						LinkedRawPointerListLog(higgs_Log_Statement, "deleteListNode", "println", x);
+						LinkedRawPointerListLog(pankey_Log_Statement, "deleteListNode", "println", "node != nullptr:");
+						LinkedRawPointerListLog(pankey_Log_Statement, "deleteListNode", "println", node != nullptr);
+						LinkedRawPointerListLog(pankey_Log_Statement, "deleteListNode", "println", "iteration index:");
+						LinkedRawPointerListLog(pankey_Log_Statement, "deleteListNode", "println", x);
 						nextNode = node->next;
 						if(this->isOwner() && node->value != nullptr){
-							LinkedRawPointerListLog(higgs_Log_Statement, "deleteListNode", "println", "this->isOwner() && node->get() != nullptr");
+							LinkedRawPointerListLog(pankey_Log_Statement, "deleteListNode", "println", "this->isOwner() && node->get() != nullptr");
 							delete node->value;
 						}
-						LinkedRawPointerListLog(higgs_Log_Statement, "deleteListNode", "println", "deleting node");
+						LinkedRawPointerListLog(pankey_Log_Statement, "deleteListNode", "println", "deleting node");
 						delete node;
 						node = nullptr;
 						if(nextNode == nullptr){
-							LinkedRawPointerListLog(higgs_Log_Statement, "deleteListNode", "println", "nextNode == nullptr");
+							LinkedRawPointerListLog(pankey_Log_Statement, "deleteListNode", "println", "nextNode == nullptr");
 							break;
 						}
-						LinkedRawPointerListLog(higgs_Log_Statement, "deleteListNode", "println", "nextNode->last = nullptr");
+						LinkedRawPointerListLog(pankey_Log_Statement, "deleteListNode", "println", "nextNode->last = nullptr");
 						nextNode->last = nullptr;
 						node = nextNode;
-						LinkedRawPointerListLog(higgs_Log_Statement, "deleteListNode", "println", "end of iteration");
+						LinkedRawPointerListLog(pankey_Log_Statement, "deleteListNode", "println", "end of iteration");
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "deleteListNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "deleteListNode", "println", "");
 					return true;
 				}
 				
 				virtual LinkedListNode<T>* getNextNode(LinkedListNode<T>* a_node) const{
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "getNextNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "getNextNode", "println", "");
 					if(a_node == nullptr){
 						return nullptr;
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "getNextNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "getNextNode", "println", "");
 					return a_node->next;
 				}
 				
 				virtual LinkedListNode<T>* getLastNode(LinkedListNode<T>* a_node) const{
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "getLastNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "getLastNode", "println", "");
 					if(a_node == nullptr){
 						return nullptr;
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "getLastNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "getLastNode", "println", "");
 					return a_node->last;
 				}
 				
 				virtual LinkedListNode<T>* setNode(LinkedListNode<T>* a_node){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "setNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "setNode", "println", "");
 					m_node = a_node;
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "setNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "setNode", "println", "");
 					return m_node;
 				}
 				
 				virtual LinkedListNode<T>* initNodes(T* a_value){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "initNodes", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "initNodes", "println", "");
 					LinkedListNode<T>* s_node = this->getStartNode();
 					LinkedListNode<T>* e_node = this->getEndNode();
 					LinkedListNode<T>* i_node = this->getNode();
@@ -130,7 +130,7 @@
 						this->setSize(1);
 						return i_node;
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "initNodes", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "initNodes", "println", "");
 					return nullptr;
 				}
 
@@ -141,9 +141,9 @@
 					if a_node has a next node, the new node is added in between a_node and the next node, making it he next node
 				*/
 				virtual LinkedListNode<T>* addPointerToNextNode(LinkedListNode<T>* a_node, T* a_value){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "addPointerToNextNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "addPointerToNextNode", "println", "");
 					if(a_node == nullptr){
-						LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToNextNode", "println", "a_node == nullptr");
+						LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToNextNode", "println", "a_node == nullptr");
 						return nullptr;
 					}
 					LinkedListNode<T>* nextNode = a_node->next;
@@ -152,7 +152,7 @@
 						nextNode->set(a_value);
 						a_node->next = nextNode;
 						nextNode->last = a_node;
-						LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToNextNode", "println", "nextNode == nullptr");
+						LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToNextNode", "println", "nextNode == nullptr");
 						return nextNode;
 					}
 					LinkedListNode<T>* n_Node = new LinkedListNode<T>();
@@ -161,12 +161,12 @@
 					n_Node->next = nextNode;
 					n_Node->last = a_node;
 					n_Node->set(a_value);
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToNextNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToNextNode", "println", "");
 					return n_Node;
 				}
 				
 				virtual LinkedListNode<T>* addPointerToLastNode(LinkedListNode<T>* a_node, T* a_value){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "addPointerToLastNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "addPointerToLastNode", "println", "");
 					if(a_node == nullptr){
 						return nullptr;
 					}
@@ -184,12 +184,12 @@
 					n_Node->last = lastNode;
 					n_Node->next = a_node;
 					n_Node->set(a_value);
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToLastNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToLastNode", "println", "");
 					return n_Node;
 				}
 				
 				virtual T* removeByNode(LinkedListNode<T>* a_node){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "removeByPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "removeByPointer", "println", "");
 					if(a_node == nullptr){
 						return nullptr;
 					}
@@ -205,7 +205,7 @@
 						return i_value;
 					}
 					if(!this->isInOrder()){
-						LinkedRawPointerListLog(higgs_Log_EndMethod, "removeByPointer", "println", "!this->isInOrder()");
+						LinkedRawPointerListLog(pankey_Log_EndMethod, "removeByPointer", "println", "!this->isInOrder()");
 						return i_value;
 					}
 					if(a_node == m_start){
@@ -218,32 +218,32 @@
 					delete a_node;
 					this->decrementPosition();
 					this->decrementSize();
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "removeByPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "removeByPointer", "println", "");
 					return i_value;
 				}
 				
 				public:
 				
 				virtual LinkedListNode<T>* getNode() const{
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "getNode", "println", "");
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "getNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "getNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "getNode", "println", "");
 					return m_node;
 				}
 				
 				virtual LinkedListNode<T>* getStartNode() const{
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "getStartNode", "println", "");
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "getStartNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "getStartNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "getStartNode", "println", "");
 					return m_start;
 				}
 				
 				virtual LinkedListNode<T>* getEndNode() const{
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "getEndNode", "println", "");
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "getEndNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "getEndNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "getEndNode", "println", "");
 					return m_end;
 				}
 				
 				virtual LinkedListNode<T>* getNode(int x) const{
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "getNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "getNode", "println", "");
 					if(this->isEmpty()){
 						return nullptr;
 					}
@@ -260,12 +260,12 @@
 						}
 						node = getNextNode(node);
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "getNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "getNode", "println", "");
 					return nullptr;
 				}
 				
 				virtual LinkedListNode<T>* getNodeI(int x) const{
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "getNodeI", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "getNodeI", "println", "");
 					if(this->isEmpty()){
 						return nullptr;
 					}
@@ -282,12 +282,12 @@
 						}
 						node = getLastNode(node);
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "getNodeI", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "getNodeI", "println", "");
 					return nullptr;
 				}
 				
 				virtual LinkedListNode<T>* getNodeByPointer(T* key) const{
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "getNodeByPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "getNodeByPointer", "println", "");
 					LinkedListNode<T>* node = getStartNode();
 					for(int count = 0; node != nullptr; count++){
 						T* i_value = node->get();
@@ -296,12 +296,12 @@
 						}
 						node = getNextNode(node);
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "getNodeByPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "getNodeByPointer", "println", "");
 					return nullptr;
 				}
 				
 				virtual LinkedListNode<T>* getNodeByPointerI(T* key) const{
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "getNodeByPointerI", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "getNodeByPointerI", "println", "");
 					LinkedListNode<T>* node = getEndNode();
 					for(int count = 0; node != nullptr; count++){
 						T* i_value = node->get();
@@ -310,12 +310,12 @@
 						}
 						node = getLastNode(node);
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "getNodeByPointerI", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "getNodeByPointerI", "println", "");
 					return nullptr;
 				}
 				
 				virtual bool nextNode(){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "nextNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "nextNode", "println", "");
 					if(m_node == nullptr){
 						return false;
 					}
@@ -324,12 +324,12 @@
 						return false;
 					}
 					m_node = node;
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "nextNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "nextNode", "println", "");
 					return true;
 				}
 				
 				virtual bool lastNode(){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "lastNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "lastNode", "println", "");
 					if(m_node == nullptr){
 						return false;
 					}
@@ -338,29 +338,29 @@
 						return false;
 					}
 					m_node = node;
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "lastNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "lastNode", "println", "");
 					return true;
 				}
 
 				virtual bool isEmpty()const{
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "isEmpty", "println", "");
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "isEmpty", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "isEmpty", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "isEmpty", "println", "");
 					return m_node == nullptr || m_start == nullptr || m_end == nullptr || this->getSize() == 0;
 				}
 				
 				virtual void setNodePosition(int a_position){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "setPosition", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "setPosition", "println", "");
 					if(a_position >= this->getSize()){
 						return;
 					}
 					this->setPosition(a_position);
 					LinkedListNode<T>* i_node = getNode(a_position);
 					setNode(i_node);
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "setPosition", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "setPosition", "println", "");
 				}
 				
 				virtual bool replace(int i, int j){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "replace", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "replace", "println", "");
 					if(i >= this->getPosition() || j >= this->getPosition() || i == j){
 						return false;
 					}
@@ -384,12 +384,12 @@
 						}
 						node = getNextNode(node);
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "replace", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "replace", "println", "");
 					return true;
 				}
 				
 				virtual T* addPointerToNode(T* a_value){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "addPointerToNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "addPointerToNode", "println", "");
 					LinkedListNode<T>* i_node = this->getNode();
 					
 					if(i_node == nullptr){
@@ -407,12 +407,12 @@
 					if(i_node == this->getEndNode()){
 						m_end = m_node;
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToNode", "println", "");
 					return a_value;
 				}
 				
 				virtual T* addPointerToStartNode(T* a_value){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "addPointerToStartNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "addPointerToStartNode", "println", "");
 					LinkedListNode<T>* i_node = this->getStartNode();
 					
 					if(i_node == nullptr){
@@ -426,12 +426,12 @@
 					m_start = this->addPointerToLastNode(i_node, a_value);
 					this->incrementPosition();
 					this->incrementSize();
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToStartNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToStartNode", "println", "");
 					return a_value;
 				}
 				
 				virtual T* addPointerToEndNode(T* a_value){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "addPointerToEndNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "addPointerToEndNode", "println", "");
 					LinkedListNode<T>* i_node = this->getEndNode();
 					
 					if(i_node == nullptr){
@@ -445,21 +445,21 @@
 					m_end = this->addPointerToNextNode(i_node, a_value);
 					this->incrementPosition();
 					this->incrementSize();
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToEndNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToEndNode", "println", "");
 					return a_value;
 				}
 				
 				virtual T* addPointer(T* a_value){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "addPointer", "println", "");
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "addPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointer", "println", "");
 					return this->addPointerToEndNode(a_value);
 				}
 				
 				virtual T* setPointer(int a_position, T* a_value){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "setPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "setPointer", "println", "");
 					if(a_position >= this->getSize()){
-						LinkedRawPointerListLog(higgs_Log_Statement, "setPointer", "println", "expanding:");
-						LinkedRawPointerListLog(higgs_Log_Statement, "setPointer", "println", a_position - this->getSize() + this->m_expandSize);
+						LinkedRawPointerListLog(pankey_Log_Statement, "setPointer", "println", "expanding:");
+						LinkedRawPointerListLog(pankey_Log_Statement, "setPointer", "println", a_position - this->getSize() + this->m_expandSize);
 						this->expand(a_position - this->getSize() + this->m_expandSize);
 					}
 					LinkedListNode<T>* i_node = getNode(a_position);
@@ -481,12 +481,12 @@
 						this->setPosition(a_position + 1);
 					}
 					
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "setPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "setPointer", "println", "");
 					return a_value;
 				}
 				
 				virtual T* insertPointer(int a_position, T* a_value){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "insertPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "insertPointer", "println", "");
 					if(a_position == 0){
 						return this->addPointerToStartNode(a_value);
 					}
@@ -500,42 +500,42 @@
 						i_node = this->addPointerToLastNode(i_node, a_value);
 						return a_value;
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "insertPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "insertPointer", "println", "");
 					return this->addPointer(a_value);
 				}
 				
 				virtual T* getByPointer(T* key){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "getByPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "getByPointer", "println", "");
 					LinkedListNode<T>* i_node = this->getNodeByPointer(key);
 					if(i_node == nullptr){
 						return nullptr;
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "getByPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "getByPointer", "println", "");
 					return i_node->get();
 				}
 				
 				virtual T* getByPosition(int a_position)const{
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "getByPosition", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "getByPosition", "println", "");
 					LinkedListNode<T>* i_node = this->getNode(a_position);
 					if(i_node == nullptr){
 						return nullptr;
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "getByPosition", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "getByPosition", "println", "");
 					return i_node->get();
 				}
 				
 				virtual bool containByPointer(T* key){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "containByPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "containByPointer", "println", "");
 					LinkedListNode<T>* i_node = this->getNodeByPointer(key);
 					if(i_node == nullptr){
 						return false;
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "containByPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "containByPointer", "println", "");
 					return true;
 				}
 				
 				virtual int getIndexByPointer(T* key){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "getIndexByPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "getIndexByPointer", "println", "");
 					LinkedListNode<T>* node = getStartNode();
 					for(int count = 0; node != nullptr; count++){
 						T* i_value = node->get();
@@ -544,12 +544,12 @@
 						}
 						node = getNextNode(node);
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "getIndexByPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "getIndexByPointer", "println", "");
 					return -1;
 				}
 				
 				virtual void reset(){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "reset", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "reset", "println", "");
 					LinkedListNode<T>* node = getStartNode();
 					LinkedListNode<T>* nextNode = nullptr;
 					for(int x = 0; node != nullptr; x++){
@@ -567,11 +567,11 @@
 					m_node = nullptr;
 					this->setPosition(0);
 					this->setSize(0);
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "reset", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "reset", "println", "");
 				}
 				
 				virtual void resetDelete(){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "resetDelete", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "resetDelete", "println", "");
 					LinkedListNode<T>* node = getStartNode();
 					LinkedListNode<T>* nextNode = nullptr;
 					for(int x = 0; node != nullptr; x++){
@@ -592,28 +592,28 @@
 					m_node = nullptr;
 					this->setPosition(0);
 					this->setSize(0);
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "resetDelete", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "resetDelete", "println", "");
 				}
 				
 				virtual T* removeByPointer(T* key){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "removeByPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "removeByPointer", "println", "");
 					LinkedListNode<T>* i_node = this->getNodeByPointer(key);
 					if(i_node == nullptr){
 						return nullptr;
 					}
 					T* i_value = this->removeByNode(i_node);
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "removeByPointer", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "removeByPointer", "println", "");
 					return i_value;
 				}
 				
 				virtual T* removeByPosition(int x){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "removeByPosition", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "removeByPosition", "println", "");
 					LinkedListNode<T>* i_node = this->getNode(x);
 					if(i_node == nullptr){
 						return nullptr;
 					}
 					T* i_value = this->removeByNode(i_node);
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "removeByPosition", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "removeByPosition", "println", "");
 					return i_value;
 				}
 				
@@ -621,13 +621,13 @@
 				
 				//cuts the list in 2 parts, it removes all nodes before the position a_position
 				virtual LinkedListNode<T>* cutBefore(int a_position){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "cutBefore", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "cutBefore", "println", "");
 					if(this->isEmpty() || a_position <= 0){
-						LinkedRawPointerListLog(higgs_Log_EndMethod, "cutBefore", "println", "this->isEmpty() || a_position == 0");
+						LinkedRawPointerListLog(pankey_Log_EndMethod, "cutBefore", "println", "this->isEmpty() || a_position == 0");
 						return nullptr;
 					}
 					if(!this->isInOrder()){
-						LinkedRawPointerListLog(higgs_Log_Statement, "cutBefore", "println", "!this->isInOrder()");
+						LinkedRawPointerListLog(pankey_Log_Statement, "cutBefore", "println", "!this->isInOrder()");
 						LinkedListNode<T>* node = this->getNode(a_position);
 						LinkedListNode<T>* lastNode = nullptr;
 						for(int x = 0; node != nullptr; x++){
@@ -639,11 +639,11 @@
 							}
 							node = lastNode;
 						}
-						LinkedRawPointerListLog(higgs_Log_EndMethod, "cutBefore", "println", "");
+						LinkedRawPointerListLog(pankey_Log_EndMethod, "cutBefore", "println", "");
 						return nullptr;
 					}
 					if(a_position == this->getPosition() - 1){
-						LinkedRawPointerListLog(higgs_Log_StartMethod, "cutBefore", "println", "a_position == this->getPosition() - 1");
+						LinkedRawPointerListLog(pankey_Log_StartMethod, "cutBefore", "println", "a_position == this->getPosition() - 1");
 						LinkedListNode<T>* b_node = this->m_end;
 						this->m_end = b_node->last;
 						this->m_end->next = nullptr;
@@ -654,39 +654,39 @@
 					}
 					LinkedListNode<T>* b_node = this->getNode(a_position);
 					if(b_node == nullptr){
-						LinkedRawPointerListLog(higgs_Log_StartMethod, "cutBefore", "println", "b_node == nullptr");
+						LinkedRawPointerListLog(pankey_Log_StartMethod, "cutBefore", "println", "b_node == nullptr");
 						return nullptr;
 					}
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "cutBefore", "println", "cutting regular node");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "cutBefore", "println", "cutting regular node");
 					b_node->cutLastNode();
 					this->decrementPosition(a_position);
 					this->decrementSize(a_position);
 					LinkedListNode<T>* stating_node = this->getStartNode();
 					m_start = b_node;
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "cutBefore", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "cutBefore", "println", "");
 					return stating_node;
 				}
 				
 				virtual bool cutDeleteBefore(int a_position){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "cutDeleteBefore", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "cutDeleteBefore", "println", "");
 					LinkedListNode<T>* node = cutBefore(a_position);
 					if(node == nullptr){
 						return false;
 					}
 					this->deleteListNode(node);
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "cutDeleteBefore", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "cutDeleteBefore", "println", "");
 					return true;
 				}
 				
 				//splits the Nodes in 2, it removes and returns the nodes after the position a_position
 				virtual LinkedListNode<T>* cutAfter(int a_position){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "cutAfter", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "cutAfter", "println", "");
 					if(this->isEmpty() || a_position == this->getPosition() - 1){
-						LinkedRawPointerListLog(higgs_Log_StartMethod, "cutAfter", "println", "this->isEmpty()");
+						LinkedRawPointerListLog(pankey_Log_StartMethod, "cutAfter", "println", "this->isEmpty()");
 						return nullptr;
 					}
 					if(!this->isInOrder()){
-						LinkedRawPointerListLog(higgs_Log_Statement, "cutBefore", "println", "!this->isInOrder()");
+						LinkedRawPointerListLog(pankey_Log_Statement, "cutBefore", "println", "!this->isInOrder()");
 						LinkedListNode<T>* node = this->getNode(a_position);
 						LinkedListNode<T>* nextNode = nullptr;
 						for(int x = 0; node != nullptr; x++){
@@ -698,11 +698,11 @@
 							}
 							node = nextNode;
 						}
-						LinkedRawPointerListLog(higgs_Log_EndMethod, "cutBefore", "println", "");
+						LinkedRawPointerListLog(pankey_Log_EndMethod, "cutBefore", "println", "");
 						return nullptr;
 					}
 					if(a_position == 0){
-						LinkedRawPointerListLog(higgs_Log_StartMethod, "cutAfter", "println", "a_position == 0");
+						LinkedRawPointerListLog(pankey_Log_StartMethod, "cutAfter", "println", "a_position == 0");
 						LinkedListNode<T>* b_node = this->m_start;
 						this->m_start = nullptr;
 						this->m_end = nullptr;
@@ -713,41 +713,41 @@
 					}
 					LinkedListNode<T>* b_node = this->getNode(a_position);
 					if(b_node == nullptr){
-						LinkedRawPointerListLog(higgs_Log_StartMethod, "cutAfter", "println", "b_node == nullptr");
+						LinkedRawPointerListLog(pankey_Log_StartMethod, "cutAfter", "println", "b_node == nullptr");
 						return nullptr;
 					}
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "cutAfter", "println", "cutting regular node");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "cutAfter", "println", "cutting regular node");
 					m_end = b_node->last;
 					b_node->cutLastNode();
 					this->decrementPosition(a_position + 1);
 					this->decrementSize(a_position + 1);
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "cutAfter", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "cutAfter", "println", "");
 					return b_node;
 				}
 				virtual bool cutDeleteAfter(int a_position){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "cutDeleteAfter", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "cutDeleteAfter", "println", "");
 					LinkedListNode<T>* node = cutAfter(a_position);
 					if(node == nullptr){
 						return false;
 					}
 					this->deleteListNode(node);
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "cutDeleteAfter", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "cutDeleteAfter", "println", "");
 					return false;
 				}
 				
 				virtual bool removeFirstIndex(int a_amount){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "removeFirstIndex", "println", "");
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "removeFirstIndex", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "removeFirstIndex", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "removeFirstIndex", "println", "");
 					return this->cutDeleteBefore(a_amount);
 				}
 				virtual bool removeLastIndex(int a_amount){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "removeLastIndex", "println", "");
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "removeLastIndex", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "removeLastIndex", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "removeLastIndex", "println", "");
 					return this->cutDeleteAfter(this->getPosition() - a_amount);
 				}
 
                 virtual void expand(int a_size){
-					LinkedRawPointerListLog(higgs_Log_StartMethod, "expand", "println", "");
+					LinkedRawPointerListLog(pankey_Log_StartMethod, "expand", "println", "");
 					LinkedListNode<T>* i_node = this->getNode();
 					
 					if(i_node == nullptr){
@@ -765,7 +765,7 @@
 					if(i_node == this->getEndNode()){
 						m_end = m_node;
 					}
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "expand", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "expand", "println", "");
 				}
 				
 			protected:

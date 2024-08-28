@@ -8,52 +8,52 @@
 #include "ListIterator.hpp"
 
 #ifdef PrimitiveRawList_LogApp
-	#include "higgs_Logger.hpp"
-	#define PrimitiveRawListLog(location,method,type,mns) higgs_Log(this,location,"PrimitiveRawList",method,type,mns)
+	#include "pankey_Logger.hpp"
+	#define PrimitiveRawListLog(location,method,type,mns) pankey_Log(this,location,"PrimitiveRawList",method,type,mns)
 #else
 	#define PrimitiveRawListLog(location,method,type,mns)
 #endif
 
-namespace higgs{
+namespace pankey{
 
 template<class T>
 class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawList<T>{
 	public:
 		PrimitiveRawList(){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "Constructor", "println", "");
-			PrimitiveRawListLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "Constructor", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 		
 		PrimitiveRawList(const PrimitiveRawList<T>& a_list){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "Constructor", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "Constructor", "println", "");
 			this->m_values = new T*[a_list.getSize()];
 			this->setSize(a_list.getSize());
 			for(int x = 0; x < a_list.getPosition(); x++){
 				this->addLValue(*a_list.getByPosition(x));
 			}
-			PrimitiveRawListLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 		
 		PrimitiveRawList(int c_size, bool c_own, bool c_reordering) : PrimitiveRawPointerList<T>(c_size, c_own, c_reordering){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "Constructor", "println", "");
-			PrimitiveRawListLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "Constructor", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 		
 		virtual ~PrimitiveRawList(){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "Destructor", "println", "");
-			PrimitiveRawListLog(higgs_Log_EndMethod, "Destructor", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "Destructor", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "Destructor", "println", "");
 		}
 		
 		virtual T* addLValue(T a_value){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "addLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "addLValue", "println", "");
 			T* i_value = new T();
 			*i_value = a_value;
-			PrimitiveRawListLog(higgs_Log_EndMethod, "addLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "addLValue", "println", "");
 			return this->addPointer(i_value);
 		}
 		
 		virtual T* setLValue(int a_position, T a_value){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "setLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "setLValue", "println", "");
 			if(a_position >= this->getPosition()){
 				return nullptr;			
 			}
@@ -61,12 +61,12 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 				this->m_values[a_position] = new T();
 			}
 			*this->m_values[a_position] = a_value;
-			PrimitiveRawListLog(higgs_Log_EndMethod, "setLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "setLValue", "println", "");
 			return this->m_values[a_position];
 		}
 		
 		virtual T* insertLValue(int a_position, T a_value){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "insertLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "insertLValue", "println", "");
             if(a_position >= this->getPosition() + 1){
 				return nullptr;
             }
@@ -82,12 +82,12 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 				rVaule = nVaule;
 			}
 			this->incrementPosition();
-			PrimitiveRawListLog(higgs_Log_EndMethod, "insertLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "insertLValue", "println", "");
 			return this->m_values[a_position];
 		}
 		
 		virtual T* getByLValue(T a_key){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "getByLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "getByLValue", "println", "");
 			if(this->m_values == nullptr){
 				return nullptr;
 			}
@@ -99,12 +99,12 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 					return this->m_values[x];
 				}
 			}
-			PrimitiveRawListLog(higgs_Log_EndMethod, "getByLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "getByLValue", "println", "");
 			return nullptr;
 		}
 		
 		virtual bool containByLValue(T a_key){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "containByLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "containByLValue", "println", "");
 			if(this->m_values == nullptr){
 				return false;
 			}
@@ -116,12 +116,12 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 					return true;
 				}
 			}
-			PrimitiveRawListLog(higgs_Log_EndMethod, "containByLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "containByLValue", "println", "");
 			return false;
 		}
 		
 		virtual int getIndexByLValue(T a_key){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "getIndexByLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "getIndexByLValue", "println", "");
 			if(this->isEmpty()){
 				return -1;
 			}
@@ -133,14 +133,14 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 					return x;
 				}
 			}
-			PrimitiveRawListLog(higgs_Log_EndMethod, "getIndexByLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "getIndexByLValue", "println", "");
 			return -1;
 		}
 		
 		virtual T* removeByLValue(T a_key){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "removeByLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "removeByLValue", "println", "");
 			if(this->isEmpty()){
-				PrimitiveRawListLog(higgs_Log_EndMethod, "removeByLValue", "println", "");
+				PrimitiveRawListLog(pankey_Log_EndMethod, "removeByLValue", "println", "");
 				return nullptr;
 			}
 			int i_position = -1;
@@ -153,15 +153,15 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 					break;
 				}
 			}
-			PrimitiveRawListLog(higgs_Log_EndMethod, "removeByLValue", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "removeByLValue", "println", "");
 			return this->removeByPosition(i_position);
 		}
 	
 		////////////////////////////////////////////special removes part///////////////////////////////////////////////
 		virtual bool removeAll(T a_value){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "removeAll", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "removeAll", "println", "");
 			if(this->isEmpty()){
-				PrimitiveRawListLog(higgs_Log_EndMethod, "removeAll", "println", "");
+				PrimitiveRawListLog(pankey_Log_EndMethod, "removeAll", "println", "");
 				return false;
 			}
 			bool r_val = false;
@@ -182,24 +182,24 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 				}
 			}
 			if(!this->isInOrder()){
-				PrimitiveRawListLog(higgs_Log_EndMethod, "removeAll", "println", "!this->isInOrder()");
+				PrimitiveRawListLog(pankey_Log_EndMethod, "removeAll", "println", "!this->isInOrder()");
 				return r_val;
 			}
 			this->setPosition(p_x);
-			PrimitiveRawListLog(higgs_Log_EndMethod, "removeAll", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "removeAll", "println", "");
 			return r_val;
 		}
 		
 		virtual bool removeFirst(T a_value){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "removeFirst", "println", "");
-			PrimitiveRawListLog(higgs_Log_EndMethod, "removeFirst", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "removeFirst", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "removeFirst", "println", "");
 			return this->removeDeleteByLValue(a_value);
 		}
 		
 		virtual bool removeLast(T a_value){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "removeLast", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "removeLast", "println", "");
 			if(this->isEmpty()){
-				PrimitiveRawListLog(higgs_Log_EndMethod, "removeLast", "println", "");
+				PrimitiveRawListLog(pankey_Log_EndMethod, "removeLast", "println", "");
 				return false;
 			}
 			int i_position = -1;
@@ -212,14 +212,14 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 					break;
 				}
 			}
-			PrimitiveRawListLog(higgs_Log_EndMethod, "removeLast", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "removeLast", "println", "");
 			return this->removeByPosition(i_position);
 		}
 		
 		virtual T& operator[](int x){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "operator[]", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "operator[]", "println", "");
 			// if(this->m_values == nullptr){
-				// higgs_ErrorHandler(App_Crash_ERROR, "PrimitiveRawList", "operator[]", "null m_values");
+				// pankey_ErrorHandler(App_Crash_ERROR, "PrimitiveRawList", "operator[]", "null m_values");
 			// }
 			if(x > this->getPosition() && this->getPosition() > 0){
 				return *this->m_values[this->getPosition() - 1];
@@ -234,19 +234,19 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 				this->incrementPosition();
 			}
 			this->m_values[x] = new T();
-			PrimitiveRawListLog(higgs_Log_EndMethod, "operator[]", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "operator[]", "println", "");
 			return *this->m_values[x];
 		}
 		
 		virtual T operator[](int x) const{
-			PrimitiveRawListLog(higgs_Log_StartMethod, "operator[]", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "operator[]", "println", "");
 			if(x >= this->getPosition() && this->getPosition() != 0){
 				return *this->m_values[this->getPosition() - 1];
 			}
 			if(x < this->getPosition() && x >= 0){
 				return *this->m_values[x];
 			}
-			PrimitiveRawListLog(higgs_Log_EndMethod, "operator[]", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "operator[]", "println", "");
 			return T();
 		}
 	
@@ -254,17 +254,17 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 		
 		
 		virtual PrimitiveRawList<T>& operator=(const PrimitiveRawList<T>& a_list){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "operator=", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "operator=", "println", "");
 			this->resetDelete();
 			for(int x = 0; x < a_list.getPosition(); x++){
 				this->addLValue(*a_list.getByPosition(x));
 			}
-			PrimitiveRawListLog(higgs_Log_EndMethod, "operator=", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "operator=", "println", "");
 			return *this;
 		}
 		
 		virtual bool operator==(const PrimitiveRawList<T>& a_list){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "operator==", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "operator==", "println", "");
 			if(this->getPosition() != a_list.getPosition()){
 				return false;
 			}
@@ -281,12 +281,12 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 				}
 				this->addLValue(*a_list.getByPosition(x));
 			}
-			PrimitiveRawListLog(higgs_Log_EndMethod, "operator==", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "operator==", "println", "");
 			return true;
 		}
 		
 		virtual bool operator!=(const PrimitiveRawList<T>& a_list){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "operator!=", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "operator!=", "println", "");
 			if(this->getPosition() != a_list.getPosition()){
 				return true;
 			}
@@ -303,21 +303,21 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 				}
 				this->addLValue(*a_list.getByPosition(x));
 			}
-			PrimitiveRawListLog(higgs_Log_EndMethod, "operator!=", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "operator!=", "println", "");
 			return true;
 		}
 	
 		////////////////////////////////////////////Iterator part///////////////////////////////////////////////
 		
 		ListIterator<T> begin(){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "begin", "println", "");
-			PrimitiveRawListLog(higgs_Log_EndMethod, "begin", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "begin", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "begin", "println", "");
 			return ListIterator<T>(this, 0, this->getPosition());
 		}
 		
 		ListIterator<T> end(){
-			PrimitiveRawListLog(higgs_Log_StartMethod, "end", "println", "");
-			PrimitiveRawListLog(higgs_Log_EndMethod, "end", "println", "");
+			PrimitiveRawListLog(pankey_Log_StartMethod, "end", "println", "");
+			PrimitiveRawListLog(pankey_Log_EndMethod, "end", "println", "");
 			return ListIterator<T>(this, this->getPosition(), this->getPosition());
 		}
 		

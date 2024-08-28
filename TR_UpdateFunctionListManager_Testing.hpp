@@ -2,15 +2,15 @@
 #ifndef TR_UpdateFunctionListManager_Testing_hpp
 	#define TR_UpdateFunctionListManager_Testing_hpp
 	
-	#include "higgs_Enviroment.hpp"
-	#include "higgs_Enviroment_config.hpp"
+	#include "pankey_Enviroment.hpp"
+	#include "pankey_Enviroment_config.hpp"
 
 	#include "TestResult.hpp"
 	#include "TestRunner.hpp"
 
 	#include "UpdateFunctionListManager.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
 		void UpdateFunctionListManagerTest(TestResult& a_result, float a_tpc){
 			a_result.assertTrue("executing method", true);

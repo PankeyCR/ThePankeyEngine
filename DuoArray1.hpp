@@ -1,12 +1,12 @@
 
-#include "ame_Enviroment.hpp"
+#include "pankey_Enviroment.hpp"
 
 #ifndef DuoArray1_hpp
 #define DuoArray1_hpp
 
 #include "DataSet.hpp"
 
-namespace higgs{
+namespace pankey{
 
 template<class T, int xS1 = 3, int xS2 = 3>
 class DuoArray1 : public DataSet<T>{

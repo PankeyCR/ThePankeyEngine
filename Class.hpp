@@ -7,13 +7,13 @@
 	#include "ClassCount.hpp"
 
 	#ifdef Class_LogApp
-		#include "higgs_Logger.hpp"
-		#define ClassLog(location,method,type,mns) higgs_Log((void*)this,location,"Class",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define ClassLog(location,method,type,mns) pankey_Log((void*)this,location,"Class",method,type,mns)
 	#else
 		#define ClassLog(location,method,type,mns)
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 		/*
 			BC = is the base class that represents all classes
 			IC = is the intance of the base class
@@ -41,50 +41,50 @@
 			}
 			
 			Class(){
-				ClassLog(higgs_Log_StartMethod, "Constructor", "println", "");
-				ClassLog(higgs_Log_EndMethod, "Constructor", "println", "");
+				ClassLog(pankey_Log_StartMethod, "Constructor", "println", "");
+				ClassLog(pankey_Log_EndMethod, "Constructor", "println", "");
 			}
 
 			Class(const Class<BC>& c_cls){
-				ClassLog(higgs_Log_StartMethod, "Constructor", "println", "");
+				ClassLog(pankey_Log_StartMethod, "Constructor", "println", "");
 				m_class = c_cls.m_class;
 				m_name = c_cls.m_name;
 				m_type = c_cls.m_type;
-				ClassLog(higgs_Log_EndMethod, "Constructor", "println", "");
+				ClassLog(pankey_Log_EndMethod, "Constructor", "println", "");
 			}
 
 			Class(CLASS_TYPE c_cls, CharArray c_name, long c_type){
-				ClassLog(higgs_Log_StartMethod, "Constructor", "println", "");
+				ClassLog(pankey_Log_StartMethod, "Constructor", "println", "");
 				m_class = c_cls;
 				m_name = c_name;
 				m_type = c_type;
-				ClassLog(higgs_Log_EndMethod, "Constructor", "println", "");
+				ClassLog(pankey_Log_EndMethod, "Constructor", "println", "");
 			}
 
 			virtual ~Class(){
-				ClassLog(higgs_Log_StartMethod, "Destructor", "println", "");
-				ClassLog(higgs_Log_EndMethod, "Destructor", "println", "");
+				ClassLog(pankey_Log_StartMethod, "Destructor", "println", "");
+				ClassLog(pankey_Log_EndMethod, "Destructor", "println", "");
 			}
 			
 			CharArray getName(){
-				ClassLog(higgs_Log_StartMethod, "getName", "println", "");
-				ClassLog(higgs_Log_EndMethod, "getName", "println", "");
+				ClassLog(pankey_Log_StartMethod, "getName", "println", "");
+				ClassLog(pankey_Log_EndMethod, "getName", "println", "");
 				return m_name;
 			}
 			
 			long getType(){
-				ClassLog(higgs_Log_StartMethod, "getType", "println", "");
-				ClassLog(higgs_Log_EndMethod, "getType", "println", "");
+				ClassLog(pankey_Log_StartMethod, "getType", "println", "");
+				ClassLog(pankey_Log_EndMethod, "getType", "println", "");
 				return m_type;
 			}
 			
 			bool isNull(){
-				ClassLog(higgs_Log_StartMethod, "isNull", "println", "");
+				ClassLog(pankey_Log_StartMethod, "isNull", "println", "");
 				if(m_class == nullptr){
-					ClassLog(higgs_Log_EndMethod, "isNull", "println", "m_class == nullptr");
+					ClassLog(pankey_Log_EndMethod, "isNull", "println", "m_class == nullptr");
 					return true;
 				}
-				ClassLog(higgs_Log_EndMethod, "isNull", "println", "");
+				ClassLog(pankey_Log_EndMethod, "isNull", "println", "");
 				return false;
 			}
 			

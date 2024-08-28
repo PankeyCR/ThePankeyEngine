@@ -20,7 +20,7 @@
 #include "MethodType.hpp"
 #include "MethodReturn.hpp"
 
-namespace higgs{
+namespace pankey{
 
 class Method{
 	public:

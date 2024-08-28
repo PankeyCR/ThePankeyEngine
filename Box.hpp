@@ -1,29 +1,10 @@
 
-#include "higgs_Enviroment.hpp"
-
-#if defined(DISABLE_Box)
-	#define Box_hpp
-#endif
-
 #ifndef Box_hpp
 #define Box_hpp
-#define Box_AVAILABLE
-
-#ifndef higgs_Enviroment_Defined
-
-#endif
-
-#ifdef higgs_Windows
-
-#endif
-
-#ifdef higgs_ArduinoIDE
-	#include "Arduino.h"
-#endif
 
 #include "Mesh.hpp"
 
-namespace higgs{
+namespace pankey{
 
 class Box : public Mesh{
     public:

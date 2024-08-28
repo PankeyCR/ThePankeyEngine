@@ -2,7 +2,7 @@
 #ifndef CommandReturn_hpp
 	#define CommandReturn_hpp
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class R, class... Args>
 		class CommandReturn{

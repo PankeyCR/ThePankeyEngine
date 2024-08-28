@@ -6,22 +6,22 @@
 #include "StaticMethodMap.hpp"
 
 #ifdef SMS_LogApp
-	#include "higgs_Logger_config.hpp"
-	#include "higgs_Logger.hpp"
+	#include "pankey_Logger_config.hpp"
+	#include "pankey_Logger.hpp"
 	
-	#define SMSLog(location,method,type,mns) higgs_Log(nullptr,location,"StateMachineSystem",method,type,mns)
+	#define SMSLog(location,method,type,mns) pankey_Log(nullptr,location,"StateMachineSystem",method,type,mns)
 #else
 	#ifdef SMS_LogDebugApp
-		#include "higgs_Logger_config.hpp"
-		#include "higgs_Logger.hpp"
+		#include "pankey_Logger_config.hpp"
+		#include "pankey_Logger.hpp"
 		
-		#define SMSLog(location,method,type,mns) higgs_LogDebug(nullptr,location,"StateMachineSystem",method,type)
+		#define SMSLog(location,method,type,mns) pankey_LogDebug(nullptr,location,"StateMachineSystem",method,type)
 	#else
 		#define SMSLog(location,method,type,mns) 
 	#endif
 #endif
 
-namespace higgs{
+namespace pankey{
 
 template<class T>
 class StateMachineSystem{	
@@ -60,8 +60,8 @@ class StateMachineSystem{
 		void nextState(){
 			statePosition++;
 			actualState = states.getByPosition(statePosition);
-			SMSLog(higgs_Log_Statement, "nextState",  "println", Note(statePosition));
-			SMSLog(higgs_Log_Statement, "nextState",  "println", Note(actualState == nullptr));
+			SMSLog(pankey_Log_Statement, "nextState",  "println", Note(statePosition));
+			SMSLog(pankey_Log_Statement, "nextState",  "println", Note(actualState == nullptr));
 		}
 		
 		StateMethod* getState(){

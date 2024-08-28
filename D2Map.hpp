@@ -4,7 +4,7 @@
 
 	#include "DMap.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
 	template <class T,int i0,int i1>
 	class D2Map : DMap<T>{

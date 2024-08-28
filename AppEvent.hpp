@@ -2,7 +2,7 @@
 #ifndef AppEvent_hpp
 	#define AppEvent_hpp
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class A, class... Args>
 		class AppEvent{

@@ -5,7 +5,7 @@
 	#include "MemoryAllocator.hpp"
 	#include "ClassCount.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class T, class H>
 		class MemoryType{

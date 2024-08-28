@@ -10,13 +10,13 @@
 	#include "System.hpp"
 
 	#ifdef Application_LogApp
-		#include "higgs_Logger.hpp"
-		#define ApplicationLog(location,method,type,mns) higgs_Log((void*)this,location,"Application",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define ApplicationLog(location,method,type,mns) pankey_Log((void*)this,location,"Application",method,type,mns)
 	#else
 		#define ApplicationLog(location,method,type,mns) 
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 		
 		class Application{
 			public:
@@ -47,7 +47,7 @@
 
 				virtual void runMethod(Note a_name){
 					auto& i_events = this->getEventManager();
-					i_events.runMethod(a_name, *this);
+					i_events.runMethod(a_name);
 				}
 
 				virtual void runAppMethod(Note a_name){
@@ -61,14 +61,14 @@
 				}
 
 				virtual float update(){
-					ApplicationLog(higgs_Log_StartMethod, "update", "println", "");
+					ApplicationLog(pankey_Log_StartMethod, "update", "println", "");
 					float i_tpc = this->generateTpc();
 
 					auto& i_manager = this->getStateManager();
 
 					i_manager.update(*this, i_tpc);
 
-					ApplicationLog(higgs_Log_EndMethod, "update", "println", "");
+					ApplicationLog(pankey_Log_EndMethod, "update", "println", "");
 					return i_tpc;
 				}
 				

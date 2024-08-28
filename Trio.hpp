@@ -2,7 +2,7 @@
 #ifndef Trio_hpp
 #define Trio_hpp
 
-namespace higgs{
+namespace pankey{
 
 template<class T,class M,class B>
 class Trio{

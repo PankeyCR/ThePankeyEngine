@@ -5,13 +5,13 @@
 #include "RawPointerMap.hpp"
 
 #ifdef RawMapIterator_LogApp
-	#include "higgs_Logger.hpp"
-	#define RawMapIteratorLog(location,method,type,mns) higgs_Log((void*)this,location,"RawMapIterator",method,type,mns)
+	#include "pankey_Logger.hpp"
+	#define RawMapIteratorLog(location,method,type,mns) pankey_Log((void*)this,location,"RawMapIterator",method,type,mns)
 #else
 	#define RawMapIteratorLog(location,method,type,mns)
 #endif
 
-namespace higgs{
+namespace pankey{
 
 template <class K,class V>
 class RawMapIterator{

@@ -4,7 +4,7 @@
 
 	#include "PointerSize.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
 		class MemoryAllocator{
 			public:

@@ -6,7 +6,7 @@
 #include "Function.hpp"
 #include "RealRandom.hpp"
 
-namespace higgs{
+namespace pankey{
 
 template<class T>
 class Random IMPLEMENTATION_cppObject {

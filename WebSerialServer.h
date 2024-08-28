@@ -21,7 +21,7 @@
 	#define WebSerialServerLog(name,method,type,mns)
 #endif
 
- namespace higgs{
+ namespace pankey{
 
 class WebSerialServer : public SerialServer{	
     public:

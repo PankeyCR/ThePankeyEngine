@@ -4,7 +4,7 @@
 
 #include "Processing.hpp"
 
-namespace higgs{
+namespace pankey{
 
 template<class P, class V>
 class ProcessEntry{

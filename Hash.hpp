@@ -5,13 +5,13 @@
 	#include "InvokeMethod.hpp"
 
 	#ifdef Hash_LogApp
-		#include "higgs_Logger.hpp"
-		#define HashLog(location,method,type,mns) higgs_Log(nullptr,location,"Hash",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define HashLog(location,method,type,mns) pankey_Log(nullptr,location,"Hash",method,type,mns)
 	#else
 		#define HashLog(location,method,type,mns)
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class T>
 		struct HashFunction{
@@ -24,14 +24,14 @@
 
 		template<class T>
 		long invalidHashMethod(const T& a_type){
-			HashLog(higgs_Log_StartMethod, "invalidHashMethod", "println", "");
-			HashLog(higgs_Log_EndMethod, "invalidHashMethod", "println", "");
+			HashLog(pankey_Log_StartMethod, "invalidHashMethod", "println", "");
+			HashLog(pankey_Log_EndMethod, "invalidHashMethod", "println", "");
 			return -1;
 		}
 
 		int invalidHashToIndexMethod(long a_hash, int a_min, int a_max){
-			HashLog(higgs_Log_StartMethod, "invalidHashToIndexMethod", "println", "");
-			HashLog(higgs_Log_EndMethod, "invalidHashToIndexMethod", "println", "");
+			HashLog(pankey_Log_StartMethod, "invalidHashToIndexMethod", "println", "");
+			HashLog(pankey_Log_EndMethod, "invalidHashToIndexMethod", "println", "");
 			return -1;
 		}
 
@@ -51,30 +51,30 @@
 
 		template<class T>
 		long Hash(const T& a_type){
-			HashLog(higgs_Log_StartMethod, "Hash", "println", "");
+			HashLog(pankey_Log_StartMethod, "Hash", "println", "");
 
 			long i_hash = HashFunction<T>::function(a_type);
-			HashLog(higgs_Log_Statement, "Hash", "println", "Hash: ");
-			HashLog(higgs_Log_Statement, "Hash", "println", i_hash);
+			HashLog(pankey_Log_Statement, "Hash", "println", "Hash: ");
+			HashLog(pankey_Log_Statement, "Hash", "println", i_hash);
 
-			HashLog(higgs_Log_EndMethod, "Hash", "println", "");
+			HashLog(pankey_Log_EndMethod, "Hash", "println", "");
 			return i_hash;
 		}
 
 		template<class T>
 		int Hash(const T& a_type, int a_min, int a_max){
-			HashLog(higgs_Log_StartMethod, "Hash", "println", "");
+			HashLog(pankey_Log_StartMethod, "Hash", "println", "");
 
 			long i_hash = HashFunction<T>::function(a_type);
 			int i_index = HashToIndexFunction::function(i_hash, a_min, a_max);
 			
-			HashLog(higgs_Log_Statement, "Hash", "println", "Hash: ");
-			HashLog(higgs_Log_Statement, "Hash", "println", i_hash);
+			HashLog(pankey_Log_Statement, "Hash", "println", "Hash: ");
+			HashLog(pankey_Log_Statement, "Hash", "println", i_hash);
 			
-			HashLog(higgs_Log_Statement, "Hash", "println", "Index: ");
-			HashLog(higgs_Log_Statement, "Hash", "println", i_index);
+			HashLog(pankey_Log_Statement, "Hash", "println", "Index: ");
+			HashLog(pankey_Log_Statement, "Hash", "println", i_index);
 
-			HashLog(higgs_Log_EndMethod, "Hash", "println", "");
+			HashLog(pankey_Log_EndMethod, "Hash", "println", "");
 			return i_index;
 		}
 

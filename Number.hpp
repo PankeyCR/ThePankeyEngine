@@ -10,7 +10,7 @@
 #include "TemplateClass.hpp"
 #include "Set.hpp"
 
-namespace higgs{
+namespace pankey{
 
 class Number : public Set{
     public:

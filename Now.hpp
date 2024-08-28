@@ -4,7 +4,7 @@
 
 #include "TimeCheck.hpp"
 
-namespace higgs{
+namespace pankey{
 
 class Now {
     public:

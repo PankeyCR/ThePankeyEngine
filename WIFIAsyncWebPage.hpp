@@ -13,13 +13,13 @@
 	#include <ESPAsyncWebServer.h>
 
 	#ifdef WIFIAsyncWebPage_LogApp
-		#include "higgs_Logger.hpp"
-		#define WIFIAsyncWebPageLog(location,method,type,mns) higgs_Log((void*)this,location,"WIFIAsyncWebPage",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define WIFIAsyncWebPageLog(location,method,type,mns) pankey_Log((void*)this,location,"WIFIAsyncWebPage",method,type,mns)
 	#else
 		#define WIFIAsyncWebPageLog(location,method,type,mns) 
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
 		class WIFIAsyncWebPage : public BaseAppState<Application>{
 			public:
@@ -30,7 +30,7 @@
 				virtual ~WIFIAsyncWebPage(){}
 
 				virtual void initializeState(Application& a_app){
-					WIFIAsyncWebPageLog(higgs_Log_StartMethod, "initialize", "println", "");
+					WIFIAsyncWebPageLog(pankey_Log_StartMethod, "initialize", "println", "");
 
 					auto& i_settings = a_app.getSettings();
 
@@ -44,7 +44,7 @@
 					// });
 
 					server.begin();
-					WIFIAsyncWebPageLog(higgs_Log_EndMethod, "initialize", "println", "");
+					WIFIAsyncWebPageLog(pankey_Log_EndMethod, "initialize", "println", "");
 				}
 
 				virtual void setJavaScriptPage(const Note& a_js){

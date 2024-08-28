@@ -5,7 +5,7 @@
 	#include "InvokeRawList.hpp"
 	#include "UpdateManager.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class... Args>
 		class UpdateFunctionListManager : virtual public UpdateManager<Args...>{

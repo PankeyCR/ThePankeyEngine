@@ -1,12 +1,12 @@
 
 #ifndef ColorRGBA_hpp
 #define ColorRGBA_hpp
-#include "higgs_Enviroment.hpp"
-#ifdef higgs_Windows
+#include "pankey_Enviroment.hpp"
+#ifdef pankey_Windows
 
 #endif
 
-#ifdef higgs_ArduinoIDE
+#ifdef pankey_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 	#include "SD.h"
@@ -15,7 +15,7 @@
 #include "Note.hpp"
 #include "LinkedList.hpp"
 
-namespace higgs{
+namespace pankey{
 
 class ColorRGBA : public Printable{
     public:

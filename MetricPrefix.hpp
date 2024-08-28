@@ -1,5 +1,5 @@
 
-#include "higgs_Enviroment.hpp"
+#include "pankey_Enviroment.hpp"
 
 #if defined(DISABLE_MetricPrefix)
 	#define MetricPrefix_hpp
@@ -9,19 +9,19 @@
 #define MetricPrefix_hpp
 #define MetricPrefix_AVAILABLE
 
-#ifndef higgs_Enviroment_Defined
+#ifndef pankey_Enviroment_Defined
 
 #endif
 
-#ifdef higgs_Windows
+#ifdef pankey_Windows
 
 #endif
 
-#ifdef higgs_ArduinoIDE
+#ifdef pankey_ArduinoIDE
 	#include "Arduino.h"
 #endif
 
-namespace higgs{
+namespace pankey{
 
 enum class MetricPrefix {
 	exa,

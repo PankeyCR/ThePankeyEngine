@@ -6,7 +6,7 @@
 
 	#include "ByteArray.hpp"
 
-	namespace higgs{
+	namespace pankey{
 		
 		TestResult TR_ByteArray_Testing_1(){
 			TestResult result;

@@ -1,41 +1,41 @@
 
-#ifndef NoteHelper_hpp
-	#define NoteHelper_hpp
+#ifndef ArrayHelper_hpp
+	#define ArrayHelper_hpp
 
 	#include "Array.hpp"
 	#include "System.hpp"
 
-#ifdef higgs_Windows
-	#include "higgs_Printable.hpp"
-	#include "higgs_Print.hpp"
-#endif
+	#ifdef pankey_Windows
+		#include "pankey_Printable.hpp"
+		#include "pankey_Print.hpp"
+	#endif
 
-#ifdef higgs_ArduinoIDE
-	#include "Arduino.h"
-	#include "Printable.h"
-#endif
+	#ifdef pankey_ArduinoIDE
+		#include "Arduino.h"
+		#include "Printable.h"
+	#endif
 
-    #ifdef NoteHelper_LogApp
-        #include "higgs_Logger_config.hpp"
-        #define NoteHelperLog(location,method,type,mns) higgs_Log((void*)this,location,"NoteHelper",method,type,mns)
+    #ifdef ArrayHelper_LogApp
+        #include "pankey_Logger_config.hpp"
+        #define ArrayHelperLog(location,method,type,mns) pankey_Log((void*)this,location,"ArrayHelper",method,type,mns)
     #else
-        #define NoteHelperLog(location,method,type,mns)
+        #define ArrayHelperLog(location,method,type,mns)
     #endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class T>
 		void print(const Array<T>& a_array){
-			NoteHelperLog(higgs_Log_StartMethod, "Destructor", "println", "");
+			ArrayHelperLog(pankey_Log_StartMethod, "Destructor", "println", "");
 			for(int x = 0; x < a_array.getPosition(); x++){
 				System::console.print(a_array.get(x));
 			}
-			NoteHelperLog(higgs_Log_EndMethod, "Destructor", "println", "");
+			ArrayHelperLog(pankey_Log_EndMethod, "Destructor", "println", "");
 		}
 
 		template<class T>
 		void println(const Array<T>& a_array){
-			NoteHelperLog(higgs_Log_StartMethod, "Destructor", "println", "");
+			ArrayHelperLog(pankey_Log_StartMethod, "Destructor", "println", "");
 			for(int x = 0; x < a_array.getPosition(); x++){
 				System::console.print(a_array.get(x));
 				if(x == a_array.getPosition() - 1){
@@ -44,7 +44,7 @@
 				System::console.print(',');
 			}
 			System::console.println();
-			NoteHelperLog(higgs_Log_EndMethod, "Destructor", "println", "");
+			ArrayHelperLog(pankey_Log_EndMethod, "Destructor", "println", "");
 		}
 	}
 

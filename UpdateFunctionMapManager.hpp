@@ -5,7 +5,7 @@
 	#include "InvokeRawMap.hpp"
 	#include "UpdateManager.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class K, class... Args>
 		class UpdateFunctionMapManager : virtual public UpdateManager<Args...>{

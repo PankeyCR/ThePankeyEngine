@@ -7,7 +7,7 @@
 #include "RadioType.hpp"
 #include "RadioReliability.hpp"
 
-namespace higgs{
+namespace pankey{
 
 class RadioServer : public SerialServer{	
     public:

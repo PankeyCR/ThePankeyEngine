@@ -2,7 +2,7 @@
 #ifndef NoteIterator_hpp
 #define NoteIterator_hpp
 
-namespace higgs{
+namespace pankey{
 
 class NoteIterator{
 	public:

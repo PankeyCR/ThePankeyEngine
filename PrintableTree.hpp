@@ -3,12 +3,12 @@
 #define PrintableTree_hpp
 #define PrintableTree_AVAILABLE
 
-#ifdef higgs_Windows
-	#include "higgs_Printable.hpp"
-	#include "higgs_Print.hpp"
+#ifdef pankey_Windows
+	#include "pankey_Printable.hpp"
+	#include "pankey_Print.hpp"
 #endif
 
-#ifdef higgs_ArduinoIDE
+#ifdef pankey_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif
@@ -18,17 +18,17 @@
 #include "Class.hpp"
 
 #ifdef PrintableTree_LogApp
-	#include "higgs_Logger_config.hpp"
-	#include "higgs_Logger.hpp"
+	#include "pankey_Logger_config.hpp"
+	#include "pankey_Logger.hpp"
 
-	#define PrintableTreeLog(location,method,type,mns) higgs_Log(this,location,"PrintableTree",method,type,mns)
+	#define PrintableTreeLog(location,method,type,mns) pankey_Log(this,location,"PrintableTree",method,type,mns)
 	#define const_PrintableTreeLog(location,method,type,mns)
 #else
 	#ifdef PrintableTree_LogDebugApp
-		#include "higgs_Logger_config.hpp"
-		#include "higgs_Logger.hpp"
+		#include "pankey_Logger_config.hpp"
+		#include "pankey_Logger.hpp"
 
-		#define PrintableTreeLog(location,method,type,mns) higgs_LogDebug(this,location,"PrintableTree",method,type)
+		#define PrintableTreeLog(location,method,type,mns) pankey_LogDebug(this,location,"PrintableTree",method,type)
 		#define const_PrintableTreeLog(location,method,type,mns)
 	#else
 		#define PrintableTreeLog(location,method,type,mns)
@@ -36,7 +36,7 @@
 	#endif
 #endif
 
-namespace higgs{
+namespace pankey{
 
 /*
 *	Class Configuration:

@@ -7,7 +7,7 @@
 #include "ClassCount.hpp"
 #include "TemplateArgsClass.hpp"
 
-namespace ame{
+namespace pankey{
 
 template<class cls = cppObject>
 struct ArgsClass{

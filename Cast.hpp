@@ -2,7 +2,7 @@
 #ifndef Cast_hpp
   #define Cast_hpp
 
-  namespace higgs{
+  namespace pankey{
 
     template <class T>
     struct remove_reference { typedef T type; };

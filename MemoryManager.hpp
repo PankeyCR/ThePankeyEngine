@@ -4,7 +4,7 @@
 
 	#include "MemoryAllocator.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class H>
 		class MemoryManager{

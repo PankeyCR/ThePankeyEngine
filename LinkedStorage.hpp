@@ -6,33 +6,33 @@
 #include "MemoryStorage.hpp"
 
 #ifdef LinkedStorage_LogApp
-	#include "higgs_Logger_config.hpp"
-	#include "higgs_Logger.hpp"
+	#include "pankey_Logger_config.hpp"
+	#include "pankey_Logger.hpp"
 
-	#define LinkedStorageLog(location,method,type,mns) higgs_Log((void*)this,location,"LinkedStorage",method,type,mns)
+	#define LinkedStorageLog(location,method,type,mns) pankey_Log((void*)this,location,"LinkedStorage",method,type,mns)
 #else
 	#ifdef LinkedStorage_LogDebugApp
-		#include "higgs_Logger_config.hpp"
-		#include "higgs_Logger.hpp"
+		#include "pankey_Logger_config.hpp"
+		#include "pankey_Logger.hpp"
 
-		#define LinkedStorageLog(location,method,type,mns) higgs_LogDebug((void*)this,location,"LinkedStorage",method,type)
+		#define LinkedStorageLog(location,method,type,mns) pankey_LogDebug((void*)this,location,"LinkedStorage",method,type)
 	#else
 		#define LinkedStorageLog(location,method,type,mns)
 	#endif
 #endif
 
-namespace higgs{
+namespace pankey{
 
 template<class T>
 class LinkedStorage : public MemoryStorage<T>{
 	public:
 		LinkedStorage(){
-			LinkedStorageLog(higgs_Log_StartMethod, "Constructor", "println", "");
-			LinkedStorageLog(higgs_Log_EndMethod, "Constructor", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "Constructor", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "Constructor", "println", "");
 		}
 
 		virtual ~LinkedStorage(){
-			LinkedStorageLog(higgs_Log_StartMethod, "Destructor", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "Destructor", "println", "");
 			LinkedListNode<T>* node = this->getStartNode();
 			this->deleteListNode(node);
 			m_start = nullptr;
@@ -40,11 +40,11 @@ class LinkedStorage : public MemoryStorage<T>{
 			m_node = nullptr;
 			this->setPosition(0);
 			this->setSize(0);
-			LinkedStorageLog(higgs_Log_EndMethod, "Destructor", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "Destructor", "println", "");
 		}
 		
 		virtual bool deleteListNode(LinkedListNode<T>* a_node){
-			LinkedStorageLog(higgs_Log_StartMethod, "deleteListNode", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "deleteListNode", "println", "");
 			if(a_node == nullptr){
 				return false;
 			}
@@ -61,37 +61,37 @@ class LinkedStorage : public MemoryStorage<T>{
 				nextNode->last = nullptr;
 				node = nextNode;
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "deleteListNode", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "deleteListNode", "println", "");
 			return true;
 		}
 		
 		virtual LinkedListNode<T>* getNextNode(LinkedListNode<T>* a_node) const{
-			LinkedStorageLog(higgs_Log_StartMethod, "getNextNode", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "getNextNode", "println", "");
 			if(a_node == nullptr){
 				return nullptr;
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "getNextNode", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "getNextNode", "println", "");
 			return a_node->next;
 		}
 		
 		virtual LinkedListNode<T>* getLastNode(LinkedListNode<T>* a_node) const{
-			LinkedStorageLog(higgs_Log_StartMethod, "getLastNode", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "getLastNode", "println", "");
 			if(a_node == nullptr){
 				return nullptr;
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "getLastNode", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "getLastNode", "println", "");
 			return a_node->last;
 		}
 		
 		virtual LinkedListNode<T>* setNode(LinkedListNode<T>* a_node){
-			LinkedStorageLog(higgs_Log_StartMethod, "setNode", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "setNode", "println", "");
 			m_node = a_node;
-			LinkedStorageLog(higgs_Log_EndMethod, "setNode", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "setNode", "println", "");
 			return m_node;
 		}
 		
 		virtual LinkedListNode<T>* initNodes(T* a_value){
-			LinkedStorageLog(higgs_Log_StartMethod, "initNodes", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "initNodes", "println", "");
 			LinkedListNode<T>* s_node = this->getStartNode();
 			LinkedListNode<T>* e_node = this->getEndNode();
 			LinkedListNode<T>* i_node = this->getNode();
@@ -105,7 +105,7 @@ class LinkedStorage : public MemoryStorage<T>{
 				this->setSize(1);
 				return i_node;
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "initNodes", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "initNodes", "println", "");
 			return nullptr;
 		}
 
@@ -116,7 +116,7 @@ class LinkedStorage : public MemoryStorage<T>{
 			if a_node has a next node, the new node is added in between a_node and the next node, making it he next node
 		*/
 		virtual LinkedListNode<T>* addPointerToNextNode(LinkedListNode<T>* a_node, T* a_value){
-			LinkedStorageLog(higgs_Log_StartMethod, "addPointerToNextNode", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "addPointerToNextNode", "println", "");
 			if(a_node == nullptr){
 				return nullptr;
 			}
@@ -136,12 +136,12 @@ class LinkedStorage : public MemoryStorage<T>{
 			n_Node->next = nextNode;
 			n_Node->last = a_node;
 			n_Node->set(a_value);
-			LinkedStorageLog(higgs_Log_EndMethod, "addPointerToNextNode", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "addPointerToNextNode", "println", "");
 			return n_Node;
 		}
 		
 		virtual LinkedListNode<T>* addPointerToLastNode(LinkedListNode<T>* a_node, T* a_value){
-			LinkedStorageLog(higgs_Log_StartMethod, "addPointerToLastNode", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "addPointerToLastNode", "println", "");
 			if(a_node == nullptr){
 				return nullptr;
 			}
@@ -161,30 +161,30 @@ class LinkedStorage : public MemoryStorage<T>{
 			n_Node->last = lastNode;
 			n_Node->next = a_node;
 			n_Node->set(a_value);
-			LinkedStorageLog(higgs_Log_EndMethod, "addPointerToLastNode", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "addPointerToLastNode", "println", "");
 			return n_Node;
 		}
 		
 		virtual LinkedListNode<T>* getNode() const{
-			LinkedStorageLog(higgs_Log_StartMethod, "getNode", "println", "");
-			LinkedStorageLog(higgs_Log_EndMethod, "getNode", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "getNode", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "getNode", "println", "");
 			return m_node;
 		}
 		
 		virtual LinkedListNode<T>* getStartNode() const{
-			LinkedStorageLog(higgs_Log_StartMethod, "getStartNode", "println", "");
-			LinkedStorageLog(higgs_Log_EndMethod, "getStartNode", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "getStartNode", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "getStartNode", "println", "");
 			return m_start;
 		}
 		
 		virtual LinkedListNode<T>* getEndNode() const{
-			LinkedStorageLog(higgs_Log_StartMethod, "getEndNode", "println", "");
-			LinkedStorageLog(higgs_Log_EndMethod, "getEndNode", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "getEndNode", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "getEndNode", "println", "");
 			return m_end;
 		}
 		
 		virtual LinkedListNode<T>* getNode(int x) const{
-			LinkedStorageLog(higgs_Log_StartMethod, "getNode", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "getNode", "println", "");
 			if(this->isEmpty()){
 				return nullptr;
 			}
@@ -201,12 +201,12 @@ class LinkedStorage : public MemoryStorage<T>{
 				}
 				node = getNextNode(node);
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "getNode", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "getNode", "println", "");
 			return nullptr;
 		}
 		
 		virtual LinkedListNode<T>* getNodeI(int x) const{
-			LinkedStorageLog(higgs_Log_StartMethod, "getNodeI", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "getNodeI", "println", "");
 			if(this->isEmpty()){
 				return nullptr;
 			}
@@ -223,12 +223,12 @@ class LinkedStorage : public MemoryStorage<T>{
 				}
 				node = getLastNode(node);
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "getNodeI", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "getNodeI", "println", "");
 			return nullptr;
 		}
 		
 		virtual LinkedListNode<T>* getNodeByPointer(T* key) const{
-			LinkedStorageLog(higgs_Log_StartMethod, "getNodeByPointer", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "getNodeByPointer", "println", "");
 			LinkedListNode<T>* node = getStartNode();
 			for(int count = 0; node != nullptr; count++){
 				T* i_value = node->get();
@@ -237,12 +237,12 @@ class LinkedStorage : public MemoryStorage<T>{
 				}
 				node = getNextNode(node);
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "getNodeByPointer", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "getNodeByPointer", "println", "");
 			return nullptr;
 		}
 		
 		virtual LinkedListNode<T>* getNodeByPointerI(T* key) const{
-			LinkedStorageLog(higgs_Log_StartMethod, "getNodeByPointerI", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "getNodeByPointerI", "println", "");
 			LinkedListNode<T>* node = getEndNode();
 			for(int count = 0; node != nullptr; count++){
 				T* i_value = node->get();
@@ -251,65 +251,65 @@ class LinkedStorage : public MemoryStorage<T>{
 				}
 				node = getLastNode(node);
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "getNodeByPointerI", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "getNodeByPointerI", "println", "");
 			return nullptr;
 		}
 		
 		virtual bool nextNode(){
-			LinkedStorageLog(higgs_Log_StartMethod, "nextNode", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "nextNode", "println", "");
 			if(m_node == nullptr){
-				LinkedStorageLog(higgs_Log_EndMethod, "nextNode", "println", "");
+				LinkedStorageLog(pankey_Log_EndMethod, "nextNode", "println", "");
 				return false;
 			}
 			LinkedListNode<T>* node = m_node->next;
 			if(node == nullptr){
-				LinkedStorageLog(higgs_Log_EndMethod, "nextNode", "println", "");
+				LinkedStorageLog(pankey_Log_EndMethod, "nextNode", "println", "");
 				return false;
 			}
 			m_node = node;
-			LinkedStorageLog(higgs_Log_EndMethod, "nextNode", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "nextNode", "println", "");
 			return true;
 		}
 		
 		virtual bool lastNode(){
-			LinkedStorageLog(higgs_Log_StartMethod, "lastNode", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "lastNode", "println", "");
 			if(m_node == nullptr){
-				LinkedStorageLog(higgs_Log_EndMethod, "lastNode", "println", "");
+				LinkedStorageLog(pankey_Log_EndMethod, "lastNode", "println", "");
 				return false;
 			}
 			LinkedListNode<T>* node = m_node->last;
 			if(node == nullptr){
-				LinkedStorageLog(higgs_Log_EndMethod, "lastNode", "println", "");
+				LinkedStorageLog(pankey_Log_EndMethod, "lastNode", "println", "");
 				return false;
 			}
 			m_node = node;
-			LinkedStorageLog(higgs_Log_EndMethod, "lastNode", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "lastNode", "println", "");
 			return true;
 		}
 		
 		virtual void setNodePosition(int a_position){
-			LinkedStorageLog(higgs_Log_StartMethod, "setPosition", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "setPosition", "println", "");
 			if(a_position >= this->getSize()){
-				LinkedStorageLog(higgs_Log_EndMethod, "setPosition", "println", "");
+				LinkedStorageLog(pankey_Log_EndMethod, "setPosition", "println", "");
 				return;
 			}
 			this->setPosition(a_position);
 			LinkedListNode<T>* i_node = getNode(a_position);
 			this->setNode(i_node);
-			LinkedStorageLog(higgs_Log_EndMethod, "setPosition", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "setPosition", "println", "");
 		}
 		
 		virtual T* addPointerToNode(T* a_value){
-			LinkedRawPointerListLog(higgs_Log_StartMethod, "addPointerToNode", "println", "");
+			LinkedRawPointerListLog(pankey_Log_StartMethod, "addPointerToNode", "println", "");
 			LinkedListNode<T>* i_node = this->getNode();
 			
 			if(i_node == nullptr){
 				LinkedListNode<T>* ii_node = this->initNodes(a_value);
 				if(ii_node == nullptr){
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToNode", "println", "");
 					return nullptr;
 				}
-				LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToNode", "println", "");
+				LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToNode", "println", "");
 				return ii_node->get();
 			}
 			
@@ -320,49 +320,49 @@ class LinkedStorage : public MemoryStorage<T>{
 			if(i_node == this->getEndNode()){
 				m_end = m_node;
 			}
-			LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToNode", "println", "");
+			LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToNode", "println", "");
 			return a_value;
 		}
 		
 		virtual T* addPointerToStartNode(T* a_value){
-			LinkedRawPointerListLog(higgs_Log_StartMethod, "addPointerToStartNode", "println", "");
+			LinkedRawPointerListLog(pankey_Log_StartMethod, "addPointerToStartNode", "println", "");
 			LinkedListNode<T>* i_node = this->getStartNode();
 			
 			if(i_node == nullptr){
 				LinkedListNode<T>* ii_node = this->initNodes(a_value);
 				if(ii_node == nullptr){
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToStartNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToStartNode", "println", "");
 					return nullptr;
 				}
-				LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToStartNode", "println", "");
+				LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToStartNode", "println", "");
 				return ii_node->get();
 			}
 			
 			m_start = this->addPointerToLastNode(i_node, a_value);
 			this->incrementPosition();
 			this->incrementSize();
-			LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToStartNode", "println", "");
+			LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToStartNode", "println", "");
 			return a_value;
 		}
 		
 		virtual T* addPointerToEndNode(T* a_value){
-			LinkedRawPointerListLog(higgs_Log_StartMethod, "addPointerToEndNode", "println", "");
+			LinkedRawPointerListLog(pankey_Log_StartMethod, "addPointerToEndNode", "println", "");
 			LinkedListNode<T>* i_node = this->getEndNode();
 			
 			if(i_node == nullptr){
 				LinkedListNode<T>* ii_node = this->initNodes(a_value);
 				if(ii_node == nullptr){
-					LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToEndNode", "println", "");
+					LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToEndNode", "println", "");
 					return nullptr;
 				}
-				LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToEndNode", "println", "");
+				LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToEndNode", "println", "");
 				return ii_node->get();
 			}
 			
 			m_end = this->addPointerToNextNode(i_node, a_value);
 			this->incrementPosition();
 			this->incrementSize();
-			LinkedRawPointerListLog(higgs_Log_EndMethod, "addPointerToEndNode", "println", "");
+			LinkedRawPointerListLog(pankey_Log_EndMethod, "addPointerToEndNode", "println", "");
 			return a_value;
 		}
 		
@@ -370,13 +370,13 @@ class LinkedStorage : public MemoryStorage<T>{
 		
 		//cuts the list in 2 parts, it removes all nodes before the position a_position
 		virtual LinkedListNode<T>* cutBefore(int a_position){
-			LinkedRawPointerListLog(higgs_Log_StartMethod, "cutBefore", "println", "");
+			LinkedRawPointerListLog(pankey_Log_StartMethod, "cutBefore", "println", "");
 			if(this->isEmpty() || a_position <= 0){
-				LinkedRawPointerListLog(higgs_Log_EndMethod, "cutBefore", "println", "this->isEmpty() || a_position == 0");
+				LinkedRawPointerListLog(pankey_Log_EndMethod, "cutBefore", "println", "this->isEmpty() || a_position == 0");
 				return nullptr;
 			}
 			if(!this->isInOrder()){
-				LinkedRawPointerListLog(higgs_Log_Statement, "cutBefore", "println", "!this->isInOrder()");
+				LinkedRawPointerListLog(pankey_Log_Statement, "cutBefore", "println", "!this->isInOrder()");
 				LinkedListNode<T>* node = this->getNode(a_position);
 				LinkedListNode<T>* lastNode = nullptr;
 				for(int x = 0; node != nullptr; x++){
@@ -388,11 +388,11 @@ class LinkedStorage : public MemoryStorage<T>{
 					}
 					node = lastNode;
 				}
-				LinkedRawPointerListLog(higgs_Log_EndMethod, "cutBefore", "println", "");
+				LinkedRawPointerListLog(pankey_Log_EndMethod, "cutBefore", "println", "");
 				return nullptr;
 			}
 			if(a_position == this->getPosition() - 1){
-				LinkedRawPointerListLog(higgs_Log_StartMethod, "cutBefore", "println", "a_position == this->getPosition() - 1");
+				LinkedRawPointerListLog(pankey_Log_StartMethod, "cutBefore", "println", "a_position == this->getPosition() - 1");
 				LinkedListNode<T>* b_node = this->m_end;
 				this->m_end = b_node->last;
 				this->m_end->next = nullptr;
@@ -403,39 +403,39 @@ class LinkedStorage : public MemoryStorage<T>{
 			}
 			LinkedListNode<T>* b_node = this->getNode(a_position);
 			if(b_node == nullptr){
-				LinkedRawPointerListLog(higgs_Log_StartMethod, "cutBefore", "println", "b_node == nullptr");
+				LinkedRawPointerListLog(pankey_Log_StartMethod, "cutBefore", "println", "b_node == nullptr");
 				return nullptr;
 			}
-			LinkedRawPointerListLog(higgs_Log_StartMethod, "cutBefore", "println", "cutting regular node");
+			LinkedRawPointerListLog(pankey_Log_StartMethod, "cutBefore", "println", "cutting regular node");
 			b_node->cutLastNode();
 			this->decrementPosition(a_position);
 			this->decrementSize(a_position);
 			LinkedListNode<T>* stating_node = this->getStartNode();
 			m_start = b_node;
-			LinkedRawPointerListLog(higgs_Log_EndMethod, "cutBefore", "println", "");
+			LinkedRawPointerListLog(pankey_Log_EndMethod, "cutBefore", "println", "");
 			return stating_node;
 		}
 		
 		virtual bool cutDeleteBefore(int a_position){
-			LinkedRawPointerListLog(higgs_Log_StartMethod, "cutDeleteBefore", "println", "");
+			LinkedRawPointerListLog(pankey_Log_StartMethod, "cutDeleteBefore", "println", "");
 			LinkedListNode<T>* node = cutBefore(a_position);
 			if(node == nullptr){
 				return false;
 			}
 			this->deleteListNode(node);
-			LinkedRawPointerListLog(higgs_Log_EndMethod, "cutDeleteBefore", "println", "");
+			LinkedRawPointerListLog(pankey_Log_EndMethod, "cutDeleteBefore", "println", "");
 			return true;
 		}
 		
 		//splits the Nodes in 2, it removes and returns the nodes after the position a_position
 		virtual LinkedListNode<T>* cutAfter(int a_position){
-			LinkedRawPointerListLog(higgs_Log_StartMethod, "cutAfter", "println", "");
+			LinkedRawPointerListLog(pankey_Log_StartMethod, "cutAfter", "println", "");
 			if(this->isEmpty() || a_position == this->getPosition() - 1){
-				LinkedRawPointerListLog(higgs_Log_StartMethod, "cutAfter", "println", "this->isEmpty()");
+				LinkedRawPointerListLog(pankey_Log_StartMethod, "cutAfter", "println", "this->isEmpty()");
 				return nullptr;
 			}
 			if(!this->isInOrder()){
-				LinkedRawPointerListLog(higgs_Log_Statement, "cutBefore", "println", "!this->isInOrder()");
+				LinkedRawPointerListLog(pankey_Log_Statement, "cutBefore", "println", "!this->isInOrder()");
 				LinkedListNode<T>* node = this->getNode(a_position);
 				LinkedListNode<T>* nextNode = nullptr;
 				for(int x = 0; node != nullptr; x++){
@@ -447,11 +447,11 @@ class LinkedStorage : public MemoryStorage<T>{
 					}
 					node = nextNode;
 				}
-				LinkedRawPointerListLog(higgs_Log_EndMethod, "cutBefore", "println", "");
+				LinkedRawPointerListLog(pankey_Log_EndMethod, "cutBefore", "println", "");
 				return nullptr;
 			}
 			if(a_position == 0){
-				LinkedRawPointerListLog(higgs_Log_StartMethod, "cutAfter", "println", "a_position == 0");
+				LinkedRawPointerListLog(pankey_Log_StartMethod, "cutAfter", "println", "a_position == 0");
 				LinkedListNode<T>* b_node = this->m_start;
 				this->m_start = nullptr;
 				this->m_end = nullptr;
@@ -462,43 +462,43 @@ class LinkedStorage : public MemoryStorage<T>{
 			}
 			LinkedListNode<T>* b_node = this->getNode(a_position);
 			if(b_node == nullptr){
-				LinkedRawPointerListLog(higgs_Log_StartMethod, "cutAfter", "println", "b_node == nullptr");
+				LinkedRawPointerListLog(pankey_Log_StartMethod, "cutAfter", "println", "b_node == nullptr");
 				return nullptr;
 			}
-			LinkedRawPointerListLog(higgs_Log_StartMethod, "cutAfter", "println", "cutting regular node");
+			LinkedRawPointerListLog(pankey_Log_StartMethod, "cutAfter", "println", "cutting regular node");
 			m_end = b_node->last;
 			b_node->cutLastNode();
 			this->decrementPosition(a_position + 1);
 			this->decrementSize(a_position + 1);
-			LinkedRawPointerListLog(higgs_Log_EndMethod, "cutAfter", "println", "");
+			LinkedRawPointerListLog(pankey_Log_EndMethod, "cutAfter", "println", "");
 			return b_node;
 		}
 		virtual bool cutDeleteAfter(int a_position){
-			LinkedRawPointerListLog(higgs_Log_StartMethod, "cutDeleteAfter", "println", "");
+			LinkedRawPointerListLog(pankey_Log_StartMethod, "cutDeleteAfter", "println", "");
 			LinkedListNode<T>* node = cutAfter(a_position);
 			if(node == nullptr){
 				return false;
 			}
 			this->deleteListNode(node);
-			LinkedRawPointerListLog(higgs_Log_EndMethod, "cutDeleteAfter", "println", "");
+			LinkedRawPointerListLog(pankey_Log_EndMethod, "cutDeleteAfter", "println", "");
 			return false;
 		}
 		
 		virtual bool isNull()const{
-			LinkedStorageLog(higgs_Log_StartMethod, "isNull", "println", "");
-			LinkedStorageLog(higgs_Log_EndMethod, "isNull", "println", this->m_values == nullptr);
+			LinkedStorageLog(pankey_Log_StartMethod, "isNull", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "isNull", "println", this->m_values == nullptr);
 			return m_node == nullptr || m_start == nullptr || m_end == nullptr;
 		}
 		
 		virtual bool isEmpty()const{
-			LinkedStorageLog(higgs_Log_StartMethod, "isEmpty", "println", "");
-			LinkedStorageLog(higgs_Log_Statement, "isEmpty", "println", "Node Size:");
-			LinkedStorageLog(higgs_Log_Statement, "isEmpty", "println", this->getSize());
+			LinkedStorageLog(pankey_Log_StartMethod, "isEmpty", "println", "");
+			LinkedStorageLog(pankey_Log_Statement, "isEmpty", "println", "Node Size:");
+			LinkedStorageLog(pankey_Log_Statement, "isEmpty", "println", this->getSize());
 			return m_node == nullptr || m_start == nullptr || m_end == nullptr || this->getSize() == 0;
 		}
 		
 		virtual bool replace(int i, int j){
-			LinkedStorageLog(higgs_Log_StartMethod, "replace", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "replace", "println", "");
 			if(i >= this->getPosition() || j >= this->getPosition() || i == j){
 				return false;
 			}
@@ -522,123 +522,123 @@ class LinkedStorage : public MemoryStorage<T>{
 				}
 				node = getNextNode(node);
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "replace", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "replace", "println", "");
 			return true;
 		}
 
 		virtual void set(int a_position, T* a_pointer){
-			LinkedStorageLog(higgs_Log_StartMethod, "set", "println", "T* a_pointer");
-			LinkedStorageLog(higgs_Log_StartMethod, "set", "println", "Position: ");
-			LinkedStorageLog(higgs_Log_StartMethod, "set", "println", a_position);
+			LinkedStorageLog(pankey_Log_StartMethod, "set", "println", "T* a_pointer");
+			LinkedStorageLog(pankey_Log_StartMethod, "set", "println", "Position: ");
+			LinkedStorageLog(pankey_Log_StartMethod, "set", "println", a_position);
 			if(this->isEmpty() && a_position >= this->getSize()){
-				LinkedStorageLog(higgs_Log_EndMethod, "set", "println", "this->isEmpty()");
+				LinkedStorageLog(pankey_Log_EndMethod, "set", "println", "this->isEmpty()");
 				return;
 			}
 			if(this->m_values[a_position] == a_pointer){
-				LinkedStorageLog(higgs_Log_EndMethod, "set", "println", "this->m_values[a_position] == a_value");
+				LinkedStorageLog(pankey_Log_EndMethod, "set", "println", "this->m_values[a_position] == a_value");
 				return;
 			}
 			this->removingMemory(this->m_values[a_position]);
 			this->m_values[a_position] = a_pointer;
 			this->addingMemory(a_pointer);
-			LinkedStorageLog(higgs_Log_EndMethod, "set", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "set", "println", "");
 		}
 
 		virtual void set(int a_position, const Pointer<T>& a_pointer){
-			LinkedStorageLog(higgs_Log_StartMethod, "set", "println", "const Pointer<T>& a_pointer");
+			LinkedStorageLog(pankey_Log_StartMethod, "set", "println", "const Pointer<T>& a_pointer");
 			this->set(a_position, a_pointer.get());
-			LinkedStorageLog(higgs_Log_EndMethod, "set", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "set", "println", "");
 		}
 		
 		virtual Pointer<T> get(int a_position)const{
-			LinkedStorageLog(higgs_Log_StartMethod, "get", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "get", "println", "");
 			if(this->isEmpty() || a_position >= this->getSize()){
 				return Pointer<T>(nullptr, this->m_manager);
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "get", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "get", "println", "");
 			return Pointer<T>(this->m_values[a_position], this->m_manager);
 		}
 
 		virtual bool contain(T* a_value){
-			LinkedStorageLog(higgs_Log_StartMethod, "contain", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "contain", "println", "");
 			if(this->isEmpty()){
-				LinkedStorageLog(higgs_Log_Statement, "contain", "println", "this->isEmpty()");
-				LinkedStorageLog(higgs_Log_EndMethod, "contain", "println", "return false");
+				LinkedStorageLog(pankey_Log_Statement, "contain", "println", "this->isEmpty()");
+				LinkedStorageLog(pankey_Log_EndMethod, "contain", "println", "return false");
 				return false;
 			}
 			for(int x = 0; x < this->getSize(); x++){
 				if(a_value == this->m_values[x]){
-					LinkedStorageLog(higgs_Log_Statement, "contain", "println", "a_value == this->m_values[x]");
-					LinkedStorageLog(higgs_Log_EndMethod, "contain", "println", "return true");
+					LinkedStorageLog(pankey_Log_Statement, "contain", "println", "a_value == this->m_values[x]");
+					LinkedStorageLog(pankey_Log_EndMethod, "contain", "println", "return true");
 					return true;
 				}
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "contain", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "contain", "println", "");
 			return false;
 		}
 
 		virtual bool contain(const Pointer<T>& a_value){
-			LinkedStorageLog(higgs_Log_StartMethod, "contain", "println", "");
-			LinkedStorageLog(higgs_Log_EndMethod, "contain", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "contain", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "contain", "println", "");
 			return this->contain(a_value.get());
 		}
 		
 		virtual int getIndex(T* a_value){
-			LinkedStorageLog(higgs_Log_StartMethod, "getIndex", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "getIndex", "println", "");
 			if(this->isEmpty()){
-				LinkedStorageLog(higgs_Log_EndMethod, "getIndex", "println", "this->isEmpty()");
+				LinkedStorageLog(pankey_Log_EndMethod, "getIndex", "println", "this->isEmpty()");
 				return -1;
 			}
 			for(int x = 0; x < this->getSize(); x++){
 				if(a_value == this->m_values[x]){
-					LinkedStorageLog(higgs_Log_EndMethod, "getIndex", "println", "a_value == this->m_values[x]");
+					LinkedStorageLog(pankey_Log_EndMethod, "getIndex", "println", "a_value == this->m_values[x]");
 					return x;
 				}
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "getIndex", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "getIndex", "println", "");
 			return -1;
 		}
 
 		virtual int getIndex(const Pointer<T>& a_value){
-			LinkedStorageLog(higgs_Log_StartMethod, "getIndex", "println", "");
-			LinkedStorageLog(higgs_Log_EndMethod, "getIndex", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "getIndex", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "getIndex", "println", "");
 			return this->getIndex(a_value.get());
 		}
 
 		virtual void clear(){
-			LinkedStorageLog(higgs_Log_StartMethod, "clear", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "clear", "println", "");
 			if(this->isEmpty()){
-				LinkedStorageLog(higgs_Log_EndMethod, "clear", "println", "this->isEmpty()");
+				LinkedStorageLog(pankey_Log_EndMethod, "clear", "println", "this->isEmpty()");
 				return;
 			}
 			for(int x = 0; x < this->getSize(); x++){
 				this->removingMemory(this->m_values[x]);
 				this->m_values[x] = nullptr;
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "clear", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "clear", "println", "");
 		}
 
 		virtual bool removeByPointer(T* a_value){
-			LinkedStorageLog(higgs_Log_StartMethod, "removeByPointer", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "removeByPointer", "println", "");
 			int i_position = this->getIndex(a_value);
-			LinkedStorageLog(higgs_Log_EndMethod, "removeByPointer", "println", "removed position: ");
-			LinkedStorageLog(higgs_Log_EndMethod, "removeByPointer", "println", i_position);
+			LinkedStorageLog(pankey_Log_EndMethod, "removeByPointer", "println", "removed position: ");
+			LinkedStorageLog(pankey_Log_EndMethod, "removeByPointer", "println", i_position);
 			if(this->isEmpty() || i_position >= this->getSize() || i_position < 0){
 				return false;
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "removeByPointer", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "removeByPointer", "println", "");
 			this->removeByPosition(i_position);
 			return true;
 		}
 
 		virtual bool removeByPointer(const Pointer<T>& a_value){
-			LinkedStorageLog(higgs_Log_StartMethod, "removeByPointer", "println", "");
-			LinkedStorageLog(higgs_Log_EndMethod, "removeByPointer", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "removeByPointer", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "removeByPointer", "println", "");
 			return this->removeByPointer(a_value.get());
 		}
 
 		virtual Pointer<T> removeByPosition(int a_position){
-			LinkedStorageLog(higgs_Log_StartMethod, "removeByPosition", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "removeByPosition", "println", "");
 			if(this->isEmpty() || a_position >= this->getSize() || a_position < 0){
 				return nullptr;
 			}
@@ -646,18 +646,18 @@ class LinkedStorage : public MemoryStorage<T>{
 			Pointer<T> i_pointer = Pointer<T>(i_value, this->m_manager);
 			this->m_values[a_position] = nullptr;
 			this->removingMemory(i_value);
-			LinkedStorageLog(higgs_Log_EndMethod, "removeByPosition", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "removeByPosition", "println", "");
 			return i_pointer;
 		}
 
 		virtual int reorder(){
-			LinkedStorageLog(higgs_Log_StartMethod, "reorder", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "reorder", "println", "");
 			if(this->isNull()){
-				LinkedStorageLog(higgs_Log_EndMethod, "clear", "println", "this->isNull()");
+				LinkedStorageLog(pankey_Log_EndMethod, "clear", "println", "this->isNull()");
 				return -1;
 			}
 			if(this->isEmpty()){
-				LinkedStorageLog(higgs_Log_EndMethod, "clear", "println", "this->isEmpty()");
+				LinkedStorageLog(pankey_Log_EndMethod, "clear", "println", "this->isEmpty()");
 				return 0;
 			}
 			int i_offset = 0;
@@ -669,59 +669,59 @@ class LinkedStorage : public MemoryStorage<T>{
 				this->m_values[i_offset] = f_value;
 				i_offset++;
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "reorder", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "reorder", "println", "");
 			return i_offset;
 		}
 
 		virtual MemoryStorage<T>* clone()const{
-			LinkedStorageLog(higgs_Log_StartMethod, "clone", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "clone", "println", "");
 			LinkedStorage<T>* i_clone = new LinkedStorage<T>();
 			i_clone->expand(this->getSize());
 			for(int x = 0; x < this->getSize(); x++){
 				i_clone->set(x, this->get(x));
 			}
-			LinkedStorageLog(higgs_Log_EndMethod, "clone", "println", "");
+			LinkedStorageLog(pankey_Log_EndMethod, "clone", "println", "");
 			return i_clone;
 		}
 
 		virtual bool expand(int a_size){
-			LinkedStorageLog(higgs_Log_StartMethod, "expand", "println", "");
+			LinkedStorageLog(pankey_Log_StartMethod, "expand", "println", "");
 			
 			int i_size = this->getSize() + a_size;
-			LinkedStorageLog(higgs_Log_Statement, "expand", "println", "List Size:");
-			LinkedStorageLog(higgs_Log_Statement, "expand", "println", this->getSize());	
-			LinkedStorageLog(higgs_Log_Statement, "expand", "println", "List extra size added:");
-			LinkedStorageLog(higgs_Log_Statement, "expand", "println", a_size);
-			LinkedStorageLog(higgs_Log_Statement, "expand", "println", "List new size:");
-			LinkedStorageLog(higgs_Log_Statement, "expand", "println", i_size);
+			LinkedStorageLog(pankey_Log_Statement, "expand", "println", "List Size:");
+			LinkedStorageLog(pankey_Log_Statement, "expand", "println", this->getSize());	
+			LinkedStorageLog(pankey_Log_Statement, "expand", "println", "List extra size added:");
+			LinkedStorageLog(pankey_Log_Statement, "expand", "println", a_size);
+			LinkedStorageLog(pankey_Log_Statement, "expand", "println", "List new size:");
+			LinkedStorageLog(pankey_Log_Statement, "expand", "println", i_size);
 			if(i_size <= 1){
-				LinkedStorageLog(higgs_Log_EndMethod, "expand", "println", "new size is too small");
+				LinkedStorageLog(pankey_Log_EndMethod, "expand", "println", "new size is too small");
 				return false;
 			}
 			T **nT;
 			nT = new T*[i_size];
 			for(int x = 0; x < this->getSize(); x++){
-				LinkedStorageLog(higgs_Log_Statement, "expand", "println", "iteration:");
-				LinkedStorageLog(higgs_Log_Statement, "expand", "println", x);
+				LinkedStorageLog(pankey_Log_Statement, "expand", "println", "iteration:");
+				LinkedStorageLog(pankey_Log_Statement, "expand", "println", x);
 				if(this->m_values != nullptr){
 					nT[x] = this->m_values[x];
 				}
 			}
 			for(int x = this->getSize(); x < i_size; x++){
-				LinkedStorageLog(higgs_Log_Statement, "expand", "println", "iteration:");
-				LinkedStorageLog(higgs_Log_Statement, "expand", "println", x);
+				LinkedStorageLog(pankey_Log_Statement, "expand", "println", "iteration:");
+				LinkedStorageLog(pankey_Log_Statement, "expand", "println", x);
 				nT[x] = nullptr;
 			}
 			if(this->m_values != nullptr){
-				LinkedStorageLog(higgs_Log_Statement, "expand", "println", "this->m_values != nullptr");
+				LinkedStorageLog(pankey_Log_Statement, "expand", "println", "this->m_values != nullptr");
 				delete[] this->m_values;
 			}
 			this->m_values = nT;
 			this->setSize(i_size);
 			
-			LinkedStorageLog(higgs_Log_Statement, "expand", "println", "List Size:");
-			LinkedStorageLog(higgs_Log_Statement, "expand", "println", this->getSize());	
-			LinkedStorageLog(higgs_Log_EndMethod, "expand", "println", "");
+			LinkedStorageLog(pankey_Log_Statement, "expand", "println", "List Size:");
+			LinkedStorageLog(pankey_Log_Statement, "expand", "println", this->getSize());	
+			LinkedStorageLog(pankey_Log_EndMethod, "expand", "println", "");
 			return true;
 		}
 	

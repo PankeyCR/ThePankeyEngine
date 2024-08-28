@@ -7,17 +7,17 @@
 #include "LinkedIterator.hpp"
 
 #ifdef LinkedList_LogApp
-	#include "higgs_Logger_config.hpp"
-	#include "higgs_Logger.hpp"
+	#include "pankey_Logger_config.hpp"
+	#include "pankey_Logger.hpp"
 
-	#define LinkedListLog(location,method,type,mns) higgs_Log(this,location,"LinkedList",method,type,mns)
+	#define LinkedListLog(location,method,type,mns) pankey_Log(this,location,"LinkedList",method,type,mns)
 	#define const_LinkedListLog(location,method,type,mns)
 #else
 	#ifdef LinkedList_LogDebugApp
-		#include "higgs_Logger_config.hpp"
-		#include "higgs_Logger.hpp"
+		#include "pankey_Logger_config.hpp"
+		#include "pankey_Logger.hpp"
 
-		#define LinkedListLog(location,method,type,mns) higgs_LogDebug(this,location,"LinkedList",method,type)
+		#define LinkedListLog(location,method,type,mns) pankey_LogDebug(this,location,"LinkedList",method,type)
 		#define const_LinkedListLog(location,method,type,mns)
 	#else
 		#define LinkedListLog(location,method,type,mns)
@@ -25,7 +25,7 @@
 	#endif
 #endif
 
-namespace higgs{
+namespace pankey{
 
 template<class T>
 class LinkedList : public LinkedRawList<T>, public List<T>{
@@ -36,13 +36,13 @@ class LinkedList : public LinkedRawList<T>, public List<T>{
 		
 	public:
 		LinkedList<T>(){
-			LinkedListLog(higgs_Log_StartMethod, "addFirst", "println", "");
-			LinkedListLog(higgs_Log_EndMethod, "addFirst", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "addFirst", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "addFirst", "println", "");
 		}
 		
 		LinkedList<T>(const LinkedList<T>& c_list){
-			LinkedListLog(higgs_Log_StartMethod, "addFirst", "println", "");
-			LinkedListLog(higgs_Log_EndMethod, "addFirst", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "addFirst", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "addFirst", "println", "");
 			LinkedListNode<T>* c_node = c_list.getStartNode();
 			if(c_node == nullptr){
 				return;
@@ -55,14 +55,14 @@ class LinkedList : public LinkedRawList<T>, public List<T>{
 		
 		// template<class... args>
 		// LinkedList<T>(args... x){
-			// LinkedListLog(higgs_Log_StartMethod, "addFirst", "println", "");
-			// LinkedListLog(higgs_Log_EndMethod, "addFirst", "println", "");
+			// LinkedListLog(pankey_Log_StartMethod, "addFirst", "println", "");
+			// LinkedListLog(pankey_Log_EndMethod, "addFirst", "println", "");
 			
 		// }
 		
 		virtual ~LinkedList<T>(){
-			LinkedListLog(higgs_Log_StartMethod, "addFirst", "println", "");
-			LinkedListLog(higgs_Log_EndMethod, "addFirst", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "addFirst", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "addFirst", "println", "");
 		}
 		
 	
@@ -70,7 +70,7 @@ class LinkedList : public LinkedRawList<T>, public List<T>{
 		
 		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE)
 		virtual bool copy(cppObject* obj){
-			LinkedListLog(higgs_Log_StartMethod, "copy", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "copy", "println", "");
 			if(obj == nullptr){
 				return false;
 			}
@@ -93,12 +93,12 @@ class LinkedList : public LinkedRawList<T>, public List<T>{
 				}
 				return true;
 			}
-			LinkedListLog(higgs_Log_EndMethod, "copy", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "copy", "println", "");
 			return false;
 		}
 		
 		virtual bool move(cppObject* obj){
-			LinkedListLog(higgs_Log_StartMethod, "move", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "move", "println", "");
 			if(obj == nullptr){
 				return false;
 			}
@@ -118,12 +118,12 @@ class LinkedList : public LinkedRawList<T>, public List<T>{
 				o_list->reset();
 				return true;
 			}
-			LinkedListLog(higgs_Log_EndMethod, "move", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "move", "println", "");
 			return false;
 		}
 		
 		virtual bool equal(cppObject* obj){
-			LinkedListLog(higgs_Log_StartMethod, "equal", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "equal", "println", "");
 			if(obj == nullptr){
 				return false;
 			}
@@ -157,38 +157,38 @@ class LinkedList : public LinkedRawList<T>, public List<T>{
 				}
 				return true;
 			}
-			LinkedListLog(higgs_Log_EndMethod, "equal", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "equal", "println", "");
 			return false;
 		}
 		
 		virtual cppObjectClass* getClass(){
-			LinkedListLog(higgs_Log_StartMethod, "getClass", "println", "");
-			LinkedListLog(higgs_Log_EndMethod, "getClass", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "getClass", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "getClass", "println", "");
 			return m_linked_list_class;
 		}
 		virtual bool instanceof(cppObjectClass* cls){
-			LinkedListLog(higgs_Log_StartMethod, "instanceof", "println", "");
-			LinkedListLog(higgs_Log_EndMethod, "instanceof", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "instanceof", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "instanceof", "println", "");
 			return cls == m_linked_list_class || List<T>::instanceof(cls);
 		}
 		
 		virtual LinkedList<T>* clone(){
-			LinkedListLog(higgs_Log_StartMethod, "clone", "println", "");
-			LinkedListLog(higgs_Log_EndMethod, "clone", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "clone", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "clone", "println", "");
 			return new LinkedList<T>(*this);
 		}
 		
 		virtual LinkedList<T>* clone(bool owningMemory){
-			LinkedListLog(higgs_Log_StartMethod, "clone", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "clone", "println", "");
 			LinkedList<T>* list = new LinkedList<T>(*this);
 			list->m_owner = owningMemory;
-			LinkedListLog(higgs_Log_EndMethod, "clone", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "clone", "println", "");
 			return list;
 		}
 		#endif
 		
         virtual void operator=(const LinkedList<T>& a_list){
-			LinkedListLog(higgs_Log_StartMethod, "operator=", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "operator=", "println", "");
 			this->resetDelete();
 			if(a_list.isEmpty()){
 				return;
@@ -204,11 +204,11 @@ class LinkedList : public LinkedRawList<T>, public List<T>{
 				this->addPointerToEndNode(i_value);
 				i_node = a_list.getNextNode(i_node);
 			}
-			LinkedListLog(higgs_Log_EndMethod, "operator=", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "operator=", "println", "");
 		}
 		
         virtual bool operator==(LinkedList<T> a_list){
-			LinkedListLog(higgs_Log_StartMethod, "operator==", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "operator==", "println", "");
 			if(this->getPosition() != a_list.getPosition()){
 				return false;
 			}
@@ -232,12 +232,12 @@ class LinkedList : public LinkedRawList<T>, public List<T>{
 				i_node_1 = this->getNextNode(i_node_1);
 				i_node_2 = this->getNextNode(i_node_2);
 			}
-			LinkedListLog(higgs_Log_EndMethod, "operator==", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "operator==", "println", "");
 			return true;
 		}
 		
         virtual bool operator!=(LinkedList<T> a_list){
-			LinkedListLog(higgs_Log_StartMethod, "operator!=", "println", "");
+			LinkedListLog(pankey_Log_StartMethod, "operator!=", "println", "");
 			if(this->getPosition() == a_list.getPosition()){
 				return true;
 			}
@@ -261,7 +261,7 @@ class LinkedList : public LinkedRawList<T>, public List<T>{
 				i_node_1 = this->getNextNode(i_node_1);
 				i_node_2 = this->getNextNode(i_node_2);
 			}
-			LinkedListLog(higgs_Log_EndMethod, "operator!=", "println", "");
+			LinkedListLog(pankey_Log_EndMethod, "operator!=", "println", "");
 			return false;
 		}
 };

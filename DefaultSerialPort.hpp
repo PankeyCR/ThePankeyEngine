@@ -7,7 +7,7 @@
 #include "SerialPort.hpp"
 #include "Stream.h"
 
-namespace higgs{
+namespace pankey{
 
 class DefaultSerialPort : public SerialPort{	
     public:

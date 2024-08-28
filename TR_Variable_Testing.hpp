@@ -2,8 +2,8 @@
 #ifndef TR_Variable_Testing_hpp
 	#define TR_Variable_Testing_hpp
 	
-	#include "higgs_Enviroment.hpp"
-	#include "higgs_Enviroment_config.hpp"
+	#include "pankey_Enviroment.hpp"
+	#include "pankey_Enviroment_config.hpp"
 
 	#include "TestResult.hpp"
 	#include "TestRunner.hpp"
@@ -12,7 +12,7 @@
 
 	#include "CharArray.hpp"
 
-	namespace higgs{
+	namespace pankey{
 
 		TestResult TR_Variable_Testing_1(){
 			TestResult result;

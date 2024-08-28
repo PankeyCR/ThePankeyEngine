@@ -2,7 +2,7 @@
 #ifndef Pair_hpp
 	#define Pair_hpp
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class X1,class X2>
 		class Pair{

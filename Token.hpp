@@ -2,25 +2,25 @@
 #ifndef Token_hpp
 	#define Token_hpp
 	
-	#include "higgs_Enviroment.hpp"
-	#include "higgs_Enviroment_config.hpp"
+	#include "pankey_Enviroment.hpp"
+	#include "pankey_Enviroment_config.hpp"
 
-	#ifndef higgs_Enviroment_Defined
+	#ifndef pankey_Enviroment_Defined
 
 	#endif
 
-	#ifdef higgs_Windows
-		#include "higgs_Printable.hpp"
+	#ifdef pankey_Windows
+		#include "pankey_Printable.hpp"
 	#endif
 
-	#ifdef higgs_ArduinoIDE
+	#ifdef pankey_ArduinoIDE
 		#include "Arduino.h"
 		#include "Printable.h"
 	#endif
 
 	#include "Note.hpp"
 
-	namespace higgs{
+	namespace pankey{
 		
 		class Token : public Printable{
 			public:

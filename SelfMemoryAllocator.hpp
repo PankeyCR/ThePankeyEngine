@@ -5,13 +5,13 @@
 	#include "MemoryAllocator.hpp"
 
     #ifdef SelfMemoryAllocator_LogApp
-        #include "higgs_Logger.hpp"
-        #define SelfMemoryAllocatorLog(location,method,type,mns) higgs_Log(nullptr,location,"SelfMemoryAllocator",method,type,mns)
+        #include "pankey_Logger.hpp"
+        #define SelfMemoryAllocatorLog(location,method,type,mns) pankey_Log(nullptr,location,"SelfMemoryAllocator",method,type,mns)
     #else
         #define SelfMemoryAllocatorLog(location,method,type,mns)
     #endif
 
-	namespace higgs{
+	namespace pankey{
 
 		template<class T>
 		class SelfMemoryAllocator : public MemoryAllocator{
@@ -23,19 +23,19 @@
 				virtual ~SelfMemoryAllocator(){}
 
 				virtual void* create(pointer_size a_size){
-                    SelfMemoryAllocatorLog(higgs_Log_StartMethod, "create", "println","");
-                    SelfMemoryAllocatorLog(higgs_Log_EndMethod, "create", "println","");
+                    SelfMemoryAllocatorLog(pankey_Log_StartMethod, "create", "println","");
+                    SelfMemoryAllocatorLog(pankey_Log_EndMethod, "create", "println","");
 					return m_pointer;
 				}
 
 				virtual void* create(){
-                    SelfMemoryAllocatorLog(higgs_Log_StartMethod, "create", "println","");
-                    SelfMemoryAllocatorLog(higgs_Log_EndMethod, "create", "println","");
+                    SelfMemoryAllocatorLog(pankey_Log_StartMethod, "create", "println","");
+                    SelfMemoryAllocatorLog(pankey_Log_EndMethod, "create", "println","");
 					return m_pointer;
 				}
 				virtual void destroy(void* a_destroy){
-                    SelfMemoryAllocatorLog(higgs_Log_StartMethod, "destroy", "println","")
-                    SelfMemoryAllocatorLog(higgs_Log_EndMethod, "destroy", "println","");
+                    SelfMemoryAllocatorLog(pankey_Log_StartMethod, "destroy", "println","")
+                    SelfMemoryAllocatorLog(pankey_Log_EndMethod, "destroy", "println","");
 				}
 			protected:
 				T* m_pointer = nullptr;

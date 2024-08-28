@@ -1,9 +1,8 @@
 
 #ifndef MethodType_hpp
 #define MethodType_hpp
-#define MethodType_AVAILABLE
 
-namespace ame{
+namespace pankey{
 
 enum class MethodType {
 	Method,

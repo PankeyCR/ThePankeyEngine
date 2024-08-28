@@ -14,8 +14,8 @@
 *   getUsedStackSize
 *
 */
-#include "higgs_Enviroment_config.hpp"
-#include "higgs_Enviroment_define.hpp"
+#include "pankey_Enviroment_config.hpp"
+#include "pankey_Enviroment_define.hpp"
 
 #if defined(DISABLE_MemoryRam)
 	#define MemoryRam_hpp
@@ -25,16 +25,16 @@
 #define MemoryRam_hpp
 #define MemoryRam_AVAILABLE
 
-#ifndef higgs_Enviroment_Defined
+#ifndef pankey_Enviroment_Defined
 
 #endif
 
-#ifdef higgs_Windows
+#ifdef pankey_Windows
 	#include <windows.h>
 
 	#define DIVMEM 1048576
 
-	namespace higgs{
+	namespace pankey{
 		
 	long getRamSize(){
 		MEMORYSTATUSEX statex;
@@ -97,8 +97,8 @@
 
 #endif
 
-#ifdef higgs_ArduinoIDE
-	#ifdef higgs_GENERIC_ARDUINO
+#ifdef pankey_ArduinoIDE
+	#ifdef pankey_GENERIC_ARDUINO
         #include <Arduino.h>
 
         #ifdef __cplusplus
@@ -239,7 +239,7 @@
 
         #endif
 	#endif
-	#ifdef higgs_GENERIC_ESP8266
+	#ifdef pankey_GENERIC_ESP8266
         #ifdef ARDUINO_ARCH_ESP8266
         extern "C" {
         #include "user_interface.h"
@@ -277,7 +277,7 @@
 
         #endif
 	#endif
-	#ifdef higgs_GENERIC_ESP32
+	#ifdef pankey_GENERIC_ESP32
 
         long getRamSize() {
             return esp_get_free_heap_size();
@@ -310,7 +310,7 @@
         }
 
 	#endif
-	#ifdef higgs_GENERIC_ADAFRUIT_FEATHER
+	#ifdef pankey_GENERIC_ADAFRUIT_FEATHER
 
         extern "C" char *sbrk(int i);
 

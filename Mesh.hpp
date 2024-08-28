@@ -1,5 +1,5 @@
 
-#include "higgs_Enviroment.hpp"
+#include "pankey_Enviroment.hpp"
 
 #if defined(DISABLE_Mesh)
 	#define Mesh_hpp
@@ -9,15 +9,15 @@
 #define Mesh_hpp
 #define Mesh_AVAILABLE
 
-#ifndef higgs_Enviroment_Defined
+#ifndef pankey_Enviroment_Defined
 
 #endif
 
-#ifdef higgs_Windows
+#ifdef pankey_Windows
 
 #endif
 
-#ifdef higgs_ArduinoIDE
+#ifdef pankey_ArduinoIDE
 	#include "SD.h"
 	#include "Arduino.h"
 #endif
@@ -29,7 +29,7 @@
 #include "LinkedList.hpp"
 #include "CommandReader.hpp"
 
-namespace higgs{
+namespace pankey{
 
 class Mesh : public Printable{
     public:

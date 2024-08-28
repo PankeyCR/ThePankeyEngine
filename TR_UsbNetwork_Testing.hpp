@@ -2,15 +2,15 @@
 #ifndef TR_UsbNetwork_Testing_hpp
 	#define TR_UsbNetwork_Testing_hpp
 	
-	#include "higgs_Enviroment.hpp"
-	#include "higgs_Enviroment_config.hpp"
+	#include "pankey_Enviroment.hpp"
+	#include "pankey_Enviroment_config.hpp"
 
 	#include "TestResult.hpp"
 	#include "TestRunner.hpp"
 
 	#include "UsbNetwork.hpp"
 
-	namespace higgs{
+	namespace pankey{
 		
 		TestResult TR_UsbNetwork_Testing_1(){
 			TestResult i_result;

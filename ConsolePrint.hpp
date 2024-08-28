@@ -3,24 +3,24 @@
 #define ConsolePrint_hpp
 #define ConsolePrint_AVAILABLE
 
-#ifndef higgs_Enviroment_Defined
+#ifndef pankey_Enviroment_Defined
 
 #endif
 
-#ifdef higgs_Windows
+#ifdef pankey_Windows
 	#include <stdio.h>
-	#include "higgs_Print.hpp"
-	#include "higgs_Printable.hpp"
+	#include "pankey_Print.hpp"
+	#include "pankey_Printable.hpp"
 #endif
 
-#ifdef higgs_ArduinoIDE
+#ifdef pankey_ArduinoIDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif
 
-#include "higgs_String.hpp"
+#include "pankey_String.hpp"
 
-namespace higgs{
+namespace pankey{
 
 class ConsolePrint : public Print{
     public:
@@ -34,7 +34,7 @@ class ConsolePrint : public Print{
         return sizeof(a_value);
     }
 
-    size_t print(const higgs_String& a_value){
+    size_t print(const pankey_String& a_value){
         printf ("%s", a_value.c_str());
         return sizeof(a_value);
     }
@@ -89,7 +89,7 @@ class ConsolePrint : public Print{
         return sizeof(a_value);
     }
 
-    size_t println(const higgs_String& a_value){
+    size_t println(const pankey_String& a_value){
         printf ("%s \n", a_value.c_str());
         return sizeof(a_value);
     }
