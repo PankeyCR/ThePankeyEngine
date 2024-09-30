@@ -9,7 +9,6 @@
 	#include "TestRunner.hpp"
 
 	#include "CharArray.hpp"
-	#include "MemoryRam.hpp"
 
 	namespace pankey{
 			
@@ -200,6 +199,21 @@
 			
 			return result;
 		}
+			
+		TestResult TR_CharArray_Testing_18(){
+			TestResult result;
+
+			CharArray i_CharArray = "hellow pikachu world";
+			
+			result.assertTrue("CharArray should contain hellow", i_CharArray.contain("hellow"));
+			result.assertTrue("CharArray should contain pikachu", i_CharArray.contain("pikachu"));
+			result.assertTrue("CharArray shouldnt contain pikacha", !i_CharArray.contain("pikacha"));
+			result.assertTrue("CharArray shouldnt contain raychu", !i_CharArray.contain("raychu"));
+			result.assertTrue("CharArray shouldnt contain worldd", !i_CharArray.contain("worldd"));
+			result.assertTrue("CharArray should contain world", i_CharArray.contain("world"));
+			
+			return result;
+		}
 		
 		void TR_CharArray_Testing(TestRunner& a_test_runner){
 			a_test_runner.map.add("CharArray Constructor Bool", TR_CharArray_Testing_1);
@@ -219,6 +233,7 @@
 			a_test_runner.map.add("CharArray addLocalValue", TR_CharArray_Testing_15);
 			a_test_runner.map.add("CharArray ", TR_CharArray_Testing_16);
 			a_test_runner.map.add("CharArray assingment operator", TR_CharArray_Testing_17);
+			a_test_runner.map.add("CharArray contain", TR_CharArray_Testing_18);
 		}
 	}
 

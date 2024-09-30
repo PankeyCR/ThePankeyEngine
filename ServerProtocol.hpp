@@ -1,53 +1,37 @@
 
 #ifndef ServerProtocol_hpp
-#define ServerProtocol_hpp
+	#define ServerProtocol_hpp
 
-#include "cppObject.hpp"
-#include "SerialNetwork.hpp"
+	#include "SerialServer.hpp"
+	#include "SerialPort.hpp"
+	#include "PortProtocol.hpp"
 
-namespace higgs{
+	namespace pankey{
 
-/*
-*	Class Configuration:
-*	DISABLE_IMPLEMENTATION_cppObject
-*/
-class ServerProtocol IMPLEMENTATION_cppObject {	
-    public:
-		ServerProtocol(){}
-		
-		virtual ~ServerProtocol(){}
-		
-		virtual void initialize(SerialState* state){
-			this->serialState = state;
-		}
+		class ServerProtocol{	
+			public:
+				ServerProtocol(){}
+				
+				virtual ~ServerProtocol(){}
+				
+				virtual obj<SerialPort> accept(obj<SerialServer> server){return nullptr;}
+				
+				virtual void UpdateSerialPort(obj<SerialPort> port){}
+				
+				virtual bool isPortManaged(){return true;}
+				
+				virtual obj<PortProtocol> createPortProtocol(){return obj<PortProtocol>();}
+				
+				virtual void update(obj<SerialServer> server, float tpc){}
+				
+				virtual void NetworkMessage(obj<SerialServer> a_server, Note a_mns){}
+				
+				virtual void operator=(const ServerProtocol& a_protocol){}
+				virtual bool operator==(const ServerProtocol& a_protocol){return true;}
+				virtual bool operator!=(const ServerProtocol& a_protocol){return true;}
+				
+		};
 
-		virtual SerialState* getSerialState(){
-			return this->serialState;
-		}
-		
-		virtual SerialPort* getUpdateSerialPort(SerialServer* server){return nullptr;}
-		
-		virtual void UpdateSerialPort(SerialPort* port){}
-		
-		virtual void update(SerialServer* server, float tpc){}
-		
-		virtual void NetworkMessage(SerialServer* a_server, Note a_mns){}
-		
-		virtual void operator=(ServerProtocol b){}
-		virtual bool operator==(ServerProtocol b){return true;}
-		virtual bool operator!=(ServerProtocol b){return true;}
-		
-		#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
-		virtual cppObjectClass* getClass(){return Class<ServerProtocol>::getClass();}
-		virtual bool instanceof(cppObjectClass* cls){
-			return cls == Class<ServerProtocol>::getClass();
-		}
-		#endif
-		
-	protected:
-		SerialState* serialState = nullptr;
-};
-
-}
+	}
 
 #endif

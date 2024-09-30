@@ -36,60 +36,52 @@
 				}
 
 				Object(const Object<O,H,M>& a_obj){
-					ObjectLog(pankey_Log_StartMethod, "Contructor", "println","const Object &a_Object");
+					ObjectLog(pankey_Log_StartMethod, "Contructor", "println","const Object<O,H,M>&");
                     this->setHolder(a_obj.getHolder());
 					ObjectLog(pankey_Log_EndMethod, "Contructor", "println","");
 				}
 
                 Object(const Member<H,M>& a_holder){
-                    ObjectLog(pankey_Log_StartMethod, "Constructor", "println","");
-					if(ClassCount<O>::get() != a_holder.getBaseType()){
-                    	ObjectLog(pankey_Log_StartMethod, "Constructor", "println","holder doesnt have same base clase");
-						return;
+                    ObjectLog(pankey_Log_StartMethod, "Constructor", "println","const Member<H,M>&");
+					if(a_holder.isMember(this->getManager(), ClassCount<O>::get())){
+                    	ObjectLog(pankey_Log_StartMethod, "Constructor", "println","holder is member");
+                    	this->setHolder(a_holder.getHolder());
 					}
-                    this->setHolder(a_holder.getHolder());
                     ObjectLog(pankey_Log_EndMethod, "Constructor", "println","");
                 }
 
                 Object(const Data<H>& a_holder){
-                    ObjectLog(pankey_Log_StartMethod, "Constructor", "println","");
-					if(ClassCount<O>::get() != a_holder.getBaseType()){
-                    	ObjectLog(pankey_Log_StartMethod, "Constructor", "println","holder doesnt have same base clase");
-						return;
+                    ObjectLog(pankey_Log_StartMethod, "Constructor", "println","const Data<H>&");
+					if(a_holder.isMember(this->getManager(), ClassCount<O>::get())){
+                    	ObjectLog(pankey_Log_StartMethod, "Constructor", "println","holder is member");
+                    	this->setHolder(a_holder.getHolder());
 					}
-                    if(!this->isMember(a_holder)){
-                        ObjectLog(pankey_Log_EndMethod, "Constructor", "println","holder isnt member");
-                        return;
-                    }
-                    this->setHolder(a_holder.getHolder());
                     ObjectLog(pankey_Log_EndMethod, "Constructor", "println","");
                 }
 
                 template<class P>
                 Object(const Pointer<P,H,M>& a_holder){
-                    ObjectLog(pankey_Log_StartMethod, "Constructor", "println","");
-					if(ClassCount<O>::get() != a_holder.getBaseType()){
-                    	ObjectLog(pankey_Log_StartMethod, "void operator=", "println","holder doesnt have same base clase");
-						return;
+                    ObjectLog(pankey_Log_StartMethod, "Constructor", "println","const Pointer<P,H,M>&");
+					if(a_holder.isMember(this->getManager(), ClassCount<O>::get())){
+                    	ObjectLog(pankey_Log_StartMethod, "Constructor", "println","holder is member");
+                    	this->setHolder(a_holder.getHolder());
 					}
-                    this->setHolder(a_holder.getHolder());
                     ObjectLog(pankey_Log_EndMethod, "Constructor", "println","");
                 }
 
                 template<class P>
                 Object(const Value<P,H,M>& a_holder){
-                    ObjectLog(pankey_Log_StartMethod, "Constructor", "println","");
-					if(ClassCount<O>::get() != a_holder.getBaseType()){
-                    	ObjectLog(pankey_Log_StartMethod, "void operator=", "println","holder doesnt have same base clase");
-						return;
+                    ObjectLog(pankey_Log_StartMethod, "Constructor", "println","const Value<P,H,M>&");
+					if(a_holder.isMember(this->getManager(), ClassCount<O>::get())){
+                    	ObjectLog(pankey_Log_StartMethod, "Constructor", "println","holder is member");
+                    	this->setHolder(a_holder.getHolder());
 					}
-                    this->setHolder(a_holder.getHolder());
                     ObjectLog(pankey_Log_EndMethod, "Constructor", "println","");
                 }
 
                 template<class P>
                 Object(const P& a_value){
-                    ObjectLog(pankey_Log_StartMethod, "Constructor", "println","value constructor");
+                    ObjectLog(pankey_Log_StartMethod, "Constructor", "println","const P&");
 
 					if(is_base_of<MemoryHolder<H>, P>::value){
 						this->copyType(&a_value);
@@ -113,17 +105,17 @@
 				}
 
                 void copyType(const void* a_holder){
-                    ObjectLog(pankey_Log_StartMethod, "copyMemoryHolder", "println","fix");
+                    ObjectLog(pankey_Log_StartMethod, "copyType", "println","fix");
                     const MemoryHolder<H>* i_holder = (const MemoryHolder<H>*)a_holder;
 					if(i_holder == nullptr){
 						return;
 					}
-					if(ClassCount<O>::get() != i_holder->getBaseType()){
-                    	ObjectLog(pankey_Log_StartMethod, "copyMemoryHolder", "println","holder doesnt have same base clase");
+					if(!i_holder->isMember(this->getManager(), ClassCount<O>::get())){
+                    	ObjectLog(pankey_Log_StartMethod, "copyType", "println","holder not a member");
 						return;
 					}
 					this->copyMemoryHolder(*i_holder);
-                    ObjectLog(pankey_Log_EndMethod, "copyMemoryHolder", "println","");
+                    ObjectLog(pankey_Log_EndMethod, "copyType", "println","");
                 }
 
 				template<class P>
@@ -145,7 +137,7 @@
 				void setValue(P a_value){
 					ObjectLog(pankey_Log_StartMethod, "setValue", "println","");
 					VOID_TYPE i_pointer = this->getRawPointer();
-					if(i_pointer != nullptr && this->getType() == ClassCount<P>::get()){
+					if(i_pointer != nullptr && (this->getType() == ClassCount<P>::get() || this->getBaseType() == ClassCount<P>::get())){
 						P* i_value_1 = (P*)i_pointer;
 					    ObjectLog(pankey_Log_Statement, "setValue", "println","asign value with assignment operator");
 						*i_value_1 = a_value;

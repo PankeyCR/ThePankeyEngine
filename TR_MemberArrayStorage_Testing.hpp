@@ -155,7 +155,7 @@
 			i_storage.add(0, i_var_0);
 			i_storage.add(1, i_var_1);
 			
-			result.assertTrue("storage should contain i_var_1", i_storage.contain(i_var_1));
+			result.assertTrue("storage should contain i_var_1", i_storage.containByPointer(i_var_1));
 
 			return result;
 		}
@@ -171,7 +171,7 @@
 			i_storage.add(0, i_var_0);
 			i_storage.add(1, i_var_1);
 			
-			result.assertEqual("storage getIndex should be 1", i_storage.getIndex(i_var_1), 1);
+			result.assertEqual("storage getIndex should be 1", i_storage.getIndexByPointer(i_var_1), 1);
 
 			return result;
 		}

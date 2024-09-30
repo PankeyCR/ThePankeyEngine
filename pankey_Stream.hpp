@@ -1,27 +1,33 @@
 
 #ifndef pankey_Stream_hpp
-#define pankey_Stream_hpp
+    #define pankey_Stream_hpp
 
-//#include "pankey_Streamable.hpp"
-#include "pankey_String.hpp"
+	#include "pankey_Enviroment.hpp"
+	#include "pankey_Enviroment_config.hpp"
 
-#ifdef pankey_Windows
-	#include <string.h>
-	#include "pankey_Print.hpp"
-#endif
+    #include "pankey_String.hpp"
 
-#ifdef pankey_ArduinoIDE
-	#include "Print.h"
-#endif
+    #ifdef pankey_Windows
+        #include <string.h>
+        #include "pankey_Print.hpp"
+    #endif
 
-class Stream : public Print{
-    public:
-        Stream() {}
-        virtual ~Stream() {}
-		
-        virtual int available() = 0;
-        virtual int read() = 0;
-        virtual int peek() = 0;
-};
+    #ifdef pankey_ArduinoIDE
+        #include "Print.h"
+    #endif
+
+    namespace pankey{
+
+        class Stream : public Print{
+            public:
+                Stream() {}
+                virtual ~Stream() {}
+                
+                virtual int available() = 0;
+                virtual int read() = 0;
+                virtual int peek() = 0;
+        };
+
+    }
 
 #endif

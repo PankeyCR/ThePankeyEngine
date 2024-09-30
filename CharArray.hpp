@@ -1047,6 +1047,52 @@ class CharArray : public Array<char>{
 			return output;
 		}
 
+		bool contain(const CharArray& a_char_array) const{
+			CharArrayLog(pankey_Log_StartMethod, "contain", "println", "");
+			Array<int> i_capture;
+			for(int x = 0; x < this->getPosition(); x++){
+				CharArrayLog(pankey_Log_Statement, "contain", "println", "main iteration: ");
+				CharArrayLog(pankey_Log_Statement, "contain", "println", x);
+				char f_char = this->get(x);
+				CharArrayLog(pankey_Log_Statement, "contain", "println", "char to check: ");
+				CharArrayLog(pankey_Log_Statement, "contain", "println", f_char);
+				for(int f_x = 0; f_x < i_capture.getPosition(); f_x++){
+					CharArrayLog(pankey_Log_Statement, "contain", "println", "second iteration: ");
+					CharArrayLog(pankey_Log_Statement, "contain", "println", f_x);
+					int f_int = i_capture.get(f_x);
+					f_int++;
+					CharArrayLog(pankey_Log_Statement, "contain", "println", "position to check: ");
+					CharArrayLog(pankey_Log_Statement, "contain", "println", f_int);
+					if(a_char_array.getPosition() <= f_int){
+						CharArrayLog(pankey_Log_Statement, "contain", "println", "a_char_array.getPosition() <= f_int");
+						CharArrayLog(pankey_Log_EndMethod, "contain", "println", "");
+						return true;
+					}
+					char f_second_char = a_char_array.get(f_int);
+					CharArrayLog(pankey_Log_Statement, "contain", "println", "second char to check: ");
+					CharArrayLog(pankey_Log_Statement, "contain", "println", f_second_char);
+					if(f_char == f_second_char){
+						CharArrayLog(pankey_Log_Statement, "contain", "println", "f_char == f_second_char");
+						if(a_char_array.getPosition() <= (f_int + 1)){
+							CharArrayLog(pankey_Log_Statement, "contain", "println", "a_char_array.getPosition() <= (f_int + 1)");
+							CharArrayLog(pankey_Log_EndMethod, "contain", "println", "");
+							return true;
+						}
+						i_capture.set(f_x, f_int);
+					}else{
+						CharArrayLog(pankey_Log_Statement, "contain", "println", "f_char != f_second_char");
+						i_capture.remove(f_x);
+					}
+				}
+				if(f_char == a_char_array.get(0)){
+					CharArrayLog(pankey_Log_Statement, "contain", "println", "f_char == a_char_array.get(0)");
+					i_capture.addLocalValue(0);
+				}
+			}
+			CharArrayLog(pankey_Log_EndMethod, "contain", "println", "");
+			return false;
+		}
+
 		CharArray split(int a_position, char a_char) const{
 			CharArrayLog(pankey_Log_StartMethod, "split", "println", "");
 			CharArray i_CharArray;

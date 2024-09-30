@@ -3,6 +3,7 @@
 	#define MemoryStorage_hpp
 
 	#include "MemoryHolder.hpp"
+	#include "InvokeMethod.hpp"
 
 	#ifdef MemoryStorage_LogApp
 		#include "pankey_Logger.hpp"
@@ -42,13 +43,19 @@
 				
 				virtual bool add(int a_position, MemoryHolder<H>& a_value)=0;
 
-				virtual bool contain(const MemoryHolder<H>& a_value)const=0;
+				virtual bool contain(InvokeMethodReturn<bool,VOID_TYPE,VOID_TYPE> a_method, const MemoryHolder<H>& a_value)const=0;
+
+				virtual bool containByPointer(const MemoryHolder<H>& a_value)const=0;
 				
-				virtual int getIndex(const MemoryHolder<H>& a_value)const=0;
+				virtual int getIndex(InvokeMethodReturn<bool,VOID_TYPE,VOID_TYPE> a_method, const MemoryHolder<H>& a_value)const=0;
+				
+				virtual int getIndexByPointer(const MemoryHolder<H>& a_value)const=0;
 				
 				virtual VOID_TYPE getRawPointer(int a_position)const=0;
 				
 				virtual HOLDER_TYPE getHolder(int a_position)const=0;
+
+				virtual bool remove(InvokeMethodReturn<bool,VOID_TYPE,VOID_TYPE> a_method, const MemoryHolder<H>& a_value)=0;
 
 				virtual bool removeByPointer(const MemoryHolder<H>& a_value)=0;
 

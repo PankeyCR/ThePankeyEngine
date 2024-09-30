@@ -23,8 +23,14 @@ class TestResult{
 		}
 		virtual ~TestResult(){}
 		
-		virtual void addInfo(Note a_note){
-			m_info.add(a_note);
+		template<class... Args>
+		void addInfo(Args... a_note){
+			Note array[] = {Note(a_note)...};
+			Note total;
+			for(const Note& a : array){
+				total.addLocalArray(a);
+			}
+			m_info.add(total);
 		}
 		
 		virtual void catchError(int a_index, Note a_note){

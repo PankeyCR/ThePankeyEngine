@@ -372,20 +372,6 @@
 				// 	PrimitiveRawPointerListLog(pankey_Log_EndMethod, "expand", "println", "");
 				// 	return i_list;
 				// }
-			
-				////////////////////////////////////////////operator part///////////////////////////////////////////////
-				
-				
-				virtual PrimitiveRawPointerList& operator=(const PrimitiveRawPointerList<T>& a_list){
-					PrimitiveRawPointerListLog(pankey_Log_StartMethod, "operator=", "println", "");
-					this->resetDelete();
-					for(int x = 0; x < a_list.getPosition(); x++){
-						T* f_value = a_list.getByPosition(x);
-						this->addPointer(f_value);
-					}
-					PrimitiveRawPointerListLog(pankey_Log_EndMethod, "operator=", "println", "");
-					return *this;
-				}
 
 				virtual void reorder(){
 					PrimitiveRawPointerListLog(pankey_Log_StartMethod, "reoder", "println", "");
@@ -400,6 +386,52 @@
 					}
 					this->setPosition(i_offset);
 					PrimitiveRawPointerListLog(pankey_Log_EndMethod, "reoder", "println", "");
+				}
+			
+				////////////////////////////////////////////operator part///////////////////////////////////////////////
+				
+				
+				virtual PrimitiveRawPointerList& operator=(const PrimitiveRawPointerList<T>& a_list){
+					PrimitiveRawPointerListLog(pankey_Log_StartMethod, "operator=", "println", "const PrimitiveRawPointerList<T>&");
+					this->resetDelete();
+					for(int x = 0; x < a_list.getPosition(); x++){
+						T* f_value = a_list.getByPosition(x);
+						this->addPointer(f_value);
+					}
+					PrimitiveRawPointerListLog(pankey_Log_EndMethod, "operator=", "println", "");
+					return *this;
+				}
+
+				virtual bool operator==(const PrimitiveRawPointerList<T>& a_list){
+					PrimitiveRawPointerListLog(pankey_Log_StartMethod, "operator=", "println", "const PrimitiveRawPointerList<T>&");
+					if(a_list.getPosition() != this->getPosition()){
+						return false;
+					}
+					for(int x = 0; x < a_list.getPosition(); x++){
+						T* f_value_1 = a_list.getByPosition(x);
+						T* f_value_2 = this->getByPosition(x);
+						if(f_value_1 != f_value_2){
+							return false;
+						}
+					}
+					PrimitiveRawPointerListLog(pankey_Log_EndMethod, "operator=", "println", "const PrimitiveRawPointerList<T>&");
+					return true;
+				}
+
+				virtual bool operator!=(const PrimitiveRawPointerList<T>& a_list){
+					PrimitiveRawPointerListLog(pankey_Log_StartMethod, "operator=", "println", "");
+					if(a_list.getPosition() != this->getPosition()){
+						return true;
+					}
+					for(int x = 0; x < a_list.getPosition(); x++){
+						T* f_value_1 = a_list.getByPosition(x);
+						T* f_value_2 = this->getByPosition(x);
+						if(f_value_1 != f_value_2){
+							return true;
+						}
+					}
+					PrimitiveRawPointerListLog(pankey_Log_EndMethod, "operator=", "println", "");
+					return false;
 				}
 				
 			protected:

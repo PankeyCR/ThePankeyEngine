@@ -1,8 +1,6 @@
 
 #ifndef AnalogInput_hpp
 	#define AnalogInput_hpp
-	
-	#include "System.hpp"
 
 	#ifdef AnalogInput_LogApp
 		#include "pankey_Logger.hpp"
@@ -76,10 +74,14 @@
 					AnalogInputLog(pankey_Log_EndMethod, "initialize", "println", "");
 				}
 					
-				virtual void operator=(AnalogInput a_di){
+				virtual void operator=(const AnalogInput& a_di){
 					AnalogInputLog(pankey_Log_StartMethod, "operator=", "println", "");
 					pin = a_di.pin;
 					value = a_di.value;
+					resolution = a_di.resolution;
+					offset = a_di.offset;
+					pause = a_di.pause;
+					interval = a_di.interval;
 					AnalogInputLog(pankey_Log_EndMethod, "operator=", "println", "");
 				}
 				virtual bool operator==(AnalogInput a_di){
@@ -92,15 +94,18 @@
 
 		bool AnalogInputAction(AnalogInput& a_input, float a_tpc){
 			AnalogInputLog(pankey_Log_StartMethod, "AnalogInputAction", "println", "");
-			AnalogInputLog(pankey_Log_Statement, "AnalogInputAction", "println", "Pin number:");
-			AnalogInputLog(pankey_Log_Statement, "AnalogInputAction", "println", a_input.pin);
-			AnalogInputLog(pankey_Log_Statement, "AnalogInputAction", "println", "Pin state:");
-			AnalogInputLog(pankey_Log_Statement, "AnalogInputAction", "println", analogRead(a_input.pin));
 
 			if(a_input.pause){
 				AnalogInputLog(pankey_Log_EndMethod, "AnalogInputAction", "println", "a_input.pause");
 				return false;
 			}
+			AnalogInputLog(pankey_Log_Statement, "AnalogInputAction", "println", "Pin number:");
+			AnalogInputLog(pankey_Log_Statement, "AnalogInputAction", "println", a_input.pin);
+
+			int i_value = analogRead(a_input.pin);
+
+			AnalogInputLog(pankey_Log_Statement, "AnalogInputAction", "println", "Pin value:");
+			AnalogInputLog(pankey_Log_Statement, "AnalogInputAction", "println", i_value);
 
 			if((millis() - a_input.start) <= a_input.interval){
 				AnalogInputLog(pankey_Log_EndMethod, "AnalogInputAction", "println", "(millis() - a_input.start) < a_input.check");
@@ -108,7 +113,7 @@
 			}
 
 			a_input.start = millis();
-			a_input.value = (analogRead(a_input.pin) * a_input.resolution) + a_input.offset;
+			a_input.value = (i_value * a_input.resolution) + a_input.offset;
 
 			AnalogInputLog(pankey_Log_Statement, "AnalogInputAction", "println", "value:");
 			AnalogInputLog(pankey_Log_Statement, "AnalogInputAction", "println", a_input.value);

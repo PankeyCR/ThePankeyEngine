@@ -18,13 +18,7 @@
 	namespace pankey{
 
 		template<class... Args>
-		using command = obj<Command<Args...>>;
-
-		template<class... Args>
 		using CommandList = OList<Command<Args...>>;
-
-		template<class... Args>
-		using commandReturn = obj<CommandReturn<Args...>>;
 
 		template<class R, class... Args>
 		using CommandReturnList = OList<CommandReturn<R,Args...>>;

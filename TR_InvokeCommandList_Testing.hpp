@@ -12,19 +12,19 @@
 
 	namespace pankey{
 
-		class TestCommand : Command<TestResult&>{
+		class TestCommandList : Command<TestResult&>{
 			void execute(TestResult& a_result){
 				a_result.assertTrue("executing method", true);
 			}
 		};
 
-		class TestCommand_2 : Command<TestResult&>{
+		class TestCommandList_2 : Command<TestResult&>{
 			void execute(TestResult& a_result){
 				a_result.assertEqual("executing method", 1,1);
 			}
 		};
 
-		class TestCommandWithError : Command<TestResult&>{
+		class TestCommandListWithError : Command<TestResult&>{
 			void execute(TestResult& a_result){
 				a_result.assertTrue("executing method with error", false);
 			}
@@ -55,7 +55,7 @@
 
 			CommandList<TestResult&> i_list;
 
-			command<TestResult&> i_obj = TestCommand();
+			command<TestResult&> i_obj = TestCommandList();
 
 			i_list.add(i_obj);
 
@@ -69,8 +69,8 @@
 
 			CommandList<TestResult&> i_list;
 
-			command<TestResult&> i_obj = TestCommand();
-			command<TestResult&> i_obj_2 = TestCommand_2();
+			command<TestResult&> i_obj = TestCommandList();
+			command<TestResult&> i_obj_2 = TestCommandList_2();
 
 			i_list.add(i_obj);
 			i_list.add(i_obj_2);
@@ -80,20 +80,20 @@
 			return result;
 		}
 
-		class TestCommandReturn : CommandReturn<bool,bool>{
+		class TestCommandListReturn : CommandReturn<bool,bool>{
 			bool execute(bool a_bool){
 				return a_bool;
 			}
 		};
 
-		class TestCommandReturn_2 : CommandReturn<bool,bool,TestResult&>{
+		class TestCommandListReturn_2 : CommandReturn<bool,bool,TestResult&>{
 			bool execute(bool a_bool, TestResult& a_result){
 				a_result.assertTrue("bool parameter has to be true", a_bool);
 				return a_bool;
 			}
 		};
 
-		class TestCommandReturn_3 : CommandReturn<bool,bool,TestResult&>{
+		class TestCommandListReturn_3 : CommandReturn<bool,bool,TestResult&>{
 			bool execute(bool a_bool, TestResult& a_result){
 				a_result.assertEqual("bool parameter has to be true", a_bool, true);
 				return a_bool;
@@ -105,7 +105,7 @@
 
 			CommandReturnList<bool,bool> i_list;
 
-			commandReturn<bool,bool> i_obj = TestCommandReturn();
+			commandReturn<bool,bool> i_obj = TestCommandListReturn();
 
 			i_list.add(i_obj);
 
@@ -119,8 +119,8 @@
 
 			CommandReturnList<bool,bool,TestResult&> i_list;
 
-			commandReturn<bool,bool,TestResult&> i_obj = TestCommandReturn_2();
-			commandReturn<bool,bool,TestResult&> i_obj_2 = TestCommandReturn_3();
+			commandReturn<bool,bool,TestResult&> i_obj = TestCommandListReturn_2();
+			commandReturn<bool,bool,TestResult&> i_obj_2 = TestCommandListReturn_3();
 
 			i_list.add(i_obj);
 			i_list.add(i_obj_2);

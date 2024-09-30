@@ -52,13 +52,13 @@
 					return this->m_storage.replace(a_index_1, a_index_2);
 				}
 
-				virtual Member<H,M> get(const Member<H,M>& a_value)const{
-					MemberArrayCollectionLog(pankey_Log_StartMethod, "get", "println", "");
-					if(!this->m_storage.contain(a_value)){
-						MemberArrayCollectionLog(pankey_Log_Statement, "get", "println", "!this->m_storage.contain(a_value)");
+				virtual Member<H,M> getByPointer(const Member<H,M>& a_value)const{
+					MemberArrayCollectionLog(pankey_Log_StartMethod, "getByPointer", "println", "");
+					if(!this->m_storage.containByPointer(a_value)){
+						MemberArrayCollectionLog(pankey_Log_Statement, "getByPointer", "println", "!this->m_storage.contain(a_value)");
 						return Member<H,M>();
 					}
-					MemberArrayCollectionLog(pankey_Log_EndMethod, "get", "println", "");
+					MemberArrayCollectionLog(pankey_Log_EndMethod, "getByPointer", "println", "");
 					return a_value;
 				}
 
@@ -68,30 +68,30 @@
 					return this->m_storage.get(x);
 				}
 
-				virtual bool contain(const Member<H,M>& a_value)const{
-					MemberArrayCollectionLog(pankey_Log_StartMethod, "contain", "println", "");
-					MemberArrayCollectionLog(pankey_Log_EndMethod, "contain", "println", "");
-					return this->m_storage.contain(a_value);
+				virtual bool containByPointer(const Member<H,M>& a_value)const{
+					MemberArrayCollectionLog(pankey_Log_StartMethod, "containByPointer", "println", "");
+					MemberArrayCollectionLog(pankey_Log_EndMethod, "containByPointer", "println", "");
+					return this->m_storage.containByPointer(a_value);
 				}
 				
-				virtual int getIndex(const Member<H,M>& a_value)const{
-					MemberArrayCollectionLog(pankey_Log_StartMethod, "getIndex", "println", "");
-					MemberArrayCollectionLog(pankey_Log_EndMethod, "getIndex", "println", "");
-					return this->m_storage.getIndex(a_value);
+				virtual int getIndexByPointer(const Member<H,M>& a_value)const{
+					MemberArrayCollectionLog(pankey_Log_StartMethod, "getIndexByPointer", "println", "");
+					MemberArrayCollectionLog(pankey_Log_EndMethod, "getIndexByPointer", "println", "");
+					return this->m_storage.getIndexByPointer(a_value);
 				}
 				
-				virtual bool remove(const Member<H,M>& a_value){
-					MemberArrayCollectionLog(pankey_Log_StartMethod, "remove", "println", "");
-					int i_index = this->m_storage.getIndex(a_value);
+				virtual bool removeByPointer(const Member<H,M>& a_value){
+					MemberArrayCollectionLog(pankey_Log_StartMethod, "removeByPointer", "println", "");
+					int i_index = this->m_storage.getIndexByPointer(a_value);
 					if(i_index == -1){
-						MemberArrayCollectionLog(pankey_Log_EndMethod, "remove", "println", "");
+						MemberArrayCollectionLog(pankey_Log_EndMethod, "removeByPointer", "println", "");
 						return false;
 					}
-					MemberArrayCollectionLog(pankey_Log_Statement, "remove", "println", "index that is been removed:");
-					MemberArrayCollectionLog(pankey_Log_Statement, "remove", "println", i_index);
+					MemberArrayCollectionLog(pankey_Log_Statement, "removeByPointer", "println", "index that is been removed:");
+					MemberArrayCollectionLog(pankey_Log_Statement, "removeByPointer", "println", i_index);
 					this->m_storage.removeByIndex(i_index);
 					this->m_storage.reorder(i_index, this->length());
-					MemberArrayCollectionLog(pankey_Log_EndMethod, "remove", "println", "");
+					MemberArrayCollectionLog(pankey_Log_EndMethod, "removeByPointer", "println", "");
 					return true;
 				}
 				
@@ -205,16 +205,6 @@
 					}
 					this->m_storage.reorder();
 					MemberArrayCollectionLog(pankey_Log_EndMethod, "reorder", "println", "");
-				}
-				
-				virtual void move(MemberArrayCollection<H,M>& a_MemberArrayCollection){
-					MemberArrayCollectionLog(pankey_Log_StartMethod, "move", "println", "");
-					MemberArrayCollectionLog(pankey_Log_EndMethod, "move", "println", "");
-				}
-				
-				virtual void duplicate(const MemberArrayCollection<H,M>& a_MemberArrayCollection){
-					MemberArrayCollectionLog(pankey_Log_StartMethod, "duplicate", "println", "");
-					MemberArrayCollectionLog(pankey_Log_EndMethod, "duplicate", "println", "");
 				}
 				
 			protected:

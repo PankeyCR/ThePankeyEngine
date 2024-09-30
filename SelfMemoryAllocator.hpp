@@ -34,7 +34,7 @@
 					return m_pointer;
 				}
 				virtual void destroy(void* a_destroy){
-                    SelfMemoryAllocatorLog(pankey_Log_StartMethod, "destroy", "println","")
+                    SelfMemoryAllocatorLog(pankey_Log_StartMethod, "destroy", "println","");
                     SelfMemoryAllocatorLog(pankey_Log_EndMethod, "destroy", "println","");
 				}
 			protected:

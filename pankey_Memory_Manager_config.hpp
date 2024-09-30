@@ -9,6 +9,9 @@
 	#include "Value.hpp"
 	#include "Object.hpp"
 	#include "Self.hpp"
+
+	#include "Command.hpp"
+	#include "CommandReturn.hpp"
 	
 	#include "State.hpp"
 	#include "AppState.hpp"
@@ -19,11 +22,16 @@
 	#include "ObjectList.hpp"
 	
 	#include "DuoMember.hpp"
+	#include "DuoTypeMember.hpp"
 	#include "MemberArrayTableStorage.hpp"
 	#include "MemberArrayMap.hpp"
+	#include "TypeArrayMap.hpp"
+	#include "ObjectArrayMap.hpp"
 
 	#include "UniversalHolder.hpp"
 	#include "UniversalManager.hpp"
+
+	#include "ClassCount.hpp"
 	
 	// #include "Class.hpp"
 	// #include "cppObjectClass.hpp"
@@ -65,6 +73,12 @@
 		using obj = Object<pankey_ENGINE_POINTER_ALLOCATOR(P)>;
 
 		using object = Object<pankey_ENGINE_POINTER_ALLOCATOR(int)>;
+
+		template<class... Args>
+		using command = obj<Command<Args...>>;
+
+		template<class... Args>
+		using commandReturn = obj<CommandReturn<Args...>>;
 		
 		template<class... Args>
 		using state = obj<State<Args...>>;
@@ -95,6 +109,9 @@
 
 		using duo = DuoMember<pankey_MEMORY_HOLDER_ALLOCATOR>;
 
+		template<class K, class V>
+		using duo_type = DuoTypeMember<K,V,pankey_MEMORY_HOLDER_ALLOCATOR>;
+
 		// using TDuo = MemberMapEntry<pankey_MEMORY_HOLDER_ALLOCATOR>;
 
 		using table = MemberArrayTableStorage<pankey_MEMORY_HOLDER_ALLOCATOR>;
@@ -106,13 +123,20 @@
 
 		using Map = MemberArrayMap<pankey_MEMORY_HOLDER_ALLOCATOR>;
 
+		template<class K, class V>
+		using TMap = TypeArrayMap<K,V,pankey_MEMORY_HOLDER_ALLOCATOR>;
+
+		template<class K, class V>
+		using OMap = ObjectArrayMap<K,V,pankey_MEMORY_HOLDER_ALLOCATOR>;
+
 		// template<class P>
 		// using THashMap = TypeHashMap<pankey_ENGINE_POINTER_ALLOCATOR(P)>;
 
 		// template<class O>
 		// using OHashMap = ObjectHashMap<pankey_ENGINE_POINTER_ALLOCATOR(O)>;
 
-		// using type = Class<cppObjectClass>;
+		template<class T>
+		using type = ClassCount<T>;
 
 		void createEngineManager(){
 			createManager<pankey_ENGINE_CREATE_ALLOCATOR()>();

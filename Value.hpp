@@ -34,8 +34,8 @@
 
 				Value(const MemoryHolder<H>& a_value){
 					ValueLog(pankey_Log_StartMethod, "Contructor", "println","const MemoryHolder &a_value");
-                    if(!this->isMember(a_value)){
-                        PointerLog(pankey_Log_EndMethod, "Constructor", "println","");
+                    if(!a_value.isMember(this->getManager(), ClassCount<P>::get())){
+                        PointerLog(pankey_Log_EndMethod, "Constructor", "println","not member");
                         return;
                     }
                     this->setHolder(a_value.getHolder());
@@ -44,11 +44,10 @@
 
 				Value(const Member<H,M>& a_value){
 					ValueLog(pankey_Log_StartMethod, "Contructor", "println","const Member &a_value");
-                    if(!this->sameType(a_value.getType())){
-                        ValueLog(pankey_Log_EndMethod, "Constructor", "println","");
-                        return;
+                    if(a_value.sameType(ClassCount<P>::get()) || a_value.sameBaseType(ClassCount<P>::get())){
+						ValueLog(pankey_Log_Statement, "Contructor", "println","seting holder");
+                    	this->setHolder(a_value.getHolder());
                     }
-                    this->setHolder(a_value.getHolder());
 					ValueLog(pankey_Log_EndMethod, "Contructor", "println","");
 				}
 

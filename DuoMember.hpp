@@ -25,22 +25,6 @@
 					DuoMemberLog(pankey_Log_StartMethod, "Constructor", "println", "");
 					DuoMemberLog(pankey_Log_EndMethod, "Constructor", "println", "");
 				}
-
-                DuoMember(const MemoryHolder<H>& a_holder){
-                    DuoMemberLog(pankey_Log_StartMethod, "Constructor", "println","");
-                    if(!this->isMember(a_holder)){
-                        DuoMemberLog(pankey_Log_EndMethod, "Constructor", "println","");
-                        return;
-                    }
-                    this->setHolder(a_holder.getHolder());
-                    DuoMemberLog(pankey_Log_EndMethod, "Constructor", "println","");
-                }
-
-                DuoMember(const Member<H,M>& a_holder){
-                    DuoMemberLog(pankey_Log_StartMethod, "Constructor", "println","");
-                    this->setHolder(a_holder.getHolder());
-                    DuoMemberLog(pankey_Log_EndMethod, "Constructor", "println","");
-                }
 				
 				DuoMember(Member<H,M> c_holder_0, Member<H,M> c_holder_1){
 					DuoMemberLog(pankey_Log_StartMethod, "Constructor", "println", "");
@@ -112,53 +96,50 @@
 
                 virtual void copyDuoMemoryHolder(const MemoryHolder<H>& a_holder){
                     DuoMemberLog(pankey_Log_StartMethod, "copyDuoMemoryHolder", "println","");
-                    if(!this->isDuoMember(a_holder)){
-                        DuoMemberLog(pankey_Log_Error, "copyDuoMemoryHolder", "println", "Variable is not Member of Variable");
-                        DuoMemberLog(pankey_Log_EndMethod, "copyDuoMemoryHolder", "println","");
-                        return;
+                    if(a_holder.shareManager(this->getManager())){
+                        this->setDuoHolder(a_holder.getHolder());
                     }
-                    this->setDuoHolder(a_holder.getHolder());
                     DuoMemberLog(pankey_Log_EndMethod, "copyDuoMemoryHolder", "println","");
                 }
 
 				virtual bool sameDuoType(long a_type)const{
                     DuoMemberLog(pankey_Log_StartMethod, "sameDuoType", "println","");
                     if(a_type == -1){
-                        DuoMemberLog(pankey_Log_Error, "sameDuoType", "println","The variable cheching has no type");
+                        DuoMemberLog(pankey_Log_Error, "sameDuoType", "println","a_type == -1");
                         DuoMemberLog(pankey_Log_EndMethod, "sameDuoType", "println","");
                         return false;
                     }
                     long i_type = this->getDuoType();
-                    if(i_type != a_type && i_type != -1){
-                        DuoMemberLog(pankey_Log_Error, "sameDuoType", "println","Not a memeber because it has diferent types");
+                    if(i_type == -1){
+                        DuoMemberLog(pankey_Log_Error, "sameDuoType", "println","i_type == -1");
                         DuoMemberLog(pankey_Log_EndMethod, "sameDuoType", "println","");
                         return false;
                     }
                     DuoMemberLog(pankey_Log_EndMethod, "sameDuoType", "println","");
-                    return true;
+                    return i_type == a_type;
 				}
 
 				virtual bool sameDuoBaseType(long a_type)const{
                     DuoMemberLog(pankey_Log_StartMethod, "sameDuoBaseType", "println","");
                     if(a_type == -1){
-                        DuoMemberLog(pankey_Log_Error, "sameDuoBaseType", "println","The variable cheching has no type");
+                        DuoMemberLog(pankey_Log_Error, "sameDuoBaseType", "println","a_type == -1");
                         DuoMemberLog(pankey_Log_EndMethod, "sameDuoBaseType", "println","");
                         return false;
                     }
                     long i_type = this->getDuoBaseType();
-                    if(i_type != a_type && i_type != -1){
-                        DuoMemberLog(pankey_Log_Error, "sameDuoBaseType", "println","Not a memeber because it has diferent types");
+                    if(i_type == -1){
+                        DuoMemberLog(pankey_Log_Error, "sameDuoBaseType", "println","i_type == -1");
                         DuoMemberLog(pankey_Log_EndMethod, "sameDuoBaseType", "println","");
                         return false;
                     }
                     DuoMemberLog(pankey_Log_EndMethod, "sameDuoBaseType", "println","");
-                    return true;
+                    return i_type == a_type;
 				}
 
 				virtual bool isDuoMember(MANAGER_TYPE a_manager, long a_type)const{
                     DuoMemberLog(pankey_Log_StartMethod, "isDuoMember", "println","");
                     DuoMemberLog(pankey_Log_EndMethod, "isDuoMember", "println","");
-                    return this->shareManager(a_manager) && this->sameDuoType(a_type);
+                    return this->shareManager(a_manager) && (this->sameDuoType(a_type) || this->sameDuoBaseType(a_type));
 				}
 
 				virtual bool isDuoMember(HOLDER_TYPE a_holder, MANAGER_TYPE a_manager)const{
@@ -229,24 +210,24 @@
 					return i_pointer;
 				}
 				
-				virtual DuoMember& operator=(const DuoMember<H,M>& a_duo_member){
+				virtual DuoMember<H,M>& operator=(const DuoMember<H,M>& a_duo_member){
 					DuoMemberLog(pankey_Log_StartMethod, "operator=", "println", "");
-                    this->setDuoHolder(a_duo_member.getDuoHolder());
                     this->setHolder(a_duo_member.getHolder());
+                    this->setDuoHolder(a_duo_member.getDuoHolder());
 					DuoMemberLog(pankey_Log_EndMethod, "operator=", "println", "");
 					return *this;
 				}
 				
-				virtual bool operator!=(const DuoMember<H,M>& a_duo_member){
+				virtual bool operator==(const DuoMember<H,M>& a_duo_member){
 					DuoMemberLog(pankey_Log_StartMethod, "operator!=", "println", "");
 					DuoMemberLog(pankey_Log_EndMethod, "operator!=", "println", "");
                     return this->getHolder() == a_duo_member.getHolder() && this->getDuoHolder() == a_duo_member.getDuoHolder();
 				}
-				
-				virtual bool operator==(const DuoMember<H,M>& a_duo_member){
+
+				virtual bool operator!=(const DuoMember<H,M>& a_duo_member){
 					DuoMemberLog(pankey_Log_StartMethod, "operator==", "println", "");
 					DuoMemberLog(pankey_Log_EndMethod, "operator==", "println", "");
-                    return this->getHolder() != a_duo_member.getHolder() && this->getDuoHolder() != a_duo_member.getDuoHolder();
+                    return this->getHolder() != a_duo_member.getHolder() || this->getDuoHolder() != a_duo_member.getDuoHolder();
 				}
 				
 				virtual bool isNull()const{

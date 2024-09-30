@@ -4,9 +4,28 @@
 	
 	#include "pankey_Logger_position.hpp"
 
-	#ifndef pankey_Log_Module
+	#if !defined(pankey_Log_Module) || !defined(pankey_Log_Split_Module) || !defined(pankey_Log_Start_Module) || !defined(pankey_Log_Stop_Module)
 		#include "pankey_Simple_Logger.hpp"
 		#define pankey_Log_Module(pointer,location,name,method,type,mns) Simple_LogPrint_(pointer,location,name,method,type,mns)
+		#define pankey_Log_Split_Modulo(tittle) Simple_LogSplitPrint_(tittle)
+		#define pankey_Log_Start_Module(tittle) Simple_LogStartPrint_(tittle)
+		#define pankey_Log_Stop_Module(tittle) Simple_LogStopPrint_(tittle)
+	#endif
+
+	#ifndef pankey_Log_Module
+		#define pankey_Log_Module(pointer,location,name,method,type,mns) 
+	#endif
+
+	#ifndef pankey_Log_Split_Module
+		#define pankey_Log_Split_Module(tittle) 
+	#endif
+
+	#ifndef pankey_Log_Start_Module
+		#define pankey_Log_Start_Module(tittle) 
+	#endif
+
+	#ifndef pankey_Log_Stop_Module
+		#define pankey_Log_Stop_Module(tittle) 
 	#endif
 
 	#ifndef pankey_LogDebug
@@ -24,7 +43,6 @@
 	#ifdef pankey_LogApp
 		#ifdef pankey_LogPrint
 			#include "pankey_String.hpp"
-			#include "System.hpp"
 
 			namespace pankey{
 			
@@ -39,10 +57,46 @@
 					#define pankey_Log(pointer,location,name,method,type,mns) LogPrint_(pointer,location,name,method,type,mns)
 				#endif
 			
+				template<class T>
+				void LogSplitPrint_(T a_tittle){
+					pankey_Log_Split_Module(a_tittle);
+				}
+
+				#ifndef pankey_Log_Split
+					#define pankey_Log_Split(tittle) LogSplitPrint_(tittle)
+				#endif
+			
+				template<class T>
+				void LogStartPrint_(T a_tittle){
+					pankey_Log_Start_Module(a_tittle);
+				}
+
+				#ifndef pankey_Log_Start
+					#define pankey_Log_Start(tittle) LogStartPrint_(tittle)
+				#endif
+			
+				template<class T>
+				void LogStopPrint_(T a_tittle){
+					pankey_Log_Stop_Module(a_tittle);
+				}
+
+				#ifndef pankey_Log_Stop
+					#define pankey_Log_Stop(tittle) LogStopPrint_(tittle)
+				#endif
+			
 			}
 		#else
 			#ifndef pankey_Log
 				#define pankey_Log(pointer,location,name,method,type,mns) 
+			#endif
+			#ifndef pankey_Log_Split
+				#define pankey_Log_Split(tittle) 
+			#endif
+			#ifndef pankey_Log_Start
+				#define pankey_Log_Start(tittle) 
+			#endif
+			#ifndef pankey_Log_Stop
+				#define pankey_Log_Stop(tittle) 
 			#endif
 		#endif
 		
@@ -50,6 +104,15 @@
 		
 		#ifndef pankey_Log
 			#define pankey_Log(pointer,location,name,method,type,mns) 
+		#endif
+		#ifndef pankey_Log_Split
+			#define pankey_Log_Split(tittle) 
+		#endif
+		#ifndef pankey_Log_Start
+			#define pankey_Log_Start(tittle) 
+		#endif
+		#ifndef pankey_Log_Stop
+			#define pankey_Log_Stop(tittle) 
 		#endif
 		
 	#endif

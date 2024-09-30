@@ -2,12 +2,13 @@
 #ifndef Application_hpp
 	#define Application_hpp
 
+	#include "pankey.hpp"
+
 	// #include "RenderManager.hpp"
 	#include "EventManager.hpp"
 	#include "LoopManager.hpp"
 	#include "DefaultAppSettings.hpp"
 	// #include "TimeControl.hpp"
-	#include "System.hpp"
 
 	#ifdef Application_LogApp
 		#include "pankey_Logger.hpp"
@@ -20,7 +21,9 @@
 		
 		class Application{
 			public:
-				Application(){}
+				Application(){
+  					createEngineManager();
+				}
 				virtual ~Application(){}
 
 				virtual EventManager<Application>& getEventManager(){
@@ -56,17 +59,14 @@
 				}
 
 				virtual void initialize(){
-					auto& i_manager = this->getStateManager();
-					i_manager.initialize(*this);
+					this->m_states.initialize(*this);
 				}
 
 				virtual float update(){
 					ApplicationLog(pankey_Log_StartMethod, "update", "println", "");
 					float i_tpc = this->generateTpc();
 
-					auto& i_manager = this->getStateManager();
-
-					i_manager.update(*this, i_tpc);
+					this->m_states.update(*this, i_tpc);
 
 					ApplicationLog(pankey_Log_EndMethod, "update", "println", "");
 					return i_tpc;
@@ -97,6 +97,7 @@
 		};
 		
 		using AppManager = LoopManager<Application>;
+		using appstate = app_state<Application,float>;
 
 	}
 

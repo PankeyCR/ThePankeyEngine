@@ -554,19 +554,49 @@ class PrimitiveRawPointerMap : virtual public RawPointerMap<K,V>{
 		}
 
 		virtual PrimitiveRawPointerMap<K,V>& operator=(const PrimitiveRawPointerMap<K,V>& a_map){
-			PrimitiveRawPointerMapLog(pankey_Log_StartMethod, "operator=", "println", "");
+			PrimitiveRawPointerMapLog(pankey_Log_StartMethod, "operator=", "println", "const PrimitiveRawPointerMap<K,V>&");
+			this->resetDelete();
+			for(int x = 0; x < a_map.getPosition(); x++){
+				K* f_key = a_map.getKeyByPosition(x);
+				V* f_value = a_map.getValueByPosition(x);
+				this->addPointers(f_key, f_value);
+			}
 			PrimitiveRawPointerMapLog(pankey_Log_EndMethod, "operator=", "println", "");
 			return *this;
 		}
 
 		virtual bool operator==(const PrimitiveRawPointerMap<K,V>& a_map){
-			PrimitiveRawPointerMapLog(pankey_Log_StartMethod, "operator==", "println", "");
+			PrimitiveRawPointerMapLog(pankey_Log_StartMethod, "operator==", "println", "const PrimitiveRawPointerMap<K,V>&");
+			if(a_map.getPosition() != this->getPosition()){
+				return false;
+			}
+			for(int x = 0; x < a_map.getPosition(); x++){
+				K* f_key_1 = a_map.getKeyByPosition(x);
+				V* f_value_1 = a_map.getValueByPosition(x);
+				K* f_key_2 = this->getKeyByPosition(x);
+				V* f_value_2 = this->getValueByPosition(x);
+				if(f_key_1 != f_key_2 || f_value_1 != f_value_2){
+					return false;
+				}
+			}
 			PrimitiveRawPointerMapLog(pankey_Log_EndMethod, "operator==", "println", "");
-			return false;
+			return true;
 		}
 
 		virtual bool operator!=(const PrimitiveRawPointerMap<K,V>& a_map){
-			PrimitiveRawPointerMapLog(pankey_Log_StartMethod, "operator!=", "println", "");
+			PrimitiveRawPointerMapLog(pankey_Log_StartMethod, "operator!=", "println", "const PrimitiveRawPointerMap<K,V>&");
+			if(a_map.getPosition() != this->getPosition()){
+				return true;
+			}
+			for(int x = 0; x < a_map.getPosition(); x++){
+				K* f_key_1 = a_map.getKeyByPosition(x);
+				V* f_value_1 = a_map.getValueByPosition(x);
+				K* f_key_2 = this->getKeyByPosition(x);
+				V* f_value_2 = this->getValueByPosition(x);
+				if(f_key_1 != f_key_2 || f_value_1 != f_value_2){
+					return true;
+				}
+			}
 			PrimitiveRawPointerMapLog(pankey_Log_StartMethod, "operator!=", "println", "");
 			return false;
 		}

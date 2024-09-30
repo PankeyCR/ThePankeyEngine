@@ -298,6 +298,72 @@ class PrimitiveRawMap : public PrimitiveRawPointerMap<K,V>, virtual public RawMa
 			PrimitiveRawMapLog(pankey_Log_EndMethod, "getValueIndexByLValue", "println", "");
 			return -1;
 		}
+	
+		////////////////////////////////////////////operator part///////////////////////////////////////////////
+		
+		
+		virtual PrimitiveRawMap<K,V>& operator=(const PrimitiveRawMap<K,V>& a_map){
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "operator=", "println", "");
+			this->resetDelete();
+			for(int x = 0; x < a_map.getPosition(); x++){
+				K* f_key = this->getKeyByPosition(x);
+				V* f_value = this->getValueByPosition(x);
+				if(f_key == nullptr || f_value == nullptr){
+					continue;
+				}
+				this->addLValues(*f_key, *f_value);
+			}
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "operator=", "println", "");
+			return *this;
+		}
+		
+		virtual bool operator==(const PrimitiveRawMap<K,V>& a_map){
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "operator==", "println", "");
+			if(this->getPosition() != a_map.getPosition()){
+				return false;
+			}
+			for(int x = 0; x < a_map.getPosition(); x++){
+				K* f_key_1 = a_map.getKeyByPosition(x);
+				V* f_value_1 = a_map.getValueByPosition(x);
+				K* f_key_2 = this->getKeyByPosition(x);
+				V* f_value_2 = this->getValueByPosition(x);
+				if(f_key_1 == f_key_2 && f_value_1 == f_value_2){
+					continue;
+				}
+				if(f_key_1 != nullptr && f_key_2 != nullptr && f_value_1 != nullptr && f_value_2 != nullptr){
+					if(*f_key_1 != *f_key_2 || *f_value_1 != *f_value_2){
+						return false;
+					}
+				}
+			}
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "operator==", "println", "");
+			return true;
+		}
+		
+		virtual bool operator!=(const PrimitiveRawMap<K,V>& a_map){
+			PrimitiveRawMapLog(pankey_Log_StartMethod, "operator!=", "println", "");
+			if(this->getPosition() != a_map.getPosition()){
+				return true;
+			}
+			for(int x = 0; x < a_map.getPosition(); x++){
+				K* f_key_1 = a_map.getKeyByPosition(x);
+				V* f_value_1 = a_map.getValueByPosition(x);
+				K* f_key_2 = this->getKeyByPosition(x);
+				V* f_value_2 = this->getValueByPosition(x);
+				if(f_key_1 == f_key_2 && f_value_1 == f_value_2){
+					continue;
+				}
+				if(f_key_1 != nullptr && f_key_2 != nullptr && f_value_1 != nullptr && f_value_2 != nullptr){
+					if(*f_key_1 != *f_key_2 || *f_value_1 != *f_value_2){
+						return true;
+					}
+				}
+			}
+			PrimitiveRawMapLog(pankey_Log_EndMethod, "operator!=", "println", "");
+			return false;
+		}
+	
+		////////////////////////////////////////////Iterator part///////////////////////////////////////////////
 		
 		virtual RawMapIterator<K,V> begin(){
 			PrimitiveRawMapLog(pankey_Log_StartMethod, "begin", "println", this->getPosition());

@@ -140,6 +140,198 @@
 
 			return result;
 		}
+		
+		TestResult TR_Pointer_Testing_5(){
+			TestResult i_result;
+			
+			pointer<int> i_pointer;
+
+			i_pointer.create();
+
+			int* i_value = i_pointer.get();
+
+			if(i_value == nullptr){i_result.catchError(101, "Fail test");return i_result;}
+
+			*i_value = 15;
+			
+			member i_member = i_pointer;
+
+			pointer<int> i_pointer_2 = i_member;
+
+			int* i_value_2 = i_pointer_2.get();
+
+			if(i_value_2 == nullptr){i_result.catchError(101, "Fail test");return i_result;}
+
+			i_result.assertEqual("pointer 2 value should be 15", *i_value_2, 15);
+
+			return i_result;
+		}
+		
+		TestResult TR_Pointer_Testing_6(){
+			TestResult i_result;
+			
+			pointer<int> i_pointer;
+
+			i_pointer.create();
+
+			int* i_value = i_pointer.get();
+
+			if(i_value == nullptr){i_result.catchError(101, "Fail test");return i_result;}
+
+			*i_value = 15;
+			
+			member i_member = i_pointer;
+
+			pointer<int> i_pointer_2;
+
+			i_pointer_2 = i_member;
+
+			int* i_value_2 = i_pointer_2.get();
+
+			if(i_value_2 == nullptr){i_result.catchError(101, "Fail test");return i_result;}
+
+			i_result.assertEqual("pointer 2 value should be 15", *i_value_2, 15);
+
+			return i_result;
+		}
+		
+		TestResult TR_Pointer_Testing_7(){
+			TestResult i_result;
+			
+			pointer<int> i_pointer;
+
+			i_pointer.create();
+
+			int* i_value = i_pointer.get();
+
+			if(i_value == nullptr){i_result.catchError(101, "Fail test");return i_result;}
+
+			*i_value = 15;
+			
+			var i_var = i_pointer;
+
+			pointer<int> i_pointer_2 = i_var;
+
+			int* i_value_2 = i_pointer_2.get();
+
+			if(i_value_2 == nullptr){i_result.catchError(101, "Fail test");return i_result;}
+
+			i_result.assertEqual("pointer 2 value should be 15", *i_value_2, 15);
+
+			return i_result;
+		}
+		
+		TestResult TR_Pointer_Testing_8(){
+			TestResult i_result;
+			
+			pointer<int> i_pointer;
+
+			i_pointer.create();
+
+			int* i_value = i_pointer.get();
+
+			if(i_value == nullptr){i_result.catchError(101, "Fail test");return i_result;}
+
+			*i_value = 15;
+			
+			var i_var = i_pointer;
+
+			pointer<int> i_pointer_2;
+
+			i_pointer_2 = i_var;
+
+			int* i_value_2 = i_pointer_2.get();
+
+			if(i_value_2 == nullptr){i_result.catchError(101, "Fail test");return i_result;}
+
+			i_result.assertEqual("pointer 2 value should be 15", *i_value_2, 15);
+
+			return i_result;
+		}
+		
+		TestResult TR_Pointer_Testing_9(){
+			TestResult i_result;
+			
+			pointer<int> i_pointer;
+
+			i_pointer.create();
+
+			int* i_value = i_pointer.get();
+
+			if(i_value == nullptr){i_result.catchError(101, "Fail test");return i_result;}
+
+			*i_value = 15;
+			
+			data i_var = i_pointer;
+
+			pointer<int> i_pointer_2 = i_var;
+
+			int* i_value_2 = i_pointer_2.get();
+
+			if(i_value_2 == nullptr){i_result.catchError(101, "Fail test, i_value_2 == nullptr");return i_result;}
+
+			i_result.assertEqual("pointer 2 value should be 15", *i_value_2, 15);
+
+			return i_result;
+		}
+		
+		TestResult TR_Pointer_Testing_10(){
+			TestResult i_result;
+			
+			pointer<int> i_pointer;
+
+			i_pointer.create();
+
+			int* i_value = i_pointer.get();
+
+			if(i_value == nullptr){i_result.catchError(101, "Fail test");return i_result;}
+
+			*i_value = 15;
+			
+			data i_var = i_pointer;
+
+			pointer<int> i_pointer_2;
+
+			i_pointer_2 = i_var;
+
+			int* i_value_2 = i_pointer_2.get();
+
+			if(i_value_2 == nullptr){i_result.catchError(101, "Fail test, i_value_2 == nullptr");return i_result;}
+
+			i_result.assertEqual("pointer 2 value should be 15", *i_value_2, 15);
+
+			return i_result;
+		}
+		
+		TestResult TR_Pointer_Testing_11(){
+			TestResult i_result;
+			
+			pointer<int> i_pointer = new int(15);
+
+			int* i_value = i_pointer.get();
+
+			if(i_value == nullptr){i_result.catchError(101, "Fail test, i_value == nullptr");return i_result;}
+
+			i_result.assertEqual("pointer value should be 15", *i_value, 15);
+
+			return i_result;
+		}
+		
+		TestResult TR_Pointer_Testing_12(){
+			TestResult i_result;
+			
+			pointer<int> i_pointer = new int(15);
+
+			var i_var_1 = i_pointer;
+			var i_var_2 = i_var_1;
+			var i_var_3 = i_var_2;
+
+			int i_value = i_var_3.getValue<int>();
+
+			i_result.assertEqual("pointer value should be 15", i_value, 15);
+
+			return i_result;
+		}
 
 		void TR_Pointer_Testing(TestRunner& a_test_runner){
 			createEngineManager();
@@ -148,6 +340,14 @@
 			a_test_runner.map.add("Pointer create", TR_Pointer_Testing_2);
 			a_test_runner.map.add("Pointer copy Constructor", TR_Pointer_Testing_3);
 			a_test_runner.map.add("Pointer Memory Holder Constructor", TR_Pointer_Testing_4);
+			a_test_runner.map.add("Pointer to Member to Pointer Constructor", TR_Pointer_Testing_5);
+			a_test_runner.map.add("Pointer to Member to Pointer operator==", TR_Pointer_Testing_6);
+			a_test_runner.map.add("Pointer to Variable to Pointer Constructor", TR_Pointer_Testing_7);
+			a_test_runner.map.add("Pointer to Variable to Pointer operator==", TR_Pointer_Testing_8);
+			a_test_runner.map.add("Pointer to Data to Pointer Constructor", TR_Pointer_Testing_9);
+			a_test_runner.map.add("Pointer to Data to Pointer operator==", TR_Pointer_Testing_10);
+			a_test_runner.map.add("Pointer Contructor with new P()", TR_Pointer_Testing_11);
+			a_test_runner.map.add("Pointer Contructor with new P() and passing it to severals vars", TR_Pointer_Testing_12);
 		}		
 
 	}

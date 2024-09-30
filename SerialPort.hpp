@@ -1,73 +1,65 @@
 
 #ifndef SerialPort_hpp
-#define SerialPort_hpp
+	#define SerialPort_hpp
 
-#include "Note.hpp"
-#include "ByteArray.hpp"
-#include "higgs_Byte.hpp"
+	#include "pankey.hpp"
 
-#ifdef higgs_Windows
-	#include "higgs_Stream.hpp"
-#endif
+	#include "Note.hpp"
+	#include "PointerSize.hpp"
 
-#ifdef higgs_ArduinoIDE
-	#include "Arduino.h"
-	#include "Stream.h"
-	#include "IPAddress.h"
-#endif
+	#ifdef pankey_Windows
+		#include "pankey_Stream.hpp"
+	#endif
 
-namespace higgs{
+	#ifdef pankey_ArduinoIDE
+		#include "Arduino.h"
+		#include "Stream.h"
+		#include "IPAddress.h"
+	#endif
 
-class SerialPort : public Stream{
+	namespace pankey{
 
-    public:
-		SerialPort(){}
-		virtual ~SerialPort(){}
-		
-		virtual uint8_t status(){return 0;}
-		virtual int available(){return 0;}
+		class SerialPort : public Stream{
+			public:
+				virtual ~SerialPort(){}
+				
+				virtual void setName(Note name){m_name = name;}
+				virtual Note getName(){return m_name;}
 
-		virtual int read(){return -1;}
-		virtual higgs_Byte readByte(){return 255;}
-		virtual Note readNote(){return "";}
+				virtual void setIP(Note a_ip){m_ip = a_ip;}
+				virtual Note getIP(){return m_ip;}
+				
+				virtual int status(){return 0;}
+				virtual int available(){return 0;}
 
-		virtual int peek(){return -1;}
+				virtual int read(){return -1;}
+				virtual Note readln(float a_time){return "";}
 
-		virtual size_t write(uint8_t chr){return 0;}
+				virtual int peek(){return -1;}
 
-		virtual bool connected(){return false;}
-		virtual bool connect(const Note& a_address){return connect(a_address,-1);}
-		virtual bool connect(const Note& a_address, int port){return false;}
-		virtual bool connect(const char* a_address){return connect(a_address,-1);}
-		virtual bool connect(const char* a_address, int port){return false;}
+				virtual pointer_size write(int chr){return 0;}
 
-		#ifdef higgs_ArduinoIDE
-		virtual bool connect(IPAddress ip, int port){return false;}
-		#endif
+				virtual bool connected(){return false;}
+				virtual bool connect(const Note& a_address){return connect(a_address,-1);}
+				virtual bool connect(const Note& a_address, int port){return false;}
 
-		virtual void stop(){}
-		
-		virtual void send(Note s){}
-		virtual void send(ByteArray array){}
-		
-		virtual void setName(Note name){m_name = name;}
-		virtual Note getName(){return m_name;}
+				virtual void stop(){}
 
-		virtual void setIP(Note a_ip){m_ip = a_ip;}
-		virtual Note getIP(){return this->m_ip;}
+				virtual void flush(){}
+			
+				virtual pointer_size print(Note s){return 0;}
+				virtual pointer_size println(Note s){return 0;}
 
-		virtual void flush(){}
+				virtual operator bool(){return false;}
+				virtual void operator=(const SerialPort& a_serial){}
+				virtual bool operator==(const SerialPort& a_serial){return false;}
+				virtual bool operator!=(const SerialPort& a_serial){return true;}
+				
+			protected:
+				Note m_name = "Default";
+				Note m_ip = "150.1.0.0";
+		};
 
-		virtual operator bool(){return false;}
-		virtual void operator=(SerialPort b){}
-		virtual bool operator==(SerialPort b){return false;}
-		virtual bool operator!=(SerialPort b){return true;}
-		
-	protected:
-		Note m_name;
-		Note m_ip = "150.1.0.0";
-};
-
-}
+	}
 
 #endif

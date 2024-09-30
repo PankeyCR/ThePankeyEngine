@@ -2,23 +2,24 @@
 #ifndef SerialNetwork_hpp
 	#define SerialNetwork_hpp
 
-	#include "State.hpp"
+	#include "BaseState.hpp"
 	#include "Note.hpp"
 	
 	#include "InvokeCommandList.hpp"
 	#include "InvokeRawList.hpp"
 
 	#ifdef SerialNetwork_LogApp
-		#include "higgs_Logger.hpp"
-		#define SerialNetworkLog(location,method,type,mns) higgs_Log((void*)this,location,"SerialNetwork",method,type,mns)
+		#include "pankey_Logger.hpp"
+		#define SerialNetworkLog(location,method,type,mns) pankey_Log((void*)this,location,"SerialNetwork",method,type,mns)
 	#else
 		#define SerialNetworkLog(location,method,type,mns) 
 	#endif
 
-	namespace higgs{
+	namespace pankey{
 
-		class SerialNetwork : public State<>{	
+		class SerialNetwork : public BaseState<float>{	
 			public:	
+				SerialNetwork(){}
 				virtual ~SerialNetwork(){}
 				
 				virtual void setIP(Note a_ip){m_ip = a_ip;}
@@ -49,21 +50,32 @@
 					return false;
 				}
 				
-				virtual void addDelivery(command<const Note&>& a_command){
+				virtual void addDelivery(command<const Note&> a_command){
+					SerialNetworkLog(pankey_Log_StartMethod, "addDelivery",  "println", "command<const Note&>");
 					m_commands.add(a_command);
+					SerialNetworkLog(pankey_Log_EndMethod, "addDelivery",  "println", "");
 				}
 				
-				virtual void addDelivery(const InvokeMethod<const Note&>& a_command){
+				virtual void addDelivery(InvokeMethod<const Note&> a_command){
+					SerialNetworkLog(pankey_Log_StartMethod, "addDelivery",  "println", "InvokeMethod<const Note&>");
 					m_methods.add(a_command);
+					SerialNetworkLog(pankey_Log_EndMethod, "addDelivery",  "println", "");
 				}
 				
-				virtual void DeliverMessage(const Note& a_mns){
-					if(a_mns.isEmpty()){
+				virtual void DeliverMessage(const Note& a_message){
+					SerialNetworkLog(pankey_Log_StartMethod, "DeliverMessage",  "println", "");
+					SerialNetworkLog(pankey_Log_Statement, "DeliverMessage",  "println", "incoming message:");
+					SerialNetworkLog(pankey_Log_Statement, "DeliverMessage",  "println", a_message);
+					if(a_message.isEmpty()){
+						SerialNetworkLog(pankey_Log_Statement, "DeliverMessage",  "println", "a_message.isEmpty()");
 						return;
 					}
-					invokeAll<const Note&>(m_commands, a_mns);
-					invokeAll<const Note&>(m_methods, a_mns);
+					invokeAll<const Note&>(m_commands, a_message);
+					invokeAll<const Note&>(m_methods, a_message);
+					SerialNetworkLog(pankey_Log_EndMethod, "DeliverMessage",  "println", "");
 				}
+
+				virtual void updateState(float a_tpc){}
 				
 			protected:
 				Note m_ip = "150.1.0.0";

@@ -2,8 +2,7 @@
 #ifndef TestRunnerState_hpp
 	#define TestRunnerState_hpp
 
-	#include "pankey_Enviroment.hpp"
-	#include "pankey_Enviroment_config.hpp"
+	#include "pankey.hpp"
 
 	#include "PrimitiveRawMap.hpp"
 	#include "InvokeRawMap.hpp"
@@ -11,8 +10,6 @@
 	#include "TestResult.hpp"
 	
 	#include "Note.hpp"
-	
-	#include "MemoryRam.hpp"
 
 	namespace pankey{
 

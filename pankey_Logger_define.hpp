@@ -10,13 +10,24 @@
 #define pankey_SystemFullLog
 //#define pankey_Arduino_Log
 
-#define Average_LogApp
+// #define ValueArrayMapCollection_LogApp
+
+// #define ObjectArrayMap_LogApp
+// #define TypeArrayMap_LogApp
+
+// #define AnalogInput_LogApp
+
+// #define InvokeList_LogApp
+
+// #define InvokeMethod_LogApp
+
+// #define CharArray_LogApp
+
+// #define Average_LogApp
 
 // #define DebounceInput_LogApp
 
 // #define DigitalInput_LogApp
-
-// #define BaseState_LogApp
 
 // #define StateListManager_LogApp
 
@@ -45,6 +56,8 @@
 // #define ObjectList_LogApp
 // #define Object_LogApp
 // #define Value_LogApp
+// #define Member_LogApp
+// #define Data_LogApp
 // #define Pointer_LogApp
 // #define MemoryHolder_LogApp
 // #define MemoryHolderManager_LogApp
@@ -80,7 +93,7 @@
 // #define LoRaNetwork_LogApp
 // #define RadioNetwork_LogApp
 
-// #define pankey_WIFI_LogApp
+// #define WIFIConnection_LogApp
 // #define pankey_ETHERNET_LogApp
 // #define pankey_LoRa_LogApp
 
@@ -124,6 +137,9 @@
 
 // #define BaseAppState_LogApp
 
+// #define BaseState_LogApp
+// #define State_LogApp
+
 // #define SerialPost_LogApp
 // #define SerialNetwork_LogApp
 // #define SerialState_LogApp
@@ -146,7 +162,7 @@
 
 // #define CSMS_LogApp
 //#define Listener_LogApp
-//#define DefaultPortProtocol_LogApp
+// #define DefaultPortProtocol_LogApp
 //#define StartEndPortProtocol_LogApp
 // #define DefaultServerProtocol_LogApp
 //#define IOPortProtocol_LogApp

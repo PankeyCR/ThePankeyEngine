@@ -1,8 +1,6 @@
 
 #ifndef DebounceInput_hpp
 	#define DebounceInput_hpp
-	
-	#include "System.hpp"
 
 	#ifdef DebounceInput_LogApp
 		#include "pankey_Logger.hpp"

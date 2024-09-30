@@ -21,7 +21,6 @@
                 using HOLDER_TYPE = typename MemoryHolder<H>::HOLDER_TYPE;
                 
                 MANAGER_TYPE m_manager = nullptr;
-                long m_type = -1;
 
                 Data(){
                     DataLog(pankey_Log_StartMethod, "Constructor", "println","");
@@ -29,25 +28,35 @@
                 }
 
                 Data(const MemoryHolder<H>& a_holder){
-                    DataLog(pankey_Log_StartMethod, "Constructor", "println","");
-                    this->setManager(a_holder.getManager());
+                    DataLog(pankey_Log_StartMethod, "Constructor", "println","const MemoryHolder<H>& a_holder");
+                    auto i_manager = a_holder.getManager();
+                    if(i_manager == nullptr){
+                        DataLog(pankey_Log_Statement, "Constructor", "println","i_manager == nullptr");
+                        DataLog(pankey_Log_EndMethod, "Constructor", "println","");
+                        return;
+                    }
+                    this->setManager(i_manager);
                     this->setHolder(a_holder.getHolder());
-                    this->setType(a_holder.getType());
+                    DataLog(pankey_Log_EndMethod, "Constructor", "println","");
+                }
+
+                Data(const Data<H>& a_holder){
+                    DataLog(pankey_Log_StartMethod, "Constructor", "println","const Data<H>& a_holder");
+                    auto i_manager = a_holder.getManager();
+                    if(i_manager == nullptr){
+                        DataLog(pankey_Log_Statement, "Constructor", "println","i_manager == nullptr");
+                        DataLog(pankey_Log_EndMethod, "Constructor", "println","");
+                        return;
+                    }
+                    this->setManager(i_manager);
+                    this->setHolder(a_holder.getHolder());
                     DataLog(pankey_Log_EndMethod, "Constructor", "println","");
                 }
 
                 Data(HOLDER_TYPE a_holder, MANAGER_TYPE a_Manager){
-                    DataLog(pankey_Log_StartMethod, "Constructor", "println","");
+                    DataLog(pankey_Log_StartMethod, "Constructor", "println","HOLDER_TYPE a_holder, MANAGER_TYPE a_Manager");
                     this->setManager(a_Manager);
                     this->setHolder(a_holder);
-                    DataLog(pankey_Log_EndMethod, "Constructor", "println","");
-                }
-
-                Data(HOLDER_TYPE a_holder, MANAGER_TYPE a_Manager, long a_type){
-                    DataLog(pankey_Log_StartMethod, "Constructor", "println","");
-                    this->setManager(a_Manager);
-                    this->setHolder(a_holder);
-                    this->setType(a_type);
                     DataLog(pankey_Log_EndMethod, "Constructor", "println","");
                 }
                 
@@ -65,27 +74,21 @@
 
                 virtual MANAGER_TYPE getManager()const{
                     DataLog(pankey_Log_StartMethod, "getManager", "println","");
+                    DataLog(pankey_Log_Statement, "getManager", "println","Is Null?");
+                    DataLog(pankey_Log_Statement, "getManager", "println",m_manager == nullptr);
                     DataLog(pankey_Log_EndMethod, "getManager", "println","");
                     return m_manager;
                 }
 
-				virtual void setType(long a_type){
-                    DataLog(pankey_Log_StartMethod, "setType", "println","");
-                    this->m_type = a_type;
-                    DataLog(pankey_Log_EndMethod, "setType", "println","");
-				}
-
-				virtual long getType()const{
-                    DataLog(pankey_Log_StartMethod, "getType", "println","");
-                    DataLog(pankey_Log_EndMethod, "getType", "println","");
-					return this->m_type;
-				}
-
                 virtual void operator=(const MemoryHolder<H>& a_holder){
                     DataLog(pankey_Log_StartMethod, "operator=", "println","");
-                    this->setManager(a_holder.getManager());
+                    auto i_manager = a_holder.getManager();
+                    if(i_manager == nullptr){
+                        DataLog(pankey_Log_EndMethod, "operator=", "println","");
+                        return;
+                    }
+                    this->setManager(i_manager);
                     this->setHolder(a_holder.getHolder());
-                    this->setType(a_holder.getType());
                     DataLog(pankey_Log_EndMethod, "operator=", "println","");
                 }
             

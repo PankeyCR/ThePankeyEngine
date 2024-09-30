@@ -84,7 +84,7 @@
 			i_list.add(i_var_0);
 			i_list.add(i_var_1);
 
-			var i_var_11 = i_list.get(i_var_1);
+			var i_var_11 = i_list.getByPointer(i_var_1);
 			int i_val_1 = i_var_11.getValue<int>();
 
 			result.assertEqual("index should be the same", i_val_1, 1);
@@ -103,7 +103,7 @@
 			i_list.add(i_var_0);
 			i_list.add(i_var_1);
 
-			result.assertTrue("list contain var", i_list.contain(i_var_1));
+			result.assertTrue("list contain var", i_list.containByPointer(i_var_1));
 
 			return result;
 		}
@@ -119,7 +119,7 @@
 			i_list.add(i_var_0);
 			i_list.add(i_var_1);
 
-			result.assertEqual("var index should be 1", i_list.getIndex(i_var_1), 1);
+			result.assertEqual("var index should be 1", i_list.getIndexByPointer(i_var_1), 1);
 
 			return result;
 		}
@@ -135,9 +135,9 @@
 			i_list.add(i_var_0);
 			i_list.add(i_var_1);
 
-			i_list.remove(i_var_0);
+			i_list.removeByPointer(i_var_0);
 
-			result.assertEqual("var index should be 0", i_list.getIndex(i_var_1), 0);
+			result.assertEqual("var index should be 0", i_list.getIndexByPointer(i_var_1), 0);
 
 			return result;
 		}
@@ -155,7 +155,7 @@
 
 			i_list.remove(0);
 
-			result.assertEqual("var index should be 0", i_list.getIndex(i_var_1), 0);
+			result.assertEqual("var index should be 0", i_list.getIndexByPointer(i_var_1), 0);
 
 			return result;
 		}

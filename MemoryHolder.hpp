@@ -74,11 +74,6 @@
 
                 virtual void copyMemoryHolder(const MemoryHolder<H>& a_holder){
                     MemoryHolderLog(pankey_Log_StartMethod, "copyMemoryHolder", "println","");
-                    if(!this->isMember(a_holder)){
-                        MemoryHolderLog(pankey_Log_Error, "copyMemoryHolder", "println", "Variable is not Member of Variable");
-                        MemoryHolderLog(pankey_Log_EndMethod, "copyMemoryHolder", "println","");
-                        return;
-                    }
                     this->setHolder(a_holder.getHolder());
                     MemoryHolderLog(pankey_Log_EndMethod, "copyMemoryHolder", "println","");
                 }
@@ -91,70 +86,94 @@
                         return false;
                     }
                     auto i_manager = this->getManager();
-                    if(i_manager != a_manager && i_manager != nullptr){
-                        MemoryHolderLog(pankey_Log_Error, "shareManager", "println","Not a memeber because it has diferent Manager");
+                    if(i_manager == nullptr){
+                        MemoryHolderLog(pankey_Log_Error, "shareManager", "println","MemoryHolder doesnt have Manager");
                         MemoryHolderLog(pankey_Log_EndMethod, "shareManager", "println","");
                         return false;
                     }
-                    MemoryHolderLog(pankey_Log_EndMethod, "shareManager", "println","");
-                    return true;
+                    MemoryHolderLog(pankey_Log_EndMethod, "shareManager", "println",a_manager == i_manager);
+                    return a_manager == i_manager;
+				}
+
+				virtual bool shareManager(const MemoryHolder<H>& a_holder)const{
+                    MemoryHolderLog(pankey_Log_StartMethod, "shareManager", "println","");
+                    auto i_manager_in = a_holder.getManager();
+                    if(i_manager_in == nullptr){
+                        MemoryHolderLog(pankey_Log_Error, "shareManager", "println","The variable cheching has no Manager");
+                        MemoryHolderLog(pankey_Log_EndMethod, "shareManager", "println","");
+                        return false;
+                    }
+                    auto i_manager = this->getManager();
+                    if(i_manager == nullptr){
+                        MemoryHolderLog(pankey_Log_Error, "shareManager", "println","MemoryHolder doesnt have Manager");
+                        MemoryHolderLog(pankey_Log_EndMethod, "shareManager", "println","");
+                        return false;
+                    }
+                    MemoryHolderLog(pankey_Log_EndMethod, "shareManager", "println",i_manager_in == i_manager);
+                    return i_manager_in == i_manager;
 				}
 
 				virtual bool sameType(long a_type)const{
                     MemoryHolderLog(pankey_Log_StartMethod, "sameType", "println","");
+                    MemoryHolderLog(pankey_Log_Statement, "sameType", "println","a_type:");
+                    MemoryHolderLog(pankey_Log_Statement, "sameType", "println",a_type);
                     if(a_type == -1){
                         MemoryHolderLog(pankey_Log_Error, "sameType", "println","The variable cheching has no type");
                         MemoryHolderLog(pankey_Log_EndMethod, "sameType", "println","");
                         return false;
                     }
                     long i_type = this->getType();
-                    if(i_type != a_type && i_type != -1){
-                        MemoryHolderLog(pankey_Log_Error, "sameType", "println","Not a memeber because it has diferent types");
+                    MemoryHolderLog(pankey_Log_Statement, "sameType", "println","i_type:");
+                    MemoryHolderLog(pankey_Log_Statement, "sameType", "println",i_type);
+                    if(i_type == -1){
                         MemoryHolderLog(pankey_Log_EndMethod, "sameType", "println","");
                         return false;
                     }
-                    MemoryHolderLog(pankey_Log_EndMethod, "sameType", "println","");
-                    return true;
+                    MemoryHolderLog(pankey_Log_EndMethod, "sameType", "println",i_type == a_type);
+                    return i_type == a_type;
 				}
 
 				virtual bool sameBaseType(long a_type)const{
                     MemoryHolderLog(pankey_Log_StartMethod, "sameBaseType", "println","");
+                    MemoryHolderLog(pankey_Log_Statement, "sameBaseType", "println","a_type:");
+                    MemoryHolderLog(pankey_Log_Statement, "sameBaseType", "println",a_type);
                     if(a_type == -1){
                         MemoryHolderLog(pankey_Log_Error, "sameBaseType", "println","The variable cheching has no type");
                         MemoryHolderLog(pankey_Log_EndMethod, "sameBaseType", "println","");
                         return false;
                     }
                     long i_type = this->getBaseType();
-                    if(i_type != a_type && i_type != -1){
-                        MemoryHolderLog(pankey_Log_Error, "sameBaseType", "println","Not a memeber because it has diferent types");
+                    MemoryHolderLog(pankey_Log_Statement, "sameBaseType", "println","i_type:");
+                    MemoryHolderLog(pankey_Log_Statement, "sameBaseType", "println",i_type);
+                    if(i_type == -1){
                         MemoryHolderLog(pankey_Log_EndMethod, "sameBaseType", "println","");
                         return false;
                     }
-                    MemoryHolderLog(pankey_Log_EndMethod, "sameBaseType", "println","");
-                    return true;
+                    MemoryHolderLog(pankey_Log_EndMethod, "sameBaseType", "println",i_type == a_type);
+                    return i_type == a_type;
 				}
 
 				virtual bool isMember(MANAGER_TYPE a_manager, long a_type)const{
-                    MemoryHolderLog(pankey_Log_StartMethod, "isMember", "println","");
+                    MemoryHolderLog(pankey_Log_StartMethod, "isMember", "println","MANAGER_TYPE a_manager, long a_type");
                     MemoryHolderLog(pankey_Log_EndMethod, "isMember", "println","");
-                    return this->shareManager(a_manager) && this->sameType(a_type);
+                    return (this->sameType(a_type) || this->sameBaseType(a_type)) && this->shareManager(a_manager);
 				}
 
 				virtual bool isMember(HOLDER_TYPE a_holder, MANAGER_TYPE a_manager)const{
-                    MemoryHolderLog(pankey_Log_StartMethod, "isMember", "println","");
+                    MemoryHolderLog(pankey_Log_StartMethod, "isMember", "println","HOLDER_TYPE a_holder, MANAGER_TYPE a_manage");
                     auto i_type = MemoryHolderManager<H>::getType(a_manager, a_holder);
                     MemoryHolderLog(pankey_Log_EndMethod, "isMember", "println","");
                     return this->isMember(a_manager, i_type);
                 }
 
 				virtual bool isMember(HOLDER_TYPE a_holder)const{
-                    MemoryHolderLog(pankey_Log_StartMethod, "isMember", "println","");
+                    MemoryHolderLog(pankey_Log_StartMethod, "isMember", "println","HOLDER_TYPE a_holder");
                     MemoryHolderLog(pankey_Log_EndMethod, "isMember", "println","");
                     return this->isMember(a_holder, this->getManager());
                 }
 
 				virtual bool isMember(const MemoryHolder<H>& a_holder)const{
-                    MemoryHolderLog(pankey_Log_StartMethod, "isMember", "println","");
+                    MemoryHolderLog(pankey_Log_StartMethod, "isMember", "println","const MemoryHolder<H>& a_holder");
                     auto i_manager = a_holder.getManager();
                     auto i_type = a_holder.getType();
                     MemoryHolderLog(pankey_Log_EndMethod, "isMember", "println","");
@@ -223,7 +242,7 @@
 
                 virtual void operator=(const MemoryHolder<H>& a_holder){
                     MemoryHolderLog(pankey_Log_StartMethod, "operator=", "println","");
-                    if(!this->isMember(a_holder)){
+                    if(!this->shareManager(a_holder)){
                         MemoryHolderLog(pankey_Log_Error, "operator=", "println", "MemoryHolder is not Member of Variable");
                         MemoryHolderLog(pankey_Log_EndMethod, "operator=", "println","");
                         return;

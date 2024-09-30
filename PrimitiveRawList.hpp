@@ -239,14 +239,14 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 		}
 		
 		virtual T operator[](int x) const{
-			PrimitiveRawListLog(pankey_Log_StartMethod, "operator[]", "println", "");
+			// PrimitiveRawListLog(pankey_Log_StartMethod, "operator[]", "println", "");
 			if(x >= this->getPosition() && this->getPosition() != 0){
 				return *this->m_values[this->getPosition() - 1];
 			}
 			if(x < this->getPosition() && x >= 0){
 				return *this->m_values[x];
 			}
-			PrimitiveRawListLog(pankey_Log_EndMethod, "operator[]", "println", "");
+			// PrimitiveRawListLog(pankey_Log_EndMethod, "operator[]", "println", "");
 			return T();
 		}
 	
@@ -257,7 +257,12 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 			PrimitiveRawListLog(pankey_Log_StartMethod, "operator=", "println", "");
 			this->resetDelete();
 			for(int x = 0; x < a_list.getPosition(); x++){
-				this->addLValue(*a_list.getByPosition(x));
+				T* i_pointer = a_list.getByPosition(x);
+				if(i_pointer == nullptr){
+					this->addPointer(nullptr);
+					continue;
+				}
+				this->addLValue(*i_pointer);
 			}
 			PrimitiveRawListLog(pankey_Log_EndMethod, "operator=", "println", "");
 			return *this;
@@ -269,13 +274,13 @@ class PrimitiveRawList : public PrimitiveRawPointerList<T>, virtual public RawLi
 				return false;
 			}
 			for(int x = 0; x < a_list.getPosition(); x++){
-				T* t_value = this->getByPosition(x);
-				T* f_value = a_list.getByPosition(x);
-				if(t_value == f_value){
+				T* f_value_1 = this->getByPosition(x);
+				T* f_value_2 = a_list.getByPosition(x);
+				if(f_value_1 == f_value_2){
 					continue;
 				}
-				if(t_value != nullptr && t_value != nullptr){
-					if(*t_value != *f_value){
+				if(f_value_1 != nullptr && f_value_2 != nullptr){
+					if(*f_value_1 != *f_value_2){
 						return false;
 					}
 				}

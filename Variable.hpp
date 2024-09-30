@@ -49,7 +49,7 @@
 
                 Variable(const Data<H>& a_holder){
                     VariableLog(pankey_Log_StartMethod, "Constructor", "println","");
-                    if(!this->isMember(a_holder)){
+                    if(!a_holder.shareManager(this->getManager())){
                         VariableLog(pankey_Log_EndMethod, "Constructor", "println","");
                         return;
                     }
@@ -111,6 +111,10 @@
 					if(i_holder == nullptr){
 						return;
 					}
+					if(!i_holder->shareManager(this->getManager())){
+                    	VariableLog(pankey_Log_StartMethod, "copyType", "println","holder not a member");
+						return;
+					}
 					this->copyMemoryHolder(*i_holder);
                     VariableLog(pankey_Log_EndMethod, "copyType", "println","");
                 }
@@ -126,6 +130,7 @@
                     VariableLog(pankey_Log_Statement, "create", "println","creating new instance");
                     HOLDER_TYPE i_holder = MemoryHolderManager<H>::newInstance(this->getManager(), ClassCount<P>::get(), sizeOfPointer<P>(), StaticAllocatorInstance<P>::getAllocator());
                     this->setHolder(i_holder);
+					this->setBaseType(ClassCount<P>::get());
 					VariableLog(pankey_Log_EndMethod, "create", "println","");
 				}
 

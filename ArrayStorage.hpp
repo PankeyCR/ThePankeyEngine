@@ -125,7 +125,7 @@
 					return this->set(a_position, a_pointer);
 				}
 
-				virtual bool contain(const MemoryHolder<H>& a_value)const{
+				virtual bool contain(InvokeMethodReturn<bool,VOID_TYPE,VOID_TYPE> a_method, const MemoryHolder<H>& a_value)const{
 					ArrayStorageLog(pankey_Log_StartMethod, "contain", "println", "");
 					if(this->isNull()){
 						ArrayStorageLog(pankey_Log_Statement, "contain", "println", "this->isNull()");
@@ -135,9 +135,19 @@
 
 					VOID_TYPE i_pointer_1 = a_value.getRawPointer();
 
+					if(i_pointer_1 == nullptr){
+						ArrayStorageLog(pankey_Log_EndMethod, "contain", "println", "i_pointer_1 == nullptr");
+						return false;
+					}
+
 					for(int x = 0; x < this->getSize(); x++){
-						VOID_TYPE f_pointer_2 = MemoryHolderManager<H>::get(this->getManager(), this->m_values[x]);;
-						if(i_pointer_1 == f_pointer_2){
+						VOID_TYPE f_pointer_2 = MemoryHolderManager<H>::get(this->getManager(), this->m_values[x]);
+						if(f_pointer_2 == nullptr){
+							ArrayStorageLog(pankey_Log_EndMethod, "contain", "println", "f_pointer_2 == nullptr");
+							continue;
+						}
+						bool i_result = invoke<bool,VOID_TYPE,VOID_TYPE>(a_method, i_pointer_1, f_pointer_2);
+						if(i_result){
 							ArrayStorageLog(pankey_Log_Statement, "contain", "println", "a_value == this->m_values[x]");
 							ArrayStorageLog(pankey_Log_EndMethod, "contain", "println", "return true");
 							return true;
@@ -147,8 +157,31 @@
 					ArrayStorageLog(pankey_Log_EndMethod, "contain", "println", "");
 					return false;
 				}
+
+				virtual bool containByPointer(const MemoryHolder<H>& a_value)const{
+					ArrayStorageLog(pankey_Log_StartMethod, "containByPointer", "println", "");
+					if(this->isNull()){
+						ArrayStorageLog(pankey_Log_Statement, "containByPointer", "println", "this->isNull()");
+						ArrayStorageLog(pankey_Log_EndMethod, "containByPointer", "println", "return false");
+						return false;
+					}
+
+					VOID_TYPE i_pointer_1 = a_value.getRawPointer();
+
+					for(int x = 0; x < this->getSize(); x++){
+						VOID_TYPE f_pointer_2 = MemoryHolderManager<H>::get(this->getManager(), this->m_values[x]);;
+						if(i_pointer_1 == f_pointer_2){
+							ArrayStorageLog(pankey_Log_Statement, "containByPointer", "println", "a_value == this->m_values[x]");
+							ArrayStorageLog(pankey_Log_EndMethod, "containByPointer", "println", "return true");
+							return true;
+						}
+					}
+
+					ArrayStorageLog(pankey_Log_EndMethod, "containByPointer", "println", "");
+					return false;
+				}
 				
-				virtual int getIndex(const MemoryHolder<H>& a_value)const{
+				virtual int getIndex(InvokeMethodReturn<bool,VOID_TYPE,VOID_TYPE> a_method, const MemoryHolder<H>& a_value)const{
 					ArrayStorageLog(pankey_Log_StartMethod, "getIndex", "println", "");
 					if(this->isNull()){
 						ArrayStorageLog(pankey_Log_EndMethod, "getIndex", "println", "this->isNull()");
@@ -157,15 +190,46 @@
 
 					VOID_TYPE i_pointer_1 = a_value.getRawPointer();
 
+					if(i_pointer_1 == nullptr){
+						ArrayStorageLog(pankey_Log_EndMethod, "getIndex", "println", "i_pointer_1 == nullptr");
+						return -1;
+					}
+
 					for(int x = 0; x < this->getSize(); x++){
-						VOID_TYPE f_pointer_2 = MemoryHolderManager<H>::get(this->getManager(), this->m_values[x]);;
-						if(i_pointer_1 == f_pointer_2){
+						VOID_TYPE f_pointer_2 = MemoryHolderManager<H>::get(this->getManager(), this->m_values[x]);
+						if(f_pointer_2 == nullptr){
+							ArrayStorageLog(pankey_Log_EndMethod, "getIndex", "println", "f_pointer_2 == nullptr");
+							continue;
+						}
+						bool i_result = invoke<bool,VOID_TYPE,VOID_TYPE>(a_method, i_pointer_1, f_pointer_2);
+						if(i_result){
 							ArrayStorageLog(pankey_Log_EndMethod, "getIndex", "println", "a_value == this->m_values[x]");
 							return x;
 						}
 					}
 
 					ArrayStorageLog(pankey_Log_EndMethod, "getIndex", "println", "");
+					return -1;
+				}
+				
+				virtual int getIndexByPointer(const MemoryHolder<H>& a_value)const{
+					ArrayStorageLog(pankey_Log_StartMethod, "getIndexByPointer", "println", "");
+					if(this->isNull()){
+						ArrayStorageLog(pankey_Log_EndMethod, "getIndexByPointer", "println", "this->isNull()");
+						return -1;
+					}
+
+					VOID_TYPE i_pointer_1 = a_value.getRawPointer();
+
+					for(int x = 0; x < this->getSize(); x++){
+						VOID_TYPE f_pointer_2 = MemoryHolderManager<H>::get(this->getManager(), this->m_values[x]);;
+						if(i_pointer_1 == f_pointer_2){
+							ArrayStorageLog(pankey_Log_EndMethod, "getIndexByPointer", "println", "a_value == this->m_values[x]");
+							return x;
+						}
+					}
+
+					ArrayStorageLog(pankey_Log_EndMethod, "getIndexByPointer", "println", "");
 					return -1;
 				}
 				
@@ -193,10 +257,29 @@
 					return this->m_values[a_position];
 				}
 
+				virtual bool remove(InvokeMethodReturn<bool,VOID_TYPE,VOID_TYPE> a_method, const MemoryHolder<H>& a_value){
+					ArrayStorageLog(pankey_Log_StartMethod, "remove", "println", "");
+
+					int i_position = this->getIndex(a_method, a_value);
+
+					ArrayStorageLog(pankey_Log_Statement, "remove", "println", "removed position: ");
+					ArrayStorageLog(pankey_Log_Statement, "remove", "println", i_position);
+
+					if(this->isNull() || i_position >= this->getSize() || i_position < 0){
+						ArrayStorageLog(pankey_Log_EndMethod, "remove", "println", "");
+						return false;
+					}
+					
+					MemoryHolderManager<H>::remove(this->getManager(), this->m_values[i_position]);
+
+					ArrayStorageLog(pankey_Log_EndMethod, "remove", "println", "");
+					return true;
+				}
+
 				virtual bool removeByPointer(const MemoryHolder<H>& a_value){
 					ArrayStorageLog(pankey_Log_StartMethod, "removeByPointer", "println", "");
 
-					int i_position = this->getIndex(a_value);
+					int i_position = this->getIndexByPointer(a_value);
 
 					ArrayStorageLog(pankey_Log_Statement, "removeByPointer", "println", "removed position: ");
 					ArrayStorageLog(pankey_Log_Statement, "removeByPointer", "println", i_position);

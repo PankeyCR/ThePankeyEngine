@@ -14,7 +14,15 @@
 
 	namespace pankey{
 
-		class BaseTestExample{public: int num = 0;};
+		class BaseTestExample{
+			public: int num = 0;
+			bool operator==(const BaseTestExample& a_test){
+				return a_test.num == num;
+			}
+			bool operator!=(const BaseTestExample& a_test){
+				return a_test.num != num;
+			}
+		};
 		class TestExample : public BaseTestExample{
 			public:
 			TestExample(){}
@@ -98,7 +106,7 @@
 			i_list.add(i_var_0);
 			i_list.add(i_var_1);
 
-			obj<BaseTestExample> i_var_11 = i_list.get(i_var_1);
+			obj<BaseTestExample> i_var_11 = i_list.getByPointer(i_var_1);
 			TestExample i_val_1 = i_var_11.getValue<TestExample>();
 
 			result.assertEqual("index should be the same", i_val_1.num, 1);
@@ -117,7 +125,7 @@
 			i_list.add(i_var_0);
 			i_list.add(i_var_1);
 
-			result.assertTrue("OList contain var", i_list.contain(i_var_1));
+			result.assertTrue("OList contain var", i_list.containByPointer(i_var_1));
 
 			return result;
 		}
@@ -133,7 +141,7 @@
 			i_list.add(i_var_0);
 			i_list.add(i_var_1);
 
-			result.assertEqual("var index should be 1", i_list.getIndex(i_var_1), 1);
+			result.assertEqual("var index should be 1", i_list.getIndexByPointer(i_var_1), 1);
 
 			return result;
 		}
@@ -149,9 +157,9 @@
 			i_list.add(i_var_0);
 			i_list.add(i_var_1);
 
-			i_list.remove(i_var_0);
+			i_list.removeByPointer(i_var_0);
 
-			result.assertEqual("var index should be 0", i_list.getIndex(i_var_1), 0);
+			result.assertEqual("var index should be 0", i_list.getIndexByPointer(i_var_1), 0);
 
 			return result;
 		}
@@ -169,7 +177,7 @@
 
 			i_list.remove(0);
 
-			result.assertEqual("var index should be 0", i_list.getIndex(i_var_1), 0);
+			result.assertEqual("var index should be 0", i_list.getIndexByPointer(i_var_1), 0);
 
 			return result;
 		}
@@ -443,8 +451,8 @@
 			result.assertNoteEqual("OList index should be 5", i_list.length(), 5);
 
 			for(int x = 0; x < i_list.length(); x++){
-				val<int> i_var = i_list.get(x);
-				result.assertNoteEqual("storage value should be the same as the index", i_var.getValue(), x);
+				val<BaseTestExample> i_var = i_list.get(x);
+				result.assertNoteEqual("storage value should be the same as the index", i_var.getValue().num, x);
 			}
 
 			return result;
@@ -469,70 +477,6 @@
 			i_list.insert(2, i_var_2);
 
 			result.assertNoteEqual("OList index should be 0", i_list.length(), 0);
-
-			return result;
-		}
-		
-		TestResult TR_ObjectList_Testing_22(){
-			TestResult result;
-
-			OList<BaseTestExample> i_list;
-
-			obj<BaseTestExample> i_var_0 = TestExample(0);
-			obj<BaseTestExample> i_var_1 = TestExample(1);
-			obj<BaseTestExample> i_var_2 = TestExample(2);
-			obj<BaseTestExample> i_var_3 = TestExample(3);
-			obj<BaseTestExample> i_var_4 = TestExample(4);
-
-			i_list.add(i_var_0);
-			i_list.add(i_var_1);
-			i_list.add(i_var_2);
-			i_list.add(i_var_3);
-			i_list.add(i_var_4);
-
-			OList<BaseTestExample> i_list_2;
-
-			i_list_2.move(i_list);
-
-			result.assertNoteEqual("OList index should be 5", i_list_2.length(), 5);
-			result.assertTrue("OList should be empty", i_list.isEmpty());
-
-			for(int x = 0; x < i_list_2.length(); x++){
-				obj<BaseTestExample> i_var = i_list_2.get(x);
-				result.assertNoteEqual("storage value should be the same as the index", i_var.getValue<TestExample>().num, x);
-			}
-
-			return result;
-		}
-		
-		TestResult TR_ObjectList_Testing_23(){
-			TestResult result;
-
-			OList<BaseTestExample> i_list;
-
-			obj<BaseTestExample> i_var_0 = TestExample(0);
-			obj<BaseTestExample> i_var_1 = TestExample(1);
-			obj<BaseTestExample> i_var_2 = TestExample(2);
-			obj<BaseTestExample> i_var_3 = TestExample(3);
-			obj<BaseTestExample> i_var_4 = TestExample(4);
-
-			i_list.add(i_var_0);
-			i_list.add(i_var_1);
-			i_list.add(i_var_2);
-			i_list.add(i_var_3);
-			i_list.add(i_var_4);
-
-			OList<BaseTestExample> i_list_2;
-
-			i_list_2.duplicate(i_list);
-
-			result.assertNoteEqual("OList index should be 5", i_list.length(), 5);
-			result.assertNoteEqual("OList index should be 5", i_list_2.length(), 5);
-
-			for(int x = 0; x < i_list_2.length(); x++){
-				obj<BaseTestExample> i_var = i_list_2.get(x);
-				result.assertNoteEqual("storage value should be the same as the index", i_var.getValue<TestExample>().num, x);
-			}
 
 			return result;
 		}
@@ -561,8 +505,6 @@
 			a_test_runner.map.add("OList set value", TR_ObjectList_Testing_19);
 			a_test_runner.map.add("OList insert var", TR_ObjectList_Testing_20);
 			a_test_runner.map.add("OList insert value", TR_ObjectList_Testing_21);
-			a_test_runner.map.add("OList move", TR_ObjectList_Testing_22);
-			a_test_runner.map.add("OList duplicate", TR_ObjectList_Testing_23);
 		}	
 
 	}

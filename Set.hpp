@@ -2,8 +2,7 @@
 #ifndef Set_hpp
 	#define Set_hpp
 		
-	#include "pankey_Enviroment.hpp"
-	#include "pankey_Enviroment_config.hpp"
+	#include "pankey.hpp"
 
 	namespace pankey{
 
@@ -29,7 +28,7 @@
 				}
 				
 				virtual bool belongs(const set& a_set){
-					return this->m_members.contain(a_set);
+					return this->m_members.containByPointer(a_set);
 				}
 				/*
 				virtual bool equals(const Set& a_var){

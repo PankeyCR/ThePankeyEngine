@@ -15,8 +15,8 @@
 
 	namespace pankey{
 
-		template<class O, class H, class A>
-		class ObjectList : public MemberArrayCollection<H,A>{
+		template<class O, class H, class M>
+		class ObjectList : public MemberArrayCollection<H,M>{
 			public:
 				ObjectList(){
 					ObjectListLog(pankey_Log_StartMethod, "Constructor", "println", "");
@@ -51,8 +51,8 @@
                     return true;
 				}
 
-				virtual Member<H,A> add(Member<H,A>& a_pointer){
-					ObjectListLog(pankey_Log_StartMethod, "add", "println", "Member<H,A>");
+				virtual Member<H,M> add(Member<H,M>& a_pointer){
+					ObjectListLog(pankey_Log_StartMethod, "add", "println", "Member<H,M>");
                     if(!this->sameBaseType(a_pointer.getBaseType())){
                         ObjectListLog(pankey_Log_Error, "add", "println", "Variable is not Member of Variable");
                         ObjectListLog(pankey_Log_EndMethod, "add", "println","");
@@ -66,8 +66,10 @@
 					return a_pointer;
 				}
 
-				virtual Object<O,H,A> add(Object<O,H,A>& a_pointer){
-					ObjectListLog(pankey_Log_StartMethod, "add", "println", "Object<O,H,A>");
+				virtual Object<O,H,M> add(Object<O,H,M>& a_pointer){
+					ObjectListLog(pankey_Log_StartMethod, "add", "println", "Object<O,H,M>");
+					ObjectListLog(pankey_Log_Statement, "add", "println", "is the pointer null:");
+					ObjectListLog(pankey_Log_Statement, "add", "println", a_pointer.isNull());
 					if(this->m_storage.add(this->m_length, a_pointer)){
 						ObjectListLog(pankey_Log_Statement, "add", "println", "element added and know incrementing position");
 						this->incrementPosition();
@@ -76,31 +78,31 @@
 					return a_pointer;
 				}
 				
-				virtual Member<H,A> put(Member<H,A>& a_pointer){
-					ObjectListLog(pankey_Log_StartMethod, "put", "println", "Member<H,A>");
+				virtual Member<H,M> put(Member<H,M>& a_pointer){
+					ObjectListLog(pankey_Log_StartMethod, "put", "println", "Member<H,M>");
                     if(!this->sameBaseType(a_pointer.getBaseType())){
                         ObjectListLog(pankey_Log_Error, "put", "println", "Variable is not Member of Variable");
                         ObjectListLog(pankey_Log_EndMethod, "put", "println","");
                         return a_pointer;
                     }
-					if(this->m_storage.contain(a_pointer)){
+					if(this->m_storage.containByPointer(a_pointer)){
 						return a_pointer;
 					}
 					ObjectListLog(pankey_Log_EndMethod, "put", "println", "");
 					return this->add(a_pointer);
 				}
 				
-				virtual Object<O,H,A> put(Object<O,H,A>& a_pointer){
-					ObjectListLog(pankey_Log_StartMethod, "put", "println", "Object<O,H,A>");
-					if(this->m_storage.contain(a_pointer)){
+				virtual Object<O,H,M> put(Object<O,H,M>& a_pointer){
+					ObjectListLog(pankey_Log_StartMethod, "put", "println", "Object<O,H,M>");
+					if(this->m_storage.containByPointer(a_pointer)){
 						return a_pointer;
 					}
 					ObjectListLog(pankey_Log_EndMethod, "put", "println", "");
 					return this->add(a_pointer);
 				}
 
-				virtual Member<H,A> set(int a_position, Member<H,A>& a_pointer){
-					ObjectListLog(pankey_Log_StartMethod, "set", "println", "Member<H,A>");
+				virtual Member<H,M> set(int a_position, Member<H,M>& a_pointer){
+					ObjectListLog(pankey_Log_StartMethod, "set", "println", "Member<H,M>");
                     if(!this->sameBaseType(a_pointer.getBaseType())){
                         ObjectListLog(pankey_Log_Error, "set", "println", "Variable is not Member of Variable");
                         ObjectListLog(pankey_Log_EndMethod, "set", "println","");
@@ -114,8 +116,8 @@
 					return a_pointer;
 				}
 
-				virtual Object<O,H,A> set(int a_position, Object<O,H,A>& a_pointer){
-					ObjectListLog(pankey_Log_StartMethod, "set", "println", "Object<O,H,A>");
+				virtual Object<O,H,M> set(int a_position, Object<O,H,M>& a_pointer){
+					ObjectListLog(pankey_Log_StartMethod, "set", "println", "Object<O,H,M>");
 					if(a_position >= this->getSize()){
 						return a_pointer;
 					}
@@ -124,8 +126,8 @@
 					return a_pointer;
 				}
 
-				virtual Member<H,A> insert(int a_position, Member<H,A>& a_pointer){
-					ObjectListLog(pankey_Log_StartMethod, "insert", "println", "Member<H,A>");
+				virtual Member<H,M> insert(int a_position, Member<H,M>& a_pointer){
+					ObjectListLog(pankey_Log_StartMethod, "insert", "println", "Member<H,M>");
                     if(!this->sameBaseType(a_pointer.getBaseType())){
                         ObjectListLog(pankey_Log_Error, "insert", "println", "Variable is not Member of Variable");
                         ObjectListLog(pankey_Log_EndMethod, "insert", "println","");
@@ -138,32 +140,55 @@
 					return a_pointer;
 				}
 
-				virtual Object<O,H,A> insert(int a_position, Object<O,H,A>& a_pointer){
-					ObjectListLog(pankey_Log_StartMethod, "insert", "println", "Object<O,H,A>");
+				virtual Object<O,H,M> insert(int a_position, Object<O,H,M>& a_pointer){
+					ObjectListLog(pankey_Log_StartMethod, "insert", "println", "Object<O,H,M>");
 					this->m_storage.insert(a_position, this->length(), 1);
 					this->m_storage.set(a_position, a_pointer);
 					this->incrementPosition();
 					ObjectListLog(pankey_Log_EndMethod, "insert", "println", "");
 					return a_pointer;
 				}
-				
-				virtual void move(Collection<H,A>& a_collection){
-					ObjectListLog(pankey_Log_StartMethod, "move", "println", "");
-					for(int x = 0; x < a_collection.length(); x++){
-						Member<H,A> f_value = a_collection.get(x);
+		
+				virtual ObjectList<O,H,M>& operator=(const ObjectList<O,H,M>& a_list){
+					ObjectListLog(pankey_Log_StartMethod, "operator=", "println", "");
+					for(int x = 0; x < a_list.length(); x++){
+						auto f_value = a_list.get(x);
 						this->add(f_value);
 					}
-					a_collection.clear();
-					ObjectListLog(pankey_Log_EndMethod, "move", "println", "");
+					ObjectListLog(pankey_Log_EndMethod, "operator=", "println", "");
+					return *this;
 				}
-				
-				virtual void duplicate(const Collection<H,A>& a_collection){
-					ObjectListLog(pankey_Log_StartMethod, "duplicate", "println", "");
-					for(int x = 0; x < a_collection.length(); x++){
-						Member<H,A> f_value = a_collection.get(x);
-						this->add(f_value);
+		
+				virtual bool operator==(const ObjectList<O,H,M>& a_list){
+					ObjectListLog(pankey_Log_StartMethod, "operator=", "println", "");
+					if(this->length() != a_list.length()){
+						return false;
 					}
-					ObjectListLog(pankey_Log_EndMethod, "duplicate", "println", "");
+					for(int x = 0; x < a_list.length(); x++){
+						auto f_value_1 = a_list.get(x);
+						auto f_value_2 = this->get(x);
+						if(f_value_1 != f_value_2){
+							return false;
+						}
+					}
+					ObjectListLog(pankey_Log_EndMethod, "operator=", "println", "");
+					return true;
+				}
+		
+				virtual bool operator!=(const ObjectList<O,H,M>& a_list){
+					ObjectListLog(pankey_Log_StartMethod, "operator=", "println", "");
+					if(this->length() != a_list.length()){
+						return true;
+					}
+					for(int x = 0; x < a_list.length(); x++){
+						auto f_value_1 = a_list.get(x);
+						auto f_value_2 = this->get(x);
+						if(f_value_1 == f_value_2){
+							return false;
+						}
+					}
+					ObjectListLog(pankey_Log_EndMethod, "operator=", "println", "");
+					return true;
 				}
 		};
 

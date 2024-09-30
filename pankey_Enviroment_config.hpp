@@ -5,6 +5,8 @@
 */
 #ifndef pankey_Enviroment_config_hpp
 	#define pankey_Enviroment_config_hpp
+	
+	#include "pankey_System.hpp"
 
 	#include "pankey_Hardware_config.hpp"
 
@@ -18,7 +20,7 @@
 	#include "pankey_Memory_Manager_config.hpp"
 
 	#include "pankey_Context.hpp"
-	#include "System.hpp"
+	#include "pankey_Watchdog.hpp"
 	
 	namespace pankey{
 

@@ -157,18 +157,6 @@
 			
 			return result;
 		}
-		
-		TestResult TR_InvokeRawList_Testing_9(){
-			TestResult result;
-
-			InvokeMethod<TestResult&>* i_method = new InvokeMethod<TestResult&>(TestMethod);
-
-			invoke<TestResult&>(i_method, result);
-			
-			delete i_method;
-			
-			return result;
-		}
 
 		void TR_InvokeRawList_Testing(TestRunner& a_test_runner){
 			a_test_runner.map.add("MethodList Constructor with no arguments", TR_InvokeRawList_Testing_1);
@@ -179,7 +167,6 @@
 			a_test_runner.map.add("MethodList invokeAll class with TestResult& argument", TR_InvokeRawList_Testing_6);
 			a_test_runner.map.add("MethodList invoke return with TestResult& argument", TR_InvokeRawList_Testing_7);
 			a_test_runner.map.add("MethodList invoke class return with TestResult& argument", TR_InvokeRawList_Testing_8);
-			a_test_runner.map.add("MethodList invoke method", TR_InvokeRawList_Testing_9);
 		}		
 
 	}

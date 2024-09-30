@@ -2,8 +2,8 @@
 #ifndef ArrayHelper_hpp
 	#define ArrayHelper_hpp
 
+	#include "pankey.hpp"
 	#include "Array.hpp"
-	#include "System.hpp"
 
 	#ifdef pankey_Windows
 		#include "pankey_Printable.hpp"

@@ -5,9 +5,9 @@
 	//////////////////////////////////////////////////////////////
 
 	#include "pankey_Logger_config.hpp"
-	#include "MemoryRam.hpp"
+	#include "pankey_MemoryRam.hpp"
 	#include "pankey_String.hpp"
-	#include "System.hpp"
+	#include "pankey_System.hpp"
 
 	using namespace pankey;
 

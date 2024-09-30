@@ -9,7 +9,6 @@
 	#include "TestRunner.hpp"
 
 	#include "Note.hpp"
-	#include "MemoryRam.hpp"
 
 	namespace pankey{
 			

@@ -2,7 +2,7 @@
 #ifndef MemberArrayMapCollection_hpp
 	#define MemberArrayMapCollection_hpp
 
-	#include "Collection.hpp"
+	#include "MapCollection.hpp"
 	#include "MemberArrayStorage.hpp"
 	#include "DuoMember.hpp"
 	#include "Member.hpp"
@@ -17,7 +17,7 @@
 	namespace pankey{
 
 		template<class H, class M>
-		class MemberArrayMapCollection : public Collection<H,M>{
+		class MemberArrayMapCollection : virtual public MapCollection<H,M>{
 			public:
 				MemberArrayMapCollection(){
 					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "Constructor", "println", "");
@@ -32,13 +32,7 @@
 				virtual bool isEmpty()const{
 					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "isEmpty", "println", "");
 					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "isEmpty", "println", "");
-					return this->m_keys.isNull() || this->m_keys.getSize() <= 0 || this->m_length <= 0;
-				}
-
-				virtual int length()const{
-					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "length", "println", "");
-					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "length", "println", "");
-					return this->m_length;
+					return this->m_keys.isNull() || this->m_keys.getSize() <= 0 || this->m_values.getSize() <= 0 || this->m_length <= 0;
 				}
 				
 				virtual int getSize()const{
@@ -55,14 +49,36 @@
 					return i_key_r && i_value_r;
 				}
 
-				virtual Member<H,M> get(const Member<H,M>& a_value)const{
-					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "get", "println", "");
-					int i_index = this->m_keys.getIndex(a_value);
+				virtual Member<H,M> getByPointer(const Member<H,M>& a_value)const{
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "getByPointer", "println", "");
+					int i_index = this->m_keys.getIndexByPointer(a_value);
 					if(i_index == -1){
-						MemberArrayMapCollectionLog(pankey_Log_Statement, "get", "println", "i_index == -1");
+						MemberArrayMapCollectionLog(pankey_Log_Statement, "getByPointer", "println", "i_index == -1");
 						return Member<H,M>();
 					}
-					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "get", "println", "");
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "getByPointer", "println", "");
+					return this->m_values.get(i_index);
+				}
+
+				virtual Member<H,M> getKeyByPointer(const Member<H,M>& a_value)const{
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "getKeyByPointer", "println", "");
+					int i_index = this->m_values.getIndexByPointer(a_value);
+					if(i_index == -1){
+						MemberArrayMapCollectionLog(pankey_Log_Statement, "getKeyByPointer", "println", "i_index == -1");
+						return Member<H,M>();
+					}
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "getKeyByPointer", "println", "");
+					return this->m_keys.get(i_index);
+				}
+
+				virtual Member<H,M> getValueByPointer(const Member<H,M>& a_key)const{
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "getValueByPointer", "println", "");
+					int i_index = this->m_keys.getIndexByPointer(a_key);
+					if(i_index == -1){
+						MemberArrayMapCollectionLog(pankey_Log_Statement, "getValueByPointer", "println", "i_index == -1");
+						return Member<H,M>();
+					}
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "getValueByPointer", "println", "");
 					return this->m_values.get(i_index);
 				}
 
@@ -72,39 +88,117 @@
 					return this->m_values.get(x);
 				}
 
-				virtual bool contain(const Member<H,M>& a_value)const{
-					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "contain", "println", "");
-					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "contain", "println", "");
-					return this->m_keys.contain(a_value) || this->m_values.contain(a_value);
+				virtual Member<H,M> getKey(int x)const{
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "get", "println", "");
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "get", "println", "");
+					return this->m_keys.get(x);
+				}
+
+				virtual Member<H,M> getValue(int x)const{
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "get", "println", "");
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "get", "println", "");
+					return this->m_values.get(x);
+				}
+
+				virtual bool containByPointer(const Member<H,M>& a_value)const{
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "containByPointer", "println", "");
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "containByPointer", "println", "");
+					return this->m_keys.containByPointer(a_value) || this->m_values.containByPointer(a_value);
+				}
+
+				virtual bool containKeyByPointer(const Member<H,M>& a_key)const{
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "containKeyByPointer", "println", "");
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "containKeyByPointer", "println", "");
+					return this->m_keys.containByPointer(a_key);
+				}
+
+				virtual bool containValueByPointer(const Member<H,M>& a_value)const{
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "containValueByPointer", "println", "");
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "containValueByPointer", "println", "");
+					return this->m_values.containByPointer(a_value);
 				}
 				
-				virtual int getIndex(const Member<H,M>& a_value)const{
-					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "getIndex", "println", "");
-					int i_index = this->m_keys.getIndex(a_value);
+				virtual int getIndexByPointer(const Member<H,M>& a_value)const{
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "getIndexByPointer", "println", "");
+					int i_index = this->m_keys.getIndexByPointer(a_value);
 					if(i_index == -1){
-						MemberArrayMapCollectionLog(pankey_Log_Statement, "getIndex", "println", "i_index == -1");
-						return this->m_values.getIndex(a_value);
+						MemberArrayMapCollectionLog(pankey_Log_Statement, "getIndexByPointer", "println", "i_index == -1");
+						return this->m_values.getIndexByPointer(a_value);
 					}
-					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "getIndex", "println", "");
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "getIndexByPointer", "println", "");
 					return i_index;
 				}
 				
-				virtual bool remove(const Member<H,M>& a_value){
-					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "remove", "println", "");
-					int i_index = this->m_keys.getIndex(a_value);
-					if(i_index == -1){
-						MemberArrayMapCollectionLog(pankey_Log_EndMethod, "remove", "println", "");
-						return false;
+				virtual int getKeyIndexByPointer(const Member<H,M>& a_value)const{
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "getKeyIndexByPointer", "println", "");
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "getKeyIndexByPointer", "println", "");
+					return this->m_keys.getIndexByPointer(a_value);
+				}
+				
+				virtual int getValueIndexByPointer(const Member<H,M>& a_value)const{
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "getKeyIndexByPointer", "println", "");
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "getKeyIndexByPointer", "println", "");
+					return this->m_values.getIndexByPointer(a_value);
+				}
+				
+				virtual bool removeByPointer(const Member<H,M>& a_value){
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "removeByPointer", "println", "");
+					int i_key_index = this->m_keys.getIndexByPointer(a_value);
+					if(i_key_index >= 0){
+						MemberArrayMapCollectionLog(pankey_Log_Statement, "removeByPointer", "println", "i_key_index that is been removed:");
+						MemberArrayMapCollectionLog(pankey_Log_Statement, "removeByPointer", "println", i_key_index);
+						this->m_keys.removeByIndex(i_key_index);
+						this->m_values.removeByIndex(i_key_index);
+						this->m_keys.reorder(i_key_index, this->length());
+						this->m_values.reorder(i_key_index, this->length());
+						this->decrementPosition();
 					}
-					MemberArrayMapCollectionLog(pankey_Log_Statement, "remove", "println", "index that is been removed:");
-					MemberArrayMapCollectionLog(pankey_Log_Statement, "remove", "println", i_index);
-					this->m_keys.removeByIndex(i_index);
-					this->m_values.removeByIndex(i_index);
-					this->m_keys.reorder(i_index, this->length());
-					this->m_values.reorder(i_index, this->length());
-					this->decrementPosition();
-					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "remove", "println", "");
-					return true;
+					int i_value_index = this->m_values.getIndexByPointer(a_value);
+					if(i_value_index >= 0){
+						MemberArrayMapCollectionLog(pankey_Log_Statement, "removeByPointer", "println", "i_value_index that is been removed:");
+						MemberArrayMapCollectionLog(pankey_Log_Statement, "removeByPointer", "println", i_value_index);
+						this->m_keys.removeByIndex(i_value_index);
+						this->m_values.removeByIndex(i_value_index);
+						this->m_keys.reorder(i_value_index, this->length());
+						this->m_values.reorder(i_value_index, this->length());
+						this->decrementPosition();
+					}
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "removeByPointer", "println", "");
+					return i_key_index >= 0 || i_value_index >= 0;
+				}
+				
+				virtual bool removeKeyByPointer(const Member<H,M>& a_value){
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "removeKeyByPointer", "println", "");
+					int i_key_index = this->m_keys.getIndexByPointer(a_value);
+					if(i_key_index >= 0){
+						MemberArrayMapCollectionLog(pankey_Log_Statement, "removeKeyByPointer", "println", "i_key_index that is been removed:");
+						MemberArrayMapCollectionLog(pankey_Log_Statement, "removeKeyByPointer", "println", i_key_index);
+						this->m_keys.removeByIndex(i_key_index);
+						this->m_values.removeByIndex(i_key_index);
+						this->m_keys.reorder(i_key_index, this->length());
+						this->m_values.reorder(i_key_index, this->length());
+						this->decrementPosition();
+						return true;
+					}
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "removeKeyByPointer", "println", "");
+					return false;
+				}
+				
+				virtual bool removeValueByPointer(const Member<H,M>& a_value){
+					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "removeValueByPointer", "println", "");
+					int i_value_index = this->m_values.getIndexByPointer(a_value);
+					if(i_value_index >= 0){
+						MemberArrayMapCollectionLog(pankey_Log_Statement, "removeValueByPointer", "println", "i_value_index that is been removed:");
+						MemberArrayMapCollectionLog(pankey_Log_Statement, "removeValueByPointer", "println", i_value_index);
+						this->m_keys.removeByIndex(i_value_index);
+						this->m_values.removeByIndex(i_value_index);
+						this->m_keys.reorder(i_value_index, this->length());
+						this->m_values.reorder(i_value_index, this->length());
+						this->decrementPosition();
+						return true;
+					}
+					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "removeValueByPointer", "println", "");
+					return false;
 				}
 				
 				virtual Member<H,M> remove(int a_index){
@@ -120,7 +214,6 @@
 					this->decrementPosition();
 					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "remove", "println", "");
 					return i_value_pointer;
-					// return DuoMember<H,M>(i_key_pointer, i_value_pointer);
 				}
 				
 				virtual bool removeFirstIndex(int a_amount){
@@ -244,16 +337,6 @@
 					this->m_keys.reorder();
 					this->m_values.reorder();
 					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "reorder", "println", "");
-				}
-				
-				virtual void move(MemberArrayMapCollection<H,M>& a_MemberArrayMapCollection){
-					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "move", "println", "");
-					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "move", "println", "");
-				}
-				
-				virtual void duplicate(const MemberArrayMapCollection<H,M>& a_MemberArrayMapCollection){
-					MemberArrayMapCollectionLog(pankey_Log_StartMethod, "duplicate", "println", "");
-					MemberArrayMapCollectionLog(pankey_Log_EndMethod, "duplicate", "println", "");
 				}
 				
 			protected:

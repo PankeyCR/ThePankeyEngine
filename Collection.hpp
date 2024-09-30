@@ -2,7 +2,6 @@
 #ifndef Collection_hpp
 	#define Collection_hpp
 
-	#include "MemberArrayStorage.hpp"
 	#include "Member.hpp"
 
 	#ifdef Collection_LogApp
@@ -35,15 +34,15 @@
 
 				virtual bool replace(int a_index_1, int a_index_2)=0;
 
-				virtual Member<H,M> get(const Member<H,M>& a_value)const=0;
+				virtual Member<H,M> getByPointer(const Member<H,M>& a_value)const=0;
 
 				virtual Member<H,M> get(int x)const=0;
 
-				virtual bool contain(const Member<H,M>& a_value)const=0;
+				virtual bool containByPointer(const Member<H,M>& a_value)const=0;
 				
-				virtual int getIndex(const Member<H,M>& a_value)const=0;
+				virtual int getIndexByPointer(const Member<H,M>& a_value)const=0;
 				
-				virtual bool remove(const Member<H,M>& a_value)=0;
+				virtual bool removeByPointer(const Member<H,M>& a_value)=0;
 				
 				virtual Member<H,M> remove(int a_index)=0;
 				
@@ -64,10 +63,6 @@
 				virtual void setReorder(bool a_reorder)=0;
 				
 				virtual void reorder()=0;
-				
-				virtual void move(Collection<H,M>& a_collection)=0;
-				
-				virtual void duplicate(const Collection<H,M>& a_collection)=0;
 				
 			protected:
 				

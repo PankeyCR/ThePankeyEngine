@@ -36,7 +36,7 @@
 				
 				virtual Member<H,A> put(Member<H,A>& a_pointer){
 					MemberArrayListLog(pankey_Log_StartMethod, "put", "println", "");
-					if(this->m_storage.contain(a_pointer)){
+					if(this->m_storage.containByPointer(a_pointer)){
 						return Member<H,A>();
 					}
 					MemberArrayListLog(pankey_Log_EndMethod, "put", "println", "");

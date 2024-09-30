@@ -26,9 +26,9 @@
                 }
 
                 Member(const MemoryHolder<H>& a_holder){
-                    MemberLog(pankey_Log_StartMethod, "Constructor", "println","");
-                    if(!this->isMember(a_holder)){
-                        MemberLog(pankey_Log_EndMethod, "Constructor", "println","");
+                    MemberLog(pankey_Log_StartMethod, "Constructor", "println","const MemoryHolder<H>& a_holder");
+                    if(!a_holder.shareManager(this->getManager())){
+                        MemberLog(pankey_Log_EndMethod, "Constructor", "println","!a_holder.shareManager(this->getManager())");
                         return;
                     }
                     this->setHolder(a_holder.getHolder());
@@ -36,7 +36,7 @@
                 }
 
                 Member(const Member<H,M>& a_holder){
-                    MemberLog(pankey_Log_StartMethod, "Constructor", "println","");
+                    MemberLog(pankey_Log_StartMethod, "Constructor", "println","const Member<H,M>& a_holder");
                     this->setHolder(a_holder.getHolder());
                     MemberLog(pankey_Log_EndMethod, "Constructor", "println","");
                 }
@@ -49,8 +49,20 @@
 
                 virtual MANAGER_TYPE getManager()const{
                     MemberLog(pankey_Log_StartMethod, "getManager", "println","");
+                    MemberLog(pankey_Log_Statement, "getManager", "println","Is Null?");
+                    MemberLog(pankey_Log_Statement, "getManager", "println",(StaticManagerInstance<H,M>::getManager() == nullptr));
                     MemberLog(pankey_Log_EndMethod, "getManager", "println","");
                     return StaticManagerInstance<H,M>::getManager();
+                }
+
+                virtual void copyMemoryHolder(const MemoryHolder<H>& a_holder){
+                    MemoryHolderLog(pankey_Log_StartMethod, "copyMemoryHolder", "println","");
+                    if(!this->shareManager(a_holder)){
+                        MemberLog(pankey_Log_EndMethod, "copyMemoryHolder", "println","");
+                        return;
+                    }
+                    this->setHolder(a_holder.getHolder());
+                    MemoryHolderLog(pankey_Log_EndMethod, "copyMemoryHolder", "println","");
                 }
 
                 virtual void copyMember(const Member<H,M>& a_holder){

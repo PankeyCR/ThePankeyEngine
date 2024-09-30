@@ -28,6 +28,8 @@
 #include "MemberArrayTableStorage.hpp"
 #include "TR_TableStorage_Testing.hpp"
 #include "TR_MemberArrayMap_Testing.hpp"
+#include "TR_TypeArrayMap_Testing.hpp"
+#include "TR_ObjectArrayMap_Testing.hpp"
 
 #include "TR_Hash_Testing.hpp"
 
@@ -39,6 +41,7 @@
 #include "TR_Object_Testing.hpp"
 #include "TR_Self_Testing.hpp"
 #include "TR_DuoMember_Testing.hpp"
+#include "TR_DuoTypeMember_Testing.hpp"
 
 #include "TR_Set_Testing.hpp"
 
@@ -51,6 +54,8 @@ void setup() {
   Serial.println("Starting the test");
 
   delay(5000);
+
+  pankey_Log_Stop("Start of test");
 
   TR_Array_Testing(test);
   TR_CharArray_Testing(test);
@@ -72,6 +77,8 @@ void setup() {
   //TR_MemberList_Testing(test);
 
   TR_MemberArrayMap_Testing(test);
+  TR_TypeArrayMap_Testing(test);
+  TR_ObjectArrayMap_Testing(test);
 
   TR_Hash_Testing(test);
   
@@ -83,6 +90,7 @@ void setup() {
   TR_Object_Testing(test);
   TR_Self_Testing(test);
   TR_DuoMember_Testing(test);
+  TR_DuoTypeMember_Testing(test);
 
   TR_TableStorage_Testing<table,int,float>("MemberArrayTableStorage", test);
   

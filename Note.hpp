@@ -12,8 +12,7 @@
 #ifndef Note_hpp
 #define Note_hpp
 
-#include "pankey_Enviroment.hpp"
-#include "pankey_Enviroment_config.hpp"
+#include "pankey.hpp"
 
 #include "Array.hpp"
 #include "CharArray.hpp"

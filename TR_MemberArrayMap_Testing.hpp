@@ -2,8 +2,7 @@
 #ifndef TR_MemberArrayMap_Testing_hpp
 	#define TR_MemberArrayMap_Testing_hpp
 	
-	#include "pankey_Enviroment.hpp"
-	#include "pankey_Enviroment_config.hpp"
+	#include "pankey.hpp"
 
 	#include "TestResult.hpp"
 	#include "TestRunner.hpp"
@@ -33,7 +32,7 @@
 
 			i_map.add(i_key, i_value);
 
-			var i_v = i_map.get(i_key);
+			var i_v = i_map.getValueByPointer(i_key);
 			
 			result.assertNoteEqual("with a 15 key a 20 value should apear", i_v.getValue<int>(), 20);
 			return result;
@@ -73,8 +72,8 @@
 
 			i_map.replace(0, 1);
 
-			var i_value_11 = i_map.get(0);
-			var i_value_22 = i_map.get(1);
+			var i_value_11 = i_map.getValue(0);
+			var i_value_22 = i_map.getValue(1);
 			
 			result.assertNoteEqual("value should be 40", i_value_11.getValue<int>(), 40);
 			result.assertNoteEqual("value should be 20", i_value_22.getValue<int>(), 20);
@@ -91,7 +90,7 @@
 
 			i_map.add(i_key_1, i_value_1);
 			
-			result.assertTrue("map should contain var", i_map.contain(i_key_1));
+			result.assertTrue("map should contain var", i_map.containByPointer(i_key_1));
 			return result;
 		}
 		
@@ -113,7 +112,7 @@
 			i_map.add(i_key_2, i_value_2);
 			i_map.add(i_key_3, i_value_3);
 
-			int i_index = i_map.getIndex(i_key_2);
+			int i_index = i_map.getIndexByPointer(i_key_2);
 			
 			result.assertNoteEqual("map index should be 1", i_index, 1);
 			return result;
@@ -137,7 +136,7 @@
 			i_map.add(i_key_2, i_value_2);
 			i_map.add(i_key_3, i_value_3);
 
-			bool i_removed = i_map.remove(i_key_2);
+			bool i_removed = i_map.removeByPointer(i_key_2);
 			
 			result.assertNoteEqual("should be true", i_removed, true);
 			result.assertNoteEqual("map length should be 2", i_map.length(), 2);
@@ -189,7 +188,7 @@
 
 			bool i_removed = i_map.removeFirstIndex(2);
 
-			var i_value = i_map.get(0);
+			var i_value = i_map.getValue(0);
 			
 			result.assertNoteEqual("should be true", i_removed, true);
 			result.assertNoteEqual("var should be 70", i_value.getValue<int>(), 70);
@@ -217,7 +216,7 @@
 
 			bool i_removed = i_map.removeLastIndex(2);
 
-			var i_value = i_map.get(0);
+			var i_value = i_map.getValue(0);
 			
 			result.assertNoteEqual("should be true", i_removed, true);
 			result.assertNoteEqual("var should be 70", i_value.getValue<int>(), 20);
@@ -249,8 +248,8 @@
 
 			bool i_removed = i_map.removePart(1, 2);
 
-			var i_value_00 = i_map.get(0);
-			var i_value_11 = i_map.get(1);
+			var i_value_00 = i_map.getValue(0);
+			var i_value_11 = i_map.getValue(1);
 			
 			result.assertNoteEqual("should be true", i_removed, true);
 			result.assertNoteEqual("var should be 20", i_value_00.getValue<int>(), 20);
@@ -279,8 +278,8 @@
 
 			bool i_removed = i_map.removeFirst();
 
-			var i_value_00 = i_map.get(0);
-			var i_value_11 = i_map.get(1);
+			var i_value_00 = i_map.getValue(0);
+			var i_value_11 = i_map.getValue(1);
 			
 			result.assertNoteEqual("should be true", i_removed, true);
 			result.assertNoteEqual("var should be 20", i_value_00.getValue<int>(), 40);
@@ -309,8 +308,8 @@
 
 			bool i_removed = i_map.removeLast();
 
-			var i_value_00 = i_map.get(0);
-			var i_value_11 = i_map.get(1);
+			var i_value_00 = i_map.getValue(0);
+			var i_value_11 = i_map.getValue(1);
 			
 			result.assertNoteEqual("should be true", i_removed, true);
 			result.assertNoteEqual("var should be 20", i_value_00.getValue<int>(), 20);
@@ -374,7 +373,7 @@
 
 			i_map.put(i_duo);
 
-			var i_value = i_map.get(i_duo.getMember());
+			var i_value = i_map.getValueByPointer(i_duo.getMember());
 			
 			result.assertNoteEqual("lenght should be 1", i_map.length(), 1);
 			result.assertNoteEqual("var should be 20", i_value.getValue<int>(), 20);

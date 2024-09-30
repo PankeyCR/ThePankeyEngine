@@ -2,8 +2,7 @@
 #ifndef StateListManager_hpp
 	#define StateListManager_hpp
 
-	#include "pankey_Enviroment.hpp"
-	#include "pankey_Enviroment_config.hpp"
+	#include "pankey.hpp"
 
 	#include "State.hpp"
 	#include "UpdateManager.hpp"
@@ -31,9 +30,12 @@
 
 				virtual state<Args...> add(state<Args...> a_state){
 					StateListManagerLog(pankey_Log_StartMethod, "add",  "println", "");
+					StateListManagerLog(pankey_Log_Statement, "add", "println", "is the pointer null:");
+					StateListManagerLog(pankey_Log_Statement, "add", "println", a_state.isNull());
 					m_initialize.add(a_state);
 					StateListManagerLog(pankey_Log_EndMethod, "add", "println", "");
 					return a_state;
+					// return state<Args...>();
 				}
 				
 				virtual state<Args...> getInitializedStateList(int a_index){
@@ -112,15 +114,18 @@
 					StateListManagerLog(pankey_Log_StartMethod, "initialize",  "println", "");
 					if(!this->m_initialize.isEmpty()){
 						for(int x = 0; x < this->m_initialize.length();x++){
+							StateListManagerLog(pankey_Log_Statement, "initialize",  "println", "iteration: ");
+							StateListManagerLog(pankey_Log_Statement, "initialize",  "println", x);
 							state<Args...> f_state = this->m_initialize.get(x);
 							if(f_state.isNull()){
+								StateListManagerLog(pankey_Log_Statement, "initialize",  "println", "f_state.isNull()");
 								continue;
 							}
 							f_state->initialize();
 							f_state->onEnable();
 							this->m_states.add(f_state);
 						}
-						StateListManagerLog(pankey_Log_StartMethod, "initialize",  "println", "m_initialize");
+						StateListManagerLog(pankey_Log_Statement, "initialize",  "println", "m_initialize");
 						this->m_initialize.clear();
 					}
 					StateListManagerLog(pankey_Log_EndMethod, "initialize", "println", "");

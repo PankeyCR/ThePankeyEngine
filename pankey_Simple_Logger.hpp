@@ -4,16 +4,21 @@
 
 #include "pankey_Logger_position.hpp"
 #include "pankey_String.hpp"
-#include "System.hpp"
+#include "pankey_System.hpp"
 
 namespace pankey{
+
+bool g_simple_logger_enable = true;
 	
 template<class T>
 void Simple_LogPrint_(void* a_log_pointer, int location, const pankey_String& name, const pankey_String& method, const pankey_String& type, T mns){
 
+	if(!g_simple_logger_enable){
+		return;
+	}
 	// shrink expand
 
-	// if(	method != "setPointer" /*&& 
+	// if(	method != "contain" /*&& 
 	// 	method != "getIndex" && 
 	// 	method != "insertLocalArrayPointer"/* && 
 	// 	method != "getKeyIndexByLValue" /*&& method != "setMapEntry"*/){
@@ -38,6 +43,27 @@ void Simple_LogPrint_(void* a_log_pointer, int location, const pankey_String& na
 		Serial.print(" - Log: ");
 		Serial.println(mns);
 	#endif
+}
+
+template<class T>
+void Simple_LogSplitPrint_(T a_tittle){
+	System::console.print("Split Tittle: ");
+	System::console.println(a_tittle);
+	System::console.println("------------------------------------------------");
+}
+
+template<class T>
+void Simple_LogStartPrint_(T a_tittle){
+	System::console.print("Start Tittle: ");
+	System::console.println(a_tittle);
+	g_simple_logger_enable = true;
+}
+
+template<class T>
+void Simple_LogStopPrint_(T a_tittle){
+	System::console.print("Stop Tittle: ");
+	System::console.println(a_tittle);
+	g_simple_logger_enable = false;
 }
 
 }

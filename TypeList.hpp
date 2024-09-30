@@ -80,7 +80,7 @@
                         TypeListLog(pankey_Log_EndMethod, "put", "println","");
                         return a_pointer;
                     }
-					if(this->m_storage.contain(a_pointer)){
+					if(this->m_storage.containByPointer(a_pointer)){
 						return a_pointer;
 					}
 					TypeListLog(pankey_Log_EndMethod, "put", "println", "");
@@ -89,7 +89,7 @@
 				
 				virtual Pointer<P,H,A> put(Pointer<P,H,A>& a_pointer){
 					TypeListLog(pankey_Log_StartMethod, "put", "println", "");
-					if(this->m_storage.contain(a_pointer)){
+					if(this->m_storage.containByPointer(a_pointer)){
 						return a_pointer;
 					}
 					TypeListLog(pankey_Log_EndMethod, "put", "println", "");
