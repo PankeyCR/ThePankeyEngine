@@ -120,76 +120,26 @@ class Array{
 			ArrayLog(pankey_Log_EndMethod, "Destructor", "println", "");
 		}
 
-		virtual int getFreeSpace(int a_position)const{
-			ArrayLog(pankey_Log_StartMethod, "getFreeSpace", "println", "int a_position");
-			int i_addingEndValue = 0;
-			if(this->hasEndValue()){
-				ArrayLog(pankey_Log_Statement, "getFreeSpace", "println", "this->hasEndValue()");
-				i_addingEndValue = 1;
-			}
-			int i_availableSize = this->getSize() - a_position - i_addingEndValue;
-			ArrayLog(pankey_Log_EndMethod, "getFreeSpace", "println", i_availableSize);
-			return i_availableSize;
-		}
-
-		virtual int getFreeSpace()const{
-			ArrayLog(pankey_Log_StartMethod, "getFreeSpace", "println", "");
-			int i_addingEndValue = 0;
-			if(this->hasEndValue()){
-				ArrayLog(pankey_Log_Statement, "getFreeSpace", "println", "this->hasEndValue()");
-				i_addingEndValue = 1;
-			}
-			int i_availableSize = this->getSize() - this->getPosition() - i_addingEndValue;
-			ArrayLog(pankey_Log_EndMethod, "getFreeSpace", "println", i_availableSize);
-			return i_availableSize;
-		}
+	protected:
 
 		virtual void expandIfNeeded(int a_array_length){
 			ArrayLog(pankey_Log_StartMethod, "expandIfNeeded", "println", "");
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", "Array Position:");
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", this->getPosition());
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", "Array Size:");
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", this->getSize());
+			ArrayLog(pankey_Log_Statement, "expandIfNeeded", "println", "Array Position:");
+			ArrayLog(pankey_Log_Statement, "expandIfNeeded", "println", this->getPosition());
+			ArrayLog(pankey_Log_Statement, "expandIfNeeded", "println", "Array Size:");
+			ArrayLog(pankey_Log_Statement, "expandIfNeeded", "println", this->getSize());
+			if(this->hasReachedFixSize()){
+				return;
+			}
 			int i_availableSize = this->getFreeSpace();
 			if(i_availableSize < a_array_length){
 				this->expandLocal(a_array_length + m_expandSize);
 			}
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", "Array Position:");
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", this->getPosition());
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", "Array Size:");
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", this->getSize());
+			ArrayLog(pankey_Log_Statement, "expandIfNeeded", "println", "Array Position:");
+			ArrayLog(pankey_Log_Statement, "expandIfNeeded", "println", this->getPosition());
+			ArrayLog(pankey_Log_Statement, "expandIfNeeded", "println", "Array Size:");
+			ArrayLog(pankey_Log_Statement, "expandIfNeeded", "println", this->getSize());
 			ArrayLog(pankey_Log_EndMethod, "expandIfNeeded", "println", "");
-		}
-
-		virtual bool hasAvailableSize()const{
-			ArrayLog(pankey_Log_StartMethod, "hasAvailableSize", "println", "");
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", "Array Position:");
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", this->getPosition());
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", "Array Size:");
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", this->getSize());
-			return this->getFreeSpace() > 0;
-		}
-
-		virtual bool hasAvailableSize(int a_size)const{
-			ArrayLog(pankey_Log_StartMethod, "hasAvailableSize", "println", "int a_size");
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", "New Size:");
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", a_size);
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", "Array Size:");
-			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", this->getSize());
-			return this->getFreeSpace(a_size) > 0;
-		}
-
-		virtual bool set(int a_position, T a_value){
-			ArrayLog(pankey_Log_StartMethod, "set", "println", "");
-			if(this->isEmpty()){
-				return false;
-			}
-			if(!this->hasAvailableSize(a_position)){
-				return false;
-			}
-			this->m_t_value[a_position] = a_value;
-			ArrayLog(pankey_Log_EndMethod, "set", "println", "");
-			return true;
 		}
 
 		virtual bool hasEndValue()const{
@@ -242,41 +192,6 @@ class Array{
 			}
 			a_arrray[a_position] = this->endValue();
 			ArrayLog(pankey_Log_EndMethod, "copyExternEndValue", "println", "");
-		}
-
-		virtual void expandLocal(int a_size){
-			ArrayLog(pankey_Log_StartMethod, "expandLocal", "println", "");
-			int nsize = this->getSize() + a_size;
-			T *nT = new T[nsize];
-			for(int x = 0; x < this->m_pos; x++){
-				nT[x] = this->m_t_value[x];
-			}
-			if(this->m_t_value != nullptr){
-				delete[] this->m_t_value;
-			}
-			this->m_t_value = nT;
-			this->setSize(nsize);
-			ArrayLog(pankey_Log_EndMethod, "expandLocal", "println", "");
-		}
-
-		virtual void fix(){
-			ArrayLog(pankey_Log_StartMethod, "fix", "println", "");
-			ArrayLog(pankey_Log_EndMethod, "fix", "println", "");
-		}
-
-		virtual void erase(){
-			ArrayLog(pankey_Log_StartMethod, "erase", "println", "");
-			if(this->m_t_value == nullptr){
-				this->m_pos = 0;
-				this->m_size = 0;
-				ArrayLog(pankey_Log_EndMethod, "erase", "println", "this->m_t_value == nullptr");
-				return;
-			}
-			delete[] this->m_t_value;
-			this->m_t_value = nullptr;
-			this->m_pos = 0;
-			this->m_size = 0;
-			ArrayLog(pankey_Log_EndMethod, "erase", "println", "");
 		}
 
 		virtual void eraseExtern(T* a_t_value){
@@ -359,34 +274,8 @@ class Array{
 			return i_t_value;
 		}
 
-		virtual void fill(T a_fill){
-			ArrayLog(pankey_Log_StartMethod, "fill", "println", "");
-			if(this->isEmpty()){
-				return;
-			}
-			for(int x = 0; x < this->getPosition(); x++){
-				this->m_t_value[x] = a_fill;
-			}
-			ArrayLog(pankey_Log_EndMethod, "fill", "println", "");
-		}
-
-		//
-		virtual void clear(){
-			ArrayLog(pankey_Log_StartMethod, "clear", "println", "");
-			if(this->m_t_value == nullptr){
-				this->m_pos = 0;
-				this->m_size = 0;
-				return;
-			}
-			delete[] this->m_t_value;
-			this->m_t_value = nullptr;
-			this->m_pos = 0;
-			this->m_size = 0;
-			ArrayLog(pankey_Log_EndMethod, "clear", "println", "");
-		}
-
 		virtual void copyToExternPointer(T* a_array, T a_value, int a_size){
-			ArrayLog(pankey_Log_StartMethod, "copyPointer", "println", "");
+			ArrayLog(pankey_Log_StartMethod, "copyToExternPointer", "println", "");
 			if(a_array == nullptr || m_t_value == nullptr){
 				return;
 			}
@@ -406,42 +295,42 @@ class Array{
 			if(this->hasEndValue()){
 				a_array[i_full_size] = this->endValue();
 			}
-			ArrayLog(pankey_Log_EndMethod, "copyPointer", "println", "");
+			ArrayLog(pankey_Log_EndMethod, "copyToExternPointer", "println", "");
 		}
 
 		virtual void copyExternPointer(T* a_array, const T* a_copy, int a_size){
-			ArrayLog(pankey_Log_StartMethod, "copyPointer", "println", "");
+			ArrayLog(pankey_Log_StartMethod, "copyExternPointer", "println", "");
 			if(a_array == nullptr || a_copy == nullptr ){
 				return;
 			}
 			for(int x = 0; x < a_size; x++){
 				a_array[x] = a_copy[x];
 			}
-			ArrayLog(pankey_Log_EndMethod, "copyPointer", "println", "");
+			ArrayLog(pankey_Log_EndMethod, "copyExternPointer", "println", "");
 		}
 
 		//Method Functionality: utility - polimorfic - reductive - unit - contruct
 		virtual void copyExternPointer(T* a_array, const T* a_copy, int a_start, int a_size){
-			ArrayLog(pankey_Log_StartMethod, "copyPointer", "println", "");
+			ArrayLog(pankey_Log_StartMethod, "copyExternPointer", "println", "");
 			if(a_array == nullptr || a_copy == nullptr ){
 				return;
 			}
 			for(int x = 0; x < a_size; x++){
 				a_array[x] = a_copy[x + a_start];
 			}
-			ArrayLog(pankey_Log_EndMethod, "copyPointer", "println", "");
+			ArrayLog(pankey_Log_EndMethod, "copyExternPointer", "println", "");
 		}
 
 		//Method Functionality: utility - polimorfic - reductive - unit - contruct
 		virtual void copyExternPointer(T* a_array, const T* a_copy, int a_start_1, int a_start_2, int a_size){
-			ArrayLog(pankey_Log_StartMethod, "copyPointer", "println", "");
+			ArrayLog(pankey_Log_StartMethod, "copyExternPointer", "println", "");
 			if(a_array == nullptr || a_copy == nullptr ){
 				return;
 			}
 			for(int x = 0; x < a_size; x++){
 				a_array[x + a_start_1] = a_copy[x + a_start_2];
 			}
-			ArrayLog(pankey_Log_EndMethod, "copyPointer", "println", "");
+			ArrayLog(pankey_Log_EndMethod, "copyExternPointer", "println", "");
 		}
 
 		virtual void copyPointer(const T* a_copy, int a_size){
@@ -491,12 +380,12 @@ class Array{
 
 		//Method Functionality: utility - polimorfic - reductive - unit - contruct
 		virtual void copyExternValue(T* a_array, T a_copy, int a_position){
-			ArrayLog(pankey_Log_StartMethod, "copyValue", "println", "");
+			ArrayLog(pankey_Log_StartMethod, "copyExternValue", "println", "");
 			if(a_array == nullptr){
 				return;
 			}
 			a_array[a_position] = a_copy;
-			ArrayLog(pankey_Log_EndMethod, "copyValue", "println", "");
+			ArrayLog(pankey_Log_EndMethod, "copyExternValue", "println", "");
 		}
 
 		virtual void copyValue(T a_value){
@@ -525,6 +414,51 @@ class Array{
 			ArrayLog(pankey_Log_StartMethod, "getAvailableSize", "println", "");
 			ArrayLog(pankey_Log_EndMethod, "getAvailableSize", "println", "");
 			return a_pos;
+		}
+
+		virtual int arrayLength(const T* a_array) const{
+			return this->arrayLength(a_array, this->endValue());
+		}
+
+		virtual int arrayLength(const T* a_array, T a_end) const{
+			if(a_array == nullptr){
+				return -1;
+			}
+			for(int x = 0; x < 10000; x++){
+				if(a_array[x] == a_end){
+					return x;
+				}
+			}
+			return -2;
+		}
+
+		virtual void setPosition(int a_position){
+			ArrayLog(pankey_Log_StartMethod, "setPosition", "println", "");
+			this->m_pos = a_position;
+			ArrayLog(pankey_Log_EndMethod, "setPosition", "println", "");
+		}
+
+		virtual void setSize(int a_size){
+			ArrayLog(pankey_Log_StartMethod, "setSize", "println", "");
+			this->m_size = a_size;
+			ArrayLog(pankey_Log_EndMethod, "setSize", "println", "");
+		}
+
+	public:
+
+		virtual int getPosition() const{
+			return this->m_pos;
+		}
+
+		virtual int getSize() const{
+			return this->m_size;
+		}
+
+		virtual int length(void) const{
+			if(this->hasEndValue()){
+				return this->m_pos - 1;
+			}
+			return this->m_pos;
 		}
 
 		virtual T* pointer()const{
@@ -569,46 +503,6 @@ class Array{
 			return cloneArray;
 		}
 
-		virtual int length(void) const{
-			return this->m_pos;
-		}
-
-		virtual int arrayLength(const T* a_array) const{
-			return this->arrayLength(a_array, this->endValue());
-		}
-
-		virtual int arrayLength(const T* a_array, T a_end) const{
-			if(a_array == nullptr){
-				return -1;
-			}
-			for(int x = 0; x < 10000; x++){
-				if(a_array[x] == a_end){
-					return x;
-				}
-			}
-			return -2;
-		}
-
-		virtual void setPosition(int a_position){
-			ArrayLog(pankey_Log_StartMethod, "setPosition", "println", "");
-			this->m_pos = a_position;
-			ArrayLog(pankey_Log_EndMethod, "setPosition", "println", "");
-		}
-
-		virtual int getPosition() const{
-			return this->m_pos;
-		}
-
-		virtual void setSize(int a_size){
-			ArrayLog(pankey_Log_StartMethod, "setSize", "println", "");
-			this->m_size = a_size;
-			ArrayLog(pankey_Log_EndMethod, "setSize", "println", "");
-		}
-
-		virtual int getSize() const{
-			return this->m_size;
-		}
-
 		virtual bool isEmpty() const{
 			ArrayLog(pankey_Log_StartMethod, "isEmpty", "println", "");
 			ArrayLog(pankey_Log_Statement, "isEmpty", "println", "this->m_pos == 0");
@@ -617,6 +511,19 @@ class Array{
 			ArrayLog(pankey_Log_Statement, "isEmpty", "println", this->m_t_value == nullptr);
 			ArrayLog(pankey_Log_EndMethod, "isEmpty", "println", "");
 			return this->m_pos == 0 || this->m_t_value == nullptr;
+		}
+
+		virtual bool set(int a_position, T a_value){
+			ArrayLog(pankey_Log_StartMethod, "set", "println", "");
+			if(this->isEmpty()){
+				return false;
+			}
+			if(!this->hasAvailableSize(a_position)){
+				return false;
+			}
+			this->m_t_value[a_position] = a_value;
+			ArrayLog(pankey_Log_EndMethod, "set", "println", "");
+			return true;
 		}
 
 		virtual T get(int x) const{
@@ -731,52 +638,30 @@ class Array{
 			return i_array;
 		}
 
-		virtual T& operator[](int x){
-			ArrayLog(pankey_Log_StartMethod, "operator[]", "println", "");
-			if(x > this->m_pos && this->m_pos > 0){
-				return this->m_t_value[this->m_pos - 1];
-			}
-			if(x < this->m_pos && x >= 0){
-				return this->m_t_value[x];
-			}
-			if(x >= this->m_size){
-				expandLocal((x - this->m_size + 1) + this->m_expandSize);
-			}
-			if(this->m_pos == x){
-				this->m_pos++;
-			}
-			ArrayLog(pankey_Log_EndMethod, "operator[]", "println", "");
-			return this->m_t_value[x];
-		}
-
-		virtual T operator[](int x) const{
-			if(this->m_t_value == nullptr){
-				return T();
-			}
-			if(x >= this->m_pos && this->m_pos > 0){
-				return this->m_t_value[this->m_pos - 1];
-			}
-			if(x < this->m_pos && x >= 0){
-				return this->m_t_value[x];
-			}
-			return T();
-		}
-
 		virtual Array<T> addValue(T a_value)const{
 			ArrayLog(pankey_Log_StartMethod, "addValue", "println", "const T& a_value");
 			Array<T> i_array = *this;
+			if(this->hasReachedFixSize()){
+				return i_array;
+			}
 			ArrayLog(pankey_Log_EndMethod, "addValue", "println", "");
 			return i_array.addLocalValue(a_value);
 		}
 
 		virtual Array<T> addLocalValue(T a_value){
 			ArrayLog(pankey_Log_StartMethod, "addLocalValue", "println", "const T& a_value");
+			if(this->hasReachedFixSize()){
+				return *this;
+			}
 			ArrayLog(pankey_Log_EndMethod, "addLocalValue", "println", "");
 			return this->insertLocalValue(this->getPosition(), a_value);
 		}
 
 		virtual Array<T> insertLocalValue(int a_position, T a_value){
 			ArrayLog(pankey_Log_StartMethod, "insertLocalValue", "println", "const T& a_value");
+			if(this->hasReachedFixSize()){
+				return *this;
+			}
 			int i_array_length = 1;
 			ArrayLog(pankey_Log_Statement, "insertLocalValue", "println", "Array Length:");
 			ArrayLog(pankey_Log_Statement, "insertLocalValue", "println", i_array_length);
@@ -822,6 +707,9 @@ class Array{
 
 		virtual Array<T> addArray(const Array<T>& a_array){
 			ArrayLog(pankey_Log_StartMethod, "addArray", "println", "");
+			if(this->hasReachedFixSize()){
+				return *this;
+			}
 			Array<T> i_array = *this;
 			ArrayLog(pankey_Log_EndMethod, "addArray", "println", "");
 			return i_array.addLocalArray(a_array);
@@ -829,12 +717,18 @@ class Array{
 
 		virtual Array<T> addLocalArray(const Array<T>& a_array){
 			ArrayLog(pankey_Log_StartMethod, "addLocalArray", "println", "const Array<T>& a_array");
+			if(this->hasReachedFixSize()){
+				return *this;
+			}
 			ArrayLog(pankey_Log_EndMethod, "addLocalArray", "println", "");
 			return this->insertLocalArray(this->getPosition(), a_array);
 		}
 
 		virtual Array<T> insertLocalArray(int a_position, const Array<T>& a_array){
 			ArrayLog(pankey_Log_StartMethod, "insertLocalArray", "println", "const Array<T>& a_array");
+			if(this->hasReachedFixSize()){
+				return *this;
+			}
 			int i_array_length = a_array.getPosition();
 			ArrayLog(pankey_Log_Statement, "insertLocalArray", "println", "Array Length:");
 			ArrayLog(pankey_Log_Statement, "insertLocalArray", "println", i_array_length);
@@ -877,6 +771,9 @@ class Array{
 		
 		virtual Array<T> addArrayPointer(const T* a_pointer)const{
 			ArrayLog(pankey_Log_StartMethod, "addArrayPointer", "println", "const char* a_pointer");
+			if(this->hasReachedFixSize()){
+				return *this;
+			}
 			ArrayLog(pankey_Log_Statement, "addArrayPointer", "println", "Pointer Array:");
 			//ArrayLog(pankey_Log_Statement, "addArrayPointer", "println", a_pointer);
 			Array i_array = *this;
@@ -886,6 +783,9 @@ class Array{
 
 		virtual Array<T> addLocalArrayPointer(const T* a_pointer){
 			ArrayLog(pankey_Log_StartMethod, "addLocalArrayPointer", "println", "const char* a_pointer");
+			if(this->hasReachedFixSize()){
+				return *this;
+			}
 			ArrayLog(pankey_Log_Statement, "addLocalArrayPointer", "println", "Pointer Array:");
 			//ArrayLog(pankey_Log_Statement, "addLocalArrayPointer", "println", a_pointer);
 			ArrayLog(pankey_Log_EndMethod, "addLocalArrayPointer", "println", "");
@@ -894,6 +794,9 @@ class Array{
 
 		virtual Array<T> addLocalArrayPointer(const T* a_pointer, int a_size){
 			ArrayLog(pankey_Log_StartMethod, "addLocalArrayPointer", "println", "const char* a_pointer");
+			if(this->hasReachedFixSize()){
+				return *this;
+			}
 			ArrayLog(pankey_Log_Statement, "addLocalArrayPointer", "println", "Pointer Array:");
 			//ArrayLog(pankey_Log_Statement, "addLocalArrayPointer", "println", a_pointer);
 			ArrayLog(pankey_Log_EndMethod, "addLocalArrayPointer", "println", "");
@@ -902,12 +805,18 @@ class Array{
 
 		virtual Array<T> insertLocalArrayPointer(int a_position, const T* a_pointer){
 			ArrayLog(pankey_Log_StartMethod, "insertLocalArrayPointer", "println", "const char* a_pointer");
+			if(this->hasReachedFixSize()){
+				return *this;
+			}
 			ArrayLog(pankey_Log_EndMethod, "insertLocalArrayPointer", "println", "");
 			return this->insertLocalArrayPointer(a_position, a_pointer, this->arrayLength(a_pointer));
 		}
 
 		virtual Array<T> insertLocalArrayPointer(int a_position, const T* a_pointer, int a_size){
 			ArrayLog(pankey_Log_StartMethod, "insertLocalArrayPointer", "println", "const char* a_pointer");
+			if(this->hasReachedFixSize()){
+				return *this;
+			}
 			ArrayLog(pankey_Log_Statement, "insertLocalArrayPointer", "println", "Pointer Array:");
 			PointerArrayLog(pankey_Log_Statement, "insertLocalArrayPointer", "println", a_pointer);
 			if(a_pointer == nullptr){
@@ -976,6 +885,9 @@ class Array{
 
 		virtual Array<T> addLocal(){
 			ArrayLog(pankey_Log_StartMethod, "addLocal", "println", "");
+			if(this->hasReachedFixSize()){
+				return *this;
+			}
 			if(this->isEmpty()){
 				return *this;
 			}
@@ -999,7 +911,7 @@ class Array{
 
 		virtual bool contain(const T& a_value){
 			ArrayLog(pankey_Log_StartMethod, "contain", "println", "");
-			if(this->m_t_value == nullptr || this->m_pos == 0){
+			if(this->isEmpty()){
 				return false;
 			}
 
@@ -1118,6 +1030,105 @@ class Array{
 			ArrayLog(pankey_Log_EndMethod, "removeLast", "println", "");
 		}
 
+		virtual Array<T> removeAllInitialValues(const T& a_value) const{
+			ArrayLog(pankey_Log_StartMethod, "removeAllInitialValues", "println", "");
+
+			Array<T> i_array;
+			int i_start_cut = 0;
+
+			ArrayLog(pankey_Log_Statement, "removeAllInitialValues", "println", "this->length()");
+			ArrayLog(pankey_Log_Statement, "removeAllInitialValues", "println", this->length());
+
+			for(int x = 0; x < this->length(); x++){
+				const T f_val = this->m_t_value[x];
+				if(f_val == a_value){
+					i_start_cut++;
+				}else{
+					break;
+				}
+			}
+
+			ArrayLog(pankey_Log_Statement, "removeAllInitialValues", "println", "i_start_cut");
+			ArrayLog(pankey_Log_Statement, "removeAllInitialValues", "println", i_start_cut);
+
+			for(int x = i_start_cut; x < this->length(); x++){
+				const T f_val = this->m_t_value[x];
+				i_array.addLocalValue(f_val);
+				if(x == this->length() - 1 && this->hasEndValue()){
+					ArrayLog(pankey_Log_Statement, "removeAllInitialValues", "println", "adding end value");
+					i_array.addLocalValue(this->endValue());
+				}
+			}
+
+			ArrayLog(pankey_Log_EndMethod, "removeAllInitialValues", "println", "");
+			return i_array;
+		}
+
+		virtual Array<T> removeAllEndingValues(const T& a_value) const{
+			ArrayLog(pankey_Log_StartMethod, "removeAllEndingValues", "println", "");
+
+			Array<T> i_array;
+			int i_end_cut = 0;
+
+			for(int x = this->length() - 1; x >= 0; x--){
+				const T f_val = this->m_t_value[x];
+				if(f_val == a_value){
+					i_end_cut++;
+				}else{
+					break;
+				}
+			}
+
+			for(int x = 0; x < this->length() - i_end_cut; x++){
+				const T f_val = this->m_t_value[x];
+				i_array.addLocalValue(f_val);
+				if(x == this->length() - i_end_cut - 1 && this->hasEndValue()){
+					i_array.addLocalValue(this->endValue());
+				}
+			}
+
+			ArrayLog(pankey_Log_EndMethod, "removeAllEndingValues", "println", "");
+			return i_array;
+		}
+
+		virtual Array<T> removeAllInitialAndEndingValues(const T& a_value) const{
+			ArrayLog(pankey_Log_StartMethod, "removeAllInitialAndEndingValues", "println", "");
+
+			Array<T> i_array;
+			int i_start_cut = 0;
+
+			for(int x = 0; x < this->length(); x++){
+				const T f_val = this->m_t_value[x];
+				if(f_val == a_value){
+					i_start_cut++;
+				}else{
+					break;
+				}
+			}
+
+			int i_end_cut = 0;
+
+			for(int x = this->length() - 1; x >= 0; x--){
+				const T f_val = this->m_t_value[x];
+				if(f_val == a_value){
+					i_end_cut++;
+				}else{
+					break;
+				}
+			}
+
+			for(int x = i_start_cut; x < this->length() - i_end_cut; x++){
+				const T f_val = this->m_t_value[x];
+				i_array.addLocalValue(f_val);
+				if(x == this->length() - i_end_cut - 1 && this->hasEndValue()){
+					i_array.addLocalValue(this->endValue());
+				}
+			}
+
+			ArrayLog(pankey_Log_EndMethod, "removeAllInitialAndEndingValues", "println", "");
+			return i_array;
+		}
+
 		virtual void removeFirstIndex(){
 			ArrayLog(pankey_Log_StartMethod, "removeFirstIndex", "println", "");
 			if(this->isEmpty()){
@@ -1135,6 +1146,87 @@ class Array{
 			this->remove(this->getPosition() - 1);
 			ArrayLog(pankey_Log_EndMethod, "removeLastIndex", "println", "");
 		}
+
+		Array<T> split(int a_position, T a_split) const{
+			ArrayLog(pankey_Log_StartMethod, "split", "println", "");
+			Array<T> i_array_cut;
+			Array<T> i_array_part;
+			int i_position = 0;
+
+			i_array_cut = this->removeAllInitialAndEndingValues(a_split);
+
+			for(int x = 0; x < i_array_cut.getPosition(); x++){
+				ArrayLog(pankey_Log_Statement, "split", "println", "iteration: ");
+				ArrayLog(pankey_Log_Statement, "split", "println", x);
+				const T f_val = i_array_cut.m_t_value[x];
+				ArrayLog(pankey_Log_Statement, "split", "println", "char: ");
+				ArrayLog(pankey_Log_Statement, "split", "println", f_val);
+				ArrayLog(pankey_Log_Statement, "split", "println", "i_array_part: ");
+				// ArrayLog(pankey_Log_Statement, "split", "println", i_array_part.pointer());
+				if(f_val == a_split){
+					ArrayLog(pankey_Log_Statement, "split", "println", "f_val == a_split");
+					i_position++;
+					ArrayLog(pankey_Log_Statement, "split", "println", "end for loop");
+					continue;
+				}
+				if(i_position == a_position){
+					ArrayLog(pankey_Log_Statement, "split", "println", "f_val == a_split");
+					i_array_part.addLocalValue(f_val);
+					ArrayLog(pankey_Log_Statement, "split", "println", "i_array_part: ");
+					// ArrayLog(pankey_Log_Statement, "split", "println", i_array_part.pointer());
+					ArrayLog(pankey_Log_Statement, "split", "println", "end for loop");
+					continue;
+				}
+				if(i_position > a_position){
+					ArrayLog(pankey_Log_Statement, "split", "println", "i_position > a_position");
+					ArrayLog(pankey_Log_Statement, "split", "println", "end for loop");
+					break;
+				}
+				ArrayLog(pankey_Log_Statement, "split", "println", "end for loop");
+			}
+			ArrayLog(pankey_Log_EndMethod, "split", "println", "");
+			return i_array_part;
+		}
+
+		//gets the amount of times it gets splits, ignorring extra split values at the start and the end
+		int getSplitSize(T a_split) const{
+			ArrayLog(pankey_Log_StartMethod, "getSplitSize", "println", "");
+			if(this->isEmpty()){
+				return 0;
+			}
+			int i_size = 0;
+			Array<T> i_array_part = this->removeAllInitialAndEndingValues(a_split);
+
+			for(int x = 0; x < i_array_part.getPosition(); x++){
+				T f_val = i_array_part.get(x);
+				if(f_val == a_split){
+					i_size++;
+				}
+			}
+
+			ArrayLog(pankey_Log_EndMethod, "getSplitSize", "println", "");
+			return i_size;
+		}
+
+		//gets the amount of parts it gets splits on
+		int getPartSize(T a_split) const{
+			ArrayLog(pankey_Log_StartMethod, "getPartSize", "println", "");
+			if(this->isEmpty()){
+				return 0;
+			}
+			Array<T> i_array_part = this->removeAllInitialAndEndingValues(a_split);
+
+			int i_size = 1;
+			for(int x = 0; x < i_array_part.getPosition(); x++){
+				T f_val = i_array_part.get(x);
+				if(f_val == a_split){
+					i_size++;
+				}
+			}
+
+			ArrayLog(pankey_Log_EndMethod, "getPartSize", "println", "");
+			return i_size;
+		}
 /*
 		Array<Array<T>> split(const T& divide){
 
@@ -1147,6 +1239,139 @@ class Array{
 		int splitLenght(const T& divide){
 
 		}*/
+
+		virtual void fixSize(int a_length){
+			ArrayLog(pankey_Log_StartMethod, "fixSize", "println", "int a_position");
+			m_fix_length = a_length;
+			ArrayLog(pankey_Log_EndMethod, "fixSize", "println", i_availableSize);
+		}
+
+		virtual void setFixSize(int a_length){
+			ArrayLog(pankey_Log_StartMethod, "setFixSize", "println", "int a_position");
+			m_fix_length = a_length;
+			expandLocal(a_length);
+			ArrayLog(pankey_Log_EndMethod, "setFixSize", "println", i_availableSize);
+		}
+
+		virtual bool hasReachedFixSize()const{
+			ArrayLog(pankey_Log_StartMethod, "hasReachedFixSize", "println", "");
+			ArrayLog(pankey_Log_Statement, "hasReachedFixSize", "println", "has reached fix size:");
+			ArrayLog(pankey_Log_Statement, "hasReachedFixSize", "println", this->length() >= m_fix_length);
+			if(m_fix_length == -1){
+				return false;
+			}
+			ArrayLog(pankey_Log_EndMethod, "hasReachedFixSize", "println", "");
+			return this->length() >= m_fix_length;
+		}
+
+		virtual int getFreeSpace(int a_position)const{
+			ArrayLog(pankey_Log_StartMethod, "getFreeSpace", "println", "int a_position");
+			int i_addingEndValue = 0;
+			if(this->hasEndValue()){
+				ArrayLog(pankey_Log_Statement, "getFreeSpace", "println", "this->hasEndValue()");
+				i_addingEndValue = 1;
+			}
+			int i_availableSize = this->getSize() - a_position - i_addingEndValue;
+			ArrayLog(pankey_Log_EndMethod, "getFreeSpace", "println", i_availableSize);
+			return i_availableSize;
+		}
+
+		virtual int getFreeSpace()const{
+			ArrayLog(pankey_Log_StartMethod, "getFreeSpace", "println", "");
+			int i_addingEndValue = 0;
+			if(this->hasEndValue()){
+				ArrayLog(pankey_Log_Statement, "getFreeSpace", "println", "this->hasEndValue()");
+				i_addingEndValue = 1;
+			}
+			int i_availableSize = this->getSize() - this->getPosition() - i_addingEndValue;
+			ArrayLog(pankey_Log_EndMethod, "getFreeSpace", "println", i_availableSize);
+			return i_availableSize;
+		}
+
+		virtual bool hasAvailableSize()const{
+			ArrayLog(pankey_Log_StartMethod, "hasAvailableSize", "println", "");
+			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", "Array Position:");
+			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", this->getPosition());
+			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", "Array Size:");
+			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", this->getSize());
+			return this->getFreeSpace() > 0;
+		}
+
+		virtual bool hasAvailableSize(int a_size)const{
+			ArrayLog(pankey_Log_StartMethod, "hasAvailableSize", "println", "int a_size");
+			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", "New Size:");
+			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", a_size);
+			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", "Array Size:");
+			ArrayLog(pankey_Log_Statement, "hasAvailableSize", "println", this->getSize());
+			return this->getFreeSpace(a_size) > 0;
+		}
+
+		virtual void fix(){
+			ArrayLog(pankey_Log_StartMethod, "fix", "println", "");
+			ArrayLog(pankey_Log_EndMethod, "fix", "println", "");
+		}
+
+		virtual void erase(){
+			ArrayLog(pankey_Log_StartMethod, "erase", "println", "");
+			if(this->m_t_value == nullptr){
+				this->m_pos = 0;
+				this->m_size = 0;
+				ArrayLog(pankey_Log_EndMethod, "erase", "println", "this->m_t_value == nullptr");
+				return;
+			}
+			delete[] this->m_t_value;
+			this->m_t_value = nullptr;
+			this->m_pos = 0;
+			this->m_size = 0;
+			ArrayLog(pankey_Log_EndMethod, "erase", "println", "");
+		}
+
+		virtual void fill(T a_fill){
+			ArrayLog(pankey_Log_StartMethod, "fill", "println", "");
+			if(this->isEmpty()){
+				return;
+			}
+			for(int x = 0; x < this->getPosition(); x++){
+				this->m_t_value[x] = a_fill;
+			}
+			ArrayLog(pankey_Log_EndMethod, "fill", "println", "");
+		}
+
+		virtual void clear(){
+			ArrayLog(pankey_Log_StartMethod, "clear", "println", "");
+			if(this->m_t_value == nullptr){
+				this->m_pos = 0;
+				this->m_size = 0;
+				return;
+			}
+			delete[] this->m_t_value;
+			this->m_t_value = nullptr;
+			this->m_pos = 0;
+			this->m_size = 0;
+			ArrayLog(pankey_Log_EndMethod, "clear", "println", "");
+		}
+
+		virtual void expandLocal(int a_size){
+			ArrayLog(pankey_Log_StartMethod, "expandLocal", "println", "");
+			if(this->hasReachedFixSize()){
+				return;
+			}
+			int nsize = this->getSize() + a_size;
+			T *nT = new T[nsize];
+			for(int x = 0; x < this->m_pos; x++){
+				nT[x] = this->m_t_value[x];
+			}
+			if(this->m_t_value != nullptr){
+				delete[] this->m_t_value;
+			}
+			this->m_t_value = nT;
+			this->setSize(nsize);
+			ArrayLog(pankey_Log_EndMethod, "expandLocal", "println", "");
+		}
+
+		////////////////////////////operator part////////////////////////////////////////////////////////////////
+
+	public:
 
 		virtual Array<T>& operator=(const Array<T>& a_array){
 			ArrayLog(pankey_Log_StartMethod, "operator=", "println", "operator= const Array<T>&");
@@ -1238,7 +1463,7 @@ class Array{
 		virtual bool operator==(const T& a_value){
 			ArrayLog(pankey_Log_StartMethod, "operator==", "println", "const T& a_value");
 			
-			if(this->getPosition() != 1){
+			if(this->length() != 1){
 				return false;
 			}
 
@@ -1249,12 +1474,43 @@ class Array{
 		virtual bool operator!=(const T& a_value){
 			ArrayLog(pankey_Log_StartMethod, "operator!=", "println", "const T& a_value");
 			
-			if(this->getPosition() != 1){
+			if(this->length() != 1){
 				return true;
 			}
 
 			ArrayLog(pankey_Log_EndMethod, "operator!=", "println", "");
 			return this->get(0) != a_value;
+		}
+
+		virtual T& operator[](int x){
+			ArrayLog(pankey_Log_StartMethod, "operator[]", "println", "");
+			if(x > this->m_pos && this->m_pos > 0){
+				return this->m_t_value[this->m_pos - 1];
+			}
+			if(x < this->m_pos && x >= 0){
+				return this->m_t_value[x];
+			}
+			if(x >= this->m_size){
+				expandLocal((x - this->m_size + 1) + this->m_expandSize);
+			}
+			if(this->m_pos == x){
+				this->m_pos++;
+			}
+			ArrayLog(pankey_Log_EndMethod, "operator[]", "println", "");
+			return this->m_t_value[x];
+		}
+
+		virtual T operator[](int x) const{
+			if(this->m_t_value == nullptr){
+				return T();
+			}
+			if(x >= this->m_pos && this->m_pos > 0){
+				return this->m_t_value[this->m_pos - 1];
+			}
+			if(x < this->m_pos && x >= 0){
+				return this->m_t_value[x];
+			}
+			return T();
 		}
 /*
 		void replace(Array a_search, Array a_change){
@@ -1350,6 +1606,7 @@ class Array{
 
 	protected:
 		bool removeShrink = true;
+		int m_fix_length = -1;
 };
 
 }

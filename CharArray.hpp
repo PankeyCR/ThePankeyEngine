@@ -302,12 +302,24 @@ class CharArray : public Array<char>{
 
 		virtual bool isBool() const{
 			CharArrayLog(pankey_Log_StartMethod, "isBool", "println", "");
-			if(this->getPosition() != 4 || this->getPosition() != 5){
+			if(this->length() != 4 && this->length() != 5 && this->length() != 1){
 				CharArrayLog(pankey_Log_EndMethod, "isBool", "println", "Not a bool");
 				return false;
 			}
+			CharArrayLog(pankey_Log_Statement, "isBool", "println", "Is a true:");
+			CharArrayLog(pankey_Log_Statement, "isBool", "println", (*this) == "true");
+			CharArrayLog(pankey_Log_Statement, "isBool", "println", "Is a false:");
+			CharArrayLog(pankey_Log_Statement, "isBool", "println", (*this) == "false");
+			CharArrayLog(pankey_Log_Statement, "isBool", "println", "Is a TRUE:");
+			CharArrayLog(pankey_Log_Statement, "isBool", "println", (*this) == "TRUE");
+			CharArrayLog(pankey_Log_Statement, "isBool", "println", "Is a FALSE:");
+			CharArrayLog(pankey_Log_Statement, "isBool", "println", (*this) == "FALSE");
+			CharArrayLog(pankey_Log_Statement, "isBool", "println", "Is a 1:");
+			CharArrayLog(pankey_Log_Statement, "isBool", "println", (*this) == "1");
+			CharArrayLog(pankey_Log_Statement, "isBool", "println", "Is a 0:");
+			CharArrayLog(pankey_Log_Statement, "isBool", "println", (*this) == "0");
 			CharArrayLog(pankey_Log_EndMethod, "isBool", "println", "Is a bool");
-			return (*this) == "true" || (*this) == "false" || (*this) == "TRUE" || (*this) == "FALSE";
+			return (*this) == "true" || (*this) == "false" || (*this) == "TRUE" || (*this) == "FALSE" || (*this) == "1" || (*this) == "0";
 		}
 
 		virtual int intCharSize(int a_value)const{
@@ -636,13 +648,13 @@ class CharArray : public Array<char>{
 				CharArrayLog(pankey_Log_EndMethod, "isFloat", "println", "Not a float");
 				return false;
 			}
-			if(this->getLastChar() != 'f'){
-				CharArrayLog(pankey_Log_EndMethod, "isFloat", "println", "Not a float");
-				return false;
-			}
 			bool i_has_decimal_point = false;
-			for(int i = 0; i < this->length() - 1; i++){
+			for(int i = 0; i < this->length(); i++){
 				char f_char = this->get(i);
+				if(i == this->length() - 1 && f_char == 'f'){
+					CharArrayLog(pankey_Log_EndMethod, "isFloat", "println", "last char is f");
+					return true;
+				}
 				if(!this->isNumber(f_char) && f_char != '.'){
 					CharArrayLog(pankey_Log_EndMethod, "isFloat", "println", "Not a float");
 					return false;
@@ -869,12 +881,32 @@ class CharArray : public Array<char>{
 
 		bool toBool()const{
 			CharArrayLog(pankey_Log_StartMethod, "toBool", "println", "");
-			if(this->m_pos == 1){
+			if(this->length() == 1){
 				if(this->get(0) == '1'){
 					CharArrayLog(pankey_Log_EndMethod, "toInt", "println", "true");
 					return true;
 				}
 				if(this->get(0) == '0'){
+					CharArrayLog(pankey_Log_EndMethod, "toInt", "println", "false");
+					return false;
+				}
+			}
+			if(this->length() == 4){
+				if((*this) == "true"){
+					CharArrayLog(pankey_Log_EndMethod, "toInt", "println", "true");
+					return true;
+				}
+				if((*this) == "TRUE"){
+					CharArrayLog(pankey_Log_EndMethod, "toInt", "println", "false");
+					return true;
+				}
+			}
+			if(this->length() == 5){
+				if((*this) == "false"){
+					CharArrayLog(pankey_Log_EndMethod, "toInt", "println", "true");
+					return false;
+				}
+				if((*this) == "FALSE"){
 					CharArrayLog(pankey_Log_EndMethod, "toInt", "println", "false");
 					return false;
 				}
@@ -1001,6 +1033,7 @@ class CharArray : public Array<char>{
 			}
 			bool lastDecimals = false;
 			int lastDecimalPosition= 0;
+			CharArrayLog(pankey_Log_Statement, "toFloat", "println", "start of iteration");
 			for(int x = i_start; x < c_size; x++){
 				char f_char = this->m_t_value[x];
 				CharArrayLog(pankey_Log_Statement, "toFloat", "println", "f_char");
@@ -1029,9 +1062,14 @@ class CharArray : public Array<char>{
 					}else{
 						CharArrayLog(pankey_Log_Statement, "toFloat", "println", "int part");
 						if(x != i_start){
+							CharArrayLog(pankey_Log_Statement, "toFloat", "println", "x != i_start");
+							CharArrayLog(pankey_Log_Statement, "toFloat", "println", "output *= 10");
 							output *= 10;
+							CharArrayLog(pankey_Log_Statement, "toFloat", "println", "output");
+							CharArrayLog(pankey_Log_Statement, "toFloat", "println", output);
 						}
 						output += (f_char - 48);
+						CharArrayLog(pankey_Log_Statement, "toFloat", "println", "output += (f_char - 48)");
 						CharArrayLog(pankey_Log_Statement, "toFloat", "println", "output");
 						CharArrayLog(pankey_Log_Statement, "toFloat", "println", output);
 					}
@@ -1091,44 +1129,6 @@ class CharArray : public Array<char>{
 			}
 			CharArrayLog(pankey_Log_EndMethod, "contain", "println", "");
 			return false;
-		}
-
-		CharArray split(int a_position, char a_char) const{
-			CharArrayLog(pankey_Log_StartMethod, "split", "println", "");
-			CharArray i_CharArray;
-			int i_position = 0;
-
-			for(int x = 0; x < this->getPosition(); x++){
-				CharArrayLog(pankey_Log_Statement, "split", "println", "iteration: ");
-				CharArrayLog(pankey_Log_Statement, "split", "println", x);
-				const char f_char = this->m_t_value[x];
-				CharArrayLog(pankey_Log_Statement, "split", "println", "char: ");
-				CharArrayLog(pankey_Log_Statement, "split", "println", f_char);
-				CharArrayLog(pankey_Log_Statement, "split", "println", "i_CharArray: ");
-				CharArrayLog(pankey_Log_Statement, "split", "println", i_CharArray.pointer());
-				if(f_char == a_char){
-					CharArrayLog(pankey_Log_Statement, "split", "println", "f_char == a_char");
-					i_position++;
-					CharArrayLog(pankey_Log_Statement, "split", "println", "end for loop");
-					continue;
-				}
-				if(i_position == a_position){
-					CharArrayLog(pankey_Log_Statement, "split", "println", "f_char == a_char");
-					i_CharArray.addLocalValue(f_char);
-					CharArrayLog(pankey_Log_Statement, "split", "println", "i_CharArray: ");
-					CharArrayLog(pankey_Log_Statement, "split", "println", i_CharArray.pointer());
-					CharArrayLog(pankey_Log_Statement, "split", "println", "end for loop");
-					continue;
-				}
-				if(i_position > a_position){
-					CharArrayLog(pankey_Log_Statement, "split", "println", "i_position > a_position");
-					CharArrayLog(pankey_Log_Statement, "split", "println", "end for loop");
-					break;
-				}
-				CharArrayLog(pankey_Log_Statement, "split", "println", "end for loop");
-			}
-			CharArrayLog(pankey_Log_EndMethod, "split", "println", "");
-			return i_CharArray;
 		}
 
 		// RawList<CharArray>* split(char a_char, RawList<CharArray>* a_list) const{
@@ -1245,24 +1245,6 @@ class CharArray : public Array<char>{
 			}
 			CharArrayLog(pankey_Log_EndMethod, "getOrder", "println", "");
 			return -1;
-		}
-
-		int getSplitSize(char a_split) const{
-			CharArrayLog(pankey_Log_StartMethod, "getSplitSize", "println", "");
-			CharArrayLog(pankey_Log_Statement, "getSplitSize", "println", "~CharArray");
-			if(this->isEmpty()){
-				return 0;
-			}
-			int i_size = 1;
-			for(int x = 0; x < this->getPosition(); x++){
-				char f_char = this->get(x);
-				if(f_char == a_split){
-					i_size++;
-				}
-			}
-
-			CharArrayLog(pankey_Log_EndMethod, "getSplitSize", "println", "");
-			return i_size;
 		}
 
 		int getSizeNoStartNoEnd(char a_split){
@@ -1749,10 +1731,10 @@ class CharArray : public Array<char>{
 		}
 
 		virtual bool operator==(const CharArray& a_CharArray) const{
-			if(a_CharArray.getPosition() != this->getPosition()){
+			if(a_CharArray.length() != this->length()){
 				return false;
 			}
-			for(int x = 0; x < this->getPosition(); x++){
+			for(int x = 0; x < this->length(); x++){
 				char f_char_1 = this->get(x);
 				char f_char_2 = a_CharArray.get(x);
 				if(f_char_1 != f_char_2){
@@ -1763,10 +1745,10 @@ class CharArray : public Array<char>{
 		}
 
 		virtual bool operator!=(const CharArray& a_CharArray){
-			if(a_CharArray.getPosition() != this->getPosition()){
+			if(a_CharArray.length() != this->length()){
 				return true;
 			}
-			for(int x = 0; x < this->getPosition(); x++){
+			for(int x = 0; x < this->length(); x++){
 				char f_char_1 = this->get(x);
 				char f_char_2 = a_CharArray.get(x);
 				if(f_char_1 == f_char_2){

@@ -27,8 +27,8 @@
 				TypeArrayMap(const TypeArrayMap<K,V,H,M>& a_map){
 					TypeArrayMapLog(pankey_Log_StartMethod, "operator=", "println", "const TypeArrayMap<K,V,H,M>&");
 					for(int x = 0; x < a_map.length(); x++){
-						auto f_key = a_map.getKey(x);
-						auto f_value = a_map.getValue(x);
+						Pointer<K,H,M> f_key = a_map.getKey(x);
+						Pointer<V,H,M> f_value = a_map.getValue(x);
 						this->add(f_key, f_value);
 					}
 					TypeArrayMapLog(pankey_Log_EndMethod, "operator=", "println", "");
@@ -53,12 +53,8 @@
 					return ClassCount<V>::get();
 				}
 
-				virtual DuoTypeMember<K,V,H,M> add(Member<H,M>& a_key, Member<H,M>& a_value){
+				virtual DuoTypeMember<K,V,H,M> add(Pointer<K,H,M> a_key, Pointer<V,H,M> a_value){
 					TypeArrayMapLog(pankey_Log_StartMethod, "add", "println", "");
-					if(a_key.getType() != this->getKeyType() || a_value.getType() != this->getValueType()){
-						TypeArrayMapLog(pankey_Log_EndMethod, "add", "println", "Not a type");
-						return DuoTypeMember<K,V,H,M>();
-					}
 					if(this->m_keys.add(this->m_length, a_key) && this->m_values.add(this->m_length, a_value)){
 						TypeArrayMapLog(pankey_Log_Statement, "add", "println", "adding type members");
 						this->incrementPosition();
@@ -67,15 +63,25 @@
 					return DuoTypeMember<K,V,H,M>(a_key, a_value);
 				}
 
-				virtual DuoTypeMember<K,V,H,M> add(DuoTypeMember<K,V,H,M>& a_duo){
+				virtual DuoTypeMember<K,V,H,M> add(Value<K,H,M> a_key, Value<V,H,M> a_value){
 					TypeArrayMapLog(pankey_Log_StartMethod, "add", "println", "");
-					Member<H,M> i_member = a_duo.getMember();
-					Member<H,M> i_duo_member = a_duo.getDuoTypeMember();
+					if(this->m_keys.add(this->m_length, a_key) && this->m_values.add(this->m_length, a_value)){
+						TypeArrayMapLog(pankey_Log_Statement, "add", "println", "adding type members");
+						this->incrementPosition();
+					}
+					TypeArrayMapLog(pankey_Log_EndMethod, "add", "println", "");
+					return DuoTypeMember<K,V,H,M>(a_key, a_value);
+				}
+
+				virtual DuoTypeMember<K,V,H,M> add(DuoTypeMember<K,V,H,M> a_duo){
+					TypeArrayMapLog(pankey_Log_StartMethod, "add", "println", "");
+					Pointer<K,H,M> i_member = a_duo.getMember();
+					Pointer<V,H,M> i_duo_member = a_duo.getDuoTypeMember();
 					TypeArrayMapLog(pankey_Log_EndMethod, "add", "println", "");
 					return this->add(i_member, i_duo_member);
 				}
 				
-				virtual DuoTypeMember<K,V,H,M> put(DuoTypeMember<K,V,H,M>& a_duo){
+				virtual DuoTypeMember<K,V,H,M> put(DuoTypeMember<K,V,H,M> a_duo){
 					TypeArrayMapLog(pankey_Log_StartMethod, "put", "println", "");
 					if(this->m_keys.containByPointer(a_duo.getMember())){
 						return a_duo;
@@ -84,7 +90,16 @@
 					return this->add(a_duo);
 				}
 				
-				virtual DuoTypeMember<K,V,H,M> put(Member<H,M>& a_key, Member<H,M>& a_value){
+				virtual DuoTypeMember<K,V,H,M> put(Pointer<K,H,M> a_key, Pointer<V,H,M> a_value){
+					TypeArrayMapLog(pankey_Log_StartMethod, "put", "println", "");
+					if(this->m_keys.containByPointer(a_key)){
+						return DuoTypeMember<K,V,H,M>(a_key, a_value);
+					}
+					TypeArrayMapLog(pankey_Log_EndMethod, "put", "println", "");
+					return this->add(a_key, a_value);
+				}
+				
+				virtual DuoTypeMember<K,V,H,M> put(Value<K,H,M> a_key, Value<V,H,M> a_value){
 					TypeArrayMapLog(pankey_Log_StartMethod, "put", "println", "");
 					if(this->m_keys.containByPointer(a_key)){
 						return DuoTypeMember<K,V,H,M>(a_key, a_value);
@@ -96,8 +111,8 @@
 				virtual TypeArrayMap<K,V,H,M>& operator=(const TypeArrayMap<K,V,H,M>& a_map){
 					TypeArrayMapLog(pankey_Log_StartMethod, "operator=", "println", "const TypeArrayMap<K,V,H,M>&");
 					for(int x = 0; x < a_map.length(); x++){
-						auto f_key = a_map.getKey(x);
-						auto f_value = a_map.getValue(x);
+						Pointer<K,H,M> f_key = a_map.getKey(x);
+						Pointer<V,H,M> f_value = a_map.getValue(x);
 						this->add(f_key, f_value);
 					}
 					TypeArrayMapLog(pankey_Log_EndMethod, "operator=", "println", "");

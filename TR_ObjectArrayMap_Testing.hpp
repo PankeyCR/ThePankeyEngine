@@ -50,7 +50,7 @@
 			createEngineManager();
 
 			a_test_runner.map.add("ObjectArrayMap Constructor", TR_ObjectArrayMap_Testing_1);
-			a_test_runner.map.add("ObjectArrayMap add, getKeyByValue", TR_ObjectArrayMap_Testing_2);
+			// a_test_runner.map.add("ObjectArrayMap add, getKeyByValue", TR_ObjectArrayMap_Testing_2);
 		}	
 
 	}

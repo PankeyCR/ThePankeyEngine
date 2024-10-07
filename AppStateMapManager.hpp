@@ -2,11 +2,17 @@
 #ifndef AppStateMapManager_hpp
 	#define AppStateMapManager_hpp
 
-	#include "pankey_Enviroment.hpp"
-	#include "pankey_Enviroment_config.hpp"
+	#include "pankey.hpp"
 
 	#include "AppState.hpp"
 	#include "UpdateManager.hpp"
+
+	#ifdef AppStateMapManager_LogApp
+		#include "pankey_Logger.hpp"
+		#define AppStateMapManagerLog(location,method,type,mns) pankey_Log(this,location,"AppStateMapManager",method,type,mns)
+	#else
+		#define AppStateMapManagerLog(location,method,type,mns)
+	#endif
 
 	namespace pankey{
 
@@ -14,18 +20,18 @@
 		class AppStateMapManager : public UpdateManager<A&,Args...>{
 			public:
 				AppStateMapManager(){
-					AppStateListManagerLog(pankey_Log_StartMethod, "Constructor", "println", "");
-					AppStateListManagerLog(pankey_Log_EndMethod, "Constructor", "println", "");
+					AppStateMapManagerLog(pankey_Log_StartMethod, "Constructor", "println", "");
+					AppStateMapManagerLog(pankey_Log_EndMethod, "Constructor", "println", "");
 				}
 				virtual ~AppStateMapManager(){
-					AppStateListManagerLog(pankey_Log_StartMethod, "Destructor", "println", "");
-					AppStateListManagerLog(pankey_Log_EndMethod, "Destructor", "println", "");
+					AppStateMapManagerLog(pankey_Log_StartMethod, "Destructor", "println", "");
+					AppStateMapManagerLog(pankey_Log_EndMethod, "Destructor", "println", "");
 				}
 
 				virtual app_state<A,Args...> add(Note a_id, app_state<A,Args...> a_state){
-					AppStateListManagerLog(pankey_Log_StartMethod, "add",  "println", "");
+					AppStateMapManagerLog(pankey_Log_StartMethod, "add",  "println", "");
 					m_initialize.add(a_state);
-					AppStateListManagerLog(pankey_Log_EndMethod, "add", "println", "");
+					AppStateMapManagerLog(pankey_Log_EndMethod, "add", "println", "");
 					return a_state;
 				}
 				

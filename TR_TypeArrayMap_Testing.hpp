@@ -23,8 +23,8 @@
 
 			TMap<int,int> i_map;
 
-			var i_key = 15;
-			var i_value = 20;
+			val<int> i_key = 15;
+			val<int> i_value = 20;
 
 			i_map.add(i_key, i_value);
 
@@ -43,8 +43,8 @@
 
 			TMap<int,int> i_map;
 
-			var i_key = 15;
-			var i_value = 20;
+			val<int> i_key = 15;
+			val<int> i_value = 20;
 
 			i_map.add(i_key, i_value);
 

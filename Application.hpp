@@ -48,6 +48,11 @@
 					i_events.run(a_name, *this);
 				}
 
+				virtual void run(Note a_name, Note a_message){
+					auto& i_events = this->getEventManager();
+					i_events.run(a_name, *this, a_message);
+				}
+
 				virtual void runMethod(Note a_name){
 					auto& i_events = this->getEventManager();
 					i_events.runMethod(a_name);
@@ -56,6 +61,16 @@
 				virtual void runAppMethod(Note a_name){
 					auto& i_events = this->getEventManager();
 					i_events.runAppMethod(a_name, *this);
+				}
+
+				virtual void runMessageMethod(Note a_name, Note a_message){
+					auto& i_events = this->getEventManager();
+					i_events.runMessageMethod(a_name, a_message);
+				}
+
+				virtual void runAppMessageMethod(Note a_name, Note a_message){
+					auto& i_events = this->getEventManager();
+					i_events.runAppMessageMethod(a_name, *this, a_message);
 				}
 
 				virtual void initialize(){

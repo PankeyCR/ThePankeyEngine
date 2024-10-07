@@ -2,6 +2,8 @@
 #ifndef AppState_hpp
 	#define AppState_hpp
 
+	#include "Note.hpp"
+
 	namespace pankey{
 
 		template<class A, class... Args>
@@ -9,6 +11,9 @@
 			public:
 				AppState(){}
 				virtual ~AppState(){}
+
+				virtual void setID(Note a_id){}
+				virtual Note getID(){return Note();}
 
 				virtual void initialize(A& app){
 					this->initializeState(app);

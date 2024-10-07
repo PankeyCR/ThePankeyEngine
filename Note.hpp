@@ -291,10 +291,10 @@ class Note : public CharArray, public Printable{
 		}
 
 		virtual bool operator==(const Note& a_note) const{
-			if(a_note.getPosition() != this->getPosition()){
+			if(a_note.length() != this->length()){
 				return false;
 			}
-			for(int x = 0; x < this->getPosition(); x++){
+			for(int x = 0; x < this->length(); x++){
 				char f_char_1 = this->get(x);
 				char f_char_2 = a_note.get(x);
 				if(f_char_1 != f_char_2){
@@ -305,10 +305,10 @@ class Note : public CharArray, public Printable{
 		}
 
 		virtual bool operator!=(const Note& a_note){
-			if(a_note.getPosition() != this->getPosition()){
+			if(a_note.length() != this->length()){
 				return true;
 			}
-			for(int x = 0; x < this->getPosition(); x++){
+			for(int x = 0; x < this->length(); x++){
 				char f_char_1 = this->get(x);
 				char f_char_2 = a_note.get(x);
 				if(f_char_1 == f_char_2){

@@ -2,8 +2,7 @@
 #ifndef AppStateListManager_hpp
 	#define AppStateListManager_hpp
 
-	#include "pankey_Enviroment.hpp"
-	#include "pankey_Enviroment_config.hpp"
+	#include "pankey.hpp"
 
 	#include "AppState.hpp"
 	#include "UpdateManager.hpp"
@@ -34,6 +33,31 @@
 					m_initialize.add(a_state);
 					AppStateListManagerLog(pankey_Log_EndMethod, "add", "println", "");
 					return a_state;
+				}
+
+				virtual app_state<A,Args...> add(Note a_id, app_state<A,Args...> a_state){
+					AppStateListManagerLog(pankey_Log_StartMethod, "add",  "println", "");
+					m_initialize.add(a_state);
+					if(!a_state.isNull()){
+						a_state->setID(a_id);
+					}
+					AppStateListManagerLog(pankey_Log_EndMethod, "add", "println", "");
+					return a_state;
+				}
+
+				virtual app_state<A,Args...> getByID(Note a_id){
+					AppStateListManagerLog(pankey_Log_StartMethod, "getByID",  "println", "");
+					for(int x = 0; x < m_appstates.length(); x++){
+						app_state<A,Args...> f_state = m_appstates.get(x);
+						if(f_state.isNull()){
+							continue;
+						}
+						if(f_state->getID() == a_id){
+							return f_state;
+						}
+					}
+					AppStateListManagerLog(pankey_Log_EndMethod, "getByID", "println", "");
+					return app_state<A,Args...>();
 				}
 				
 				virtual app_state<A,Args...> getInitializedAppStateList(int a_index){

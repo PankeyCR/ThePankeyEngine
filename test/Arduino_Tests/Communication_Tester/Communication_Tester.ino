@@ -16,19 +16,17 @@ void setup() {
   delay(4000);
 
   initializeWIFI( "10.10.10.10.10.150"  ,     //mac
-                  "192.168.100.141"       ,     //ip
-                  "192.168.100.1"         ,     //gateway
-                  "192.168.100.1"         ,     //subnet
+                  "192.168.1.141"       ,     //ip
+                  "192.168.1.1"         ,     //gateway
+                  "192.168.1.1"         ,     //subnet
                   "255.255.255.0"       ,     //dns
                   "MERCUSYS_6541"       ,     //router name
                   "57924106");                //router password
 
-                  //router name MERCUSYS_6541 - pokemon - Cristo - PankeyCR - PankeyWifi
-                  //router password 57924106 - tania1919 - Jesucristo#1 - gtuz4549 - Nalgas48
+                  //router name MERCUSYS_6541 - pokemon - Cristo - PankeyCR
+                  //router password 57924106 - tania1919 - Jesucristo#1 - gtuz4549
 
   haltUntilWIFIConnection();
-  
-  pankey_Log_Stop("Start of test");
 
   SerialState serial;
   WIFISerialServer server = 101;
@@ -37,7 +35,7 @@ void setup() {
   serial.addDelivery(Event_Message);
 
   auto& i_manager = app.getStateManager();
-  i_manager.state_timed_functions_list.add(serial);
+  i_manager.app_state_timed_functions_list.add(serial);
   
   app.initialize();
 }
@@ -46,6 +44,12 @@ void loop() {
   app.update();
 }
 
-void Event_Message(const Note& a_message){
+void Event_Message(Application& a_app, const Note& a_message){
   System::console.println(a_message);
+  int i_message_size = a_message.getSplitSize(' ');
+  if(i_message_size == 0){
+    if(a_message == "getRam"){
+      System::console.println(getRamSize());
+    }
+  }
 }

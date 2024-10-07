@@ -47,6 +47,8 @@
 					SerialStateLog(pankey_Log_StartMethod, "Constructor", "println", "const SerialState&");
 					m_commands = a_serial.m_commands;
 					m_methods = a_serial.m_methods;
+					m_app_commands = a_serial.m_app_commands;
+					m_app_methods = a_serial.m_app_methods;
 					m_broadMessages = a_serial.m_broadMessages;
 					m_clientMessages = a_serial.m_clientMessages;
 					m_servers = a_serial.m_servers;
@@ -516,7 +518,7 @@
 					#endif
 				}
 
-				virtual void initializeState(){
+				virtual void initializeState(Application& a_app){
 					SerialStateLog(pankey_Log_StartMethod, "initializeState", "println", "");
 					for(int x = 0; x < this->m_servers.length(); x++){
 						SerialStateLog(pankey_Log_Statement, "updateState",  "println", "server iteration");
@@ -529,7 +531,7 @@
 					SerialStateLog(pankey_Log_EndMethod, "initializeState", "println", "");
 				}
 
-				virtual void updateState(float tpc){
+				virtual void updateState(Application& a_app, float tpc){
 					SerialStateLog(pankey_Log_StartMethod, "updateState",  "println", "");
 					SerialStateLog(pankey_Log_Statement, "updateState",  "println", "server length");
 					SerialStateLog(pankey_Log_Statement, "updateState",  "println", this->m_servers.length());
@@ -574,15 +576,13 @@
 							// SerialStateLog(pankey_Log_Statement, "update",  "println", Note("index: ") + Note(index));
 							// SerialStateLog(pankey_Log_Statement, "update",  "println", Note("Port Name: ") + port->getName());
 							if(port->available() > 0) {
-  								pankey_Log_Start("reading message");
 								SerialStateLog(pankey_Log_Statement, "updateState",  "println", "port->available() > 0");
 								Note i_message = portProtocol->Read(port);
 								SerialStateLog(pankey_Log_Statement, "updateState",  "println", "incoming message:");
 								SerialStateLog(pankey_Log_Statement, "updateState",  "println", i_message);
 								if(!i_message.isEmpty()){
-									this->DeliverMessage(i_message);
+									this->DeliverMessage(a_app, i_message);
 								}
-  								pankey_Log_Stop("reading message");
 							}
 							for(int x = 0; x < m_broadMessages.getPosition(); x++){
 								portProtocol->BroadcastMessage(port, *m_broadMessages.getByPosition(x));
@@ -609,6 +609,8 @@
 					SerialStateLog(pankey_Log_StartMethod, "operator=", "println", "const SerialState&");
 					m_commands = a_serial.m_commands;
 					m_methods = a_serial.m_methods;
+					m_app_commands = a_serial.m_app_commands;
+					m_app_methods = a_serial.m_app_methods;
 					m_broadMessages = a_serial.m_broadMessages;
 					m_clientMessages = a_serial.m_clientMessages;
 					m_servers = a_serial.m_servers;

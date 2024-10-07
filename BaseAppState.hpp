@@ -18,6 +18,9 @@
 			public:
 				BaseAppState(){}
 				virtual ~BaseAppState(){}
+
+				virtual void setID(Note a_id){m_id = a_id;}
+				virtual Note getID(){return m_id;}
 				
 				virtual void initialize(A& a_app){
 					BaseAppStateLog(pankey_Log_StartMethod, "initialize", "println", "");
@@ -50,6 +53,7 @@
 			protected:
 				bool m_enable = false;
 				bool m_init = false;
+				Note m_id = "";
 		};
 
 	}

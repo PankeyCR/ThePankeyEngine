@@ -214,6 +214,138 @@
 			
 			return result;
 		}
+			
+		TestResult TR_CharArray_Testing_19(){
+			TestResult result;
+			
+			CharArray array = "-hellow-world-";//14
+
+			CharArray i_part_1 = array.removeAllInitialValues('-');
+			CharArray i_part_2 = array.removeAllEndingValues('-');
+			CharArray i_part_3 = array.removeAllInitialAndEndingValues('-');
+
+			result.assertNoteEqual("array removeAllInitialValues size should be 13", i_part_1.length(), 13);
+			result.assertNoteEqual("array part 1 should be hellow-world-", i_part_1, CharArray("hellow-world-"));
+
+			result.assertNoteEqual("array removeAllEndingValues size should be 13", i_part_2.length(), 13);
+			result.assertNoteEqual("array part 1 should be -hellow-world", i_part_2, CharArray("-hellow-world"));
+
+			result.assertNoteEqual("array removeAllInitialAndEndingValues size should be 12", i_part_3.length(), 12);
+			result.assertNoteEqual("array part 1 should be hellow-world", i_part_3, CharArray("hellow-world"));
+
+			int i_split_size = array.getSplitSize('-');
+			int i_part_size = array.getPartSize('-');
+
+			result.assertNoteEqual("array splits 1 time", i_split_size, 1);
+			result.assertNoteEqual("array splits in to parts", i_part_size, 2);
+
+			CharArray i_part_4 = array.split(0, '-');
+			CharArray i_part_5 = array.split(1, '-');
+
+			result.assertNoteEqual("array should contain 2 ints", i_part_4.length(), 6);
+			result.assertNoteEqual("array part should be hellow", i_part_4, CharArray("hellow"));
+
+			result.assertNoteEqual("array should contain 2 ints", i_part_5.length(), 5);
+			result.assertNoteEqual("array part should be world", i_part_5, CharArray("world"));
+			
+			return result;
+		}
+			
+		TestResult TR_CharArray_Testing_20(){
+			TestResult result;
+			
+			CharArray i_num = "15.15f";
+
+			result.assertNoteEqual("array should contain 6 chars", i_num.length(), 6);
+			result.assertTrue("array should be a float", i_num.isFloat());
+			// result.assertNoteEqual("float should be 15.15f", i_num.toFloat(), 15.15f);
+			
+			return result;
+		}
+			
+		TestResult TR_CharArray_Testing_21(){
+			TestResult result;
+			
+			CharArray i_num = "15.15";
+
+			result.assertNoteEqual("array should contain 6 chars", i_num.length(), 5);
+			result.assertTrue("array should be a float", i_num.isFloat());
+			// result.assertNoteEqual("float should be 15.15f", i_num.toFloat(), 15.15f);
+			
+			return result;
+		}
+			
+		TestResult TR_CharArray_Testing_22(){
+			TestResult result;
+			
+			CharArray i_num = "0";
+
+			result.assertNoteEqual("array should contain 1 chars", i_num.length(), 1);
+			result.assertTrue("array should be a bool", i_num.isBool());
+			result.assertNoteEqual("bool should be false", i_num.toBool(), false);
+			
+			return result;
+		}
+			
+		TestResult TR_CharArray_Testing_23(){
+			TestResult result;
+			
+			CharArray i_num = "1";
+
+			result.assertNoteEqual("array should contain 1 chars", i_num.length(), 1);
+			result.assertTrue("array should be a bool", i_num.isBool());
+			result.assertNoteEqual("bool should be true", i_num.toBool(), true);
+			
+			return result;
+		}
+			
+		TestResult TR_CharArray_Testing_24(){
+			TestResult result;
+			
+			CharArray i_num = "true";
+
+			result.assertNoteEqual("array should contain 4 chars", i_num.length(), 4);
+			result.assertTrue("array should be a bool", i_num.isBool());
+			result.assertNoteEqual("bool should be true", i_num.toBool(), true);
+			
+			return result;
+		}
+			
+		TestResult TR_CharArray_Testing_25(){
+			TestResult result;
+			
+			CharArray i_num = "TRUE";
+
+			result.assertNoteEqual("array should contain 4 chars", i_num.length(), 4);
+			result.assertTrue("array should be a bool", i_num.isBool());
+			result.assertNoteEqual("bool should be true", i_num.toBool(), true);
+			
+			return result;
+		}
+			
+		TestResult TR_CharArray_Testing_26(){
+			TestResult result;
+			
+			CharArray i_num = "false";
+
+			result.assertNoteEqual("array should contain 5 chars", i_num.length(), 5);
+			result.assertTrue("array should be a bool", i_num.isBool());
+			result.assertNoteEqual("bool should be false", i_num.toBool(), false);
+			
+			return result;
+		}
+			
+		TestResult TR_CharArray_Testing_27(){
+			TestResult result;
+			
+			CharArray i_num = "FALSE";
+
+			result.assertNoteEqual("array should contain 5 chars", i_num.length(), 5);
+			result.assertTrue("array should be a bool", i_num.isBool());
+			result.assertNoteEqual("bool should be false", i_num.toBool(), false);
+			
+			return result;
+		}
 		
 		void TR_CharArray_Testing(TestRunner& a_test_runner){
 			a_test_runner.map.add("CharArray Constructor Bool", TR_CharArray_Testing_1);
@@ -234,6 +366,15 @@
 			a_test_runner.map.add("CharArray ", TR_CharArray_Testing_16);
 			a_test_runner.map.add("CharArray assingment operator", TR_CharArray_Testing_17);
 			a_test_runner.map.add("CharArray contain", TR_CharArray_Testing_18);
+			a_test_runner.map.add("CharArray splits", TR_CharArray_Testing_19);
+			a_test_runner.map.add("CharArray isFloat, toFloat with f at the end", TR_CharArray_Testing_20);
+			a_test_runner.map.add("CharArray isFloat, toFloat with out f at the end", TR_CharArray_Testing_21);
+			a_test_runner.map.add("CharArray isBool, toBool with array 0", TR_CharArray_Testing_22);
+			a_test_runner.map.add("CharArray isBool, toBool with array 1", TR_CharArray_Testing_23);
+			a_test_runner.map.add("CharArray isBool, toBool with array true", TR_CharArray_Testing_24);
+			a_test_runner.map.add("CharArray isBool, toBool with array TRUE", TR_CharArray_Testing_25);
+			a_test_runner.map.add("CharArray isBool, toBool with array false", TR_CharArray_Testing_26);
+			a_test_runner.map.add("CharArray isBool, toBool with array FALSE", TR_CharArray_Testing_27);
 		}
 	}
 

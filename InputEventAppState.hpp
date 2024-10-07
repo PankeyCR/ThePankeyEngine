@@ -25,7 +25,7 @@
 				}
 				InputEventAppState(const InputEventAppState& a_inputevent){
 					InputEventAppStateLog(ame_Log_StartMethod, "Constructor", "println", "");
-					m_inputs.addCopy(a_inputevent.m_inputs);
+					m_inputs = a_inputevent.m_inputs;
 					m_action.addCopy(a_inputevent.m_action);
 					m_events.addCopy(a_inputevent.m_events);
 					m_app_events.addCopy(a_inputevent.m_app_events);
@@ -35,8 +35,8 @@
 				
 				virtual void add(int a_interrupt, I a_input, InvokeMethodReturn<bool,I&,float> a_action, InvokeMethod<int,I&> a_event){
 					InputEventAppStateLog(ame_Log_StartMethod, "add", "println", "");
-					m_inputs.add(a_interrupt, a_input);
-					m_action.add(a_interrupt, a_action);
+					m_inputs.put(a_interrupt, a_input);
+					m_action.put(a_interrupt, a_action);
 					if(!m_events.contain(a_interrupt)){
 						m_events.addPointer(a_interrupt, new MethodList<int,I&>());
 					}
@@ -50,8 +50,8 @@
 				
 				virtual void add(int a_interrupt, I a_input, InvokeMethodReturn<bool,I&,float> a_action, InvokeMethod<Application&,int,I&> a_event){
 					InputEventAppStateLog(ame_Log_StartMethod, "add", "println", "");
-					m_inputs.add(a_interrupt, a_input);
-					m_action.add(a_interrupt, a_action);
+					m_inputs.put(a_interrupt, a_input);
+					m_action.put(a_interrupt, a_action);
 					if(!m_app_events.contain(a_interrupt)){
 						m_app_events.addPointer(a_interrupt, new MethodList<Application&,int,I&>());
 					}
@@ -63,13 +63,19 @@
 					InputEventAppStateLog(ame_Log_EndMethod, "add", "println", "");
 				}
 				
+				virtual val<I> getInput(int a_interrupt){
+					InputEventAppStateLog(ame_Log_StartMethod, "getInput", "println", "");
+					InputEventAppStateLog(ame_Log_EndMethod, "getInput", "println", "");
+					return m_inputs.getValueByValue(val<int>(a_interrupt));
+				}
+				
 				virtual void initializeState(){
 					InputEventAppStateLog(ame_Log_StartMethod, "initializeState", "println", "");
 					InputEventAppStateLog(ame_Log_Statement, "initializeState", "println", "input position:");
 					InputEventAppStateLog(ame_Log_Statement, "initializeState", "println", m_inputs.getPosition());
-					for(int x = 0; x < m_inputs.getPosition(); x++){
-						I* f_input = m_inputs.getValueByPosition(x);
-						if(f_input == nullptr){
+					for(int x = 0; x < m_inputs.length(); x++){
+						pointer<I> f_input = m_inputs.getValue(x);
+						if(f_input.isNull()){
 							InputEventAppStateLog(ame_Log_Statement, "initializeState", "println", "f_input == nullptr");
 							continue;
 						}
@@ -82,13 +88,15 @@
 					InputEventAppStateLog(ame_Log_StartMethod, "updateState", "println", "");
 					InputEventAppStateLog(ame_Log_Statement, "updateState", "println", "input position:");
 					InputEventAppStateLog(ame_Log_Statement, "updateState", "println", m_inputs.getPosition());
-					for(int x = 0; x < m_inputs.getPosition(); x++){
-						int f_interrupt = m_inputs.getKey(x);
-						I* f_input = m_inputs.getValueByPosition(x);
-						if(f_input == nullptr){
+					for(int x = 0; x < m_inputs.length(); x++){
+						pointer<int> f_interrupt_p = m_inputs.getKey(x);
+						pointer<I> f_input_p = m_inputs.getValue(x);
+						if(f_interrupt_p.isNull() || f_input_p.isNull()){
 							InputEventAppStateLog(ame_Log_Statement, "initializeState", "println", "f_input == nullptr");
 							continue;
 						}
+						int f_interrupt = *((int*)f_interrupt_p.getRawPointer());
+						I* f_input = (I*)f_input_p.getRawPointer();
 						
 						bool i_action = invoke<int,bool,I&,float>(m_action, f_interrupt, *f_input, a_tpc);
 						InputEventAppStateLog(ame_Log_Statement, "updateState", "println", "Action State:");
@@ -114,7 +122,7 @@
 
 				virtual void operator=(const InputEventAppState& a_inputevent){
 					InputEventAppStateLog(ame_Log_StartMethod, "Constructor", "println", "");
-					m_inputs.addCopy(a_inputevent.m_inputs);
+					m_inputs = a_inputevent.m_inputs;
 					m_action.addCopy(a_inputevent.m_action);
 					m_events.addCopy(a_inputevent.m_events);
 					m_app_events.addCopy(a_inputevent.m_app_events);
@@ -122,7 +130,7 @@
 				}
 
 			protected:
-				PrimitiveRawMap<int,I> m_inputs;
+				TMap<int,I> m_inputs;
 				MethodReturnMap<int,bool,I&,float> m_action;
 				PrimitiveRawMap<int,MethodList<int,I&>> m_events;
 				PrimitiveRawMap<int,MethodList<Application&,int,I&>> m_app_events;
