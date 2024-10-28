@@ -17,12 +17,12 @@
 #include "Array.hpp"
 #include "CharArray.hpp"
 
-#ifdef pankey_Windows
+#if pankey_Enviroment == pankey_Windows_Enviroment
 	#include "pankey_Printable.hpp"
 	#include "pankey_Print.hpp"
 #endif
 
-#ifdef pankey_ArduinoIDE
+#if pankey_IDE == pankey_Arduino_IDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif
@@ -318,7 +318,7 @@ class Note : public CharArray, public Printable{
 			return true;
 		}
 
-		#if defined(pankey_ArduinoIDE)
+		#if pankey_IDE == pankey_Arduino_IDE
 
 			virtual String toString()const{
 				String i_str;

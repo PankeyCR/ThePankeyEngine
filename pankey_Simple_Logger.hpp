@@ -18,7 +18,7 @@ void Simple_LogPrint_(void* a_log_pointer, int location, const pankey_String& na
 	}
 	// shrink expand
 
-	// if(	method != "contain" /*&& 
+	// if(	method != "hasReachedFixSize" /*&& 
 	// 	method != "getIndex" && 
 	// 	method != "insertLocalArrayPointer"/* && 
 	// 	method != "getKeyIndexByLValue" /*&& method != "setMapEntry"*/){

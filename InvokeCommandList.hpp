@@ -1,9 +1,6 @@
 
 #ifndef InvokeCommandList_hpp
 	#define InvokeCommandList_hpp
-	
-	#include "pankey_Enviroment.hpp"
-	#include "pankey_Enviroment_config.hpp"
 
 	#include "Command.hpp"
 	#include "CommandReturn.hpp"

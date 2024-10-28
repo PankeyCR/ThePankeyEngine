@@ -1,4 +1,6 @@
 
+#include "config.hpp"
+
 #include "TestRunner.hpp"
 
 #include "TR_InvokeMethod_Testing.hpp"
@@ -10,6 +12,8 @@
 #include "TR_InvokeCommandMap_Testing.hpp"
 
 #include "TR_InvokeList_Testing.hpp"
+
+#include "TR_Function_Testing.hpp"
 
 using namespace pankey;
 
@@ -30,6 +34,8 @@ void setup() {
   TR_InvokeCommandMap_Testing(test);
   
   TR_InvokeList_Testing(test);
+  
+  TR_Function_Testing(test);
 }
 
 void loop() {

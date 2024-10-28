@@ -5,18 +5,20 @@
 	#include "SerialServer.hpp"
 	#include "WIFISerialPort.hpp"
 
-	#ifdef pankey_Windows
+	#if pankey_Enviroment == pankey_Windows_Enviroment
 
 	#endif
 
-	#ifdef pankey_ArduinoIDE
+	#if pankey_IDE == pankey_Arduino_IDE
 		#include "Arduino.h"
 		#include "IPAddress.h"
 	#endif
 
-	#if defined(ARDUINO_ARCH_ESP8266)
+	#if pankey_Generic_Hardware == pankey_Generic_Esp8266_Hardware
 		#include "WiFi.h"
-	#elif defined(ARDUINO_ARCH_ESP32)
+	#endif
+
+	#if pankey_Generic_Hardware == pankey_Generic_Esp32_Hardware
 		#include "WiFi.h"
 	#endif
 
@@ -67,7 +69,7 @@
 			
 			virtual obj<SerialPort> accept(){
 				WIFISerialServerLog(pankey_Log_StartMethod, "accept",  "println", "");
-				#if defined(pankey_GENERIC_ESP32)
+				#if pankey_Generic_Hardware == pankey_Generic_Esp32_Hardware
 					WIFISerialServerLog(pankey_Log_Statement, "accept",  "println", "pankey_GENERIC_ESP32");
 					WiFiClient client = server.accept();   // Listen for incoming clients
 					if(client){
@@ -76,7 +78,7 @@
 						return i_port;
 					}
 				#endif 
-				#if defined(pankey_GENERIC_ESP8266)
+				#if pankey_Generic_Hardware == pankey_Generic_Esp8266_Hardware
 					WIFISerialServerLog(pankey_Log_Statement, "accept",  "println", "pankey_GENERIC_ESP8266");
 					WiFiClient client = server.available();
 					if(client){

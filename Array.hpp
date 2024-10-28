@@ -194,13 +194,13 @@ class Array{
 			ArrayLog(pankey_Log_EndMethod, "copyExternEndValue", "println", "");
 		}
 
-		virtual void eraseExtern(T* a_t_value){
-			ArrayLog(pankey_Log_StartMethod, "erase", "println", "");
+		virtual void eraseExternArrayPointer(T* a_t_value){
+			ArrayLog(pankey_Log_StartMethod, "eraseExternArrayPointer", "println", "");
 			if(a_t_value == nullptr){
 				return;
 			}
 			delete[] a_t_value;
-			ArrayLog(pankey_Log_EndMethod, "erase", "println", "");
+			ArrayLog(pankey_Log_EndMethod, "eraseExternArrayPointer", "println", "");
 		}
 
 		virtual T* create(int a_size)const{
@@ -897,7 +897,7 @@ class Array{
 				expandLocal(i_size + this->m_expandSize);
 			}
 			this->copyPointer(i_t_value, i_size);
-			this->eraseExtern(i_t_value);
+			this->eraseExternArrayPointer(i_t_value);
 			ArrayLog(pankey_Log_EndMethod, "addLocal", "println", "");
 			return *this;
 		}
@@ -1241,27 +1241,36 @@ class Array{
 		}*/
 
 		virtual void fixSize(int a_length){
-			ArrayLog(pankey_Log_StartMethod, "fixSize", "println", "int a_position");
+			ArrayLog(pankey_Log_StartMethod, "fixSize", "println", "");
 			m_fix_length = a_length;
-			ArrayLog(pankey_Log_EndMethod, "fixSize", "println", i_availableSize);
+			ArrayLog(pankey_Log_EndMethod, "fixSize", "println", "");
 		}
 
 		virtual void setFixSize(int a_length){
-			ArrayLog(pankey_Log_StartMethod, "setFixSize", "println", "int a_position");
+			ArrayLog(pankey_Log_StartMethod, "setFixSize", "println", "");
 			m_fix_length = a_length;
 			expandLocal(a_length);
-			ArrayLog(pankey_Log_EndMethod, "setFixSize", "println", i_availableSize);
+			ArrayLog(pankey_Log_EndMethod, "setFixSize", "println", "");
 		}
 
 		virtual bool hasReachedFixSize()const{
 			ArrayLog(pankey_Log_StartMethod, "hasReachedFixSize", "println", "");
+			ArrayLog(pankey_Log_Statement, "hasReachedFixSize", "println", "m_fix_length:");
+			ArrayLog(pankey_Log_Statement, "hasReachedFixSize", "println", m_fix_length);
+			ArrayLog(pankey_Log_Statement, "hasReachedFixSize", "println", "this->length():");
+			ArrayLog(pankey_Log_Statement, "hasReachedFixSize", "println", this->length());
+			ArrayLog(pankey_Log_Statement, "hasReachedFixSize", "println", "this->getPosition():");
+			ArrayLog(pankey_Log_Statement, "hasReachedFixSize", "println", this->getPosition());
+			ArrayLog(pankey_Log_Statement, "hasReachedFixSize", "println", "this->getSize():");
+			ArrayLog(pankey_Log_Statement, "hasReachedFixSize", "println", this->getSize());
 			ArrayLog(pankey_Log_Statement, "hasReachedFixSize", "println", "has reached fix size:");
 			ArrayLog(pankey_Log_Statement, "hasReachedFixSize", "println", this->length() >= m_fix_length);
 			if(m_fix_length == -1){
+				ArrayLog(pankey_Log_EndMethod, "hasReachedFixSize", "println", "m_fix_length == -1");
 				return false;
 			}
 			ArrayLog(pankey_Log_EndMethod, "hasReachedFixSize", "println", "");
-			return this->length() >= m_fix_length;
+			return this->length() >= m_fix_length || this->getPosition() >= m_fix_length;
 		}
 
 		virtual int getFreeSpace(int a_position)const{

@@ -5,16 +5,16 @@
 	#include "Note.hpp"
 	#include "PrimitiveRawList.hpp"
 
-	#ifdef pankey_Windows
+	#if pankey_Enviroment == pankey_Windows_Enviroment
 
 	#endif
 
-	#ifdef pankey_ArduinoIDE
+	#if pankey_IDE == pankey_Arduino_IDE
 		#include "IPAddress.h"
 	#endif
 
 	namespace pankey{
-		#if defined(pankey_ArduinoIDE)
+		#if pankey_IDE == pankey_Arduino_IDE
 		
 			Array<uint8_t> toMAC(const Note& a_note){
 				Array<uint8_t> i_mac;
@@ -153,7 +153,7 @@
 			
 		#endif
 		
-		#if defined(pankey_Windows)
+		#if pankey_Enviroment == pankey_Windows_Enviroment
 		
 		// IPAddress toIPAddress(const Note& a_note){
 		// 	IPAddress ip;

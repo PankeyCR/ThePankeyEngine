@@ -2,11 +2,11 @@
 #ifndef WIFISerialPort_hpp
 	#define WIFISerialPort_hpp
 
-	#ifdef pankey_Windows
+	#if pankey_Enviroment == pankey_Windows_Enviroment
 
 	#endif
 
-	#ifdef pankey_ArduinoIDE
+	#if pankey_IDE == pankey_Arduino_IDE
 		#include "Arduino.h"
 		#include "Printable.h"
 		#include "IPAddress.h"
@@ -15,9 +15,11 @@
 	#include "SerialPort.hpp"
 	#include "NoteHelper.hpp"
 
-	#if defined(ARDUINO_ARCH_ESP8266)
+	#if pankey_Generic_Hardware == pankey_Generic_Esp8266_Hardware
 		#include "WiFi.h"
-	#elif defined(ARDUINO_ARCH_ESP32)
+	#endif
+
+	#if pankey_Generic_Hardware == pankey_Generic_Esp32_Hardware
 		#include "WiFi.h"
 	#endif
 
@@ -51,7 +53,7 @@
 					WIFISerialPortLog(pankey_Log_EndMethod, "Destructor",  "println", "");
 				}
 
-				#ifdef pankey_ArduinoIDE
+				#if pankey_IDE == pankey_Arduino_IDE
 
 					WIFISerialPort(const WIFISerialPort& a_serialport){
 						WIFISerialPortLog(pankey_Log_StartMethod, "Contructor",  "println", "eclient");
@@ -205,11 +207,11 @@
 				#endif
 
 			protected:
-				#ifdef pankey_Windows
+				#if pankey_Enviroment == pankey_Windows_Enviroment
 
 				#endif
 
-				#ifdef pankey_ArduinoIDE
+				#if pankey_IDE == pankey_Arduino_IDE
 					WiFiClient m_client;
 				#endif
 		};

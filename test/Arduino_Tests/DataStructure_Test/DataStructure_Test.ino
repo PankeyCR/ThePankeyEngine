@@ -1,4 +1,6 @@
 
+#include "config.hpp"
+
 #include "TestRunner.hpp"
 
 #include "TR_Array_Testing.hpp"

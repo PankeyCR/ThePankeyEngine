@@ -2,80 +2,91 @@
 #ifndef Function_hpp
 	#define Function_hpp
 		
-	#include "pankey_Enviroment.hpp"
-	#include "pankey_Enviroment_config.hpp"
+	#include "pankey.hpp"
+	
+	#include "InvokeMethod.hpp"
+	#include "ClassFunction.hpp"
+
+	#ifdef Function_LogApp
+		#include "pankey_Logger.hpp"
+		#define FunctionLog(location,method,type,mns) pankey_Log((void*)this,location,"Function",method,type,mns)
+	#else
+		#define FunctionLog(location,method,type,mns)
+	#endif
 
 	namespace pankey{
 
-		template<class T>
+		template<class T, class... Args>
 		class Function{
+			protected:
+				obj<ClassFunction<T,Args...>> m_function;
+
 			public:
 				Function(){}
-				virtual ~Function(){}
 
-				template<class... Args>
-				T f(Args... a_args){
-					PrimitiveList<T> i_list;
-					i_list.addPack(a_args...);
-					return this->function(i_list);
+				template<class O>
+				Function(const O& a_obj){
+					FunctionLog(pankey_Log_StartMethod, "Constructor", "println", "const ClassFunction<T,Args...>&");
+					m_function = a_obj;
+					FunctionLog(pankey_Log_EndMethod, "Constructor", "println", "");
 				}
 
-				virtual T function(const PrimitiveList<T>& a_variables)=0;
-
-				virtual void initializeConstantes(int a_size, T a_value){
-					for(int x = 0; x < a_size; x++){
-						m_constantes.add(a_value);
-					}
+				virtual ~Function(){
+					FunctionLog(pankey_Log_StartMethod, "Destructor", "println", "");
+					FunctionLog(pankey_Log_EndMethod, "Destructor", "println", "");
 				}
 
-				virtual void setConstante(int a_index, T a_value){m_constantes.set(a_index, a_value);}
-
-				virtual T getConstante(int a_index){
-					if(m_constantes.getPosition() <= a_index){
+			public:
+				T run(Args... a_args){
+					FunctionLog(pankey_Log_StartMethod, "run", "println", "");
+					if(m_function.isNull()){
+						FunctionLog(pankey_Log_EndMethod, "run", "println", "m_function.isNull()");
 						return T();
 					}
-					return m_constantes[a_index];
+					FunctionLog(pankey_Log_EndMethod, "run", "println", "");
+					return m_function->run(a_args...);
 				}
 
-				virtual Function<T>* clone(){
-					return nullptr;
+				bool fit(T a_result, Args... a_args){
+					FunctionLog(pankey_Log_StartMethod, "fit", "println", "");
+					if(m_function.isNull()){
+						FunctionLog(pankey_Log_EndMethod, "fit", "println", "m_function.isNull()");
+						return false;
+					}
+					FunctionLog(pankey_Log_EndMethod, "fit", "println", "");
+					return m_function->fit(a_result, a_args...);
 				}
-					
-				#if defined(cppObject_AVAILABLE) && defined(cppObjectClass_AVAILABLE) && defined(Class_AVAILABLE)
-				virtual cppObjectClass* getClass(){return Class<Function<T>>::getClass();}
+
+				template<class V>
+				void operator=(const V& a_value){
+					m_function = a_value;
+				}
 				
-				virtual bool instanceof(cppObjectClass* cls){return cls == Class<Function<T>>::getClass();}
-
-				virtual bool equal(cppObject* a_obj){
-					if(a_obj == nullptr){
+				template<class V>
+				bool operator==(const V& a_value){
+					if(m_function.isNull()){
 						return false;
 					}
-					if(!a_obj->instanceof(this->getClass())){
+					if(m_function.template isValidObject<V>()){
+						V& i_valid = m_function.template getReference<V>();
+						return i_valid == a_value ;
+					}
+					ClassFunction<T,Args...>& i_value = m_function.template getReference<ClassFunction<T,Args...>>();
+					return i_value == a_value ;
+				}
+				
+				template<class V>
+				bool operator!=(const V& a_value){
+					if(m_function.isNull()){
 						return false;
 					}
-					Function<T>* i_function = (Function<T>*)a_obj;
-					return m_constantes == i_function->m_constantes;
+					if(m_function.template isValidObject<V>()){
+						V& i_valid = m_function.template getReference<V>();
+						return i_valid != a_value ;
+					}
+					ClassFunction<T,Args...>& i_value = m_function.template getReference<ClassFunction<T,Args...>>();
+					return i_value != a_value ;
 				}
-				#else
-				virtual bool equal(Function<T>* a_function){
-					return m_constantes == a_function->m_constantes;
-				}
-				#endif
-
-				virtual void operator=(const Function<T>& a_function){
-					m_constantes = a_function.m_constantes;
-				}
-
-				virtual bool operator==(const Function<T>& a_function){
-					return m_constantes == a_function.m_constantes;
-				}
-
-				virtual bool operator!=(const Function<T>& a_function){
-					return m_constantes != a_function.m_constantes;
-				}
-
-			protected:
-				PrimitiveList<T> m_constantes;
 		};
 
 	}

@@ -8,17 +8,19 @@
 	#include "NoteHelper.hpp"
 	#include "PrimitiveRawList.hpp"
 
-	#ifdef pankey_Windows
+	#if pankey_Enviroment == pankey_Windows_Enviroment
 
 	#endif
 
-	#ifdef pankey_ArduinoIDE
+	#if pankey_IDE == pankey_Arduino_IDE
 		#include "Arduino.h"
 	#endif
 
-	#if defined(ARDUINO_ARCH_ESP8266)
+	#if pankey_Generic_Hardware == pankey_Generic_Esp8266_Hardware
 		#include "WiFi.h"
-	#elif defined(ARDUINO_ARCH_ESP32)
+	#endif
+
+	#if pankey_Generic_Hardware == pankey_Generic_Esp32_Hardware
 		#include "WiFi.h"
 		#include <esp_wifi.h>
 	#endif
@@ -34,7 +36,7 @@
 		
 		//void initializeWIFI(Note a_ip, Note a_gateway, Note a_subnet, Note a_dns, uint8_t* a_mac, const char* name, const char* pasword);
 
-		#ifdef pankey_ArduinoIDE
+		#if pankey_IDE == pankey_Arduino_IDE
 
 			void initializeWIFI(Note a_mac, Note a_ip, Note a_gateway, Note a_subnet, Note a_dns, Note a_name, Note a_pasword){
 				WIFIConnectionLog(pankey_Log_StartMethod, "initializeWIFI",  "println", "");

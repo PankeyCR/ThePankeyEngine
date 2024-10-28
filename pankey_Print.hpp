@@ -2,14 +2,11 @@
 #ifndef pankey_Print_hpp
     #define pankey_Print_hpp
 
-    #include "pankey_Enviroment.hpp"
-    #include "pankey_Enviroment_config.hpp"
-
     #include "pankey_Byte.hpp"
     #include "pankey_Printable.hpp"
     #include "pankey_String.hpp"
 
-    #ifdef pankey_Windows
+    #if pankey_Enviroment == pankey_Windows_Enviroment
         #include <string.h>
     #endif
 

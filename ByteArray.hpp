@@ -2,12 +2,12 @@
 #ifndef ByteArray_hpp
 	#define ByteArray_hpp
 
-	#ifdef pankey_Windows
+	#if pankey_Enviroment == pankey_Windows_Enviroment
 		#include "pankey_Printable.hpp"
 		#include "pankey_Print.hpp"
 	#endif
 
-	#ifdef pankey_ArduinoIDE
+	#if pankey_IDE == pankey_Arduino_IDE
 		#include "Arduino.h"
 		#include "Printable.h"
 		#include "IPAddress.h"
@@ -162,9 +162,9 @@
 						ByteArrayLog(pankey_Log_EndMethod, "setBit", "println", "c == nullptr || bit >= 8");
 						return;
 					}
-					#ifdef pankey_ArduinoIDE
+					#if pankey_IDE == pankey_Arduino_IDE
 					bitWrite((*c), bit, value);
-					#elif defined(pankey_Windows)
+					#elif pankey_Enviroment == pankey_Windows_Enviroment
 
 					#else
 
@@ -178,9 +178,9 @@
 					if(c == nullptr){
 						return;
 					}
-					#ifdef pankey_ArduinoIDE
+					#if pankey_IDE == pankey_Arduino_IDE
 					bitWrite((*c), bit, false);
-					#elif defined(pankey_Windows)
+					#elif pankey_Enviroment == pankey_Windows_Enviroment
 
 					#else
 
@@ -193,9 +193,9 @@
 					for(int xi = 0; xi < this->getPosition(); xi++){
 						for(int xo = 0; xo < 8; xo++){
 							pankey_Byte f_byte = this->get(xi);
-							#ifdef pankey_ArduinoIDE
+							#if pankey_IDE == pankey_Arduino_IDE
 							bitWrite(f_byte, xo, !bitRead(f_byte, xo));
-							#elif defined(pankey_Windows)
+							#elif pankey_Enviroment == pankey_Windows_Enviroment
 
 							#else
 
@@ -212,9 +212,9 @@
 						return;
 					}
 					for(int x = 0; x < 8; x++){
-						#ifdef pankey_ArduinoIDE
+						#if pankey_IDE == pankey_Arduino_IDE
 						bitWrite((*c), x, !bitRead((*c), x));
-						#elif defined(pankey_Windows)
+						#elif pankey_Enviroment == pankey_Windows_Enviroment
 
 						#else
 
@@ -229,9 +229,9 @@
 					if(c == nullptr){
 						return;
 					}
-					#ifdef pankey_ArduinoIDE
+					#if pankey_IDE == pankey_Arduino_IDE
 					bitWrite((*c), bit, !bitRead((*c), bit));
-					#elif defined(pankey_Windows)
+					#elif pankey_Enviroment == pankey_Windows_Enviroment
 
 					#else
 
@@ -246,9 +246,9 @@
 						return false;
 					}
 					ByteArrayLog(pankey_Log_EndMethod, "getBit", "println", "");
-					#ifdef pankey_ArduinoIDE
+					#if pankey_IDE == pankey_Arduino_IDE
 					return bitRead((*c), bit);
-					#elif defined(pankey_Windows)
+					#elif pankey_Enviroment == pankey_Windows_Enviroment
 					return false;
 					#else
 					return false;

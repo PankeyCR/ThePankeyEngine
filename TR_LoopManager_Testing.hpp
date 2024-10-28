@@ -2,8 +2,7 @@
 #ifndef TR_LoopManager_Testing_hpp
 	#define TR_LoopManager_Testing_hpp
 
-	#include "pankey_Enviroment.hpp"
-	#include "pankey_Enviroment_config.hpp"
+	#include "pankey.hpp"
 
 	#include "TestResult.hpp"
 	#include "TestRunner.hpp"

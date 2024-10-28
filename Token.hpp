@@ -2,12 +2,7 @@
 #ifndef Token_hpp
 	#define Token_hpp
 	
-	#include "pankey_Enviroment.hpp"
-	#include "pankey_Enviroment_config.hpp"
-
-	#ifndef pankey_Enviroment_Defined
-
-	#endif
+	#include "pankey.hpp"
 
 	#ifdef pankey_Windows
 		#include "pankey_Printable.hpp"
@@ -86,6 +81,11 @@
 				}
 				virtual bool operator==(Token b){return value == b.value;}
 				virtual bool operator!=(Token b){return value != b.value;}
+
+				virtual bool valueEqual(Token i_token){return value == i_token.value;}
+				virtual bool name_valueEqual(Token i_token){return value == i_token.value;}
+				virtual bool equal(Token i_token){return value == i_token.value;}
+				virtual bool is(Token i_token){return value == i_token.value;}
 
 				size_t printTo(Print& p) const{
 					size_t i_size = 0;

@@ -1,18 +1,20 @@
 
 #ifndef TR_Matrix3f_Testing_hpp
-#define TR_Matrix3f_Testing_hpp
+	#define TR_Matrix3f_Testing_hpp
 
-#include "TestResult.hpp"
+	#include "pankey.hpp"
 
-#include "Matrix3f.hpp"
+	#include "TestResult.hpp"
 
-namespace higgs{
-	
-	TestResult TR_Matrix3f_Testing(){
-		TestResult result;
+	#include "Matrix3f.hpp"
+
+	namespace pankey{
 		
-		return result;
+		TestResult TR_Matrix3f_Testing(){
+			TestResult result;
+			
+			return result;
+		}
 	}
-}
 
 #endif

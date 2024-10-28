@@ -10,6 +10,9 @@
 #define pankey_SystemFullLog
 //#define pankey_Arduino_Log
 
+// #define Function_LogApp
+// #define FreeFunction_LogApp
+
 // #define ValueArrayMapCollection_LogApp
 
 // #define ObjectArrayMap_LogApp

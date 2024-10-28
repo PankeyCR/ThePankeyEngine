@@ -4,11 +4,11 @@
 
 	#include "pankey.hpp"
 
-	#ifdef pankey_Windows
+	#if pankey_Enviroment == pankey_Windows_Enviroment
 
 	#endif
 
-	#ifdef pankey_ArduinoIDE
+	#if pankey_IDE == pankey_Arduino_IDE
 		#include "Arduino.h"
 	#endif
 
@@ -23,7 +23,7 @@
 
 	namespace pankey{
 
-		#ifdef pankey_ArduinoIDE
+		#if pankey_IDE == pankey_Arduino_IDE
 			void initializeETHERNET(IPAddress a_ip, IPAddress a_gateway, IPAddress a_subnet, int CS_pin, byte* mac){
 				ETHERNETConnectionLog(pankey_Log_StartMethod, "initializeETHERNET",  "println", "IPAddress");
 				ETHERNETConnectionLog(pankey_Log_StartMethod, "initializeETHERNET",  "println", "a_ip");

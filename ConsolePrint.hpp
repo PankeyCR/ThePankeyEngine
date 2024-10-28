@@ -1,19 +1,14 @@
 
 #ifndef ConsolePrint_hpp
 #define ConsolePrint_hpp
-#define ConsolePrint_AVAILABLE
 
-#ifndef pankey_Enviroment_Defined
-
-#endif
-
-#ifdef pankey_Windows
+#if pankey_Enviroment == pankey_Windows_Enviroment
 	#include <stdio.h>
 	#include "pankey_Print.hpp"
 	#include "pankey_Printable.hpp"
 #endif
 
-#ifdef pankey_ArduinoIDE
+#if pankey_IDE == pankey_Arduino_IDE
 	#include "Arduino.h"
 	#include "Printable.h"
 #endif

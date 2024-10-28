@@ -182,9 +182,9 @@
 
 				template<class P>
 				P& getReference(){
-					ObjectLog(pankey_Log_StartMethod, "getValue", "println","");
+					ObjectLog(pankey_Log_StartMethod, "getReference", "println","");
 					VOID_TYPE i_pointer = this->getRawPointer();
-					ObjectLog(pankey_Log_EndMethod, "getValue", "println","");
+					ObjectLog(pankey_Log_EndMethod, "getReference", "println","");
 					return *((P*)i_pointer);
 				}
 

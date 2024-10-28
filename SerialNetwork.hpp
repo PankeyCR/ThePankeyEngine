@@ -51,28 +51,28 @@
 					return false;
 				}
 				
-				virtual void addDelivery(command<const Note&> a_command){
-					SerialNetworkLog(pankey_Log_StartMethod, "addDelivery",  "println", "command<const Note&>");
+				virtual void addCommandDelivery(command<const Note&> a_command){
+					SerialNetworkLog(pankey_Log_StartMethod, "addCommandDelivery",  "println", "command<const Note&>");
 					m_commands.add(a_command);
-					SerialNetworkLog(pankey_Log_EndMethod, "addDelivery",  "println", "");
+					SerialNetworkLog(pankey_Log_EndMethod, "addCommandDelivery",  "println", "");
 				}
 				
-				virtual void addDelivery(InvokeMethod<const Note&> a_command){
-					SerialNetworkLog(pankey_Log_StartMethod, "addDelivery",  "println", "InvokeMethod<const Note&>");
+				virtual void addMethodDelivery(InvokeMethod<const Note&> a_command){
+					SerialNetworkLog(pankey_Log_StartMethod, "addMethodDelivery",  "println", "InvokeMethod<const Note&>");
 					m_methods.add(a_command);
-					SerialNetworkLog(pankey_Log_EndMethod, "addDelivery",  "println", "");
+					SerialNetworkLog(pankey_Log_EndMethod, "addMethodDelivery",  "println", "");
 				}
 				
-				virtual void addDelivery(command<Application&> a_command){
-					SerialNetworkLog(pankey_Log_StartMethod, "addDelivery",  "println", "command<const Note&>");
+				virtual void addAppCommandDelivery(command<Application&,const Note&> a_command){
+					SerialNetworkLog(pankey_Log_StartMethod, "addAppDelivery",  "println", "command<Application&,const Note&>");
 					m_app_commands.add(a_command);
-					SerialNetworkLog(pankey_Log_EndMethod, "addDelivery",  "println", "");
+					SerialNetworkLog(pankey_Log_EndMethod, "addAppDelivery",  "println", "");
 				}
 				
-				virtual void addDelivery(InvokeMethod<Application&,const Note&> a_command){
-					SerialNetworkLog(pankey_Log_StartMethod, "addDelivery",  "println", "InvokeMethod<Application&,const Note&>");
+				virtual void addAppMethodDelivery(InvokeMethod<Application&,const Note&> a_command){
+					SerialNetworkLog(pankey_Log_StartMethod, "addAppDelivery",  "println", "InvokeMethod<Application&,const Note&>");
 					m_app_methods.add(a_command);
-					SerialNetworkLog(pankey_Log_EndMethod, "addDelivery",  "println", "");
+					SerialNetworkLog(pankey_Log_EndMethod, "addAppDelivery",  "println", "");
 				}
 				
 				virtual void DeliverMessage(Application& a_app, Note& a_message){
@@ -85,7 +85,7 @@
 					}
 					invokeAll<const Note&>(m_commands, a_message);
 					invokeAll<const Note&>(m_methods, a_message);
-					invokeAll<Application&>(m_app_commands, a_app);
+					invokeAll<Application&,const Note&>(m_app_commands, a_app, a_message);
 					invokeAll<Application&,const Note&>(m_app_methods, a_app, a_message);
 					SerialNetworkLog(pankey_Log_EndMethod, "DeliverMessage",  "println", "");
 				}
@@ -96,7 +96,7 @@
 
 				CommandList<const Note&> m_commands;
 				MethodList<const Note&> m_methods;
-				CommandList<Application&> m_app_commands;
+				CommandList<Application&,const Note&> m_app_commands;
 				MethodList<Application&,const Note&> m_app_methods;
 		};
 

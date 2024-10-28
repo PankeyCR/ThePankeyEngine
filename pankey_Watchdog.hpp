@@ -1,12 +1,8 @@
 
 #ifndef pankey_Watchdog_hpp
 	#define pankey_Watchdog_hpp
-
-	#ifdef pankey_Windows
 	
-	#endif
-	
-	#ifdef pankey_GENERIC_ESP32
+	#if pankey_IDE == pankey_Generic_Esp32_Hardware
 		#include "esp_task_wdt.h"
 	#endif
 
@@ -16,7 +12,7 @@
 			public:
 
 				static void feed(){
-					#ifdef pankey_GENERIC_ESP32
+					#if pankey_IDE == pankey_Generic_Esp32_Hardware
 						esp_task_wdt_reset();
 					#endif
 				}

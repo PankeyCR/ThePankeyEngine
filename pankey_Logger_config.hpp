@@ -17,10 +17,10 @@
 //   addClassMethodToLog("insertLocalArrayPointer");
 
 
-#ifndef pankey_LogDebug
-	#include "pankey_debug.hpp"
-	#define pankey_LogDebug(pointer,location,name,method,type) debug(pointer,location,name,method,type)
-#endif
+// #ifndef pankey_LogDebug
+// 	#include "pankey_debug.hpp"
+// 	#define pankey_LogDebug(pointer,location,name,method,type) debug(pointer,location,name,method,type)
+// #endif
 
 // #ifndef pankey_LogDebug
 // 	#include "pankey_list_debug.hpp"

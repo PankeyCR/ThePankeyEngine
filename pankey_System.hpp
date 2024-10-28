@@ -2,14 +2,14 @@
 #ifndef pankey_System_hpp
 	#define pankey_System_hpp
 
-	#ifdef pankey_Windows
+	#if pankey_Enviroment == pankey_Windows_Enviroment
 		#include <stdio.h>
 		#include "pankey_Print.hpp"
 		#include "pankey_Printable.hpp"
 		#include "ConsolePrint.hpp"
 	#endif
 
-	#ifdef pankey_ArduinoIDE
+	#if pankey_IDE == pankey_Arduino_IDE
 		#include "Arduino.h"
 		#include "Printable.h"
 	#endif
@@ -24,9 +24,9 @@
 				virtual ~System(){}
 
 				static long milliSeconds(){
-					#ifdef pankey_Windows
+					#if pankey_Enviroment == pankey_Windows_Enviroment
 						return 0;
-					#elif defined(pankey_ArduinoIDE)
+					#elif pankey_IDE == pankey_Arduino_IDE
 						return millis();
 					#else
 						return 0;
@@ -34,9 +34,9 @@
 				}
 
 				static long microSeconds(){
-					#ifdef pankey_Windows
+					#if pankey_Enviroment == pankey_Windows_Enviroment
 						return 0;
-					#elif defined(pankey_ArduinoIDE)
+					#elif pankey_IDE == pankey_Arduino_IDE
 						return micros();
 					#else
 						return 0;
@@ -44,9 +44,9 @@
 				}
 
 				static void sleep(long a_time){
-					#ifdef pankey_Windows
+					#if pankey_Enviroment == pankey_Windows_Enviroment
 						
-					#elif defined(pankey_ArduinoIDE)
+					#elif pankey_IDE == pankey_Arduino_IDE
 						delay(a_time);
 					#else
 						
@@ -54,9 +54,9 @@
 				}
 
 				static void recycle(){
-					#ifdef pankey_Windows
+					#if pankey_Enviroment == pankey_Windows_Enviroment
 						
-					#elif defined(pankey_ArduinoIDE)
+					#elif pankey_IDE == pankey_Arduino_IDE
 					
 					#else
 						
@@ -69,12 +69,12 @@
 
 		};
 
-		#ifdef pankey_Windows
+		#if pankey_Enviroment == pankey_Windows_Enviroment
 			ConsolePrint PConsole;
 			Print& System::console = PConsole;
 		#endif
 
-		#ifdef pankey_ArduinoIDE
+		#if pankey_IDE == pankey_Arduino_IDE
 			Print& System::console = Serial;
 		#endif
 

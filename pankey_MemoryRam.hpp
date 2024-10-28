@@ -14,108 +14,108 @@
 *   getUsedStackSize
 *
 */
-#include "pankey_Enviroment_config.hpp"
-#include "pankey_Enviroment_define.hpp"
+#include "pankey.hpp"
 
 #ifndef pankey_MemoryRam_hpp
     #define pankey_MemoryRam_hpp
 
-    #ifdef pankey_Windows
+    #if pankey_Enviroment == pankey_Windows_Enviroment
         #include <windows.h>
 
         #define DIVMEM 1048576
 
         namespace pankey{
             
-        long getRamSize(){
-            MEMORYSTATUSEX statex;
-            statex.dwLength = sizeof (statex);
-            GlobalMemoryStatusEx (&statex);
-            return statex.ullTotalPhys/DIVMEM;
-        }
-        long getFreeRamSize(){
-            MEMORYSTATUSEX statex;
-            statex.dwLength = sizeof (statex);
-            GlobalMemoryStatusEx (&statex);
-            return statex.ullAvailPhys/DIVMEM;
-        }
-        long getUsedRamSize(){
-            MEMORYSTATUSEX statex;
-            statex.dwLength = sizeof (statex);
-            GlobalMemoryStatusEx (&statex);
-            return statex.ullTotalPhys/DIVMEM - statex.ullAvailPhys/DIVMEM;
-        }
+            long getRamSize(){
+                MEMORYSTATUSEX statex;
+                statex.dwLength = sizeof (statex);
+                GlobalMemoryStatusEx (&statex);
+                return statex.ullTotalPhys/DIVMEM;
+            }
+            long getFreeRamSize(){
+                MEMORYSTATUSEX statex;
+                statex.dwLength = sizeof (statex);
+                GlobalMemoryStatusEx (&statex);
+                return statex.ullAvailPhys/DIVMEM;
+            }
+            long getUsedRamSize(){
+                MEMORYSTATUSEX statex;
+                statex.dwLength = sizeof (statex);
+                GlobalMemoryStatusEx (&statex);
+                return statex.ullTotalPhys/DIVMEM - statex.ullAvailPhys/DIVMEM;
+            }
 
-        long getHeapSize(){
-            MEMORYSTATUSEX statex;
-            statex.dwLength = sizeof (statex);
-            GlobalMemoryStatusEx (&statex);
-            return 0;
-        }
-        long getFreeHeapSize(){
-            MEMORYSTATUSEX statex;
-            statex.dwLength = sizeof (statex);
-            GlobalMemoryStatusEx (&statex);
-            return 0;
-        }
-        long getUsedHeapSize(){
-            MEMORYSTATUSEX statex;
-            statex.dwLength = sizeof (statex);
-            GlobalMemoryStatusEx (&statex);
-            return 0;
-        }
+            long getHeapSize(){
+                MEMORYSTATUSEX statex;
+                statex.dwLength = sizeof (statex);
+                GlobalMemoryStatusEx (&statex);
+                return 0;
+            }
+            long getFreeHeapSize(){
+                MEMORYSTATUSEX statex;
+                statex.dwLength = sizeof (statex);
+                GlobalMemoryStatusEx (&statex);
+                return 0;
+            }
+            long getUsedHeapSize(){
+                MEMORYSTATUSEX statex;
+                statex.dwLength = sizeof (statex);
+                GlobalMemoryStatusEx (&statex);
+                return 0;
+            }
 
-        long getStackSize(){
-            MEMORYSTATUSEX statex;
-            statex.dwLength = sizeof (statex);
-            GlobalMemoryStatusEx (&statex);
-            return 0;
-        }
-        long getFreeStackSize(){
-            MEMORYSTATUSEX statex;
-            statex.dwLength = sizeof (statex);
-            GlobalMemoryStatusEx (&statex);
-            return 0;
-        }
-        long getUsedStackSize(){
-            MEMORYSTATUSEX statex;
-            statex.dwLength = sizeof (statex);
-            GlobalMemoryStatusEx (&statex);
-            return 0;
-        }
+            long getStackSize(){
+                MEMORYSTATUSEX statex;
+                statex.dwLength = sizeof (statex);
+                GlobalMemoryStatusEx (&statex);
+                return 0;
+            }
+            long getFreeStackSize(){
+                MEMORYSTATUSEX statex;
+                statex.dwLength = sizeof (statex);
+                GlobalMemoryStatusEx (&statex);
+                return 0;
+            }
+            long getUsedStackSize(){
+                MEMORYSTATUSEX statex;
+                statex.dwLength = sizeof (statex);
+                GlobalMemoryStatusEx (&statex);
+                return 0;
+            }
         
         }
 
     #endif
-
-    #ifdef pankey_ArduinoIDE
-        #ifdef pankey_GENERIC_ARDUINO
+    
+    #if pankey_IDE == pankey_Arduino_IDE
+        #if pankey_Generic_Hardware == pankey_Generic_Arduino_Hardware
             #include <Arduino.h>
 
+            #ifdef ARDUINO_ARCH_AVR
+            
             #ifdef __cplusplus
             extern "C" {
             #endif
-            #ifdef ARDUINO_ARCH_AVR
 
             extern unsigned int __heap_start;
             extern void *__brkval;
 
             struct __freelist {
-            size_t sz;
-            struct __freelist *nx;
+                size_t sz;
+                struct __freelist *nx;
             };
 
             extern struct __freelist *__flp;
 
 
             long freeListSize() {
-            struct __freelist* current;
-            long total = 0;
-            for (current = __flp; current; current = current->nx) {
-                total += 2;
-                total += (long) current->sz;
-            }
-            return total;
+                struct __freelist* current;
+                long total = 0;
+                for (current = __flp; current; current = current->nx) {
+                    total += 2;
+                    total += (long) current->sz;
+                }
+                return total;
             }
 
             long getRamSize();
@@ -230,7 +230,8 @@
 
             #endif
         #endif
-        #ifdef pankey_GENERIC_ESP8266
+        
+        #if pankey_Generic_Hardware == pankey_Generic_Esp8266_Hardware
             #ifdef ARDUINO_ARCH_ESP8266
             extern "C" {
             #include "user_interface.h"
@@ -268,7 +269,7 @@
 
             #endif
         #endif
-        #ifdef pankey_GENERIC_ESP32
+        #if pankey_Generic_Hardware == pankey_Generic_Esp32_Hardware
 
             long getRamSize() {
                 return esp_get_free_heap_size();
@@ -301,7 +302,7 @@
             }
 
         #endif
-        #ifdef pankey_GENERIC_ADAFRUIT_FEATHER
+        #if pankey_Generic_Hardware == pankey_Generic_Adafruit_Feather_Hardware
 
             extern "C" char *sbrk(int i);
 

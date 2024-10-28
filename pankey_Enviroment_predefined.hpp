@@ -1,10 +1,24 @@
 
-///////////////////////////////////////////
+#if pankey_Enviroment == pankey_Windows_Enviroment
+	#ifndef pankey_Enviroment_Name
+		#define pankey_Enviroment_Name "Windows"
+	#endif
+#endif
 
-#include "pankey_Windows_Enviroment_predefined.hpp"
-#include "pankey_Linux_Enviroment_predefined.hpp"
-#include "pankey_RaspberryPiOS_Enviroment_predefined.hpp"
-#include "pankey_ArduinoIDE_Enviroment_predefined.hpp"
-#include "pankey_Expressif_Enviroment_predefined.hpp"
+#if pankey_Enviroment == pankey_Linux_Enviroment
+	#ifndef pankey_Enviroment_Name
+		#define pankey_Enviroment_Name "Linux"
+	#endif
+#endif
 
-///////////////////////////////////////////
+#if pankey_Enviroment == pankey_Apple_Enviroment
+	#ifndef pankey_Enviroment_Name
+		#define pankey_Enviroment_Name "Apple"
+	#endif
+#endif
+
+#if pankey_Enviroment == pankey_RaspberryPi_Enviroment
+	#ifndef pankey_Enviroment_Name
+		#define pankey_Enviroment_Name "RaspberryPiOS"
+	#endif
+#endif
