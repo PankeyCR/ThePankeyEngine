@@ -531,7 +531,7 @@
 					SerialStateLog(pankey_Log_EndMethod, "initializeState", "println", "");
 				}
 
-				virtual void updateState(Application& a_app, float tpc){
+				virtual void updateState(Application& a_app, long a_tpc){
 					SerialStateLog(pankey_Log_StartMethod, "updateState",  "println", "");
 					SerialStateLog(pankey_Log_Statement, "updateState",  "println", "server length");
 					SerialStateLog(pankey_Log_Statement, "updateState",  "println", this->m_servers.length());
@@ -551,7 +551,7 @@
 								this->addSerialPort(port, serverProtocol->createPortProtocol());
 							}
 						}
-						serverProtocol->update(server, tpc);
+						serverProtocol->update(server, a_tpc);
 					}
 					SerialStateLog(pankey_Log_Statement, "updateState",  "println", "port length");
 					SerialStateLog(pankey_Log_Statement, "updateState",  "println", this->m_ports.length());
@@ -587,7 +587,7 @@
 							for(int x = 0; x < m_broadMessages.getPosition(); x++){
 								portProtocol->BroadcastMessage(port, *m_broadMessages.getByPosition(x));
 							}
-							portProtocol->update(port,tpc);
+							portProtocol->update(port, a_tpc);
 						}
 					}
 					m_broadMessages.resetDelete();

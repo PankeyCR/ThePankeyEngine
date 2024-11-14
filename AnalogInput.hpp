@@ -92,7 +92,7 @@
 				}
 		};
 
-		bool AnalogInputAction(AnalogInput& a_input, float a_tpc){
+		bool AnalogInputAction(AnalogInput& a_input, long a_tpc){
 			AnalogInputLog(pankey_Log_StartMethod, "AnalogInputAction", "println", "");
 
 			if(a_input.pause){

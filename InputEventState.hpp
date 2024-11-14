@@ -16,7 +16,7 @@
 	namespace pankey{
 
 		template<class I>
-		class InputEventState : public BaseState<float> {
+		class InputEventState : public BaseState<long> {
 			public:
 				InputEventState(){
 					InputEventStateLog(pankey_Log_StartMethod, "Constructor", "println", "");
@@ -31,7 +31,7 @@
 				}
 				virtual ~InputEventState(){}
 				
-				virtual void add(int a_interrupt, I a_input, InvokeMethodReturn<bool,I&,float> a_action, InvokeMethod<int,I&> a_event){
+				virtual void add(int a_interrupt, I a_input, InvokeMethodReturn<bool,I&,long> a_action, InvokeMethod<int,I&> a_event){
 					InputEventStateLog(pankey_Log_StartMethod, "add", "println", "");
 					m_inputs.add(a_interrupt, a_input);
 					m_action.add(a_interrupt, a_action);
@@ -61,7 +61,7 @@
 					InputEventStateLog(pankey_Log_EndMethod, "initializeState", "println", "");
 				}
 				
-				virtual void updateState(float a_tpc){
+				virtual void updateState(long a_tpc){
 					InputEventStateLog(pankey_Log_StartMethod, "updateState", "println", "");
 					InputEventStateLog(pankey_Log_Statement, "updateState", "println", "input position:");
 					InputEventStateLog(pankey_Log_Statement, "updateState", "println", m_inputs.getPosition());
@@ -73,7 +73,7 @@
 							continue;
 						}
 						
-						bool i_action = invoke<int,bool,I&,float>(m_action, f_interrupt, *f_input, a_tpc);
+						bool i_action = invoke<int,bool,I&,long>(m_action, f_interrupt, *f_input, a_tpc);
 						InputEventStateLog(pankey_Log_Statement, "updateState", "println", "Action State:");
 						InputEventStateLog(pankey_Log_Statement, "updateState", "println", i_action);
 						
@@ -98,7 +98,7 @@
 
 			protected:
 				PrimitiveRawMap<int,I> m_inputs;
-				MethodReturnMap<int,bool,I&,float> m_action;
+				MethodReturnMap<int,bool,I&,long> m_action;
 				PrimitiveRawMap<int,MethodList<int,I&>> m_events;
 		};
 

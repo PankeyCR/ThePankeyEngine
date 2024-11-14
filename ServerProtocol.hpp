@@ -22,7 +22,7 @@
 				
 				virtual obj<PortProtocol> createPortProtocol(){return obj<PortProtocol>();}
 				
-				virtual void update(obj<SerialServer> server, float tpc){}
+				virtual void update(obj<SerialServer> server, long a_tpc){}
 				
 				virtual void NetworkMessage(obj<SerialServer> a_server, Note a_mns){}
 				

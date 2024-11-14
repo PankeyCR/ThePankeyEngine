@@ -77,9 +77,9 @@
 					this->m_states.initialize(*this);
 				}
 
-				virtual float update(){
+				virtual long update(){
 					ApplicationLog(pankey_Log_StartMethod, "update", "println", "");
-					float i_tpc = this->generateTpc();
+					long i_tpc = this->generateTpc();
 
 					this->m_states.update(*this, i_tpc);
 
@@ -87,14 +87,14 @@
 					return i_tpc;
 				}
 				
-				virtual float tpc(){
+				virtual long tpc(){
 					return m_tpc;
 				}
 
-				virtual float generateTpc(){
-					this->m_now = System::microSeconds();
+				virtual long generateTpc(){
+					this->m_now = System::milliSeconds();
 
-					this->m_tpc = (float)(this->m_now - this->m_prev)/1000000;
+					this->m_tpc = this->m_now - this->m_prev;
 					this->m_prev = this->m_now;
 
 					return this->m_tpc;
@@ -108,7 +108,7 @@
 
 				long m_now = 0;
 				long m_prev = 0;
-				float m_tpc = 0;
+				long m_tpc = 0;
 		};
 		
 		using AppManager = LoopManager<Application>;

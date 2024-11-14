@@ -62,8 +62,8 @@
 				virtual obj<PortProtocol> createPortProtocol(){
 					DefaultServerProtocolLog(pankey_Log_StartMethod, "createPortProtocol",  "println", "");
 					obj<PortProtocol> i_protocol = T();
-					SerialStateLog(pankey_Log_Statement, "addSerialPort",  "println", "is protocol null:");
-					SerialStateLog(pankey_Log_Statement, "addSerialPort",  "println", i_protocol.isNull());
+					SerialStateLog(pankey_Log_Statement, "createPortProtocol",  "println", "is protocol null:");
+					SerialStateLog(pankey_Log_Statement, "createPortProtocol",  "println", i_protocol.isNull());
 					DefaultServerProtocolLog(pankey_Log_EndMethod, "createPortProtocol",  "println", "");
 					return i_protocol;
 				}

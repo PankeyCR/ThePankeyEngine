@@ -18,7 +18,7 @@
 
 	namespace pankey{
 
-		class SerialNetwork : public BaseAppState<Application,float>{	
+		class SerialNetwork : public BaseAppState<Application,long>{	
 			public:	
 				SerialNetwork(){}
 				virtual ~SerialNetwork(){}

@@ -17,7 +17,7 @@
 	namespace pankey{
 
 		template<class I>
-		class InputEventAppState : public BaseAppState<Application,float> {
+		class InputEventAppState : public BaseAppState<Application,long> {
 			public:
 				InputEventAppState(){
 					InputEventAppStateLog(ame_Log_StartMethod, "Constructor", "println", "");
@@ -33,7 +33,7 @@
 				}
 				virtual ~InputEventAppState(){}
 				
-				virtual void add(int a_interrupt, I a_input, InvokeMethodReturn<bool,I&,float> a_action, InvokeMethod<int,I&> a_event){
+				virtual void add(int a_interrupt, I a_input, InvokeMethodReturn<bool,I&,long> a_action, InvokeMethod<int,I&> a_event){
 					InputEventAppStateLog(ame_Log_StartMethod, "add", "println", "");
 					m_inputs.put(a_interrupt, a_input);
 					m_action.put(a_interrupt, a_action);
@@ -48,7 +48,7 @@
 					InputEventAppStateLog(ame_Log_EndMethod, "add", "println", "");
 				}
 				
-				virtual void add(int a_interrupt, I a_input, InvokeMethodReturn<bool,I&,float> a_action, InvokeMethod<Application&,int,I&> a_event){
+				virtual void add(int a_interrupt, I a_input, InvokeMethodReturn<bool,I&,long> a_action, InvokeMethod<Application&,int,I&> a_event){
 					InputEventAppStateLog(ame_Log_StartMethod, "add", "println", "");
 					m_inputs.put(a_interrupt, a_input);
 					m_action.put(a_interrupt, a_action);
@@ -84,7 +84,7 @@
 					InputEventAppStateLog(ame_Log_EndMethod, "initializeState", "println", "");
 				}
 				
-				virtual void updateState(Application& a_pp, float a_tpc){
+				virtual void updateState(Application& a_pp, long a_tpc){
 					InputEventAppStateLog(ame_Log_StartMethod, "updateState", "println", "");
 					InputEventAppStateLog(ame_Log_Statement, "updateState", "println", "input position:");
 					InputEventAppStateLog(ame_Log_Statement, "updateState", "println", m_inputs.getPosition());
@@ -98,7 +98,7 @@
 						int f_interrupt = *((int*)f_interrupt_p.getRawPointer());
 						I* f_input = (I*)f_input_p.getRawPointer();
 						
-						bool i_action = invoke<int,bool,I&,float>(m_action, f_interrupt, *f_input, a_tpc);
+						bool i_action = invoke<int,bool,I&,long>(m_action, f_interrupt, *f_input, a_tpc);
 						InputEventAppStateLog(ame_Log_Statement, "updateState", "println", "Action State:");
 						InputEventAppStateLog(ame_Log_Statement, "updateState", "println", i_action);
 						
@@ -131,7 +131,7 @@
 
 			protected:
 				TMap<int,I> m_inputs;
-				MethodReturnMap<int,bool,I&,float> m_action;
+				MethodReturnMap<int,bool,I&,long> m_action;
 				PrimitiveRawMap<int,MethodList<int,I&>> m_events;
 				PrimitiveRawMap<int,MethodList<Application&,int,I&>> m_app_events;
 		};

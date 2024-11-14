@@ -64,7 +64,7 @@
 				}
 		};
 
-		bool DebounceInputAction(DebounceInput& a_input, float a_tpc){
+		bool DebounceInputAction(DebounceInput& a_input, long a_tpc){
 			DebounceInputLog(pankey_Log_StartMethod, "DebounceInputAction", "println", "");
 			DebounceInputLog(pankey_Log_Statement, "DebounceInputAction", "println", "Pin number:");
 			DebounceInputLog(pankey_Log_Statement, "DebounceInputAction", "println", a_input.pin);

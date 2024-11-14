@@ -10,6 +10,8 @@
 #define pankey_SystemFullLog
 //#define pankey_Arduino_Log
 
+// #define SinWave_LogApp
+
 // #define Function_LogApp
 // #define FreeFunction_LogApp
 

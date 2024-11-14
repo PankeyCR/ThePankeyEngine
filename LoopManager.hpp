@@ -25,7 +25,7 @@
 	namespace pankey{
 
 		template<class A>
-		class LoopManager : public UpdateManager<A&,float>{
+		class LoopManager : public UpdateManager<A&,long>{
 			public:
 				LoopManager(){
 					LoopManagerLog(pankey_Log_StartMethod, "Constructor", "println", "");
@@ -80,7 +80,7 @@
 					app_state_timed_functions_list.initialize(a_app);
 				}
 
-				virtual void update(A& a_app, float a_tpc){
+				virtual void update(A& a_app, long a_tpc){
 					LoopManagerLog(pankey_Log_StartMethod, "update",  "println", "");
 					functions_list.update();
 					app_functions_list.update(a_app);
@@ -118,27 +118,27 @@
 				//update
 				UpdateFunctionListManager<> functions_list;
 				UpdateFunctionListManager<A&> app_functions_list;
-				UpdateFunctionListManager<float> timed_functions_list;
-				UpdateFunctionListManager<A&,float> app_timed_functions_list;
+				UpdateFunctionListManager<long> timed_functions_list;
+				UpdateFunctionListManager<A&,long> app_timed_functions_list;
 
 				UpdateClassFunctionListManager<A> class_functions_list;
-				UpdateClassFunctionListManager<A,float> class_timed_functions_list;
+				UpdateClassFunctionListManager<A,long> class_timed_functions_list;
 				
 				StateListManager<> state_functions_list;
-				StateListManager<float> state_timed_functions_list;
+				StateListManager<long> state_timed_functions_list;
 				
 				AppStateListManager<A> app_state_functions_list;
-				AppStateListManager<A,float> app_state_timed_functions_list;
+				AppStateListManager<A,long> app_state_timed_functions_list;
 
 				UpdateFunctionMapManager<Note> functions_map;
 				UpdateFunctionMapManager<Note,A&> app_functions_map;
-				UpdateFunctionMapManager<Note,float> timed_functions_map;
-				UpdateFunctionMapManager<Note,A&,float> app_timed_functions_map;
+				UpdateFunctionMapManager<Note,long> timed_functions_map;
+				UpdateFunctionMapManager<Note,A&,long> app_timed_functions_map;
 
 				UpdateClassFunctionMapManager<A,Note> class_functions_map;
-				UpdateClassFunctionMapManager<A,Note,float> class_timed_functions_map;
+				UpdateClassFunctionMapManager<A,Note,long> class_timed_functions_map;
 				
-				// AppStateMapManager<A,float> app_state_functions_map;
+				// AppStateMapManager<A,long> app_state_functions_map;
 		};
 
 	}

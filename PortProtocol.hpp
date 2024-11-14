@@ -33,7 +33,7 @@
 				//you need to send to message manually
 				virtual void PrivateMessage(obj<SerialPort> a_port, Note a_message){}
 				
-				virtual void update(obj<SerialPort> a_port, float a_tpc){}
+				virtual void update(obj<SerialPort> a_port, long a_tpc){}
 				
 				virtual void operator=(const PortProtocol& a_protocol){}
 				virtual bool operator==(const PortProtocol& a_protocol){return true;}
